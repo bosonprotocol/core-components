@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "target": "ES2021",
+    "module": "CommonJS",
+    "jsx": "react-jsx",
+    "paths": {
+      "@bosonprotocol/*": ["./packages/*/"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "packages/**/tests/**",
+    "packages/**/dist/**",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "dist"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "version": "independent",
+  "useWorkspaces": true,
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "ignoreChanges": ["*.md"],
+      "message": "chore(release): publish",
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "exact": true,
+      "verifyAccess": false
+    }
+  },
+  "ignoreChanges": [".github/**", "**/*.test.*", "**/*.spec.*", "**/*.md"]
+}

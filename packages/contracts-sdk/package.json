@@ -1,0 +1,31 @@
+{
+  "name": "@bosonprotocol/contracts-sdk",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsc --watch",
+    "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "build": "rimraf dist && tsc -p tsconfig.esm.json",
+    "test": "jest",
+    "clean": "rimraf dist coverage .turbo node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bosonprotocol/core-components.git"
+  },
+  "author": "Boson Protocol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bosonprotocol/core-components/issues"
+  },
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
+  "files": [
+    "dist"
+  ],
+  "private": true,
+  "publishConfig": {
+    "access": "restricted",
+    "main": "./dist/index.js"
+  }
+}
