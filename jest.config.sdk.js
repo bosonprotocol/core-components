@@ -7,5 +7,10 @@ module.exports = {
   coveragePathIgnorePatterns: ["jest.config.js", "/node_modules/", "/dist/"],
   moduleNameMapper: {
     "^@bosonprotocol/(.*)$": "<rootDir>/../$1/"
+  },
+  globals: {
+    "ts-jest": {
+      tsconfig: "../../tsconfig.tests.json"
+    }
   }
 };

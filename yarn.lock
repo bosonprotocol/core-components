@@ -1498,6 +1498,8 @@ __metadata:
 "@bosonprotocol/contracts-sdk@^1.0.0, @bosonprotocol/contracts-sdk@workspace:packages/contracts-sdk":
   version: 0.0.0-use.local
   resolution: "@bosonprotocol/contracts-sdk@workspace:packages/contracts-sdk"
+  dependencies:
+    jest: ^27.5.1
   languageName: unknown
   linkType: soft
 
@@ -1506,12 +1508,15 @@ __metadata:
   resolution: "@bosonprotocol/core-sdk@workspace:packages/core-sdk"
   dependencies:
     "@bosonprotocol/contracts-sdk": ^1.0.0
+    jest: ^27.5.1
   languageName: unknown
   linkType: soft
 
 "@bosonprotocol/data-storage-sdk@workspace:packages/data-storage-sdk":
   version: 0.0.0-use.local
   resolution: "@bosonprotocol/data-storage-sdk@workspace:packages/data-storage-sdk"
+  dependencies:
+    jest: ^27.5.1
   languageName: unknown
   linkType: soft
 
@@ -3593,7 +3598,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^17.0.21":
   version: 17.0.21
   resolution: "@types/node@npm:17.0.21"
   checksum: 89dcd2fe82f21d3634266f8384e9c865cf8af49685639fbdbd799bdd1040480fb1e8eeda2d3b9fce41edbe704d2a4be9f427118c4ae872e8d9bb7cbeb3c41a94
@@ -5739,6 +5744,7 @@ __metadata:
   resolution: "core-components@workspace:."
   dependencies:
     "@types/jest": ^27.4.1
+    "@types/node": ^17.0.21
     "@typescript-eslint/eslint-plugin": ^5.12.1
     "@typescript-eslint/parser": ^5.12.1
     eslint: ^8.9.0

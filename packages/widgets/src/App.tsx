@@ -5,6 +5,7 @@ import { CoreSdk } from "@bosonprotocol/core-sdk";
 
 function App() {
   const coreSdk = new CoreSdk();
+  console.log(coreSdk);
 
   return (
     <div className="App">

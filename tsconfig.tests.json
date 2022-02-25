@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -17,7 +16,11 @@
     "pretty": false,
     "sourceMap": true,
     "skipLibCheck": true,
-    "target": "es5"
+    "target": "es5",
+    "outDir": "dist",
+    "paths": {
+      "@bosonprotocol/*": ["./packages/*/"]
+    }
   },
   "exclude": [
     "node_modules",
@@ -26,11 +29,5 @@
     "**/*.spec.ts",
     "**/*.test.ts",
     "dist"
-  ],
-  "references": [
-    { "path": "./packages/contracts-sdk" },
-    { "path": "./packages/core-sdk" },
-    { "path": "./packages/data-storage-sdk" },
-    { "path": "./packages/widgets" }
   ]
 }

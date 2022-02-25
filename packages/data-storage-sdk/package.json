@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc --watch",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
-    "build": "rimraf dist && tsc -p tsconfig.esm.json",
+    "build": "rimraf dist && tsc --build tsconfig.json && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"
   },
@@ -21,11 +21,16 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "dist"
+    "./dist/cjs/*",
+    "./dist/esm/*"
   ],
   "private": true,
   "publishConfig": {
     "access": "restricted",
-    "main": "./dist/index.js"
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }

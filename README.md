@@ -7,7 +7,7 @@ Core components monorepo of the Boson Protocol.
 ### Prerequisites
 
 - Node.js >=16.14.0
-- yarn >=3.2.0
+- yarn
 
 ### Monorepo tools
 
