@@ -4,7 +4,7 @@ import { providers } from "ethers";
 import { addresses } from "../../contracts-sdk/src/addresses";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
-const validEnvNames = ["localhost", "testing", "staging", "production"];
+const validEnvNames = ["local", "testing", "staging", "production"];
 
 const envName = process.argv[2];
 
