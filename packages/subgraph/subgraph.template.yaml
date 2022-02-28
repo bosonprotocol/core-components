@@ -13,12 +13,13 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Offer
-        - OfferMetadata
-        - Owner
+        - Metadata
+        - Seller
+        - ExchangeToken
       abis:
         - name: IBosonOfferHandler
           file: ../contracts-sdk/src/abis/IBosonOfferHandler.json

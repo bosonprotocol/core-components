@@ -1,3 +1,41 @@
+type Metadata @entity {
+  id: ID!
+  title: String!
+  description: String
+  offer: Offer!
+  # TODO: add more fields
+}
+
 type Offer @entity {
   id: ID!
+  price: BigInt!
+  deposit: BigInt!
+  penalty: BigInt!
+  quantity: BigInt!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
+  redeemableDate: BigInt!
+  fulfillmentPeriodDuration: BigInt!
+  voucherValidDuration: BigInt!
+  metadataUri: String!
+  metadataHash: String!
+  voided: Boolean!
+  seller: Seller!
+  exchangeToken: ExchangeToken!
+  metadata: Metadata
+}
+
+type Seller @entity {
+  id: ID!
+  address: Bytes!
+  offers: [Offer!]! @derivedFrom(field: "seller")
+  offerCount: BigInt!
+  # TODO: add more fields
+}
+
+type ExchangeToken @entity {
+  id: ID!
+  address: Bytes!
+  offers: [Offer!]! @derivedFrom(field: "exchangeToken")
+  # TODO: add more fields
 }
