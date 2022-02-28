@@ -1,0 +1,30 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+features:
+  - ipfsOnEthereumContracts
+dataSources:
+  - kind: ethereum/contract
+    name: IBosonOfferHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonOfferHandler
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Offer
+        - OfferMetadata
+        - Owner
+      abis:
+        - name: IBosonOfferHandler
+          file: ../contracts-sdk/src/abis/IBosonOfferHandler.json
+        - name: ProtocolDiamond
+          file: ../contracts-sdk/src/abis/ProtocolDiamond.json
+      eventHandlers:
+        - event: OfferCreated(indexed uint256,indexed address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,string,string,bool))
+          handler: handleOfferCreatedEvent
+      file: ./src/mapping.ts
