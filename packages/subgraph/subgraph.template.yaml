@@ -28,4 +28,6 @@ dataSources:
       eventHandlers:
         - event: OfferCreated(indexed uint256,indexed address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,string,string,bool))
           handler: handleOfferCreatedEvent
+        - event: OfferVoided(indexed uint256,indexed address)
+          handler: handleOfferVoidedEvent
       file: ./src/mapping.ts

@@ -1,6 +1,7 @@
 import {
   IBosonOfferHandler,
-  OfferCreated
+  OfferCreated,
+  OfferVoided
 } from "../generated/IBosonOfferHandler/IBosonOfferHandler";
 import { Offer } from "../generated/schema";
 
@@ -25,6 +26,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
       saveSeller(offerFromContract.seller);
 
       offer = new Offer(offerId.toString());
+      offer.createdAt = event.block.timestamp;
       offer.price = offerFromContract.price;
       offer.deposit = offerFromContract.deposit;
       offer.penalty = offerFromContract.penalty;
@@ -44,5 +46,17 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
 
       offer.save();
     }
+  }
+}
+
+export function handleOfferVoidedEvent(event: OfferVoided): void {
+  const offerId = event.params.offerId;
+
+  const offer = Offer.load(offerId.toString());
+
+  if (offer !== null) {
+    offer.voided = true;
+    offer.voidedAt = event.block.timestamp;
+    offer.save();
   }
 }

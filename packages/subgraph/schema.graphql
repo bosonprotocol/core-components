@@ -8,6 +8,7 @@ type Metadata @entity {
 
 type Offer @entity {
   id: ID!
+  createdAt: BigInt!
   price: BigInt!
   deposit: BigInt!
   penalty: BigInt!
@@ -23,6 +24,7 @@ type Offer @entity {
   seller: Seller!
   exchangeToken: ExchangeToken!
   metadata: Metadata
+  voidedAt: BigInt
 }
 
 type Seller @entity {
