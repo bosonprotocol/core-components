@@ -18,8 +18,8 @@
     "type": "git",
     "url": "git+https://github.com/bosonprotocol/core-components.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Boson Protocol",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/bosonprotocol/core-components/issues"
   },

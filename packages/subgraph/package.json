@@ -1,0 +1,25 @@
+{
+  "name": "@bosonprotocol/subgraph",
+  "version": "1.0.0",
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.26.0",
+    "@graphprotocol/graph-ts": "^0.24.1"
+  },
+  "devDependencies": {
+    "ethers": "^5.5.4",
+    "handlebars": "^4.7.7",
+    "ts-node": "^10.5.0"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "manifest": "ts-node ./scripts/render-manifest.ts",
+    "codegen": "graph codegen",
+    "create:local": "graph create --node http://localhost:8020/ dohaki/bosoncclocal",
+    "remove:local": "graph remove --node http://localhost:8020/ dohaki/bosoncclocal",
+    "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 dohaki/bosoncclocal",
+    "deploy:hosted": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
+    "deploy:testing": "yarn manifest testing && yarn deploy:hosted dohaki/bosoncctesting",
+    "deploy:staging": "yarn manifest staging && yarn deploy:hosted dohaki/bosonccstaging",
+    "deploy:production": "yarn manifest production && yarn deploy:hosted dohaki/bosonccproduction"
+  }
+}
