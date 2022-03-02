@@ -39,5 +39,8 @@ type ExchangeToken @entity {
   id: ID!
   address: Bytes!
   offers: [Offer!]! @derivedFrom(field: "exchangeToken")
+  decimals: BigInt!
+  symbol: String!
+  name: String!
   # TODO: add more fields
 }

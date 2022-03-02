@@ -5,7 +5,7 @@ features:
   - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum/contract
-    name: IBosonOfferHandler
+    name: OfferHandler
     network: {{network}}
     source:
       address: "{{protocolDiamond}}"
@@ -25,6 +25,12 @@ dataSources:
           file: ../contracts-sdk/src/abis/IBosonOfferHandler.json
         - name: ProtocolDiamond
           file: ../contracts-sdk/src/abis/ProtocolDiamond.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: OfferCreated(indexed uint256,indexed address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,string,string,bool))
           handler: handleOfferCreatedEvent

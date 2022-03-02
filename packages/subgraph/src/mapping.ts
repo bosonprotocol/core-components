@@ -2,7 +2,7 @@ import {
   IBosonOfferHandler,
   OfferCreated,
   OfferVoided
-} from "../generated/IBosonOfferHandler/IBosonOfferHandler";
+} from "../generated/OfferHandler/IBosonOfferHandler";
 import { Offer } from "../generated/schema";
 
 import { saveIpfsMetadata } from "./utils/metadata";
