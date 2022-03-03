@@ -1,12 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import { CommitToOffer } from "./views/commit-to-offer";
 import { CreateOffer } from "./views/create-offer";
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    max-width: 700px;
+    font-family: 'Roboto', sans-serif;
+  }
+`;
+
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyle />
     <BrowserRouter>
       <Routes>
         <Route
