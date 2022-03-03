@@ -1,12 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import { CommitToOffer } from "./views/commit-to-offer";
+import { CreateOffer } from "./views/create-offer";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/create"
+          element={
+            <React.Suspense fallback={<></>}>
+              <CreateOffer />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/commit"
+          element={
+            <React.Suspense fallback={<></>}>
+              <CommitToOffer />
+            </React.Suspense>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
