@@ -1,0 +1,46 @@
+{
+  "name": "@bosonprotocol/ethers-sdk",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsc --watch",
+    "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "build": "rimraf dist && tsc --build tsconfig.json && tsc --build tsconfig.cjs.json",
+    "test": "jest",
+    "clean": "rimraf dist coverage .turbo node_modules",
+    "typechain": "typechain --target ethers-v5 --out-dir ./src/contracts '../common/src/abis/*.json'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bosonprotocol/core-components.git"
+  },
+  "author": "Boson Protocol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bosonprotocol/core-components/issues"
+  },
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
+  "files": [
+    "./dist/cjs/*",
+    "./dist/esm/*"
+  ],
+  "private": true,
+  "publishConfig": {
+    "access": "restricted",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js"
+  },
+  "dependencies": {
+    "@bosonprotocol/common": "^1.0.0"
+  },
+  "devDependencies": {
+    "@typechain/ethers-v5": "^9.0.0",
+    "jest": "^27.5.1",
+    "typechain": "^7.0.0",
+    "typescript": "^4.5.5"
+  },
+  "peerDependencies": {
+    "ethers": "^5.5.0"
+  }
+}
