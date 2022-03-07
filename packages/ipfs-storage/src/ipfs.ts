@@ -3,12 +3,19 @@ import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
+import { THE_GRAPH_IPFS_URL } from "./constants";
 
 export class IpfsMetadata implements MetadataStorage {
   private _ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
     this._ipfsClient = create(opts);
+  }
+
+  static fromTheGraphIpfsUrl() {
+    return new IpfsMetadata({
+      url: THE_GRAPH_IPFS_URL
+    });
   }
 
   public async storeMetadata(metadata: Metadata): Promise<string> {
