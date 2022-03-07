@@ -2,8 +2,7 @@ import { RequestManager } from "eth-connect";
 import {
   TransactionResponse,
   Web3LibAdapter,
-  TransactionRequest,
-  OfferStruct
+  TransactionRequest
 } from "@bosonprotocol/common";
 
 export type EthersAdapterConstructorArgs = {
@@ -15,6 +14,10 @@ export class EthConnectAdapter implements Web3LibAdapter {
 
   constructor({ requestManager }: EthersAdapterConstructorArgs) {
     this._requestManager = requestManager;
+  }
+
+  public async getChainId(): Promise<number> {
+    return this._requestManager.provider.getChainId();
   }
 
   public async getBalance(address: string): Promise<string> {
@@ -40,12 +43,9 @@ export class EthConnectAdapter implements Web3LibAdapter {
     });
 
     return {
+      hash: txHash,
       wait: async (confirmations: number) => this._wait(txHash)
     };
-  }
-
-  public async getOffer(offerId: string): Promise<OfferStruct> {
-    throw new Error("Not implemented");
   }
 
   private async _wait(txHash: string, confirmations?: number): Promise<any> {
