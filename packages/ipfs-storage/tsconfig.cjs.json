@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "module": "commonjs",
+    "outDir": "dist/cjs",
+    "target": "es2015"
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.json"]
+}
