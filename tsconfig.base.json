@@ -28,9 +28,11 @@
     "dist"
   ],
   "references": [
-    { "path": "./packages/contracts-sdk" },
+    { "path": "./packages/common" },
     { "path": "./packages/core-sdk" },
-    { "path": "./packages/data-storage-sdk" },
+    { "path": "./packages/eth-connect-sdk" },
+    { "path": "./packages/ethers-sdk" },
+    { "path": "./packages/subgraph" },
     { "path": "./packages/widgets" }
   ]
 }

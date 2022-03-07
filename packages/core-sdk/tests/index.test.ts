@@ -1,9 +1,9 @@
-import { CoreSdk, ContractsSdk } from "../src/index";
+import { CoreSDK, offers } from "../src/index";
 
 test("imports CoreSdk", () => {
-  expect(CoreSdk).toBeTruthy();
+  expect(CoreSDK).toBeTruthy();
 });
 
-test("imports ContractsSdk", () => {
-  expect(ContractsSdk).toBeTruthy();
+test("imports offers", () => {
+  expect(offers).toBeTruthy();
 });

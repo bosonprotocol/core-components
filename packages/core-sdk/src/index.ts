@@ -1,5 +1,5 @@
-import { ContractsSdk as sdk } from "@bosonprotocol/contracts-sdk";
+export { CoreSDK } from "./core-sdk";
 
-export const ContractsSdk = new sdk();
+export * as offers from "./offers";
 
-export class CoreSdk {}
+export * as subgraph from "./subgraph";

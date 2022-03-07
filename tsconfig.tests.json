@@ -9,8 +9,6 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
     "preserveSymlinks": true,
     "preserveWatchOutput": true,
     "pretty": false,
@@ -18,6 +16,7 @@
     "skipLibCheck": true,
     "target": "es5",
     "outDir": "dist",
+    "resolveJsonModule": true,
     "paths": {
       "@bosonprotocol/*": ["./packages/*/"]
     }
