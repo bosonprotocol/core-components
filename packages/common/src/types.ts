@@ -4,9 +4,11 @@ export type ContractAddresses = {
   protocolDiamond: string;
 };
 
-export type ChainAddresses = {
+export type ProtocolConfig = {
+  envName: string;
   chainId: number;
-  protocolDiamond: string;
+  subgraphUrl: string;
+  contracts: ContractAddresses;
 };
 
 export type CreateOfferArgs = {
@@ -55,15 +57,24 @@ export type TransactionRequest = Partial<{
 }>;
 
 export type TransactionResponse = {
-  wait: (confirmations: number) => Promise<any>;
+  hash: string;
+  wait: (confirmations: number) => Promise<unknown>;
 };
 
 export interface Web3LibAdapter {
+  getChainId(): Promise<number>;
   getBalance(address: string): Promise<BigNumberish>;
-
   sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse>;
+}
 
-  getOffer(offerId: BigNumberish): Promise<OfferStruct>;
+export type Metadata = {
+  title: string;
+  description: string;
+};
+
+export interface MetadataStorage {
+  getMetadata(metadataUri: string): Promise<Metadata>;
+  storeMetadata(metadata: Metadata): Promise<string>;
 }

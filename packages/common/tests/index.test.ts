@@ -1,4 +1,4 @@
-import { abis, addresses, getAddressesByEnv } from "../src/index";
+import { abis, getDefaultConfigByEnvName, defaultConfigs } from "../src/index";
 
 describe("index entrypoint", () => {
   test("export abis", () => {
@@ -6,8 +6,8 @@ describe("index entrypoint", () => {
     expect(abis.ProtocolDiamondABI).toBeTruthy();
   });
 
-  test("export addresses", () => {
-    expect(addresses).toBeTruthy();
-    expect(getAddressesByEnv).toBeTruthy();
+  test("export default configs", () => {
+    expect(defaultConfigs).toBeTruthy();
+    expect(getDefaultConfigByEnvName).toBeTruthy();
   });
 });

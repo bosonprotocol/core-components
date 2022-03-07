@@ -1,5 +1,5 @@
 export * as abis from "./abis";
-export { addresses, getAddressesByEnv } from "./addresses";
+export { defaultConfigs, getDefaultConfigByEnvName } from "./configs";
 export * as utils from "./utils";
 
 export * from "./types";
