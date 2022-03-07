@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { TransactionProcessingModal } from "./TransactionProcessingModal";
@@ -94,6 +95,7 @@ const Currency = styled.div`
 `;
 
 export function CreateOffer() {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <WidgetLayout title="Create Offer" offerName="Baggy Jeans">
       <Row>
@@ -176,10 +178,12 @@ export function CreateOffer() {
       </Row>
       <Spacer />
       <Actions>
-        <Button>Approve Tokens</Button>
+        <Button onClick={() => setIsLoading(true)}>Approve Tokens</Button>
         <Button disabled>Create Offer</Button>
       </Actions>
-      <TransactionProcessingModal txHash="0x649e0d345e36bca92e237e097915118bbe37c5e3" />
+      {isLoading && (
+        <TransactionProcessingModal txHash="0x649e0d345e36bca92e237e097915118bbe37c5e3" />
+      )}
     </WidgetLayout>
   );
 }
