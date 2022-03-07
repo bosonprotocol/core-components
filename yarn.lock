@@ -1555,6 +1555,7 @@ __metadata:
     react-icons: ^4.3.1
     react-router-dom: ^6.2.2
     react-scripts: 5.0.0
+    spinners-react: ^1.0.6
     styled-components: ^5.3.3
     typescript: ^4.5.5
     web-vitals: ^2.1.4
@@ -16550,6 +16551,18 @@ __metadata:
     select-hose: ^2.0.0
     spdy-transport: ^3.0.0
   checksum: 2c739d0ff6f56ad36d2d754d0261d5ec358457bea7cbf77b1b05b0c6464f2ce65b85f196305f50b7bd9120723eb94bae9933466f28e67e5cd8cde4e27f1d75f8
+  languageName: node
+  linkType: hard
+
+"spinners-react@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "spinners-react@npm:1.0.6"
+  peerDependencies:
+    "@types/react": ^16.x || 17.x
+    "@types/react-dom": ^16.x || 17.x
+    react: ^16.x || 17.x
+    react-dom: ^16.x || 17.x
+  checksum: 276d047df73b51b77c784e9ef841bf8828634e9240025861a2b3cf2b60aafadec5fcd4e57702feaea792bcab161b32bed190e3611965396d1e7c30d01e0dfbd1
   languageName: node
   linkType: hard
 

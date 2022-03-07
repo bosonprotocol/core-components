@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
+import { TransactionProcessingModal } from "./TransactionProcessingModal";
 
 const columnGap = 24;
 
@@ -178,6 +179,7 @@ export function CreateOffer() {
         <Button>Approve Tokens</Button>
         <Button disabled>Create Offer</Button>
       </Actions>
+      <TransactionProcessingModal txHash="0x649e0d345e36bca92e237e097915118bbe37c5e3" />
     </WidgetLayout>
   );
 }
