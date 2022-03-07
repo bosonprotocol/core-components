@@ -1,21 +1,12 @@
 import fs from "fs";
 import handlebars from "handlebars";
 import { providers } from "ethers";
-import { addresses } from "../../contracts-sdk/src/addresses";
+import { getAddressesByEnv } from "../../common/src/addresses";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
-const validEnvNames = ["local", "testing", "staging", "production"];
 
 const envName = process.argv[2];
-
-if (!validEnvNames.includes(envName)) {
-  throw new Error(
-    `Invalid env name "${envName}". Valid env names: ${validEnvNames.join(
-      ", "
-    )}.`
-  );
-}
-const { protocolDiamond, chainId } = addresses[envName];
+const { protocolDiamond, chainId } = getAddressesByEnv(envName);
 
 const isLocalhost = chainId === 31337;
 

@@ -1,11 +1,4 @@
-export type ContractAddresses = {
-  protocolDiamond: string;
-};
-
-export type ChainAddresses = {
-  chainId: number;
-  protocolDiamond: string;
-};
+import { ChainAddresses } from "./types";
 
 export const addresses: Record<string, ChainAddresses> = {
   local: {
@@ -25,3 +18,13 @@ export const addresses: Record<string, ChainAddresses> = {
     protocolDiamond: "0x"
   }
 };
+
+export function getAddressesByEnv(envName: string): ChainAddresses {
+  const chainAddresses = addresses[envName];
+
+  if (!chainAddresses) {
+    throw new Error(`No addresses found for env '${envName}'`);
+  }
+
+  return chainAddresses;
+}

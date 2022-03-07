@@ -1,12 +1,8 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { CoreSdk } from "@bosonprotocol/core-sdk";
 
 function App() {
-  const coreSdk = new CoreSdk();
-  console.log(coreSdk);
-
   return (
     <div className="App">
       <header className="App-header">

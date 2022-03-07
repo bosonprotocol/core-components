@@ -1,4 +1,4 @@
-# `contracts-sdk`
+# `@bosonprotocol/common`
 
 > TODO: description
 
