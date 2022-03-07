@@ -1,29 +1,49 @@
-import { encodeCreateOffer, bosonOfferHandlerIface } from "../src/offers";
+import {
+  createOffer,
+  encodeCreateOffer,
+  bosonOfferHandlerIface
+} from "../../src/offers/handler";
 import { utils } from "@bosonprotocol/common";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+import {
+  MockMetadataStorage,
+  MockWeb3LibAdapter,
+  ADDRESS
+} from "@bosonprotocol/common/tests/mocks";
+import { mockCreateOfferArgs } from "../mocks";
+
+describe("#createOffer()", () => {
+  test("throw for invalid args", () => {
+    expect(() =>
+      createOffer({
+        offerToCreate: mockCreateOfferArgs({
+          price: "invalid"
+        }),
+        web3Lib: new MockWeb3LibAdapter(),
+        contractAddress: ADDRESS
+      })
+    ).rejects.toThrow();
+  });
+
+  test("return tx response", async () => {
+    const mockedTxHash = "0xTX_HASH";
+    const txResponse = await createOffer({
+      offerToCreate: mockCreateOfferArgs(),
+      web3Lib: new MockWeb3LibAdapter({
+        sendTransaction: {
+          hash: mockedTxHash,
+          wait: async () => mockedTxHash
+        }
+      }),
+      contractAddress: ADDRESS,
+      metadataStorage: new MockMetadataStorage(),
+      theGraphStorage: new MockMetadataStorage()
+    });
+
+    expect(txResponse.hash).toEqual(mockedTxHash);
+  });
+});
 
 describe("#encodeCreateOffer()", () => {
-  test("throw if validFromDate after validUntilDate", () => {
-    expect(() => {
-      encodeCreateOffer(
-        mockCreateOfferArgs({
-          validFromDateInMS: Date.now(),
-          validUntilDateInMS: Date.now() - 1000
-        })
-      );
-    }).toThrow();
-  });
-
-  test("throw if validUntilDate before now", () => {
-    expect(() => {
-      encodeCreateOffer(
-        mockCreateOfferArgs({
-          validUntilDateInMS: Date.now() - 1000
-        })
-      );
-    }).toThrow();
-  });
-
   test("encode correct calldata", () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs();
 
@@ -48,7 +68,7 @@ describe("#encodeCreateOffer()", () => {
       .toString()
       .split(",");
 
-    expect(id).toBe(mockedCreateOfferArgs.id.toString());
+    expect(id).toBeTruthy();
     expect(price).toBe(mockedCreateOfferArgs.price.toString());
     expect(deposit).toBe(mockedCreateOfferArgs.deposit.toString());
     expect(penalty).toBe(mockedCreateOfferArgs.penalty.toString());
