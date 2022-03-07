@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
 import { hooks, metaMask } from "../../connectors/metamask";
-import { BsCheckLg } from "react-icons/bs";
 import { ReactComponent as Logo } from "./logo.svg";
 
 const StyledLogo = styled(Logo)`
@@ -9,7 +8,7 @@ const StyledLogo = styled(Logo)`
 `;
 
 const Root = styled.div`
-  padding: 8px;
+  padding: 16px;
   padding-bottom: 16px;
   position: relative;
   background-color: #6f7681;
@@ -31,8 +30,8 @@ const OfferName = styled.div`
 
 const WalletConnection = styled.div`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 16px;
+  right: 16px;
 `;
 
 const ConnectButton = styled.button`
@@ -74,13 +73,21 @@ interface Props {
 
 export function WidgetLayout({ children, title, offerName }: Props) {
   const isActive = hooks.useIsActive();
+  const account = hooks.useAccount();
+
+  function truncateAddress(address: string) {
+    const start = address.slice(address.length - 6, address.length);
+    const end = address.slice(0, 6);
+
+    return `${start}...${end}`;
+  }
 
   return (
     <Root>
       <WalletConnection>
         {isActive ? (
           <ConnectionSuccess>
-            <BsCheckLg size={12} />
+            {truncateAddress(account as string)}
           </ConnectionSuccess>
         ) : (
           <ConnectButton onClick={() => metaMask.activate()}>

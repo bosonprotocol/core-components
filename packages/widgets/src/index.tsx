@@ -9,7 +9,6 @@ import { CreateOffer } from "./views/create-offer";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
-    max-width: 700px;
     font-family: 'Roboto', sans-serif;
   }
 `;

@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 
+const columnGap = 24;
+
 const Entry = styled.div`
-  width: 50%;
+  flex-grow: 1;
+  max-width: calc(50% - ${columnGap / 2}px);
   display: inline-flex;
   align-items: center;
   vertical-align: top;
@@ -12,8 +15,7 @@ const Entry = styled.div`
 const Label = styled.div`
   font-weight: 500;
   display: inline-block;
-  width: 140px;
-  text-align: right;
+  min-width: 140px;
   padding-right: 8px;
   font-size: 14px;
   user-select: none;
@@ -27,6 +29,10 @@ const Value = styled.div`
   color: #333333;
   border-radius: 4px;
   flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 `;
 
 const Spacer = styled.div`
@@ -45,10 +51,6 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 
-  & + & {
-    margin-left: 24px;
-  }
-
   ${(p) =>
     p.disabled &&
     `
@@ -57,68 +59,120 @@ const Button = styled.button`
   `}
 `;
 
+const Row = styled.div`
+  display: flex;
+  gap: ${columnGap}px;
+  min-width: 0;
+`;
+
 const Actions = styled.div`
   display: flex;
   justify-content: center;
+  gap: ${columnGap}px;
+`;
+
+const Money = styled.div`
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+
+  ${Value} {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: none;
+  }
+`;
+
+const Currency = styled.div`
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border: 2px solid #5e5e5e;
+  background-color: #adb2b8;
+  color: #333333;
+  padding: 4px;
 `;
 
 export function CreateOffer() {
   return (
     <WidgetLayout title="Create Offer" offerName="Baggy Jeans">
-      <Entry>
-        <Label>Price</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Seller Deposit</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Quantity</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Cancellation Penalty</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Dispute Resolver</Label>
-        <Value>...</Value>
-      </Entry>
+      <Row>
+        <Entry>
+          <Label>Price</Label>
+          <Money>
+            <Value>123456</Value>
+            <Currency>ETH</Currency>
+          </Money>
+        </Entry>
+        <Entry>
+          <Label>Seller Deposit</Label>
+          <Money>
+            <Value>123456</Value>
+            <Currency>ETH</Currency>
+          </Money>
+        </Entry>
+      </Row>
+      <Row>
+        <Entry>
+          <Label>Quantity</Label>
+          <Value>123456</Value>
+        </Entry>
+        <Entry>
+          <Label>Cancellation Penalty</Label>
+          <Money>
+            <Value>123456</Value>
+            <Currency>ETH</Currency>
+          </Money>
+        </Entry>
+      </Row>
+      <Row>
+        <Entry>
+          <Label>Dispute Resolver</Label>
+          <Value>...</Value>
+        </Entry>
+        <Entry />
+      </Row>
       <Spacer />
-      <Entry>
-        <Label>Valid From</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Valid Until</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Redeemable By</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Validity Duration</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Dispute Period</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Fulfilment Period</Label>
-        <Value>...</Value>
-      </Entry>
+      <Row>
+        <Entry>
+          <Label>Valid From</Label>
+          <Value>...</Value>
+        </Entry>
+        <Entry>
+          <Label>Valid Until</Label>
+          <Value>...</Value>
+        </Entry>
+      </Row>
+      <Row>
+        <Entry>
+          <Label>Redeemable By</Label>
+          <Value>...</Value>
+        </Entry>
+        <Entry>
+          <Label>Validity Duration</Label>
+          <Value>...</Value>
+        </Entry>
+      </Row>
+      <Row>
+        <Entry>
+          <Label>Dispute Period</Label>
+          <Value>...</Value>
+        </Entry>
+        <Entry>
+          <Label>Fulfilment Period</Label>
+          <Value>...</Value>
+        </Entry>
+      </Row>
       <Spacer />
-      <Entry>
-        <Label>Metadata URI</Label>
-        <Value>...</Value>
-      </Entry>
-      <Entry>
-        <Label>Metadata Hash</Label>
-        <Value>...</Value>
-      </Entry>
+      <Row>
+        <Entry>
+          <Label>Metadata URI</Label>
+          <Value>...</Value>
+        </Entry>
+        <Entry>
+          <Label>Metadata Hash</Label>
+          <Value>...</Value>
+        </Entry>
+      </Row>
       <Spacer />
       <Actions>
         <Button>Approve Tokens</Button>
