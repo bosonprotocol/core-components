@@ -18,11 +18,12 @@ jobs:
         with:
           requireScope: false
           scopes: |
-            contracts-sdk
+            common
             core-sdk
-            data-storage-sdk
+            eth-connect-sdk
+            ethers-sdk
+            ipfs-storage
             subgraph
             widgets
-            widgets-sdk
           subjectPattern: ^(?![A-Z]).+$
           validateSingleCommit: true
