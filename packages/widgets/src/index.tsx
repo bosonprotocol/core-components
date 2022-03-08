@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
-import { CommitToOffer } from "./views/commit-to-offer";
+import { Commit } from "./views/commit";
 import { CreateOffer } from "./views/create-offer";
 
 const GlobalStyle = createGlobalStyle`
@@ -30,7 +30,7 @@ ReactDOM.render(
           path="/commit"
           element={
             <React.Suspense fallback={<></>}>
-              <CommitToOffer />
+              <Commit />
             </React.Suspense>
           }
         />
