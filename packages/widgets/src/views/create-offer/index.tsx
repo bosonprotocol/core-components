@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
+import { StageIndicator } from "./StageIndicator";
 import { TransactionProcessingModal } from "./TransactionProcessingModal";
 
 const columnGap = 24;
@@ -181,6 +182,7 @@ export function CreateOffer() {
         <Button onClick={() => setIsLoading(true)}>Approve Tokens</Button>
         <Button disabled>Create Offer</Button>
       </Actions>
+      <StageIndicator stage={1} />
       {isLoading && (
         <TransactionProcessingModal txHash="0x649e0d345e36bca92e237e097915118bbe37c5e3" />
       )}
