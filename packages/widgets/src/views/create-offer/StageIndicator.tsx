@@ -14,7 +14,6 @@ const StagePoint = styled.div`
   margin-left: -12px;
   margin-right: -12px;
   border-radius: 20px;
-  background-color: red;
   border: 2px solid #5e5e5e;
   display: inline-flex;
   justify-content: center;
@@ -24,12 +23,12 @@ const StagePoint = styled.div`
   color: #333333;
 `;
 
-const Line = styled.div`
+const Line = styled.div<{ stage: Props["stage"] }>`
   height: 16px;
   width: 240px;
   background: rgb(15, 251, 173);
   background: linear-gradient(
-    90deg,
+    ${(p) => (p.stage === 1 ? "90deg" : "270deg")},
     rgba(15, 251, 173, 1) 0%,
     rgba(227, 250, 227, 1) 44%,
     rgba(223, 227, 232, 1) 100%
@@ -49,7 +48,7 @@ export function StageIndicator({ stage }: Props) {
       >
         1
       </StagePoint>
-      <Line />
+      <Line stage={stage} />
       <StagePoint
         style={{ backgroundColor: stage === 2 ? "#0ffbad" : "#dfe3e8" }}
       >
