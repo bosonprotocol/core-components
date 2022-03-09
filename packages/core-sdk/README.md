@@ -1,4 +1,4 @@
-# `core-sdk`
+# `@bosonprotocol/core-sdk`
 
 > TODO: description
 

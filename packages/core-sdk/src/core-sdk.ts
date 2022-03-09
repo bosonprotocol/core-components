@@ -1,27 +1,82 @@
 import {
   Web3LibAdapter,
-  CreateOfferArgs,
-  TransactionResponse
+  TransactionResponse,
+  defaultConfigs,
+  MetadataStorage
 } from "@bosonprotocol/common";
-import { createOffer } from "./offers";
+import { handler as offerHandler, CreateOfferArgs } from "./offers";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
+  private _metadataStorage?: MetadataStorage;
+  private _theGraphStorage?: MetadataStorage;
 
-  constructor(opts: { web3Lib: Web3LibAdapter }) {
+  private _subgraphUrl: string;
+  private _protocolDiamond: string;
+
+  constructor(opts: {
+    web3Lib: Web3LibAdapter;
+    subgraphUrl: string;
+    protocolDiamond: string;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+  }) {
     this._web3Lib = opts.web3Lib;
+    this._subgraphUrl = opts.subgraphUrl;
+    this._protocolDiamond = opts.protocolDiamond;
+    this._metadataStorage = opts.metadataStorage;
   }
 
-  public async getBalance(address: string) {
-    return this._web3Lib.getBalance(address);
+  static async fromDefaultConfig(opts: {
+    web3Lib: Web3LibAdapter;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
+    envName?: string;
+    chainId?: number;
+  }) {
+    const fallbackChainId = await opts.web3Lib.getChainId();
+
+    const [defaultConfig] = defaultConfigs.filter((config) => {
+      if (opts.envName) {
+        return config.envName === opts.envName;
+      }
+
+      return config.chainId === (opts.chainId || fallbackChainId);
+    });
+
+    if (!defaultConfig) {
+      throw new Error(
+        `Could not find default config for ${JSON.stringify(
+          opts.envName
+            ? { envName: opts.envName }
+            : {
+                chainId: opts.chainId || fallbackChainId
+              }
+        )}`
+      );
+    }
+
+    return new CoreSDK({
+      web3Lib: opts.web3Lib,
+      metadataStorage: opts.metadataStorage,
+      theGraphStorage: opts.theGraphStorage,
+      subgraphUrl: defaultConfig.subgraphUrl,
+      protocolDiamond: defaultConfig.contracts.protocolDiamond
+    });
   }
 
   public async createOffer(
-    args: CreateOfferArgs
+    offerToCreate: CreateOfferArgs,
+    opts: Partial<{
+      contractAddress: string;
+    }> = {}
   ): Promise<TransactionResponse> {
-    return createOffer({
-      offer: args,
-      web3Lib: this._web3Lib
+    return offerHandler.createOffer({
+      offerToCreate,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      contractAddress: opts.contractAddress || this._protocolDiamond
     });
   }
 }
