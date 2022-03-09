@@ -1,11 +1,11 @@
+import "bootstrap/dist/css/bootstrap.css";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
-import { Commit } from "./views/commit";
-import { CreateOffer } from "./views/create-offer";
-import { Home } from "./views/home";
+import { HomeView } from "./views/create";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,23 +19,7 @@ ReactDOM.render(
     <GlobalStyle />
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/create"
-          element={
-            <React.Suspense fallback={<></>}>
-              <CreateOffer />
-            </React.Suspense>
-          }
-        />
-        <Route
-          path="/commit"
-          element={
-            <React.Suspense fallback={<></>}>
-              <Commit />
-            </React.Suspense>
-          }
-        />
+        <Route path="/" element={<HomeView />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
