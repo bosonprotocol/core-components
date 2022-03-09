@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
+import { zIndex } from "../../zIndex";
 
 const Root = styled.div`
   position: absolute;
@@ -11,6 +12,7 @@ const Root = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #0004;
+  z-index: ${zIndex.modal};
 `;
 
 const Content = styled.div`
