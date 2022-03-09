@@ -1552,6 +1552,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@bosonprotocol/example-parent-app@workspace:packages/example-parent-app":
+  version: 0.0.0-use.local
+  resolution: "@bosonprotocol/example-parent-app@workspace:packages/example-parent-app"
+  dependencies:
+    "@bosonprotocol/core-sdk": ^1.0.0
+    "@bosonprotocol/widgets-sdk": "workspace:^"
+    "@testing-library/jest-dom": ^5.16.2
+    "@testing-library/react": ^12.1.3
+    "@testing-library/user-event": ^13.5.0
+    "@types/jest": ^27.4.1
+    "@types/node": ^16.11.25
+    "@types/react": ^17.0.39
+    "@types/react-dom": ^17.0.11
+    "@types/styled-components": ^5.1.24
+    babel-plugin-styled-components: ^2.0.6
+    customize-cra: ^1.0.0
+    react: ^17.0.2
+    react-app-rewired: ^2.2.1
+    react-dom: ^17.0.2
+    react-router-dom: ^6.2.2
+    react-scripts: 5.0.0
+    styled-components: ^5.3.3
+    typescript: ^4.5.5
+    web-vitals: ^2.1.4
+  languageName: unknown
+  linkType: soft
+
 "@bosonprotocol/subgraph@workspace:packages/subgraph":
   version: 0.0.0-use.local
   resolution: "@bosonprotocol/subgraph@workspace:packages/subgraph"
@@ -1561,6 +1588,20 @@ __metadata:
     ethers: ^5.5.4
     handlebars: ^4.7.7
     ts-node: ^10.5.0
+  languageName: unknown
+  linkType: soft
+
+"@bosonprotocol/widgets-sdk@workspace:^, @bosonprotocol/widgets-sdk@workspace:packages/widgets-sdk":
+  version: 0.0.0-use.local
+  resolution: "@bosonprotocol/widgets-sdk@workspace:packages/widgets-sdk"
+  dependencies:
+    "@types/react": ^17.0.39
+    "@types/react-dom": ^17.0.11
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    react-use: ^17.3.2
+    styled-components: ^5.3.3
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -1584,7 +1625,6 @@ __metadata:
     react: ^17.0.2
     react-app-rewired: ^2.2.1
     react-dom: ^17.0.2
-    react-icons: ^4.3.1
     react-router-dom: ^6.2.2
     react-scripts: 5.0.0
     spinners-react: ^1.0.6
@@ -15513,15 +15553,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "react-icons@npm:4.3.1"
-  peerDependencies:
-    react: "*"
-  checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
-  languageName: node
-  linkType: hard
-
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -18986,20 +19017,6 @@ __metadata:
   checksum: d5fc37cd561f9daee3c80e03b92ed3e84d80dde3365a8767263d03dacfc8fa06b065ffe1df00d8c2a09f731482fcacae745abfbb478d4af36d0a891fad4834d3
   languageName: node
   linkType: hard
-
-"widgets-sdk@workspace:packages/widgets-sdk":
-  version: 0.0.0-use.local
-  resolution: "widgets-sdk@workspace:packages/widgets-sdk"
-  dependencies:
-    "@types/react": ^17.0.39
-    "@types/react-dom": ^17.0.11
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-use: ^17.3.2
-    styled-components: ^5.3.3
-    typescript: ^4.5.3
-  languageName: unknown
-  linkType: soft
 
 "word-wrap@npm:^1.2.3, word-wrap@npm:~1.2.3":
   version: 1.2.3

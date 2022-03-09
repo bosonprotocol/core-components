@@ -39,16 +39,16 @@ function CreateOfferWidget({ request }: Props) {
   const urlParams = new URLSearchParams({
     ipfsCID,
     price,
-    quantity,
+    quantity
   }).toString();
 
   return (
     <Modal>
       <StyledIframe
         style={{ boxShadow: "none" }}
-        src={`${config.IFRAME_SRC_BASE_URL}/#/seller?${urlParams}`}
-        width={512}
-        height={400}
+        src={`${config.WIDGETS_URl}/create?${urlParams}`}
+        width={600}
+        height={582}
       />
     </Modal>
   );
