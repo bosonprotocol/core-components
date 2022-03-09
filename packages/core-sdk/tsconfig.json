@@ -1,12 +1,16 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "rootDir": "src",
-    "module": "esnext",
-    "outDir": "dist/esm",
-    "target": "esnext"
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "strict": true,
+    "jsx": "react",
+    "skipLibCheck": true
   },
-  "include": ["./src/**/*.ts"]
+  "exclude": ["node_modules"],
+  "include": ["src"]
 }

@@ -2,11 +2,13 @@
   "name": "@bosonprotocol/common",
   "version": "1.0.0",
   "description": "Common package",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
   "scripts": {
     "dev": "tsc --watch",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
-    "build": "rimraf dist && tsc --build tsconfig.json && tsc --build tsconfig.cjs.json",
+    "build": "rimraf dist && tsc --build tsconfig.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"
   },
@@ -21,14 +23,12 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "./dist/cjs/*",
-    "./dist/esm/*"
+    "./dist/*"
   ],
   "private": true,
   "publishConfig": {
     "access": "restricted",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js"
+    "main": "./dist/index.js"
   },
   "devDependencies": {
     "jest": "^27.5.1",

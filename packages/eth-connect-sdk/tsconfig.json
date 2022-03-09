@@ -5,7 +5,7 @@
     "noImplicitAny": false,
     "rootDir": "src",
     "module": "esnext",
-    "outDir": "dist/esm",
+    "outDir": "dist",
     "target": "esnext"
   },
   "include": ["./src/**/*.ts"]

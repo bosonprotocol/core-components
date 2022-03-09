@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -26,13 +25,5 @@
     "**/*.spec.ts",
     "**/*.test.ts",
     "dist"
-  ],
-  "references": [
-    { "path": "./packages/common" },
-    { "path": "./packages/core-sdk" },
-    { "path": "./packages/eth-connect-sdk" },
-    { "path": "./packages/ethers-sdk" },
-    { "path": "./packages/subgraph" },
-    { "path": "./packages/widgets" }
   ]
 }

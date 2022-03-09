@@ -1509,7 +1509,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bosonprotocol/core-sdk@^1.0.0, @bosonprotocol/core-sdk@workspace:packages/core-sdk":
+"@bosonprotocol/core-sdk@^1.0.0, @bosonprotocol/core-sdk@workspace:^, @bosonprotocol/core-sdk@workspace:packages/core-sdk":
   version: 0.0.0-use.local
   resolution: "@bosonprotocol/core-sdk@workspace:packages/core-sdk"
   dependencies:
@@ -1612,7 +1612,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bosonprotocol/widgets@workspace:packages/widgets"
   dependencies:
-    "@bosonprotocol/core-sdk": ^1.0.0
+    "@bosonprotocol/core-sdk": "workspace:^"
     "@testing-library/jest-dom": ^5.16.2
     "@testing-library/react": ^12.1.3
     "@testing-library/user-event": ^13.5.0
