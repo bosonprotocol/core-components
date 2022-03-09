@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "> TODO: description",
   "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
@@ -26,10 +27,6 @@
     "dist/*"
   ],
   "private": true,
-  "publishConfig": {
-    "access": "restricted",
-    "main": "./dist/cjs/index.js"
-  },
   "dependencies": {
     "@bosonprotocol/common": "^1.0.0",
     "eslint": "^8.10.0",
