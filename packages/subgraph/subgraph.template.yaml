@@ -26,7 +26,7 @@ dataSources:
         - name: ProtocolDiamond
           file: ../common/src/abis/ProtocolDiamond.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: ../common/src/abis/ERC20.json
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
         - name: ERC20SymbolBytes
