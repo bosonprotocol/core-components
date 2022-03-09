@@ -40,6 +40,7 @@
     "@ethersproject/constants": "^5.5.0",
     "@ethersproject/units": "^5.5.0",
     "eslint": "^8.10.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.3"
   }
 }
