@@ -20,7 +20,8 @@ jobs:
           scopes: |
             contracts-sdk
             core-sdk
-            data-storage-sdk
+            ethers-sdk
+            eth-connect-sdk
             subgraph
             widgets
             widgets-sdk
