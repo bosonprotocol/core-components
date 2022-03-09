@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { zIndex } from "../../lib/zIndex";
 
 const Root = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const StagePoint = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 1;
+  z-index: ${zIndex.stageIndicator};
   color: #333333;
 `;
 
