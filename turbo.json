@@ -3,7 +3,8 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "build": {
-      "outputs": []
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "test": {
       "outputs": []

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "outDir": "./dist",
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "dist/esm",
+    "moduleResolution": "node",
     "rootDir": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

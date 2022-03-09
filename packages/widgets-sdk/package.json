@@ -1,16 +1,15 @@
 {
   "name": "@bosonprotocol/widgets-sdk",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "source": "./src/index.ts",
+  "version": "1.0.0",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
   "private": true,
   "files": [
-    "dist/**"
+    "dist/*"
   ],
   "scripts": {
-    "dev": "tsc -w --preserveWatchOutput",
-    "build": "tsc",
+    "dev": "tsc --watch --preserveWatchOutput",
+    "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
@@ -22,6 +21,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-use": "^17.3.2",
+    "rimraf": "^3.0.2",
     "styled-components": "^5.3.3"
   }
 }

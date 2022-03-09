@@ -16,10 +16,7 @@
     "skipLibCheck": true,
     "target": "es5",
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "paths": {
-      "@bosonprotocol/*": ["./packages/*/"]
-    }
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
