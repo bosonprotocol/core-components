@@ -4,8 +4,6 @@ import {
   Web3LibAdapter,
   TransactionRequest
 } from "@bosonprotocol/common";
-import { IBosonOfferHandler__factory } from "./contracts/factories/IBosonOfferHandler__factory";
-import { BosonTypes } from "./contracts/IBosonOfferHandler";
 
 export type EthersAdapterConstructorArgs = {
   signer: ethers.Signer;
@@ -18,6 +16,10 @@ export class EthersAdapter implements Web3LibAdapter {
     this._signer = signer;
   }
 
+  public async getChainId(): Promise<number> {
+    return this._signer.getChainId();
+  }
+
   public async getBalance(address: string): Promise<BigNumberish> {
     return this._signer.getBalance();
   }
@@ -26,21 +28,5 @@ export class EthersAdapter implements Web3LibAdapter {
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
     return this._signer.sendTransaction(transactionRequest);
-  }
-
-  public async getOffer(
-    offerId: BigNumberish
-  ): Promise<BosonTypes.OfferStruct> {
-    const bosonOfferHandler = IBosonOfferHandler__factory.connect(
-      "0x",
-      this._signer
-    );
-    const [success, offer] = await bosonOfferHandler.getOffer(offerId);
-
-    if (!success) {
-      return null;
-    }
-
-    return offer;
   }
 }

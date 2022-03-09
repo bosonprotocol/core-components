@@ -2,11 +2,11 @@
 
 Official subgraph of the Boson Protocol.
 
-| Network   | Subgraph ID | Endpoint |
-| --------- | ----------- | -------- |
-| `ropsten` | `TBD`       | `TBD`    |
-| `rinkeby` | `TBD`       | `TBD`    |
-| `mainnet` | `TBD`       | `TBD`    |
+| Env          | Network   | Endpoint                                                        |
+| ------------ | --------- | --------------------------------------------------------------- |
+| `testing`    | `ropsten` | `https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten` |
+| `staging`    | `ropsten` | `TBD`                                                           |
+| `production` | `mainnet` | `TBD`                                                           |
 
 ## Local development
 

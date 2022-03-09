@@ -22,9 +22,9 @@ dataSources:
         - ExchangeToken
       abis:
         - name: IBosonOfferHandler
-          file: ../contracts-sdk/src/abis/IBosonOfferHandler.json
+          file: ../common/src/abis/IBosonOfferHandler.json
         - name: ProtocolDiamond
-          file: ../contracts-sdk/src/abis/ProtocolDiamond.json
+          file: ../common/src/abis/ProtocolDiamond.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20NameBytes
