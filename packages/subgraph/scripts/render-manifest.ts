@@ -17,7 +17,7 @@ const template = handlebars.compile(String(manifestTemplate));
 const manifest = template({
   protocolDiamond,
   network: isLocalhost ? "localhost" : providers.getNetwork(chainId).name,
-  startBlock: isLocalhost ? 0 : 10143000
+  startBlock: isLocalhost ? 0 : 12027000
 });
 
 if (!fs.existsSync(generatedManifestsDir)) {

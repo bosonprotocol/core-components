@@ -1,31 +1,31 @@
-import { ipfs, JSONValue, Value } from "@graphprotocol/graph-ts";
+import { ipfs, json, JSONValueKind } from "@graphprotocol/graph-ts";
 import { Metadata } from "../../generated/schema";
 
 export function saveIpfsMetadata(
   ipfsHash: string,
   offerId: string
 ): string | null {
-  const offerMetadataId = offerId.toString() + "-metadata";
+  const offerMetadataId = offerId + "-metadata";
 
-  // TODO: re-enable and test when using hosted service. does not work with local setup.
-  // ipfs.mapJSON(
-  //   ipfsHash,
-  //   "processIpfsMetadata",
-  //   Value.fromString(offerMetadataId)
-  // );
+  const result = ipfs.cat(ipfsHash);
 
-  return offerMetadataId;
-}
+  if (result !== null) {
+    const data = json.try_fromBytes(result);
 
-export function processIpfsMetadata(value: JSONValue, userData: Value): void {
-  const obj = value.toObject();
-  const title = obj.get("title");
-  const description = obj.get("description");
+    if (data.isOk && data.value.kind === JSONValueKind.OBJECT) {
+      const dataObj = data.value.toObject();
+      const title = dataObj.get("title");
+      const description = dataObj.get("description");
 
-  if (title && description) {
-    const metadata = new Metadata(userData.toString());
-    metadata.title = title.toString();
-    metadata.description = description.toString();
-    metadata.save();
+      if (title && description) {
+        const offerMetadata = new Metadata(offerMetadataId);
+        offerMetadata.title = title.toString();
+        offerMetadata.description = description.toString();
+        offerMetadata.save();
+        return offerMetadataId;
+      }
+    }
   }
+
+  return null;
 }
