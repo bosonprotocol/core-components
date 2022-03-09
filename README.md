@@ -7,11 +7,11 @@ Core components monorepo of the Boson Protocol.
 ### Prerequisites
 
 - Node.js >=16.14.0
-- yarn
+- npm@8.5.3
 
 ### Monorepo tools
 
-- [yarn workspaces](https://yarnpkg.com/features/workspaces)
+- [npm workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces)
 - [lerna](https://lerna.js.org/)
 - [turborepo](https://turborepo.org/)
 
@@ -27,7 +27,7 @@ git checkout https://github.com/bosonprotocol/core-components.git
 
 ```bash
 cd core-components
-yarn install
+npm ci
 ```
 
 ### Run tests
@@ -36,14 +36,14 @@ In the root of this monorepo run
 
 ```bash
 # Run tests of all packages in parallel
-yarn test
+npm run test
 
 # Run tests of all packages serially
-yarn test --concurrency=1
+npm run test --concurrency=1
 
 # Run tests of single package with all dependent packages
-yarn test --scope="@bosonprotocol/contract-sdk"
+npm run test --scope="@bosonprotocol/contract-sdk"
 
 # Run test of single package without dependent packages
-yarn test --scope="@bosonprotocol/contracts-sdk" --no-deps
+npm run test --scope="@bosonprotocol/contracts-sdk" --no-deps
 ```

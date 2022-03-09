@@ -33,9 +33,9 @@ jobs:
         with:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
-          cache: "yarn"
-      - run: yarn install
-      - run: yarn build
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
       - name: Bump version
         run: |
           git config user.name 'github-actions[bot]'
@@ -47,7 +47,7 @@ jobs:
             lerna version --conventional-prerelease --preid next --yes
           fi
       - name: Pack package
-        run: yarn workspaces foreach --no-private pack
+        run: npm pack --workspaces
       - name: Publish to registry
         run: |
           if [ ${{ github.event.inputs.releaseType }} = release ]; then
