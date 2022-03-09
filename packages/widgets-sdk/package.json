@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/widgets-sdk",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/index.d.ts",
   "private": true,
@@ -8,7 +8,7 @@
     "dist/*"
   ],
   "scripts": {
-    "dev": "tsc --watch",
+    "dev": "tsc --watch --preserveWatchOutput",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },

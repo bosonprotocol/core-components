@@ -18,8 +18,8 @@
     "remove:local": "graph remove --node http://localhost:8020/ dohaki/bosoncclocal",
     "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 dohaki/bosoncclocal",
     "deploy:hosted": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
-    "deploy:testing": "yarn manifest testing && yarn deploy:hosted dohaki/bosonccropsten",
-    "deploy:staging": "yarn manifest staging && yarn deploy:hosted dohaki/bosonccstaging",
-    "deploy:production": "yarn manifest production && yarn deploy:hosted dohaki/bosonccproduction"
+    "deploy:testing": "npm run manifest testing && npm run deploy:hosted dohaki/bosonccropsten",
+    "deploy:staging": "npm run manifest staging && npm run deploy:hosted dohaki/bosonccstaging",
+    "deploy:production": "npm run manifest production && npm run deploy:hosted dohaki/bosonccproduction"
   }
 }
