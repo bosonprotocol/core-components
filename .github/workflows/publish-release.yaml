@@ -47,7 +47,7 @@ jobs:
             lerna version --conventional-prerelease --preid next --yes
           fi
       - name: Pack package
-        run: yarn workspaces foreach --no-private pack
+        run: npm pack --workspaces
       - name: Publish to registry
         run: |
           if [ ${{ github.event.inputs.releaseType }} = release ]; then
