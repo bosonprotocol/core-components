@@ -1,12 +1,41 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
+import { Commit } from "./views/commit";
+import { CreateOffer } from "./views/create-offer";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+  }
+`;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GlobalStyle />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/create"
+          element={
+            <React.Suspense fallback={<></>}>
+              <CreateOffer />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/commit"
+          element={
+            <React.Suspense fallback={<></>}>
+              <Commit />
+            </React.Suspense>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

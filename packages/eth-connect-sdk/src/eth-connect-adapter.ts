@@ -5,14 +5,14 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
-export type EthersAdapterConstructorArgs = {
+export type EthConnectAdapterConstructorArgs = {
   requestManager: RequestManager;
 };
 
 export class EthConnectAdapter implements Web3LibAdapter {
   private _requestManager: RequestManager;
 
-  constructor({ requestManager }: EthersAdapterConstructorArgs) {
+  constructor({ requestManager }: EthConnectAdapterConstructorArgs) {
     this._requestManager = requestManager;
   }
 
