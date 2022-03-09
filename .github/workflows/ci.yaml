@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: "16"
           cache: "npm"
-      - run: npm run ci
+      - run: npm ci
       - run: npm run lint --concurrency=1
       - run: npm run build
       - run: npm run test --concurrency=1

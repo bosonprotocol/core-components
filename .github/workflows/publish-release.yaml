@@ -34,7 +34,7 @@ jobs:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
-      - run: npm run ci
+      - run: npm ci
       - run: npm run build
       - name: Bump version
         run: |
