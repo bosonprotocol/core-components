@@ -2,13 +2,12 @@
   "name": "@bosonprotocol/core-sdk",
   "version": "1.0.0",
   "description": "> TODO: description",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "source": "./src/index.ts",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
-    "build": "rimraf dist && tsc --build tsconfig.json",
+    "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
     "clean": "rimraf dist coverage .turbo node_modules"
   },
@@ -23,12 +22,12 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "./dist/*"
+    "dist/*"
   ],
   "private": true,
   "publishConfig": {
     "access": "restricted",
-    "main": "./dist/index.js"
+    "main": "./dist/cjs/index.js"
   },
   "dependencies": {
     "@bosonprotocol/common": "^1.0.0",
@@ -37,7 +36,9 @@
     "@ethersproject/bignumber": "^5.5.0",
     "@ethersproject/constants": "^5.5.0",
     "@ethersproject/units": "^5.5.0",
-    "cross-fetch": "^3.1.5"
+    "cross-fetch": "^3.1.5",
+    "eslint": "^8.10.0",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "jest": "^27.5.1",
