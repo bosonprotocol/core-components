@@ -1,4 +1,4 @@
-import { Metadata, MetadataStorage } from "@bosonprotocol/common";
+import { utils, Metadata, MetadataStorage } from "@bosonprotocol/common";
 import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
@@ -19,10 +19,12 @@ export class IpfsMetadata implements MetadataStorage {
   }
 
   public async storeMetadata(metadata: Metadata): Promise<string> {
-    // TODO: order keys of metadata?
-    const addResult = await this._ipfsClient.add(JSON.stringify(metadata), {
-      pin: true
-    });
+    // TODO: validate metadata
+    const metadataWithSortedKeys = utils.metadata.sortObjKeys(metadata);
+    const addResult = await this._ipfsClient.add(
+      JSON.stringify(metadataWithSortedKeys),
+      { pin: true }
+    );
     const cid = addResult.cid.toString();
     return cid;
   }
