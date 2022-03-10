@@ -1,12 +1,10 @@
 {
-  "name": "@bosonprotocol/core-sdk",
+  "name": "@bosonprotocol/ipfs-storage",
   "version": "1.0.0",
-  "description": "> TODO: description",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/cjs/index.d.ts",
+  "description": "IPFS metadata storage",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "tsc --watch --preserveWatchOutput",
+    "dev": "tsc --watch",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
@@ -23,18 +21,14 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "dist/*"
+    "./dist/cjs/*",
+    "./dist/esm/*"
   ],
   "private": true,
-  "dependencies": {
-    "@bosonprotocol/common": "^1.0.0",
-    "@ethersproject/abi": "^5.5.0",
-    "@ethersproject/address": "^5.5.0",
-    "@ethersproject/bignumber": "^5.5.0",
-    "@ethersproject/constants": "^5.5.0",
-    "@ethersproject/units": "^5.5.0",
-    "cross-fetch": "^3.1.5",
-    "yup": "^0.32.11"
+  "publishConfig": {
+    "access": "restricted",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js"
   },
   "devDependencies": {
     "jest": "^27.5.1",
@@ -42,5 +36,11 @@
     "eslint": "^8.10.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3"
+  },
+  "dependencies": {
+    "@bosonprotocol/common": "^1.0.0",
+    "ipfs-http-client": "^56.0.1",
+    "multiformats": "^9.6.4",
+    "uint8arrays": "^3.0.0"
   }
 }

@@ -2,7 +2,8 @@ import {
   Web3LibAdapter,
   TransactionResponse,
   defaultConfigs,
-  MetadataStorage
+  MetadataStorage,
+  Metadata
 } from "@bosonprotocol/common";
 import { handler as offerHandler, CreateOfferArgs } from "./offers";
 
@@ -63,6 +64,14 @@ export class CoreSDK {
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond
     });
+  }
+
+  public async storeMetadata(metadata: Metadata): Promise<string> {
+    if (!this._metadataStorage) {
+      throw new Error("No metadataStorage set");
+    }
+
+    return this._metadataStorage.storeMetadata(metadata);
   }
 
   public async createOffer(
