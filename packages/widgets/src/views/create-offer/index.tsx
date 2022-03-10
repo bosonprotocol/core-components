@@ -241,6 +241,11 @@ export function CreateOffer() {
 
               const txReceipt = await txResponse.wait(1);
               console.log({ txReceipt });
+
+              window.parent.postMessage(
+                { target: "boson", message: "offer-created" },
+                "*"
+              );
             } finally {
               setPendingTransactionHash(undefined);
             }
