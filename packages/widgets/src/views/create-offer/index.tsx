@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionProcessingModal } from "./TransactionProcessingModal";
+import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
+import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
+import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { ethers } from "ethers";
 
 const columnGap = 24;
 
@@ -95,8 +99,47 @@ const Currency = styled.div`
   padding: 4px;
 `;
 
+// TODO: get from url params
+const staticCreateOfferArgs: offers.CreateOfferArgs = {
+  price: 1,
+  deposit: 2,
+  penalty: 3,
+  quantity: 10,
+  validFromDateInMS: Date.now() + 24 * 60 * 60 * 1000,
+  validUntilDateInMS: Date.now() + 48 * 60 * 60 * 1000,
+  redeemableDateInMS: Date.now() + 48 * 60 * 60 * 1000,
+  fulfillmentPeriodDurationInMS: 24 * 60 * 60 * 1000,
+  voucherValidDurationInMS: 24 * 60 * 60 * 1000,
+  seller: ethers.constants.AddressZero, // TODO: replace dynamically with connected wallet
+  exchangeToken: ethers.constants.AddressZero,
+  metadataUri:
+    "https://ipfs.io/ipfs/QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
+  metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6"
+};
+
 export function CreateOffer() {
   const [isLoading, setIsLoading] = useState(false);
+  const [coreSDK, setCoreSDK] = useState<null | CoreSDK>(null);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      CoreSDK.fromDefaultConfig({
+        chainId: 3,
+        web3Lib: new EthersAdapter({
+          signer: new ethers.providers.Web3Provider(
+            window.ethereum // TODO: replace with provider from web3-react
+          ).getSigner()
+        }),
+        metadataStorage: new IpfsMetadata({
+          url: "https://ipfs.infura.io:5001"
+        }),
+        theGraphStorage: IpfsMetadata.fromTheGraphIpfsUrl()
+      })
+        .then(setCoreSDK)
+        .catch((e) => console.log("failed to init core-sdk", e));
+    }
+  }, []);
+
   return (
     <WidgetLayout title="Create Offer" offerName="Baggy Jeans">
       <Row>
@@ -180,7 +223,20 @@ export function CreateOffer() {
       <Spacer />
       <Actions>
         <Button onClick={() => setIsLoading(true)}>Approve Tokens</Button>
-        <Button disabled>Create Offer</Button>
+        <Button
+          onClick={async () => {
+            if (coreSDK) {
+              const txResponse = await coreSDK.createOffer(
+                staticCreateOfferArgs
+              );
+              console.log("txResponse", txResponse);
+              const txReceipt = await txResponse.wait(1);
+              console.log("txReceipt", txReceipt);
+            }
+          }}
+        >
+          Create Offer
+        </Button>
       </Actions>
       <StageIndicator stage={1} />
       {isLoading && (
