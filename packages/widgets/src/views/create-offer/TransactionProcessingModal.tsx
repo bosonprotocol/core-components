@@ -24,6 +24,7 @@ const Value = styled.div`
   color: #333333;
   border-radius: 4px;
   margin-bottom: 24px;
+  font-size: 14px;
 `;
 
 const Center = styled.div`

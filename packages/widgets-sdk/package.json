@@ -9,7 +9,7 @@
     "dist/*"
   ],
   "scripts": {
-    "dev": "tsc --watch --preserveWatchOutput",
+    "dev": "tsc --build tsconfig.cjs.json --watch --preserveWatchOutput ",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "clean": "rimraf .turbo && rimraf node_modules && rimraf dist"
   },

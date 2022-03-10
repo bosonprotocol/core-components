@@ -14,8 +14,6 @@ interface CreateOfferRequest {
   redeemableDateInMS: string;
   fulfillmentPeriodDurationInMS: string;
   voucherValidDurationInMS: string;
-  seller: string;
-  exchangeToken: string;
   metadataUri: string;
   metadataHash: string;
 }

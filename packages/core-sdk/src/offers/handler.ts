@@ -20,9 +20,16 @@ export async function createOffer(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
-  await createOfferArgsSchema.validate(args.offerToCreate, {
-    abortEarly: false
-  });
+  try {
+    await createOfferArgsSchema.validate(args.offerToCreate, {
+      abortEarly: false
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error);
+    console.log(error);
+    // throw error;
+  }
 
   // We use the feature `ipfsOnEthereum` in our subgraph to resolve metadata from IPFS
   // and store them in the graph. In order for the graph node to reliably resolve them,

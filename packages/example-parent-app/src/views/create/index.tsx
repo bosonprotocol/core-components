@@ -2,32 +2,45 @@ import { createOffer } from "@bosonprotocol/widgets-sdk";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { useFormik } from "formik";
+import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 
 const Root = styled.div`
   padding: 24px;
   max-width: 600px;
 `;
 
+const dayInMs = 1000 * 60 * 60 * 24;
+
 export function HomeView() {
   const formik = useFormik({
     initialValues: {
       title: "Baggy jeans",
-      price: "123",
-      deposit: "123",
-      penalty: "123",
-      quantity: "123",
-      validFromDateInMS: "123",
-      validUntilDateInMS: "123",
-      redeemableDateInMS: "123",
-      fulfillmentPeriodDurationInMS: "123",
-      voucherValidDurationInMS: "123",
-      seller: "123",
-      exchangeToken: "ETH",
-      metadataUri: "123",
-      metadataHash: "123"
+      price: "1",
+      deposit: "2",
+      penalty: "3",
+      quantity: "10",
+      validFromDateInMS: (Date.now() + dayInMs).toString(),
+      validUntilDateInMS: (Date.now() + 2 * dayInMs).toString(),
+      redeemableDateInMS: (Date.now() + 2 * dayInMs).toString(),
+      fulfillmentPeriodDurationInMS: dayInMs.toString(),
+      voucherValidDurationInMS: dayInMs.toString()
     },
-    onSubmit: (values) => {
-      createOffer(values);
+    onSubmit: async (values) => {
+      const storage = new IpfsMetadata({
+        url: "https://ipfs.infura.io:5001"
+      });
+
+      const metadataHash = await storage.storeMetadata({
+        title: values.title,
+        description: ""
+      });
+      const metadataUri = `https://ipfs.io/ipfs/${metadataHash}`;
+
+      createOffer({
+        ...values,
+        metadataHash,
+        metadataUri: metadataUri
+      });
     }
   });
 
@@ -70,6 +83,16 @@ export function HomeView() {
             value={formik.values.penalty}
             onChange={formik.handleChange}
             name="penalty"
+            type="text"
+            placeholder="..."
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>quantity</Form.Label>
+          <Form.Control
+            value={formik.values.quantity}
+            onChange={formik.handleChange}
+            name="quantity"
             type="text"
             placeholder="..."
           />
@@ -120,46 +143,6 @@ export function HomeView() {
             value={formik.values.voucherValidDurationInMS}
             onChange={formik.handleChange}
             name="voucherValidDurationInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>seller</Form.Label>
-          <Form.Control
-            value={formik.values.seller}
-            onChange={formik.handleChange}
-            name="seller"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>exchangeToken</Form.Label>
-          <Form.Control
-            value={formik.values.exchangeToken}
-            onChange={formik.handleChange}
-            name="exchangeToken"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>metadataUri</Form.Label>
-          <Form.Control
-            value={formik.values.metadataUri}
-            onChange={formik.handleChange}
-            name="metadataUri"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>metadataHash</Form.Label>
-          <Form.Control
-            value={formik.values.metadataHash}
-            onChange={formik.handleChange}
-            name="metadataHash"
             type="text"
             placeholder="..."
           />
