@@ -76,8 +76,8 @@ export function WidgetLayout({ children, title, offerName }: Props) {
   const account = hooks.useAccount();
 
   function truncateAddress(address: string) {
-    const start = address.slice(address.length - 6, address.length);
-    const end = address.slice(0, 6);
+    const start = address.slice(0, 6);
+    const end = address.slice(address.length - 6, address.length);
 
     return `${start}...${end}`;
   }
