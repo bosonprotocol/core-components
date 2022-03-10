@@ -4,6 +4,7 @@
   "description": "IPFS metadata storage",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
