@@ -5,7 +5,8 @@ import {
   MetadataStorage,
   Metadata
 } from "@bosonprotocol/common";
-import { handler as offerHandler, CreateOfferArgs } from "./offers";
+import { BigNumberish } from "@ethersproject/bignumber";
+import * as offers from "./offers";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -75,17 +76,23 @@ export class CoreSDK {
   }
 
   public async createOffer(
-    offerToCreate: CreateOfferArgs,
+    offerToCreate: offers.CreateOfferArgs,
     opts: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return offerHandler.createOffer({
+    return offers.handler.createOffer({
       offerToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
       contractAddress: opts.contractAddress || this._protocolDiamond
     });
+  }
+
+  public async getOfferById(
+    offerId: BigNumberish
+  ): Promise<offers.RawOfferFromSubgraph> {
+    return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
   }
 }
