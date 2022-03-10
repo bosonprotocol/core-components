@@ -5,9 +5,19 @@ import { Modal } from "./components/Modal";
 import { config } from "../config";
 
 interface CreateOfferRequest {
-  ipfsCID: string;
   price: string;
+  deposit: string;
+  penalty: string;
   quantity: string;
+  validFromDateInMS: string;
+  validUntilDateInMS: string;
+  redeemableDateInMS: string;
+  fulfillmentPeriodDurationInMS: string;
+  voucherValidDurationInMS: string;
+  seller: string;
+  exchangeToken: string;
+  metadataUri: string;
+  metadataHash: string;
 }
 
 export function createOffer(request: CreateOfferRequest) {
@@ -34,13 +44,11 @@ export function createOffer(request: CreateOfferRequest) {
 interface Props {
   request: CreateOfferRequest;
 }
+
 function CreateOfferWidget({ request }: Props) {
-  const { ipfsCID, price, quantity } = request;
-  const urlParams = new URLSearchParams({
-    ipfsCID,
-    price,
-    quantity
-  }).toString();
+  const urlParams = new URLSearchParams(
+    request as unknown as Record<string, string>
+  ).toString();
 
   return (
     <Modal>

@@ -96,35 +96,55 @@ const Currency = styled.div`
 `;
 
 export function CreateOffer() {
+  const urlParams = Object.fromEntries(
+    new URLSearchParams(window.location.search).entries()
+  );
+
+  const {
+    title,
+    price,
+    deposit,
+    penalty,
+    quantity,
+    validFromDateInMS,
+    validUntilDateInMS,
+    redeemableDateInMS,
+    fulfillmentPeriodDurationInMS,
+    voucherValidDurationInMS,
+    exchangeToken,
+    metadataUri,
+    metadataHash
+  } = urlParams;
+
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <WidgetLayout title="Create Offer" offerName="Baggy Jeans">
+    <WidgetLayout title="Create Offer" offerName={title}>
       <Row>
         <Entry>
           <Label>Price</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{price}</Value>
+            <Currency>{exchangeToken}</Currency>
           </Money>
         </Entry>
         <Entry>
           <Label>Seller Deposit</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{deposit}</Value>
+            <Currency>{exchangeToken}</Currency>
           </Money>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Quantity</Label>
-          <Value>123456</Value>
+          <Value>{quantity}</Value>
         </Entry>
         <Entry>
           <Label>Cancellation Penalty</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{penalty}</Value>
+            <Currency>{exchangeToken}</Currency>
           </Money>
         </Entry>
       </Row>
@@ -139,27 +159,27 @@ export function CreateOffer() {
       <Row>
         <Entry>
           <Label>Valid From</Label>
-          <Value>...</Value>
+          <Value>{validFromDateInMS}</Value>
         </Entry>
         <Entry>
           <Label>Valid Until</Label>
-          <Value>...</Value>
+          <Value>{validUntilDateInMS}</Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Redeemable By</Label>
-          <Value>...</Value>
+          <Value>{redeemableDateInMS}</Value>
         </Entry>
         <Entry>
           <Label>Validity Duration</Label>
-          <Value>...</Value>
+          <Value>{fulfillmentPeriodDurationInMS}</Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Dispute Period</Label>
-          <Value>...</Value>
+          <Value>{voucherValidDurationInMS}</Value>
         </Entry>
         <Entry>
           <Label>Fulfilment Period</Label>
@@ -170,11 +190,11 @@ export function CreateOffer() {
       <Row>
         <Entry>
           <Label>Metadata URI</Label>
-          <Value>...</Value>
+          <Value>{metadataUri}</Value>
         </Entry>
         <Entry>
           <Label>Metadata Hash</Label>
-          <Value>...</Value>
+          <Value>{metadataHash}</Value>
         </Entry>
       </Row>
       <Spacer />
