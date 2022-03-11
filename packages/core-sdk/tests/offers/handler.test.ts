@@ -26,7 +26,11 @@ describe("#createOffer()", () => {
       web3Lib: new MockWeb3LibAdapter({
         sendTransaction: {
           hash: mockedTxHash,
-          wait: async () => mockedTxHash
+          wait: async () => ({
+            from: "0x",
+            to: "0x",
+            logs: []
+          })
         }
       }),
       contractAddress: ADDRESS,
