@@ -46,7 +46,7 @@ export type OfferStruct = {
   voided: boolean;
 };
 
-type Log = {
+export type Log = {
   data: string;
   topics: string[];
 };
