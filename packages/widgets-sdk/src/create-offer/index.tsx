@@ -5,9 +5,17 @@ import { Modal } from "./components/Modal";
 import { config } from "../config";
 
 interface CreateOfferRequest {
-  ipfsCID: string;
   price: string;
+  deposit: string;
+  penalty: string;
   quantity: string;
+  validFromDateInMS: string;
+  validUntilDateInMS: string;
+  redeemableDateInMS: string;
+  fulfillmentPeriodDurationInMS: string;
+  voucherValidDurationInMS: string;
+  metadataUri: string;
+  metadataHash: string;
 }
 
 export function createOffer(request: CreateOfferRequest) {
@@ -21,7 +29,7 @@ export function createOffer(request: CreateOfferRequest) {
     const { target, message } = e.data || {};
 
     if (target !== "boson") return;
-    if (message !== "offer-created") return;
+    if (message !== "close-offer-create-widget") return;
 
     ReactDOM.unmountComponentAtNode(el);
     el.remove();
@@ -34,13 +42,11 @@ export function createOffer(request: CreateOfferRequest) {
 interface Props {
   request: CreateOfferRequest;
 }
+
 function CreateOfferWidget({ request }: Props) {
-  const { ipfsCID, price, quantity } = request;
-  const urlParams = new URLSearchParams({
-    ipfsCID,
-    price,
-    quantity
-  }).toString();
+  const urlParams = new URLSearchParams(
+    request as unknown as Record<string, string>
+  ).toString();
 
   return (
     <Modal>

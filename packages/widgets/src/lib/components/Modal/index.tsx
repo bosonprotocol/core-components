@@ -16,6 +16,7 @@ const Root = styled.div`
 `;
 
 const Content = styled.div`
+  margin: 24px;
   color: white;
   min-width: 300px;
   border-radius: 8px;

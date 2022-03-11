@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
-import { TransactionProcessingModal } from "./TransactionProcessingModal";
-import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
-import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { TransactionPendingModal } from "./modals/TransactionPendingModal";
+import { offers } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
+import { useCoreSDK } from "../../lib/useCoreSDK";
+import { hooks } from "../../lib/connectors/metamask";
+import axios from "axios";
+import { Button } from "./Button";
+import { SucessModal as SuccessModal } from "./modals/SuccessModal";
+import { ErrorModal } from "./modals/ErrorModal";
+import { formatEther } from "ethers/lib/utils";
 
 const columnGap = 24;
 
@@ -46,26 +51,6 @@ const Spacer = styled.div`
   height: 20px;
 `;
 
-const Button = styled.button`
-  all: unset;
-  user-select: none;
-  width: 200px;
-  background-color: #0ffbad;
-  color: #333333;
-  border: 2px solid #5e5e5e;
-  padding: 8px 16px;
-  text-align: center;
-  border-radius: 4px;
-  cursor: pointer;
-
-  ${(p) =>
-    p.disabled &&
-    `
-    background-color: #ced4db;
-    cursor: initial;
-  `}
-`;
-
 const Row = styled.div`
   display: flex;
   gap: ${columnGap}px;
@@ -99,75 +84,93 @@ const Currency = styled.div`
   padding: 4px;
 `;
 
-// TODO: get from url params
-const staticCreateOfferArgs: offers.CreateOfferArgs = {
-  price: 1,
-  deposit: 2,
-  penalty: 3,
-  quantity: 10,
-  validFromDateInMS: Date.now() + 24 * 60 * 60 * 1000,
-  validUntilDateInMS: Date.now() + 48 * 60 * 60 * 1000,
-  redeemableDateInMS: Date.now() + 48 * 60 * 60 * 1000,
-  fulfillmentPeriodDurationInMS: 24 * 60 * 60 * 1000,
-  voucherValidDurationInMS: 24 * 60 * 60 * 1000,
-  seller: ethers.constants.AddressZero, // TODO: replace dynamically with connected wallet
-  exchangeToken: ethers.constants.AddressZero,
-  metadataUri:
-    "https://ipfs.io/ipfs/QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
-  metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6"
-};
-
-export function CreateOffer() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [coreSDK, setCoreSDK] = useState<null | CoreSDK>(null);
+function useMetadata(metadataUri: string) {
+  const [metadata, setMetadata] = useState<Record<string, string>>();
 
   useEffect(() => {
-    if (window.ethereum) {
-      CoreSDK.fromDefaultConfig({
-        chainId: 3,
-        web3Lib: new EthersAdapter({
-          signer: new ethers.providers.Web3Provider(
-            window.ethereum // TODO: replace with provider from web3-react
-          ).getSigner()
-        }),
-        metadataStorage: new IpfsMetadata({
-          url: "https://ipfs.infura.io:5001"
-        }),
-        theGraphStorage: IpfsMetadata.fromTheGraphIpfsUrl()
-      })
-        .then(setCoreSDK)
-        .catch((e) => console.log("failed to init core-sdk", e));
-    }
-  }, []);
+    axios.get(metadataUri).then((resp) => setMetadata(resp.data));
+  }, [metadataUri]);
+
+  return metadata;
+}
+
+export function CreateOffer() {
+  const urlParams = Object.fromEntries(
+    new URLSearchParams(window.location.search).entries()
+  );
+
+  const account = hooks.useAccount();
+
+  const createOfferArgs: offers.CreateOfferArgs = {
+    price: urlParams["price"],
+    deposit: urlParams["deposit"],
+    penalty: urlParams["penalty"],
+    quantity: urlParams["quantity"],
+    validFromDateInMS: urlParams["validFromDateInMS"],
+    validUntilDateInMS: urlParams["validUntilDateInMS"],
+    redeemableDateInMS: urlParams["redeemableDateInMS"],
+    fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
+    voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
+    seller: account ?? ethers.constants.AddressZero,
+    exchangeToken: ethers.constants.AddressZero,
+    metadataUri: urlParams["metadataUri"],
+    metadataHash: urlParams["metadataHash"]
+  };
+
+  const metadata = useMetadata(createOfferArgs.metadataUri);
+
+  const currency =
+    createOfferArgs.exchangeToken === ethers.constants.AddressZero
+      ? "ETH"
+      : "UNKNOWN";
+  const coreSDK = useCoreSDK();
+
+  const [transaction, setTransaction] = useState<
+    | {
+        status: "empty";
+      }
+    | {
+        status: "pending";
+        txHash: string;
+      }
+    | {
+        status: "error";
+        error: Error;
+      }
+    | {
+        status: "success";
+        txHash: string;
+      }
+  >({ status: "empty" });
 
   return (
-    <WidgetLayout title="Create Offer" offerName="Baggy Jeans">
+    <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
       <Row>
         <Entry>
           <Label>Price</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{formatEther(createOfferArgs.price)}</Value>
+            <Currency>{currency}</Currency>
           </Money>
         </Entry>
         <Entry>
           <Label>Seller Deposit</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{formatEther(createOfferArgs.deposit)}</Value>
+            <Currency>{currency}</Currency>
           </Money>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Quantity</Label>
-          <Value>123456</Value>
+          <Value>{createOfferArgs.quantity}</Value>
         </Entry>
         <Entry>
           <Label>Cancellation Penalty</Label>
           <Money>
-            <Value>123456</Value>
-            <Currency>ETH</Currency>
+            <Value>{formatEther(createOfferArgs.penalty)}</Value>
+            <Currency>{currency}</Currency>
           </Money>
         </Entry>
       </Row>
@@ -182,21 +185,21 @@ export function CreateOffer() {
       <Row>
         <Entry>
           <Label>Valid From</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.validFromDateInMS}</Value>
         </Entry>
         <Entry>
           <Label>Valid Until</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.validUntilDateInMS}</Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Redeemable By</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.redeemableDateInMS}</Value>
         </Entry>
         <Entry>
           <Label>Validity Duration</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.voucherValidDurationInMS}</Value>
         </Entry>
       </Row>
       <Row>
@@ -206,41 +209,65 @@ export function CreateOffer() {
         </Entry>
         <Entry>
           <Label>Fulfilment Period</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.fulfillmentPeriodDurationInMS}</Value>
         </Entry>
       </Row>
       <Spacer />
       <Row>
         <Entry>
           <Label>Metadata URI</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.metadataUri}</Value>
         </Entry>
         <Entry>
           <Label>Metadata Hash</Label>
-          <Value>...</Value>
+          <Value>{createOfferArgs.metadataHash}</Value>
         </Entry>
       </Row>
       <Spacer />
       <Actions>
-        <Button onClick={() => setIsLoading(true)}>Approve Tokens</Button>
+        <Button disabled>Approve Tokens</Button>
         <Button
           onClick={async () => {
-            if (coreSDK) {
-              const txResponse = await coreSDK.createOffer(
-                staticCreateOfferArgs
-              );
-              console.log("txResponse", txResponse);
+            if (!coreSDK) return;
+
+            console.log({ createOfferArgs });
+
+            try {
+              const txResponse = await coreSDK.createOffer(createOfferArgs);
+              console.log({ txResponse });
+
+              setTransaction({
+                status: "pending",
+                txHash: txResponse.hash
+              });
+
               const txReceipt = await txResponse.wait(1);
-              console.log("txReceipt", txReceipt);
+              console.log({ txReceipt });
+
+              setTransaction({
+                status: "success",
+                txHash: txResponse.hash
+              });
+            } catch (e) {
+              setTransaction({
+                status: "error",
+                error: e as Error
+              });
             }
           }}
         >
           Create Offer
         </Button>
       </Actions>
-      <StageIndicator stage={1} />
-      {isLoading && (
-        <TransactionProcessingModal txHash="0x649e0d345e36bca92e237e097915118bbe37c5e3" />
+      <StageIndicator stage={2} />
+      {transaction.status === "pending" && (
+        <TransactionPendingModal txHash={transaction.txHash} />
+      )}
+      {transaction.status === "success" && (
+        <SuccessModal txHash={transaction.txHash} offerId="TODO" />
+      )}
+      {transaction.status === "error" && (
+        <ErrorModal error={transaction.error} />
       )}
     </WidgetLayout>
   );
