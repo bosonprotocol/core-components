@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
-import { TransactionProcessingModal } from "./TransactionProcessingModal";
+import { TransactionPendingModal } from "./modals/TransactionPendingModal";
 import { offers } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { hooks } from "../../lib/connectors/metamask";
 import axios from "axios";
+import { Button } from "./Button";
+import { SucessModal as SuccessModal } from "./modals/SuccessModal";
+import { ErrorModal } from "./modals/ErrorModal";
 
 const columnGap = 24;
 
@@ -45,26 +48,6 @@ const Value = styled.div`
 
 const Spacer = styled.div`
   height: 20px;
-`;
-
-const Button = styled.button`
-  all: unset;
-  user-select: none;
-  width: 200px;
-  background-color: #0ffbad;
-  color: #333333;
-  border: 2px solid #5e5e5e;
-  padding: 8px 16px;
-  text-align: center;
-  border-radius: 4px;
-  cursor: pointer;
-
-  ${(p) =>
-    p.disabled &&
-    `
-    background-color: #ced4db;
-    cursor: initial;
-  `}
 `;
 
 const Row = styled.div`
@@ -141,8 +124,23 @@ export function CreateOffer() {
       : "UNKNOWN";
   const coreSDK = useCoreSDK();
 
-  const [pendingTransactionHash, setPendingTransactionHash] =
-    useState<string>();
+  const [transaction, setTransaction] = useState<
+    | {
+        status: "empty";
+      }
+    | {
+        status: "pending";
+        txHash: string;
+      }
+    | {
+        status: "error";
+        error: Error;
+      }
+    | {
+        status: "success";
+        txHash: string;
+      }
+  >({ status: "empty" });
 
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
@@ -237,17 +235,23 @@ export function CreateOffer() {
               const txResponse = await coreSDK.createOffer(createOfferArgs);
               console.log({ txResponse });
 
-              setPendingTransactionHash(txResponse.hash);
+              setTransaction({
+                status: "pending",
+                txHash: txResponse.hash
+              });
 
               const txReceipt = await txResponse.wait(1);
               console.log({ txReceipt });
 
-              window.parent.postMessage(
-                { target: "boson", message: "offer-created" },
-                "*"
-              );
-            } finally {
-              setPendingTransactionHash(undefined);
+              setTransaction({
+                status: "success",
+                txHash: txResponse.hash
+              });
+            } catch (e) {
+              setTransaction({
+                status: "error",
+                error: e as Error
+              });
             }
           }}
         >
@@ -255,8 +259,14 @@ export function CreateOffer() {
         </Button>
       </Actions>
       <StageIndicator stage={2} />
-      {pendingTransactionHash && (
-        <TransactionProcessingModal txHash={pendingTransactionHash} />
+      {transaction.status === "pending" && (
+        <TransactionPendingModal txHash={transaction.txHash} />
+      )}
+      {transaction.status === "success" && (
+        <SuccessModal txHash={transaction.txHash} offerId="TODO" />
+      )}
+      {transaction.status === "error" && (
+        <ErrorModal error={transaction.error} />
       )}
     </WidgetLayout>
   );

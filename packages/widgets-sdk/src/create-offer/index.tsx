@@ -29,7 +29,7 @@ export function createOffer(request: CreateOfferRequest) {
     const { target, message } = e.data || {};
 
     if (target !== "boson") return;
-    if (message !== "offer-created") return;
+    if (message !== "close-offer-create-widget") return;
 
     ReactDOM.unmountComponentAtNode(el);
     el.remove();

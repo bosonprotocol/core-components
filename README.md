@@ -29,6 +29,12 @@ git checkout https://github.com/bosonprotocol/core-components.git
 cd core-components
 npm ci
 ```
+3. Run dev environment 
+
+```bash
+# "build" command is only needed first time running dev env 
+npm run build && npm run dev
+```
 
 ### Run tests
 
