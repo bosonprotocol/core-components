@@ -1,14 +1,14 @@
 import { Modal } from "../../../lib/components/Modal";
 import { Button } from "../Button";
-import { closeWidget } from "../closeWidget";
 import { Title, Label, Value, Center } from "./shared-styles";
 
 interface Props {
   txHash: string;
   offerId: string;
+  onClickClose: () => void;
 }
 
-export function SucessModal({ txHash, offerId }: Props) {
+export function SuccessModal({ txHash, offerId, onClickClose }: Props) {
   return (
     <Modal>
       <Title>Success</Title>
@@ -17,7 +17,7 @@ export function SucessModal({ txHash, offerId }: Props) {
       <Label>Offer ID</Label>
       <Value>{offerId}</Value>
       <Center>
-        <Button onClick={closeWidget}>Close</Button>
+        <Button onClick={onClickClose}>Close</Button>
       </Center>
     </Modal>
   );

@@ -9,7 +9,7 @@ import { useCoreSDK } from "../../lib/useCoreSDK";
 import { hooks } from "../../lib/connectors/metamask";
 import axios from "axios";
 import { Button } from "./Button";
-import { SucessModal as SuccessModal } from "./modals/SuccessModal";
+import { SuccessModal } from "./modals/SuccessModal";
 import { ErrorModal } from "./modals/ErrorModal";
 import { formatEther } from "ethers/lib/utils";
 
@@ -127,7 +127,7 @@ export function CreateOffer() {
 
   const [transaction, setTransaction] = useState<
     | {
-        status: "empty";
+        status: "idle";
       }
     | {
         status: "pending";
@@ -140,8 +140,9 @@ export function CreateOffer() {
     | {
         status: "success";
         txHash: string;
+        offerId: string;
       }
-  >({ status: "empty" });
+  >({ status: "idle" });
 
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
@@ -244,9 +245,12 @@ export function CreateOffer() {
               const txReceipt = await txResponse.wait(1);
               console.log({ txReceipt });
 
+              const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
+
               setTransaction({
                 status: "success",
-                txHash: txResponse.hash
+                txHash: txResponse.hash,
+                offerId: offerId || ""
               });
             } catch (e) {
               setTransaction({
@@ -264,10 +268,17 @@ export function CreateOffer() {
         <TransactionPendingModal txHash={transaction.txHash} />
       )}
       {transaction.status === "success" && (
-        <SuccessModal txHash={transaction.txHash} offerId="TODO" />
+        <SuccessModal
+          txHash={transaction.txHash}
+          offerId={transaction.offerId}
+          onClickClose={() => setTransaction({ status: "idle" })}
+        />
       )}
       {transaction.status === "error" && (
-        <ErrorModal error={transaction.error} />
+        <ErrorModal
+          error={transaction.error}
+          onClickClose={() => setTransaction({ status: "idle" })}
+        />
       )}
     </WidgetLayout>
   );
