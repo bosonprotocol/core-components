@@ -56,13 +56,15 @@ cd graph-node/docker
 ./setup.sh
 ```
 
-Change the network name in line 20 of the `docker-compose.yaml` file from `mainnet` to `localhost`, so that the Graph Node connects to the local hardhat node of step 1:
+Change the network name in line 20 of the `docker-compose.yaml` file from `mainnet` to `localhost`, so that the Graph Node connects to the local hardhat node of step 1.
+You also need to enable the `ipfsOnEthereum` feature by setting the env var `GRAPH_ALLOW_NON_DETERMINISTIC_IPFS` to `true`.
 
 ```diff
       ipfs: 'ipfs:5001'
 -     ethereum: 'mainnet:http://host.docker.internal:8545'
 +     ethereum: 'localhost:http://host.docker.internal:8545'
       GRAPH_LOG: info
++     GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: true
 ```
 
 Now you can start the Graph Node by running:
@@ -78,17 +80,7 @@ This will start an IPFS node, a Postgres database and a Graph Node that you can 
 Inside this repository and `packages/subgraph` directory run:
 
 ```bash
-# Creates ephemeral subgraph.yaml from template
-yarn manifest local
-
-# Generates AssemblyScript code from manifest
-yarn codegen
-
-# Initializes subgraph on local Graph Node
-yarn create:local
-
-# Deploys subgraph to local Graph Node
-yarn deploy:local
+npm run deploy:local
 ```
 
 ### 4. Query the subgraph
