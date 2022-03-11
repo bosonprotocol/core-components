@@ -158,6 +158,3 @@ export function HomeView() {
     </Root>
   );
 }
-
-// TODO: format eth to gwei
-// TODO: look into reece issue
