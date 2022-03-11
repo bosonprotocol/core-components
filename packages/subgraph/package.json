@@ -13,13 +13,17 @@
   "license": "Apache-2.0",
   "scripts": {
     "manifest": "ts-node ./scripts/render-manifest.ts",
+    "manifest:local": "npm run manifest -- local && npm run codegen",
+    "manifest:testing": "npm run manifest -- testing && npm run codegen",
+    "manifest:staging": "npm run manifest -- staging && npm run codegen",
+    "manifest:production": "npm run manifest -- production && npm run codegen",
     "codegen": "graph codegen",
-    "create:local": "graph create --node http://localhost:8020/ dohaki/bosoncclocal",
-    "remove:local": "graph remove --node http://localhost:8020/ dohaki/bosoncclocal",
-    "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 dohaki/bosoncclocal",
+    "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
+    "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
+    "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents",
     "deploy:hosted": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
-    "deploy:testing": "npm run manifest testing && npm run deploy:hosted dohaki/bosonccropsten",
-    "deploy:staging": "npm run manifest staging && npm run deploy:hosted dohaki/bosonccstaging",
-    "deploy:production": "npm run manifest production && npm run deploy:hosted dohaki/bosonccproduction"
+    "deploy:testing": "npm run manifest:testing && npm run deploy:hosted dohaki/bosonccropsten",
+    "deploy:staging": "npm run manifest:staging && npm run deploy:hosted dohaki/bosonccstaging",
+    "deploy:production": "npm run manifest:production && npm run deploy:hosted dohaki/bosonccproduction"
   }
 }
