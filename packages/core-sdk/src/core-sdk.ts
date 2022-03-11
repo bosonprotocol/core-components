@@ -3,7 +3,8 @@ import {
   TransactionResponse,
   defaultConfigs,
   MetadataStorage,
-  Metadata
+  Metadata,
+  Log
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import * as offers from "./offers";
@@ -88,6 +89,10 @@ export class CoreSDK {
       metadataStorage: this._metadataStorage,
       contractAddress: opts.contractAddress || this._protocolDiamond
     });
+  }
+
+  public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
+    return offers.iface.getCreatedOfferIdFromLogs(logs);
   }
 
   public async getOfferById(

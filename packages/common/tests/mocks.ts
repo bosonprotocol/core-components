@@ -46,7 +46,10 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
   sendTransaction: {
     hash: "0x",
     wait: async (confirmations: number) => ({
-      transactionHash: "0x"
+      transactionHash: "0x",
+      from: ADDRESS,
+      to: ADDRESS,
+      logs: []
     })
   }
 };

@@ -46,6 +46,11 @@ export type OfferStruct = {
   voided: boolean;
 };
 
+export type Log = {
+  data: string;
+  topics: string[];
+};
+
 export type TransactionRequest = Partial<{
   to: string;
   from: string;
@@ -58,7 +63,14 @@ export type TransactionRequest = Partial<{
 
 export type TransactionResponse = {
   hash: string;
-  wait: (confirmations: number) => Promise<unknown>;
+  wait: (confirmations: number) => Promise<TransactionReceipt>;
+};
+
+export type TransactionReceipt = {
+  from: string;
+  to: string;
+  status?: number;
+  logs: Log[];
 };
 
 export interface Web3LibAdapter {

@@ -1,17 +1,11 @@
 import {
   Web3LibAdapter,
   TransactionResponse,
-  OfferStruct,
-  utils,
-  abis,
   MetadataStorage
 } from "@bosonprotocol/common";
-import { Interface } from "@ethersproject/abi";
-import { getAddress } from "@ethersproject/address";
 import { createOfferArgsSchema } from "./validation";
+import { encodeCreateOffer } from "./interface";
 import { CreateOfferArgs } from "./types";
-
-export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
 
 export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
@@ -53,39 +47,4 @@ export async function storeMetadataOnTheGraph(args: {
   const metadata = await args.metadataStorage.getMetadata(args.metadataUri);
   const metadataUri = await args.theGraphStorage.storeMetadata(metadata);
   return metadataUri;
-}
-
-export function encodeCreateOffer(args: CreateOfferArgs) {
-  return bosonOfferHandlerIface.encodeFunctionData("createOffer", [
-    createOfferArgsToStruct(args)
-  ]);
-}
-
-export function createOfferArgsToStruct(
-  args: CreateOfferArgs
-): Partial<OfferStruct> {
-  const {
-    exchangeToken,
-    seller,
-    validFromDateInMS,
-    validUntilDateInMS,
-    redeemableDateInMS,
-    fulfillmentPeriodDurationInMS,
-    voucherValidDurationInMS,
-    ...restArgs
-  } = args;
-
-  return {
-    id: "0",
-    ...restArgs,
-    exchangeToken: getAddress(exchangeToken),
-    seller: getAddress(seller),
-    validFromDate: utils.timestamp.msToSec(validFromDateInMS),
-    validUntilDate: utils.timestamp.msToSec(validUntilDateInMS),
-    redeemableDate: utils.timestamp.msToSec(redeemableDateInMS),
-    fulfillmentPeriodDuration: utils.timestamp.msToSec(
-      fulfillmentPeriodDurationInMS
-    ),
-    voucherValidDuration: utils.timestamp.msToSec(voucherValidDurationInMS)
-  };
 }
