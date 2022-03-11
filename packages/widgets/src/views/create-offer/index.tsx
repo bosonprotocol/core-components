@@ -11,6 +11,7 @@ import axios from "axios";
 import { Button } from "./Button";
 import { SucessModal as SuccessModal } from "./modals/SuccessModal";
 import { ErrorModal } from "./modals/ErrorModal";
+import { formatEther } from "ethers/lib/utils";
 
 const columnGap = 24;
 
@@ -148,14 +149,14 @@ export function CreateOffer() {
         <Entry>
           <Label>Price</Label>
           <Money>
-            <Value>{createOfferArgs.price}</Value>
+            <Value>{formatEther(createOfferArgs.price)}</Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>
         <Entry>
           <Label>Seller Deposit</Label>
           <Money>
-            <Value>{createOfferArgs.deposit}</Value>
+            <Value>{formatEther(createOfferArgs.deposit)}</Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>
@@ -168,7 +169,7 @@ export function CreateOffer() {
         <Entry>
           <Label>Cancellation Penalty</Label>
           <Money>
-            <Value>{createOfferArgs.penalty}</Value>
+            <Value>{formatEther(createOfferArgs.penalty)}</Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>

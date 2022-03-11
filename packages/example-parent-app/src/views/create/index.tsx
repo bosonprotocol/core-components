@@ -3,6 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { parseEther } from "@ethersproject/units";
 
 const Root = styled.div`
   padding: 24px;
@@ -38,6 +39,9 @@ export function HomeView() {
 
       createOffer({
         ...values,
+        price: parseEther(values.price).toString(),
+        deposit: parseEther(values.deposit).toString(),
+        penalty: parseEther(values.penalty).toString(),
         metadataHash,
         metadataUri: metadataUri
       });
