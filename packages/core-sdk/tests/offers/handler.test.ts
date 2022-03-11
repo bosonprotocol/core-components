@@ -1,9 +1,4 @@
-import {
-  createOffer,
-  encodeCreateOffer,
-  bosonOfferHandlerIface
-} from "../../src/offers/handler";
-import { utils } from "@bosonprotocol/common";
+import { createOffer } from "../../src/offers/handler";
 import {
   MockMetadataStorage,
   MockWeb3LibAdapter,
@@ -40,67 +35,5 @@ describe("#createOffer()", () => {
     });
 
     expect(txResponse.hash).toEqual(mockedTxHash);
-  });
-});
-
-describe("#encodeCreateOffer()", () => {
-  test("encode correct calldata", () => {
-    const mockedCreateOfferArgs = mockCreateOfferArgs();
-
-    const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
-    const [
-      id,
-      price,
-      deposit,
-      penalty,
-      quantity,
-      validFromDate,
-      validUntilDate,
-      redeemableDate,
-      fulfillmentPeriodDuration,
-      voucherValidDuration,
-      seller,
-      exchangeToken,
-      metadataUri,
-      metadataHash
-    ] = bosonOfferHandlerIface
-      .decodeFunctionData("createOffer", encodedCalldata)[0]
-      .toString()
-      .split(",");
-
-    expect(id).toBeTruthy();
-    expect(price).toBe(mockedCreateOfferArgs.price.toString());
-    expect(deposit).toBe(mockedCreateOfferArgs.deposit.toString());
-    expect(penalty).toBe(mockedCreateOfferArgs.penalty.toString());
-    expect(quantity).toBe(mockedCreateOfferArgs.quantity.toString());
-    expect(validFromDate).toBe(
-      utils.timestamp
-        .msToSec(mockedCreateOfferArgs.validFromDateInMS)
-        .toString()
-    );
-    expect(validUntilDate).toBe(
-      utils.timestamp
-        .msToSec(mockedCreateOfferArgs.validUntilDateInMS)
-        .toString()
-    );
-    expect(redeemableDate).toBe(
-      utils.timestamp
-        .msToSec(mockedCreateOfferArgs.redeemableDateInMS)
-        .toString()
-    );
-    expect(fulfillmentPeriodDuration).toBe(
-      utils.timestamp
-        .msToSec(mockedCreateOfferArgs.fulfillmentPeriodDurationInMS)
-        .toString()
-    );
-    expect(voucherValidDuration).toBe(
-      utils.timestamp
-        .msToSec(mockedCreateOfferArgs.voucherValidDurationInMS)
-        .toString()
-    );
-    expect(seller).toBe(mockedCreateOfferArgs.seller);
-    expect(exchangeToken).toBe(mockedCreateOfferArgs.exchangeToken);
-    expect(metadataUri).toBe(mockedCreateOfferArgs.metadataUri);
-    expect(metadataHash).toBe(mockedCreateOfferArgs.metadataHash);
   });
 });

@@ -46,6 +46,11 @@ export type OfferStruct = {
   voided: boolean;
 };
 
+type Log = {
+  data: string;
+  topics: string[];
+};
+
 export type TransactionRequest = Partial<{
   to: string;
   from: string;
