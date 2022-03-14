@@ -1,5 +1,18 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
+import { BigNumberish } from "@ethersproject/bignumber";
 import { erc20Iface } from "./interface";
+
+export async function approve(args: {
+  contractAddress: string;
+  spender: string;
+  value: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}) {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("approve", [args.spender, args.value])
+  });
+}
 
 export async function getAllowance(args: {
   contractAddress: string;

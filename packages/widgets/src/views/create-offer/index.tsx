@@ -235,7 +235,24 @@ export function CreateOffer() {
       </Row>
       <Spacer />
       <Actions>
-        <Button disabled>Approve Tokens</Button>
+        <Button
+          onClick={async () => {
+            if (!coreSDK) {
+              return;
+            }
+
+            const txResponse = await coreSDK.approveExchangeToken(
+              BOSON_TOKEN,
+              1
+            );
+            console.log(txResponse);
+
+            const txReceipt = await txResponse.wait();
+            console.log(txReceipt);
+          }}
+        >
+          Approve Tokens
+        </Button>
         <Button
           onClick={async () => {
             if (!coreSDK) return;

@@ -103,13 +103,17 @@ export class CoreSDK {
   }
 
   public async getExchangeTokenAllowance(
-    exchangeToken: string
+    exchangeToken: string,
+    opts: Partial<{
+      spender: string;
+      owner: string;
+    }> = {}
   ): Promise<string> {
     return erc20.handler.getAllowance({
       web3Lib: this._web3Lib,
       contractAddress: exchangeToken,
-      spender: this._protocolDiamond,
-      owner: await this._web3Lib.getSignerAddress()
+      spender: opts.spender || this._protocolDiamond,
+      owner: opts.owner || (await this._web3Lib.getSignerAddress())
     });
   }
 
@@ -120,6 +124,21 @@ export class CoreSDK {
   }> {
     return erc20.handler.getTokenInfo({
       contractAddress: exchangeToken,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async approveExchangeToken(
+    exchangeToken: string,
+    value: BigNumberish,
+    opts: Partial<{
+      spender: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return erc20.handler.approve({
+      contractAddress: exchangeToken,
+      spender: opts.spender || this._protocolDiamond,
+      value,
       web3Lib: this._web3Lib
     });
   }
