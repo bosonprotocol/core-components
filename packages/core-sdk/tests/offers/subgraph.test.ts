@@ -1,15 +1,10 @@
-import nock from "nock";
 import { getOfferById } from "../../src/offers/subgraph";
 
-import { mockRawOfferFromSubgraph } from "../mocks";
-
-const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs";
-
-function interceptSubgraph() {
-  return nock(SUBGRAPH_URL).post("", (body) => {
-    return body.query && body.variables;
-  });
-}
+import {
+  SUBGRAPH_URL,
+  interceptSubgraph,
+  mockRawOfferFromSubgraph
+} from "../mocks";
 
 describe("#getOfferById()", () => {
   test("throw if response not okay", async () => {

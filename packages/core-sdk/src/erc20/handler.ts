@@ -67,16 +67,3 @@ export async function getName(args: {
   const [name] = erc20Iface.decodeFunctionResult("name", result);
   return String(name);
 }
-
-export async function getTokenInfo(args: {
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-}) {
-  const [decimals, name, symbol] = await Promise.all([
-    getDecimals(args),
-    getName(args),
-    getSymbol(args)
-  ]);
-
-  return { decimals, name, symbol };
-}
