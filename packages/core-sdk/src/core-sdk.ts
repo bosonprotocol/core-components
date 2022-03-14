@@ -79,7 +79,7 @@ export class CoreSDK {
 
   public async createOffer(
     offerToCreate: offers.CreateOfferArgs,
-    opts: Partial<{
+    overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
@@ -88,12 +88,26 @@ export class CoreSDK {
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
-      contractAddress: opts.contractAddress || this._protocolDiamond
+      contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
 
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
     return offers.iface.getCreatedOfferIdFromLogs(logs);
+  }
+
+  public async voidOffer(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.voidOffer({
+      offerId,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
   }
 
   public async getOfferById(
@@ -104,7 +118,7 @@ export class CoreSDK {
 
   public async getExchangeTokenAllowance(
     exchangeToken: string,
-    opts: Partial<{
+    overrides: Partial<{
       spender: string;
       owner: string;
     }> = {}
@@ -112,8 +126,8 @@ export class CoreSDK {
     return erc20.handler.getAllowance({
       web3Lib: this._web3Lib,
       contractAddress: exchangeToken,
-      spender: opts.spender || this._protocolDiamond,
-      owner: opts.owner || (await this._web3Lib.getSignerAddress())
+      spender: overrides.spender || this._protocolDiamond,
+      owner: overrides.owner || (await this._web3Lib.getSignerAddress())
     });
   }
 
@@ -122,22 +136,29 @@ export class CoreSDK {
     decimals: number;
     symbol: string;
   }> {
-    return erc20.handler.getTokenInfo({
-      contractAddress: exchangeToken,
-      web3Lib: this._web3Lib
-    });
+    const args = {
+      web3Lib: this._web3Lib,
+      contractAddress: exchangeToken
+    };
+    const [decimals, name, symbol] = await Promise.all([
+      erc20.handler.getDecimals(args),
+      erc20.handler.getName(args),
+      erc20.handler.getSymbol(args)
+    ]);
+
+    return { decimals, name, symbol };
   }
 
   public async approveExchangeToken(
     exchangeToken: string,
     value: BigNumberish,
-    opts: Partial<{
+    overrides: Partial<{
       spender: string;
     }> = {}
   ): Promise<TransactionResponse> {
     return erc20.handler.approve({
       contractAddress: exchangeToken,
-      spender: opts.spender || this._protocolDiamond,
+      spender: overrides.spender || this._protocolDiamond,
       value,
       web3Lib: this._web3Lib
     });
