@@ -5,10 +5,10 @@ import { Title, Label, Value, Center } from "./shared-styles";
 interface Props {
   txHash: string;
   offerId: string;
-  onClickClose: () => void;
+  onClose: () => void;
 }
 
-export function SuccessModal({ txHash, offerId, onClickClose }: Props) {
+export function SuccessModal({ txHash, offerId, onClose }: Props) {
   return (
     <Modal>
       <Title>Success</Title>
@@ -17,7 +17,7 @@ export function SuccessModal({ txHash, offerId, onClickClose }: Props) {
       <Label>Offer ID</Label>
       <Value>{offerId}</Value>
       <Center>
-        <Button onClick={onClickClose}>Close</Button>
+        <Button onClick={onClose}>Close</Button>
       </Center>
     </Modal>
   );

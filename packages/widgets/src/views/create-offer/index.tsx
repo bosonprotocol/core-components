@@ -4,7 +4,6 @@ import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "./modals/TransactionPendingModal";
 import { offers } from "@bosonprotocol/core-sdk";
-import { ethers } from "ethers";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
 import { hooks } from "../../lib/connectors/metamask";
@@ -95,8 +94,6 @@ function useMetadata(metadataUri: string) {
   return metadata;
 }
 
-const BOSON_TOKEN = "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c";
-
 export function CreateOffer() {
   const urlParams = Object.fromEntries(
     new URLSearchParams(window.location.search).entries()
@@ -114,25 +111,11 @@ export function CreateOffer() {
     redeemableDateInMS: urlParams["redeemableDateInMS"],
     fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
     voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
-    seller: account ?? ethers.constants.AddressZero,
-    exchangeToken: ethers.constants.AddressZero,
+    seller: account ?? "",
+    exchangeToken: urlParams["exchangeToken"],
     metadataUri: urlParams["metadataUri"],
     metadataHash: urlParams["metadataHash"]
   };
-
-  const metadata = useMetadata(createOfferArgs.metadataUri);
-
-  const currency =
-    createOfferArgs.exchangeToken === ethers.constants.AddressZero
-      ? "ETH"
-      : "UNKNOWN";
-  const coreSDK = useCoreSDK();
-
-  const { exchangeToken, isLoading, error } = useExchangeToken(
-    BOSON_TOKEN, // TODO: properly use from field input / url query param
-    coreSDK
-  );
-  console.log(exchangeToken, isLoading, error);
 
   const [transaction, setTransaction] = useState<
     | {
@@ -152,6 +135,22 @@ export function CreateOffer() {
         offerId: string;
       }
   >({ status: "idle" });
+
+  const metadata = useMetadata(createOfferArgs.metadataUri);
+  const coreSDK = useCoreSDK();
+  const { tokenState, reload: reloadExhangeToken } = useExchangeToken(
+    createOfferArgs.exchangeToken,
+    coreSDK
+  );
+  console.log({ tokenState });
+
+  const currency =
+    tokenState.status === "token" ? tokenState.token.symbol : "...";
+
+  const tokenApprovalNeeded =
+    tokenState.status === "token"
+      ? tokenState.token.allowance.lt(createOfferArgs.deposit)
+      : true;
 
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
@@ -236,24 +235,25 @@ export function CreateOffer() {
       <Spacer />
       <Actions>
         <Button
+          disabled={!tokenApprovalNeeded}
           onClick={async () => {
-            if (!coreSDK) {
-              return;
-            }
+            if (!coreSDK) return;
 
             const txResponse = await coreSDK.approveExchangeToken(
-              BOSON_TOKEN,
-              1
+              createOfferArgs.exchangeToken,
+              createOfferArgs.deposit
             );
             console.log(txResponse);
 
             const txReceipt = await txResponse.wait();
+            reloadExhangeToken();
             console.log(txReceipt);
           }}
         >
           Approve Tokens
         </Button>
         <Button
+          disabled={tokenApprovalNeeded}
           onClick={async () => {
             if (!coreSDK) return;
 
@@ -289,7 +289,7 @@ export function CreateOffer() {
           Create Offer
         </Button>
       </Actions>
-      <StageIndicator stage={2} />
+      <StageIndicator stage={tokenApprovalNeeded ? 1 : 2} />
       {transaction.status === "pending" && (
         <TransactionPendingModal txHash={transaction.txHash} />
       )}
@@ -297,13 +297,13 @@ export function CreateOffer() {
         <SuccessModal
           txHash={transaction.txHash}
           offerId={transaction.offerId}
-          onClickClose={() => setTransaction({ status: "idle" })}
+          onClose={() => setTransaction({ status: "idle" })}
         />
       )}
       {transaction.status === "error" && (
         <ErrorModal
           error={transaction.error}
-          onClickClose={() => setTransaction({ status: "idle" })}
+          onClose={() => setTransaction({ status: "idle" })}
         />
       )}
     </WidgetLayout>

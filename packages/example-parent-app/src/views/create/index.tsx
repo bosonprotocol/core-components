@@ -20,6 +20,7 @@ export function HomeView() {
       deposit: "2",
       penalty: "3",
       quantity: "10",
+      exchangeToken: "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c", // ropsten boson address
       validFromDateInMS: (Date.now() + dayInMs).toString(),
       validUntilDateInMS: (Date.now() + 2 * dayInMs).toString(),
       redeemableDateInMS: (Date.now() + 2 * dayInMs).toString(),
@@ -57,6 +58,16 @@ export function HomeView() {
             value={formik.values.title}
             onChange={formik.handleChange}
             name="title"
+            type="text"
+            placeholder="..."
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>exchangeToken</Form.Label>
+          <Form.Control
+            value={formik.values.exchangeToken}
+            onChange={formik.handleChange}
+            name="exchangeToken"
             type="text"
             placeholder="..."
           />
