@@ -63,7 +63,7 @@ export type TransactionRequest = Partial<{
 
 export type TransactionResponse = {
   hash: string;
-  wait: (confirmations: number) => Promise<TransactionReceipt>;
+  wait: (confirmations?: number) => Promise<TransactionReceipt>;
 };
 
 export type TransactionReceipt = {
@@ -74,11 +74,13 @@ export type TransactionReceipt = {
 };
 
 export interface Web3LibAdapter {
+  getSignerAddress(): Promise<string>;
   getChainId(): Promise<number>;
   getBalance(address: string): Promise<BigNumberish>;
   sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse>;
+  call(transactionRequest: TransactionRequest): Promise<string>;
 }
 
 export type Metadata = {

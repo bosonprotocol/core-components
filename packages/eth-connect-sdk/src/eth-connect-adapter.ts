@@ -5,15 +5,16 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
-export type EthConnectAdapterConstructorArgs = {
-  requestManager: RequestManager;
-};
-
 export class EthConnectAdapter implements Web3LibAdapter {
   private _requestManager: RequestManager;
 
-  constructor({ requestManager }: EthConnectAdapterConstructorArgs) {
+  constructor(requestManager: RequestManager) {
     this._requestManager = requestManager;
+  }
+
+  public async getSignerAddress() {
+    const [address] = await this._requestManager.eth_accounts();
+    return address;
   }
 
   public async getChainId(): Promise<number> {
@@ -44,8 +45,19 @@ export class EthConnectAdapter implements Web3LibAdapter {
 
     return {
       hash: txHash,
-      wait: async (confirmations: number) => this._wait(txHash)
+      wait: async (confirmations?: number) => this._wait(txHash)
     };
+  }
+
+  public async call(transactionRequest: TransactionRequest): Promise<string> {
+    const blockNumber = await this._requestManager.eth_blockNumber();
+    return this._requestManager.eth_call(
+      {
+        data: transactionRequest.data,
+        to: transactionRequest.to
+      },
+      blockNumber
+    );
   }
 
   private async _wait(txHash: string, confirmations?: number): Promise<any> {
