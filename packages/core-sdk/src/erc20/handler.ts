@@ -1,0 +1,69 @@
+import { Web3LibAdapter } from "@bosonprotocol/common";
+import { erc20Iface } from "./interface";
+
+export async function getAllowance(args: {
+  contractAddress: string;
+  owner: string;
+  spender: string;
+  web3Lib: Web3LibAdapter;
+}) {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("allowance", [args.owner, args.spender])
+  });
+
+  const [allowance] = erc20Iface.decodeFunctionResult("allowance", result);
+  return String(allowance);
+}
+
+export async function getDecimals(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}) {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("decimals", [])
+  });
+
+  const [decimals] = erc20Iface.decodeFunctionResult("decimals", result);
+  return Number(decimals);
+}
+
+export async function getSymbol(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}) {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("symbol", [])
+  });
+
+  const [symbols] = erc20Iface.decodeFunctionResult("symbol", result);
+  return String(symbols);
+}
+
+export async function getName(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}) {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("name", [])
+  });
+
+  const [name] = erc20Iface.decodeFunctionResult("name", result);
+  return String(name);
+}
+
+export async function getTokenInfo(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}) {
+  const [decimals, name, symbol] = await Promise.all([
+    getDecimals(args),
+    getName(args),
+    getSymbol(args)
+  ]);
+
+  return { decimals, name, symbol };
+}

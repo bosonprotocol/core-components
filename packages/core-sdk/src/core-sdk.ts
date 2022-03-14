@@ -8,6 +8,7 @@ import {
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import * as offers from "./offers";
+import * as erc20 from "./erc20";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -99,5 +100,27 @@ export class CoreSDK {
     offerId: BigNumberish
   ): Promise<offers.RawOfferFromSubgraph> {
     return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
+  }
+
+  public async getExchangeTokenAllowance(
+    exchangeToken: string
+  ): Promise<string> {
+    return erc20.handler.getAllowance({
+      web3Lib: this._web3Lib,
+      contractAddress: exchangeToken,
+      spender: this._protocolDiamond,
+      owner: await this._web3Lib.getSignerAddress()
+    });
+  }
+
+  public async getExchangeTokenInfo(exchangeToken: string): Promise<{
+    name: string;
+    decimals: number;
+    symbol: string;
+  }> {
+    return erc20.handler.getTokenInfo({
+      contractAddress: exchangeToken,
+      web3Lib: this._web3Lib
+    });
   }
 }
