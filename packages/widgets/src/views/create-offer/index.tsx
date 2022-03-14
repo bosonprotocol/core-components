@@ -6,6 +6,7 @@ import { TransactionPendingModal } from "./modals/TransactionPendingModal";
 import { offers } from "@bosonprotocol/core-sdk";
 import { ethers } from "ethers";
 import { useCoreSDK } from "../../lib/useCoreSDK";
+import { useExchangeToken } from "../../lib/useExchangeToken";
 import { hooks } from "../../lib/connectors/metamask";
 import axios from "axios";
 import { Button } from "./Button";
@@ -94,6 +95,8 @@ function useMetadata(metadataUri: string) {
   return metadata;
 }
 
+const BOSON_TOKEN = "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c";
+
 export function CreateOffer() {
   const urlParams = Object.fromEntries(
     new URLSearchParams(window.location.search).entries()
@@ -124,6 +127,12 @@ export function CreateOffer() {
       ? "ETH"
       : "UNKNOWN";
   const coreSDK = useCoreSDK();
+
+  const { exchangeToken, isLoading, error } = useExchangeToken(
+    BOSON_TOKEN, // TODO: properly use from field input / url query param
+    coreSDK
+  );
+  console.log(exchangeToken, isLoading, error);
 
   const [transaction, setTransaction] = useState<
     | {
@@ -226,7 +235,24 @@ export function CreateOffer() {
       </Row>
       <Spacer />
       <Actions>
-        <Button disabled>Approve Tokens</Button>
+        <Button
+          onClick={async () => {
+            if (!coreSDK) {
+              return;
+            }
+
+            const txResponse = await coreSDK.approveExchangeToken(
+              BOSON_TOKEN,
+              1
+            );
+            console.log(txResponse);
+
+            const txReceipt = await txResponse.wait();
+            console.log(txReceipt);
+          }}
+        >
+          Approve Tokens
+        </Button>
         <Button
           onClick={async () => {
             if (!coreSDK) return;

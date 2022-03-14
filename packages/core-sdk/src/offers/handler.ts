@@ -30,11 +30,9 @@ export async function createOffer(args: {
     });
   }
 
-  const calldata = encodeCreateOffer(args.offerToCreate);
-
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: calldata
+    data: encodeCreateOffer(args.offerToCreate)
   });
 }
 

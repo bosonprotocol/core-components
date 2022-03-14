@@ -5,15 +5,17 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
-export type EthersAdapterConstructorArgs = {
-  signer: ethers.Signer;
-};
-
 export class EthersAdapter implements Web3LibAdapter {
-  private _signer: ethers.Signer;
+  private _signer: ethers.providers.JsonRpcSigner;
+  private _provider: ethers.providers.Web3Provider;
 
-  constructor({ signer }: EthersAdapterConstructorArgs) {
-    this._signer = signer;
+  constructor(provider: ethers.providers.Web3Provider) {
+    this._provider = provider;
+    this._signer = this._provider.getSigner();
+  }
+
+  public async getSignerAddress() {
+    return this._signer.getAddress();
   }
 
   public async getChainId(): Promise<number> {
@@ -28,5 +30,9 @@ export class EthersAdapter implements Web3LibAdapter {
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
     return this._signer.sendTransaction(transactionRequest);
+  }
+
+  public async call(transactionRequest: TransactionRequest): Promise<string> {
+    return this._provider.call(transactionRequest);
   }
 }

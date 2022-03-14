@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
-import { ethers } from "ethers";
 import { hooks } from "./connectors/metamask";
 
 export function useCoreSDK() {
@@ -14,11 +13,7 @@ export function useCoreSDK() {
 
     CoreSDK.fromDefaultConfig({
       chainId: 3,
-      web3Lib: new EthersAdapter({
-        signer: new ethers.providers.Web3Provider(
-          provider.jsonRpcFetchFunc
-        ).getSigner()
-      }),
+      web3Lib: new EthersAdapter(provider),
       metadataStorage: new IpfsMetadata({
         url: "https://ipfs.infura.io:5001"
       }),

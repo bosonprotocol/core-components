@@ -35,12 +35,15 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
 }
 
 type MockedWeb3LibReturnValues = {
+  getSignerAddress: string;
   getChainId: number;
   getBalance: string;
   sendTransaction: TransactionResponse;
+  call: string;
 };
 
 const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
+  getSignerAddress: ADDRESS,
   getChainId: 1,
   getBalance: parseEther("0.001").toString(),
   sendTransaction: {
@@ -51,7 +54,8 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
       to: ADDRESS,
       logs: []
     })
-  }
+  },
+  call: "0x"
 };
 
 export class MockWeb3LibAdapter implements Web3LibAdapter {
@@ -64,6 +68,10 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
     };
   }
 
+  async getSignerAddress() {
+    return this._returnValues.getSignerAddress;
+  }
+
   async getChainId() {
     return this._returnValues.getChainId;
   }
@@ -74,6 +82,10 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
 
   async sendTransaction() {
     return this._returnValues.sendTransaction;
+  }
+
+  async call() {
+    return this._returnValues.call;
   }
 }
 
