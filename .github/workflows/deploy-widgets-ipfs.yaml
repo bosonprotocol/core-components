@@ -1,12 +1,17 @@
+name: Deploy widgets to IPFS
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - deploy-widgets-actions
+    # tags:
+    #   - '@bosonprotocol\/widgets@[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy widgets next
+    name: Deploy widgets to IPFS
     steps:
       - uses: actions/checkout@v2
       - name: Deploy via fleek
@@ -14,6 +19,6 @@ jobs:
         uses: fleekhq/action-deploy@v1
         with:
           apiKey: ${{ secrets.FLEEK_API_KEY }}
-          workDir: ./packages/widgets/fleek/next
+          workDir: ./packages/widgets
       - name: Get the output url
         run: echo "Deploy url is ${{ steps.deploy.outputs.deployUrl }}"
