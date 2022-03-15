@@ -38,14 +38,17 @@ export function HomeView() {
       });
       const metadataUri = `https://ipfs.io/ipfs/${metadataHash}`;
 
-      createOffer({
-        ...values,
-        price: parseEther(values.price).toString(),
-        deposit: parseEther(values.deposit).toString(),
-        penalty: parseEther(values.penalty).toString(),
-        metadataHash,
-        metadataUri: metadataUri
-      });
+      createOffer(
+        {
+          ...values,
+          price: parseEther(values.price).toString(),
+          deposit: parseEther(values.deposit).toString(),
+          penalty: parseEther(values.penalty).toString(),
+          metadataHash,
+          metadataUri: metadataUri
+        },
+        process.env.REACT_APP_WIDGETS_URL
+      );
     }
   });
 

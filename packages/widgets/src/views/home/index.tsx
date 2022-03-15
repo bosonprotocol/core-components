@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
+
 export function Home() {
   return (
     <ul>
       <li>
-        <a href="/create">"Create Offer" widget page</a>
+        <Link to="/create">"Create Offer" widget page</Link>
       </li>
       <li>
-        <a href="/commit">"Create to Offer" widget page</a>
+        <Link to="/commit">"Create to Offer" widget page</Link>
       </li>
     </ul>
   );
