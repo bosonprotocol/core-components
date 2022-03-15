@@ -3,10 +3,8 @@ name: Deploy widgets to IPFS
 on:
   workflow_dispatch:
   push:
-    branches:
-      - deploy-widgets-actions
-    # tags:
-    #   - '@bosonprotocol\/widgets@[0-9]+.[0-9]+.[0-9]+'
+    tags:
+      - '@bosonprotocol\/widgets@[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   deploy:
