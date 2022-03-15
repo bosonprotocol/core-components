@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { StyledIframe } from "../lib/StyledIframe";
 import { Modal } from "./components/Modal";
-import { config } from "../config";
+import { DEFAULT_WIDGETS_URl } from "../constants";
 
 interface CreateOfferRequest {
   price: string;
@@ -18,12 +18,18 @@ interface CreateOfferRequest {
   metadataHash: string;
 }
 
-export function createOffer(request: CreateOfferRequest) {
+export function createOffer(
+  request: CreateOfferRequest,
+  widgetsUrl: string = DEFAULT_WIDGETS_URl
+) {
   const el = document.createElement("div");
   el.style.height = "0px";
   el.style.width = "0px";
   document.body.appendChild(el);
-  ReactDOM.render(<CreateOfferWidget request={request} />, el);
+  ReactDOM.render(
+    <CreateOfferWidget request={request} widgetsUrl={widgetsUrl} />,
+    el
+  );
 
   function onMessage(e: MessageEvent) {
     const { target, message } = e.data || {};
@@ -41,9 +47,10 @@ export function createOffer(request: CreateOfferRequest) {
 
 interface Props {
   request: CreateOfferRequest;
+  widgetsUrl: string;
 }
 
-function CreateOfferWidget({ request }: Props) {
+function CreateOfferWidget({ request, widgetsUrl }: Props) {
   const urlParams = new URLSearchParams(
     request as unknown as Record<string, string>
   ).toString();
@@ -52,7 +59,7 @@ function CreateOfferWidget({ request }: Props) {
     <Modal>
       <StyledIframe
         style={{ boxShadow: "none" }}
-        src={`${config.WIDGETS_URl}/create?${urlParams}`}
+        src={`${widgetsUrl}/#/create?${urlParams}`}
         width={600}
         height={582}
       />

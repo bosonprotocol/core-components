@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import { Commit } from "./views/commit";
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -37,7 +37,7 @@ ReactDOM.render(
           }
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

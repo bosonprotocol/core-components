@@ -97,7 +97,7 @@ function useMetadata(metadataUri: string) {
 
 export function CreateOffer() {
   const urlParams = Object.fromEntries(
-    new URLSearchParams(window.location.search).entries()
+    new URLSearchParams(window.location.hash).entries()
   );
 
   const account = hooks.useAccount();
