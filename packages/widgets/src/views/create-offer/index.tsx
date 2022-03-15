@@ -12,6 +12,7 @@ import { Button } from "./Button";
 import { SuccessModal } from "./modals/SuccessModal";
 import { ErrorModal } from "./modals/ErrorModal";
 import { formatEther } from "ethers/lib/utils";
+import { ethers } from "ethers";
 
 const columnGap = 24;
 
@@ -149,7 +150,7 @@ export function CreateOffer() {
 
   const tokenApprovalNeeded =
     tokenState.status === "token"
-      ? tokenState.token.allowance.lt(createOfferArgs.deposit)
+      ? tokenState.token.allowance.lt(ethers.constants.MaxInt256.div(2))
       : true;
 
   return (
@@ -241,7 +242,7 @@ export function CreateOffer() {
 
             const txResponse = await coreSDK.approveExchangeToken(
               createOfferArgs.exchangeToken,
-              createOfferArgs.deposit
+              ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
             );
             console.log(txResponse);
 
