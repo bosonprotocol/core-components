@@ -143,7 +143,6 @@ export function CreateOffer() {
     createOfferArgs.exchangeToken,
     coreSDK
   );
-  console.log({ tokenState });
 
   const currency =
     tokenState.status === "token" ? tokenState.token.symbol : "...";
@@ -240,15 +239,27 @@ export function CreateOffer() {
           onClick={async () => {
             if (!coreSDK) return;
 
-            const txResponse = await coreSDK.approveExchangeToken(
-              createOfferArgs.exchangeToken,
-              ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
-            );
-            console.log(txResponse);
+            try {
+              const txResponse = await coreSDK.approveExchangeToken(
+                createOfferArgs.exchangeToken,
+                ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
+              );
 
-            const txReceipt = await txResponse.wait();
-            reloadExhangeToken();
-            console.log(txReceipt);
+              setTransaction({
+                status: "pending",
+                txHash: txResponse.hash
+              });
+
+              await txResponse.wait();
+
+              reloadExhangeToken();
+              setTransaction({ status: "idle" });
+            } catch (e) {
+              setTransaction({
+                status: "error",
+                error: e as Error
+              });
+            }
           }}
         >
           Approve Tokens
@@ -258,11 +269,8 @@ export function CreateOffer() {
           onClick={async () => {
             if (!coreSDK) return;
 
-            console.log({ createOfferArgs });
-
             try {
               const txResponse = await coreSDK.createOffer(createOfferArgs);
-              console.log({ txResponse });
 
               setTransaction({
                 status: "pending",
@@ -270,8 +278,6 @@ export function CreateOffer() {
               });
 
               const txReceipt = await txResponse.wait(1);
-              console.log({ txReceipt });
-
               const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
 
               setTransaction({
