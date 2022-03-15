@@ -6,6 +6,15 @@ import {
   ADDRESS
 } from "@bosonprotocol/common/tests/mocks";
 import { CreateOfferArgs, RawOfferFromSubgraph } from "../src/offers/types";
+import nock from "nock";
+
+export const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs";
+
+export function interceptSubgraph() {
+  return nock(SUBGRAPH_URL).post("", (body) => {
+    return body.query && body.variables;
+  });
+}
 
 export function mockCreateOfferArgs(
   overrides?: Partial<CreateOfferArgs>
