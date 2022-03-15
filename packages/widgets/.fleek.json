@@ -8,8 +8,8 @@
   },
   "build": {
     "baseDir": "",
-    "publicDir": "packages/widgets/build",
-    "command": "npm ci && npm run build",
+    "publicDir": "build",
+    "command": "npm run build",
     "rootDir": ""
   }
 }
