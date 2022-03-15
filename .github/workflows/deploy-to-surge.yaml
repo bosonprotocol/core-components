@@ -1,0 +1,27 @@
+name: Deploy to surge
+
+on:
+  workflow_dispatch:
+    branches: [main]
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy widgets and example parent
+    env:
+      REACT_APP_WIDGETS_URL: https://boson-widgets-test.surge.sh
+      REACT_APP_PARENT_URL: https://boson-parent-test.surge.sh
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm install -g surge
+      - run: npm ci
+      - run: npm run build
+      - run: surge ./packages/widgets/build ${{ env.REACT_APP_WIDGETS_URL }} --token ${{ secrets.SURGE_TOKEN }}
+      - run: surge ./packages/example-parent-app/build ${{ env.REACT_APP_PARENT_URL }} --token ${{ secrets.SURGE_TOKEN }}
