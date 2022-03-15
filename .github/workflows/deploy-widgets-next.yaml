@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - deploy-widgets-actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy widgets next
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy via fleek
+        id: deploy
+        uses: fleekhq/action-deploy@v1
+        with:
+          apiKey: ${{ secrets.FLEEK_API_KEY }}
+          workDir: ./packages/widgets/fleek/next
+      - name: Get the output url
+        run: echo "Deploy url is ${{ steps.deploy.outputs.deployUrl }}"
