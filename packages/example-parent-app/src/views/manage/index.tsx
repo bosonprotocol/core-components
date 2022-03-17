@@ -34,7 +34,7 @@ export function Manage() {
           placeholder="..."
         />
       </Form.Group>
-      <Button onClick={retreiveOffers}>Receive offer ids</Button>
+      <Button onClick={retreiveOffers}>Receive offers</Button>
       {offers !== "uninitialized" && (
         <>
           <hr />
