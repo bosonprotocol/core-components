@@ -1,6 +1,13 @@
 import fetch from "cross-fetch";
 import { FetchError } from "./errors";
 
+export type MultiQueryOpts = Partial<{
+  first: number;
+  skip: number;
+  orderBy: string;
+  orderDirection: "asc" | "desc";
+}>;
+
 export async function fetchSubgraph<T>(
   subgraphUrl: string,
   query: string,
