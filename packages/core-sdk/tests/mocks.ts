@@ -8,7 +8,7 @@ import {
 import { CreateOfferArgs, RawOfferFromSubgraph } from "../src/offers/types";
 import nock from "nock";
 
-export const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs";
+export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
 
 export function interceptSubgraph() {
   return nock(SUBGRAPH_URL).post("", (body) => {
