@@ -3,7 +3,7 @@ import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
-import { THE_GRAPH_IPFS_URL } from "./constants";
+import { DEFAULT_THE_GRAPH_IPFS_URL } from "./constants";
 
 export class IpfsMetadata implements MetadataStorage {
   private _ipfsClient: IPFSHTTPClient;
@@ -12,9 +12,9 @@ export class IpfsMetadata implements MetadataStorage {
     this._ipfsClient = create(opts);
   }
 
-  static fromTheGraphIpfsUrl() {
+  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
     return new IpfsMetadata({
-      url: THE_GRAPH_IPFS_URL
+      url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }
 
@@ -29,12 +29,18 @@ export class IpfsMetadata implements MetadataStorage {
     return cid;
   }
 
-  public async getMetadata(metadataUri: string): Promise<Metadata> {
-    if (CID.isCID(metadataUri)) {
-      return this.getMetadataByCID(metadataUri);
+  public async getMetadata(metadataUriOrHash: string): Promise<Metadata> {
+    let cid: CID = null;
+    try {
+      cid = CID.parse(metadataUriOrHash);
+    } catch (error) {
+      // if parsing fails, we assume it is a url
     }
 
-    return this.getMetadataByUrl(metadataUri);
+    if (cid) {
+      return this.getMetadataByCID(cid.toString());
+    }
+    return this.getMetadataByUrl(metadataUriOrHash);
   }
 
   public async getMetadataByCID(cid: string): Promise<Metadata> {

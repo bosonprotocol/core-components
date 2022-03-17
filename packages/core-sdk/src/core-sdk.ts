@@ -1,7 +1,7 @@
 import {
   Web3LibAdapter,
   TransactionResponse,
-  defaultConfigs,
+  getDefaultConfig,
   MetadataStorage,
   Metadata,
   Log
@@ -29,41 +29,25 @@ export class CoreSDK {
     this._subgraphUrl = opts.subgraphUrl;
     this._protocolDiamond = opts.protocolDiamond;
     this._metadataStorage = opts.metadataStorage;
+    this._theGraphStorage = opts.theGraphStorage;
   }
 
-  static async fromDefaultConfig(opts: {
+  static fromDefaultConfig(args: {
     web3Lib: Web3LibAdapter;
-    metadataStorage?: MetadataStorage;
-    theGraphStorage?: MetadataStorage;
     envName?: string;
     chainId?: number;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }) {
-    const fallbackChainId = await opts.web3Lib.getChainId();
-
-    const [defaultConfig] = defaultConfigs.filter((config) => {
-      if (opts.envName) {
-        return config.envName === opts.envName;
-      }
-
-      return config.chainId === (opts.chainId || fallbackChainId);
+    const defaultConfig = getDefaultConfig({
+      envName: args.envName,
+      chainId: args.chainId
     });
 
-    if (!defaultConfig) {
-      throw new Error(
-        `Could not find default config for ${JSON.stringify(
-          opts.envName
-            ? { envName: opts.envName }
-            : {
-                chainId: opts.chainId || fallbackChainId
-              }
-        )}`
-      );
-    }
-
     return new CoreSDK({
-      web3Lib: opts.web3Lib,
-      metadataStorage: opts.metadataStorage,
-      theGraphStorage: opts.theGraphStorage,
+      web3Lib: args.web3Lib,
+      metadataStorage: args.metadataStorage,
+      theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond
     });
@@ -71,10 +55,18 @@ export class CoreSDK {
 
   public async storeMetadata(metadata: Metadata): Promise<string> {
     if (!this._metadataStorage) {
-      throw new Error("No metadataStorage set");
+      throw new Error("No metadata storage set");
     }
 
     return this._metadataStorage.storeMetadata(metadata);
+  }
+
+  public async getMetadata(metadataHashOrUri: string): Promise<Metadata> {
+    if (!this._metadataStorage) {
+      throw new Error("No metadata storage set");
+    }
+
+    return this._metadataStorage.getMetadata(metadataHashOrUri);
   }
 
   public async createOffer(

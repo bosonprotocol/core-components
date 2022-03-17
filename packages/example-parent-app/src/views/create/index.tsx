@@ -29,14 +29,16 @@ export function HomeView() {
     },
     onSubmit: async (values) => {
       const storage = new IpfsMetadata({
-        url: "https://ipfs.infura.io:5001"
+        url:
+          process.env.REACT_APP_IPFS_METADATA_URL ||
+          "https://ipfs.infura.io:5001"
       });
 
       const metadataHash = await storage.storeMetadata({
         title: values.title,
         description: ""
       });
-      const metadataUri = `https://ipfs.io/ipfs/${metadataHash}`;
+      const metadataUri = `${process.env.REACT_APP_METADATA_BASE_URL}/${metadataHash}`;
 
       createOffer(
         {
@@ -45,9 +47,13 @@ export function HomeView() {
           deposit: parseEther(values.deposit).toString(),
           penalty: parseEther(values.penalty).toString(),
           metadataHash,
-          metadataUri: metadataUri
+          metadataUri
         },
-        process.env.REACT_APP_WIDGETS_URL
+        {
+          widgetsUrl:
+            process.env.REACT_APP_WIDGETS_URL || "http://localhost:3000",
+          chainId: parseInt(process.env.REACT_APP_CHAIN_ID || "3")
+        }
       );
     }
   });

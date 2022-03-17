@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "./modals/TransactionPendingModal";
-import { offers } from "@bosonprotocol/core-sdk";
+import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
 import { hooks } from "../../lib/connectors/metamask";
-import axios from "axios";
 import { Button } from "./Button";
 import { SuccessModal } from "./modals/SuccessModal";
 import { ErrorModal } from "./modals/ErrorModal";
@@ -85,12 +84,12 @@ const Currency = styled.div`
   padding: 4px;
 `;
 
-function useMetadata(metadataUri: string) {
+function useMetadata(coreSDK: CoreSDK, metadataHash: string) {
   const [metadata, setMetadata] = useState<Record<string, string>>();
 
   useEffect(() => {
-    axios.get(metadataUri).then((resp) => setMetadata(resp.data));
-  }, [metadataUri]);
+    coreSDK.getMetadata(metadataHash).then(setMetadata);
+  }, [coreSDK, metadataHash]);
 
   return metadata;
 }
@@ -137,12 +136,16 @@ export function CreateOffer() {
       }
   >({ status: "idle" });
 
-  const metadata = useMetadata(createOfferArgs.metadataUri);
   const coreSDK = useCoreSDK();
+
+  const metadata = useMetadata(coreSDK, createOfferArgs.metadataHash);
+
   const { tokenState, reload: reloadExhangeToken } = useExchangeToken(
     createOfferArgs.exchangeToken,
     coreSDK
   );
+
+  console.log(tokenState);
 
   const currency =
     tokenState.status === "token" ? tokenState.token.symbol : "...";

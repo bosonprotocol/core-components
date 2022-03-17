@@ -14,6 +14,9 @@ jobs:
     env:
       REACT_APP_WIDGETS_URL: https://boson-widgets-test.surge.sh
       REACT_APP_PARENT_URL: https://boson-parent-test.surge.sh
+      REACT_APP_CHAIN_ID: 3
+      REACT_APP_IPFS_METADATA_URL: https://ipfs.infura.io:5001
+      REACT_APP_METADATA_BASE_URL: https://ipfs.io/ipfs
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2

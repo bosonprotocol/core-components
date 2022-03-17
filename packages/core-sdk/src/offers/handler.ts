@@ -26,7 +26,7 @@ export async function createOffer(args: {
   // See https://thegraph.com/docs/en/developer/assemblyscript-api/#ipfs-api
   if (args.metadataStorage && args.theGraphStorage) {
     await storeMetadataOnTheGraph({
-      metadataUri: args.offerToCreate.metadataUri,
+      metadataUriOrHash: args.offerToCreate.metadataHash,
       metadataStorage: args.metadataStorage,
       theGraphStorage: args.theGraphStorage
     });
@@ -68,12 +68,14 @@ export async function voidOffer(args: {
 }
 
 export async function storeMetadataOnTheGraph(args: {
-  metadataUri: string;
+  metadataUriOrHash: string;
   metadataStorage: MetadataStorage;
   theGraphStorage: MetadataStorage;
 }): Promise<string> {
   // TODO: check if `metadataUri` valid ipfs hash/url?
-  const metadata = await args.metadataStorage.getMetadata(args.metadataUri);
+  const metadata = await args.metadataStorage.getMetadata(
+    args.metadataUriOrHash
+  );
   const metadataUri = await args.theGraphStorage.storeMetadata(metadata);
   return metadataUri;
 }

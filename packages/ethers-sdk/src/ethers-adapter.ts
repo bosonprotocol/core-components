@@ -7,9 +7,9 @@ import {
 
 export class EthersAdapter implements Web3LibAdapter {
   private _signer: ethers.providers.JsonRpcSigner;
-  private _provider: ethers.providers.Web3Provider;
+  private _provider: ethers.providers.JsonRpcProvider;
 
-  constructor(provider: ethers.providers.Web3Provider) {
+  constructor(provider: ethers.providers.JsonRpcProvider) {
     this._provider = provider;
     this._signer = this._provider.getSigner();
   }
