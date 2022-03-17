@@ -117,7 +117,7 @@ export class CoreSDK {
     return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
   }
 
-  public async getAllOfferOfSeller(
+  public async getAllOffersOfSeller(
     sellerAddress: string,
     opts: MultiQueryOpts = {}
   ): Promise<offers.RawOfferFromSubgraph[]> {
