@@ -1,4 +1,4 @@
-import { Modal } from "../../../lib/components/Modal";
+import { Modal } from "./Modal";
 import { Button } from "../Button";
 import { Center, Title, Value } from "./shared-styles";
 

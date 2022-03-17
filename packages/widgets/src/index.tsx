@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
-import { Commit } from "./views/commit";
 import { CreateOffer } from "./views/create-offer";
 import { Home } from "./views/home";
+import { ManageOffer } from "./views/manage-offer";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -29,10 +29,10 @@ ReactDOM.render(
           }
         />
         <Route
-          path="/commit"
+          path="/manage"
           element={
             <React.Suspense fallback={<></>}>
-              <Commit />
+              <ManageOffer />
             </React.Suspense>
           }
         />

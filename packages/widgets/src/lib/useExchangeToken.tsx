@@ -1,6 +1,7 @@
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useReloadToken } from "./useReloadToken";
 
 type ExchangeToken = {
   name: string;
@@ -18,17 +19,13 @@ const ETH_EXCHANGE_TOKEN: ExchangeToken = {
   decimals: 18
 };
 
-function useReloadToken() {
-  const [reloadToken, setReloadToken] = useState(0);
-  const reload = () => setReloadToken((token) => token + 1);
-
-  return { reloadToken, reload };
-}
-
-export function useExchangeToken(
-  exchangeTokenAddress: string,
-  coreSDK?: CoreSDK
-) {
+export function useExchangeToken({
+  exchangeTokenAddress = ethers.constants.AddressZero,
+  coreSDK
+}: {
+  exchangeTokenAddress?: string;
+  coreSDK?: CoreSDK;
+}) {
   const { reloadToken, reload } = useReloadToken();
   const isEth = exchangeTokenAddress === ethers.constants.AddressZero;
 

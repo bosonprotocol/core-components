@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { StyledIframe } from "../lib/StyledIframe";
-import { Modal } from "./components/Modal";
-import { DEFAULT_WIDGETS_URl } from "../constants";
+import { StyledIframe } from "../../lib/StyledIframe";
+import { Modal } from "../../lib/Modal";
+import { DEFAULT_WIDGETS_URl } from "../../constants";
 
 interface CreateOfferRequest {
   price: string;
@@ -35,7 +35,7 @@ export function createOffer(
     const { target, message } = e.data || {};
 
     if (target !== "boson") return;
-    if (message !== "close-offer-create-widget") return;
+    if (message !== "close-widget") return;
 
     ReactDOM.unmountComponentAtNode(el);
     el.remove();
