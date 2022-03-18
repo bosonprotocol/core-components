@@ -1,4 +1,4 @@
-import { Modal } from "../../../lib/components/Modal";
+import { Modal } from "./Modal";
 import { SpinnerCircular } from "spinners-react";
 import { Title, Label, Value, Center } from "./shared-styles";
 

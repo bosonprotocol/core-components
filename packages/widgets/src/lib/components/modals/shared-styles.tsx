@@ -26,6 +26,7 @@ export const Value = styled.div`
 `;
 
 export const Center = styled.div`
+  gap: 24px;
   display: flex;
   justify-content: center;
 `;

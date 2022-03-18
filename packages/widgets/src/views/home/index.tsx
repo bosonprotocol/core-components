@@ -7,7 +7,7 @@ export function Home() {
         <Link to="/create">"Create Offer" widget page</Link>
       </li>
       <li>
-        <Link to="/commit">"Create to Offer" widget page</Link>
+        <Link to="/manage">"Create to Offer" widget page</Link>
       </li>
     </ul>
   );
