@@ -25,7 +25,6 @@ function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
   const timeNow = Date.now();
 
   if (offer.voidedAt) return "VOIDED";
-
   if (toTimeStamp(offer.validFromDate) > timeNow) return "INACTIVE";
   if (toTimeStamp(offer.validUntilDate) < timeNow) return "EXPIRED";
   return "ACTIVE";
