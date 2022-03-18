@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import { HomeView } from "./views/create";
@@ -18,13 +18,13 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <BrowserRouter>
+    <HashRouter>
       <ul>
         <li>
           <a href="/">create offer</a>
         </li>
         <li>
-          <a href="/manage">manage offer</a>
+          <a href="/#/manage">manage offer</a>
         </li>
       </ul>
       <hr />
@@ -32,7 +32,7 @@ ReactDOM.render(
         <Route path="/" element={<HomeView />} />
         <Route path="/manage" element={<Manage />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
