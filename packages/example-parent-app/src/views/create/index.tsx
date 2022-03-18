@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { parseEther } from "@ethersproject/units";
+import { CONFIG } from "../../lib/config";
 
 const Root = styled.div`
   padding: 24px;
@@ -29,16 +30,14 @@ export function HomeView() {
     },
     onSubmit: async (values) => {
       const storage = new IpfsMetadata({
-        url:
-          process.env.REACT_APP_IPFS_METADATA_URL ||
-          "https://ipfs.infura.io:5001"
+        url: CONFIG.ipfsMetadataUrl
       });
 
       const metadataHash = await storage.storeMetadata({
         title: values.title,
         description: ""
       });
-      const metadataUri = `${process.env.REACT_APP_METADATA_BASE_URL}/${metadataHash}`;
+      const metadataUri = `${CONFIG.metadataBaseUrl}/${metadataHash}`;
 
       createOffer(
         {
@@ -49,11 +48,7 @@ export function HomeView() {
           metadataHash,
           metadataUri
         },
-        {
-          widgetsUrl:
-            process.env.REACT_APP_WIDGETS_URL || "http://localhost:3000",
-          chainId: parseInt(process.env.REACT_APP_CHAIN_ID || "3")
-        }
+        CONFIG
       );
     }
   });

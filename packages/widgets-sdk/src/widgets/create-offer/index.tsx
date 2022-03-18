@@ -24,7 +24,7 @@ export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {
   el.style.width = "0px";
   document.body.appendChild(el);
   ReactDOM.render(
-    <CreateOfferWidget request={request} widgetConfig={config} />,
+    <CreateOfferWidget request={request} widgetsConfig={config} />,
     el
   );
 
@@ -44,11 +44,11 @@ export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {
 
 interface Props {
   request: CreateOfferRequest;
-  widgetConfig: WidgetConfig;
+  widgetsConfig: WidgetConfig;
 }
 
-function CreateOfferWidget({ request, widgetConfig }: Props) {
-  const { widgetsUrl, ...restConfig } = widgetConfig;
+function CreateOfferWidget({ request, widgetsConfig }: Props) {
+  const { widgetsUrl, ...restConfig } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     ...request,

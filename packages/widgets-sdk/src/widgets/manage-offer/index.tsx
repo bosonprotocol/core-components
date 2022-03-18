@@ -2,18 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { StyledIframe } from "../../lib/StyledIframe";
 import { Modal } from "../../lib/Modal";
-import { DEFAULT_WIDGETS_URl } from "../../constants";
+import { WidgetConfig } from "../../types";
 
-export function manageOffer(
-  offerId: string,
-  widgetsUrl: string = DEFAULT_WIDGETS_URl
-) {
+export function manageOffer(offerId: string, config: WidgetConfig) {
   const el = document.createElement("div");
   el.style.height = "0px";
   el.style.width = "0px";
   document.body.appendChild(el);
   ReactDOM.render(
-    <ManageOfferWidget offerId={offerId} widgetsUrl={widgetsUrl} />,
+    <ManageOfferWidget offerId={offerId} widgetsConfig={config} />,
     el
   );
 
@@ -33,11 +30,16 @@ export function manageOffer(
 
 interface Props {
   offerId: string;
-  widgetsUrl: string;
+  widgetsConfig: WidgetConfig;
 }
 
-function ManageOfferWidget({ offerId, widgetsUrl }: Props) {
-  const urlParams = new URLSearchParams({ offerId }).toString();
+function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
+  const { widgetsUrl, ...restConfig } = widgetsConfig;
+
+  const urlParams = new URLSearchParams({
+    offerId,
+    ...restConfig
+  } as unknown as Record<string, string>).toString();
 
   return (
     <Modal>

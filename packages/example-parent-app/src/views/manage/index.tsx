@@ -1,21 +1,27 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useCoreSDK } from "../../lib/useCoreSDK";
-import { offers } from "@bosonprotocol/core-sdk";
+import { offers as offersApi, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { manageOffer } from "@bosonprotocol/widgets-sdk";
+import { CONFIG } from "../../lib/config";
 
 export function Manage() {
   const [offers, setOffers] = useState<
-    offers.RawOfferFromSubgraph[] | "uninitialized"
+    offersApi.RawOfferFromSubgraph[] | "uninitialized"
   >("uninitialized");
 
   const [sellerAddress, setSellerAddress] = useState("");
 
-  const coreSDK = useCoreSDK();
-
-  function retreiveOffers() {
+  function retrieveOffers() {
     if (!sellerAddress) return;
-    coreSDK?.getAllOffersOfSeller(sellerAddress).then(setOffers);
+
+    const { subgraphUrl } = getDefaultConfig({
+      chainId: CONFIG.chainId
+    });
+
+    offersApi.subgraph
+      .getAllOffersOfSeller(subgraphUrl, sellerAddress)
+      .then(setOffers)
+      .catch(console.log);
   }
 
   return (
@@ -34,7 +40,7 @@ export function Manage() {
           placeholder="..."
         />
       </Form.Group>
-      <Button onClick={retreiveOffers}>Receive offers</Button>
+      <Button onClick={retrieveOffers}>Receive offers</Button>
       {offers !== "uninitialized" && (
         <>
           <hr />
@@ -50,7 +56,7 @@ export function Manage() {
                   display: "block",
                   margin: 4
                 }}
-                onClick={() => manageOffer(offer.id)}
+                onClick={() => manageOffer(offer.id, CONFIG)}
               >
                 Manage offer {offer.id}
               </Button>
