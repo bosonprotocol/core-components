@@ -67,6 +67,22 @@ export const Spacer = styled.div`
   height: 20px;
 `;
 
+export const emptyOfferDetails = {
+  deposit: "0",
+  exchangeToken: "...",
+  metadataHash: "...",
+  metadataUri: "...",
+  penalty: "0",
+  price: "0",
+  quantity: "0",
+  seller: "...",
+  validFromDateInMS: "0",
+  validUntilDateInMS: "0",
+  voucherValidDurationInMS: "0",
+  fulfillmentPeriodDurationInMS: "0",
+  redeemableDateInMS: "0"
+};
+
 interface Props {
   createOfferArgs: offers.CreateOfferArgs;
   currency: string;
