@@ -11,6 +11,7 @@ export function useCoreSDK() {
       chainId: chainId,
       web3Lib: {
         getChainId: () => Promise.resolve(chainId)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       metadataStorage: new IpfsMetadata({
         url: "https://ipfs.infura.io:5001"
