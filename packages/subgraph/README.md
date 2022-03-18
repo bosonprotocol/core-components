@@ -1,4 +1,4 @@
-# @bosonprotocol/subgraph
+# `@bosonprotocol/subgraph`
 
 Official subgraph of the Boson Protocol.
 

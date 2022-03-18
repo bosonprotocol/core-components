@@ -18,7 +18,7 @@
     "url": "git+https://github.com/bosonprotocol/core-components.git"
   },
   "author": "Boson Protocol",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/bosonprotocol/core-components/issues"
   },
@@ -26,7 +26,9 @@
   "files": [
     "dist/*"
   ],
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@bosonprotocol/common": "^1.0.0"
   },
