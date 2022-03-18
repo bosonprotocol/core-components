@@ -53,7 +53,7 @@ function getConfig(): Config {
 
 function getConfigFromUrl(): Partial<Config> {
   const urlSearchParams = Object.fromEntries(
-    new URLSearchParams(window.location.hash).entries()
+    new URLSearchParams(window.location.hash.split("?")[1]).entries()
   );
 
   return {
