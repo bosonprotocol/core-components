@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
-import { offers } from "@bosonprotocol/core-sdk";
+import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
 import { hooks } from "../../lib/connectors/metamask";
-import axios from "axios";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
@@ -24,12 +23,18 @@ const Actions = styled.div`
   gap: ${columnGap}px;
 `;
 
-function useMetadata(metadataUri: string) {
+function useMetadata({
+  coreSDK,
+  metadataHash
+}: {
+  metadataHash: string;
+  coreSDK: CoreSDK;
+}) {
   const [metadata, setMetadata] = useState<Record<string, string>>();
 
   useEffect(() => {
-    axios.get(metadataUri).then((resp) => setMetadata(resp.data));
-  }, [metadataUri]);
+    coreSDK.getMetadata(metadataHash).then(setMetadata);
+  }, [coreSDK, metadataHash]);
 
   return metadata;
 }
@@ -76,9 +81,13 @@ export function CreateOffer() {
       }
   >({ status: "idle" });
 
-  const metadata = useMetadata(createOfferArgs.metadataUri);
   const coreSDK = useCoreSDK();
-  const { tokenState, reload: reloadExhangeToken } = useExchangeToken({
+
+  const metadata = useMetadata({
+    coreSDK,
+    metadataHash: createOfferArgs.metadataHash
+  });
+  const { tokenState, reload: reloadExchangeToken } = useExchangeToken({
     exchangeTokenAddress: createOfferArgs.exchangeToken,
     coreSDK
   });
@@ -114,7 +123,7 @@ export function CreateOffer() {
 
               await txResponse.wait();
 
-              reloadExhangeToken();
+              reloadExchangeToken();
               setTransaction({ status: "idle" });
             } catch (e) {
               setTransaction({

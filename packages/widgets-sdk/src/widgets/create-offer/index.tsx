@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { StyledIframe } from "../../lib/StyledIframe";
 import { Modal } from "../../lib/Modal";
-import { DEFAULT_WIDGETS_URl } from "../../constants";
+import { WidgetConfig } from "../../types";
 
 interface CreateOfferRequest {
   price: string;
@@ -18,16 +18,13 @@ interface CreateOfferRequest {
   metadataHash: string;
 }
 
-export function createOffer(
-  request: CreateOfferRequest,
-  widgetsUrl: string = DEFAULT_WIDGETS_URl
-) {
+export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {
   const el = document.createElement("div");
   el.style.height = "0px";
   el.style.width = "0px";
   document.body.appendChild(el);
   ReactDOM.render(
-    <CreateOfferWidget request={request} widgetsUrl={widgetsUrl} />,
+    <CreateOfferWidget request={request} widgetsConfig={config} />,
     el
   );
 
@@ -47,13 +44,16 @@ export function createOffer(
 
 interface Props {
   request: CreateOfferRequest;
-  widgetsUrl: string;
+  widgetsConfig: WidgetConfig;
 }
 
-function CreateOfferWidget({ request, widgetsUrl }: Props) {
-  const urlParams = new URLSearchParams(
-    request as unknown as Record<string, string>
-  ).toString();
+function CreateOfferWidget({ request, widgetsConfig }: Props) {
+  const { widgetsUrl, ...restConfig } = widgetsConfig;
+
+  const urlParams = new URLSearchParams({
+    ...request,
+    ...restConfig
+  } as unknown as Record<string, string>).toString();
 
   return (
     <Modal>

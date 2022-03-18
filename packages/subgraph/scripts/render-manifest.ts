@@ -1,12 +1,12 @@
 import fs from "fs";
 import handlebars from "handlebars";
 import { providers } from "ethers";
-import { getDefaultConfigByEnvName } from "../../common/src/configs";
+import { getDefaultConfig } from "../../common/src/configs";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
 
 const envName = process.argv[2];
-const { contracts, chainId } = getDefaultConfigByEnvName(envName);
+const { contracts, chainId } = getDefaultConfig({ envName });
 
 const isLocalhost = chainId === 31337;
 

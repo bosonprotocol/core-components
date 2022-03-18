@@ -35,6 +35,7 @@ export function useExchangeToken({
       }
     | {
         status: "error";
+        error: Error;
       }
     | { status: "token"; token: ExchangeToken }
   >(
@@ -62,7 +63,7 @@ export function useExchangeToken({
           }
         });
       })
-      .catch(() => setTokenState({ status: "error" }));
+      .catch((error) => setTokenState({ status: "error", error }));
   }, [coreSDK, exchangeTokenAddress, isEth, reloadToken]);
 
   return { reload, tokenState };
