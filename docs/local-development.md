@@ -25,11 +25,11 @@ It is also beneficial to have a rough understanding of the [monorepo tools](./mo
 
 ```bash
 # checkout repo
-> git checkout https://github.com/bosonprotocol/core-components.git
+git checkout https://github.com/bosonprotocol/core-components.git
 
 # install deps
-> cd core-components
-> npm install
+cd core-components
+npm install
 ```
 
 ### Local widgets and example parent app
@@ -38,10 +38,10 @@ In the root of this monorepo run
 
 ```bash
 # only needed first time running dev env
-> npm run build
+npm run build
 
 # run dev environment
-> npm run dev
+npm run dev
 ```
 
 This will build every package and start dev servers for the [widgets]() and the [example parent app]():

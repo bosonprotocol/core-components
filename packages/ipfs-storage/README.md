@@ -1,19 +1,23 @@
 # `@bosonprotocol/ipfs-storage`
 
-`Metadata` interface implementation for IPFS.
+`MetadataStorage` interface implementation for IPFS.
+
+## Install
+
+```bash
+npm i @bosonprotocol/ipfs-storage
+
+# OR
+
+yarn add @bosonprotocol/ipfs-storage
+```
 
 ## Usage
 
-```js
-import { CoreSDK } from "@bosonprotocol/core-sdk";
-import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { IpfsStorage } from "@bosonprotocol/ipfs-storage";
+Use as a standalone instance to handle metadata or pass as an constructor argument to [`@bosonprotocol/core-sdk`](/packages/core-sdk/README.md).
 
-const coreSDK = await CoreSDK.fromDefaultConfig({
-  web3Lib: new EthersAdapter({ signer }),
-  metadataStorage: new IpfsStorage({
-    url: "YOUR_IPFS_URL"
-  })
-  theGraphStorage: IpfsStorage.fromTheGraphIpfsUrl()
-});
+```js
+import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+
+const ipfsMetadata = new IpfsMetadata({ url: "https://ipfs.infura.io:5001" });
 ```
