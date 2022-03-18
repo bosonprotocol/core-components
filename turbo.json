@@ -4,19 +4,16 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "build/**"]
     },
-    "test": {
-      "outputs": []
-    },
-    "lint": {
-      "outputs": []
-    },
+    "test": {},
+    "lint": {},
     "clean": {
-      "outputs": []
+      "cache": false
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^dev"]
     }
   }
 }

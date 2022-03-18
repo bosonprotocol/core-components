@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import { HomeView } from "./views/create";
+import { Manage } from "./views/manage";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -18,8 +19,18 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
     <BrowserRouter>
+      <ul>
+        <li>
+          <a href="/">create offer</a>
+        </li>
+        <li>
+          <a href="/manage">manage offer</a>
+        </li>
+      </ul>
+      <hr />
       <Routes>
         <Route path="/" element={<HomeView />} />
+        <Route path="/manage" element={<Manage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

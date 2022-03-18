@@ -9,6 +9,7 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import * as offers from "./offers";
 import * as erc20 from "./erc20";
+import { MultiQueryOpts } from "./utils/subgraph";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -106,6 +107,17 @@ export class CoreSDK {
     offerId: BigNumberish
   ): Promise<offers.RawOfferFromSubgraph> {
     return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
+  }
+
+  public async getAllOffersOfSeller(
+    sellerAddress: string,
+    opts: MultiQueryOpts = {}
+  ): Promise<offers.RawOfferFromSubgraph[]> {
+    return offers.subgraph.getAllOffersOfSeller(
+      this._subgraphUrl,
+      sellerAddress,
+      opts
+    );
   }
 
   public async getExchangeTokenAllowance(

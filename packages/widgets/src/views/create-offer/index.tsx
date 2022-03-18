@@ -2,59 +2,19 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
-import { TransactionPendingModal } from "./modals/TransactionPendingModal";
+import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
 import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
 import { hooks } from "../../lib/connectors/metamask";
-import { Button } from "./Button";
-import { SuccessModal } from "./modals/SuccessModal";
-import { ErrorModal } from "./modals/ErrorModal";
-import { formatEther } from "ethers/lib/utils";
+import { Button } from "../../lib/components/Button";
+import { SuccessModal } from "../../lib/components/modals/SuccessModal";
+import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { ethers } from "ethers";
-
-const columnGap = 24;
-
-const Entry = styled.div`
-  flex-grow: 1;
-  max-width: calc(50% - ${columnGap / 2}px);
-  display: inline-flex;
-  align-items: center;
-  vertical-align: top;
-  margin-bottom: 10px;
-`;
-
-const Label = styled.div`
-  font-weight: 500;
-  display: inline-block;
-  min-width: 140px;
-  padding-right: 8px;
-  font-size: 14px;
-  user-select: none;
-`;
-
-const Value = styled.div`
-  display: inline-block;
-  padding: 4px 8px;
-  border: 2px solid #5e5e5e;
-  background-color: #ced4db;
-  color: #333333;
-  border-radius: 4px;
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-`;
+import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
 
 const Spacer = styled.div`
   height: 20px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  gap: ${columnGap}px;
-  min-width: 0;
 `;
 
 const Actions = styled.div`
@@ -63,28 +23,13 @@ const Actions = styled.div`
   gap: ${columnGap}px;
 `;
 
-const Money = styled.div`
-  display: flex;
-  flex-grow: 1;
-  min-width: 0;
-
-  ${Value} {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-right: none;
-  }
-`;
-
-const Currency = styled.div`
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border: 2px solid #5e5e5e;
-  background-color: #adb2b8;
-  color: #333333;
-  padding: 4px;
-`;
-
-function useMetadata(coreSDK: CoreSDK, metadataHash: string) {
+function useMetadata({
+  coreSDK,
+  metadataHash
+}: {
+  metadataHash: string;
+  coreSDK: CoreSDK;
+}) {
   const [metadata, setMetadata] = useState<Record<string, string>>();
 
   useEffect(() => {
@@ -96,7 +41,7 @@ function useMetadata(coreSDK: CoreSDK, metadataHash: string) {
 
 export function CreateOffer() {
   const urlParams = Object.fromEntries(
-    new URLSearchParams(window.location.hash).entries()
+    new URLSearchParams(window.location.hash.split("?")[1]).entries()
   );
 
   const account = hooks.useAccount();
@@ -138,14 +83,14 @@ export function CreateOffer() {
 
   const coreSDK = useCoreSDK();
 
-  const metadata = useMetadata(coreSDK, createOfferArgs.metadataHash);
-
-  const { tokenState, reload: reloadExhangeToken } = useExchangeToken(
-    createOfferArgs.exchangeToken,
+  const metadata = useMetadata({
+    coreSDK,
+    metadataHash: createOfferArgs.metadataHash
+  });
+  const { tokenState, reload: reloadExchangeToken } = useExchangeToken({
+    exchangeTokenAddress: createOfferArgs.exchangeToken,
     coreSDK
-  );
-
-  console.log(tokenState);
+  });
 
   const currency =
     tokenState.status === "token" ? tokenState.token.symbol : "...";
@@ -157,84 +102,7 @@ export function CreateOffer() {
 
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
-      <Row>
-        <Entry>
-          <Label>Price</Label>
-          <Money>
-            <Value>{formatEther(createOfferArgs.price)}</Value>
-            <Currency>{currency}</Currency>
-          </Money>
-        </Entry>
-        <Entry>
-          <Label>Seller Deposit</Label>
-          <Money>
-            <Value>{formatEther(createOfferArgs.deposit)}</Value>
-            <Currency>{currency}</Currency>
-          </Money>
-        </Entry>
-      </Row>
-      <Row>
-        <Entry>
-          <Label>Quantity</Label>
-          <Value>{createOfferArgs.quantity}</Value>
-        </Entry>
-        <Entry>
-          <Label>Cancellation Penalty</Label>
-          <Money>
-            <Value>{formatEther(createOfferArgs.penalty)}</Value>
-            <Currency>{currency}</Currency>
-          </Money>
-        </Entry>
-      </Row>
-      <Row>
-        <Entry>
-          <Label>Dispute Resolver</Label>
-          <Value>...</Value>
-        </Entry>
-        <Entry />
-      </Row>
-      <Spacer />
-      <Row>
-        <Entry>
-          <Label>Valid From</Label>
-          <Value>{createOfferArgs.validFromDateInMS}</Value>
-        </Entry>
-        <Entry>
-          <Label>Valid Until</Label>
-          <Value>{createOfferArgs.validUntilDateInMS}</Value>
-        </Entry>
-      </Row>
-      <Row>
-        <Entry>
-          <Label>Redeemable By</Label>
-          <Value>{createOfferArgs.redeemableDateInMS}</Value>
-        </Entry>
-        <Entry>
-          <Label>Validity Duration</Label>
-          <Value>{createOfferArgs.voucherValidDurationInMS}</Value>
-        </Entry>
-      </Row>
-      <Row>
-        <Entry>
-          <Label>Dispute Period</Label>
-          <Value>...</Value>
-        </Entry>
-        <Entry>
-          <Label>Fulfilment Period</Label>
-          <Value>{createOfferArgs.fulfillmentPeriodDurationInMS}</Value>
-        </Entry>
-      </Row>
-      <Spacer />
-      <Row>
-        <Entry>
-          <Label>Metadata URI</Label>
-          <Value>{createOfferArgs.metadataUri}</Value>
-        </Entry>
-        <Entry>
-          <Label>Metadata Hash</Label>
-          <Value>{createOfferArgs.metadataHash}</Value>
-        </Entry>
-      </Row>
+      <OfferDetails createOfferArgs={createOfferArgs} currency={currency} />
       <Spacer />
       <Actions>
         <Button
@@ -255,7 +123,7 @@ export function CreateOffer() {
 
               await txResponse.wait();
 
-              reloadExhangeToken();
+              reloadExchangeToken();
               setTransaction({ status: "idle" });
             } catch (e) {
               setTransaction({
