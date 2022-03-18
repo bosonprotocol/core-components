@@ -101,7 +101,7 @@ export function CreateOffer() {
       : true;
 
   return (
-    <WidgetLayout title="Create Offer" offerName={metadata?.title ?? ""}>
+    <WidgetLayout title="Create Offer" offerName={metadata?.title ?? "..."}>
       <OfferDetails createOfferArgs={createOfferArgs} currency={currency} />
       <Spacer />
       <Actions>

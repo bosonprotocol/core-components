@@ -4,6 +4,7 @@ import { offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import {
   columnGap,
+  emptyOfferDetails,
   Entry,
   Label,
   OfferDetails,
@@ -73,38 +74,44 @@ export function ManageOffer() {
   const currency = offer?.exchangeToken.symbol ?? "...";
 
   return (
-    <WidgetLayout title="Manage Offer" offerName={offer?.metadata?.title ?? ""}>
+    <WidgetLayout
+      title="Manage Offer"
+      offerName={offer?.metadata?.title ?? "..."}
+    >
       <Row>
         <Entry>
           <Label>Offer ID</Label>
-          <Value>{offer?.id ?? ""}</Value>
+          <Value>{offer?.id ?? "..."}</Value>
         </Entry>
         <Entry>
           <Label>State</Label>
           <Value>{isOfferVoided ? "VOIDED" : "NOT VOIDED"}</Value>
         </Entry>
       </Row>
-      {offer && (
-        <OfferDetails
-          createOfferArgs={{
-            deposit: offer.deposit,
-            exchangeToken: offer.exchangeToken.address,
-            metadataHash: offer.metadataHash,
-            metadataUri: offer.metadataUri,
-            penalty: offer.penalty,
-            price: offer.price,
-            quantity: offer.quantity,
-            seller: offer.seller.address,
-            validFromDateInMS: Number(offer.validFromDate) * 1000,
-            validUntilDateInMS: Number(offer.validUntilDate) * 1000,
-            voucherValidDurationInMS: Number(offer.voucherValidDuration) * 1000,
-            fulfillmentPeriodDurationInMS:
-              Number(offer.fulfillmentPeriodDuration) * 1000,
-            redeemableDateInMS: Number(offer.fulfillmentPeriodDuration) * 1000
-          }}
-          currency={currency}
-        />
-      )}
+      <OfferDetails
+        createOfferArgs={
+          !offer
+            ? emptyOfferDetails
+            : {
+                deposit: offer.deposit,
+                exchangeToken: offer.exchangeToken.address,
+                metadataHash: offer.metadataHash,
+                metadataUri: offer.metadataUri,
+                penalty: offer.penalty,
+                price: offer.price,
+                quantity: offer.quantity,
+                seller: offer.seller.address,
+                validFromDateInMS: Number(offer.validFromDate) * 1000,
+                validUntilDateInMS: Number(offer.validUntilDate) * 1000,
+                voucherValidDurationInMS:
+                  Number(offer.voucherValidDuration) * 1000,
+                fulfillmentPeriodDurationInMS:
+                  Number(offer.fulfillmentPeriodDuration) * 1000,
+                redeemableDateInMS: Number(offer.redeemableDate) * 1000
+              }
+        }
+        currency={currency}
+      />
       <Spacer />
       <Actions>
         {!isOfferVoided && (
