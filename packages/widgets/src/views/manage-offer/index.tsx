@@ -20,6 +20,16 @@ import { Button } from "../../lib/components/Button";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
 
+function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
+  const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
+  const timeNow = Date.now();
+
+  if (offer.voidedAt) return "VOIDED";
+  if (toTimeStamp(offer.validFromDate) > timeNow) return "INACTIVE";
+  if (toTimeStamp(offer.validUntilDate) < timeNow) return "EXPIRED";
+  return "ACTIVE";
+}
+
 const PrimaryButton = styled(Button)`
   background-color: #6f7681;
   color: #0ffbad;
@@ -85,7 +95,7 @@ export function ManageOffer() {
         </Entry>
         <Entry>
           <Label>State</Label>
-          <Value>{isOfferVoided ? "VOIDED" : "NOT VOIDED"}</Value>
+          <Value>{offer ? getOfferStatus(offer) : "..."}</Value>
         </Entry>
       </Row>
       <OfferDetails

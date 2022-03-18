@@ -22,9 +22,9 @@ export function HomeView() {
       penalty: "3",
       quantity: "10",
       exchangeToken: "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c", // ropsten boson address
-      validFromDateInMS: (Date.now() + dayInMs).toString(),
-      validUntilDateInMS: (Date.now() + 2 * dayInMs).toString(),
-      redeemableDateInMS: (Date.now() + 2 * dayInMs).toString(),
+      redeemableDateInMS: Date.now().toString(),
+      validFromDateInMS: Date.now().toString(),
+      validUntilDateInMS: (Date.now() + dayInMs).toString(),
       fulfillmentPeriodDurationInMS: dayInMs.toString(),
       voucherValidDurationInMS: dayInMs.toString()
     },

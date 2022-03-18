@@ -61,7 +61,7 @@ function CreateOfferWidget({ request, widgetsConfig }: Props) {
         style={{ boxShadow: "none" }}
         src={`${widgetsUrl}/#/create?${urlParams}`}
         width={600}
-        height={582}
+        height={541}
       />
     </Modal>
   );
