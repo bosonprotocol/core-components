@@ -120,13 +120,6 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
           </Money>
         </Entry>
       </Row>
-      <Row>
-        <Entry>
-          <Label>Dispute Resolver</Label>
-          <Value>...</Value>
-        </Entry>
-        <Entry />
-      </Row>
       <Spacer />
       <Row>
         <Entry>
@@ -149,10 +142,6 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
         </Entry>
       </Row>
       <Row>
-        <Entry>
-          <Label>Dispute Period</Label>
-          <Value>...</Value>
-        </Entry>
         <Entry>
           <Label>Fulfilment Period</Label>
           <Value>{createOfferArgs.fulfillmentPeriodDurationInMS}</Value>

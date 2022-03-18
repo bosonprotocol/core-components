@@ -47,7 +47,7 @@ function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
         style={{ boxShadow: "none" }}
         src={`${widgetsUrl}/#/manage?${urlParams}`}
         width={600}
-        height={587}
+        height={546}
       />
     </Modal>
   );
