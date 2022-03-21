@@ -4,7 +4,7 @@ import {
   bosonOfferHandlerIface
 } from "../../src/offers/interface";
 import { utils } from "@bosonprotocol/common";
-import { mockCreateOfferArgs } from "../mocks";
+import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 
 describe("#getCreatedOfferIdFromLogs()", () => {
   test("return offer id", () => {
