@@ -2,10 +2,10 @@ import { createOffer, voidOffer } from "../../src/offers/handler";
 import {
   MockMetadataStorage,
   MockWeb3LibAdapter,
-  ADDRESS
+  ADDRESS,
+  mockCreateOfferArgs
 } from "@bosonprotocol/common/tests/mocks";
 import {
-  mockCreateOfferArgs,
   interceptSubgraph,
   SUBGRAPH_URL,
   mockRawOfferFromSubgraph

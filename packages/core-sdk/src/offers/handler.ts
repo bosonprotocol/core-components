@@ -2,9 +2,9 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import {
   Web3LibAdapter,
   TransactionResponse,
-  MetadataStorage
+  MetadataStorage,
+  utils
 } from "@bosonprotocol/common";
-import { createOfferArgsSchema } from "./validation";
 import { bosonOfferHandlerIface, encodeCreateOffer } from "./interface";
 import { getOfferById } from "./subgraph";
 import { CreateOfferArgs } from "./types";
@@ -16,7 +16,7 @@ export async function createOffer(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
-  await createOfferArgsSchema.validate(args.offerToCreate, {
+  await utils.validation.createOfferArgsSchema.validate(args.offerToCreate, {
     abortEarly: false
   });
 
@@ -72,7 +72,6 @@ export async function storeMetadataOnTheGraph(args: {
   metadataStorage: MetadataStorage;
   theGraphStorage: MetadataStorage;
 }): Promise<string> {
-  // TODO: check if `metadataUri` valid ipfs hash/url?
   const metadata = await args.metadataStorage.getMetadata(
     args.metadataUriOrHash
   );

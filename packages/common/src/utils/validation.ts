@@ -42,12 +42,18 @@ export const createOfferArgsSchema = object({
     .test("is-valid-duration", (value) => isPositiveBigNumber(value)),
   seller: string()
     .required()
-    .test("is-valid-seller", (value) => isAddress(value!)),
+    .test("is-valid-seller", (value) => isAddress(value || "")),
   exchangeToken: string()
     .required()
-    .test("is-valid-exchange-token", (value) => isAddress(value!)),
+    .test("is-valid-exchange-token", (value) => isAddress(value || "")),
   metadataUri: string().required().url(),
   metadataHash: string().required()
+});
+
+export const metadataSchema = object({
+  title: string().required(),
+  description: string().required(),
+  additionalProperties: string()
 });
 
 function isPositiveBigNumber(value: unknown) {

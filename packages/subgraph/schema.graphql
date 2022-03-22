@@ -1,7 +1,8 @@
 type Metadata @entity {
   id: ID!
   title: String!
-  description: String
+  description: String!
+  additionalProperties: String
   offer: Offer!
   # TODO: add more fields
 }

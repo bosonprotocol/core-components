@@ -13,6 +13,7 @@ import { useCreateOfferData } from "./useCreateOfferData";
 import { SpinnerCircular } from "spinners-react";
 import { hooks } from "../../lib/connectors/metamask";
 import { closeWidget } from "../../lib/closeWidget";
+import { ValidationError } from "../../lib/useMetadata";
 
 const Spacer = styled.div`
   height: 20px;
@@ -29,6 +30,19 @@ const Center = styled.div`
   justify-content: center;
   flex-grow: 1;
 `;
+
+function formatErrorMessage(error: Error | ValidationError) {
+  if (error.name === "ValidationError") {
+    const err = error as ValidationError;
+    return JSON.stringify(
+      { providedValue: err.value, validationError: err.errors },
+      null,
+      2
+    );
+  }
+
+  return error.message;
+}
 
 export function CreateOffer() {
   const coreSDK = useCoreSDK();
@@ -54,11 +68,14 @@ export function CreateOffer() {
 
   const { data: createOfferData, reload: reloadCreateOfferData } =
     useCreateOfferData();
-  createOfferData.status = "error";
+
   if (createOfferData.status === "error")
     return (
       <WidgetLayout title="" offerName="" hideWallet>
-        <ErrorModal error={new Error("hello world")} onClose={closeWidget} />
+        <ErrorModal
+          message={formatErrorMessage(createOfferData.error)}
+          onClose={closeWidget}
+        />
       </WidgetLayout>
     );
 
@@ -77,7 +94,6 @@ export function CreateOffer() {
     ethers.constants.MaxInt256.div(2)
   );
 
-  // TODO: set account when creating offer
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title}>
       <OfferDetails
@@ -160,7 +176,7 @@ export function CreateOffer() {
       )}
       {transaction.status === "error" && (
         <ErrorModal
-          error={transaction.error}
+          message={formatErrorMessage(transaction.error)}
           onClose={() => setTransaction({ status: "idle" })}
         />
       )}

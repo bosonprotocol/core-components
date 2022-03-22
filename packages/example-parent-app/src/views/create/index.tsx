@@ -17,6 +17,10 @@ export function HomeView() {
   const formik = useFormik({
     initialValues: {
       title: "Baggy jeans",
+      description: "Lore ipsum",
+      additionalProperties: JSON.stringify({
+        key: "value"
+      }),
       price: "1",
       deposit: "2",
       penalty: "3",
@@ -33,9 +37,16 @@ export function HomeView() {
         url: CONFIG.ipfsMetadataUrl
       });
 
+      let additionalPropertiesHash;
+      if (values.additionalProperties) {
+        const parsed = JSON.parse(values.additionalProperties);
+        additionalPropertiesHash = await storage.add(parsed);
+      }
+
       const metadataHash = await storage.storeMetadata({
         title: values.title,
-        description: ""
+        description: values.description,
+        additionalProperties: additionalPropertiesHash
       });
       const metadataUri = `${CONFIG.metadataBaseUrl}/${metadataHash}`;
 
@@ -63,6 +74,26 @@ export function HomeView() {
             onChange={formik.handleChange}
             name="title"
             type="text"
+            placeholder="..."
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>description</Form.Label>
+          <Form.Control
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            name="description"
+            as="textarea"
+            placeholder="..."
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>additional props as JSON (optional)</Form.Label>
+          <Form.Control
+            value={formik.values.additionalProperties}
+            onChange={formik.handleChange}
+            name="additionalProperties"
+            as="textarea"
             placeholder="..."
           />
         </Form.Group>

@@ -6,10 +6,10 @@ import { CID } from "multiformats/cid";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "./constants";
 
 export class IpfsMetadata implements MetadataStorage {
-  private _ipfsClient: IPFSHTTPClient;
+  public ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
-    this._ipfsClient = create(opts);
+    this.ipfsClient = create(opts);
   }
 
   static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
@@ -19,48 +19,60 @@ export class IpfsMetadata implements MetadataStorage {
   }
 
   public async storeMetadata(metadata: Metadata): Promise<string> {
-    // TODO: validate metadata
+    await utils.validation.metadataSchema.validate(metadata, {
+      abortEarly: false
+    });
     const metadataWithSortedKeys = utils.metadata.sortObjKeys(metadata);
-    const addResult = await this._ipfsClient.add(
-      JSON.stringify(metadataWithSortedKeys),
-      { pin: true }
-    );
-    const cid = addResult.cid.toString();
+    const cid = await this.add(metadataWithSortedKeys);
     return cid;
   }
 
   public async getMetadata(metadataUriOrHash: string): Promise<Metadata> {
+    const metadata = await this.get<Metadata>(metadataUriOrHash);
+
+    await utils.validation.metadataSchema.validate(metadata, {
+      abortEarly: false
+    });
+
+    return metadata;
+  }
+
+  public async add(value: Record<string, unknown>) {
+    const addResult = await this.ipfsClient.add(JSON.stringify(value), {
+      pin: true
+    });
+    const cid = addResult.cid.toString();
+    return cid;
+  }
+
+  public async get<T>(uriOrHash: string): Promise<T> {
     let cid: CID = null;
     try {
-      cid = CID.parse(metadataUriOrHash);
+      cid = CID.parse(uriOrHash);
     } catch (error) {
       // if parsing fails, we assume it is a url
     }
 
-    if (cid) {
-      return this.getMetadataByCID(cid.toString());
-    }
-    return this.getMetadataByUrl(metadataUriOrHash);
+    const value = await (cid
+      ? this.getByCID<T>(cid.toString())
+      : this.getByURL<T>(uriOrHash));
+    return value;
   }
 
-  public async getMetadataByCID(cid: string): Promise<Metadata> {
+  public async getByCID<T>(cid: string): Promise<T> {
     const chunks = [];
-    for await (const chunk of this._ipfsClient.cat(cid)) {
+    for await (const chunk of this.ipfsClient.cat(cid)) {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    const metadata = JSON.parse(toString(data));
-
-    // TODO: validate metadata
-    return metadata;
+    const parsed = JSON.parse(toString(data));
+    return parsed;
   }
 
-  public async getMetadataByUrl(metadataUrl: string): Promise<Metadata> {
-    const response = await fetch(metadataUrl);
+  public async getByURL<T>(url: string): Promise<T> {
+    const response = await fetch(url);
 
-    const metadata = await response.json();
-
-    // TODO: validate metadata
-    return metadata;
+    const parsed = await response.json();
+    return parsed;
   }
 }
