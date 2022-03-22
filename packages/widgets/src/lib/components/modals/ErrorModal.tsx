@@ -3,7 +3,7 @@ import { Button } from "../Button";
 import { Center, Title, Value } from "./shared-styles";
 
 interface Props {
-  error: Error;
+  error: Error | string;
   onClose: () => void;
 }
 
@@ -11,7 +11,7 @@ export function ErrorModal({ error, onClose }: Props) {
   return (
     <Modal>
       <Title>Error</Title>
-      <Value>{error.message}</Value>
+      <Value>{typeof error === "string" ? error : error.message} </Value>
       <Center>
         <Button onClick={onClose}>Close</Button>
       </Center>
