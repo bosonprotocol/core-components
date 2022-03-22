@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
-import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
+import { offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
+import { useMetadata } from "../../lib/useMetadata";
 import { hooks } from "../../lib/connectors/metamask";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
@@ -22,22 +23,6 @@ const Actions = styled.div`
   justify-content: center;
   gap: ${columnGap}px;
 `;
-
-function useMetadata({
-  coreSDK,
-  metadataHash
-}: {
-  metadataHash: string;
-  coreSDK: CoreSDK;
-}) {
-  const [metadata, setMetadata] = useState<Record<string, string>>();
-
-  useEffect(() => {
-    coreSDK.getMetadata(metadataHash).then(setMetadata);
-  }, [coreSDK, metadataHash]);
-
-  return metadata;
-}
 
 export function CreateOffer() {
   const urlParams = Object.fromEntries(
@@ -83,7 +68,7 @@ export function CreateOffer() {
 
   const coreSDK = useCoreSDK();
 
-  const metadata = useMetadata({
+  const { metadata, error: metadataError } = useMetadata({
     coreSDK,
     metadataHash: createOfferArgs.metadataHash
   });
@@ -182,6 +167,26 @@ export function CreateOffer() {
         <ErrorModal
           error={transaction.error}
           onClose={() => setTransaction({ status: "idle" })}
+        />
+      )}
+      {metadataError && (
+        <ErrorModal
+          error={
+            metadataError.name === "ValidationError"
+              ? `Metadata is invalid: ${JSON.stringify(
+                  {
+                    providedValue: (metadataError as any).value,
+                    validationError: (metadataError as any).errors
+                  },
+                  null,
+                  2
+                )}`
+              : metadataError
+          }
+          onClose={() => {
+            // TODO: handle close appropriately
+            console.log({ metadataError });
+          }}
         />
       )}
     </WidgetLayout>
