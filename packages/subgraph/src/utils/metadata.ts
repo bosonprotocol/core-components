@@ -16,11 +16,20 @@ export function saveIpfsMetadata(
       const dataObj = data.value.toObject();
       const title = dataObj.get("title");
       const description = dataObj.get("description");
+      const additionalProperties = dataObj.get("additionalProperties");
 
       if (title && description) {
         const offerMetadata = new Metadata(offerMetadataId);
         offerMetadata.title = title.toString();
         offerMetadata.description = description.toString();
+
+        if (
+          additionalProperties !== null &&
+          additionalProperties.kind === JSONValueKind.STRING
+        ) {
+          offerMetadata.additionalProperties = additionalProperties.toString();
+        }
+
         offerMetadata.save();
         return offerMetadataId;
       }

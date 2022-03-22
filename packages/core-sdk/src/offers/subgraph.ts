@@ -30,6 +30,7 @@ fragment offerFields on Offer {
   metadata {
     title
     description
+    additionalProperties
   }
 }
 `;

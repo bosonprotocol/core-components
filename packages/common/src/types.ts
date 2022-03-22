@@ -15,7 +15,7 @@ export type ProtocolConfig = {
 };
 
 export type CreateOfferArgs = {
-  id: BigNumberish;
+  id?: BigNumberish;
   price: BigNumberish;
   deposit: BigNumberish;
   penalty: BigNumberish;
@@ -89,6 +89,7 @@ export interface Web3LibAdapter {
 export type Metadata = {
   title: string;
   description: string;
+  additionalProperties?: string;
 };
 
 export interface MetadataStorage {

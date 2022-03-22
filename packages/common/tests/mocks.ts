@@ -5,7 +5,8 @@ import {
   TransactionResponse,
   OfferStruct,
   MetadataStorage,
-  Metadata
+  Metadata,
+  CreateOfferArgs
 } from "../src/types";
 
 export const IPFS_HASH = "QmYXc12ov6F2MZVZwPs5XeCBbf61cW3wKRk8h3D5NTYj4T";
@@ -26,6 +27,28 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     redeemableDate: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
     fulfillmentPeriodDuration: 60 * 60,
     voucherValidDuration: 60 * 60,
+    seller: ADDRESS,
+    exchangeToken: AddressZero,
+    metadataUri: IPFS_URI,
+    metadataHash: IPFS_HASH,
+    ...overrides
+  };
+}
+
+export function mockCreateOfferArgs(
+  overrides?: Partial<CreateOfferArgs>
+): CreateOfferArgs {
+  return {
+    id: "1",
+    price: parseEther("1"),
+    deposit: parseEther("1"),
+    penalty: parseEther("1"),
+    quantity: 10,
+    validFromDateInMS: Date.now(),
+    validUntilDateInMS: Date.now() + 2 * 60 * 1000,
+    redeemableDateInMS: Date.now() + 1 * 60 * 1000,
+    fulfillmentPeriodDurationInMS: 60 * 60 * 1000,
+    voucherValidDurationInMS: 60 * 60 * 1000,
     seller: ADDRESS,
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,

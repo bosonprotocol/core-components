@@ -1,4 +1,4 @@
-import { createOfferArgsSchema } from "../../src/offers/validation";
+import { createOfferArgsSchema } from "../../src/utils/validation";
 import { mockCreateOfferArgs } from "../mocks";
 
 describe("#createOfferArgsSchema", () => {
