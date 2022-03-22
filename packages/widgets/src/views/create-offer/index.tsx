@@ -6,7 +6,7 @@ import { TransactionPendingModal } from "../../lib/components/modals/Transaction
 import { offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useExchangeToken } from "../../lib/useExchangeToken";
-import { useMetadata } from "../../lib/useMetadata";
+import { useMetadata, ValidationError } from "../../lib/useMetadata";
 import { hooks } from "../../lib/connectors/metamask";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
@@ -175,8 +175,8 @@ export function CreateOffer() {
             metadataError.name === "ValidationError"
               ? `Metadata is invalid: ${JSON.stringify(
                   {
-                    providedValue: (metadataError as any).value,
-                    validationError: (metadataError as any).errors
+                    providedValue: (metadataError as ValidationError).value,
+                    validationError: (metadataError as ValidationError).errors
                   },
                   null,
                   2
