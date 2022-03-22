@@ -94,6 +94,58 @@ export function CreateOffer() {
     ethers.constants.MaxInt256.div(2)
   );
 
+  async function handleTokenApproval() {
+    try {
+      const txResponse = await coreSDK.createOffer({
+        ...createOfferArgs,
+        seller: account ?? createOfferArgs.seller
+      });
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      const txReceipt = await txResponse.wait(1);
+      const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
+
+      setTransaction({
+        status: "success",
+        txHash: txResponse.hash,
+        offerId: offerId || ""
+      });
+    } catch (e) {
+      setTransaction({
+        status: "error",
+        error: e as Error
+      });
+    }
+  }
+
+  async function handleCreateOffer() {
+    try {
+      const txResponse = await coreSDK.approveExchangeToken(
+        createOfferArgs.exchangeToken,
+        ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
+      );
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      await txResponse.wait();
+
+      reloadCreateOfferData();
+      setTransaction({ status: "idle" });
+    } catch (e) {
+      setTransaction({
+        status: "error",
+        error: e as Error
+      });
+    }
+  }
+
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.title}>
       <OfferDetails
@@ -102,64 +154,10 @@ export function CreateOffer() {
       />
       <Spacer />
       <Actions>
-        <Button
-          disabled={!tokenApprovalNeeded}
-          onClick={async () => {
-            try {
-              const txResponse = await coreSDK.approveExchangeToken(
-                createOfferArgs.exchangeToken,
-                ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
-              );
-
-              setTransaction({
-                status: "pending",
-                txHash: txResponse.hash
-              });
-
-              await txResponse.wait();
-
-              reloadCreateOfferData();
-              setTransaction({ status: "idle" });
-            } catch (e) {
-              setTransaction({
-                status: "error",
-                error: e as Error
-              });
-            }
-          }}
-        >
+        <Button disabled={!tokenApprovalNeeded} onClick={handleCreateOffer}>
           Approve Tokens
         </Button>
-        <Button
-          disabled={tokenApprovalNeeded}
-          onClick={async () => {
-            try {
-              const txResponse = await coreSDK.createOffer({
-                ...createOfferArgs,
-                seller: account ?? createOfferArgs.seller
-              });
-
-              setTransaction({
-                status: "pending",
-                txHash: txResponse.hash
-              });
-
-              const txReceipt = await txResponse.wait(1);
-              const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
-
-              setTransaction({
-                status: "success",
-                txHash: txResponse.hash,
-                offerId: offerId || ""
-              });
-            } catch (e) {
-              setTransaction({
-                status: "error",
-                error: e as Error
-              });
-            }
-          }}
-        >
+        <Button disabled={tokenApprovalNeeded} onClick={handleTokenApproval}>
           Create Offer
         </Button>
       </Actions>

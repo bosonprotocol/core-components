@@ -6,8 +6,47 @@ import { getURLParams } from "../../lib/parseUrlParams";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { useAsyncEffect } from "use-async-effect";
+import * as yup from "yup";
+import { assert } from "../../lib/assert";
+import { isAddress } from "@ethersproject/address";
 
 type TokenInfo = Awaited<ReturnType<typeof getTokenInfo>>;
+
+function validateUrlParams() {
+  const urlParams = getURLParams();
+
+  // offer values
+  offers.validation.createOfferArgsSchema.validateSync(
+    { ...urlParams, seller: ethers.constants.AddressZero },
+    {
+      abortEarly: false
+    }
+  );
+
+  // config values
+  yup
+    .object({
+      widgetsUrl: yup.string().required().url(),
+      chainId: yup
+        .string()
+        .required()
+        .test("valid-chain-id", (val) => {
+          assert(val);
+          const number = parseInt(val);
+          if (Number.isNaN(number)) return false;
+          if (number < 1) return false;
+          return true;
+        }),
+      protocolDiamond: yup
+        .string()
+        .test("valid-protocol-diamond", (val) => isAddress(val ?? "")),
+      subgraphUrl: yup.string().url(),
+      jsonRpcUrl: yup.string().url(),
+      theGraphIpfsUrl: yup.string().url(),
+      ipfsMetadataUrl: yup.string().url()
+    })
+    .validateSync(urlParams, { abortEarly: false });
+}
 
 async function getTokenAllowance(
   coreSDK: CoreSDK,
@@ -90,6 +129,7 @@ export function useCreateOfferData() {
   useAsyncEffect(
     (isActive) => {
       async function load() {
+        validateUrlParams();
         const createOfferArgs = getCreateOfferArgs();
 
         const [metadata, tokenInfo] = await Promise.all([

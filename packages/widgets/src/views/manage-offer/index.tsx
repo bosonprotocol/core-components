@@ -122,6 +122,7 @@ export function ManageOffer() {
       />
       <Spacer />
       <Actions>
+        {/* TODO: don't show void button for "INACTIVE" offers */}
         {!isOfferVoided && (
           <PrimaryButton onClick={async () => setShowConfirmModal(true)}>
             Void Offer
@@ -143,7 +144,7 @@ export function ManageOffer() {
       )}
       {transaction.status === "error" && (
         <ErrorModal
-          error={transaction.error}
+          message={transaction.error.message}
           onClose={() => setTransaction({ status: "idle" })}
         />
       )}
