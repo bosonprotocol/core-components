@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
-import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
-import { useExchangeToken } from "../../lib/useExchangeToken";
-import { hooks } from "../../lib/connectors/metamask";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { ethers } from "ethers";
 import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
+import { useCreateOfferData } from "./useCreateOfferData";
+import { SpinnerCircular } from "spinners-react";
+import { hooks } from "../../lib/connectors/metamask";
+import { closeWidget } from "../../lib/closeWidget";
 
 const Spacer = styled.div`
   height: 20px;
@@ -23,45 +24,15 @@ const Actions = styled.div`
   gap: ${columnGap}px;
 `;
 
-function useMetadata({
-  coreSDK,
-  metadataHash
-}: {
-  metadataHash: string;
-  coreSDK: CoreSDK;
-}) {
-  const [metadata, setMetadata] = useState<Record<string, string>>();
-
-  useEffect(() => {
-    coreSDK.getMetadata(metadataHash).then(setMetadata);
-  }, [coreSDK, metadataHash]);
-
-  return metadata;
-}
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+`;
 
 export function CreateOffer() {
-  const urlParams = Object.fromEntries(
-    new URLSearchParams(window.location.hash.split("?")[1]).entries()
-  );
-
+  const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
-
-  const createOfferArgs: offers.CreateOfferArgs = {
-    price: urlParams["price"],
-    deposit: urlParams["deposit"],
-    penalty: urlParams["penalty"],
-    quantity: urlParams["quantity"],
-    validFromDateInMS: urlParams["validFromDateInMS"],
-    validUntilDateInMS: urlParams["validUntilDateInMS"],
-    redeemableDateInMS: urlParams["redeemableDateInMS"],
-    fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
-    voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
-    seller: account ?? "",
-    exchangeToken: urlParams["exchangeToken"],
-    metadataUri: urlParams["metadataUri"],
-    metadataHash: urlParams["metadataHash"]
-  };
-
   const [transaction, setTransaction] = useState<
     | {
         status: "idle";
@@ -81,35 +52,43 @@ export function CreateOffer() {
       }
   >({ status: "idle" });
 
-  const coreSDK = useCoreSDK();
+  const { data: createOfferData, reload: reloadCreateOfferData } =
+    useCreateOfferData();
+  createOfferData.status = "error";
+  if (createOfferData.status === "error")
+    return (
+      <WidgetLayout title="" offerName="" hideWallet>
+        <ErrorModal error={new Error("hello world")} onClose={closeWidget} />
+      </WidgetLayout>
+    );
 
-  const metadata = useMetadata({
-    coreSDK,
-    metadataHash: createOfferArgs.metadataHash
-  });
-  const { tokenState, reload: reloadExchangeToken } = useExchangeToken({
-    exchangeTokenAddress: createOfferArgs.exchangeToken,
-    coreSDK
-  });
+  if (createOfferData.status === "loading")
+    return (
+      <WidgetLayout title="" offerName="" hideWallet>
+        <Center>
+          <SpinnerCircular className="" size={80} color="#ced4db" />
+        </Center>
+      </WidgetLayout>
+    );
 
-  const currency =
-    tokenState.status === "token" ? tokenState.token.symbol : "...";
+  const { tokenInfo, createOfferArgs, metadata } = createOfferData;
 
-  const tokenApprovalNeeded =
-    tokenState.status === "token"
-      ? tokenState.token.allowance.lt(ethers.constants.MaxInt256.div(2))
-      : true;
+  const tokenApprovalNeeded = tokenInfo.allowance.lt(
+    ethers.constants.MaxInt256.div(2)
+  );
 
+  // TODO: set account when creating offer
   return (
-    <WidgetLayout title="Create Offer" offerName={metadata?.title ?? "..."}>
-      <OfferDetails createOfferArgs={createOfferArgs} currency={currency} />
+    <WidgetLayout title="Create Offer" offerName={metadata?.title}>
+      <OfferDetails
+        createOfferArgs={createOfferArgs}
+        currency={tokenInfo.symbol}
+      />
       <Spacer />
       <Actions>
         <Button
           disabled={!tokenApprovalNeeded}
           onClick={async () => {
-            if (!coreSDK) return;
-
             try {
               const txResponse = await coreSDK.approveExchangeToken(
                 createOfferArgs.exchangeToken,
@@ -123,7 +102,7 @@ export function CreateOffer() {
 
               await txResponse.wait();
 
-              reloadExchangeToken();
+              reloadCreateOfferData();
               setTransaction({ status: "idle" });
             } catch (e) {
               setTransaction({
@@ -138,10 +117,11 @@ export function CreateOffer() {
         <Button
           disabled={tokenApprovalNeeded}
           onClick={async () => {
-            if (!coreSDK) return;
-
             try {
-              const txResponse = await coreSDK.createOffer(createOfferArgs);
+              const txResponse = await coreSDK.createOffer({
+                ...createOfferArgs,
+                seller: account ?? createOfferArgs.seller
+              });
 
               setTransaction({
                 status: "pending",

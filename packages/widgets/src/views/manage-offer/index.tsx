@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { Button } from "../../lib/components/Button";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
+import { getURLParams } from "../../lib/parseUrlParams";
 
 function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
   const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
@@ -47,9 +48,7 @@ const Actions = styled.div`
 `;
 
 export function ManageOffer() {
-  const { offerId } = Object.fromEntries(
-    new URLSearchParams(window.location.hash.split("?")[1]).entries()
-  );
+  const { offerId } = getURLParams();
 
   const { reload: reloadOfferData, reloadToken } = useReloadToken();
   const [offer, setOffer] = useState<offers.RawOfferFromSubgraph>();
@@ -77,7 +76,6 @@ export function ManageOffer() {
   const coreSDK = useCoreSDK();
 
   useEffect(() => {
-    if (!coreSDK) return;
     coreSDK.getOfferById(offerId).then(setOffer);
   }, [coreSDK, offerId, reloadToken]);
 
@@ -153,8 +151,6 @@ export function ManageOffer() {
         <ConfirmModal
           onCancel={() => setShowConfirmModal(false)}
           onConfirm={async () => {
-            if (!coreSDK) return;
-
             setShowConfirmModal(false);
             try {
               const txResponse = await coreSDK.voidOffer(offerId);

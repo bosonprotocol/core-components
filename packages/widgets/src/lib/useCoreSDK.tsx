@@ -4,6 +4,7 @@ import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { hooks } from "./connectors/metamask";
 import { ethers } from "ethers";
+import { getURLParams } from "./parseUrlParams";
 
 type Config = {
   chainId: number;
@@ -52,17 +53,15 @@ function getConfig(): Config {
 }
 
 function getConfigFromUrl(): Partial<Config> {
-  const urlSearchParams = Object.fromEntries(
-    new URLSearchParams(window.location.hash.split("?")[1]).entries()
-  );
+  const urlParams = getURLParams();
 
   return {
-    chainId: parseInt(urlSearchParams["chainId"]),
-    protocolDiamond: urlSearchParams["protocolDiamond"],
-    subgraphUrl: urlSearchParams["subgraphUrl"],
-    jsonRpcUrl: urlSearchParams["jsonRpcUrl"],
-    theGraphIpfsUrl: urlSearchParams["theGraphIpfsUrl"],
-    ipfsMetadataUrl: urlSearchParams["ipfsMetadataUrl"]
+    chainId: parseInt(urlParams["chainId"]),
+    protocolDiamond: urlParams["protocolDiamond"],
+    subgraphUrl: urlParams["subgraphUrl"],
+    jsonRpcUrl: urlParams["jsonRpcUrl"],
+    theGraphIpfsUrl: urlParams["theGraphIpfsUrl"],
+    ipfsMetadataUrl: urlParams["ipfsMetadataUrl"]
   };
 }
 
