@@ -11,6 +11,10 @@ import { assert } from "../../lib/assert";
 import { isAddress } from "@ethersproject/address";
 
 type TokenInfo = Awaited<ReturnType<typeof getTokenInfo>>;
+export type ValidationError = Error & {
+  errors: string[];
+  value: Record<string, unknown>;
+};
 
 function validateUrlParams() {
   const urlParams = getURLParams();

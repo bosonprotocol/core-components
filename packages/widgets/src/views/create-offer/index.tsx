@@ -9,11 +9,10 @@ import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { ethers } from "ethers";
 import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
-import { useCreateOfferData } from "./useCreateOfferData";
+import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
 import { SpinnerCircular } from "spinners-react";
 import { hooks } from "../../lib/connectors/metamask";
 import { closeWidget } from "../../lib/closeWidget";
-import { ValidationError } from "../../lib/useMetadata";
 
 const Spacer = styled.div`
   height: 20px;
