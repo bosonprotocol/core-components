@@ -30,7 +30,6 @@ function validateUrlParams() {
   // config values
   yup
     .object({
-      widgetsUrl: yup.string().required().url(),
       chainId: yup
         .string()
         .required()
@@ -43,7 +42,9 @@ function validateUrlParams() {
         }),
       protocolDiamond: yup
         .string()
-        .test("valid-protocol-diamond", (val) => isAddress(val ?? "")),
+        .test("valid-protocol-diamond", (val) =>
+          isAddress(val ?? ethers.constants.AddressZero)
+        ),
       subgraphUrl: yup.string().url(),
       jsonRpcUrl: yup.string().url(),
       theGraphIpfsUrl: yup.string().url(),
