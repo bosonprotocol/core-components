@@ -18,14 +18,17 @@ export class EthConnectAdapter implements Web3LibAdapter {
   }
 
   public async getChainId(): Promise<number> {
-    return this._requestManager.provider.getChainId();
+    const chainId = await this._requestManager.net_version();
+    return parseInt(chainId);
   }
 
-  public async getBalance(address: string): Promise<string> {
-    const blockNumber = await this._requestManager.eth_blockNumber();
+  public async getBalance(
+    addressOrName: string,
+    blockNumber?: string | number
+  ): Promise<string> {
     const balance = await this._requestManager.eth_getBalance(
-      address,
-      blockNumber.toString()
+      addressOrName,
+      (blockNumber || (await this._requestManager.eth_blockNumber())).toString()
     );
     return balance.toString();
   }

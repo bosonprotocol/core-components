@@ -79,7 +79,10 @@ export type TransactionReceipt = {
 export interface Web3LibAdapter {
   getSignerAddress(): Promise<string>;
   getChainId(): Promise<number>;
-  getBalance(address: string): Promise<BigNumberish>;
+  getBalance(
+    addressOrName: string,
+    blockNumber?: string | number
+  ): Promise<BigNumberish>;
   sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse>;
