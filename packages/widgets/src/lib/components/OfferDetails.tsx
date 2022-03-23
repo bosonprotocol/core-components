@@ -1,15 +1,16 @@
 import styled from "styled-components";
 import { formatEther } from "ethers/lib/utils";
 import { offers } from "@bosonprotocol/core-sdk";
+import { colors } from "../colors";
 
 export const columnGap = 24;
 
 export const Value = styled.div`
   display: inline-block;
   padding: 4px 8px;
-  border: 2px solid #797e91;
-  background-color: #43464f;
-  color: #d3d3d3;
+  border: 2px solid ${colors.shadowGray};
+  background-color: ${colors.cyberSpaceGray};
+  color: ${colors.satinWhite};
   border-radius: 4px;
   flex-grow: 1;
   white-space: nowrap;
@@ -33,9 +34,9 @@ const Money = styled.div`
 const Currency = styled.div`
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  border: 2px solid #797e91;
-  background-color: #5d616e;
-  color: #d3d3d3;
+  border: 2px solid ${colors.shadowGray};
+  background-color: ${colors.concreteGray};
+  color: ${colors.satinWhite};
   padding: 4px;
 `;
 

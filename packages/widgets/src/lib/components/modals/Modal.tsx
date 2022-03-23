@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
+import { colors } from "../../colors";
 import { zIndex } from "../../zIndex";
 
 const Root = styled.div`
@@ -21,8 +22,8 @@ const Content = styled.div`
   min-width: 300px;
   border-radius: 8px;
   padding: 16px;
-  background-color: #43464f;
-  border: 2px solid #c1c1c1;
+  background-color: ${colors.cyberSpaceGray};
+  border: 2px solid ${colors.stoneWallGray};
 `;
 
 interface Props {

@@ -20,6 +20,7 @@ import { Button } from "../../lib/components/Button";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
 import { getURLParams } from "../../lib/parseUrlParams";
+import { colors } from "../../lib/colors";
 
 enum OfferState {
   VOIDED = "VOIDED",
@@ -39,13 +40,13 @@ function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
 }
 
 const PrimaryButton = styled(Button)`
-  background-color: #43464f;
-  color: #0ffbad;
-  border-color: #0ffbad;
+  background-color: ${colors.cyberSpaceGray};
+  color: ${colors.neonGreen};
+  border-color: ${colors.neonGreen};
 `;
 
 const SecondaryButton = styled(Button)`
-  background-color: #0ffbad;
+  background-color: ${colors.neonGreen};
   opacity: 0.9;
 `;
 

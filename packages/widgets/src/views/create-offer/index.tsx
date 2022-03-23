@@ -13,6 +13,7 @@ import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
 import { SpinnerCircular } from "spinners-react";
 import { hooks } from "../../lib/connectors/metamask";
 import { closeWidget } from "../../lib/closeWidget";
+import { colors } from "../../lib/colors";
 
 const Spacer = styled.div`
   height: 20px;
@@ -82,7 +83,7 @@ export function CreateOffer() {
     return (
       <WidgetLayout title="" offerName="" hideWallet>
         <Center>
-          <SpinnerCircular className="" size={80} color="#ced4db" />
+          <SpinnerCircular className="" size={80} color={colors.satinWhite} />
         </Center>
       </WidgetLayout>
     );

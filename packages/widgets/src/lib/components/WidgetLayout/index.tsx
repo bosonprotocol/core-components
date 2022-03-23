@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
+import { colors } from "../../colors";
 import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
 
@@ -11,8 +12,8 @@ const Root = styled.div`
   padding: 16px;
   padding-bottom: 16px;
   position: relative;
-  background-color: #43464f;
-  color: #ced4db;
+  background-color: ${colors.cyberSpaceGray};
+  color: ${colors.satinWhite};
   height: 100vh;
   box-sizing: border-box;
   display: flex;
@@ -40,8 +41,8 @@ const WalletConnection = styled.div`
 
 const ConnectButton = styled.button`
   all: unset;
-  background-color: #43464f;
-  border: solid 1px #0ffbad;
+  background-color: ${colors.cyberSpaceGray};
+  border: solid 1px ${colors.neonGreen};
   text-align: center;
   color: white;
   padding: 0px 8px;
@@ -55,8 +56,8 @@ const ConnectButton = styled.button`
 `;
 
 const ConnectionSuccess = styled.div`
-  background-color: #43464f;
-  border: solid 1px #0ffbad;
+  background-color: ${colors.cyberSpaceGray};
+  border: solid 1px ${colors.neonGreen};
   color: white;
   padding: 0px 10px;
   border-radius: 4px;

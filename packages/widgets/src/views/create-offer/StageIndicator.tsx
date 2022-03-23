@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../lib/colors";
 import { zIndex } from "../../lib/zIndex";
 
 const Root = styled.div`
@@ -14,13 +15,13 @@ const StagePoint = styled.div`
   margin-left: -12px;
   margin-right: -12px;
   border-radius: 20px;
-  border: 2px solid #5e5e5e;
+  border: 2px solid ${colors.concreteGray};
   display: inline-flex;
   justify-content: center;
   align-items: center;
   position: relative;
   z-index: ${zIndex.stageIndicator};
-  color: #333333;
+  color: black;
 `;
 
 const Line = styled.div<{ stage: Props["stage"] }>`
@@ -33,7 +34,7 @@ const Line = styled.div<{ stage: Props["stage"] }>`
     rgba(200, 200, 200, 1) 60%,
     rgba(193, 193, 193, 1) 100%
   );
-  border: 2px solid #5e5e5e;
+  border: 2px solid ${colors.concreteGray};
 `;
 
 interface Props {
@@ -44,13 +45,17 @@ export function StageIndicator({ stage }: Props) {
   return (
     <Root>
       <StagePoint
-        style={{ backgroundColor: stage === 1 ? "#0ffbad" : "#c1c1c1" }}
+        style={{
+          backgroundColor: stage === 1 ? colors.neonGreen : colors.stoneWallGray
+        }}
       >
         1
       </StagePoint>
       <Line stage={stage} />
       <StagePoint
-        style={{ backgroundColor: stage === 2 ? "#0ffbad" : "#c1c1c1" }}
+        style={{
+          backgroundColor: stage === 2 ? colors.neonGreen : colors.stoneWallGray
+        }}
       >
         2
       </StagePoint>

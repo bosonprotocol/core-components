@@ -2,13 +2,14 @@ import { Modal } from "./Modal";
 import { Button } from "../Button";
 import { Center, Title } from "./shared-styles";
 import styled from "styled-components";
+import { colors } from "../../colors";
 
 const PrimaryButton = styled(Button)`
   width: 100px;
 `;
 
 const SecondaryButton = styled(PrimaryButton)`
-  background-color: #ced4db;
+  background-color: ${colors.satinWhite};
 `;
 
 const StyledTitle = styled(Title)`
