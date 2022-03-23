@@ -3,7 +3,7 @@ import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { hooks } from "./connectors/metamask";
-import { ethers } from "ethers";
+import { providers } from "ethers";
 import { getURLParams } from "./parseUrlParams";
 
 type Config = {
@@ -66,13 +66,10 @@ function getConfigFromUrl(): Partial<Config> {
 }
 
 function getDefaultProvider(jsonRpcUrl: string) {
-  return new ethers.providers.JsonRpcProvider(jsonRpcUrl);
+  return new providers.JsonRpcProvider(jsonRpcUrl);
 }
 
-function initCoreSDK(
-  provider: ethers.providers.JsonRpcProvider,
-  config: Config
-) {
+function initCoreSDK(provider: providers.JsonRpcProvider, config: Config) {
   return new CoreSDK({
     web3Lib: new EthersAdapter(provider),
     protocolDiamond: config.protocolDiamond,

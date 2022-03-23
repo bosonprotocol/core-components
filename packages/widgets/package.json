@@ -21,7 +21,7 @@
     "babel-plugin-styled-components": "^2.0.6",
     "customize-cra": "^1.0.0",
     "eslint": "^8.10.0",
-    "ethers": "^5.5.0",
+    "ethers": "^5.6.1",
     "react": "^17.0.2",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^17.0.2",
@@ -31,6 +31,7 @@
     "styled-components": "^5.3.3",
     "typescript": "^4.5.5",
     "use-async-effect": "^2.2.5",
+    "webpack-bundle-analyzer": "^4.5.0",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -38,6 +39,7 @@
     "dev": "BROWSER=none GENERATE_SOURCEMAP=false react-app-rewired start",
     "lint": "eslint --ignore-path ../../.gitignore --ext .jsx,.tsx .",
     "build": "react-app-rewired build",
+    "analyze": "BUNDLE_VISUALIZE=1 react-app-rewired build",
     "test": "react-app-rewired test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
     "clean": "rimraf build coverage .turbo node_modules"

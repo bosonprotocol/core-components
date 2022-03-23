@@ -56,7 +56,7 @@ const Actions = styled.div`
   gap: ${columnGap}px;
 `;
 
-export function ManageOffer() {
+export default function ManageOffer() {
   const { offerId } = getURLParams();
 
   const { reload: reloadOfferData, reloadToken } = useReloadToken();

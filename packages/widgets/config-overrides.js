@@ -1,4 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { override, addBabelPlugins } = require("customize-cra");
+const {
+  override,
+  addBabelPlugins,
+  addBundleVisualizer
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+} = require("customize-cra");
 
-module.exports = override(addBabelPlugins("babel-plugin-styled-components"));
+module.exports = override(
+  addBabelPlugins("babel-plugin-styled-components"),
+  process.env.BUNDLE_VISUALIZE &&
+    addBundleVisualizer({
+      analyzerMode: "server"
+    })
+);

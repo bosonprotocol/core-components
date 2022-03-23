@@ -7,7 +7,7 @@ import { useCoreSDK } from "../../lib/useCoreSDK";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
-import { ethers } from "ethers";
+import { constants } from "ethers";
 import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
 import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
 import { SpinnerCircular } from "spinners-react";
@@ -44,7 +44,7 @@ function formatErrorMessage(error: Error | ValidationError) {
   return error.message;
 }
 
-export function CreateOffer() {
+export default function CreateOffer() {
   const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
   const [transaction, setTransaction] = useState<
@@ -91,7 +91,7 @@ export function CreateOffer() {
   const { tokenInfo, createOfferArgs, metadata } = createOfferData;
 
   const tokenApprovalNeeded = tokenInfo.allowance.lt(
-    ethers.constants.MaxInt256.div(2)
+    constants.MaxInt256.div(2)
   );
 
   async function handleTokenApproval() {
@@ -126,7 +126,7 @@ export function CreateOffer() {
     try {
       const txResponse = await coreSDK.approveExchangeToken(
         createOfferArgs.exchangeToken,
-        ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
+        constants.MaxInt256.sub(createOfferArgs.deposit)
       );
 
       setTransaction({
