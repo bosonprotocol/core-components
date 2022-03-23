@@ -57,6 +57,7 @@ async function getTokenAllowance(
   exchangeTokenAddress: string
 ) {
   // TODO: need better check to see if account is avaialbe in provider (which is being used)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providerUrl = (coreSDK as any)._web3Lib._provider.connection.url;
   if (providerUrl !== "metamask") return ethers.BigNumber.from(0);
 
