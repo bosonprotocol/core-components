@@ -21,8 +21,8 @@ const Content = styled.div`
   min-width: 300px;
   border-radius: 8px;
   padding: 16px;
-  background-color: #979ea8;
-  border: 2px solid #5e5e5e;
+  background-color: #43464f;
+  border: 2px solid #c1c1c1;
 `;
 
 interface Props {

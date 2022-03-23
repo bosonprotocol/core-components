@@ -17,9 +17,9 @@ export const Label = styled.div`
 
 export const Value = styled.div`
   padding: 4px 8px;
-  border: 2px solid #5e5e5e;
-  background-color: #ced4db;
-  color: #333333;
+  border: 2px solid #c1c1c1;
+  background-color: #43464f;
+  color: #c1c1c1;
   border-radius: 4px;
   margin-bottom: 24px;
   font-size: 14px;

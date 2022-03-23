@@ -30,8 +30,8 @@ const Line = styled.div<{ stage: Props["stage"] }>`
   background: linear-gradient(
     ${(p) => (p.stage === 1 ? "90deg" : "270deg")},
     rgba(15, 251, 173, 1) 0%,
-    rgba(227, 250, 227, 1) 44%,
-    rgba(223, 227, 232, 1) 100%
+    rgba(200, 200, 200, 1) 60%,
+    rgba(193, 193, 193, 1) 100%
   );
   border: 2px solid #5e5e5e;
 `;
@@ -44,13 +44,13 @@ export function StageIndicator({ stage }: Props) {
   return (
     <Root>
       <StagePoint
-        style={{ backgroundColor: stage === 1 ? "#0ffbad" : "#dfe3e8" }}
+        style={{ backgroundColor: stage === 1 ? "#0ffbad" : "#c1c1c1" }}
       >
         1
       </StagePoint>
       <Line stage={stage} />
       <StagePoint
-        style={{ backgroundColor: stage === 2 ? "#0ffbad" : "#dfe3e8" }}
+        style={{ backgroundColor: stage === 2 ? "#0ffbad" : "#c1c1c1" }}
       >
         2
       </StagePoint>

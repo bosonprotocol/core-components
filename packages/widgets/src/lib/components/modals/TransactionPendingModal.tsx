@@ -13,7 +13,7 @@ export function TransactionPendingModal({ txHash }: Props) {
       <Label>Tx Hash</Label>
       <Value>{txHash}</Value>
       <Center>
-        <SpinnerCircular className="" size={80} color="#ced4db" />
+        <SpinnerCircular className="" size={80} color="#0ffbad" />
       </Center>
     </Modal>
   );
