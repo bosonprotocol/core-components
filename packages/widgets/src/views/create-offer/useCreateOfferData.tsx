@@ -1,5 +1,5 @@
 import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
-import { ethers } from "ethers";
+import { constants, BigNumber } from "ethers";
 import { useState } from "react";
 import { hooks } from "../../lib/connectors/metamask";
 import { getURLParams } from "../../lib/parseUrlParams";
@@ -21,7 +21,7 @@ function validateUrlParams() {
 
   // offer values
   offers.validation.createOfferArgsSchema.validateSync(
-    { ...urlParams, seller: ethers.constants.AddressZero },
+    { ...urlParams, seller: constants.AddressZero },
     {
       abortEarly: false
     }
@@ -43,7 +43,7 @@ function validateUrlParams() {
       protocolDiamond: yup
         .string()
         .test("valid-protocol-diamond", (val) =>
-          isAddress(val ?? ethers.constants.AddressZero)
+          isAddress(val ?? constants.AddressZero)
         ),
       subgraphUrl: yup.string().url(),
       jsonRpcUrl: yup.string().url(),
@@ -55,32 +55,35 @@ function validateUrlParams() {
 
 async function getTokenAllowance(
   coreSDK: CoreSDK,
-  exchangeTokenAddress: string
+  exchangeTokenAddress: string,
+  account?: string
 ) {
-  // TODO: need better check to see if account is avaialbe in provider (which is being used)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const providerUrl = (coreSDK as any)._web3Lib._provider.connection.url;
-  if (providerUrl !== "metamask") return ethers.BigNumber.from(0);
+  if (!account) return BigNumber.from(0);
 
   const allowance = await coreSDK.getExchangeTokenAllowance(
-    exchangeTokenAddress
+    exchangeTokenAddress,
+    { owner: account }
   );
-  return ethers.BigNumber.from(allowance);
+  return BigNumber.from(allowance);
 }
 
-async function getTokenInfo(coreSDK: CoreSDK, exchangeTokenAddress: string) {
-  if (exchangeTokenAddress === ethers.constants.AddressZero) {
+async function getTokenInfo(
+  coreSDK: CoreSDK,
+  exchangeTokenAddress: string,
+  account?: string
+) {
+  if (exchangeTokenAddress === constants.AddressZero) {
     return {
       name: "Ether",
       symbol: "ETH",
-      address: ethers.constants.AddressZero,
-      allowance: ethers.constants.MaxUint256,
+      address: constants.AddressZero,
+      allowance: constants.MaxUint256,
       decimals: 18
     };
   }
 
   const [allowance, exchangeTokenInfo] = await Promise.all([
-    getTokenAllowance(coreSDK, exchangeTokenAddress),
+    getTokenAllowance(coreSDK, exchangeTokenAddress, account),
     coreSDK.getExchangeTokenInfo(exchangeTokenAddress)
   ]);
 
@@ -140,7 +143,7 @@ export function useCreateOfferData() {
 
         const [metadata, tokenInfo] = await Promise.all([
           coreSDK.getMetadata(createOfferArgs.metadataHash),
-          getTokenInfo(coreSDK, createOfferArgs.exchangeToken)
+          getTokenInfo(coreSDK, createOfferArgs.exchangeToken, account)
         ]);
 
         if (!isActive()) return;
