@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
-import { offers } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
-import { useExchangeToken } from "../../lib/useExchangeToken";
-import { useMetadata, ValidationError } from "../../lib/useMetadata";
-import { hooks } from "../../lib/connectors/metamask";
 import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { ethers } from "ethers";
 import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
+import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
+import { SpinnerCircular } from "spinners-react";
+import { hooks } from "../../lib/connectors/metamask";
+import { closeWidget } from "../../lib/closeWidget";
 
 const Spacer = styled.div`
   height: 20px;
@@ -24,29 +24,28 @@ const Actions = styled.div`
   gap: ${columnGap}px;
 `;
 
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+`;
+
+function formatErrorMessage(error: Error | ValidationError) {
+  if (error.name === "ValidationError") {
+    const err = error as ValidationError;
+    return JSON.stringify(
+      { providedValue: err.value, validationError: err.errors },
+      null,
+      2
+    );
+  }
+
+  return error.message;
+}
+
 export function CreateOffer() {
-  const urlParams = Object.fromEntries(
-    new URLSearchParams(window.location.hash.split("?")[1]).entries()
-  );
-
+  const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
-
-  const createOfferArgs: offers.CreateOfferArgs = {
-    price: urlParams["price"],
-    deposit: urlParams["deposit"],
-    penalty: urlParams["penalty"],
-    quantity: urlParams["quantity"],
-    validFromDateInMS: urlParams["validFromDateInMS"],
-    validUntilDateInMS: urlParams["validUntilDateInMS"],
-    redeemableDateInMS: urlParams["redeemableDateInMS"],
-    fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
-    voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
-    seller: account ?? "",
-    exchangeToken: urlParams["exchangeToken"],
-    metadataUri: urlParams["metadataUri"],
-    metadataHash: urlParams["metadataHash"]
-  };
-
   const [transaction, setTransaction] = useState<
     | {
         status: "idle";
@@ -66,89 +65,98 @@ export function CreateOffer() {
       }
   >({ status: "idle" });
 
-  const coreSDK = useCoreSDK();
+  const { data: createOfferData, reload: reloadCreateOfferData } =
+    useCreateOfferData();
 
-  const { metadata, error: metadataError } = useMetadata({
-    coreSDK,
-    metadataHash: createOfferArgs.metadataHash
-  });
-  const { tokenState, reload: reloadExchangeToken } = useExchangeToken({
-    exchangeTokenAddress: createOfferArgs.exchangeToken,
-    coreSDK
-  });
+  if (createOfferData.status === "error")
+    return (
+      <WidgetLayout title="" offerName="" hideWallet>
+        <ErrorModal
+          message={formatErrorMessage(createOfferData.error)}
+          onClose={closeWidget}
+        />
+      </WidgetLayout>
+    );
 
-  const currency =
-    tokenState.status === "token" ? tokenState.token.symbol : "...";
+  if (createOfferData.status === "loading")
+    return (
+      <WidgetLayout title="" offerName="" hideWallet>
+        <Center>
+          <SpinnerCircular className="" size={80} color="#ced4db" />
+        </Center>
+      </WidgetLayout>
+    );
 
-  const tokenApprovalNeeded =
-    tokenState.status === "token"
-      ? tokenState.token.allowance.lt(ethers.constants.MaxInt256.div(2))
-      : true;
+  const { tokenInfo, createOfferArgs, metadata } = createOfferData;
+
+  const tokenApprovalNeeded = tokenInfo.allowance.lt(
+    ethers.constants.MaxInt256.div(2)
+  );
+
+  async function handleTokenApproval() {
+    try {
+      const txResponse = await coreSDK.createOffer({
+        ...createOfferArgs,
+        seller: account ?? createOfferArgs.seller
+      });
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      const txReceipt = await txResponse.wait(1);
+      const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
+
+      setTransaction({
+        status: "success",
+        txHash: txResponse.hash,
+        offerId: offerId || ""
+      });
+    } catch (e) {
+      setTransaction({
+        status: "error",
+        error: e as Error
+      });
+    }
+  }
+
+  async function handleCreateOffer() {
+    try {
+      const txResponse = await coreSDK.approveExchangeToken(
+        createOfferArgs.exchangeToken,
+        ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
+      );
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      await txResponse.wait();
+
+      reloadCreateOfferData();
+      setTransaction({ status: "idle" });
+    } catch (e) {
+      setTransaction({
+        status: "error",
+        error: e as Error
+      });
+    }
+  }
 
   return (
-    <WidgetLayout title="Create Offer" offerName={metadata?.title ?? "..."}>
-      <OfferDetails createOfferArgs={createOfferArgs} currency={currency} />
+    <WidgetLayout title="Create Offer" offerName={metadata?.title}>
+      <OfferDetails
+        createOfferArgs={createOfferArgs}
+        currency={tokenInfo.symbol}
+      />
       <Spacer />
       <Actions>
-        <Button
-          disabled={!tokenApprovalNeeded}
-          onClick={async () => {
-            if (!coreSDK) return;
-
-            try {
-              const txResponse = await coreSDK.approveExchangeToken(
-                createOfferArgs.exchangeToken,
-                ethers.constants.MaxInt256.sub(createOfferArgs.deposit)
-              );
-
-              setTransaction({
-                status: "pending",
-                txHash: txResponse.hash
-              });
-
-              await txResponse.wait();
-
-              reloadExchangeToken();
-              setTransaction({ status: "idle" });
-            } catch (e) {
-              setTransaction({
-                status: "error",
-                error: e as Error
-              });
-            }
-          }}
-        >
+        <Button disabled={!tokenApprovalNeeded} onClick={handleCreateOffer}>
           Approve Tokens
         </Button>
-        <Button
-          disabled={tokenApprovalNeeded}
-          onClick={async () => {
-            if (!coreSDK) return;
-
-            try {
-              const txResponse = await coreSDK.createOffer(createOfferArgs);
-
-              setTransaction({
-                status: "pending",
-                txHash: txResponse.hash
-              });
-
-              const txReceipt = await txResponse.wait(1);
-              const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
-
-              setTransaction({
-                status: "success",
-                txHash: txResponse.hash,
-                offerId: offerId || ""
-              });
-            } catch (e) {
-              setTransaction({
-                status: "error",
-                error: e as Error
-              });
-            }
-          }}
-        >
+        <Button disabled={tokenApprovalNeeded} onClick={handleTokenApproval}>
           Create Offer
         </Button>
       </Actions>
@@ -165,28 +173,8 @@ export function CreateOffer() {
       )}
       {transaction.status === "error" && (
         <ErrorModal
-          error={transaction.error}
+          message={formatErrorMessage(transaction.error)}
           onClose={() => setTransaction({ status: "idle" })}
-        />
-      )}
-      {metadataError && (
-        <ErrorModal
-          error={
-            metadataError.name === "ValidationError"
-              ? `Metadata is invalid: ${JSON.stringify(
-                  {
-                    providedValue: (metadataError as ValidationError).value,
-                    validationError: (metadataError as ValidationError).errors
-                  },
-                  null,
-                  2
-                )}`
-              : metadataError
-          }
-          onClose={() => {
-            // TODO: handle close appropriately
-            console.log({ metadataError });
-          }}
         />
       )}
     </WidgetLayout>

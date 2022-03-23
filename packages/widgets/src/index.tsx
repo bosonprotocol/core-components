@@ -4,7 +4,6 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
 import { CreateOffer } from "./views/create-offer";
-import { Home } from "./views/home";
 import { ManageOffer } from "./views/manage-offer";
 
 const GlobalStyle = createGlobalStyle`
@@ -19,7 +18,6 @@ ReactDOM.render(
     <GlobalStyle />
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route
           path="/create"
           element={

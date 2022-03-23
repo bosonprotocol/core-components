@@ -19,15 +19,23 @@ import styled from "styled-components";
 import { Button } from "../../lib/components/Button";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
+import { getURLParams } from "../../lib/parseUrlParams";
+
+enum OfferState {
+  VOIDED = "VOIDED",
+  INACTIVE = "INACTIVE",
+  EXPIRED = "EXPIRED",
+  ACTIVE = "ACTIVE"
+}
 
 function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
   const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
   const timeNow = Date.now();
 
-  if (offer.voidedAt) return "VOIDED";
-  if (toTimeStamp(offer.validFromDate) > timeNow) return "INACTIVE";
-  if (toTimeStamp(offer.validUntilDate) < timeNow) return "EXPIRED";
-  return "ACTIVE";
+  if (offer.voidedAt) return OfferState.VOIDED;
+  if (toTimeStamp(offer.validFromDate) > timeNow) return OfferState.INACTIVE;
+  if (toTimeStamp(offer.validUntilDate) < timeNow) return OfferState.EXPIRED;
+  return OfferState.ACTIVE;
 }
 
 const PrimaryButton = styled(Button)`
@@ -47,9 +55,7 @@ const Actions = styled.div`
 `;
 
 export function ManageOffer() {
-  const { offerId } = Object.fromEntries(
-    new URLSearchParams(window.location.hash.split("?")[1]).entries()
-  );
+  const { offerId } = getURLParams();
 
   const { reload: reloadOfferData, reloadToken } = useReloadToken();
   const [offer, setOffer] = useState<offers.RawOfferFromSubgraph>();
@@ -73,13 +79,15 @@ export function ManageOffer() {
       }
   >({ status: "idle" });
 
-  const isOfferVoided = offer ? !!offer?.voidedAt : true;
   const coreSDK = useCoreSDK();
 
   useEffect(() => {
-    if (!coreSDK) return;
     coreSDK.getOfferById(offerId).then(setOffer);
   }, [coreSDK, offerId, reloadToken]);
+
+  const voidOfferAvailable =
+    offer &&
+    [OfferState.ACTIVE, OfferState.INACTIVE].includes(getOfferStatus(offer));
 
   const currency = offer?.exchangeToken.symbol ?? "...";
 
@@ -124,12 +132,14 @@ export function ManageOffer() {
       />
       <Spacer />
       <Actions>
-        {!isOfferVoided && (
+        {voidOfferAvailable && (
           <PrimaryButton onClick={async () => setShowConfirmModal(true)}>
             Void Offer
           </PrimaryButton>
         )}
-        <SecondaryButton style={{ width: isOfferVoided ? "100%" : undefined }}>
+        <SecondaryButton
+          style={{ width: !voidOfferAvailable ? "100%" : undefined }}
+        >
           Withdraw
         </SecondaryButton>
       </Actions>
@@ -145,7 +155,7 @@ export function ManageOffer() {
       )}
       {transaction.status === "error" && (
         <ErrorModal
-          error={transaction.error}
+          message={transaction.error.message}
           onClose={() => setTransaction({ status: "idle" })}
         />
       )}
@@ -153,8 +163,6 @@ export function ManageOffer() {
         <ConfirmModal
           onCancel={() => setShowConfirmModal(false)}
           onConfirm={async () => {
-            if (!coreSDK) return;
-
             setShowConfirmModal(false);
             try {
               const txResponse = await coreSDK.voidOffer(offerId);

@@ -13,6 +13,10 @@ const Root = styled.div`
   position: relative;
   background-color: #6f7681;
   color: #ced4db;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
@@ -69,9 +73,15 @@ interface Props {
   children: ReactNode;
   title: string;
   offerName: string;
+  hideWallet?: boolean;
 }
 
-export function WidgetLayout({ children, title, offerName }: Props) {
+export function WidgetLayout({
+  children,
+  title,
+  offerName,
+  hideWallet
+}: Props) {
   const isActive = hooks.useIsActive();
   const account = hooks.useAccount();
 
@@ -84,17 +94,20 @@ export function WidgetLayout({ children, title, offerName }: Props) {
 
   return (
     <Root>
-      <WalletConnection>
-        {isActive ? (
-          <ConnectionSuccess>
-            {truncateAddress(account as string)}
-          </ConnectionSuccess>
-        ) : (
-          <ConnectButton onClick={() => metaMask.activate()}>
-            Connect Wallet
-          </ConnectButton>
-        )}
-      </WalletConnection>
+      {!hideWallet && (
+        <WalletConnection>
+          {isActive ? (
+            <ConnectionSuccess>
+              {truncateAddress(account as string)}
+            </ConnectionSuccess>
+          ) : (
+            <ConnectButton onClick={() => metaMask.activate()}>
+              Connect Wallet
+            </ConnectButton>
+          )}
+        </WalletConnection>
+      )}
+
       <Title>{title}</Title>
       <OfferName>{offerName}</OfferName>
       {children}
