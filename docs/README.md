@@ -1,16 +1,20 @@
 # Core Components Docs
 
-- [API Docs](#api-docs)
 - [How tos & guides](#how-tos--guides)
+- [API Docs](#api-docs)
 - [Contributor docs](#contributor-docs)
-
-## API docs
-
-> TODO
 
 ## How tos & guides
 
 > TODO
+
+## API docs
+
+- [`@bosonprotocol/core-sdk`](/packages/core-sdk/README.md)
+- [`@bosonprotocol/eth-connect-sdk`](/packages/eth-connect-sdk//README.md)
+- [`@bosonprotocol/ethers-sdk`](/packages/ethers-sdk/README.md)
+- [`@bosonprotocol/ipfs-storage`](/packages/ipfs-storage/README.md)
+- [`@bosonprotocol/widgets-sdk`](/packages/widgets-sdk/README.md)
 
 ## Contributor docs
 

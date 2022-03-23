@@ -39,13 +39,14 @@ function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
 }
 
 const PrimaryButton = styled(Button)`
-  background-color: #6f7681;
+  background-color: #43464f;
   color: #0ffbad;
   border-color: #0ffbad;
 `;
 
 const SecondaryButton = styled(Button)`
-  background-color: #ced4db;
+  background-color: #0ffbad;
+  opacity: 0.9;
 `;
 
 const Actions = styled.div`

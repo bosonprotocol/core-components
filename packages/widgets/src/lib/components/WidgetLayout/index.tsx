@@ -11,7 +11,7 @@ const Root = styled.div`
   padding: 16px;
   padding-bottom: 16px;
   position: relative;
-  background-color: #6f7681;
+  background-color: #43464f;
   color: #ced4db;
   height: 100vh;
   box-sizing: border-box;
@@ -40,7 +40,8 @@ const WalletConnection = styled.div`
 
 const ConnectButton = styled.button`
   all: unset;
-  background-color: #6db1ff;
+  background-color: #43464f;
+  border: solid 1px #0ffbad;
   text-align: center;
   color: white;
   padding: 0px 8px;
@@ -54,7 +55,8 @@ const ConnectButton = styled.button`
 `;
 
 const ConnectionSuccess = styled.div`
-  background-color: #5bd68e;
+  background-color: #43464f;
+  border: solid 1px #0ffbad;
   color: white;
   padding: 0px 10px;
   border-radius: 4px;

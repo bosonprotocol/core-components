@@ -1,0 +1,36 @@
+name: Deploy subgraph
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployTarget:
+        description: "Deploy target env"
+        required: true
+        default: "testing"
+        type: choice
+        options:
+          - testing
+          - staging
+          - production
+  push:
+    paths:
+      - ./packages/subgraph/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy subgraph
+    if: ${{ github.ref == 'refs/heads/main' }}
+    env:
+      DEPLOY_TARGET: ${{ github.event.inputs && github.event.inputs.deployTarget || 'testing' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm ci
+      - name: Authenticate The Graph CLI
+        run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN }}
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:${{ env.DEPLOY_TARGET }}
