@@ -21,4 +21,12 @@ export const Button = styled.button`
     cursor: initial;
     opacity: 0.7;
   `}
+
+  ${(p) =>
+    !p.disabled &&
+    `
+    :hover {
+      filter: brightness(1.1);
+    }
+  `}
 `;

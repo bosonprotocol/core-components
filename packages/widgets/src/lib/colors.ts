@@ -6,6 +6,3 @@ export const colors = {
   concreteGray: "#5d616e",
   satinWhite: "#ced4db"
 };
-
-// TODO: button hover effects
-// TODO: background color update
