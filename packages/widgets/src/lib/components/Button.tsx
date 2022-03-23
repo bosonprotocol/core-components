@@ -1,12 +1,13 @@
 import styled from "styled-components";
+import { colors } from "../colors";
 
 export const Button = styled.button`
   all: unset;
   user-select: none;
   width: 200px;
-  background-color: #0ffbad;
-  color: #000000;
-  border: 2px solid #5e5e5e;
+  background-color: ${colors.neonGreen};
+  color: black;
+  border: 2px solid ${colors.concreteGray};
   padding: 8px 16px;
   text-align: center;
   border-radius: 4px;
@@ -16,7 +17,7 @@ export const Button = styled.button`
   ${(p) =>
     p.disabled &&
     `
-    background-color: #c1c1c1;
+    background-color: ${colors.stoneWallGray};
     cursor: initial;
     opacity: 0.7;
   `}

@@ -1,6 +1,7 @@
 import { Modal } from "./Modal";
 import { SpinnerCircular } from "spinners-react";
 import { Title, Label, Value, Center } from "./shared-styles";
+import { colors } from "../../colors";
 
 interface Props {
   txHash: string;
@@ -13,7 +14,7 @@ export function TransactionPendingModal({ txHash }: Props) {
       <Label>Tx Hash</Label>
       <Value>{txHash}</Value>
       <Center>
-        <SpinnerCircular className="" size={80} color="#0ffbad" />
+        <SpinnerCircular className="" size={80} color={colors.neonGreen} />
       </Center>
     </Modal>
   );
