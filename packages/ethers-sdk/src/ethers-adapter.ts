@@ -1,4 +1,4 @@
-import { BigNumberish, ethers } from "ethers";
+import { BigNumberish, providers, Signer } from "ethers";
 import {
   TransactionResponse,
   Web3LibAdapter,
@@ -6,12 +6,15 @@ import {
 } from "@bosonprotocol/common";
 
 export class EthersAdapter implements Web3LibAdapter {
-  private _signer: ethers.providers.JsonRpcSigner;
-  private _provider: ethers.providers.JsonRpcProvider;
+  private _signer: Signer;
+  private _provider: providers.JsonRpcProvider;
 
-  constructor(provider: ethers.providers.JsonRpcProvider) {
+  constructor(provider: providers.JsonRpcProvider, signer?: Signer) {
     this._provider = provider;
-    this._signer = this._provider.getSigner();
+
+    this._signer = signer
+      ? signer.connect(this._provider)
+      : this._provider.getSigner();
   }
 
   public async getSignerAddress() {
@@ -22,8 +25,11 @@ export class EthersAdapter implements Web3LibAdapter {
     return this._signer.getChainId();
   }
 
-  public async getBalance(address: string): Promise<BigNumberish> {
-    return this._signer.getBalance();
+  public async getBalance(
+    addressOrName: string,
+    blockNumber?: string | number
+  ): Promise<BigNumberish> {
+    return this._provider.getBalance(addressOrName, blockNumber);
   }
 
   public async sendTransaction(
