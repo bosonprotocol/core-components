@@ -43,7 +43,7 @@ function formatErrorMessage(error: Error | ValidationError) {
   return error.message;
 }
 
-export function CreateOffer() {
+export default function CreateOffer() {
   const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
   const [transaction, setTransaction] = useState<
