@@ -2,17 +2,19 @@
 
 <h2 align="center">Core Components of the Boson Protocol</h2>
 
-<center>
+<div align="center">
 
-![](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square) [![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)](https://discord.com/invite/QSdtKRaap6) [![](https://img.shields.io/twitter/follow/BosonProtocol?style=social)](https://twitter.com/BosonProtocol)
+<a href="">![](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square)</a>
+<a href="https://discord.com/invite/QSdtKRaap6">![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)</a>
+<a href="https://twitter.com/BosonProtocol">![](https://img.shields.io/twitter/follow/BosonProtocol?style=social)</a>
 
-</center>
+</div align="center">
 
-<center>
+<div align="center">
 
 🛠️ **Tools for building on top of the [Boson Protocol](https://bosonprotocol.io).**
 
-</center>
+</div>
 
 ## Getting started
 
