@@ -41,8 +41,6 @@ const defaultConfigOnRopsten = getDefaultConfig({
 //     protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5"
 //   }
 // }
-
-//
 ```
 
 ### Interfaces and types
@@ -60,3 +58,16 @@ class CustomMetadataStorage implements MetadataStorage {
   // implementation
 }
 ```
+
+#### `Web3LibAdapter`
+
+The [core-sdk](/packages/core-sdk/README.md) has the following features:
+
+- web3 lib agnostic
+- lightweight
+- consists of composable building blocks
+- leverages existing tools, such as [TypeChain](https://github.com/dethcrypto/TypeChain)
+
+To achieve these, we use an adapter pattern with [`Web3LibAdapter`](./src/types/web3-lib-adapter.ts) being the interface.
+
+An example implementation is the [`EthersAdapter`](/packages/ethers-sdk/src/ethers-adapter.ts) targeting the [ethers](https://docs.ethers.io/) library.
