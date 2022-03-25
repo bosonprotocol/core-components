@@ -18,9 +18,10 @@ const InputContainer = styled.div`
 
 interface Props {
   onOfferSelect(offer: offersApi.RawOfferFromSubgraph): void;
+  onReset(): void;
 }
 
-export function OfferSelect({ onOfferSelect }: Props) {
+export function OfferSelect({ onOfferSelect, onReset }: Props) {
   const [offers, setOffers] = useState<offersApi.RawOfferFromSubgraph[]>([]);
   const [sellerAddress, setSellerAddress] = useState("");
 
@@ -38,6 +39,7 @@ export function OfferSelect({ onOfferSelect }: Props) {
   }
 
   function onSellerAddressChange(address: string) {
+    onReset();
     setSellerAddress(address);
 
     if (isAddress(address)) {
