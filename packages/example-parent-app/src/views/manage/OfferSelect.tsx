@@ -70,6 +70,7 @@ export function OfferSelect({ onOfferSelect }: Props) {
       <InputContainer>
         <Form.Label>Offer ID</Form.Label>
         <Form.Select
+          value=""
           onChange={(e) => onOfferIdSelect(e.target.value)}
           disabled={offers.length === 0}
         >
