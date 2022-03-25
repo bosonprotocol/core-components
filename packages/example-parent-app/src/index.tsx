@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import { HashRouter, Route, Routes, Link } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reportWebVitals from "./reportWebVitals";
+import { Layout } from "./lib/components/Layout";
 import { HomeView } from "./views/create";
 import { Manage } from "./views/manage";
 
@@ -12,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    color: white;
   }
 `;
 
@@ -19,18 +21,17 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
     <HashRouter>
-      <ul>
-        <li>
-          <Link to="/">create offer</Link>
-        </li>
-        <li>
-          <Link to="/manage">manage offer</Link>
-        </li>
-      </ul>
-      <hr />
       <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="/manage" element={<Manage />} />
+        <Route
+          path="/background"
+          element={
+            <Layout>
+              <div style={{ color: "red" }}>marius</div>
+            </Layout>
+          }
+        />
       </Routes>
     </HashRouter>
   </React.StrictMode>,
