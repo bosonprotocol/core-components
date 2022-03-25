@@ -77,9 +77,7 @@ export function OfferSelect({ onOfferSelect, onReset }: Props) {
           disabled={offers.length === 0}
         >
           {offers.length === 0 ? (
-            <option value="" key="marius">
-              No offers found for given seller
-            </option>
+            <option value="">No offers found for given seller</option>
           ) : (
             <>
               <option value="">
