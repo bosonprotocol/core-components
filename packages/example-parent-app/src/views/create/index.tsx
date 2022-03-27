@@ -1,14 +1,15 @@
 import { createOffer } from "@bosonprotocol/widgets-sdk";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { parseEther } from "@ethersproject/units";
 import { CONFIG } from "../../lib/config";
+import { Layout } from "../../lib/components/Layout";
+import { PageTitle } from "../../lib/components/PageTitle";
 
-const Root = styled.div`
-  padding: 24px;
-  max-width: 600px;
+const StyledForm = styled(Form)`
+  width: 800px;
 `;
 
 const dayInMs = 1000 * 60 * 60 * 24;
@@ -65,28 +66,144 @@ export function HomeView() {
   });
 
   return (
-    <Root>
-      <Form onSubmit={formik.handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>title</Form.Label>
-          <Form.Control
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            name="title"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>description</Form.Label>
-          <Form.Control
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            name="description"
-            as="textarea"
-            placeholder="..."
-          />
-        </Form.Group>
+    <Layout>
+      <PageTitle>Create Offer</PageTitle>
+      <StyledForm onSubmit={formik.handleSubmit}>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>title</Form.Label>
+            <Form.Control
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              name="title"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>description</Form.Label>
+            <Form.Control
+              rows={1}
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              name="description"
+              as="textarea"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>price</Form.Label>
+            <Form.Control
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              name="price"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>deposit</Form.Label>
+            <Form.Control
+              value={formik.values.deposit}
+              onChange={formik.handleChange}
+              name="deposit"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>penalty</Form.Label>
+            <Form.Control
+              value={formik.values.penalty}
+              onChange={formik.handleChange}
+              name="penalty"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>quantity</Form.Label>
+            <Form.Control
+              value={formik.values.quantity}
+              onChange={formik.handleChange}
+              name="quantity"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>voucherValidDurationInMS</Form.Label>
+            <Form.Control
+              value={formik.values.voucherValidDurationInMS}
+              onChange={formik.handleChange}
+              name="voucherValidDurationInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>exchangeToken</Form.Label>
+            <Form.Control
+              value={formik.values.exchangeToken}
+              onChange={formik.handleChange}
+              name="exchangeToken"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>validFromDateInMS</Form.Label>
+            <Form.Control
+              value={formik.values.validFromDateInMS}
+              onChange={formik.handleChange}
+              name="validFromDateInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>validUntilDateInMS</Form.Label>
+            <Form.Control
+              value={formik.values.validUntilDateInMS}
+              onChange={formik.handleChange}
+              name="validUntilDateInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>redeemableDateInMS</Form.Label>
+            <Form.Control
+              value={formik.values.redeemableDateInMS}
+              onChange={formik.handleChange}
+              name="redeemableDateInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>fulfillmentPeriodDurationInMS</Form.Label>
+            <Form.Control
+              value={formik.values.fulfillmentPeriodDurationInMS}
+              onChange={formik.handleChange}
+              name="fulfillmentPeriodDurationInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+
         <Form.Group className="mb-3">
           <Form.Label>additional props as JSON (optional)</Form.Label>
           <Form.Control
@@ -97,110 +214,11 @@ export function HomeView() {
             placeholder="..."
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>exchangeToken</Form.Label>
-          <Form.Control
-            value={formik.values.exchangeToken}
-            onChange={formik.handleChange}
-            name="exchangeToken"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>price</Form.Label>
-          <Form.Control
-            value={formik.values.price}
-            onChange={formik.handleChange}
-            name="price"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>deposit</Form.Label>
-          <Form.Control
-            value={formik.values.deposit}
-            onChange={formik.handleChange}
-            name="deposit"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>penalty</Form.Label>
-          <Form.Control
-            value={formik.values.penalty}
-            onChange={formik.handleChange}
-            name="penalty"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>quantity</Form.Label>
-          <Form.Control
-            value={formik.values.quantity}
-            onChange={formik.handleChange}
-            name="quantity"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>validFromDateInMS</Form.Label>
-          <Form.Control
-            value={formik.values.validFromDateInMS}
-            onChange={formik.handleChange}
-            name="validFromDateInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>validUntilDateInMS</Form.Label>
-          <Form.Control
-            value={formik.values.validUntilDateInMS}
-            onChange={formik.handleChange}
-            name="validUntilDateInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>redeemableDateInMS</Form.Label>
-          <Form.Control
-            value={formik.values.redeemableDateInMS}
-            onChange={formik.handleChange}
-            name="redeemableDateInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>fulfillmentPeriodDurationInMS</Form.Label>
-          <Form.Control
-            value={formik.values.fulfillmentPeriodDurationInMS}
-            onChange={formik.handleChange}
-            name="fulfillmentPeriodDurationInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>voucherValidDurationInMS</Form.Label>
-          <Form.Control
-            value={formik.values.voucherValidDurationInMS}
-            onChange={formik.handleChange}
-            name="voucherValidDurationInMS"
-            type="text"
-            placeholder="..."
-          />
-        </Form.Group>
+
         <Button variant="primary" type="submit">
           Submit
         </Button>
-      </Form>
-    </Root>
+      </StyledForm>
+    </Layout>
   );
 }

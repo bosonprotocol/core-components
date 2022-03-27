@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
+import { closeWidget } from "../../closeWidget";
 import { colors } from "../../colors";
 import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
@@ -36,7 +37,7 @@ const OfferName = styled.div`
 const WalletConnection = styled.div`
   position: absolute;
   top: 16px;
-  right: 16px;
+  left: 16px;
 `;
 
 const ConnectButton = styled.button`
@@ -65,6 +66,39 @@ const ConnectionSuccess = styled.div`
   align-items: center;
   justify-content: center;
   height: 30px;
+`;
+
+const CloseButton = styled.button`
+  all: unset;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+`;
+
+const CloseIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  opacity: 0.3;
+  position: relative;
+  cursor: pointer;
+  :hover {
+    opacity: 1;
+  }
+  :before,
+  :after {
+    position: absolute;
+    left: 15px;
+    content: " ";
+    height: 24px;
+    width: 2px;
+    background-color: ${colors.satinWhite};
+  }
+  :before {
+    transform: rotate(45deg);
+  }
+  :after {
+    transform: rotate(-45deg);
+  }
 `;
 
 const Center = styled.div`
@@ -98,19 +132,23 @@ export function WidgetLayout({
   return (
     <Root>
       {!hideWallet && (
-        <WalletConnection>
-          {isActive ? (
-            <ConnectionSuccess>
-              {truncateAddress(account as string)}
-            </ConnectionSuccess>
-          ) : (
-            <ConnectButton onClick={() => metaMask.activate()}>
-              Connect Wallet
-            </ConnectButton>
-          )}
-        </WalletConnection>
+        <>
+          <CloseButton onClick={closeWidget}>
+            <CloseIcon />
+          </CloseButton>
+          <WalletConnection>
+            {isActive ? (
+              <ConnectionSuccess>
+                {truncateAddress(account as string)}
+              </ConnectionSuccess>
+            ) : (
+              <ConnectButton onClick={() => metaMask.activate()}>
+                Connect Wallet
+              </ConnectButton>
+            )}
+          </WalletConnection>
+        </>
       )}
-
       <Title>{title}</Title>
       <OfferName>{offerName}</OfferName>
       {children}
