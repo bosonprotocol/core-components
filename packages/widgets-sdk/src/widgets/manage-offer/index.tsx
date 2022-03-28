@@ -1,17 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { StyledIframe } from "../../lib/StyledIframe";
-import { Modal } from "../../lib/Modal";
 import { WidgetConfig } from "../../types";
 
-export function manageOffer(offerId: string, config: WidgetConfig) {
-  const el = document.createElement("div");
-  el.style.height = "0px";
-  el.style.width = "0px";
-  document.body.appendChild(el);
+export function manageOffer(
+  offerId: string,
+  config: WidgetConfig,
+  element: HTMLElement
+) {
   ReactDOM.render(
     <ManageOfferWidget offerId={offerId} widgetsConfig={config} />,
-    el
+    element
   );
 
   function onMessage(e: MessageEvent) {
@@ -20,8 +19,7 @@ export function manageOffer(offerId: string, config: WidgetConfig) {
     if (target !== "boson") return;
     if (message !== "close-widget") return;
 
-    ReactDOM.unmountComponentAtNode(el);
-    el.remove();
+    ReactDOM.unmountComponentAtNode(element);
     window.removeEventListener("message", onMessage);
   }
 
@@ -42,13 +40,11 @@ function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
   } as unknown as Record<string, string>).toString();
 
   return (
-    <Modal>
-      <StyledIframe
-        style={{ boxShadow: "none" }}
-        src={`${widgetsUrl}/#/manage?${urlParams}`}
-        width={600}
-        height={546}
-      />
-    </Modal>
+    <StyledIframe
+      style={{ boxShadow: "none" }}
+      src={`${widgetsUrl}/#/manage?${urlParams}`}
+      width={626}
+      height={546}
+    />
   );
 }
