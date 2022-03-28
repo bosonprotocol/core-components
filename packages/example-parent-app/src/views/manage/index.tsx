@@ -1,12 +1,14 @@
 import { manageOffer } from "@bosonprotocol/widgets-sdk";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Layout } from "../../lib/components/Layout";
 import { PageTitle } from "../../lib/components/PageTitle";
 import { CONFIG } from "../../lib/config";
 import { OfferSelect } from "./OfferSelect";
 import { offers } from "@bosonprotocol/core-sdk";
-import { Form } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { assert } from "../../lib/assert";
 
 const Root = styled.div`
   margin-top: 16px;
@@ -15,43 +17,63 @@ const Root = styled.div`
   border-top: 1px solid white;
 `;
 
+const WidgetContainer = styled.div`
+  margin-top: 16px;
+  margin-bottom: 64px;
+`;
+
 export function Manage() {
   const [offer, setOffer] = useState<offers.RawOfferFromSubgraph>();
+  const widgetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    assert(widgetRef.current);
+
+    if (offer) {
+      const el = document.createElement("div");
+      widgetRef.current.appendChild(el);
+      manageOffer(offer.id, CONFIG, el);
+
+      return () => el.remove();
+    }
+
+    return;
+  }, [offer]);
 
   return (
     <Layout>
       <PageTitle>Manage Offer</PageTitle>
       <OfferSelect
         onReset={() => setOffer(undefined)}
-        onOfferSelect={(offer) => {
-          setOffer(offer);
-          manageOffer(offer.id, CONFIG);
-        }}
+        onOfferSelect={(offer) => setOffer(offer)}
       />
       {offer && (
         <Root>
-          <Form.Group className="mb-3">
-            <Form.Label>Offer ID</Form.Label>
-            <Form.Control value={offer.id} disabled placeholder="Enter email" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              value={offer.metadata?.title}
-              disabled
-              placeholder="Password"
-            />
-          </Form.Group>
+          <Row className="mb-3">
+            <Form.Group as={Col}>
+              <Form.Label>Offer ID</Form.Label>
+              <Form.Control value={offer.id} disabled placeholder="..." />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                value={offer.metadata?.title}
+                disabled
+                placeholder="..."
+              />
+            </Form.Group>
+          </Row>
           <Form.Group className="mb-3">
             <Form.Label>Description</Form.Label>
             <Form.Control
               value={offer.metadata?.description}
               disabled
-              placeholder="Password"
+              placeholder="..."
             />
           </Form.Group>
         </Root>
       )}
+      <WidgetContainer ref={widgetRef} />
     </Layout>
   );
 }

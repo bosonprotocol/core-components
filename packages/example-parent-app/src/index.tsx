@@ -12,7 +12,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    color: white;
+    color: #fffc;
+  }
+  .form-control, .form-select {
+    && {
+      background-color: #fffc;
+    }
   }
 `;
 

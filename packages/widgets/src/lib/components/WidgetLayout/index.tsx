@@ -106,18 +106,26 @@ const Center = styled.div`
   justify-content: center;
 `;
 
+const Content = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
 interface Props {
   children: ReactNode;
   title: string;
   offerName: string;
   hideWallet?: boolean;
+  hideCloseButton?: boolean;
 }
 
 export function WidgetLayout({
   children,
   title,
   offerName,
-  hideWallet
+  hideWallet,
+  hideCloseButton
 }: Props) {
   const isActive = hooks.useIsActive();
   const account = hooks.useAccount();
@@ -131,27 +139,27 @@ export function WidgetLayout({
 
   return (
     <Root>
+      {!hideCloseButton && (
+        <CloseButton onClick={closeWidget}>
+          <CloseIcon />
+        </CloseButton>
+      )}
       {!hideWallet && (
-        <>
-          <CloseButton onClick={closeWidget}>
-            <CloseIcon />
-          </CloseButton>
-          <WalletConnection>
-            {isActive ? (
-              <ConnectionSuccess>
-                {truncateAddress(account as string)}
-              </ConnectionSuccess>
-            ) : (
-              <ConnectButton onClick={() => metaMask.activate()}>
-                Connect Wallet
-              </ConnectButton>
-            )}
-          </WalletConnection>
-        </>
+        <WalletConnection>
+          {isActive ? (
+            <ConnectionSuccess>
+              {truncateAddress(account as string)}
+            </ConnectionSuccess>
+          ) : (
+            <ConnectButton onClick={() => metaMask.activate()}>
+              Connect Wallet
+            </ConnectButton>
+          )}
+        </WalletConnection>
       )}
       <Title>{title}</Title>
       <OfferName>{offerName}</OfferName>
-      {children}
+      <Content>{children}</Content>
       <Center>
         <StyledLogo />
       </Center>
