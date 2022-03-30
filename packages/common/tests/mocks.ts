@@ -44,7 +44,7 @@ export function mockCreateOfferArgs(
     deposit: parseEther("1"),
     penalty: parseEther("1"),
     quantity: 10,
-    validFromDateInMS: Date.now(),
+    validFromDateInMS: Date.now() + 1 * 60 * 1000,
     validUntilDateInMS: Date.now() + 2 * 60 * 1000,
     redeemableDateInMS: Date.now() + 1 * 60 * 1000,
     fulfillmentPeriodDurationInMS: 60 * 60 * 1000,
