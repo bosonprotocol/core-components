@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { formatEther } from "ethers/lib/utils";
 import { offers } from "@bosonprotocol/core-sdk";
 import { colors } from "../colors";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const columnGap = 24;
 
@@ -89,6 +93,10 @@ interface Props {
   currency: string;
 }
 
+function formatDate(date: string) {
+  return dayjs(parseInt(date)).utc().format("DD/MM/YYYY HH:mm:ss UTC");
+}
+
 export function OfferDetails({ createOfferArgs, currency }: Props) {
   return (
     <>
@@ -125,17 +133,23 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
       <Row>
         <Entry>
           <Label>Valid From</Label>
-          <Value>{createOfferArgs.validFromDateInMS}</Value>
+          <Value>
+            {formatDate(createOfferArgs.validFromDateInMS as string)}
+          </Value>
         </Entry>
         <Entry>
           <Label>Valid Until</Label>
-          <Value>{createOfferArgs.validUntilDateInMS}</Value>
+          <Value>
+            {formatDate(createOfferArgs.validUntilDateInMS as string)}
+          </Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Redeemable By</Label>
-          <Value>{createOfferArgs.redeemableDateInMS}</Value>
+          <Value>
+            {formatDate(createOfferArgs.redeemableDateInMS as string)}
+          </Value>
         </Entry>
         <Entry>
           <Label>Validity Duration</Label>
