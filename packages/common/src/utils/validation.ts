@@ -20,6 +20,7 @@ export const createOfferArgsSchema = object({
     .test("is-valid-from-date", (value, ctx) => {
       return (
         isPositiveBigNumber(value) &&
+        BigNumber.from(value).gt(Date.now()) &&
         BigNumber.from(ctx.parent.validUntilDateInMS).gt(BigNumber.from(value))
       );
     }),
@@ -28,12 +29,17 @@ export const createOfferArgsSchema = object({
     .test("is-valid-until-date", (value, ctx) => {
       return (
         isPositiveBigNumber(value) &&
+        BigNumber.from(value).gt(Date.now()) &&
         BigNumber.from(ctx.parent.validFromDateInMS).lt(BigNumber.from(value))
       );
     }),
   redeemableDateInMS: string()
     .required()
-    .test("is-valid-redeemable-date", (value) => isPositiveBigNumber(value)),
+    .test(
+      "is-valid-redeemable-date",
+      (value) =>
+        isPositiveBigNumber(value) && BigNumber.from(value).gt(Date.now())
+    ),
   fulfillmentPeriodDurationInMS: string()
     .required()
     .test("is-valid-fulfillment-period", (value) => isPositiveBigNumber(value)),

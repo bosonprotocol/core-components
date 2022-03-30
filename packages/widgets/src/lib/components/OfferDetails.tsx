@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { formatEther } from "ethers/lib/utils";
 import { offers } from "@bosonprotocol/core-sdk";
 import { colors } from "../colors";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const columnGap = 24;
 
@@ -89,6 +93,10 @@ interface Props {
   currency: string;
 }
 
+function formatDate(date: string) {
+  return dayjs(parseInt(date)).utc().format("DD/MM/YYYY HH:mm:ss UTC");
+}
+
 export function OfferDetails({ createOfferArgs, currency }: Props) {
   return (
     <>
@@ -96,14 +104,18 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
         <Entry>
           <Label>Price</Label>
           <Money>
-            <Value>{formatEther(createOfferArgs.price)}</Value>
+            <Value title={formatEther(createOfferArgs.price)}>
+              {formatEther(createOfferArgs.price)}
+            </Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>
         <Entry>
           <Label>Seller Deposit</Label>
           <Money>
-            <Value>{formatEther(createOfferArgs.deposit)}</Value>
+            <Value title={formatEther(createOfferArgs.deposit)}>
+              {formatEther(createOfferArgs.deposit)}
+            </Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>
@@ -111,12 +123,16 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
       <Row>
         <Entry>
           <Label>Quantity</Label>
-          <Value>{createOfferArgs.quantity}</Value>
+          <Value title={createOfferArgs.quantity.toString()}>
+            {createOfferArgs.quantity}
+          </Value>
         </Entry>
         <Entry>
           <Label>Cancellation Penalty</Label>
           <Money>
-            <Value>{formatEther(createOfferArgs.penalty)}</Value>
+            <Value title={formatEther(createOfferArgs.penalty)}>
+              {formatEther(createOfferArgs.penalty)}
+            </Value>
             <Currency>{currency}</Currency>
           </Money>
         </Entry>
@@ -125,38 +141,60 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
       <Row>
         <Entry>
           <Label>Valid From</Label>
-          <Value>{createOfferArgs.validFromDateInMS}</Value>
+          <Value
+            title={formatDate(createOfferArgs.validFromDateInMS.toString())}
+          >
+            {formatDate(createOfferArgs.validFromDateInMS.toString())}
+          </Value>
         </Entry>
         <Entry>
           <Label>Valid Until</Label>
-          <Value>{createOfferArgs.validUntilDateInMS}</Value>
+          <Value
+            title={formatDate(createOfferArgs.validUntilDateInMS.toString())}
+          >
+            {formatDate(createOfferArgs.validUntilDateInMS.toString())}
+          </Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Redeemable By</Label>
-          <Value>{createOfferArgs.redeemableDateInMS}</Value>
+          <Value
+            title={formatDate(createOfferArgs.redeemableDateInMS.toString())}
+          >
+            {formatDate(createOfferArgs.redeemableDateInMS.toString())}
+          </Value>
         </Entry>
         <Entry>
           <Label>Validity Duration</Label>
-          <Value>{createOfferArgs.voucherValidDurationInMS}</Value>
+          <Value title={createOfferArgs.voucherValidDurationInMS.toString()}>
+            {createOfferArgs.voucherValidDurationInMS}
+          </Value>
         </Entry>
       </Row>
       <Row>
         <Entry>
           <Label>Fulfilment Period</Label>
-          <Value>{createOfferArgs.fulfillmentPeriodDurationInMS}</Value>
+          <Value
+            title={createOfferArgs.fulfillmentPeriodDurationInMS.toString()}
+          >
+            {createOfferArgs.fulfillmentPeriodDurationInMS}
+          </Value>
         </Entry>
       </Row>
       <Spacer />
       <Row>
         <Entry>
           <Label>Metadata URI</Label>
-          <Value>{createOfferArgs.metadataUri}</Value>
+          <Value title={createOfferArgs.metadataUri}>
+            {createOfferArgs.metadataUri}
+          </Value>
         </Entry>
         <Entry>
           <Label>Metadata Hash</Label>
-          <Value>{createOfferArgs.metadataHash}</Value>
+          <Value title={createOfferArgs.metadataHash}>
+            {createOfferArgs.metadataHash}
+          </Value>
         </Entry>
       </Row>
     </>
