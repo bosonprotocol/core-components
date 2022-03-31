@@ -13,7 +13,7 @@ const StyledForm = styled(Form)`
 `;
 
 const dayInMs = 1000 * 60 * 60 * 24;
-const hourInMs = 1000 * 60 * 60;
+const minuteInMS = 1000 * 60;
 
 export function HomeView() {
   const formik = useFormik({
@@ -28,8 +28,8 @@ export function HomeView() {
       penalty: "3",
       quantity: "10",
       exchangeToken: "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c", // ropsten boson address
-      redeemableDateInMS: (Date.now() + hourInMs).toString(),
-      validFromDateInMS: (Date.now() + hourInMs).toString(),
+      redeemableDateInMS: (Date.now() + minuteInMS).toString(),
+      validFromDateInMS: (Date.now() + minuteInMS).toString(),
       validUntilDateInMS: (Date.now() + dayInMs).toString(),
       fulfillmentPeriodDurationInMS: dayInMs.toString(),
       voucherValidDurationInMS: dayInMs.toString()

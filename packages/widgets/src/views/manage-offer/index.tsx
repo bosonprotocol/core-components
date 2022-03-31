@@ -24,9 +24,9 @@ import { colors } from "../../lib/colors";
 
 enum OfferState {
   VOIDED = "VOIDED",
-  INACTIVE = "INACTIVE",
+  NOT_YET_VALID = "NOT YET VALID",
   EXPIRED = "EXPIRED",
-  ACTIVE = "ACTIVE"
+  VALID = "VALID"
 }
 
 function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
@@ -34,9 +34,10 @@ function getOfferStatus(offer: offers.RawOfferFromSubgraph) {
   const timeNow = Date.now();
 
   if (offer.voidedAt) return OfferState.VOIDED;
-  if (toTimeStamp(offer.validFromDate) > timeNow) return OfferState.INACTIVE;
+  if (toTimeStamp(offer.validFromDate) > timeNow)
+    return OfferState.NOT_YET_VALID;
   if (toTimeStamp(offer.validUntilDate) < timeNow) return OfferState.EXPIRED;
-  return OfferState.ACTIVE;
+  return OfferState.VALID;
 }
 
 const PrimaryButton = styled(Button)`
@@ -89,7 +90,9 @@ export default function ManageOffer() {
 
   const voidOfferAvailable =
     offer &&
-    [OfferState.ACTIVE, OfferState.INACTIVE].includes(getOfferStatus(offer));
+    [OfferState.VALID, OfferState.NOT_YET_VALID].includes(
+      getOfferStatus(offer)
+    );
 
   const currency = offer?.exchangeToken.symbol ?? "...";
 
