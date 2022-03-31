@@ -108,7 +108,7 @@ export default function ManageOffer() {
           <Value>{offer?.id ?? "..."}</Value>
         </Entry>
         <Entry>
-          <Label>State</Label>
+          <Label>Status</Label>
           <Value>{offer ? getOfferStatus(offer) : "..."}</Value>
         </Entry>
       </Row>
