@@ -1,12 +1,11 @@
 name: Deploy subgraph to testing env
 
 on:
-  # push:
-  #   paths:
-  #     - ./packages/subgraph/**
+  workflow_dispatch:
+    branches: [main]
   push:
     branches:
-      - support-testing-env
+      - main
 
 jobs:
   deploy:
