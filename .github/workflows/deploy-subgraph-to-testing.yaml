@@ -1,0 +1,21 @@
+name: Deploy subgraph to testing env
+
+on:
+  push:
+    paths:
+      - ./packages/subgraph/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy subgraph
+    if: ${{ github.ref == 'refs/heads/support-testing-env' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:testing
