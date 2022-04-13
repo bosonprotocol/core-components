@@ -8,7 +8,13 @@ const generatedManifestsDir = __dirname + "/../generated/manifests";
 const envName = process.argv[2];
 const { contracts, chainId } = getDefaultConfig({ envName });
 
-const envNameToConfig = {
+const envNameToConfig: Record<
+  string,
+  {
+    network: string;
+    startBlock: number;
+  }
+> = {
   local: {
     network: "localhost",
     startBlock: 0
@@ -26,6 +32,10 @@ const envNameToConfig = {
     startBlock: 12027000
   }
 };
+const { network, startBlock } = envNameToConfig[envName] || {
+  network: "",
+  startBlock: 0
+};
 
 const manifestTemplate = fs.readFileSync(
   __dirname + "/../subgraph.template.yaml"
@@ -33,8 +43,8 @@ const manifestTemplate = fs.readFileSync(
 const template = handlebars.compile(String(manifestTemplate));
 const manifest = template({
   protocolDiamond: contracts.protocolDiamond,
-  network: envNameToConfig[envName].network,
-  startBlock: envNameToConfig[envName].startBlock
+  network,
+  startBlock
 });
 
 if (!fs.existsSync(generatedManifestsDir)) {
