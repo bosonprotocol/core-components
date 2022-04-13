@@ -16,7 +16,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "testing",
     chainId: 1234,
     subgraphUrl:
-      "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/boson/corecomponents",
+      "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
@@ -26,12 +26,13 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "staging",
-    chainId: 4,
-    subgraphUrl: "",
-    jsonRpcUrl: "",
+    chainId: 3,
+    subgraphUrl:
+      "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
+    jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: ""
+      protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5"
     }
   },
   {
