@@ -2,27 +2,32 @@ name: Deploy subgraph
 
 on:
   workflow_dispatch:
+    branches: [main]
     inputs:
+      subgraphVersion:
+        description: "Subgraph version"
+        required: true
+        default: "0.0.1"
+        type:
       deployTarget:
         description: "Deploy target env"
         required: true
-        default: "testing"
+        default: "staging"
         type: choice
         options:
-          - testing
           - staging
           - production
   push:
-    paths:
-      - ./packages/subgraph/**
+    tags:
+      - '@bosonprotocol\/subgraph@[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy subgraph
-    if: ${{ github.ref == 'refs/heads/main' }}
     env:
-      DEPLOY_TARGET: ${{ github.event.inputs && github.event.inputs.deployTarget || 'testing' }}
+      DEPLOY_TARGET: ${{ github.event.inputs.deployTarget }}
+      SUBGRAPH_VERSION: ${{ github.event.inputs.subgraphVersion }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -33,4 +38,4 @@ jobs:
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN }}
       - name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:${{ env.DEPLOY_TARGET }}
+        run: cd ./packages/subgraph && npm run deploy:${{ env.DEPLOY_TARGET }} -- -l ${{ env.SUBGRAPH_VERSION }}
