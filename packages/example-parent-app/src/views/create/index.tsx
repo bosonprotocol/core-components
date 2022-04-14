@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { MetadataType } from "@bosonprotocol/common";
 import { parseEther } from "@ethersproject/units";
 import { CONFIG } from "../../lib/config";
 import { Layout } from "../../lib/components/Layout";
@@ -18,11 +19,10 @@ const minuteInMS = 1000 * 60;
 export function HomeView() {
   const formik = useFormik({
     initialValues: {
-      title: "Baggy jeans",
+      name: "Baggy jeans",
       description: "Lore ipsum",
-      additionalProperties: JSON.stringify({
-        key: "value"
-      }),
+      externalUrl: "https://external-url.com",
+      schemaUrl: "https://schema.org/schema",
       price: "1",
       deposit: "2",
       penalty: "3",
@@ -39,16 +39,12 @@ export function HomeView() {
         url: CONFIG.ipfsMetadataUrl
       });
 
-      let additionalPropertiesHash;
-      if (values.additionalProperties) {
-        const parsed = JSON.parse(values.additionalProperties);
-        additionalPropertiesHash = await storage.add(parsed);
-      }
-
       const metadataHash = await storage.storeMetadata({
-        title: values.title,
+        name: values.name,
         description: values.description,
-        additionalProperties: additionalPropertiesHash
+        externalUrl: values.externalUrl,
+        schemaUrl: values.schemaUrl,
+        type: MetadataType.BASE
       });
       const metadataUri = `${CONFIG.metadataBaseUrl}/${metadataHash}`;
 
@@ -72,11 +68,11 @@ export function HomeView() {
       <StyledForm onSubmit={formik.handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col}>
-            <Form.Label>title</Form.Label>
+            <Form.Label>name</Form.Label>
             <Form.Control
-              value={formik.values.title}
+              value={formik.values.name}
               onChange={formik.handleChange}
-              name="title"
+              name="name"
               type="text"
               placeholder="..."
             />
@@ -89,6 +85,28 @@ export function HomeView() {
               onChange={formik.handleChange}
               name="description"
               as="textarea"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
+            <Form.Label>externalUrl</Form.Label>
+            <Form.Control
+              value={formik.values.externalUrl}
+              onChange={formik.handleChange}
+              name="externalUrl"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>schemaUrl</Form.Label>
+            <Form.Control
+              value={formik.values.schemaUrl}
+              onChange={formik.handleChange}
+              name="schemaUrl"
+              type="text"
               placeholder="..."
             />
           </Form.Group>
@@ -204,17 +222,6 @@ export function HomeView() {
             />
           </Form.Group>
         </Row>
-
-        <Form.Group className="mb-3">
-          <Form.Label>additional props as JSON (optional)</Form.Label>
-          <Form.Control
-            value={formik.values.additionalProperties}
-            onChange={formik.handleChange}
-            name="additionalProperties"
-            as="textarea"
-            placeholder="..."
-          />
-        </Form.Group>
 
         <Button variant="primary" type="submit">
           Submit
