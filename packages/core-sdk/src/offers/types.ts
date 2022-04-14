@@ -25,8 +25,10 @@ export type RawOfferFromSubgraph = {
     symbol: string;
   };
   metadata: null | {
-    title: string;
+    name: string;
     description: string;
-    additionalProperties?: string;
+    externalUrl: string;
+    schemaUrl: string;
+    type: string;
   };
 };
