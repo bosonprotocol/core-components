@@ -1,6 +1,7 @@
 import { IpfsMetadata } from "../src/ipfs";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../src/constants";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
+import { MetadataType, BaseMetadata } from "@bosonprotocol/common";
 
 import fetch from "cross-fetch";
 jest.mock("cross-fetch");
@@ -56,8 +57,11 @@ describe("#storeMetadata()", () => {
     });
 
     const cid = await ipfsStorage.storeMetadata({
-      title: "title",
-      description: "description"
+      name: "name",
+      description: "description",
+      schemaUrl: "schemaUrl",
+      externalUrl: "externalUrl",
+      type: MetadataType.BASE
     });
 
     expect(cid).toEqual(IPFS_HASH);
@@ -65,9 +69,20 @@ describe("#storeMetadata()", () => {
 });
 
 describe("#getMetadata()", () => {
-  const METADATA = {
-    title: "title",
-    description: "description"
+  const METADATA_FROM_IPFS = {
+    name: "name",
+    description: "description",
+    schema_url: "schemaUrl",
+    external_url: "externalUrl",
+    type: MetadataType.BASE
+  };
+
+  const EXPECTED_METADATA = {
+    name: METADATA_FROM_IPFS.name,
+    description: METADATA_FROM_IPFS.description,
+    schemaUrl: METADATA_FROM_IPFS.schema_url,
+    externalUrl: METADATA_FROM_IPFS.external_url,
+    type: METADATA_FROM_IPFS.type
   };
 
   it("get by cid", async () => {
@@ -83,14 +98,16 @@ describe("#getMetadata()", () => {
         }
       })
     });
-    mockedUint8arrays.toString.mockReturnValueOnce(JSON.stringify(METADATA));
+    mockedUint8arrays.toString.mockReturnValueOnce(
+      JSON.stringify(METADATA_FROM_IPFS)
+    );
     const ipfsStorage = new IpfsMetadata({
       url: IPFS_URL
     });
 
     const metadata = await ipfsStorage.getMetadata(IPFS_HASH);
 
-    expect(metadata).toMatchObject(METADATA);
+    expect(metadata).toMatchObject(EXPECTED_METADATA);
   });
 
   it("get by url", async () => {
@@ -99,7 +116,9 @@ describe("#getMetadata()", () => {
         url: IPFS_URL
       })
     });
-    mockedFetch.mockResolvedValueOnce(new Response(JSON.stringify(METADATA)));
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify(METADATA_FROM_IPFS))
+    );
     const ipfsStorage = new IpfsMetadata({
       url: IPFS_URL
     });
@@ -107,8 +126,7 @@ describe("#getMetadata()", () => {
     const metadata = await ipfsStorage.getMetadata(
       "http://ipfs.api.com/METADATA"
     );
-
-    expect(metadata).toMatchObject(METADATA);
+    expect(metadata).toMatchObject(EXPECTED_METADATA);
   });
 
   it("throw if retrieved metadata wrong schema", async () => {

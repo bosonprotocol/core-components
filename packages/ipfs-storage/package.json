@@ -27,7 +27,7 @@
     "./dist/esm/*"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
   "devDependencies": {
     "jest": "^27.5.1",
