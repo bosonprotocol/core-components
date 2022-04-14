@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { array, object, string } from "yup";
 import { BigNumber } from "@ethersproject/bignumber";
 import { isAddress } from "@ethersproject/address";
 
@@ -56,10 +56,23 @@ export const createOfferArgsSchema = object({
   metadataHash: string().required()
 });
 
-export const metadataSchema = object({
-  title: string().required(),
+const commonMetadataSchema = {
+  name: string().required(),
   description: string().required(),
-  additionalProperties: string()
+  externalUrl: string().required(),
+  schemaUrl: string().required(),
+  type: string().required()
+};
+
+export const baseMetadataSchema = object({
+  ...commonMetadataSchema
+});
+
+export const productV1MetadataSchema = object({
+  ...commonMetadataSchema,
+  images: array(string()),
+  tags: array(string()),
+  brandName: string()
 });
 
 function isPositiveBigNumber(value: unknown) {
