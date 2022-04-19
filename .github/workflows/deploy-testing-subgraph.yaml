@@ -1,0 +1,23 @@
+name: Deploy subgraph to testing env
+
+on:
+  workflow_dispatch:
+    branches: [main]
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: core-components
+    name: Deploy subgraph
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy subgraph
+        run: cd ./packages/subgraph && npm run deploy:testing
