@@ -28,9 +28,11 @@ fragment offerFields on Offer {
     symbol
   }
   metadata {
-    title
+    name 
     description
-    additionalProperties
+    externalUrl
+    schemaUrl
+    type
   }
 }
 `;

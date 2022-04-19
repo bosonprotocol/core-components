@@ -5,7 +5,7 @@ import {
 } from "../generated/OfferHandler/IBosonOfferHandler";
 import { Offer } from "../generated/schema";
 
-import { saveIpfsMetadata } from "./utils/metadata";
+import { saveMetadata } from "./entities/metadata/handler";
 import { saveExchangeToken } from "./utils/token";
 import { saveSeller } from "./utils/seller";
 
@@ -21,9 +21,13 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     if (!result.reverted && result.value.value0) {
       const offerFromContract = result.value.value1;
 
-      saveIpfsMetadata(offerFromContract.metadataHash, offerId.toString());
-      saveExchangeToken(offerFromContract.exchangeToken);
       saveSeller(offerFromContract.seller);
+      saveMetadata(
+        offerFromContract.metadataHash,
+        offerId.toString(),
+        offerFromContract.seller.toHexString()
+      );
+      saveExchangeToken(offerFromContract.exchangeToken);
 
       offer = new Offer(offerId.toString());
       offer.createdAt = event.block.timestamp;

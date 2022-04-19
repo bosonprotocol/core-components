@@ -1,4 +1,5 @@
 import { RawOfferFromSubgraph } from "../src/offers/types";
+import { MetadataType } from "@bosonprotocol/common";
 import nock from "nock";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
@@ -47,8 +48,11 @@ export function mockRawOfferFromSubgraph(
       ...exchangeToken
     },
     metadata: {
-      title: "Title",
+      name: "Name",
       description: "Description",
+      externalUrl: "externalUrl",
+      schemaUrl: "schemaUrl",
+      type: MetadataType.BASE,
       ...metadata
     },
     ...restOverrides

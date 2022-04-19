@@ -1,4 +1,4 @@
-import { CoreSDK, offers } from "@bosonprotocol/core-sdk";
+import { CoreSDK, offers, AnyMetadata } from "@bosonprotocol/core-sdk";
 import { constants, BigNumber } from "ethers";
 import { useState } from "react";
 import { hooks } from "../../lib/connectors/metamask";
@@ -123,7 +123,7 @@ export function useCreateOfferData() {
   const [data, setData] = useState<
     | {
         status: "loaded";
-        metadata: Record<string, string>;
+        metadata: AnyMetadata;
         tokenInfo: TokenInfo;
         createOfferArgs: offers.CreateOfferArgs;
       }

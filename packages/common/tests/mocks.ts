@@ -5,8 +5,9 @@ import {
   TransactionResponse,
   OfferStruct,
   MetadataStorage,
-  Metadata,
-  CreateOfferArgs
+  AnyMetadata,
+  CreateOfferArgs,
+  MetadataType
 } from "../src/types";
 
 export const IPFS_HASH = "QmYXc12ov6F2MZVZwPs5XeCBbf61cW3wKRk8h3D5NTYj4T";
@@ -113,15 +114,18 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
 }
 
 type MockedMetadataStorageReturnValues = {
-  getMetadata: Metadata;
+  getMetadata: AnyMetadata;
   storeMetadata: string;
 };
 
 const defaultMockedMetadataStorageReturnValues: MockedMetadataStorageReturnValues =
   {
     getMetadata: {
-      title: "title",
-      description: "description"
+      name: "name",
+      description: "description",
+      externalUrl: "externalUrl",
+      schemaUrl: "schemaUrl",
+      type: MetadataType.BASE
     },
     storeMetadata: IPFS_URI
   };
@@ -136,11 +140,11 @@ export class MockMetadataStorage implements MetadataStorage {
     };
   }
 
-  async getMetadata(metadataUri: string): Promise<Metadata> {
+  async getMetadata(metadataUri: string): Promise<AnyMetadata> {
     return this._returnValues.getMetadata;
   }
 
-  async storeMetadata(metadata: Metadata): Promise<string> {
+  async storeMetadata(metadata: AnyMetadata): Promise<string> {
     return this._returnValues.storeMetadata;
   }
 }

@@ -1,12 +1,56 @@
-type Metadata @entity {
-  id: ID!
-  title: String!
-  description: String!
-  additionalProperties: String
-  offer: Offer!
-  # TODO: add more fields
+enum MetadataType {
+  BASE
+  PRODUCT_V1
 }
 
+interface MetadataInterface {
+  "<OFFER_ID>-metadata"
+  id: ID!
+  name: String
+  description: String
+  "Arbitrary URL which is linked to metadata"
+  externalUrl: String
+  "JSON schema URL"
+  schemaUrl: String
+  "Enum"
+  type: MetadataType!
+  "Reference to related Offer entity"
+  offer: Offer!
+  "Reference to related Seller entity"
+  seller: Seller!
+}
+
+type BaseMetadataEntity implements MetadataInterface @entity {
+  id: ID!
+  name: String
+  description: String
+  externalUrl: String
+  schemaUrl: String
+  type: MetadataType! # MetadataType.BASE
+  offer: Offer!
+  seller: Seller!
+}
+
+type ProductV1MetadataEntity implements MetadataInterface @entity {
+  id: ID!
+  name: String
+  description: String
+  externalUrl: String
+  schemaUrl: String
+  type: MetadataType! # MetadataType.PRODUCT
+  offer: Offer!
+  seller: Seller!
+  """
+  ProductV1MetadataEntity specific fields
+  """
+  images: [String!]
+  tags: [String!]
+  brandName: String
+}
+
+"""
+Offer
+"""
 type Offer @entity {
   id: ID!
   createdAt: BigInt!
@@ -24,7 +68,7 @@ type Offer @entity {
   voided: Boolean!
   seller: Seller!
   exchangeToken: ExchangeToken!
-  metadata: Metadata
+  metadata: MetadataInterface
   voidedAt: BigInt
 }
 

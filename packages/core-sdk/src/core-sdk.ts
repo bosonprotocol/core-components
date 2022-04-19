@@ -3,7 +3,7 @@ import {
   TransactionResponse,
   getDefaultConfig,
   MetadataStorage,
-  Metadata,
+  AnyMetadata,
   Log
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
@@ -54,7 +54,7 @@ export class CoreSDK {
     });
   }
 
-  public async storeMetadata(metadata: Metadata): Promise<string> {
+  public async storeMetadata(metadata: AnyMetadata): Promise<string> {
     if (!this._metadataStorage) {
       throw new Error("No metadata storage set");
     }
@@ -62,7 +62,7 @@ export class CoreSDK {
     return this._metadataStorage.storeMetadata(metadata);
   }
 
-  public async getMetadata(metadataHashOrUri: string): Promise<Metadata> {
+  public async getMetadata(metadataHashOrUri: string): Promise<AnyMetadata> {
     if (!this._metadataStorage) {
       throw new Error("No metadata storage set");
     }

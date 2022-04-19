@@ -55,9 +55,9 @@ export function Manage() {
               <Form.Control value={offer.id} disabled placeholder="..." />
             </Form.Group>
             <Form.Group as={Col}>
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
-                value={offer.metadata?.title}
+                value={offer.metadata?.name}
                 disabled
                 placeholder="..."
               />

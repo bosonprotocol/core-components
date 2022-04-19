@@ -147,7 +147,7 @@ export default function CreateOffer() {
   }
 
   return (
-    <WidgetLayout title="Create Offer" offerName={metadata?.title}>
+    <WidgetLayout title="Create Offer" offerName={metadata?.name}>
       <OfferDetails
         createOfferArgs={createOfferArgs}
         currency={tokenInfo.symbol}

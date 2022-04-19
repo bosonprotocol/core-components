@@ -87,7 +87,7 @@ export function OfferSelect({ onOfferSelect, onReset }: Props) {
               </option>
               {offers.map((offer) => (
                 <option key={offer.id} value={offer.id}>
-                  {offer.id} - {offer.metadata?.title}
+                  {offer.id} - {offer.metadata?.name}
                 </option>
               ))}
             </>
