@@ -8,7 +8,7 @@ on:
         description: "Subgraph version"
         required: true
         default: "0.0.1"
-        type:
+        type: string
       deployTarget:
         description: "Deploy target env"
         required: true
