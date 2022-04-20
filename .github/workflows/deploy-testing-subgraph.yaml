@@ -17,7 +17,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "npm"
       - run: npm ci
       - name: Deploy subgraph
         run: cd ./packages/subgraph && npm run deploy:testing
