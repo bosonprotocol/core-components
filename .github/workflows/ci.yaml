@@ -19,11 +19,11 @@ jobs:
         id: turbo-cache
         uses: actions/cache@v3
         with:
-          path: node_modules/.cache/turbo
+          path: .turbo
           key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ github.job }}-${{ github.ref_name }}-
-      - run: npm i
-      - run: npm run lint
-      - run: npm run build
-      - run: npm run test
+      - run: npm ci
+      - run: npm run lint -- --cache-dir=".turbo"
+      - run: npm run build -- --cache-dir=".turbo"
+      - run: npm run test -- --cache-dir=".turbo"
