@@ -27,7 +27,7 @@
     "dist/*"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
   "dependencies": {
     "@bosonprotocol/common": "^1.0.0"

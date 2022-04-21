@@ -5,9 +5,8 @@
   "command": {
     "publish": {
       "ignoreChanges": ["*.md"],
-      "message": "chore(release): publish",
+      "message": "chore(release): publish latest [skip ci]",
       "conventionalCommits": true,
-      "createRelease": "github",
       "exact": true,
       "verifyAccess": false
     }
