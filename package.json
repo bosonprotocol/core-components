@@ -10,7 +10,7 @@
     "dev": "turbo run dev --parallel --no-cache",
     "lint": "turbo run lint",
     "build": "turbo run build",
-    "test": "turbo run test --no-cache",
+    "test": "turbo run test",
     "clean": "turbo run clean",
     "version": "echo 'not implemented'"
   },
