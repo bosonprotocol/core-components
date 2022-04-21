@@ -1,0 +1,50 @@
+name: "Publish next release"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Publish next packages
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GH_TOKEN: ${{ secrets.PAT }}
+      GITHUB_TOKEN: ${{ secrets.PAT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          # pulls all commits (needed for lerna / semantic release to correctly version)
+          fetch-depth: "0"
+      - name: Setup .npmrc file for publish
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - name: Set github bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Bump next versions
+        run: |
+          lerna version \
+            --yes \
+            --conventional-prerelease \
+            --no-git-tag-version \
+            --no-changelog \
+            --no-push
+
+          git add .
+          git commit -m "chore(release): publish next [skip ci]"
+      - name: Publish to npm
+        run: |
+          lerna publish from-package --dist-tag latest --yes
+          git push
