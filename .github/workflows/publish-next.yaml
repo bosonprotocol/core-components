@@ -46,5 +46,5 @@ jobs:
           git commit -m "chore(release): publish next [skip ci]"
       - name: Publish to npm
         run: |
-          lerna publish from-package --dist-tag latest --yes
+          lerna publish from-package --dist-tag next --yes
           git push
