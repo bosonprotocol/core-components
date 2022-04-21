@@ -25,8 +25,7 @@
     "create:testing": "graph create --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "remove:testing": "graph remove --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "deploy:testing": "npm run manifest:testing && npm run create:testing && graph deploy --node http://graph.geth.svc.cluster.local:8020 --ipfs http://ipfs.geth.svc.cluster.local:5001 boson/corecomponents -l 0.0.1",
-    "deploy:hosted": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
-    "deploy:staging": "npm run manifest:staging && npm run deploy:hosted dohaki/bosonccstaging",
-    "deploy:production": "npm run manifest:production && npm run deploy:hosted dohaki/bosonccproduction"
+    "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dohaki/bosonccropsten",
+    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dohaki/bosonccproduction"
   }
 }
