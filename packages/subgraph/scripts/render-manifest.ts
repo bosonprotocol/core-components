@@ -25,7 +25,7 @@ const envNameToConfig: Record<
   },
   staging: {
     network: providers.getNetwork(chainId).name,
-    startBlock: 12027000
+    startBlock: 12209342
   },
   production: {
     network: providers.getNetwork(chainId).name,
