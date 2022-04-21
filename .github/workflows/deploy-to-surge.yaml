@@ -27,12 +27,12 @@ jobs:
         id: turbo-cache
         uses: actions/cache@v3
         with:
-          path: node_modules/.cache/turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            turbo-${{ runner.os }}
       - run: npm install -g surge
       - run: npm ci
-      - run: npm run build
+      - run: npm run build -- --cache-dir=".turbo"
       - run: surge ./packages/widgets/build ${{ env.REACT_APP_WIDGETS_URL }} --token ${{ secrets.SURGE_TOKEN }}
       - run: surge ./packages/example-parent-app/build ${{ env.REACT_APP_PARENT_URL }} --token ${{ secrets.SURGE_TOKEN }}

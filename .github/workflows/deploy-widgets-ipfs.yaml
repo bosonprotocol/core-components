@@ -21,12 +21,12 @@ jobs:
         id: turbo-cache
         uses: actions/cache@v3
         with:
-          path: node_modules/.cache/turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            turbo-${{ runner.os }}
       - run: npm ci
-      - run: npm run build
+      - run: npm run build -- --cache-dir=".turbo"
       - name: Deploy via fleek
         id: deploy
         uses: fleekhq/action-deploy@v1
