@@ -23,8 +23,7 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "./dist/cjs/*",
-    "./dist/esm/*"
+    "./dist/*"
   ],
   "publishConfig": {
     "access": "restricted"
