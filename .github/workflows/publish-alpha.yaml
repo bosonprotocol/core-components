@@ -1,4 +1,4 @@
-name: "Publish next release"
+name: "Publish alpha release"
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    name: Publish next packages
+    name: Publish alpha packages
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -43,8 +43,8 @@ jobs:
             --no-push
 
           git add .
-          git commit -m "chore(release): publish next [skip ci]"
+          git commit -m "chore(release): publish alpha [skip ci]"
       - name: Publish to npm
         run: |
-          lerna publish from-package --dist-tag next --yes
+          lerna publish from-package --dist-tag alpha --yes
           git push
