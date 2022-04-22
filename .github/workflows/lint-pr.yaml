@@ -25,5 +25,6 @@ jobs:
             ipfs-storage
             subgraph
             widgets
+            deps
           subjectPattern: ^(?![A-Z]).+$
           validateSingleCommit: true
