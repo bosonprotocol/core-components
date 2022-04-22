@@ -26,11 +26,11 @@
   "homepage": "https://github.com/bosonprotocol/core-components#readme",
   "packageManager": "npm@8.5.3",
   "devDependencies": {
+    "@lerna-lite/cli": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "lerna": "^4.0.0",
     "turbo": "^1.1.6"
   }
 }
