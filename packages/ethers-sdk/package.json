@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
   "files": [
-    "dist/*"
+    "dist/*",
+    "src/*"
   ],
   "publishConfig": {
     "access": "restricted"
