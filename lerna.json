@@ -5,7 +5,7 @@
   "command": {
     "publish": {
       "ignoreChanges": ["*.md"],
-      "message": "chore(release): publish latest [skip ci]",
+      "message": "chore(release): publish latest",
       "conventionalCommits": true,
       "exact": true,
       "verifyAccess": false
