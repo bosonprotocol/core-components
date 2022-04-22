@@ -6,8 +6,14 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
-    "test": {},
-    "lint": {},
+    "test": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/**/*.ts"]
+    },
+    "lint": {
+      "outputs": [],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/**/*.ts"]
+    },
     "clean": {
       "cache": false
     },
