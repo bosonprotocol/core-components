@@ -1,4 +1,4 @@
-name: Deploy subgraph
+name: Deploy subgraph to production env
 
 on:
   workflow_dispatch:
@@ -9,24 +9,12 @@ on:
         required: true
         default: "0.0.1"
         type: string
-      deployTarget:
-        description: "Deploy target env"
-        required: true
-        default: "staging"
-        type: choice
-        options:
-          - staging
-          - production
-  push:
-    tags:
-      - '@bosonprotocol\/subgraph@[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy subgraph
     env:
-      DEPLOY_TARGET: ${{ github.event.inputs.deployTarget }}
       SUBGRAPH_VERSION: ${{ github.event.inputs.subgraphVersion }}
     steps:
       - uses: actions/checkout@v3
@@ -38,4 +26,4 @@ jobs:
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN }}
       - name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:${{ env.DEPLOY_TARGET }} -- -l ${{ env.SUBGRAPH_VERSION }}
+        run: cd ./packages/subgraph && npm run deploy:production -- -l ${{ env.SUBGRAPH_VERSION }}
