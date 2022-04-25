@@ -17,8 +17,9 @@ jobs:
           cache: "npm"
       - name: View the information of the pusher
         run: |
-          echo "The name of the pusher: ${{ github.event.push.pusher.name }}"
-          echo "The email of the pusher: ${{ github.event.push.pusher.email }}"
+          echo "The name of the pusher: ${{ github.event.pusher.name }}"
+          echo "The email of the pusher: ${{ github.event.pusher.email }}"
+          echo "Test: ${{ !contains("github-actions[bot]", "github-actions[bot]") }}"
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
