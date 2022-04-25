@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: startsWith(github.event.release.tag_name, "@bosonprotocol/widgets@")
+    if: startsWith(github.event.release.tag_name, '@bosonprotocol/widgets@')
     runs-on: ubuntu-latest
     name: Deploy widgets to IPFS
     steps:
