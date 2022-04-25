@@ -1,10 +1,10 @@
 {
   "name": "@bosonprotocol/example-parent-app",
-  "version": "1.1.1",
+  "version": "1.1.2-alpha.0",
   "private": true,
   "dependencies": {
     "@bosonprotocol/ipfs-storage": "1.1.1",
-    "@bosonprotocol/widgets-sdk": "1.1.1",
+    "@bosonprotocol/widgets-sdk": "1.1.2-alpha.0",
     "@ethersproject/address": "^5.6.0",
     "@ethersproject/units": "^5.6.0",
     "@testing-library/jest-dom": "^5.16.2",
