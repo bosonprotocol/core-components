@@ -1,17 +1,11 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "strict": true,
-    "jsx": "react",
-    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "rootDir": "src",
     "module": "esnext",
     "outDir": "dist/esm",
-    "target": "esnext",
-    "moduleResolution": "node"
+    "target": "esnext"
   },
-  "exclude": ["node_modules"],
   "include": ["src"]
 }

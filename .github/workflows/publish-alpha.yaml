@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish:
+    if: "!contains(github.event.pusher.name, 'github-actions[bot]')"
     name: Publish alpha packages
     runs-on: ubuntu-latest
     env:
@@ -51,7 +52,7 @@ jobs:
             --no-push
 
           git add .
-          git commit -m "chore(release): publish alpha [skip ci]"
+          git commit -m "chore(release): publish alpha"
       - name: Publish to npm
         run: |
           lerna publish from-package --dist-tag alpha --yes
