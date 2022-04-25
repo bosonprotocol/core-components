@@ -9,7 +9,6 @@ on:
 
 jobs:
   deploy:
-    if: "!contains(github.event.pusher.name, 'github-actions[bot]')"
     runs-on: ubuntu-latest
     name: Deploy widgets and example parent
     env:

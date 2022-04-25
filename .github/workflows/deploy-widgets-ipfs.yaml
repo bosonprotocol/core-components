@@ -1,12 +1,12 @@
 name: Deploy widgets to IPFS
 
 on:
-  push:
-    tags:
-      - '@bosonprotocol\/widgets@[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [published]
 
 jobs:
   deploy:
+    if: startsWith(github.event.release.tag_name, "@bosonprotocol/widgets@")
     runs-on: ubuntu-latest
     name: Deploy widgets to IPFS
     steps:
