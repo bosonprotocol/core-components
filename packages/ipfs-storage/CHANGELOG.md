@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.1.0...@bosonprotocol/ipfs-storage@1.1.1) (2022-04-25)
+
+
+### Bug Fixes
+
+* dist files ipfs-storage ([#58](https://github.com/bosonprotocol/core-components/issues/58)) ([ea44927](https://github.com/bosonprotocol/core-components/commit/ea449277565fe06a7c8c7393e5f6269b53dab558))
+* include ts files to fix sourcemap warnings ([#61](https://github.com/bosonprotocol/core-components/issues/61)) ([e815e31](https://github.com/bosonprotocol/core-components/commit/e815e31f13c667522b1f3c18460a4f1a7de37b53))
+* included dist files of ipfs-storage package ([#57](https://github.com/bosonprotocol/core-components/issues/57)) ([005ea03](https://github.com/bosonprotocol/core-components/commit/005ea037b29154f063cf9f86ba6c6a21ec91a0f3))
+
+
+
+
+
 # 1.1.0 (2022-04-21)
 
 

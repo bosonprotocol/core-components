@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.1.0...@bosonprotocol/subgraph@1.1.1) (2022-04-25)
+
+
+### Bug Fixes
+
+* subgraph staging deploy config ([#55](https://github.com/bosonprotocol/core-components/issues/55)) ([aee4881](https://github.com/bosonprotocol/core-components/commit/aee488129005aff499123fd7fa497d79b554a46e))
+
+
+
+
+
 # 1.1.0 (2022-04-21)
 
 
