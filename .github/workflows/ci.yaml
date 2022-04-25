@@ -15,6 +15,10 @@ jobs:
         with:
           node-version: "16"
           cache: "npm"
+      - name: View the information of the pusher
+        run: |
+          echo "The name of the pusher: ${{ github.event.pusher.name }}"
+          echo "The email of the pusher: ${{ github.event.pusher.email }}"
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
