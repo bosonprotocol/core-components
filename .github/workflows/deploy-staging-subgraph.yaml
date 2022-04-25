@@ -1,12 +1,12 @@
 name: Deploy subgraph to staging env
 
 on:
-  push:
-    tags:
-      - '@bosonprotocol\/subgraph@[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [published]
 
 jobs:
   deploy:
+    if: startsWith(github.event.release.tag_name, "@bosonprotocol/subgraph@")
     runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
