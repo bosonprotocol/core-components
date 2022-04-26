@@ -20,19 +20,19 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export declare namespace BosonTypes {
   export type OfferStruct = {
     id: BigNumberish;
+    sellerId: BigNumberish;
     price: BigNumberish;
-    deposit: BigNumberish;
-    penalty: BigNumberish;
-    quantity: BigNumberish;
+    sellerDeposit: BigNumberish;
+    buyerCancelPenalty: BigNumberish;
+    quantityAvailable: BigNumberish;
     validFromDate: BigNumberish;
     validUntilDate: BigNumberish;
-    redeemableDate: BigNumberish;
+    redeemableFromDate: BigNumberish;
     fulfillmentPeriodDuration: BigNumberish;
     voucherValidDuration: BigNumberish;
-    seller: string;
     exchangeToken: string;
     metadataUri: string;
-    metadataHash: string;
+    offerChecksum: string;
     voided: boolean;
   };
 
@@ -47,26 +47,26 @@ export declare namespace BosonTypes {
     BigNumber,
     BigNumber,
     BigNumber,
-    string,
+    BigNumber,
     string,
     string,
     string,
     boolean
   ] & {
     id: BigNumber;
+    sellerId: BigNumber;
     price: BigNumber;
-    deposit: BigNumber;
-    penalty: BigNumber;
-    quantity: BigNumber;
+    sellerDeposit: BigNumber;
+    buyerCancelPenalty: BigNumber;
+    quantityAvailable: BigNumber;
     validFromDate: BigNumber;
     validUntilDate: BigNumber;
-    redeemableDate: BigNumber;
+    redeemableFromDate: BigNumber;
     fulfillmentPeriodDuration: BigNumber;
     voucherValidDuration: BigNumber;
-    seller: string;
     exchangeToken: string;
     metadataUri: string;
-    metadataHash: string;
+    offerChecksum: string;
     voided: boolean;
   };
 }
@@ -74,15 +74,29 @@ export declare namespace BosonTypes {
 export interface IBosonOfferHandlerInterface extends utils.Interface {
   contractName: "IBosonOfferHandler";
   functions: {
-    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,string,string,bool))": FunctionFragment;
+    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool))": FunctionFragment;
+    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool)[])": FunctionFragment;
+    "extendOffer(uint256,uint256)": FunctionFragment;
     "getNextOfferId()": FunctionFragment;
     "getOffer(uint256)": FunctionFragment;
+    "isOfferUpdateable(uint256)": FunctionFragment;
+    "isOfferVoided(uint256)": FunctionFragment;
+    "updateOffer((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool))": FunctionFragment;
     "voidOffer(uint256)": FunctionFragment;
+    "voidOfferBatch(uint256[])": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "createOffer",
     values: [BosonTypes.OfferStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createOfferBatch",
+    values: [BosonTypes.OfferStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "extendOffer",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getNextOfferId",
@@ -93,8 +107,24 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "isOfferUpdateable",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isOfferVoided",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateOffer",
+    values: [BosonTypes.OfferStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "voidOffer",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "voidOfferBatch",
+    values: [BigNumberish[]]
   ): string;
 
   decodeFunctionResult(
@@ -102,31 +132,72 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "createOfferBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "extendOffer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getNextOfferId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getOffer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "isOfferUpdateable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isOfferVoided",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateOffer",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "voidOffer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "voidOfferBatch",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "OfferCreated(uint256,address,tuple)": EventFragment;
-    "OfferVoided(uint256,address)": EventFragment;
+    "OfferCreated(uint256,uint256,tuple)": EventFragment;
+    "OfferUpdated(uint256,uint256,tuple)": EventFragment;
+    "OfferVoided(uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "OfferCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OfferUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OfferVoided"): EventFragment;
 }
 
 export type OfferCreatedEvent = TypedEvent<
-  [BigNumber, string, BosonTypes.OfferStructOutput],
-  { offerId: BigNumber; seller: string; offer: BosonTypes.OfferStructOutput }
+  [BigNumber, BigNumber, BosonTypes.OfferStructOutput],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    offer: BosonTypes.OfferStructOutput;
+  }
 >;
 
 export type OfferCreatedEventFilter = TypedEventFilter<OfferCreatedEvent>;
 
+export type OfferUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BosonTypes.OfferStructOutput],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    offer: BosonTypes.OfferStructOutput;
+  }
+>;
+
+export type OfferUpdatedEventFilter = TypedEventFilter<OfferUpdatedEvent>;
+
 export type OfferVoidedEvent = TypedEvent<
-  [BigNumber, string],
-  { offerId: BigNumber; seller: string }
+  [BigNumber, BigNumber],
+  { offerId: BigNumber; sellerId: BigNumber }
 >;
 
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
@@ -164,6 +235,17 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    createOfferBatch(
+      _offers: BosonTypes.OfferStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    extendOffer(
+      _offerId: BigNumberish,
+      _validUntilDate: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     getNextOfferId(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { nextOfferId: BigNumber }>;
@@ -173,19 +255,52 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [boolean, BosonTypes.OfferStructOutput] & {
-        success: boolean;
+        exists: boolean;
         offer: BosonTypes.OfferStructOutput;
       }
     >;
 
+    isOfferUpdateable(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, boolean] & { exists: boolean; offerUpdateable: boolean }
+    >;
+
+    isOfferVoided(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean, boolean] & { exists: boolean; offerVoided: boolean }>;
+
+    updateOffer(
+      _offer: BosonTypes.OfferStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     voidOffer(
       _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    voidOfferBatch(
+      _offerIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   createOffer(
     _offer: BosonTypes.OfferStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  createOfferBatch(
+    _offers: BosonTypes.OfferStruct[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  extendOffer(
+    _offerId: BigNumberish,
+    _validUntilDate: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -196,19 +311,52 @@ export interface IBosonOfferHandler extends BaseContract {
     overrides?: CallOverrides
   ): Promise<
     [boolean, BosonTypes.OfferStructOutput] & {
-      success: boolean;
+      exists: boolean;
       offer: BosonTypes.OfferStructOutput;
     }
   >;
+
+  isOfferUpdateable(
+    _offerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [boolean, boolean] & { exists: boolean; offerUpdateable: boolean }
+  >;
+
+  isOfferVoided(
+    _offerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<[boolean, boolean] & { exists: boolean; offerVoided: boolean }>;
+
+  updateOffer(
+    _offer: BosonTypes.OfferStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   voidOffer(
     _offerId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  voidOfferBatch(
+    _offerIds: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     createOffer(
       _offer: BosonTypes.OfferStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    createOfferBatch(
+      _offers: BosonTypes.OfferStruct[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    extendOffer(
+      _offerId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -219,39 +367,83 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [boolean, BosonTypes.OfferStructOutput] & {
-        success: boolean;
+        exists: boolean;
         offer: BosonTypes.OfferStructOutput;
       }
     >;
 
+    isOfferUpdateable(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, boolean] & { exists: boolean; offerUpdateable: boolean }
+    >;
+
+    isOfferVoided(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean, boolean] & { exists: boolean; offerVoided: boolean }>;
+
+    updateOffer(
+      _offer: BosonTypes.OfferStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     voidOffer(_offerId: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    voidOfferBatch(
+      _offerIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
-    "OfferCreated(uint256,address,tuple)"(
+    "OfferCreated(uint256,uint256,tuple)"(
       offerId?: BigNumberish | null,
-      seller?: string | null,
+      sellerId?: BigNumberish | null,
       offer?: null
     ): OfferCreatedEventFilter;
     OfferCreated(
       offerId?: BigNumberish | null,
-      seller?: string | null,
+      sellerId?: BigNumberish | null,
       offer?: null
     ): OfferCreatedEventFilter;
 
-    "OfferVoided(uint256,address)"(
+    "OfferUpdated(uint256,uint256,tuple)"(
       offerId?: BigNumberish | null,
-      seller?: string | null
+      sellerId?: BigNumberish | null,
+      offer?: null
+    ): OfferUpdatedEventFilter;
+    OfferUpdated(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      offer?: null
+    ): OfferUpdatedEventFilter;
+
+    "OfferVoided(uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      sellerId?: BigNumberish | null
     ): OfferVoidedEventFilter;
     OfferVoided(
       offerId?: BigNumberish | null,
-      seller?: string | null
+      sellerId?: BigNumberish | null
     ): OfferVoidedEventFilter;
   };
 
   estimateGas: {
     createOffer(
       _offer: BosonTypes.OfferStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    createOfferBatch(
+      _offers: BosonTypes.OfferStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    extendOffer(
+      _offerId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -262,8 +454,28 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isOfferUpdateable(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isOfferVoided(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    updateOffer(
+      _offer: BosonTypes.OfferStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     voidOffer(
       _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    voidOfferBatch(
+      _offerIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -274,6 +486,17 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    createOfferBatch(
+      _offers: BosonTypes.OfferStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    extendOffer(
+      _offerId: BigNumberish,
+      _validUntilDate: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     getNextOfferId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getOffer(
@@ -281,8 +504,28 @@ export interface IBosonOfferHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    isOfferUpdateable(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isOfferVoided(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    updateOffer(
+      _offer: BosonTypes.OfferStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     voidOffer(
       _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    voidOfferBatch(
+      _offerIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
