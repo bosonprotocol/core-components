@@ -2,11 +2,11 @@
 
 Official subgraph of the Boson Protocol.
 
-| Env          | Network   | Endpoint                                                        |
-| ------------ | --------- | --------------------------------------------------------------- |
-| `testing`    | `ropsten` | `https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten` |
-| `staging`    | `ropsten` | `TBD`                                                           |
-| `production` | `mainnet` | `TBD`                                                           |
+| Env          | Network   | Endpoint                                                                                     |
+| ------------ | --------- | -------------------------------------------------------------------------------------------- |
+| `testing`    | `private` | `https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents` |
+| `staging`    | `ropsten` | `https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten`                              |
+| `production` | `mainnet` | `TBD`                                                                                        |
 
 ## Local development
 
