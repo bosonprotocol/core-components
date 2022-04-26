@@ -5,7 +5,7 @@ import { convertToString, convertToStringArray } from "../../utils/json";
 
 export function saveProductV1Metadata(
   offerId: string,
-  seller: string,
+  sellerId: string,
   metadataObj: TypedMap<string, JSONValue>
 ): string {
   const metadataId = offerId + "-metadata";
@@ -21,7 +21,7 @@ export function saveProductV1Metadata(
   const productV1MetadataEntity = new ProductV1MetadataEntity(metadataId);
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.offer = offerId;
-  productV1MetadataEntity.seller = seller;
+  productV1MetadataEntity.seller = sellerId;
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;

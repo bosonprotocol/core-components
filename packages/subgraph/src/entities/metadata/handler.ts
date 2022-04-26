@@ -1,14 +1,23 @@
 import { log } from "@graphprotocol/graph-ts";
 import { saveProductV1Metadata } from "./product-v1";
 import { saveBaseMetadata } from "./base";
-import { getIpfsMetadataObject } from "../../utils/ipfs";
+import { getIpfsMetadataObject, parseIpfsHash } from "../../utils/ipfs";
 import { convertToString } from "../../utils/json";
 
 export function saveMetadata(
-  ipfsHash: string,
+  metadataUri: string,
   offerId: string,
-  seller: string
+  sellerId: string
 ): string | null {
+  const ipfsHash = parseIpfsHash(metadataUri);
+
+  if (ipfsHash === null) {
+    log.warning("Metadata URI does not contain supported CID: {}", [
+      metadataUri
+    ]);
+    return null;
+  }
+
   const metadataObj = getIpfsMetadataObject(ipfsHash);
 
   if (metadataObj === null) {
@@ -22,11 +31,11 @@ export function saveMetadata(
   const metadataType = convertToString(metadataObj.get("type"));
 
   if (metadataType == "BASE") {
-    return saveBaseMetadata(offerId, seller, metadataObj);
+    return saveBaseMetadata(offerId, sellerId, metadataObj);
   }
 
   if (metadataType == "PRODUCT_V1") {
-    return saveProductV1Metadata(offerId, seller, metadataObj);
+    return saveProductV1Metadata(offerId, sellerId, metadataObj);
   }
 
   return null;

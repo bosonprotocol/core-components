@@ -22,3 +22,19 @@ export function getIpfsMetadataObject(
 
   return null;
 }
+
+export function parseIpfsHash(metadataUri: string): string | null {
+  if (metadataUri.startsWith("ipfs://")) {
+    return metadataUri.split("ipfs://")[1];
+  }
+
+  // CID v0
+  if (metadataUri.startsWith("Qm") && metadataUri.length === 46) {
+    return metadataUri;
+  }
+
+  // TODO: handle CID v1
+  // TODO: handle different URIs
+
+  return null;
+}

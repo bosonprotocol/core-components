@@ -5,7 +5,7 @@ import { convertToString } from "../../utils/json";
 
 export function saveBaseMetadata(
   offerId: string,
-  seller: string,
+  sellerId: string,
   metadataObj: TypedMap<string, JSONValue>
 ): string {
   const metadataId = offerId + "-metadata";
@@ -16,7 +16,7 @@ export function saveBaseMetadata(
 
   const baseMetadataEntity = new BaseMetadataEntity(metadataId);
   baseMetadataEntity.offer = offerId;
-  baseMetadataEntity.seller = seller;
+  baseMetadataEntity.seller = sellerId;
   baseMetadataEntity.type = "BASE";
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;

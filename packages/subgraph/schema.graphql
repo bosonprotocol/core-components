@@ -55,29 +55,35 @@ type Offer @entity {
   id: ID!
   createdAt: BigInt!
   price: BigInt!
-  deposit: BigInt!
-  penalty: BigInt!
-  quantity: BigInt!
+  sellerDeposit: BigInt!
+  buyerCancelPenalty: BigInt!
+  quantityAvailable: BigInt!
   validFromDate: BigInt!
   validUntilDate: BigInt!
-  redeemableDate: BigInt!
+  redeemableFromDate: BigInt!
   fulfillmentPeriodDuration: BigInt!
   voucherValidDuration: BigInt!
   metadataUri: String!
-  metadataHash: String!
+  offerChecksum: String!
   voided: Boolean!
+  sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
   metadata: MetadataInterface
   voidedAt: BigInt
 }
 
+"""
+Seller
+"""
 type Seller @entity {
-  id: ID!
-  address: Bytes!
+  id: ID! # Offer.sellerId
   offers: [Offer!]! @derivedFrom(field: "seller")
-  offerCount: BigInt!
-  # TODO: add more fields
+  operator: Bytes!
+  admin: Bytes!
+  clerk: Bytes!
+  treasury: Bytes!
+  active: Boolean!
 }
 
 type ExchangeToken @entity {
