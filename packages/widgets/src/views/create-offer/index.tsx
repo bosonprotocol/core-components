@@ -88,7 +88,7 @@ export default function CreateOffer() {
       </WidgetLayout>
     );
 
-  const { tokenInfo, createOfferArgs, metadata } = createOfferData;
+  const { tokenInfo, createOfferArgs, metadata, seller } = createOfferData;
 
   const tokenApprovalNeeded = tokenInfo.allowance.lt(
     constants.MaxInt256.div(2)
@@ -96,10 +96,20 @@ export default function CreateOffer() {
 
   async function handleTokenApproval() {
     try {
-      const txResponse = await coreSDK.createOffer({
-        ...createOfferArgs,
-        seller: account ?? createOfferArgs.seller
-      });
+      const operatorAddress = account || seller?.operator || "";
+
+      const txResponse = seller
+        ? await coreSDK.createOffer(createOfferArgs)
+        : await coreSDK.createSellerAndOffer(
+            {
+              operator: operatorAddress,
+              // TODO: Allow to set separate seller address values
+              admin: operatorAddress,
+              treasury: operatorAddress,
+              clerk: operatorAddress
+            },
+            createOfferArgs
+          );
 
       setTransaction({
         status: "pending",
@@ -126,7 +136,7 @@ export default function CreateOffer() {
     try {
       const txResponse = await coreSDK.approveExchangeToken(
         createOfferArgs.exchangeToken,
-        constants.MaxInt256.sub(createOfferArgs.deposit)
+        constants.MaxInt256.sub(createOfferArgs.sellerDeposit)
       );
 
       setTransaction({
