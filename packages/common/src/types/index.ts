@@ -15,3 +15,4 @@ export {
 } from "./metadata-storage";
 export { ContractAddresses, ProtocolConfig } from "./configs";
 export { OfferStruct, CreateOfferArgs } from "./offers";
+export { SellerStruct, CreateSellerArgs } from "./accounts";
