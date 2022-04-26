@@ -21,6 +21,7 @@ dataSources:
         - Offer
         - Seller
         - ExchangeToken
+        - ProductV1Brand
       abis:
         - name: IBosonOfferHandler
           file: ../common/src/abis/IBosonOfferHandler.json

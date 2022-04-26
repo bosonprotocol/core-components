@@ -18,6 +18,14 @@ interface MetadataInterface {
   offer: Offer!
   "Reference to related Seller entity"
   seller: Seller!
+  "Reference to related ExchangeToken entity"
+  exchangeToken: ExchangeToken!
+  """
+  Enriched fields from offer entity to allow nested query workaround
+  """
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
 }
 
 type BaseMetadataEntity implements MetadataInterface @entity {
@@ -29,6 +37,10 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   type: MetadataType! # MetadataType.BASE
   offer: Offer!
   seller: Seller!
+  exchangeToken: ExchangeToken!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
 }
 
 type ProductV1MetadataEntity implements MetadataInterface @entity {
@@ -40,12 +52,23 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   type: MetadataType! # MetadataType.PRODUCT
   offer: Offer!
   seller: Seller!
+  exchangeToken: ExchangeToken!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
   """
   ProductV1MetadataEntity specific fields
   """
   images: [String!]
   tags: [String!]
   brandName: String
+  brand: ProductV1Brand!
+}
+
+type ProductV1Brand @entity {
+  id: ID!
+  name: String!
+  products: [ProductV1MetadataEntity!]! @derivedFrom(field: "brand")
 }
 
 """

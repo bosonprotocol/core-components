@@ -20,12 +20,8 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     if (!result.reverted && result.value.value0) {
       const offerFromContract = result.value.value1;
 
-      saveMetadata(
-        offerFromContract.metadataUri,
-        offerId.toString(),
-        offerFromContract.sellerId.toString()
-      );
       saveExchangeToken(offerFromContract.exchangeToken);
+      saveMetadata(offerFromContract);
 
       offer = new Offer(offerId.toString());
       offer.createdAt = event.block.timestamp;

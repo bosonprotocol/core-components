@@ -1,13 +1,17 @@
 import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { ProductV1MetadataEntity } from "../../../generated/schema";
+import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/BosonOfferHandler/IBosonOfferHandler";
+import {
+  ProductV1MetadataEntity,
+  ProductV1Brand
+} from "../../../generated/schema";
 
 import { convertToString, convertToStringArray } from "../../utils/json";
 
 export function saveProductV1Metadata(
-  offerId: string,
-  sellerId: string,
+  offerFromContract: IBosonOfferHandler__getOfferResultOfferStruct,
   metadataObj: TypedMap<string, JSONValue>
 ): string {
+  const offerId = offerFromContract.id.toString();
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
@@ -18,10 +22,22 @@ export function saveProductV1Metadata(
   const tags = convertToStringArray(metadataObj.get("tags"));
   const brandName = convertToString(metadataObj.get("brandName"));
 
-  const productV1MetadataEntity = new ProductV1MetadataEntity(metadataId);
+  saveProductV1Brand(brandName);
+
+  let productV1MetadataEntity = ProductV1MetadataEntity.load(metadataId);
+
+  if (productV1MetadataEntity == null) {
+    productV1MetadataEntity = new ProductV1MetadataEntity(metadataId);
+  }
+
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.offer = offerId;
-  productV1MetadataEntity.seller = sellerId;
+  productV1MetadataEntity.seller = offerFromContract.sellerId.toHexString();
+  productV1MetadataEntity.exchangeToken =
+    offerFromContract.exchangeToken.toHexString();
+  productV1MetadataEntity.voided = offerFromContract.voided;
+  productV1MetadataEntity.validFromDate = offerFromContract.validFromDate;
+  productV1MetadataEntity.validUntilDate = offerFromContract.validUntilDate;
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
@@ -29,6 +45,18 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.images = images;
   productV1MetadataEntity.tags = tags;
   productV1MetadataEntity.brandName = brandName;
+  productV1MetadataEntity.brand = brandName.toLowerCase();
   productV1MetadataEntity.save();
   return metadataId;
+}
+
+function saveProductV1Brand(brandName: string): void {
+  const brandId = brandName.toLowerCase();
+  let brand = ProductV1Brand.load(brandId);
+
+  if (brand == null) {
+    brand = new ProductV1Brand(brandId);
+    brand.name = brandName;
+    brand.save();
+  }
 }
