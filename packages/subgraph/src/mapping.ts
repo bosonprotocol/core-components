@@ -22,12 +22,8 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
       const offerFromContract = result.value.value1;
 
       saveSeller(offerFromContract.seller);
-      saveMetadata(
-        offerFromContract.metadataHash,
-        offerId.toString(),
-        offerFromContract.seller.toHexString()
-      );
       saveExchangeToken(offerFromContract.exchangeToken);
+      saveMetadata(offerFromContract);
 
       offer = new Offer(offerId.toString());
       offer.createdAt = event.block.timestamp;
