@@ -7,19 +7,24 @@ fragment offerFields on Offer {
   id
   createdAt
   price
-  deposit
-  penalty
-  quantity
+  sellerDeposit
+  buyerCancelPenalty
+  quantityAvailable
   validFromDate
   validUntilDate
-  redeemableDate
+  redeemableFromDate
   fulfillmentPeriodDuration
   voucherValidDuration
   metadataUri
-  metadataHash
+  offerChecksum
   voidedAt
   seller {
-    address
+    id
+    operator
+    admin
+    clerk
+    treasury
+    active
   }
   exchangeToken {
     address
@@ -59,15 +64,17 @@ export async function getOfferById(
   return offer;
 }
 
-export const getAllOffersOfSellerQuery = `
-query GetAllOffersOfSellerQuery(
-  $seller: ID!,
+export const getAllOffersOfOperatorQuery = `
+query GetAllOffersOfOperatorQuery(
+  $operator: String!,
   $first: Int,
   $skip: Int,
   $orderBy: String,
   $orderDirection: String
 ) {
-  seller(id: $seller) {
+  sellers(where: {
+    operator: $operator
+  }) {
     offers(
       first: $first
       skip: $skip
@@ -81,15 +88,15 @@ query GetAllOffersOfSellerQuery(
 ${offerFieldsFragment}
 `;
 
-export async function getAllOffersOfSeller(
+export async function getAllOffersOfOperator(
   subgraphUrl: string,
-  sellerAddress: string,
+  operatorAddress: string,
   opts: MultiQueryOpts = {}
 ): Promise<RawOfferFromSubgraph[]> {
-  const { seller } = await fetchSubgraph<{
-    seller: { offers: RawOfferFromSubgraph[] };
-  }>(subgraphUrl, getAllOffersOfSellerQuery, {
-    seller: sellerAddress.toLowerCase(),
+  const { sellers } = await fetchSubgraph<{
+    sellers: { offers: RawOfferFromSubgraph[] };
+  }>(subgraphUrl, getAllOffersOfOperatorQuery, {
+    operator: operatorAddress.toLowerCase(),
     first: 100,
     skip: 0,
     orderBy: "createdAt",
@@ -97,9 +104,9 @@ export async function getAllOffersOfSeller(
     ...opts
   });
 
-  if (!seller) {
+  if (!sellers) {
     return [];
   }
 
-  return seller.offers;
+  return sellers[0].offers;
 }

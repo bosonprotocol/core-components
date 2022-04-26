@@ -4,19 +4,24 @@ export type RawOfferFromSubgraph = {
   id: string;
   createdAt: string;
   price: string;
-  deposit: string;
-  penalty: string;
-  quantity: string;
+  sellerDeposit: string;
+  buyerCancelPenalty: string;
+  quantityAvailable: string;
   validFromDate: string;
   validUntilDate: string;
-  redeemableDate: string;
+  redeemableFromDate: string;
   fulfillmentPeriodDuration: string;
   voucherValidDuration: string;
   metadataUri: string;
-  metadataHash: string;
+  offerChecksum: string;
   voidedAt: null | string;
   seller: {
-    address: string;
+    id: string;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    active: boolean;
   };
   exchangeToken: {
     address: string;
