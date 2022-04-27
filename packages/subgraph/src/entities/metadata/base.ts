@@ -1,5 +1,5 @@
 import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/OfferHandler/IBosonOfferHandler";
+import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/BosonOfferHandler/IBosonOfferHandler";
 import { BaseMetadataEntity } from "../../../generated/schema";
 
 import { convertToString } from "../../utils/json";
@@ -22,7 +22,7 @@ export function saveBaseMetadata(
   }
 
   baseMetadataEntity.offer = offerId;
-  baseMetadataEntity.seller = offerFromContract.seller.toHexString();
+  baseMetadataEntity.seller = offerFromContract.sellerId.toString();
   baseMetadataEntity.exchangeToken =
     offerFromContract.exchangeToken.toHexString();
   baseMetadataEntity.voided = offerFromContract.voided;

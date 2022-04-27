@@ -2,12 +2,11 @@ import {
   IBosonOfferHandler,
   OfferCreated,
   OfferVoided
-} from "../generated/OfferHandler/IBosonOfferHandler";
-import { Offer } from "../generated/schema";
+} from "../../generated/BosonOfferHandler/IBosonOfferHandler";
+import { Offer } from "../../generated/schema";
 
-import { saveMetadata } from "./entities/metadata/handler";
-import { saveExchangeToken } from "./utils/token";
-import { saveSeller } from "./utils/seller";
+import { saveMetadata } from "../entities/metadata/handler";
+import { saveExchangeToken } from "../entities/token";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -21,26 +20,25 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     if (!result.reverted && result.value.value0) {
       const offerFromContract = result.value.value1;
 
-      saveSeller(offerFromContract.seller);
       saveExchangeToken(offerFromContract.exchangeToken);
       saveMetadata(offerFromContract);
 
       offer = new Offer(offerId.toString());
       offer.createdAt = event.block.timestamp;
       offer.price = offerFromContract.price;
-      offer.deposit = offerFromContract.deposit;
-      offer.penalty = offerFromContract.penalty;
-      offer.quantity = offerFromContract.quantity;
+      offer.sellerDeposit = offerFromContract.sellerDeposit;
+      offer.buyerCancelPenalty = offerFromContract.buyerCancelPenalty;
+      offer.quantityAvailable = offerFromContract.quantityAvailable;
       offer.validFromDate = offerFromContract.validFromDate;
       offer.validUntilDate = offerFromContract.validUntilDate;
-      offer.redeemableDate = offerFromContract.redeemableDate;
+      offer.redeemableFromDate = offerFromContract.redeemableFromDate;
       offer.fulfillmentPeriodDuration =
         offerFromContract.fulfillmentPeriodDuration;
       offer.voucherValidDuration = offerFromContract.voucherValidDuration;
-      offer.seller = offerFromContract.seller.toHexString();
+      offer.seller = offerFromContract.sellerId.toString();
       offer.exchangeToken = offerFromContract.exchangeToken.toHexString();
       offer.metadataUri = offerFromContract.metadataUri;
-      offer.metadataHash = offerFromContract.metadataHash;
+      offer.offerChecksum = offerFromContract.offerChecksum;
       offer.metadata = offerId.toString() + "-metadata";
       offer.voided = false;
 

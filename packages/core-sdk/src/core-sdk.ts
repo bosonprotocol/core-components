@@ -7,8 +7,11 @@ import {
   Log
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
+import * as accounts from "./accounts";
 import * as offers from "./offers";
+import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
+import { getCreatedOfferIdFromLogs } from "./utils/logs";
 import { MultiQueryOpts } from "./utils/subgraph";
 
 export class CoreSDK {
@@ -70,6 +73,29 @@ export class CoreSDK {
     return this._metadataStorage.getMetadata(metadataHashOrUri);
   }
 
+  public async getSellerByOperator(
+    operator: string
+  ): Promise<accounts.RawSellerFromSubgraph> {
+    return accounts.subgraph.getSellerByOperator(this._subgraphUrl, operator);
+  }
+
+  public async createSellerAndOffer(
+    sellerToCreate: accounts.CreateSellerArgs,
+    offerToCreate: offers.CreateOfferArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return orchestration.handler.createOfferAndSeller({
+      sellerToCreate,
+      offerToCreate,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
   public async createOffer(
     offerToCreate: offers.CreateOfferArgs,
     overrides: Partial<{
@@ -86,7 +112,17 @@ export class CoreSDK {
   }
 
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
-    return offers.iface.getCreatedOfferIdFromLogs(logs);
+    try {
+      return getCreatedOfferIdFromLogs(
+        offers.iface.bosonOfferHandlerIface,
+        logs
+      );
+    } catch (offerError) {
+      return getCreatedOfferIdFromLogs(
+        orchestration.iface.bosonOrchestrationHandlerIface,
+        logs
+      );
+    }
   }
 
   public async voidOffer(
@@ -110,14 +146,20 @@ export class CoreSDK {
   }
 
   public async getAllOffersOfSeller(
-    sellerAddress: string,
+    sellerFilter: {
+      operatorAddress: string;
+      // TODO: add support for sellerId, adminAddress, clerkAddress, treasuryAddress
+    },
     opts: MultiQueryOpts = {}
   ): Promise<offers.RawOfferFromSubgraph[]> {
-    return offers.subgraph.getAllOffersOfSeller(
-      this._subgraphUrl,
-      sellerAddress,
-      opts
-    );
+    if (sellerFilter.operatorAddress) {
+      return offers.subgraph.getAllOffersOfOperator(
+        this._subgraphUrl,
+        sellerFilter.operatorAddress,
+        opts
+      );
+    }
+    return [];
   }
 
   public async getExchangeTokenAllowance(

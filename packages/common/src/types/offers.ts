@@ -1,36 +1,34 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 
 export type CreateOfferArgs = {
-  id?: BigNumberish;
   price: BigNumberish;
-  deposit: BigNumberish;
-  penalty: BigNumberish;
-  quantity: BigNumberish;
+  sellerDeposit: BigNumberish;
+  buyerCancelPenalty: BigNumberish;
+  quantityAvailable: BigNumberish;
   validFromDateInMS: BigNumberish;
   validUntilDateInMS: BigNumberish;
-  redeemableDateInMS: BigNumberish;
+  redeemableFromDateInMS: BigNumberish;
   fulfillmentPeriodDurationInMS: BigNumberish;
   voucherValidDurationInMS: BigNumberish;
-  seller: string;
   exchangeToken: string;
   metadataUri: string;
-  metadataHash: string;
+  offerChecksum: string;
 };
 
 export type OfferStruct = {
   id: BigNumberish;
+  sellerId: BigNumberish;
   price: BigNumberish;
-  deposit: BigNumberish;
-  penalty: BigNumberish;
-  quantity: BigNumberish;
+  sellerDeposit: BigNumberish;
+  buyerCancelPenalty: BigNumberish;
+  quantityAvailable: BigNumberish;
   validFromDate: BigNumberish;
   validUntilDate: BigNumberish;
-  redeemableDate: BigNumberish;
+  redeemableFromDate: BigNumberish;
   fulfillmentPeriodDuration: BigNumberish;
   voucherValidDuration: BigNumberish;
-  seller: string;
   exchangeToken: string;
   metadataUri: string;
-  metadataHash: string;
+  offerChecksum: string;
   voided: boolean;
 };

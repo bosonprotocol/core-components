@@ -1,5 +1,5 @@
 import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/OfferHandler/IBosonOfferHandler";
+import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
   ProductV1MetadataEntity,
   ProductV1Brand
@@ -32,7 +32,7 @@ export function saveProductV1Metadata(
 
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.offer = offerId;
-  productV1MetadataEntity.seller = offerFromContract.seller.toHexString();
+  productV1MetadataEntity.seller = offerFromContract.sellerId.toHexString();
   productV1MetadataEntity.exchangeToken =
     offerFromContract.exchangeToken.toHexString();
   productV1MetadataEntity.voided = offerFromContract.voided;

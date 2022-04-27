@@ -1,27 +1,9 @@
-import { OfferStruct, utils, abis, Log } from "@bosonprotocol/common";
+import { OfferStruct, utils, abis } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
 import { CreateOfferArgs } from "./types";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
-
-export function getCreatedOfferIdFromLogs(logs: Log[]) {
-  const parsedLogs = logs.map((log) => parseLog(log.data, log.topics));
-
-  const [offerCreatedLog] = parsedLogs.filter(
-    (log) => log.name === "OfferCreated"
-  );
-
-  if (!offerCreatedLog) {
-    return null;
-  }
-
-  return String(offerCreatedLog.args.offerId);
-}
-
-export function parseLog(data: string, topics: string[]) {
-  return bosonOfferHandlerIface.parseLog({ data, topics });
-}
 
 export function encodeCreateOffer(args: CreateOfferArgs) {
   return bosonOfferHandlerIface.encodeFunctionData("createOffer", [
@@ -34,10 +16,9 @@ export function createOfferArgsToStruct(
 ): Partial<OfferStruct> {
   const {
     exchangeToken,
-    seller,
     validFromDateInMS,
     validUntilDateInMS,
-    redeemableDateInMS,
+    redeemableFromDateInMS,
     fulfillmentPeriodDurationInMS,
     voucherValidDurationInMS,
     ...restArgs
@@ -45,12 +26,12 @@ export function createOfferArgsToStruct(
 
   return {
     id: "0",
+    sellerId: "0",
     ...restArgs,
     exchangeToken: getAddress(exchangeToken),
-    seller: getAddress(seller),
     validFromDate: utils.timestamp.msToSec(validFromDateInMS),
     validUntilDate: utils.timestamp.msToSec(validUntilDateInMS),
-    redeemableDate: utils.timestamp.msToSec(redeemableDateInMS),
+    redeemableFromDate: utils.timestamp.msToSec(redeemableFromDateInMS),
     fulfillmentPeriodDuration: utils.timestamp.msToSec(
       fulfillmentPeriodDurationInMS
     ),

@@ -9,6 +9,7 @@ import { useAsyncEffect } from "use-async-effect";
 import * as yup from "yup";
 import { assert } from "../../lib/assert";
 import { isAddress } from "@ethersproject/address";
+import { RawSellerFromSubgraph } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
 
 type TokenInfo = Awaited<ReturnType<typeof getTokenInfo>>;
 export type ValidationError = Error & {
@@ -20,12 +21,9 @@ function validateUrlParams() {
   const urlParams = getURLParams();
 
   // offer values
-  offers.validation.createOfferArgsSchema.validateSync(
-    { ...urlParams, seller: constants.AddressZero },
-    {
-      abortEarly: false
-    }
-  );
+  offers.validation.createOfferArgsSchema.validateSync(urlParams, {
+    abortEarly: false
+  });
 
   // config values
   yup
@@ -99,18 +97,17 @@ function getCreateOfferArgs() {
 
   const createOfferArgs: offers.CreateOfferArgs = {
     price: urlParams["price"],
-    deposit: urlParams["deposit"],
-    penalty: urlParams["penalty"],
-    quantity: urlParams["quantity"],
+    sellerDeposit: urlParams["sellerDeposit"],
+    buyerCancelPenalty: urlParams["buyerCancelPenalty"],
+    quantityAvailable: urlParams["quantityAvailable"],
     validFromDateInMS: urlParams["validFromDateInMS"],
     validUntilDateInMS: urlParams["validUntilDateInMS"],
-    redeemableDateInMS: urlParams["redeemableDateInMS"],
+    redeemableFromDateInMS: urlParams["redeemableFromDateInMS"],
     fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
     voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
-    seller: "",
     exchangeToken: urlParams["exchangeToken"],
     metadataUri: urlParams["metadataUri"],
-    metadataHash: urlParams["metadataHash"]
+    offerChecksum: urlParams["offerChecksum"]
   };
 
   return createOfferArgs;
@@ -126,6 +123,7 @@ export function useCreateOfferData() {
         metadata: AnyMetadata;
         tokenInfo: TokenInfo;
         createOfferArgs: offers.CreateOfferArgs;
+        seller?: RawSellerFromSubgraph;
       }
     | { status: "loading" }
     | { status: "error"; error: Error }
@@ -141,9 +139,10 @@ export function useCreateOfferData() {
         validateUrlParams();
         const createOfferArgs = getCreateOfferArgs();
 
-        const [metadata, tokenInfo] = await Promise.all([
-          coreSDK.getMetadata(createOfferArgs.metadataHash),
-          getTokenInfo(coreSDK, createOfferArgs.exchangeToken, account)
+        const [metadata, tokenInfo, seller] = await Promise.all([
+          coreSDK.getMetadata(createOfferArgs.metadataUri),
+          getTokenInfo(coreSDK, createOfferArgs.exchangeToken, account),
+          coreSDK.getSellerByOperator(account || "")
         ]);
 
         if (!isActive()) return;
@@ -151,7 +150,8 @@ export function useCreateOfferData() {
           status: "loaded",
           metadata,
           createOfferArgs,
-          tokenInfo
+          tokenInfo,
+          seller
         });
       }
       load().catch((e) => setData({ status: "error", error: e as Error }));

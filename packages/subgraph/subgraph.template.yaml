@@ -5,25 +5,28 @@ features:
   - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum/contract
-    name: OfferHandler
+    name: BosonOfferHandler
     network: {{network}}
     source:
       address: "{{protocolDiamond}}"
-      abi: IBosonOfferHandler
+      abi: IBosonOfferHandler 
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
+        - BaseMetadataEntity
+        - ProductV1MetadataEntity
         - Offer
-        - Metadata
         - Seller
         - ExchangeToken
         - ProductV1Brand
       abis:
         - name: IBosonOfferHandler
           file: ../common/src/abis/IBosonOfferHandler.json
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
         - name: ProtocolDiamond
           file: ../common/src/abis/ProtocolDiamond.json
         - name: ERC20
@@ -33,8 +36,38 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,string,string,bool))
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool))
           handler: handleOfferCreatedEvent
-        - event: OfferVoided(indexed uint256,indexed address)
+        - event: OfferVoided(indexed uint256,indexed uint256)
           handler: handleOfferVoidedEvent
-      file: ./src/mapping.ts
+      file: ./src/mappings/offer-handler.ts
+  - kind: ethereum/contract
+    name: BosonAccountHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonAccountHandler 
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - BaseMetadataEntity
+        - ProductV1MetadataEntity
+        - Offer
+        - Seller
+        - ExchangeToken
+      abis:
+        - name: IBosonOfferHandler
+          file: ../common/src/abis/IBosonOfferHandler.json
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
+        - name: ProtocolDiamond
+          file: ../common/src/abis/ProtocolDiamond.json
+      eventHandlers:
+        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool))
+          handler: handleSellerCreatedEvent
+        - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool))
+          handler: handleSellerUpdatedEvent
+      file: ./src/mappings/account-handler.ts

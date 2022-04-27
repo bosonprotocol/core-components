@@ -55,7 +55,11 @@ export class IpfsMetadata implements MetadataStorage {
   public async get<T>(uriOrHash: string): Promise<T> {
     let cid: CID = null;
     try {
-      cid = CID.parse(uriOrHash);
+      cid = CID.parse(
+        uriOrHash.startsWith("ipfs://")
+          ? uriOrHash.split("ipfs://")[1]
+          : uriOrHash
+      );
     } catch (error) {
       // if parsing fails, we assume it is a url
     }

@@ -117,21 +117,20 @@ export default function ManageOffer() {
           !offer
             ? emptyOfferDetails
             : {
-                deposit: offer.deposit,
+                sellerDeposit: offer.sellerDeposit,
                 exchangeToken: offer.exchangeToken.address,
-                metadataHash: offer.metadataHash,
+                offerChecksum: offer.offerChecksum,
                 metadataUri: offer.metadataUri,
-                penalty: offer.penalty,
+                buyerCancelPenalty: offer.buyerCancelPenalty,
                 price: offer.price,
-                quantity: offer.quantity,
-                seller: offer.seller.address,
+                quantityAvailable: offer.quantityAvailable,
                 validFromDateInMS: Number(offer.validFromDate) * 1000,
                 validUntilDateInMS: Number(offer.validUntilDate) * 1000,
                 voucherValidDurationInMS:
                   Number(offer.voucherValidDuration) * 1000,
                 fulfillmentPeriodDurationInMS:
                   Number(offer.fulfillmentPeriodDuration) * 1000,
-                redeemableDateInMS: Number(offer.redeemableDate) * 1000
+                redeemableFromDateInMS: Number(offer.redeemableFromDate) * 1000
               }
         }
         currency={currency}

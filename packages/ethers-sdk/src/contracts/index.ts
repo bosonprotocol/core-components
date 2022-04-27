@@ -2,9 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { ERC20 } from "./ERC20";
+export type { IBosonAccountHandler } from "./IBosonAccountHandler";
 export type { IBosonOfferHandler } from "./IBosonOfferHandler";
+export type { IBosonOrchestrationHandler } from "./IBosonOrchestrationHandler";
 export type { ProtocolDiamond } from "./ProtocolDiamond";
 
 export { ERC20__factory } from "./factories/ERC20__factory";
+export { IBosonAccountHandler__factory } from "./factories/IBosonAccountHandler__factory";
 export { IBosonOfferHandler__factory } from "./factories/IBosonOfferHandler__factory";
+export { IBosonOrchestrationHandler__factory } from "./factories/IBosonOrchestrationHandler__factory";
 export { ProtocolDiamond__factory } from "./factories/ProtocolDiamond__factory";
