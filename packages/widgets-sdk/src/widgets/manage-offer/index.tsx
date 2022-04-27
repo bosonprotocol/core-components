@@ -32,11 +32,12 @@ interface Props {
 }
 
 function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
-  const { widgetsUrl, ...restConfig } = widgetsConfig;
+  const { widgetsUrl, chainId, ipfsMetadataUrl } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     offerId,
-    ...restConfig
+    chainId,
+    ipfsMetadataUrl
   } as unknown as Record<string, string>).toString();
 
   return (
