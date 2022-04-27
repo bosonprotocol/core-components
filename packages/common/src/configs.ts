@@ -34,7 +34,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
+      protocolDiamond: "0xcb936f50e21A5Fd16960f67f90b2DC9dA495Ad59"
     }
   },
   {
