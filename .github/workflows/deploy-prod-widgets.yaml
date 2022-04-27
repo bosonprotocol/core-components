@@ -1,12 +1,11 @@
-name: Deploy widgets to IPFS
+name: Deploy production widgets to IPFS
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    branches: [main]
 
 jobs:
   deploy:
-    if: startsWith(github.event.release.tag_name, '@bosonprotocol/widgets@')
     runs-on: ubuntu-latest
     name: Deploy widgets to IPFS
     steps:
