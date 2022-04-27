@@ -1,0 +1,29 @@
+name: Deploy staging widgets
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    if: startsWith(github.event.release.tag_name, '@bosonprotocol/widgets@')
+    runs-on: ubuntu-latest
+    name: Deploy widgets
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
+      - run: npm install -g surge
+      - run: npm ci
+      - run: npm run build -- --cache-dir=".turbo"
+      - run: surge ./packages/widgets/build https://boson-widgets-staging.surge.sh --token ${{ secrets.SURGE_TOKEN }}
