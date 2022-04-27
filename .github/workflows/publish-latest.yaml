@@ -8,11 +8,6 @@ jobs:
   publish:
     name: Publish latest packages
     runs-on: ubuntu-latest
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GH_TOKEN: ${{ secrets.PAT }}
-      GITHUB_TOKEN: ${{ secrets.PAT }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,8 +32,12 @@ jobs:
       - run: npm ci
       - run: npm run build -- --cache-dir=".turbo"
       - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-          lerna publish --dist-tag latest --conventional-graduate --yes --create-release github
+          npx lerna publish --dist-tag latest --conventional-graduate --yes --create-release github
