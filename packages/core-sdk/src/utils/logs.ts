@@ -16,14 +16,16 @@ export function getCreatedOfferIdFromLogs(iface: Interface, logs: Log[]) {
 }
 
 export function getCommittedExchangeIdFromLogs(iface: Interface, logs: Log[]) {
-  const parsedLogs = logs.map((log) => {
-    try {
-      return iface.parseLog(log)  
-    } catch (error) {
-      // assume that failing to parse is irrelevant log
-      return null
-    }
-  }).filter(log => log !== null);
+  const parsedLogs = logs
+    .map((log) => {
+      try {
+        return iface.parseLog(log);
+      } catch (error) {
+        // assume that failing to parse is irrelevant log
+        return null;
+      }
+    })
+    .filter((log) => log !== null);
 
   const [buyerCommittedLog] = parsedLogs.filter(
     (log) => log.name === "BuyerCommitted"
