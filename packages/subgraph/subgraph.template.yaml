@@ -70,4 +70,35 @@ dataSources:
           handler: handleSellerCreatedEvent
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool))
           handler: handleSellerUpdatedEvent
+        - event: BuyerCreated(indexed uint256,(uint256,address,bool))
+          handler: handleBuyerCreatedEvent
       file: ./src/mappings/account-handler.ts
+  - kind: ethereum/contract
+    name: BosonExchangeHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonExchangeHandler 
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Offer
+        - Seller
+        - Buyer
+        - Exchange
+      abis:
+        - name: IBosonOfferHandler
+          file: ../common/src/abis/IBosonOfferHandler.json
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
+        - name: IBosonExchangeHandler
+          file: ../common/src/abis/IBosonExchangeHandler.json
+        - name: ProtocolDiamond
+          file: ../common/src/abis/ProtocolDiamond.json
+      eventHandlers:
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),bool,uint8))
+          handler: handleBuyerCommittedEvent
+      file: ./src/mappings/exchange-handler.ts

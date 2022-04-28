@@ -1,8 +1,9 @@
 import {
   SellerCreated,
-  SellerUpdated
+  SellerUpdated,
+  BuyerCreated
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
-import { Seller } from "../../generated/schema";
+import { Seller, Buyer } from "../../generated/schema";
 
 export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
@@ -37,4 +38,19 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
   seller.treasury = sellerFromEvent.treasury;
   seller.active = sellerFromEvent.active;
   seller.save();
+}
+
+export function handleBuyerCreatedEvent(event: BuyerCreated): void {
+  const buyerFromEvent = event.params.buyer;
+  const buyerId = buyerFromEvent.id.toString();
+
+  let buyer = Buyer.load(buyerId);
+
+  if (buyer === null) {
+    buyer = new Buyer(buyerId);
+  }
+
+  buyer.wallet = buyerFromEvent.wallet;
+  buyer.active = false;
+  buyer.save();
 }

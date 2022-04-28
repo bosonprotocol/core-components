@@ -83,6 +83,7 @@ type Offer @entity {
   price: BigInt!
   sellerDeposit: BigInt!
   buyerCancelPenalty: BigInt!
+  quantityInitial: BigInt!
   quantityAvailable: BigInt!
   validFromDate: BigInt!
   validUntilDate: BigInt!
@@ -97,14 +98,41 @@ type Offer @entity {
   exchangeToken: ExchangeToken!
   metadata: MetadataInterface
   voidedAt: BigInt
+  exchanges: [Exchange!]! @derivedFrom(field: "offer")
 }
 
 """
-Seller
+Exchange and Voucher
+"""
+enum ExchangeState {
+  COMMITTED
+  REVOKED
+  CANCELLED
+  REDEEMED
+  COMPLETED
+}
+
+type Exchange @entity {
+  id: ID!
+  offer: Offer!
+  buyer: Buyer!
+  seller: Seller
+  disputed: Boolean!
+  state: ExchangeState!
+  committedDate: BigInt!
+  finalizedDate: BigInt
+  validUntilDate: BigInt
+  redeemedDate: BigInt
+  expired: Boolean!
+}
+
+"""
+Accounts
 """
 type Seller @entity {
   id: ID! # Offer.sellerId
   offers: [Offer!]! @derivedFrom(field: "seller")
+  exchanges: [Exchange!]! @derivedFrom(field: "seller")
   operator: Bytes!
   admin: Bytes!
   clerk: Bytes!
@@ -112,6 +140,16 @@ type Seller @entity {
   active: Boolean!
 }
 
+type Buyer @entity {
+  id: ID!
+  exchanges: [Exchange!]! @derivedFrom(field: "buyer")
+  wallet: Bytes!
+  active: Boolean!
+}
+
+"""
+Tokens
+"""
 type ExchangeToken @entity {
   id: ID!
   address: Bytes!
