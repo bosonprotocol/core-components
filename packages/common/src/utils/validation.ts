@@ -5,16 +5,25 @@ import { isAddress } from "@ethersproject/address";
 export const createOfferArgsSchema = object({
   price: string()
     .required()
-    .test("is-valid-price", (value) => isPositiveBigNumber(value)),
+    .test(
+      "is-valid-price",
+      (value) => isPositiveBigNumber(value) && !isZeroBigNumber(value)
+    ),
   deposit: string()
     .required()
-    .test("is-valid-deposit", (value) => isPositiveBigNumber(value)),
+    .test(
+      "is-valid-deposit",
+      (value) => isPositiveBigNumber(value) && !isZeroBigNumber(value)
+    ),
   penalty: string()
     .required()
     .test("is-valid-penalty", (value) => isPositiveBigNumber(value)),
   quantity: string()
     .required()
-    .test("is-valid-quantity", (value) => isPositiveBigNumber(value)),
+    .test(
+      "is-valid-quantity",
+      (value) => isPositiveBigNumber(value) && !isZeroBigNumber(value)
+    ),
   validFromDateInMS: string()
     .required()
     .test("is-valid-from-date", (value, ctx) => {
@@ -79,6 +88,15 @@ function isPositiveBigNumber(value: unknown) {
   try {
     const bigNumber = BigNumber.from(value);
     return !bigNumber.isNegative();
+  } catch (error) {
+    return false;
+  }
+}
+
+function isZeroBigNumber(value: unknown) {
+  try {
+    const bigNumber = BigNumber.from(value);
+    return bigNumber.isZero();
   } catch (error) {
     return false;
   }
