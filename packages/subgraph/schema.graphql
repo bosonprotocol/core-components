@@ -23,6 +23,7 @@ interface MetadataInterface {
   """
   Enriched fields from offer entity to allow nested query workaround
   """
+  createdAt: BigInt!
   voided: Boolean!
   validFromDate: BigInt!
   validUntilDate: BigInt!
@@ -38,6 +39,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   offer: Offer!
   seller: Seller!
   exchangeToken: ExchangeToken!
+  createdAt: BigInt!
   voided: Boolean!
   validFromDate: BigInt!
   validUntilDate: BigInt!
@@ -53,6 +55,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   offer: Offer!
   seller: Seller!
   exchangeToken: ExchangeToken!
+  createdAt: BigInt!
   voided: Boolean!
   validFromDate: BigInt!
   validUntilDate: BigInt!

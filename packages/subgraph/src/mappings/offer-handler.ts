@@ -1,5 +1,4 @@
 import {
-  IBosonOfferHandler,
   OfferCreated,
   OfferVoided
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
@@ -14,36 +13,30 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
   let offer = Offer.load(offerId.toString());
 
   if (offer === null) {
-    const contract = IBosonOfferHandler.bind(event.address);
-    const result = contract.try_getOffer(offerId);
+    const offerStruct = event.params.offer;
 
-    if (!result.reverted && result.value.value0) {
-      const offerFromContract = result.value.value1;
+    offer = new Offer(offerId.toString());
+    offer.createdAt = event.block.timestamp;
+    offer.price = offerStruct.price;
+    offer.sellerDeposit = offerStruct.sellerDeposit;
+    offer.buyerCancelPenalty = offerStruct.buyerCancelPenalty;
+    offer.quantityAvailable = offerStruct.quantityAvailable;
+    offer.validFromDate = offerStruct.validFromDate;
+    offer.validUntilDate = offerStruct.validUntilDate;
+    offer.redeemableFromDate = offerStruct.redeemableFromDate;
+    offer.fulfillmentPeriodDuration = offerStruct.fulfillmentPeriodDuration;
+    offer.voucherValidDuration = offerStruct.voucherValidDuration;
+    offer.seller = offerStruct.sellerId.toString();
+    offer.exchangeToken = offerStruct.exchangeToken.toHexString();
+    offer.metadataUri = offerStruct.metadataUri;
+    offer.offerChecksum = offerStruct.offerChecksum;
+    offer.metadata = offerId.toString() + "-metadata";
+    offer.voided = false;
 
-      saveExchangeToken(offerFromContract.exchangeToken);
-      saveMetadata(offerFromContract);
+    offer.save();
 
-      offer = new Offer(offerId.toString());
-      offer.createdAt = event.block.timestamp;
-      offer.price = offerFromContract.price;
-      offer.sellerDeposit = offerFromContract.sellerDeposit;
-      offer.buyerCancelPenalty = offerFromContract.buyerCancelPenalty;
-      offer.quantityAvailable = offerFromContract.quantityAvailable;
-      offer.validFromDate = offerFromContract.validFromDate;
-      offer.validUntilDate = offerFromContract.validUntilDate;
-      offer.redeemableFromDate = offerFromContract.redeemableFromDate;
-      offer.fulfillmentPeriodDuration =
-        offerFromContract.fulfillmentPeriodDuration;
-      offer.voucherValidDuration = offerFromContract.voucherValidDuration;
-      offer.seller = offerFromContract.sellerId.toString();
-      offer.exchangeToken = offerFromContract.exchangeToken.toHexString();
-      offer.metadataUri = offerFromContract.metadataUri;
-      offer.offerChecksum = offerFromContract.offerChecksum;
-      offer.metadata = offerId.toString() + "-metadata";
-      offer.voided = false;
-
-      offer.save();
-    }
+    saveExchangeToken(offerStruct.exchangeToken);
+    saveMetadata(offer, event.block.timestamp);
   }
 }
 
@@ -55,6 +48,9 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
   if (offer !== null) {
     offer.voided = true;
     offer.voidedAt = event.block.timestamp;
+
     offer.save();
+
+    saveMetadata(offer, offer.createdAt);
   }
 }
