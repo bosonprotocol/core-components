@@ -8,10 +8,14 @@ import {
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import * as accounts from "./accounts";
+import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
-import { getCreatedOfferIdFromLogs } from "./utils/logs";
+import {
+  getCreatedOfferIdFromLogs,
+  getCommittedExchangeIdFromLogs
+} from "./utils/logs";
 import { MultiQueryOpts } from "./utils/subgraph";
 
 export class CoreSDK {
@@ -160,6 +164,28 @@ export class CoreSDK {
       );
     }
     return [];
+  }
+
+  public async commitToOffer(
+    offerId: BigNumberish,
+    overrides: Partial<{
+      buyer: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.commitToOffer({
+      buyer: overrides.buyer || (await this._web3Lib.getSignerAddress()),
+      offerId,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: this._protocolDiamond
+    });
+  }
+
+  public getCommittedExchangeIdFromLogs(logs: Log[]): string | null {
+    return getCommittedExchangeIdFromLogs(
+      exchanges.iface.bosonExchangeHandlerIface,
+      logs
+    );
   }
 
   public async getExchangeTokenAllowance(
