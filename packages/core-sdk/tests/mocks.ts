@@ -1,8 +1,10 @@
 import { RawOfferFromSubgraph } from "../src/offers/types";
-import { MetadataType } from "@bosonprotocol/common";
+import { MetadataType, utils } from "@bosonprotocol/common";
 import nock from "nock";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
+
+export const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 export function interceptSubgraph() {
   return nock(SUBGRAPH_URL).post("", (body) => {
@@ -22,14 +24,14 @@ export function mockRawOfferFromSubgraph(
 
   return {
     id: "1",
-    createdAt: "1646910946",
+    createdAt: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     price: "1",
     sellerDeposit: "2",
     buyerCancelPenalty: "0",
     quantityAvailable: "10",
-    validFromDate: "1646997184",
-    validUntilDate: "1647083584",
-    redeemableFromDate: "1647083584",
+    validFromDate: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
+    validUntilDate: utils.timestamp.msToSec(Date.now() + DAY_IN_MS).toString(),
+    redeemableFromDate: utils.timestamp.msToSec(Date.now()).toString(),
     fulfillmentPeriodDuration: "864000",
     voucherValidDuration: "86400",
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",

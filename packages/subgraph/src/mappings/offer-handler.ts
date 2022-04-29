@@ -20,6 +20,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.price = offerStruct.price;
     offer.sellerDeposit = offerStruct.sellerDeposit;
     offer.buyerCancelPenalty = offerStruct.buyerCancelPenalty;
+    offer.quantityInitial = offerStruct.quantityAvailable;
     offer.quantityAvailable = offerStruct.quantityAvailable;
     offer.validFromDate = offerStruct.validFromDate;
     offer.validUntilDate = offerStruct.validUntilDate;
