@@ -1,17 +1,18 @@
-import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { IBosonOfferHandler__getOfferResultOfferStruct } from "../../../generated/OfferHandler/IBosonOfferHandler";
+import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
 import {
   ProductV1MetadataEntity,
-  ProductV1Brand
+  ProductV1Brand,
+  Offer
 } from "../../../generated/schema";
 
 import { convertToString, convertToStringArray } from "../../utils/json";
 
 export function saveProductV1Metadata(
-  offerFromContract: IBosonOfferHandler__getOfferResultOfferStruct,
-  metadataObj: TypedMap<string, JSONValue>
+  offer: Offer,
+  metadataObj: TypedMap<string, JSONValue>,
+  timestamp: BigInt
 ): string {
-  const offerId = offerFromContract.id.toString();
+  const offerId = offer.id.toString();
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
@@ -32,12 +33,12 @@ export function saveProductV1Metadata(
 
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.offer = offerId;
-  productV1MetadataEntity.seller = offerFromContract.seller.toHexString();
-  productV1MetadataEntity.exchangeToken =
-    offerFromContract.exchangeToken.toHexString();
-  productV1MetadataEntity.voided = offerFromContract.voided;
-  productV1MetadataEntity.validFromDate = offerFromContract.validFromDate;
-  productV1MetadataEntity.validUntilDate = offerFromContract.validUntilDate;
+  productV1MetadataEntity.seller = offer.sellerId.toHexString();
+  productV1MetadataEntity.exchangeToken = offer.exchangeToken;
+  productV1MetadataEntity.createdAt = timestamp;
+  productV1MetadataEntity.voided = offer.voided;
+  productV1MetadataEntity.validFromDate = offer.validFromDate;
+  productV1MetadataEntity.validUntilDate = offer.validUntilDate;
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;

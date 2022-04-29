@@ -9,16 +9,22 @@ export const createOfferArgsSchema = object({
       "is-valid-price",
       (value) => isPositiveBigNumber(value) && !isZeroBigNumber(value)
     ),
-  deposit: string()
+  sellerDeposit: string()
     .required()
     .test(
       "is-valid-deposit",
       (value) => isPositiveBigNumber(value) && !isZeroBigNumber(value)
     ),
-  penalty: string()
+  buyerCancelPenalty: string()
     .required()
-    .test("is-valid-penalty", (value) => isPositiveBigNumber(value)),
-  quantity: string()
+    .test("is-positive-number", (value) => isPositiveBigNumber(value))
+    .test(
+      "penalty-lte-price",
+      "${path} has to be less than or equal price",
+      (value, ctx) =>
+        BigNumber.from(value).lte(BigNumber.from(ctx.parent.price))
+    ),
+  quantityAvailable: string()
     .required()
     .test(
       "is-valid-quantity",
@@ -42,7 +48,7 @@ export const createOfferArgsSchema = object({
         BigNumber.from(ctx.parent.validFromDateInMS).lt(BigNumber.from(value))
       );
     }),
-  redeemableDateInMS: string()
+  redeemableFromDateInMS: string()
     .required()
     .test(
       "is-valid-redeemable-date",
@@ -55,14 +61,28 @@ export const createOfferArgsSchema = object({
   voucherValidDurationInMS: string()
     .required()
     .test("is-valid-duration", (value) => isPositiveBigNumber(value)),
-  seller: string()
-    .required()
-    .test("is-valid-seller", (value) => isAddress(value || "")),
   exchangeToken: string()
     .required()
     .test("is-valid-exchange-token", (value) => isAddress(value || "")),
-  metadataUri: string().required().url(),
-  metadataHash: string().required()
+  metadataUri: string()
+    .required()
+    .test("is-valid-metadata-uri", (value) => isMetadataUri(value)), // TODO: validate if
+  offerChecksum: string().required()
+});
+
+export const createSellerArgsSchema = object({
+  operator: string()
+    .required()
+    .test("is-valid-address", (value) => isAddress(value || "")),
+  admin: string()
+    .required()
+    .test("is-valid-address", (value) => isAddress(value || "")),
+  clerk: string()
+    .required()
+    .test("is-valid-address", (value) => isAddress(value || "")),
+  treasury: string()
+    .required()
+    .test("is-valid-address", (value) => isAddress(value || ""))
 });
 
 const commonMetadataSchema = {
@@ -100,4 +120,22 @@ function isZeroBigNumber(value: unknown) {
   } catch (error) {
     return false;
   }
+}
+function isMetadataUri(value: unknown) {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  if (/^(ipfs|http|https):\/\/[^ "]+$/.test(value)) {
+    return true;
+  }
+
+  // IPFS CID v0
+  if (value.startsWith("Qm") && value.length === 46) {
+    return true;
+  }
+
+  // TODO: IPFS CID v1
+
+  return false;
 }

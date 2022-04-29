@@ -1,7 +1,7 @@
 import { createOfferArgsSchema } from "../../src/utils/validation";
 import { mockCreateOfferArgs } from "../mocks";
 
-describe("#createOfferArgsSchema", () => {
+describe("#createOfferArgsSchema()", () => {
   test("not throw for valid args", () => {
     expect(
       createOfferArgsSchema.validateSync(mockCreateOfferArgs())
@@ -18,7 +18,7 @@ describe("#createOfferArgsSchema", () => {
     }).toThrow();
   });
 
-  test("throw for invalid date values", () => {
+  test("throw for invalid validation date values", () => {
     expect(() => {
       createOfferArgsSchema.validateSync(
         mockCreateOfferArgs({
@@ -29,11 +29,22 @@ describe("#createOfferArgsSchema", () => {
     }).toThrow();
   });
 
+  test("throw for invalid price values", () => {
+    expect(() => {
+      createOfferArgsSchema.validateSync(
+        mockCreateOfferArgs({
+          price: "1",
+          buyerCancelPenalty: "2"
+        })
+      );
+    }).toThrow();
+  });
+
   test("throw for invalid address values", () => {
     expect(() => {
       createOfferArgsSchema.validateSync(
         mockCreateOfferArgs({
-          seller: "0xinvalid"
+          exchangeToken: "0xinvalid"
         })
       );
     }).toThrow();

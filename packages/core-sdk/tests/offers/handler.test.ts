@@ -92,7 +92,12 @@ describe("#voidOffer()", () => {
       data: {
         offer: mockRawOfferFromSubgraph({
           seller: {
-            address: sellerAddress
+            id: "1",
+            operator: sellerAddress,
+            admin: sellerAddress,
+            clerk: sellerAddress,
+            treasury: sellerAddress,
+            active: true
           }
         })
       }
@@ -108,7 +113,7 @@ describe("#voidOffer()", () => {
         })
       })
     ).rejects.toThrow(
-      `Signer with address "${signerAddress}" is not the seller "${sellerAddress}"`
+      `Signer with address "${signerAddress}" is not the operator "${sellerAddress}"`
     );
   });
 
@@ -117,7 +122,12 @@ describe("#voidOffer()", () => {
       data: {
         offer: mockRawOfferFromSubgraph({
           seller: {
-            address: ADDRESS
+            id: "1",
+            operator: ADDRESS,
+            admin: ADDRESS,
+            clerk: ADDRESS,
+            treasury: ADDRESS,
+            active: true
           }
         })
       }

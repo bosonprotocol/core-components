@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../generated/OfferHandler/ERC20";
-import { ERC20SymbolBytes } from "../../generated/OfferHandler/ERC20SymbolBytes";
-import { ERC20NameBytes } from "../../generated/OfferHandler/ERC20NameBytes";
+import { ERC20 } from "../../generated/BosonOfferHandler/ERC20";
+import { ERC20SymbolBytes } from "../../generated/BosonOfferHandler/ERC20SymbolBytes";
+import { ERC20NameBytes } from "../../generated/BosonOfferHandler/ERC20NameBytes";
 import { ExchangeToken } from "../../generated/schema";
 
 export function saveExchangeToken(exchangeTokenAddress: Address): void {
