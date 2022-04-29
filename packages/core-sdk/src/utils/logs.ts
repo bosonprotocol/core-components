@@ -1,25 +1,16 @@
 import { Log } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 
-export function getCreatedOfferIdFromLogs(iface: Interface, logs: Log[]) {
-  const parsedLogs = logs.map((log) => iface.parseLog(log));
-
-  const [offerCreatedLog] = parsedLogs.filter(
-    (log) => log.name === "OfferCreated"
-  );
-
-  if (!offerCreatedLog) {
-    return null;
-  }
-
-  return String(offerCreatedLog.args.offerId);
-}
-
-export function getCommittedExchangeIdFromLogs(iface: Interface, logs: Log[]) {
-  const parsedLogs = logs
+export function getValueFromLogs(args: {
+  iface: Interface;
+  logs: Log[];
+  eventArgsKey: string;
+  eventName: string;
+}) {
+  const parsedLogs = args.logs
     .map((log) => {
       try {
-        return iface.parseLog(log);
+        return args.iface.parseLog(log);
       } catch (error) {
         // assume that failing to parse is irrelevant log
         return null;
@@ -27,13 +18,11 @@ export function getCommittedExchangeIdFromLogs(iface: Interface, logs: Log[]) {
     })
     .filter((log) => log !== null);
 
-  const [buyerCommittedLog] = parsedLogs.filter(
-    (log) => log.name === "BuyerCommitted"
-  );
+  const [relevantLog] = parsedLogs.filter((log) => log.name === args.eventName);
 
-  if (!buyerCommittedLog) {
+  if (!relevantLog) {
     return null;
   }
 
-  return String(buyerCommittedLog.args.exchangeId);
+  return String(relevantLog.args[args.eventArgsKey]);
 }

@@ -12,10 +12,7 @@ import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
-import {
-  getCreatedOfferIdFromLogs,
-  getCommittedExchangeIdFromLogs
-} from "./utils/logs";
+import { getValueFromLogs } from "./utils/logs";
 import { MultiQueryOpts } from "./utils/subgraph";
 
 export class CoreSDK {
@@ -116,17 +113,22 @@ export class CoreSDK {
   }
 
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
-    try {
-      return getCreatedOfferIdFromLogs(
-        offers.iface.bosonOfferHandlerIface,
-        logs
-      );
-    } catch (offerError) {
-      return getCreatedOfferIdFromLogs(
-        orchestration.iface.bosonOrchestrationHandlerIface,
-        logs
-      );
-    }
+    const offerId = getValueFromLogs({
+      iface: offers.iface.bosonOfferHandlerIface,
+      logs,
+      eventArgsKey: "offerId",
+      eventName: "OfferCreated"
+    });
+
+    return (
+      offerId ||
+      getValueFromLogs({
+        iface: orchestration.iface.bosonOrchestrationHandlerIface,
+        logs,
+        eventArgsKey: "offerId",
+        eventName: "OfferCreated"
+      })
+    );
   }
 
   public async voidOffer(
@@ -182,10 +184,12 @@ export class CoreSDK {
   }
 
   public getCommittedExchangeIdFromLogs(logs: Log[]): string | null {
-    return getCommittedExchangeIdFromLogs(
-      exchanges.iface.bosonExchangeHandlerIface,
-      logs
-    );
+    return getValueFromLogs({
+      iface: exchanges.iface.bosonExchangeHandlerIface,
+      logs,
+      eventArgsKey: "exchangeId",
+      eventName: "BuyerCommitted"
+    });
   }
 
   public async getExchangeTokenAllowance(
