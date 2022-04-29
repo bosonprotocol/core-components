@@ -14,7 +14,9 @@ fragment sellerFields on Seller {
 
 export const getSellerByOperatorQuery = `
 query GetSellersByOperator($operator: String!) {
-  sellers(operator: $operator) {
+  sellers(where: {
+    operator: $operator
+  }) {
     ...sellerFields
   }
 }
