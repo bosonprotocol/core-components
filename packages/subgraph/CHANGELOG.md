@@ -3,19 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.1.0...@bosonprotocol/subgraph@1.1.1) (2022-04-25)
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.1.1...@bosonprotocol/subgraph@1.2.0) (2022-05-02)
 
+### Bug Fixes
+
+* **subgraph:** update voided prop on metadata ([#73](https://github.com/bosonprotocol/core-components/issues/73)) ([cbc509d](https://github.com/bosonprotocol/core-components/commit/cbc509d88e76f2fe5ccbba2fb18a419547853bc8))
+
+### Features
+
+* adapt create-offer to new offer-, account and orchestration handler contracts ([#67](https://github.com/bosonprotocol/core-components/issues/67)) ([86a589d](https://github.com/bosonprotocol/core-components/commit/86a589d69c65f178bf86f062f7ad77f3bfe33cad))
+* commit functionality in sdks and subgraphs ([#75](https://github.com/bosonprotocol/core-components/issues/75)) ([519ca47](https://github.com/bosonprotocol/core-components/commit/519ca470318b2f1fceb44c5c6a5739a204d0a266))
+* **subgraph:** enrich metadata schemas with fields from offer ([#68](https://github.com/bosonprotocol/core-components/issues/68)) ([10f0815](https://github.com/bosonprotocol/core-components/commit/10f081578598d9cc7a21eea9d8ccadbd8fb29875))
+
+## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.1.0...@bosonprotocol/subgraph@1.1.1) (2022-04-25)
 
 ### Bug Fixes
 
 * subgraph staging deploy config ([#55](https://github.com/bosonprotocol/core-components/issues/55)) ([aee4881](https://github.com/bosonprotocol/core-components/commit/aee488129005aff499123fd7fa497d79b554a46e))
 
-
-
-
-
 # 1.1.0 (2022-04-21)
-
 
 ### Features
 
