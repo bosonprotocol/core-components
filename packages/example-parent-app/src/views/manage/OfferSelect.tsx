@@ -28,12 +28,8 @@ export function OfferSelect({ onOfferSelect, onReset }: Props) {
   function retrieveOffers(sellerAddress: string) {
     if (!sellerAddress) return;
 
-    const { subgraphUrl } = getDefaultConfig({
-      chainId: CONFIG.chainId
-    });
-
     offersApi.subgraph
-      .getAllOffersOfOperator(subgraphUrl, sellerAddress)
+      .getAllOffersOfOperator(CONFIG.subgraphUrl, sellerAddress)
       .then(setOffers)
       .catch(console.log);
   }
