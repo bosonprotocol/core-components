@@ -147,7 +147,7 @@ export function WidgetLayout({
       {!hideWallet && (
         <WalletConnection>
           {isActive ? (
-            <ConnectionSuccess onClick={() => metaMask.deactivate()}>
+            <ConnectionSuccess>
               {truncateAddress(account as string)}
             </ConnectionSuccess>
           ) : (
