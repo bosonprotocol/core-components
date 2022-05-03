@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/core-sdk",
-  "version": "1.2.0",
+  "version": "1.2.1-alpha.0",
   "description": "> TODO: description",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -30,7 +30,7 @@
     "access": "restricted"
   },
   "dependencies": {
-    "@bosonprotocol/common": "1.2.0",
+    "@bosonprotocol/common": "1.3.0-alpha.0",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
