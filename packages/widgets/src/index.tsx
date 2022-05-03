@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// TODO: remove router
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
