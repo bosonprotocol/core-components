@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import { StageIndicator } from "./StageIndicator";
@@ -97,6 +97,7 @@ export default function CreateOffer() {
   async function handleTokenApproval() {
     try {
       const operatorAddress = account || seller?.operator || "";
+      console.log(seller);
 
       const txResponse = seller
         ? await coreSDK.createOffer(createOfferArgs)
@@ -117,6 +118,7 @@ export default function CreateOffer() {
       });
 
       const txReceipt = await txResponse.wait(1);
+      console.log(txReceipt.logs);
       const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
 
       setTransaction({

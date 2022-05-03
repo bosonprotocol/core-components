@@ -144,6 +144,17 @@ export default function ManageOffer() {
         )}
         <SecondaryButton
           style={{ width: !voidOfferAvailable ? "100%" : undefined }}
+          onClick={async () => {
+            const txResponse = await coreSDK.commitToOffer(
+              offer ? offer.id : 1
+            );
+            const receipt = await txResponse.wait();
+            console.log(receipt.logs);
+            const exchangeId = coreSDK.getCommittedExchangeIdFromLogs(
+              receipt.logs
+            );
+            console.log(exchangeId);
+          }}
         >
           Withdraw
         </SecondaryButton>
