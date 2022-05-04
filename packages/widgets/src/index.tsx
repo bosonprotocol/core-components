@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import { App } from "./app";
 import reportWebVitals from "./reportWebVitals";
 
 const GlobalStyle = createGlobalStyle`
@@ -11,33 +11,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const CreateOffer = React.lazy(() => import("./views/create-offer"));
-const ManageOffer = React.lazy(() => import("./views/manage-offer"));
-
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <React.Suspense fallback={<div>Loading...</div>}>
-      <HashRouter>
-        <Routes>
-          <Route
-            path="/create"
-            element={
-              <React.Suspense fallback={<></>}>
-                <CreateOffer />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path="/manage"
-            element={
-              <React.Suspense fallback={<></>}>
-                <ManageOffer />
-              </React.Suspense>
-            }
-          />
-        </Routes>
-      </HashRouter>
+    <React.Suspense fallback={<></>}>
+      <App />
     </React.Suspense>
   </React.StrictMode>,
   document.getElementById("root")

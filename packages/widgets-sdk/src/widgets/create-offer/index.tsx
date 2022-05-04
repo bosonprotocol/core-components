@@ -59,7 +59,7 @@ function CreateOfferWidget({ request, widgetsConfig }: Props) {
     <Modal>
       <StyledIframe
         style={{ boxShadow: "none" }}
-        src={`${widgetsUrl}/#/create?${urlParams}`}
+        src={`${widgetsUrl}?${urlParams}`}
         width={600}
         height={541}
       />

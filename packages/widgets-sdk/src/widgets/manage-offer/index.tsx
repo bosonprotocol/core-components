@@ -43,7 +43,7 @@ function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
   return (
     <StyledIframe
       style={{ boxShadow: "none" }}
-      src={`${widgetsUrl}/#/manage?${urlParams}`}
+      src={`${widgetsUrl}?${urlParams}`}
       width={626}
       height={546}
     />

@@ -7,7 +7,6 @@
       "ignoreChanges": ["*.md"],
       "message": "chore(release): publish latest [skip ci]",
       "conventionalCommits": true,
-      "exact": true,
       "verifyAccess": false
     }
   },

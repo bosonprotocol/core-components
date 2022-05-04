@@ -57,7 +57,10 @@ export function HomeView() {
           offerChecksum: metadataHash, // TODO: use correct checksum
           metadataUri
         },
-        CONFIG
+        {
+          ...CONFIG,
+          widgetsUrl: "http://localhost:3000"
+        }
       );
     }
   });

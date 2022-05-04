@@ -4,6 +4,7 @@ import { closeWidget } from "../../closeWidget";
 import { colors } from "../../colors";
 import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as Close } from "./close.svg";
 
 const StyledLogo = styled(Logo)`
   margin-top: 16px;
@@ -56,16 +57,23 @@ const ConnectButton = styled.button`
   }
 `;
 
-const ConnectionSuccess = styled.div`
+const ConnectionSuccess = styled.button`
+  all: unset;
   background-color: ${colors.cyberSpaceGray};
   border: solid 1px ${colors.neonGreen};
   color: white;
-  padding: 0px 10px;
+  padding: 0px 4px 0px 10px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 30px;
+
+  > svg {
+    display: inline-block;
+    margin-left: 4px;
+  }
+  cursor: pointer;
 `;
 
 const CloseButton = styled.button`
@@ -137,6 +145,19 @@ export function WidgetLayout({
     return `${start}...${end}`;
   }
 
+  function connectWallet() {
+    metaMask.provider
+      ?.request({
+        method: "wallet_requestPermissions",
+        params: [
+          {
+            eth_accounts: {}
+          }
+        ]
+      })
+      .then(() => metaMask.activate());
+  }
+
   return (
     <Root>
       {!hideCloseButton && (
@@ -147,11 +168,11 @@ export function WidgetLayout({
       {!hideWallet && (
         <WalletConnection>
           {isActive ? (
-            <ConnectionSuccess>
-              {truncateAddress(account as string)}
+            <ConnectionSuccess onClick={() => metaMask.deactivate()}>
+              {truncateAddress(account as string)} <Close />
             </ConnectionSuccess>
           ) : (
-            <ConnectButton onClick={() => metaMask.activate()}>
+            <ConnectButton onClick={connectWallet}>
               Connect Wallet
             </ConnectButton>
           )}
