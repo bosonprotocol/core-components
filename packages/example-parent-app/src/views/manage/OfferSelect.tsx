@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { offers as offersApi, getDefaultConfig } from "@bosonprotocol/core-sdk";
+import { offers as offersApi } from "@bosonprotocol/core-sdk";
 import { CONFIG } from "../../lib/config";
 import styled from "styled-components";
 import { isAddress } from "@ethersproject/address";
@@ -28,12 +28,8 @@ export function OfferSelect({ onOfferSelect, onReset }: Props) {
   function retrieveOffers(sellerAddress: string) {
     if (!sellerAddress) return;
 
-    const { subgraphUrl } = getDefaultConfig({
-      chainId: CONFIG.chainId
-    });
-
     offersApi.subgraph
-      .getAllOffersOfSeller(subgraphUrl, sellerAddress)
+      .getAllOffersOfOperator(CONFIG.subgraphUrl, sellerAddress)
       .then(setOffers)
       .catch(console.log);
   }

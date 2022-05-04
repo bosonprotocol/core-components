@@ -20,18 +20,18 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     id: "1",
     voided: false,
     price: parseEther("1"),
-    deposit: parseEther("1"),
-    penalty: parseEther("1"),
-    quantity: 10,
+    sellerDeposit: parseEther("1"),
+    buyerCancelPenalty: parseEther("1"),
+    quantityAvailable: 10,
     validFromDate: Math.floor(Date.now() / 1000),
     validUntilDate: Math.floor((Date.now() + 2 * 60 * 1000) / 1000),
-    redeemableDate: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
+    redeemableFromDate: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
     fulfillmentPeriodDuration: 60 * 60,
     voucherValidDuration: 60 * 60,
-    seller: ADDRESS,
+    sellerId: "1",
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
-    metadataHash: IPFS_HASH,
+    offerChecksum: IPFS_HASH, // TODO: use correct checksum
     ...overrides
   };
 }
@@ -40,20 +40,18 @@ export function mockCreateOfferArgs(
   overrides?: Partial<CreateOfferArgs>
 ): CreateOfferArgs {
   return {
-    id: "1",
     price: parseEther("1"),
-    deposit: parseEther("1"),
-    penalty: parseEther("1"),
-    quantity: 10,
+    sellerDeposit: parseEther("1"),
+    buyerCancelPenalty: parseEther("1"),
+    quantityAvailable: 10,
     validFromDateInMS: Date.now() + 1 * 60 * 1000,
     validUntilDateInMS: Date.now() + 2 * 60 * 1000,
-    redeemableDateInMS: Date.now() + 1 * 60 * 1000,
+    redeemableFromDateInMS: Date.now() + 1 * 60 * 1000,
     fulfillmentPeriodDurationInMS: 60 * 60 * 1000,
     voucherValidDurationInMS: 60 * 60 * 1000,
-    seller: ADDRESS,
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
-    metadataHash: IPFS_HASH,
+    offerChecksum: IPFS_HASH, // TODO: use correct checksum
     ...overrides
   };
 }

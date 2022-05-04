@@ -21,9 +21,9 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "seller",
-        type: "address",
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
       },
       {
         components: [
@@ -34,22 +34,27 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "price",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "deposit",
+            name: "sellerDeposit",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "penalty",
+            name: "buyerCancelPenalty",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "quantity",
+            name: "quantityAvailable",
             type: "uint256",
           },
           {
@@ -64,7 +69,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "redeemableDate",
+            name: "redeemableFromDate",
             type: "uint256",
           },
           {
@@ -78,11 +83,6 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "seller",
-            type: "address",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
@@ -94,7 +94,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "metadataHash",
+            name: "offerChecksum",
             type: "string",
           },
           {
@@ -123,9 +123,111 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "seller",
-        type: "address",
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemableFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriodDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValidDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "offerChecksum",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Offer",
+        name: "offer",
+        type: "tuple",
+      },
+    ],
+    name: "OfferUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
       },
     ],
     name: "OfferVoided",
@@ -142,22 +244,27 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "price",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "deposit",
+            name: "sellerDeposit",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "penalty",
+            name: "buyerCancelPenalty",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "quantity",
+            name: "quantityAvailable",
             type: "uint256",
           },
           {
@@ -172,7 +279,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "redeemableDate",
+            name: "redeemableFromDate",
             type: "uint256",
           },
           {
@@ -186,11 +293,6 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "seller",
-            type: "address",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
@@ -202,7 +304,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "metadataHash",
+            name: "offerChecksum",
             type: "string",
           },
           {
@@ -217,6 +319,114 @@ const _abi = [
       },
     ],
     name: "createOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemableFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriodDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValidDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "offerChecksum",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer[]",
+        name: "_offers",
+        type: "tuple[]",
+      },
+    ],
+    name: "createOfferBatch",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_validUntilDate",
+        type: "uint256",
+      },
+    ],
+    name: "extendOffer",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -246,7 +456,7 @@ const _abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "exists",
         type: "bool",
       },
       {
@@ -258,22 +468,27 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "price",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "deposit",
+            name: "sellerDeposit",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "penalty",
+            name: "buyerCancelPenalty",
             type: "uint256",
           },
           {
             internalType: "uint256",
-            name: "quantity",
+            name: "quantityAvailable",
             type: "uint256",
           },
           {
@@ -288,7 +503,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "redeemableDate",
+            name: "redeemableFromDate",
             type: "uint256",
           },
           {
@@ -302,11 +517,6 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "seller",
-            type: "address",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
@@ -318,7 +528,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "metadataHash",
+            name: "offerChecksum",
             type: "string",
           },
           {
@@ -343,7 +553,158 @@ const _abi = [
         type: "uint256",
       },
     ],
+    name: "isOfferUpdateable",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        internalType: "bool",
+        name: "offerUpdateable",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
+    name: "isOfferVoided",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        internalType: "bool",
+        name: "offerVoided",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemableFromDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriodDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValidDuration",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "offerChecksum",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+    ],
+    name: "updateOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
     name: "voidOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "_offerIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "voidOfferBatch",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

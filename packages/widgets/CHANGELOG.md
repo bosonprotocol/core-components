@@ -3,21 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.1.1...@bosonprotocol/widgets@1.2.0) (2022-05-02)
+
+### Features
+
+* adapt create-offer to new offer-, account and orchestration handler contracts ([#67](https://github.com/bosonprotocol/core-components/issues/67)) ([86a589d](https://github.com/bosonprotocol/core-components/commit/86a589d69c65f178bf86f062f7ad77f3bfe33cad))
+
 ## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.1.0...@bosonprotocol/widgets@1.1.1) (2022-04-25)
 
 **Note:** Version bump only for package @bosonprotocol/widgets
 
-
-
-
-
 # 1.1.0 (2022-04-21)
-
 
 ### Bug Fixes
 
 * fix url params validation  ([#38](https://github.com/bosonprotocol/core-components/issues/38)) ([dea407e](https://github.com/bosonprotocol/core-components/commit/dea407ef65fa4c7bb3cf2479f2d41486a12cc68b))
-
 
 ### Features
 

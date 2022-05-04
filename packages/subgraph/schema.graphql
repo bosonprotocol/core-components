@@ -18,6 +18,15 @@ interface MetadataInterface {
   offer: Offer!
   "Reference to related Seller entity"
   seller: Seller!
+  "Reference to related ExchangeToken entity"
+  exchangeToken: ExchangeToken!
+  """
+  Enriched fields from offer entity to allow nested query workaround
+  """
+  createdAt: BigInt!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
 }
 
 type BaseMetadataEntity implements MetadataInterface @entity {
@@ -29,6 +38,11 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   type: MetadataType! # MetadataType.BASE
   offer: Offer!
   seller: Seller!
+  exchangeToken: ExchangeToken!
+  createdAt: BigInt!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
 }
 
 type ProductV1MetadataEntity implements MetadataInterface @entity {
@@ -40,12 +54,24 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   type: MetadataType! # MetadataType.PRODUCT
   offer: Offer!
   seller: Seller!
+  exchangeToken: ExchangeToken!
+  createdAt: BigInt!
+  voided: Boolean!
+  validFromDate: BigInt!
+  validUntilDate: BigInt!
   """
   ProductV1MetadataEntity specific fields
   """
   images: [String!]
   tags: [String!]
   brandName: String
+  brand: ProductV1Brand!
+}
+
+type ProductV1Brand @entity {
+  id: ID!
+  name: String!
+  products: [ProductV1MetadataEntity!]! @derivedFrom(field: "brand")
 }
 
 """
@@ -55,31 +81,75 @@ type Offer @entity {
   id: ID!
   createdAt: BigInt!
   price: BigInt!
-  deposit: BigInt!
-  penalty: BigInt!
-  quantity: BigInt!
+  sellerDeposit: BigInt!
+  buyerCancelPenalty: BigInt!
+  quantityInitial: BigInt!
+  quantityAvailable: BigInt!
   validFromDate: BigInt!
   validUntilDate: BigInt!
-  redeemableDate: BigInt!
+  redeemableFromDate: BigInt!
   fulfillmentPeriodDuration: BigInt!
   voucherValidDuration: BigInt!
   metadataUri: String!
-  metadataHash: String!
+  offerChecksum: String!
   voided: Boolean!
+  sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
   metadata: MetadataInterface
   voidedAt: BigInt
+  exchanges: [Exchange!]! @derivedFrom(field: "offer")
 }
 
-type Seller @entity {
+"""
+Exchange and Voucher
+"""
+enum ExchangeState {
+  COMMITTED
+  REVOKED
+  CANCELLED
+  REDEEMED
+  COMPLETED
+}
+
+type Exchange @entity {
   id: ID!
-  address: Bytes!
-  offers: [Offer!]! @derivedFrom(field: "seller")
-  offerCount: BigInt!
-  # TODO: add more fields
+  offer: Offer!
+  buyer: Buyer!
+  seller: Seller
+  disputed: Boolean!
+  state: ExchangeState!
+  committedDate: BigInt!
+  finalizedDate: BigInt
+  validUntilDate: BigInt
+  redeemedDate: BigInt
+  expired: Boolean!
 }
 
+"""
+Accounts
+"""
+type Seller @entity {
+  id: ID! # Offer.sellerId
+  offers: [Offer!]! @derivedFrom(field: "seller")
+  exchanges: [Exchange!]! @derivedFrom(field: "seller")
+  operator: Bytes!
+  admin: Bytes!
+  clerk: Bytes!
+  treasury: Bytes!
+  active: Boolean!
+}
+
+type Buyer @entity {
+  id: ID!
+  exchanges: [Exchange!]! @derivedFrom(field: "buyer")
+  wallet: Bytes!
+  active: Boolean!
+}
+
+"""
+Tokens
+"""
 type ExchangeToken @entity {
   id: ID!
   address: Bytes!

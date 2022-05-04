@@ -73,19 +73,18 @@ export const Spacer = styled.div`
 `;
 
 export const emptyOfferDetails = {
-  deposit: "0",
+  sellerDeposit: "0",
   exchangeToken: "...",
-  metadataHash: "...",
+  offerChecksum: "...",
   metadataUri: "...",
-  penalty: "0",
+  buyerCancelPenalty: "0",
   price: "0",
-  quantity: "0",
-  seller: "...",
+  quantityAvailable: "0",
   validFromDateInMS: "0",
   validUntilDateInMS: "0",
   voucherValidDurationInMS: "0",
   fulfillmentPeriodDurationInMS: "0",
-  redeemableDateInMS: "0"
+  redeemableFromDateInMS: "0"
 };
 
 interface Props {
@@ -113,8 +112,8 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
         <Entry>
           <Label>Seller Deposit</Label>
           <Money>
-            <Value title={formatEther(createOfferArgs.deposit)}>
-              {formatEther(createOfferArgs.deposit)}
+            <Value title={formatEther(createOfferArgs.sellerDeposit)}>
+              {formatEther(createOfferArgs.sellerDeposit)}
             </Value>
             <Currency>{currency}</Currency>
           </Money>
@@ -123,15 +122,15 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
       <Row>
         <Entry>
           <Label>Quantity</Label>
-          <Value title={createOfferArgs.quantity.toString()}>
-            {createOfferArgs.quantity}
+          <Value title={createOfferArgs.quantityAvailable.toString()}>
+            {createOfferArgs.quantityAvailable}
           </Value>
         </Entry>
         <Entry>
           <Label>Cancellation Penalty</Label>
           <Money>
-            <Value title={formatEther(createOfferArgs.penalty)}>
-              {formatEther(createOfferArgs.penalty)}
+            <Value title={formatEther(createOfferArgs.buyerCancelPenalty)}>
+              {formatEther(createOfferArgs.buyerCancelPenalty)}
             </Value>
             <Currency>{currency}</Currency>
           </Money>
@@ -158,11 +157,13 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
       </Row>
       <Row>
         <Entry>
-          <Label>Redeemable By</Label>
+          <Label>Redeemable From</Label>
           <Value
-            title={formatDate(createOfferArgs.redeemableDateInMS.toString())}
+            title={formatDate(
+              createOfferArgs.redeemableFromDateInMS.toString()
+            )}
           >
-            {formatDate(createOfferArgs.redeemableDateInMS.toString())}
+            {formatDate(createOfferArgs.redeemableFromDateInMS.toString())}
           </Value>
         </Entry>
         <Entry>
@@ -191,9 +192,9 @@ export function OfferDetails({ createOfferArgs, currency }: Props) {
           </Value>
         </Entry>
         <Entry>
-          <Label>Metadata Hash</Label>
-          <Value title={createOfferArgs.metadataHash}>
-            {createOfferArgs.metadataHash}
+          <Label>Offer Checksum</Label>
+          <Value title={createOfferArgs.offerChecksum}>
+            {createOfferArgs.offerChecksum}
           </Value>
         </Entry>
       </Row>

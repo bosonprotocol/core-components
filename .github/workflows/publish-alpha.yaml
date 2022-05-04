@@ -9,11 +9,6 @@ jobs:
   publish:
     name: Publish alpha packages
     runs-on: ubuntu-latest
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GH_TOKEN: ${{ secrets.PAT }}
-      GITHUB_TOKEN: ${{ secrets.PAT }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,8 +37,11 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Bump next versions
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
-          lerna version \
+          npx lerna version \
             --yes \
             --conventional-prerelease \
             --no-git-tag-version \
@@ -53,6 +51,9 @@ jobs:
           git add .
           git commit -m "chore(release): publish alpha [skip ci]"
       - name: Publish to npm
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          lerna publish from-package --dist-tag alpha --yes
+          npx lerna publish from-package --dist-tag alpha --yes
           git push

@@ -6,16 +6,16 @@ import { WidgetConfig } from "../../types";
 
 interface CreateOfferRequest {
   price: string;
-  deposit: string;
-  penalty: string;
-  quantity: string;
+  sellerDeposit: string;
+  buyerCancelPenalty: string;
+  quantityAvailable: string;
   validFromDateInMS: string;
   validUntilDateInMS: string;
-  redeemableDateInMS: string;
+  redeemableFromDateInMS: string;
   fulfillmentPeriodDurationInMS: string;
   voucherValidDurationInMS: string;
   metadataUri: string;
-  metadataHash: string;
+  offerChecksum: string;
 }
 
 export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {
@@ -59,7 +59,7 @@ function CreateOfferWidget({ request, widgetsConfig }: Props) {
     <Modal>
       <StyledIframe
         style={{ boxShadow: "none" }}
-        src={`${widgetsUrl}/#/create?${urlParams}`}
+        src={`${widgetsUrl}?${urlParams}`}
         width={600}
         height={541}
       />

@@ -8,8 +8,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
+    widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
-      protocolDiamond: "0xad7A37a28923a9534809eEdE6c783a1F22df1c2b"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
+      protocolDiamond: "0xa783F770Ea9921824305d8940e24718D199E5eff"
     }
   },
   {
@@ -17,11 +19,13 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 1234,
     subgraphUrl:
       "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
+    jsonRpcUrl: "http://127.0.0.1:8546",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
+    widgetsUrl: "https://boson-widgets-testing.surge.sh",
     contracts: {
-      protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
+      protocolDiamond: "0xd2913d45Db90bdFc31A1B38a7e7ce4D6c5a4f0A3"
     }
   },
   {
@@ -31,8 +35,10 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+    widgetsUrl: "https://boson-widgets-staging.surge.sh",
     contracts: {
-      protocolDiamond: "0x5E3f5127e320aD0C38a21970E327eefEf12561E5"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
+      protocolDiamond: "0xcb936f50e21A5Fd16960f67f90b2DC9dA495Ad59"
     }
   },
   {
@@ -41,6 +47,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl: "",
     jsonRpcUrl: "",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+    widgetsUrl: "", // TODO: replace with prod
     contracts: {
       protocolDiamond: ""
     }

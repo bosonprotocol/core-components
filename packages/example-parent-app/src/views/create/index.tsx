@@ -24,11 +24,11 @@ export function HomeView() {
       externalUrl: "https://external-url.com",
       schemaUrl: "https://schema.org/schema",
       price: "1",
-      deposit: "2",
-      penalty: "3",
-      quantity: "10",
+      sellerDeposit: "2",
+      buyerCancelPenalty: "1",
+      quantityAvailable: "10",
       exchangeToken: "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c", // ropsten boson address
-      redeemableDateInMS: (Date.now() + minuteInMS).toString(),
+      redeemableFromDateInMS: (Date.now() + minuteInMS).toString(),
       validFromDateInMS: (Date.now() + minuteInMS).toString(),
       validUntilDateInMS: (Date.now() + dayInMs).toString(),
       fulfillmentPeriodDurationInMS: dayInMs.toString(),
@@ -46,18 +46,21 @@ export function HomeView() {
         schemaUrl: values.schemaUrl,
         type: MetadataType.BASE
       });
-      const metadataUri = `${CONFIG.metadataBaseUrl}/${metadataHash}`;
+      const metadataUri = `ipfs://${metadataHash}`;
 
       createOffer(
         {
           ...values,
           price: parseEther(values.price).toString(),
-          deposit: parseEther(values.deposit).toString(),
-          penalty: parseEther(values.penalty).toString(),
-          metadataHash,
+          sellerDeposit: parseEther(values.sellerDeposit).toString(),
+          buyerCancelPenalty: parseEther(values.buyerCancelPenalty).toString(),
+          offerChecksum: metadataHash, // TODO: use correct checksum
           metadataUri
         },
-        CONFIG
+        {
+          ...CONFIG,
+          widgetsUrl: "http://localhost:3000"
+        }
       );
     }
   });
@@ -123,11 +126,11 @@ export function HomeView() {
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label>deposit</Form.Label>
+            <Form.Label>sellerDeposit</Form.Label>
             <Form.Control
-              value={formik.values.deposit}
+              value={formik.values.sellerDeposit}
               onChange={formik.handleChange}
-              name="deposit"
+              name="sellerDeposit"
               type="text"
               placeholder="..."
             />
@@ -135,21 +138,21 @@ export function HomeView() {
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col}>
-            <Form.Label>penalty</Form.Label>
+            <Form.Label>buyerCancelPenalty</Form.Label>
             <Form.Control
-              value={formik.values.penalty}
+              value={formik.values.buyerCancelPenalty}
               onChange={formik.handleChange}
-              name="penalty"
+              name="buyerCancelPenalty"
               type="text"
               placeholder="..."
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label>quantity</Form.Label>
+            <Form.Label>quantityAvailable</Form.Label>
             <Form.Control
-              value={formik.values.quantity}
+              value={formik.values.quantityAvailable}
               onChange={formik.handleChange}
-              name="quantity"
+              name="quantityAvailable"
               type="text"
               placeholder="..."
             />
@@ -202,11 +205,11 @@ export function HomeView() {
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col}>
-            <Form.Label>redeemableDateInMS</Form.Label>
+            <Form.Label>redeemableFromDateInMS</Form.Label>
             <Form.Control
-              value={formik.values.redeemableDateInMS}
+              value={formik.values.redeemableFromDateInMS}
               onChange={formik.handleChange}
-              name="redeemableDateInMS"
+              name="redeemableFromDateInMS"
               type="text"
               placeholder="..."
             />

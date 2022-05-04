@@ -3,19 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.1.0...@bosonprotocol/common@1.1.1) (2022-04-25)
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.1.1...@bosonprotocol/common@1.2.0) (2022-05-02)
 
+### Features
+
+* adapt create-offer to new offer-, account and orchestration handler contracts ([#67](https://github.com/bosonprotocol/core-components/issues/67)) ([86a589d](https://github.com/bosonprotocol/core-components/commit/86a589d69c65f178bf86f062f7ad77f3bfe33cad))
+* commit functionality in sdks and subgraphs ([#75](https://github.com/bosonprotocol/core-components/issues/75)) ([519ca47](https://github.com/bosonprotocol/core-components/commit/519ca470318b2f1fceb44c5c6a5739a204d0a266))
+
+## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.1.0...@bosonprotocol/common@1.1.1) (2022-04-25)
 
 ### Bug Fixes
 
 * include ts files to fix sourcemap warnings ([#61](https://github.com/bosonprotocol/core-components/issues/61)) ([e815e31](https://github.com/bosonprotocol/core-components/commit/e815e31f13c667522b1f3c18460a4f1a7de37b53))
 
-
-
-
-
 # 1.1.0 (2022-04-21)
-
 
 ### Features
 

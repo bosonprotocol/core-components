@@ -1,22 +1,33 @@
-import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
-import { BaseMetadataEntity } from "../../../generated/schema";
+import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
+import { BaseMetadataEntity, Offer } from "../../../generated/schema";
 
 import { convertToString } from "../../utils/json";
 
 export function saveBaseMetadata(
-  offerId: string,
-  seller: string,
-  metadataObj: TypedMap<string, JSONValue>
+  offer: Offer,
+  metadataObj: TypedMap<string, JSONValue>,
+  timestamp: BigInt
 ): string {
+  const offerId = offer.id.toString();
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("external_url"));
   const schemaUrl = convertToString(metadataObj.get("schema_url"));
 
-  const baseMetadataEntity = new BaseMetadataEntity(metadataId);
+  let baseMetadataEntity = BaseMetadataEntity.load(metadataId);
+
+  if (baseMetadataEntity == null) {
+    baseMetadataEntity = new BaseMetadataEntity(metadataId);
+  }
+
   baseMetadataEntity.offer = offerId;
-  baseMetadataEntity.seller = seller;
+  baseMetadataEntity.seller = offer.sellerId.toString();
+  baseMetadataEntity.exchangeToken = offer.exchangeToken.toString();
+  baseMetadataEntity.voided = offer.voided;
+  baseMetadataEntity.createdAt = timestamp;
+  baseMetadataEntity.validFromDate = offer.validFromDate;
+  baseMetadataEntity.validUntilDate = offer.validUntilDate;
   baseMetadataEntity.type = "BASE";
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;
