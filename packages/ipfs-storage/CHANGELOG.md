@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.2.0...@bosonprotocol/ipfs-storage@1.3.0) (2022-05-04)
+
+### Features
+
+* export validation in ipfs-storage package ([#78](https://github.com/bosonprotocol/core-components/issues/78)) ([642328b](https://github.com/bosonprotocol/core-components/commit/642328b3b42e03d78acccf577145b63f5486dd93))
+
 # [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.1.1...@bosonprotocol/ipfs-storage@1.2.0) (2022-05-02)
 
 ### Features
