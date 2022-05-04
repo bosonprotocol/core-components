@@ -29,7 +29,7 @@ git checkout https://github.com/bosonprotocol/core-components.git
 
 # install deps
 cd core-components
-npm install
+npm ci
 ```
 
 ### Local widgets and example parent app
