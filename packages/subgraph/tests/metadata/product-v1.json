@@ -1,0 +1,10 @@
+{
+  "name": "name - PRODUCT_V1",
+  "description": "description - PRODUCT_V1",
+  "external_url": "external url - PRODUCT_V1",
+  "schema_url": "schema url - PRODUCT_V1",
+  "type": "PRODUCT_V1",
+  "images": ["imageUrl1", "imageUrl2"],
+  "tags": ["tag1", "tag2"],
+  "brandName": "brandName"
+}
