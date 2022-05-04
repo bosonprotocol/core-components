@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
     "@graphprotocol/graph-ts": "^0.24.1"
@@ -8,6 +8,7 @@
   "devDependencies": {
     "ethers": "^5.5.4",
     "handlebars": "^4.7.7",
+    "matchstick-as": "^0.4.2",
     "ts-node": "^10.7.0"
   },
   "license": "Apache-2.0",
@@ -26,6 +27,7 @@
     "remove:testing": "graph remove --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "deploy:testing": "npm run manifest:testing && npm run create:testing && graph deploy --node http://graph.geth.svc.cluster.local:8020 --ipfs http://ipfs.geth.svc.cluster.local:5001 boson/corecomponents -l 0.0.1",
     "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dohaki/bosonccropsten",
-    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dohaki/bosonccproduction"
+    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dohaki/bosonccproduction",
+    "test": "npm run manifest:local && graph test"
   }
 }

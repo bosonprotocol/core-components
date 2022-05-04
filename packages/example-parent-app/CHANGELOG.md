@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.2.0...@bosonprotocol/example-parent-app@1.3.0) (2022-05-04)
+
+### Features
+
+* add widgetsUrl to default config ([#77](https://github.com/bosonprotocol/core-components/issues/77)) ([7ceea3d](https://github.com/bosonprotocol/core-components/commit/7ceea3deebf5da484d1ca7936cb9cd0e0cb6558f))
+* render all widgets on index page ([#76](https://github.com/bosonprotocol/core-components/issues/76)) ([8aec59e](https://github.com/bosonprotocol/core-components/commit/8aec59eb0c763ece116a00b083d9283dcceaab8e))
+
 # [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.1.2...@bosonprotocol/example-parent-app@1.2.0) (2022-05-02)
 
 ### Features

@@ -51,6 +51,6 @@ export function handleBuyerCreatedEvent(event: BuyerCreated): void {
   }
 
   buyer.wallet = buyerFromEvent.wallet;
-  buyer.active = false;
+  buyer.active = true;
   buyer.save();
 }
