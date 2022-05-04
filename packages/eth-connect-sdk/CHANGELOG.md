@@ -3,19 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.1.0...@bosonprotocol/eth-connect-sdk@1.1.1) (2022-04-25)
+## [1.1.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.1.1...@bosonprotocol/eth-connect-sdk@1.1.2) (2022-05-02)
 
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.1.0...@bosonprotocol/eth-connect-sdk@1.1.1) (2022-04-25)
 
 ### Bug Fixes
 
 * include ts files to fix sourcemap warnings ([#61](https://github.com/bosonprotocol/core-components/issues/61)) ([e815e31](https://github.com/bosonprotocol/core-components/commit/e815e31f13c667522b1f3c18460a4f1a7de37b53))
 
-
-
-
-
 # 1.1.0 (2022-04-21)
-
 
 ### Features
 

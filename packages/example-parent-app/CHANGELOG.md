@@ -3,24 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.1.2...@bosonprotocol/example-parent-app@1.2.0) (2022-05-02)
+
+### Features
+
+* adapt create-offer to new offer-, account and orchestration handler contracts ([#67](https://github.com/bosonprotocol/core-components/issues/67)) ([86a589d](https://github.com/bosonprotocol/core-components/commit/86a589d69c65f178bf86f062f7ad77f3bfe33cad))
+
 ## [1.1.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.1.1...@bosonprotocol/example-parent-app@1.1.2) (2022-04-25)
 
 **Note:** Version bump only for package @bosonprotocol/example-parent-app
-
-
-
-
 
 ## [1.1.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.1.0...@bosonprotocol/example-parent-app@1.1.1) (2022-04-25)
 
 **Note:** Version bump only for package @bosonprotocol/example-parent-app
 
-
-
-
-
 # 1.1.0 (2022-04-21)
-
 
 ### Features
 
