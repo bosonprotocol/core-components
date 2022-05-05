@@ -80,6 +80,12 @@ export class CoreSDK {
     return accounts.subgraph.getSellerByOperator(this._subgraphUrl, operator);
   }
 
+  public async getSellerByAddress(
+    address: string
+  ): Promise<accounts.RawSellerFromSubgraph> {
+    return accounts.subgraph.getSellerByAddress(this._subgraphUrl, address);
+  }
+
   public async createSellerAndOffer(
     sellerToCreate: accounts.CreateSellerArgs,
     offerToCreate: offers.CreateOfferArgs,
