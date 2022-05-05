@@ -1,15 +1,30 @@
 import { RawOfferFromSubgraph } from "../src/offers/types";
+import { RawSellerFromSubgraph } from "../src/accounts/types";
 import { MetadataType, utils } from "@bosonprotocol/common";
 import nock from "nock";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
-
 export const DAY_IN_MS = 24 * 60 * 60 * 1000;
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export function interceptSubgraph() {
   return nock(SUBGRAPH_URL).post("", (body) => {
     return body.query && body.variables;
   });
+}
+
+export function mockRawSellerFromSubgraph(
+  overrides: Partial<RawSellerFromSubgraph> = {}
+): RawSellerFromSubgraph {
+  return {
+    id: "1",
+    admin: ZERO_ADDRESS,
+    clerk: ZERO_ADDRESS,
+    operator: ZERO_ADDRESS,
+    treasury: ZERO_ADDRESS,
+    active: true,
+    ...overrides
+  };
 }
 
 export function mockRawOfferFromSubgraph(
@@ -39,15 +54,15 @@ export function mockRawOfferFromSubgraph(
     voidedAt: null,
     seller: {
       id: "1",
-      operator: "0x0000000000000000000000000000000000000000",
-      admin: "0x0000000000000000000000000000000000000000",
-      clerk: "0x0000000000000000000000000000000000000000",
-      treasury: "0x0000000000000000000000000000000000000000",
+      operator: ZERO_ADDRESS,
+      admin: ZERO_ADDRESS,
+      clerk: ZERO_ADDRESS,
+      treasury: ZERO_ADDRESS,
       active: true,
       ...seller
     },
     exchangeToken: {
-      address: "0x0000000000000000000000000000000000000000",
+      address: ZERO_ADDRESS,
       decimals: "18",
       name: "Ether",
       symbol: "ETH",
