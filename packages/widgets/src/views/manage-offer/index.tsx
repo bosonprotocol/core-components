@@ -32,7 +32,7 @@ const ConnectButton = styled(SecondaryButton)`
   width: 100%;
 `;
 
-function isSeller(offer: offers.RawOfferFromSubgraph, account: string) {
+function isAccountSeller(offer: offers.RawOfferFromSubgraph, account: string) {
   if (offer.seller.clerk.toLowerCase() === account.toLowerCase()) return true;
   if (offer.seller.operator.toLowerCase() === account.toLowerCase())
     return true;
@@ -62,10 +62,12 @@ export default function ManageOffer() {
 
   const { offer } = offerData;
 
+  const isSeller = isAccountSeller(offer, account ?? "");
+
   return (
     <WidgetLayout
       hideCloseButton
-      title="Manage Offer"
+      title={isSeller ? "Manage Offer" : "Offer"}
       offerName={offer.metadata?.name ?? ""}
     >
       <Row>
@@ -101,7 +103,7 @@ export default function ManageOffer() {
         <Actions>
           <ConnectButton onClick={connectWallet}>Connect Wallet</ConnectButton>
         </Actions>
-      ) : isSeller(offer, account ?? "") ? (
+      ) : isSeller ? (
         <SellerActions offer={offer} reloadOfferData={reloadOfferData} />
       ) : (
         <BuyerActions offer={offer} reloadOfferData={reloadOfferData} />
