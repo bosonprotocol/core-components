@@ -7,8 +7,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl:
       "https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc",
-    theGraphIpfsUrl: "http://127.0.0.1:5002",
-    ipfsMetadataUrl: "http://127.0.0.1:5002",
+    theGraphIpfsUrl: "http://127.0.0.1:5001",
+    ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
@@ -35,7 +35,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5002",
+    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://boson-widgets-staging.surge.sh",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699

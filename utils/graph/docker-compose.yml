@@ -26,7 +26,7 @@ services:
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     ports:
-      - '5002:5001'
+      - '5001:5001'
     volumes:
       - ./data/ipfs:/data/ipfs
   postgres:
