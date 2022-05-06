@@ -5,6 +5,7 @@ import { colors } from "../../colors";
 import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
 import { ReactComponent as Close } from "./close.svg";
+import { connectWallet } from "../../connectWallet";
 
 const StyledLogo = styled(Logo)`
   margin-top: 16px;
@@ -143,19 +144,6 @@ export function WidgetLayout({
     const end = address.slice(address.length - 6, address.length);
 
     return `${start}...${end}`;
-  }
-
-  function connectWallet() {
-    metaMask.provider
-      ?.request({
-        method: "wallet_requestPermissions",
-        params: [
-          {
-            eth_accounts: {}
-          }
-        ]
-      })
-      .then(() => metaMask.activate());
   }
 
   return (
