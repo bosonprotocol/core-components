@@ -42,14 +42,14 @@ npm run deploy-suite:local
 
 ### 2. Set up Graph Node locally
 
+**Only for Linux users:** Linux does not support the `host.docker.internal` alias for the host machine that The Graph Node Docker Compose uses. Run the following command from the Docker directory to replace the alias with the host IP address. What this does is that the host IP address will be automatically written into `docker-compose.yml`.
+
 In a new terminal clone the Graph Node repository and enter the `docker` directory:
 
 ```bash
 git clone https://github.com/graphprotocol/graph-node
 cd graph-node/docker
 ```
-
-**Only for Linux users:** Linux does not support the `host.docker.internal` alias for the host machine that The Graph Node Docker Compose uses. Run the following command from the Docker directory to replace the alias with the host IP address. What this does is that the host IP address will be automatically written into `docker-compose.yml`.
 
 ```bash
 # Only Linux users
@@ -67,7 +67,13 @@ You also need to enable the `ipfsOnEthereum` feature by setting the env var `GRA
 +     GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: true
 ```
 
-Now you can start the Graph Node by running:
+**All the other users:**
+
+Run the docker compose file that's on
+
+```
+/core-components/utils/graph/docker-compose.yml
+```
 
 ```bash
 docker-compose up
