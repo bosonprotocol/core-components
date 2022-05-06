@@ -1,0 +1,21 @@
+import styled from "styled-components";
+import { colors } from "../../lib/colors";
+import { Button } from "../../lib/components/Button";
+import { columnGap } from "../../lib/components/OfferDetails";
+
+export const SecondaryButton = styled(Button)`
+  background-color: ${colors.cyberSpaceGray};
+  color: ${colors.neonGreen};
+  border-color: ${colors.neonGreen};
+`;
+
+export const PrimaryButton = styled(Button)`
+  background-color: ${colors.neonGreen};
+  opacity: 0.9;
+`;
+
+export const Actions = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: ${columnGap}px;
+`;

@@ -178,7 +178,7 @@ export default function CreateOffer() {
       {transaction.status === "success" && (
         <SuccessModal
           txHash={transaction.txHash}
-          offerId={transaction.offerId}
+          dataToPreview={{ label: "Offer ID", value: transaction.offerId }}
           onClose={() => setTransaction({ status: "idle" })}
         />
       )}

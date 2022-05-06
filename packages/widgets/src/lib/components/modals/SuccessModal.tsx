@@ -4,18 +4,18 @@ import { Title, Label, Value, Center } from "./shared-styles";
 
 interface Props {
   txHash: string;
-  offerId: string;
+  dataToPreview: { label: string; value: string };
   onClose: () => void;
 }
 
-export function SuccessModal({ txHash, offerId, onClose }: Props) {
+export function SuccessModal({ txHash, dataToPreview, onClose }: Props) {
   return (
     <Modal>
       <Title>Success</Title>
       <Label>Tx Hash</Label>
       <Value>{txHash}</Value>
-      <Label>Offer ID</Label>
-      <Value>{offerId}</Value>
+      <Label>{dataToPreview.label}</Label>
+      <Value>{dataToPreview.value}</Value>
       <Center>
         <Button onClick={onClose}>Close</Button>
       </Center>

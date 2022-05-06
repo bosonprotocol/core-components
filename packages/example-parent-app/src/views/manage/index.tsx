@@ -32,7 +32,14 @@ export function Manage() {
     if (offer) {
       const el = document.createElement("div");
       widgetRef.current.appendChild(el);
-      manageOffer(offer.id, CONFIG, el);
+      manageOffer(
+        offer.id,
+        {
+          ...CONFIG,
+          widgetsUrl: "http://localhost:3000"
+        },
+        el
+      );
 
       return () => el.remove();
     }
