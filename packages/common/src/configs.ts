@@ -5,13 +5,14 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "local",
     chainId: 31337,
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl: "http://127.0.0.1:8545",
+    jsonRpcUrl:
+      "https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xa783F770Ea9921824305d8940e24718D199E5eff"
+      protocolDiamond: "0xd2913d45Db90bdFc31A1B38a7e7ce4D6c5a4f0A3"
     }
   },
   {
