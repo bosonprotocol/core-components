@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.3.0...@bosonprotocol/widgets@1.4.0) (2022-05-09)
+
+### Features
+
+* add commit widget ([#85](https://github.com/bosonprotocol/core-components/issues/85)) ([4aec8ce](https://github.com/bosonprotocol/core-components/commit/4aec8cec60d07588f356da0997ec4414f22a5b55))
+
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.2.0...@bosonprotocol/widgets@1.3.0) (2022-05-04)
 
 ### Features

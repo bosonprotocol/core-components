@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.2.1...@bosonprotocol/core-sdk@1.3.0) (2022-05-09)
+
+### Features
+
+* **core-sdk:** expose get seller by clerk ([#83](https://github.com/bosonprotocol/core-components/issues/83)) ([df7a4b1](https://github.com/bosonprotocol/core-components/commit/df7a4b1b842b77d4e08767fe6d888fdebd8a7efa))
+* **core-sdk:** get seller by address method ([#82](https://github.com/bosonprotocol/core-components/issues/82)) ([de7f9d9](https://github.com/bosonprotocol/core-components/commit/de7f9d95c5fe536f277b01af210a7f66df420c67))
+
 ## [1.2.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.2.0...@bosonprotocol/core-sdk@1.2.1) (2022-05-04)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
