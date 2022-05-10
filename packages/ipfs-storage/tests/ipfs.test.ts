@@ -1,7 +1,7 @@
 import { IpfsMetadata } from "../src/ipfs";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../src/constants";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
-import { MetadataType, BaseMetadata } from "@bosonprotocol/common";
+import { MetadataType } from "@bosonprotocol/metadata";
 
 import fetch from "cross-fetch";
 jest.mock("cross-fetch");

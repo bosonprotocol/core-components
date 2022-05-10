@@ -32,5 +32,8 @@
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
     "turbo": "^1.1.6"
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
   }
 }

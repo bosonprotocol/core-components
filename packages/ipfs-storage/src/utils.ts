@@ -1,4 +1,4 @@
-import { AnyMetadata } from "@bosonprotocol/common";
+import { AnyMetadata } from "@bosonprotocol/metadata";
 
 export type ERC721Metadata = Omit<AnyMetadata, "externalUrl" | "schemaUrl"> & {
   external_url: string;
@@ -25,4 +25,15 @@ export function convertFromERC721Metadata(
     externalUrl: external_url,
     schemaUrl: schema_url
   } as AnyMetadata;
+}
+
+export function sortObjKeys(
+  objToSort: Record<string, unknown>
+): Record<string, unknown> {
+  return Object.keys(objToSort)
+    .sort()
+    .reduce<Record<string, unknown>>((obj, key) => {
+      obj[key] = objToSort[key];
+      return obj;
+    }, {});
 }

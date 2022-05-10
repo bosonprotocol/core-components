@@ -1,4 +1,4 @@
-import { utils, MetadataStorage, AnyMetadata } from "@bosonprotocol/common";
+import { MetadataStorage, AnyMetadata } from "@bosonprotocol/metadata";
 import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
@@ -8,7 +8,8 @@ import { DEFAULT_THE_GRAPH_IPFS_URL } from "./constants";
 import {
   convertFromERC721Metadata,
   convertToERC721Metadata,
-  ERC721Metadata
+  ERC721Metadata,
+  sortObjKeys
 } from "./utils";
 
 export class IpfsMetadata implements MetadataStorage {
@@ -27,9 +28,7 @@ export class IpfsMetadata implements MetadataStorage {
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {
     validateMetadata(metadata);
     const metadataConformingToERC721 = convertToERC721Metadata(metadata);
-    const metadataWithSortedKeys = utils.metadata.sortObjKeys(
-      metadataConformingToERC721
-    );
+    const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
     const cid = await this.add(metadataWithSortedKeys);
     return cid;
   }

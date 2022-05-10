@@ -20,7 +20,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 1234,
     subgraphUrl:
       "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl: "http://127.0.0.1:8546",
+    jsonRpcUrl:
+      "https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     widgetsUrl: "https://boson-widgets-testing.surge.sh",
