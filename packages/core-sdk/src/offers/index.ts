@@ -7,7 +7,5 @@ export * as storage from "./storage";
 export * from "./types";
 
 export const validation = {
-  createOfferArgsSchema: utils.validation.createOfferArgsSchema,
-  baseMetadataSchema: utils.validation.baseMetadataSchema,
-  productV1MetadataSchema: utils.validation.productV1MetadataSchema
+  createOfferArgsSchema: utils.validation.createOfferArgsSchema
 };
