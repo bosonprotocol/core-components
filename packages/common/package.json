@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/bosonprotocol/core-components/issues"
   },
-  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/contracts-sdk#readme",
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/common#readme",
   "files": [
     "dist/*",
     "src/*"
@@ -37,6 +37,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@bosonprotocol/metadata": "^1.0.0",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
