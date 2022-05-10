@@ -15,21 +15,19 @@ export interface MetadataStorage {
 
 function validateMetadata(metadata: AnyMetadata) {
   switch (metadata.type) {
-    case base.BASE_METADATA_TYPE:
+    case MetadataType.BASE:
       base.baseMetadataSchema.validateSync(metadata, {
         abortEarly: false
       });
       return true;
-    case productV1.PRODUCT_V1_METADATA_TYPE:
+    case MetadataType.PRODUCT_V1:
       productV1.productV1MetadataSchema.validateSync(metadata, {
         abortEarly: false
       });
       return true;
     default:
       throw new Error(
-        `Metadata validation failed for unknown type: ${
-          (metadata as Record<string, unknown>)?.type
-        }`
+        `Metadata validation failed for unknown type: ${metadata.type}`
       );
   }
 }
