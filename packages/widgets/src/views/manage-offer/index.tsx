@@ -21,6 +21,7 @@ import { BuyerActions } from "./BuyerActions";
 import { Actions, SecondaryButton } from "./shared-styles";
 import { connectWallet } from "../../lib/connectWallet";
 import { offers } from "@bosonprotocol/core-sdk";
+import { getConfig } from "../../lib/config";
 
 const Center = styled.div`
   display: flex;
@@ -42,6 +43,7 @@ function isAccountSeller(offer: offers.RawOfferFromSubgraph, account: string) {
 export default function ManageOffer() {
   const { offerId } = getURLParams();
   const { offerData, reloadOfferData } = useManageOfferData(offerId);
+  const { chainId } = getConfig();
   const account = hooks.useAccount();
 
   if (offerData.status === "error")
@@ -101,7 +103,9 @@ export default function ManageOffer() {
       <Spacer />
       {!account ? (
         <Actions>
-          <ConnectButton onClick={connectWallet}>Connect Wallet</ConnectButton>
+          <ConnectButton onClick={() => connectWallet(chainId)}>
+            Connect Wallet
+          </ConnectButton>
         </Actions>
       ) : isSeller ? (
         <SellerActions offer={offer} reloadOfferData={reloadOfferData} />

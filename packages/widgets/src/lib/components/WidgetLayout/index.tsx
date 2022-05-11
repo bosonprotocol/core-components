@@ -160,7 +160,7 @@ export function WidgetLayout({
               {truncateAddress(account as string)} <Close />
             </ConnectionSuccess>
           ) : (
-            <ConnectButton onClick={connectWallet}>
+            <ConnectButton onClick={() => connectWallet(chainId)}>
               Connect Wallet
             </ConnectButton>
           )}

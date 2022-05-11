@@ -1,6 +1,6 @@
 import { metaMask } from "./connectors/metamask";
 
-export function connectWallet() {
+export function connectWallet(chainId?: number) {
   metaMask.provider
     ?.request({
       method: "wallet_requestPermissions",
@@ -10,5 +10,5 @@ export function connectWallet() {
         }
       ]
     })
-    .then(() => metaMask.activate());
+    .then(() => metaMask.activate(chainId));
 }
