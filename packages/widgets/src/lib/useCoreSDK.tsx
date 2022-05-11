@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
 import { hooks } from "./connectors/metamask";
 import { providers } from "ethers";
-import { getURLParams } from "./parseUrlParams";
-
-type Config = {
-  chainId: number;
-  protocolDiamond: string;
-  subgraphUrl: string;
-  jsonRpcUrl: string;
-  theGraphIpfsUrl?: string;
-  ipfsMetadataUrl: string;
-};
+import { getConfig, Config } from "./config";
 
 export function useCoreSDK() {
   const [config] = useState(getConfig());
@@ -31,38 +22,6 @@ export function useCoreSDK() {
   }, [web3Provider, config]);
 
   return coreSDK;
-}
-
-function getConfig(): Config {
-  const configFromUrl = getConfigFromUrl();
-  const defaultConfig = getDefaultConfig({
-    chainId: configFromUrl.chainId || 1
-  });
-
-  return {
-    chainId: configFromUrl.chainId || defaultConfig.chainId,
-    protocolDiamond:
-      configFromUrl.protocolDiamond || defaultConfig.contracts.protocolDiamond,
-    subgraphUrl: configFromUrl.subgraphUrl || defaultConfig.subgraphUrl,
-    jsonRpcUrl: configFromUrl.jsonRpcUrl || defaultConfig.jsonRpcUrl,
-    theGraphIpfsUrl:
-      configFromUrl.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl,
-    ipfsMetadataUrl:
-      configFromUrl.ipfsMetadataUrl || defaultConfig.ipfsMetadataUrl
-  };
-}
-
-function getConfigFromUrl(): Partial<Config> {
-  const urlParams = getURLParams();
-
-  return {
-    chainId: parseInt(urlParams["chainId"]),
-    protocolDiamond: urlParams["protocolDiamond"],
-    subgraphUrl: urlParams["subgraphUrl"],
-    jsonRpcUrl: urlParams["jsonRpcUrl"],
-    theGraphIpfsUrl: urlParams["theGraphIpfsUrl"],
-    ipfsMetadataUrl: urlParams["ipfsMetadataUrl"]
-  };
 }
 
 function getDefaultProvider(jsonRpcUrl: string) {
