@@ -5,15 +5,16 @@ import { Center, Title, Value } from "./shared-styles";
 interface Props {
   message: string;
   onClose: () => void;
+  buttonLabel?: string;
 }
 
-export function ErrorModal({ message, onClose }: Props) {
+export function ErrorModal({ message, onClose, buttonLabel = "Close" }: Props) {
   return (
     <Modal>
       <Title>Error</Title>
       <Value>{message} </Value>
       <Center>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{buttonLabel}</Button>
       </Center>
     </Modal>
   );
