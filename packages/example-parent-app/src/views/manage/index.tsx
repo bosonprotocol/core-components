@@ -38,7 +38,10 @@ export function Manage() {
           ...CONFIG,
           widgetsUrl: "http://localhost:3000"
         },
-        el
+        el,
+        {
+          forceBuyerView: false
+        }
       );
 
       return () => el.remove();

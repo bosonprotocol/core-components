@@ -6,6 +6,7 @@ import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
 import { ReactComponent as Close } from "./close.svg";
 import { connectWallet } from "../../connectWallet";
+import { useWalletChangeNotification } from "../../useWalletChangeNotification";
 
 const StyledLogo = styled(Logo)`
   margin-top: 16px;
@@ -145,6 +146,8 @@ export function WidgetLayout({
 
     return `${start}...${end}`;
   }
+
+  useWalletChangeNotification(account);
 
   return (
     <Root>
