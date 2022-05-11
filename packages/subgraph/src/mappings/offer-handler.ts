@@ -27,6 +27,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.redeemableFromDate = offerStruct.redeemableFromDate;
     offer.fulfillmentPeriodDuration = offerStruct.fulfillmentPeriodDuration;
     offer.voucherValidDuration = offerStruct.voucherValidDuration;
+    offer.sellerId = offerStruct.sellerId;
     offer.seller = offerStruct.sellerId.toString();
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
