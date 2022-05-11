@@ -40,7 +40,7 @@ function isAccountSeller(offer: offers.RawOfferFromSubgraph, account: string) {
 }
 
 export default function ManageOffer() {
-  const { offerId } = getURLParams();
+  const { offerId, forceBuyerView } = getURLParams();
   const { offerData, reloadOfferData } = useManageOfferData(offerId);
   const account = hooks.useAccount();
 
@@ -62,7 +62,7 @@ export default function ManageOffer() {
 
   const { offer } = offerData;
 
-  const isSeller = isAccountSeller(offer, account ?? "");
+  const isSeller = isAccountSeller(offer, account ?? "") && !forceBuyerView;
 
   return (
     <WidgetLayout

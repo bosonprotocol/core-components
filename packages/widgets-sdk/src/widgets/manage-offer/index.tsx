@@ -3,13 +3,22 @@ import ReactDOM from "react-dom";
 import { StyledIframe } from "../../lib/StyledIframe";
 import { WidgetConfig } from "../../types";
 
+interface OptionalParams {
+  forceBuyerView?: boolean;
+}
+
 export function manageOffer(
   offerId: string,
   config: WidgetConfig,
-  element: HTMLElement
+  element: HTMLElement,
+  params?: OptionalParams
 ) {
   ReactDOM.render(
-    <ManageOfferWidget offerId={offerId} widgetsConfig={config} />,
+    <ManageOfferWidget
+      offerId={offerId}
+      widgetsConfig={config}
+      forceBuyerView={params?.forceBuyerView ?? false}
+    />,
     element
   );
 
@@ -29,15 +38,17 @@ export function manageOffer(
 interface Props {
   offerId: string;
   widgetsConfig: WidgetConfig;
+  forceBuyerView: boolean;
 }
 
-function ManageOfferWidget({ offerId, widgetsConfig }: Props) {
+function ManageOfferWidget({ offerId, widgetsConfig, forceBuyerView }: Props) {
   const { widgetsUrl, chainId, ipfsMetadataUrl } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     offerId,
     chainId,
-    ipfsMetadataUrl
+    ipfsMetadataUrl,
+    ...(forceBuyerView && { forceBuyerView })
   } as unknown as Record<string, string>).toString();
 
   return (
