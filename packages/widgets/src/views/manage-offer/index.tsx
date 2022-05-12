@@ -69,7 +69,7 @@ export default function ManageOffer() {
   return (
     <WidgetLayout
       hideCloseButton
-      title={isSeller ? "Manage Offer" : "Offer"}
+      title="Offer"
       offerName={offer.metadata?.name ?? ""}
     >
       <Row>
