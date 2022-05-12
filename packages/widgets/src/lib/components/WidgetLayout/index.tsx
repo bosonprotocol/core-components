@@ -8,6 +8,7 @@ import { ReactComponent as Close } from "./close.svg";
 import { connectWallet } from "../../connectWallet";
 import { getConfig } from "../../config";
 import { ErrorModal } from "../modals/ErrorModal";
+import { useWalletChangeNotification } from "../../useWalletChangeNotification";
 
 const StyledLogo = styled(Logo)`
   margin-top: 16px;
@@ -149,6 +150,8 @@ export function WidgetLayout({
 
     return `${start}...${end}`;
   }
+
+  useWalletChangeNotification(account);
 
   if (account && isActive && chainId !== connectedChainId) {
     return (
