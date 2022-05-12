@@ -6,6 +6,8 @@ import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
 import { ReactComponent as Close } from "./close.svg";
 import { connectWallet } from "../../connectWallet";
+import { getConfig } from "../../config";
+import { ErrorModal } from "../modals/ErrorModal";
 import { useWalletChangeNotification } from "../../useWalletChangeNotification";
 
 const StyledLogo = styled(Logo)`
@@ -139,6 +141,8 @@ export function WidgetLayout({
 }: Props) {
   const isActive = hooks.useIsActive();
   const account = hooks.useAccount();
+  const connectedChainId = hooks.useChainId();
+  const { chainId } = getConfig();
 
   function truncateAddress(address: string) {
     const start = address.slice(0, 6);
@@ -148,6 +152,16 @@ export function WidgetLayout({
   }
 
   useWalletChangeNotification(account);
+
+  if (account && isActive && chainId !== connectedChainId) {
+    return (
+      <ErrorModal
+        message={`Your wallet is connected to a wrong network. Please switch to a network with chain id: ${chainId}`}
+        onClose={() => connectWallet(chainId)}
+        buttonLabel="Switch network"
+      />
+    );
+  }
 
   return (
     <Root>
@@ -163,7 +177,7 @@ export function WidgetLayout({
               {truncateAddress(account as string)} <Close />
             </ConnectionSuccess>
           ) : (
-            <ConnectButton onClick={connectWallet}>
+            <ConnectButton onClick={() => connectWallet(chainId)}>
               Connect Wallet
             </ConnectButton>
           )}
