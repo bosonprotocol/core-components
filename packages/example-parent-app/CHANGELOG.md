@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.5.0...@bosonprotocol/example-parent-app@1.6.0) (2022-05-13)
+
+### Features
+
+* wallet change notificaiton and forcable buyer view ([#89](https://github.com/bosonprotocol/core-components/issues/89)) ([ff321e7](https://github.com/bosonprotocol/core-components/commit/ff321e7cc82406906dac8fa531c41a1263c9696c))
+* **widgets:** enforce correct chain in wallet ([#88](https://github.com/bosonprotocol/core-components/issues/88)) ([d9060b3](https://github.com/bosonprotocol/core-components/commit/d9060b3c361ab168b0f7b4c319e03f322ebc6bab))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.4.0...@bosonprotocol/example-parent-app@1.5.0) (2022-05-10)
 
 ### Features
