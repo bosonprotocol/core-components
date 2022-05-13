@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { colors } from "../colors";
 
+export const buttonWidth = 235;
+
 export const Button = styled.button`
   all: unset;
   user-select: none;
-  width: 200px;
+  width: ${buttonWidth}px;
+  box-sizing: border-box;
   background-color: ${colors.neonGreen};
   color: black;
   border: 2px solid ${colors.concreteGray};

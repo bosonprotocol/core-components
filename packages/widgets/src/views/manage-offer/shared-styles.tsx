@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../lib/colors";
-import { Button } from "../../lib/components/Button";
+import { Button, buttonWidth } from "../../lib/components/Button";
 import { columnGap } from "../../lib/components/OfferDetails";
 
 export const SecondaryButton = styled(Button)`
@@ -18,4 +18,8 @@ export const Actions = styled.div`
   display: flex;
   justify-content: center;
   gap: ${columnGap}px;
+
+  > button {
+    max-width: ${buttonWidth * 2 + columnGap}px;
+  }
 `;
