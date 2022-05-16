@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.5.0...@bosonprotocol/widgets@1.6.0) (2022-05-16)
+
+### Features
+
+* disable commit for voided offer ([#92](https://github.com/bosonprotocol/core-components/issues/92)) ([50471e8](https://github.com/bosonprotocol/core-components/commit/50471e8ab6c0fa4b5243d03e0c040bdebc8128b6))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.4.1...@bosonprotocol/widgets@1.5.0) (2022-05-13)
 
 ### Features
