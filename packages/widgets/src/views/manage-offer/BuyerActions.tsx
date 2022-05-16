@@ -6,6 +6,7 @@ import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
 import { useCoreSDK } from "../../lib/useCoreSDK";
+import { getOfferStatus, OfferState } from "./getOfferStatus";
 import { Actions, PrimaryButton } from "./shared-styles";
 
 const CommitButton = styled(PrimaryButton)`
@@ -17,9 +18,10 @@ const CommitButton = styled(PrimaryButton)`
 `;
 
 function isCommitDisabled(offer: offers.RawOfferFromSubgraph) {
-  const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
+  const offerStatus = getOfferStatus(offer);
 
-  if (toTimeStamp(offer.validUntilDate) < Date.now()) return true;
+  if (offerStatus === OfferState.EXPIRED) return true;
+  if (offerStatus === OfferState.VOIDED) return true;
   if (Number(offer.quantityAvailable) <= 0) return true;
 
   return false;
