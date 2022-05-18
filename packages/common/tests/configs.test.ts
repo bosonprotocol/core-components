@@ -35,7 +35,7 @@ describe("#getDefaultConfig()", () => {
 
   test("return default config of chain id", () => {
     const { chainId, contracts, subgraphUrl } = getDefaultConfig({
-      chainId: 31337
+      chainId: 1234
     });
     expect(typeof chainId === "number").toBeTruthy();
     expect(typeof subgraphUrl === "string").toBeTruthy();
