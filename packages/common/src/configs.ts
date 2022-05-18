@@ -3,7 +3,7 @@ import { ProtocolConfig } from "./types";
 export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "local",
-    chainId: 31337,
+    chainId: 1234,
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl:
       "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
