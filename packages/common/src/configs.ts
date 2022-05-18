@@ -6,13 +6,13 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 31337,
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl:
-      "https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc",
+      "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xd2913d45Db90bdFc31A1B38a7e7ce4D6c5a4f0A3"
+      protocolDiamond: "0xd2a2c7E31b1F23d3Ca85e21858EB2FC453a14531"
     }
   },
   {
@@ -21,13 +21,13 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl:
       "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
     jsonRpcUrl:
-      "https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc",
+      "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     widgetsUrl: "https://boson-widgets-testing.surge.sh",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xd2913d45Db90bdFc31A1B38a7e7ce4D6c5a4f0A3"
+      protocolDiamond: "0xd2a2c7E31b1F23d3Ca85e21858EB2FC453a14531"
     }
   },
   {
