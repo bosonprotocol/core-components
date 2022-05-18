@@ -19,7 +19,7 @@ services:
       postgres_pass: let-me-in
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
-      ethereum: 'mainnet:https://geth.bsn-development-potassium.bosonportal.io/84b5aa4e40481e772f16/rpc'
+      ethereum: 'mainnet:https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc'
       GRAPH_LOG: info
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: "true"
 

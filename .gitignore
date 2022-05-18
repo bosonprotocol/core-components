@@ -20,3 +20,6 @@ dist/**
 !.yarn/sdks
 !.yarn/versions
 *.tgz
+
+# docker
+utils/graph/data
