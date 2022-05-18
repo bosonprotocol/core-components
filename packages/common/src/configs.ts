@@ -2,20 +2,6 @@ import { ProtocolConfig } from "./types";
 
 export const defaultConfigs: ProtocolConfig[] = [
   {
-    envName: "local",
-    chainId: 1234,
-    subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl:
-      "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
-    theGraphIpfsUrl: "http://127.0.0.1:5001",
-    ipfsMetadataUrl: "http://127.0.0.1:5001",
-    widgetsUrl: "http://127.0.0.1:3000",
-    contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xd2a2c7E31b1F23d3Ca85e21858EB2FC453a14531"
-    }
-  },
-  {
     envName: "testing",
     chainId: 1234,
     subgraphUrl:
@@ -52,6 +38,20 @@ export const defaultConfigs: ProtocolConfig[] = [
     widgetsUrl: "", // TODO: replace with prod
     contracts: {
       protocolDiamond: ""
+    }
+  },
+  {
+    envName: "local",
+    chainId: 1234,
+    subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
+    jsonRpcUrl:
+      "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
+    theGraphIpfsUrl: "http://127.0.0.1:5001",
+    ipfsMetadataUrl: "http://127.0.0.1:5001",
+    widgetsUrl: "http://127.0.0.1:3000",
+    contracts: {
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
+      protocolDiamond: "0xd2a2c7E31b1F23d3Ca85e21858EB2FC453a14531"
     }
   }
 ];
