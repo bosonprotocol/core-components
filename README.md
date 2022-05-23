@@ -8,6 +8,9 @@
 <a href="https://discord.com/invite/QSdtKRaap6">![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)</a>
 <a href="https://twitter.com/BosonProtocol">![](https://img.shields.io/twitter/follow/BosonProtocol?style=social)</a>
 
+<a href="https://github.com/bosonprotocol/core-components/actions/workflows/publish-alpha.yaml">[![Build Status](https://github.com/bosonprotocol/core-components/actions/workflows/publish-alpha.yaml/badge.svg)](https://github.com/bosonprotocol/core-components/actions/workflows/publish-alpha.yaml)</a>
+![](https://img.shields.io/badge/Coverage-18%25-F2C572.svg?prefix=$coverage$)
+
 </div align="center">
 
 <div align="center">
