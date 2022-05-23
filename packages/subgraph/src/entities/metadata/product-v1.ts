@@ -16,8 +16,8 @@ export function saveProductV1Metadata(
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
-  const externalUrl = convertToString(metadataObj.get("external_url"));
-  const schemaUrl = convertToString(metadataObj.get("schema_url"));
+  const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
 
   const images = convertToStringArray(metadataObj.get("images"));
   const tags = convertToStringArray(metadataObj.get("tags"));
