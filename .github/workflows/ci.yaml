@@ -62,25 +62,24 @@ jobs:
       - uses: actions/checkout@v3
       - name: Adding Job Summary
         run: |
-          echo "# Status of build summary" >> $GITHUB_STEP_SUMMARY
           echo "| Command | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-          if [ $env.JOB_LINT == ""success"" ]; then
+          echo "| ---- | ---- |" >> $GITHUB_STEP_SUMMARY
+          if [ ${{ env.JOB_LINT }} == success ]; then
             echo "| Lint | ✅ |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Lint | ❌ |" >> $GITHUB_STEP_SUMMARY
           fi
-          if [ $env.JOB_TEST == ""success"" ]; then
+          if [ ${{ env.JOB_TEST }} == success ]; then
             echo "| Test | ✅ |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Test | ❌ |" >> $GITHUB_STEP_SUMMARY
           fi
-          if [ $env.JOB_BUILD == ""success"" ]; then
+          if [ ${{ env.JOB_BUILD }} == success ]; then
             echo "| Build | ✅ |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Build | ❌ |" >> $GITHUB_STEP_SUMMARY
           fi
-          if [ $env.JOB_COVERAGE == ""success"" ]; then
+          if [ ${{ env.JOB_COVERAGE }} == success ]; then
             echo "| Coverage | ✅ |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Coverage | ❌ |" >> $GITHUB_STEP_SUMMARY
