@@ -32,7 +32,6 @@ function readCoverage() {
             const coverage = parseInt(data.total.statements.pct) || 0;
             const name = item.split(".")[0];
             const badge = getCoverageBadge(coverage, name);
-            console.log(badge);
             replaceCoverageInReadme(badge, name);
             return badge;
           }
