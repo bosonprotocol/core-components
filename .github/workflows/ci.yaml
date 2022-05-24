@@ -9,6 +9,10 @@ jobs:
   lint-build-test:
     name: Lint, build and test
     runs-on: ubuntu-latest
+    outputs:
+      JOB_LINT: ${{ steps.lint.outputs.pass }}
+      JOB_TEST: ${{ steps.test.outputs.pass }}
+      JOB_BUILD: ${{ steps.build.outputs.pass }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -25,8 +29,14 @@ jobs:
             turbo-${{ runner.os }}
       - run: npm ci
       - run: npm run lint -- --cache-dir=".turbo"
+      - id: lint
+        run: echo "::set-output name=pass::true"
       - run: npm run build -- --cache-dir=".turbo"
+      - id: build
+        run: echo "::set-output name=pass::true"
       - run: npm run test -- --cache-dir=".turbo"
+      - id: test
+        run: echo "::set-output name=pass::true"
       - run: npm run coverage -- --cache-dir=".turbo"
       - run: npm run badge -- --cache-dir=".turbo"
       # - name: Commit files
@@ -37,3 +47,23 @@ jobs:
       # - name: Update badges
       #   run: |
       #     git push
+
+  job-sumary:
+    name: Create Job Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [lint-build-test]
+    env:
+      JOB_LINT: ${{ needs.lint-build-test.outputs.JOB_LINT }}
+      JOB_TEST: ${{ needs.lint-build-test.outputs.JOB_TEST }}
+      JOB_BUILD: ${{ needs.lint-build-test.outputs.JOB_BUILD }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Adding Job Summary
+        run: |
+          echo "# Status of build summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Command | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
