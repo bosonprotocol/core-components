@@ -65,7 +65,7 @@ jobs:
           echo "# Status of build summary" >> $GITHUB_STEP_SUMMARY
           echo "| Command | Status |" >> $GITHUB_STEP_SUMMARY
           echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-          echo "| Lint | {{ env.JOB_LINT }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Test | {{ env.JOB_TEST }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Build | {{ env.JOB_BUILD }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Coverage | {{ env.JOB_COVERAGE }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ env.JOB_LINT }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test | ${{ env.JOB_TEST }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ env.JOB_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage | ${{ env.JOB_COVERAGE }} |" >> $GITHUB_STEP_SUMMARY
