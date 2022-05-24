@@ -36,9 +36,7 @@ jobs:
       - id: test
         run: npm run test -- --cache-dir=".turbo"
       - id: coverage
-        run: |
-          npm run coverage -- --cache-dir=".turbo"
-          npm run badge -- --cache-dir=".turbo"
+        run: npm run coverage && npm run badge
       # - name: Commit files
       #   run: |
       #     git config --local user.email "bapp-ci-bot@users.noreply.github.com"

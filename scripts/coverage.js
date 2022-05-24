@@ -20,6 +20,9 @@ function combineCoverage() {
   if (!fs.existsSync(PATHS.NYC)) {
     fs.mkdirSync(PATHS.NYC);
   }
+  if (!fs.existsSync(PATHS.COVERAGE)) {
+    fs.mkdirSync(PATHS.COVERAGE);
+  }
 
   fs.readdir(PATHS.PACKAGES, (err, packages) => {
     if (err) console.error(err);
