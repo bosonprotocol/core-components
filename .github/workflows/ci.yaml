@@ -27,7 +27,8 @@ jobs:
       - run: npm run lint -- --cache-dir=".turbo"
       - run: npm run build -- --cache-dir=".turbo"
       - run: npm run test -- --cache-dir=".turbo"
-      - run: npm run test:badge -- --cache-dir=".turbo"
+      - run: npm run coverage -- --cache-dir=".turbo"
+      - run: npm run badge -- --cache-dir=".turbo"
       # - name: Commit files
       #   run: |
       #     git config --local user.email "bapp-ci-bot@users.noreply.github.com"

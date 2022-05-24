@@ -11,7 +11,8 @@
     "lint": "turbo run lint",
     "build": "turbo run build",
     "test": "turbo run test",
-    "test:badge": "node ./scripts/coverage.js && npx nyc report --reporter 'json-summary' && coverage-badge-creator",
+    "coverage": "node ./scripts/coverage.js && npx nyc report --reporter 'json-summary'",
+    "badge": "coverage-badge-creator && node ./scripts/read.js",
     "clean": "turbo run clean",
     "version": "echo 'not implemented'"
   },
