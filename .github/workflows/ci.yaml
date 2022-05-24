@@ -10,9 +10,10 @@ jobs:
     name: Lint, build and test
     runs-on: ubuntu-latest
     outputs:
-      JOB_LINT: ${{ steps.lint.outputs.pass }}
-      JOB_TEST: ${{ steps.test.outputs.pass }}
-      JOB_BUILD: ${{ steps.build.outputs.pass }}
+      JOB_LINT: ${{ steps.lint.outcome }}
+      JOB_TEST: ${{ steps.test.outcome }}
+      JOB_BUILD: ${{ steps.build.outcome }}
+      JOB_COVERAGE: ${{ steps.coverage.outcome }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -28,17 +29,16 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}
       - run: npm ci
-      - run: npm run lint -- --cache-dir=".turbo"
       - id: lint
-        run: echo "::set-output name=pass::true"
-      - run: npm run build -- --cache-dir=".turbo"
+        run: npm run lint -- --cache-dir=".turbo"
       - id: build
-        run: echo "::set-output name=pass::true"
-      - run: npm run test -- --cache-dir=".turbo"
+        run: npm run build -- --cache-dir=".turbo"
       - id: test
-        run: echo "::set-output name=pass::true"
-      - run: npm run coverage -- --cache-dir=".turbo"
-      - run: npm run badge -- --cache-dir=".turbo"
+        run: npm run test -- --cache-dir=".turbo"
+      - id: coverage
+        run: |
+          npm run coverage -- --cache-dir=".turbo"
+          npm run badge -- --cache-dir=".turbo"
       # - name: Commit files
       #   run: |
       #     git config --local user.email "bapp-ci-bot@users.noreply.github.com"
@@ -57,6 +57,7 @@ jobs:
       JOB_LINT: ${{ needs.lint-build-test.outputs.JOB_LINT }}
       JOB_TEST: ${{ needs.lint-build-test.outputs.JOB_TEST }}
       JOB_BUILD: ${{ needs.lint-build-test.outputs.JOB_BUILD }}
+      JOB_COVERAGE: ${{ needs.lint-build-test.outputs.JOB_COVERAGE }}
     steps:
       - uses: actions/checkout@v3
       - name: Adding Job Summary
@@ -64,6 +65,7 @@ jobs:
           echo "# Status of build summary" >> $GITHUB_STEP_SUMMARY
           echo "| Command | Status |" >> $GITHUB_STEP_SUMMARY
           echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-          echo "| Lint | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Test | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Build | ✅ VS ❌ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | {{ env.JOB_LINT }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test | {{ env.JOB_TEST }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | {{ env.JOB_BUILD }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage | {{ env.JOB_COVERAGE }} |" >> $GITHUB_STEP_SUMMARY
