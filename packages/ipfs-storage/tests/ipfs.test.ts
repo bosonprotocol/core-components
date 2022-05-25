@@ -72,7 +72,8 @@ describe("#getMetadata()", () => {
   const METADATA_FROM_IPFS = {
     name: "name",
     description: "description",
-    schema_url: "schemaUrl",
+    schemaUrl: "schemaUrl",
+    externalUrl: "externalUrl",
     external_url: "externalUrl",
     type: MetadataType.BASE
   };
@@ -80,8 +81,8 @@ describe("#getMetadata()", () => {
   const EXPECTED_METADATA = {
     name: METADATA_FROM_IPFS.name,
     description: METADATA_FROM_IPFS.description,
-    schemaUrl: METADATA_FROM_IPFS.schema_url,
-    externalUrl: METADATA_FROM_IPFS.external_url,
+    schemaUrl: METADATA_FROM_IPFS.schemaUrl,
+    externalUrl: METADATA_FROM_IPFS.externalUrl,
     type: METADATA_FROM_IPFS.type
   };
 
