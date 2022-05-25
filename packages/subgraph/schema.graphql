@@ -131,6 +131,7 @@ Accounts
 """
 type Seller @entity {
   id: ID! # Offer.sellerId
+  sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
   exchanges: [Exchange!]! @derivedFrom(field: "seller")
   operator: Bytes!
