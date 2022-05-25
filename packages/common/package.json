@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/common",
-  "version": "1.5.0-alpha.1",
+  "version": "1.5.0-alpha.2",
   "description": "Common package",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -37,7 +37,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@bosonprotocol/metadata": "^1.1.0",
+    "@bosonprotocol/metadata": "^1.2.0-alpha.0",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
