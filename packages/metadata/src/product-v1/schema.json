@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "externalUrl": { "type": "string" },
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["PRODUCT_V1"] },
+    "images": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "brandName": { "type": "string" }
+  },
+  "required": [
+    "name",
+    "description",
+    "externalUrl",
+    "schemaUrl",
+    "type",
+    "images",
+    "tags",
+    "brandName"
+  ]
+}
