@@ -29,7 +29,7 @@
 
 The core components can be found in the [`packages`](/packages) folder of this monorepo.
 
-| Component | Release | Tests | Description |
+| Component | Release | Tests Coverage | Description |
 | ---- | ---- | -------- | -------- |
 | [`common`](/packages/common/README.md) | ![](https://img.shields.io/badge/npm-0.0.0-blue?style=flat-square) | ![](https://img.shields.io/badge/Coverage-34%25-red.svg?prefix=$common-summary$) | JS lib with common types, interfaces and utilities shared by the core components in this repository. |
 | [`core-sdk`](/packages/core-sdk/README.md) | ![](https://img.shields.io/badge/npm-0.0.0-blue?style=flat-square) | ![](https://img.shields.io/badge/Coverage-0%25-red.svg?prefix=$core-sdk-summary$) | JS lib that facilitates interaction with the Boson Protocol [contracts](https://github.com/bosonprotocol/boson-protocol-contracts), [subgraph](/packages/subgraph/README.md) and [IPFS metadata storage](/packages/ipfs-storage/README.md) |
