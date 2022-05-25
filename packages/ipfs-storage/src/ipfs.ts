@@ -5,12 +5,7 @@ import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 import { validateMetadata } from "./validation";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "./constants";
-import {
-  convertFromERC721Metadata,
-  convertToERC721Metadata,
-  ERC721Metadata,
-  sortObjKeys
-} from "./utils";
+import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "./utils";
 
 export class IpfsMetadata implements MetadataStorage {
   public ipfsClient: IPFSHTTPClient;
@@ -34,10 +29,7 @@ export class IpfsMetadata implements MetadataStorage {
   }
 
   public async getMetadata(metadataUriOrHash: string): Promise<AnyMetadata> {
-    const metadataConformingToERC721 = await this.get<ERC721Metadata>(
-      metadataUriOrHash
-    );
-    const metadata = convertFromERC721Metadata(metadataConformingToERC721);
+    const metadata = await this.get<ERC721Metadata>(metadataUriOrHash);
     validateMetadata(metadata);
 
     return metadata;
