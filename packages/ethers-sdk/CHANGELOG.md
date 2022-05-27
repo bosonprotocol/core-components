@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.2.3...@bosonprotocol/ethers-sdk@1.2.4) (2022-05-27)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
 ## [1.2.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.2.2...@bosonprotocol/ethers-sdk@1.2.3) (2022-05-10)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

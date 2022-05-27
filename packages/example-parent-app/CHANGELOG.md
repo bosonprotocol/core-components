@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.6.0...@bosonprotocol/example-parent-app@1.7.0) (2022-05-27)
+
+### Features
+
+* migrate to new testing env ([#93](https://github.com/bosonprotocol/core-components/issues/93)) ([5af0e2f](https://github.com/bosonprotocol/core-components/commit/5af0e2f5c4ab3c90a80b0ce323464c53690c7dc1))
+
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.5.0...@bosonprotocol/example-parent-app@1.6.0) (2022-05-13)
 
 ### Features

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.4.0...@bosonprotocol/common@1.5.0) (2022-05-27)
+
+### Features
+
+* change precedence of local default config ([#94](https://github.com/bosonprotocol/core-components/issues/94)) ([1d60641](https://github.com/bosonprotocol/core-components/commit/1d60641b5525dec2b737e0baf862f6e0c73e68ea))
+* migrate to new testing env ([#93](https://github.com/bosonprotocol/core-components/issues/93)) ([5af0e2f](https://github.com/bosonprotocol/core-components/commit/5af0e2f5c4ab3c90a80b0ce323464c53690c7dc1))
+
 # [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.3.1...@bosonprotocol/common@1.4.0) (2022-05-10)
 
 ### Features

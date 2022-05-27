@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.1.0...@bosonprotocol/metadata@1.2.0) (2022-05-27)
+
+### Features
+
+* json schema support for metadata ([#95](https://github.com/bosonprotocol/core-components/issues/95)) ([ebda0ce](https://github.com/bosonprotocol/core-components/commit/ebda0cef189b3a0c3667dce0a7ac46fecaf22b79))
+
 # 1.1.0 (2022-05-10)
 
 ### Features
