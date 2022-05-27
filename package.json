@@ -12,7 +12,7 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "coverage": "node ./scripts/coverage.js && npx nyc report --reporter 'json-summary'",
-    "badge": "coverage-badge-creator && node ./scripts/read.js",
+    "badge": "istanbul-badges-readme && node ./scripts/read.js",
     "clean": "turbo run clean",
     "version": "echo 'not implemented'"
   },
@@ -31,9 +31,9 @@
     "@lerna-lite/cli": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
-    "coverage-badge-creator": "^1.0.11",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "istanbul-badges-readme": "^1.8.1",
     "nyc": "^15.1.0",
     "turbo": "^1.1.6"
   },

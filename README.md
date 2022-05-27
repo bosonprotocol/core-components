@@ -1,5 +1,9 @@
 [![banner](docs/assets/banner.png)](https://bosonprotocol.io)
 
+| Statements                  | Branches                | Functions                 | Lines             |
+| --------------------------- | ----------------------- | ------------------------- | ----------------- |
+| ![Statements](https://img.shields.io/badge/statements-15.76%25-red.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-29.41%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-9.3%25-red.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-17.24%25-red.svg?style=flat) |
+
 <h2 align="center">Core Components of the Boson Protocol</h2>
 
 <div align="center">
@@ -9,7 +13,6 @@
 <a href="https://twitter.com/BosonProtocol">![](https://img.shields.io/twitter/follow/BosonProtocol?style=social)</a>
 
 <a href="https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml">[![Build Status](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml/badge.svg)](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml)</a>
-![](https://img.shields.io/badge/Coverage-18%25-F2C572.svg?prefix=$coverage$)
 
 </div align="center">
 

@@ -37,14 +37,14 @@ jobs:
         run: npm run test -- --cache-dir=".turbo"
       - id: coverage
         run: npm run coverage && npm run badge
-      # - name: Commit files
-      #   run: |
-      #     git config --local user.email "bapp-ci-bot@users.noreply.github.com"
-      #     git config --local user.name "@bapp-ci-bot"
-      #     git commit -am "Update badges"
-      # - name: Update badges
-      #   run: |
-      #     git push
+      - name: Commit files
+        run: |
+          git config --local user.email "bapp-ci-bot@users.noreply.github.com"
+          git config --local user.name "@bapp-ci-bot"
+          git commit -am "Update badges"
+      - name: Update badges
+        run: |
+          git push
 
   job-sumary:
     name: Create Job Summary
