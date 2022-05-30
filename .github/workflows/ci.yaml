@@ -32,9 +32,9 @@ jobs:
       - id: lint
         run: npm run lint -- --cache-dir=".turbo"
       - id: build
-        run: npm run build -- --cache-dir=".turbo"
+        run: npm run build
       - id: test
-        run: npm run test -- --cache-dir=".turbo"
+        run: npm run test
       - name: Upload common package coverage
         uses: codecov/codecov-action@v2
         with:
