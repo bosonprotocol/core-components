@@ -35,7 +35,7 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/common/coverage-final.json,./packages/core-sdk/coverage-final.json
+          files: ./packages/common/coverage/coverage-final.json,./packages/core-sdk/coverage/coverage-final.json
           flags: unittests # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
