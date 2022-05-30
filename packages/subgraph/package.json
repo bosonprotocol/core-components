@@ -8,7 +8,7 @@
   "devDependencies": {
     "ethers": "^5.5.4",
     "handlebars": "^4.7.7",
-    "matchstick-as": "^0.4.2",
+    "matchstick-as": "0.4.2",
     "ts-node": "^10.7.0"
   },
   "license": "Apache-2.0",
