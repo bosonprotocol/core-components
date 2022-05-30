@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  pull_request:
-    branches:
-      - main
+on: [pull_request]
 
 jobs:
   lint-build-test:
@@ -13,7 +10,6 @@ jobs:
       JOB_LINT: ${{ steps.lint.outcome }}
       JOB_TEST: ${{ steps.test.outcome }}
       JOB_BUILD: ${{ steps.build.outcome }}
-      JOB_COVERAGE: ${{ steps.coverage.outcome }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -35,18 +31,16 @@ jobs:
         run: npm run build -- --cache-dir=".turbo"
       - id: test
         run: npm run test -- --cache-dir=".turbo"
-      - id: coverage
-        run: npm run coverage && npm run badge
-      - name: Commit files
-        run: |
-          git config --local user.email "bapp-ci-bot@users.noreply.github.com"
-          git config --local user.name "@bapp-ci-bot"
-          git commit -am "Update badges"
-      - name: Update badges
-        run: |
-          git push
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/common/coverage-final.json,./packages/core-sdk/coverage-final.json
+          flags: unittests # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
 
-  job-sumary:
+  job-summary:
     name: Create Job Summary
     runs-on: ubuntu-latest
     if: always()
@@ -55,7 +49,6 @@ jobs:
       JOB_LINT: ${{ needs.lint-build-test.outputs.JOB_LINT }}
       JOB_TEST: ${{ needs.lint-build-test.outputs.JOB_TEST }}
       JOB_BUILD: ${{ needs.lint-build-test.outputs.JOB_BUILD }}
-      JOB_COVERAGE: ${{ needs.lint-build-test.outputs.JOB_COVERAGE }}
     steps:
       - uses: actions/checkout@v3
       - name: Adding Job Summary
@@ -76,9 +69,4 @@ jobs:
             echo "| Build | ✅ |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Build | ❌ |" >> $GITHUB_STEP_SUMMARY
-          fi
-          if [ ${{ env.JOB_COVERAGE }} == success ]; then
-            echo "| Coverage | ✅ |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Coverage | ❌ |" >> $GITHUB_STEP_SUMMARY
           fi
