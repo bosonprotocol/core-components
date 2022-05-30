@@ -1,7 +1,0 @@
-flags:
-  common:
-    paths:
-      - packages/common/src
-  core-sdk:
-    paths:
-      - packages/core-sdk/src
