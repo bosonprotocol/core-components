@@ -12,8 +12,8 @@ export function saveBaseMetadata(
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
-  const externalUrl = convertToString(metadataObj.get("external_url"));
-  const schemaUrl = convertToString(metadataObj.get("schema_url"));
+  const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
 
   let baseMetadataEntity = BaseMetadataEntity.load(metadataId);
 

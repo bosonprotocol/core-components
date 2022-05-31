@@ -6,9 +6,9 @@ import {
   OfferStruct,
   MetadataStorage,
   AnyMetadata,
-  CreateOfferArgs,
-  MetadataType
+  CreateOfferArgs
 } from "../src/types";
+import { MetadataType } from "@bosonprotocol/metadata";
 
 export const IPFS_HASH = "QmYXc12ov6F2MZVZwPs5XeCBbf61cW3wKRk8h3D5NTYj4T";
 export const IPFS_URI = `https://ipfs.io/ipfs/${IPFS_HASH}`;

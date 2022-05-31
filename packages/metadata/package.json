@@ -1,0 +1,42 @@
+{
+  "name": "@bosonprotocol/metadata",
+  "version": "1.2.0",
+  "description": "Offer metadata schemas, types and tools of the Boson Protocol.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "scripts": {
+    "dev": "tsc --build tsconfig.cjs.json --watch --preserveWatchOutput",
+    "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
+    "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
+    "test": "jest",
+    "clean": "rimraf dist coverage .turbo node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bosonprotocol/core-components.git"
+  },
+  "author": "Boson Protocol",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bosonprotocol/core-components/issues"
+  },
+  "homepage": "https://github.com/bosonprotocol/core-components/tree/main/packages/metadata#readme",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "jest": "^27.5.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "schema-to-yup": "^1.11.11"
+  }
+}

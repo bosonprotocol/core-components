@@ -1,4 +1,4 @@
-import { sortObjKeys } from "../../src/utils/metadata";
+import { sortObjKeys } from "../src/utils";
 
 describe("#sortObjKeys()", () => {
   test("sort object keys", () => {

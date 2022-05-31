@@ -1,18 +1,10 @@
+export * from "./web3-lib-adapter";
+export * from "./configs";
+export * from "./offers";
+export * from "./accounts";
+
 export {
-  Log,
-  TransactionReceipt,
-  TransactionRequest,
-  TransactionResponse,
-  Web3LibAdapter
-} from "./web3-lib-adapter";
-export {
-  Metadata,
+  AnyMetadata,
   MetadataStorage,
-  MetadataType,
-  BaseMetadata,
-  ProductV1Metadata,
-  AnyMetadata
-} from "./metadata-storage";
-export { ContractAddresses, ProtocolConfig } from "./configs";
-export { OfferStruct, CreateOfferArgs } from "./offers";
-export { SellerStruct, CreateSellerArgs } from "./accounts";
+  MetadataType
+} from "@bosonprotocol/metadata";

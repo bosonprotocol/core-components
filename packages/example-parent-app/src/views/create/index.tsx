@@ -27,7 +27,7 @@ export function HomeView() {
       sellerDeposit: "2",
       buyerCancelPenalty: "1",
       quantityAvailable: "10",
-      exchangeToken: "0xf47E4fd9d2eBd6182F597eE12E487CcA37FC524c", // ropsten boson address
+      exchangeToken: "0x0000000000000000000000000000000000000000",
       redeemableFromDateInMS: (Date.now() + minuteInMS).toString(),
       validFromDateInMS: (Date.now() + minuteInMS).toString(),
       validUntilDateInMS: (Date.now() + dayInMs).toString(),

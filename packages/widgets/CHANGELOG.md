@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.6.0...@bosonprotocol/widgets@1.6.1) (2022-05-27)
+
+**Note:** Version bump only for package @bosonprotocol/widgets
+
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.5.0...@bosonprotocol/widgets@1.6.0) (2022-05-16)
+
+### Features
+
+* disable commit for voided offer ([#92](https://github.com/bosonprotocol/core-components/issues/92)) ([50471e8](https://github.com/bosonprotocol/core-components/commit/50471e8ab6c0fa4b5243d03e0c040bdebc8128b6))
+
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.4.1...@bosonprotocol/widgets@1.5.0) (2022-05-13)
+
+### Features
+
+* change widget title ([#90](https://github.com/bosonprotocol/core-components/issues/90)) ([ede165d](https://github.com/bosonprotocol/core-components/commit/ede165db19aa0a3faefee3205dc007338f9bd71e))
+* limit full width button size ([#91](https://github.com/bosonprotocol/core-components/issues/91)) ([853d1fa](https://github.com/bosonprotocol/core-components/commit/853d1fa08966c1a46cbb308b749e5acc204f824d))
+* wallet change notificaiton and forcable buyer view ([#89](https://github.com/bosonprotocol/core-components/issues/89)) ([ff321e7](https://github.com/bosonprotocol/core-components/commit/ff321e7cc82406906dac8fa531c41a1263c9696c))
+* **widgets:** enforce correct chain in wallet ([#88](https://github.com/bosonprotocol/core-components/issues/88)) ([d9060b3](https://github.com/bosonprotocol/core-components/commit/d9060b3c361ab168b0f7b4c319e03f322ebc6bab))
+
+## [1.4.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.4.0...@bosonprotocol/widgets@1.4.1) (2022-05-10)
+
+**Note:** Version bump only for package @bosonprotocol/widgets
+
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.3.0...@bosonprotocol/widgets@1.4.0) (2022-05-09)
+
+### Features
+
+* add commit widget ([#85](https://github.com/bosonprotocol/core-components/issues/85)) ([4aec8ce](https://github.com/bosonprotocol/core-components/commit/4aec8cec60d07588f356da0997ec4414f22a5b55))
+
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.2.0...@bosonprotocol/widgets@1.3.0) (2022-05-04)
 
 ### Features

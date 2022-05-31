@@ -1,28 +1,31 @@
-import { AnyMetadata } from "@bosonprotocol/common";
+import { AnyMetadata } from "@bosonprotocol/metadata";
 
-export type ERC721Metadata = Omit<AnyMetadata, "externalUrl" | "schemaUrl"> & {
+export type ERC721Metadata = AnyMetadata & {
   external_url: string;
-  schema_url: string;
 };
 
+/**
+ * The ERC721 metadata standard defines the property `external_url` in snake_case.
+ * We prefer to use camelCase though. To comply with the standard but still be consistent
+ * in our code, we redundantly add the property `external_url` with the value of `externalUrl`.
+ */
 export function convertToERC721Metadata(metadata: AnyMetadata): ERC721Metadata {
-  const { externalUrl, schemaUrl, ...rest } = metadata;
+  const { externalUrl, ...rest } = metadata;
 
   return {
     ...rest,
-    external_url: externalUrl,
-    schema_url: schemaUrl
+    externalUrl,
+    external_url: externalUrl
   };
 }
 
-export function convertFromERC721Metadata(
-  erc721Metadata: ERC721Metadata
-): AnyMetadata {
-  const { external_url, schema_url, ...rest } = erc721Metadata;
-
-  return {
-    ...rest,
-    externalUrl: external_url,
-    schemaUrl: schema_url
-  } as AnyMetadata;
+export function sortObjKeys(
+  objToSort: Record<string, unknown>
+): Record<string, unknown> {
+  return Object.keys(objToSort)
+    .sort()
+    .reduce<Record<string, unknown>>((obj, key) => {
+      obj[key] = objToSort[key];
+      return obj;
+    }, {});
 }

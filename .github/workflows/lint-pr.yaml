@@ -26,5 +26,6 @@ jobs:
             subgraph
             widgets
             deps
+            metadata
           subjectPattern: ^(?![A-Z]).+$
           validateSingleCommit: true

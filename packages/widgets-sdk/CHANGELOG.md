@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.3.0...@bosonprotocol/widgets-sdk@1.4.0) (2022-05-13)
+
+### Features
+
+* wallet change notificaiton and forcable buyer view ([#89](https://github.com/bosonprotocol/core-components/issues/89)) ([ff321e7](https://github.com/bosonprotocol/core-components/commit/ff321e7cc82406906dac8fa531c41a1263c9696c))
+
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.2.0...@bosonprotocol/widgets-sdk@1.3.0) (2022-05-04)
 
 ### Features

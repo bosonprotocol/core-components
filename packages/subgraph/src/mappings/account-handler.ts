@@ -13,6 +13,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
 
   if (seller === null) {
     seller = new Seller(sellerId);
+    seller.sellerId = event.params.sellerId;
     seller.operator = sellerFromEvent.operator;
     seller.admin = sellerFromEvent.admin;
     seller.clerk = sellerFromEvent.clerk;

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.2.3...@bosonprotocol/subgraph@1.3.0) (2022-05-27)
+
+### Features
+
+* **subgraph:** add sellerId as bigint to seller entity ([#98](https://github.com/bosonprotocol/core-components/issues/98)) ([07025c7](https://github.com/bosonprotocol/core-components/commit/07025c7f55efeded40b82ebb5612b8942673152d))
+
+## [1.2.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.2.2...@bosonprotocol/subgraph@1.2.3) (2022-05-13)
+
+### Bug Fixes
+
+* **subgraph:** correctly store sellerId in offer entity ([#87](https://github.com/bosonprotocol/core-components/issues/87)) ([d9829ab](https://github.com/bosonprotocol/core-components/commit/d9829ab2b07539f4433afd17266d56d0edf6bc80))
+
+## [1.2.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.2.1...@bosonprotocol/subgraph@1.2.2) (2022-05-09)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
 ## [1.2.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.2.0...@bosonprotocol/subgraph@1.2.1) (2022-05-04)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

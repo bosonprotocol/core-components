@@ -32,11 +32,12 @@ export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {
     const { target, message } = e.data || {};
 
     if (target !== "boson") return;
-    if (message !== "close-widget") return;
 
-    ReactDOM.unmountComponentAtNode(el);
-    el.remove();
-    window.removeEventListener("message", onMessage);
+    if (message === "close-widget") {
+      ReactDOM.unmountComponentAtNode(el);
+      el.remove();
+      window.removeEventListener("message", onMessage);
+    }
   }
 
   window.addEventListener("message", onMessage);
