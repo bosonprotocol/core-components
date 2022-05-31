@@ -23,3 +23,7 @@ dist/**
 
 # docker
 utils/graph/data
+
+# tests
+.nyc_output
+coverage/

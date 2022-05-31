@@ -4,6 +4,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   collectCoverageFrom: ["src/**/*.{ts,js,jsx,tsx}"],
+  coverageReporters: ["json", "text"],
   coveragePathIgnorePatterns: ["jest.config.js", "/node_modules/", "/dist/"],
   moduleNameMapper: {
     "^@bosonprotocol/(.*)$": "<rootDir>/../$1/"
