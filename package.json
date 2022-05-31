@@ -11,8 +11,6 @@
     "lint": "turbo run lint",
     "build": "turbo run build",
     "test": "turbo run test",
-    "coverage": "node ./scripts/coverage.js && npx nyc report --reporter 'json-summary'",
-    "badge": "istanbul-badges-readme && node ./scripts/read.js",
     "clean": "turbo run clean",
     "version": "echo 'not implemented'"
   },
@@ -33,8 +31,6 @@
     "@typescript-eslint/parser": "^5.12.1",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "istanbul-badges-readme": "^1.8.1",
-    "nyc": "^15.1.0",
     "turbo": "^1.1.6"
   },
   "overrides": {
