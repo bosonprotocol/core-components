@@ -10,5 +10,12 @@
       "verifyAccess": false
     }
   },
-  "ignoreChanges": [".github/**", "**/*.test.*", "**/*.spec.*", "**/*.md"]
+  "ignoreChanges": [
+    "e2e/**",
+    "contracts/**",
+    ".github/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.md"
+  ]
 }
