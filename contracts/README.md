@@ -7,7 +7,7 @@ The primary use of this is to easily allow a customized usage of local hardhat n
 
 ### Install deps
 
-```shell
+```bash
 npm i
 ```
 
@@ -15,12 +15,26 @@ npm i
 
 #### Run local node
 
-```shell
+```bash
 npm run node
 ```
 
 #### Deploy contracts
 
-```shell
+```bash
 npm run deploy
+```
+
+## Update submodule
+
+In order to update protocol contracts submodule run
+
+```bash
+cd protocol-contracts
+git checkout <BRANCH | COMMIT_HASH | TAG>
+
+cd ..
+
+git add .
+git commit -m "chore: update protocol contracts submodule"
 ```
