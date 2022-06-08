@@ -16,7 +16,7 @@ const envNameToConfig: Record<
   }
 > = {
   local: {
-    network: "mainnet",
+    network: "localhost",
     startBlock: 0
   },
   testing: {

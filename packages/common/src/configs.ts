@@ -42,16 +42,15 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "local",
-    chainId: 1234,
+    chainId: 31337,
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl:
-      "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
+    jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xd2a2c7E31b1F23d3Ca85e21858EB2FC453a14531"
+      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
     }
   }
 ];
@@ -61,6 +60,7 @@ export function getDefaultConfig(filter: {
   chainId?: number;
 }): ProtocolConfig {
   const { envName, chainId } = filter;
+  console.log(envName);
 
   if (!envName && !chainId) {
     throw new Error(`filter.envName or filter.chainId has to be set`);

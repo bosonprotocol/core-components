@@ -22,7 +22,7 @@
     "codegen": "graph codegen",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
-    "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents",
+    "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
     "create:testing": "graph create --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "remove:testing": "graph remove --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "deploy:testing": "npm run manifest:testing && npm run create:testing && graph deploy --node http://graph.geth.svc.cluster.local:8020 --ipfs http://ipfs.geth.svc.cluster.local:5001 boson/corecomponents -l 0.0.1",
