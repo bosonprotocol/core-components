@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 trap cleanup EXIT INT TERM
 
-function cleanup {
+function cleanup() {
   cd e2e
   docker-compose down -v
   rm -rf ./data
