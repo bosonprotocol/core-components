@@ -1,15 +1,26 @@
-# Basic Sample Hardhat Project
+# Protocol v2 contracts wrapper
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This folder contains a hardhat project which uses the [Boson Protocol Contracts](https://github.com/bosonprotocol/boson-protocol-contracts) as a submodule.
+The primary use of this is to easily allow a customized usage of local hardhat node deployments.
 
-Try running some of the following tasks:
+## Usage
+
+### Install deps
 
 ```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
+npm i
+```
+
+### Scripts
+
+#### Run local node
+
+```shell
+npm run node
+```
+
+#### Deploy contracts
+
+```shell
+npm run deploy
 ```
