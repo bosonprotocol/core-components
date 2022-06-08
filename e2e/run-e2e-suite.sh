@@ -3,10 +3,10 @@
 trap cleanup EXIT INT TERM
 
 function cleanup() {
+  exit_status=$?
   cd e2e
   docker-compose down -v
-  rm -rf ./data
-  exit
+  exit "$exit_status"
 }
 
 cd e2e

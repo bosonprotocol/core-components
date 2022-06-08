@@ -78,6 +78,8 @@ jobs:
     needs: [lint-build-test]
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: "true"
       - uses: actions/setup-node@v3
         with:
           node-version: "16"

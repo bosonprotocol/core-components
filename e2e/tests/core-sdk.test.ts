@@ -1,7 +1,7 @@
 import { providers, Wallet } from "ethers";
 import { CoreSDK, getDefaultConfig } from "../../packages/core-sdk/src";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
-import { EthersAdapter } from "../../packages/ethers-sdk";
+import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { ACCOUNT_1 } from "../../contracts/accounts";
 
 jest.setTimeout(60_000);
