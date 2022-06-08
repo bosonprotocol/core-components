@@ -2,7 +2,7 @@
 
 trap cleanup EXIT INT TERM
 
-function cleanup() {
+function cleanup {
   docker-compose down -v
   rm -rf ./data
   exit
