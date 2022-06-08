@@ -36,4 +36,12 @@ export type RawOfferFromSubgraph = {
     schemaUrl: string;
     type: string;
   };
+  exchanges: {
+    id: string;
+    committedDate: string;
+    disputed: boolean;
+    expired: boolean;
+    finalizedDate: string;
+    redeemedDate: string;
+  }[];
 };

@@ -25,6 +25,7 @@ const WidgetContainer = styled.div`
 export function Manage() {
   const [offer, setOffer] = useState<offers.RawOfferFromSubgraph>();
   const widgetRef = useRef<HTMLDivElement>(null);
+  const [selectedExchangeId, setSelectedExchangeId] = useState<string>();
 
   useEffect(() => {
     assert(widgetRef.current);
@@ -40,7 +41,8 @@ export function Manage() {
         },
         el,
         {
-          forceBuyerView: false
+          forceBuyerView: false,
+          exchangeId: selectedExchangeId
         }
       );
 
@@ -48,8 +50,7 @@ export function Manage() {
     }
 
     return;
-  }, [offer]);
-
+  }, [offer, selectedExchangeId]);
   return (
     <Layout>
       <PageTitle>Manage Offer</PageTitle>
@@ -81,6 +82,31 @@ export function Manage() {
               placeholder="..."
             />
           </Form.Group>
+          <div>
+            <Form.Label>Exchange ID</Form.Label>
+            <Form.Select
+              value=""
+              onChange={(e) => setSelectedExchangeId(e.target.value)}
+              disabled={offer.exchanges.length === 0}
+            >
+              {offer.exchanges.length === 0 ? (
+                <option value="">No exchanges found for this offer</option>
+              ) : (
+                <>
+                  <option value="">
+                    {offer.exchanges.length === 1
+                      ? `--- 1 Exchange found ---`
+                      : `--- ${offer.exchanges.length} Exchanges found ---`}
+                  </option>
+                  {offer.exchanges.map((exchange) => (
+                    <option key={exchange.id} value={exchange.id}>
+                      {exchange.id}
+                    </option>
+                  ))}
+                </>
+              )}
+            </Form.Select>
+          </div>
         </Root>
       )}
       <WidgetContainer ref={widgetRef} />

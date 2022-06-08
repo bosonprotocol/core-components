@@ -7,7 +7,7 @@ import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { getOfferStatus, OfferState } from "./getOfferStatus";
-import { Actions, PrimaryButton } from "./shared-styles";
+import { Actions, PrimaryButton, SecondaryButton } from "./shared-styles";
 
 const CommitButton = styled(PrimaryButton)`
   width: 100%;
@@ -17,8 +17,27 @@ const CommitButton = styled(PrimaryButton)`
   }
 `;
 
-function isCommitDisabled(offer: offers.RawOfferFromSubgraph) {
-  const offerStatus = getOfferStatus(offer);
+const RedeemButton = styled(PrimaryButton)`
+  width: 50%;
+
+  &[disabled] {
+    opacity: 0.2;
+  }
+`;
+
+const CancelButton = styled(SecondaryButton)`
+  width: 50%;
+
+  &[disabled] {
+    opacity: 0.2;
+  }
+`;
+
+function isCommitDisabled(
+  offer: offers.RawOfferFromSubgraph,
+  exchangeId: string | null
+) {
+  const offerStatus = getOfferStatus(offer, exchangeId);
 
   if (offerStatus === OfferState.EXPIRED) return true;
   if (offerStatus === OfferState.VOIDED) return true;
@@ -30,8 +49,9 @@ function isCommitDisabled(offer: offers.RawOfferFromSubgraph) {
 interface Props {
   offer: offers.RawOfferFromSubgraph;
   reloadOfferData: () => void;
+  exchangeId: string | null;
 }
-export function BuyerActions({ offer, reloadOfferData }: Props) {
+export function BuyerActions({ offer, reloadOfferData, exchangeId }: Props) {
   const coreSDK = useCoreSDK();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [transaction, setTransaction] = useState<
@@ -53,17 +73,28 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
       }
   >({ status: "idle" });
 
-  const commitDisabled = isCommitDisabled(offer);
+  const commitDisabled = isCommitDisabled(offer, exchangeId);
 
   return (
     <>
       <Actions>
-        <CommitButton
-          disabled={commitDisabled}
-          onClick={() => setShowConfirmModal(true)}
-        >
-          Commit to Offer
-        </CommitButton>
+        {exchangeId ? (
+          <>
+            <CancelButton onClick={() => console.log("cancel offer")}>
+              Cancel
+            </CancelButton>
+            <RedeemButton onClick={() => console.log("redeem offer")}>
+              Redeem
+            </RedeemButton>
+          </>
+        ) : (
+          <CommitButton
+            disabled={commitDisabled}
+            onClick={() => setShowConfirmModal(true)}
+          >
+            Commit to Offer
+          </CommitButton>
+        )}
       </Actions>
       {transaction.status === "pending" && (
         <TransactionPendingModal txHash={transaction.txHash} />
