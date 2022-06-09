@@ -5,6 +5,7 @@ import { WidgetConfig } from "../../types";
 
 interface OptionalParams {
   forceBuyerView?: boolean;
+  exchangeId?: string;
 }
 
 export function manageOffer(
@@ -16,6 +17,7 @@ export function manageOffer(
   ReactDOM.render(
     <ManageOfferWidget
       offerId={offerId}
+      exchangeId={params?.exchangeId}
       widgetsConfig={config}
       forceBuyerView={params?.forceBuyerView ?? false}
     />,
@@ -37,15 +39,22 @@ export function manageOffer(
 
 interface Props {
   offerId: string;
+  exchangeId?: string;
   widgetsConfig: WidgetConfig;
   forceBuyerView: boolean;
 }
 
-function ManageOfferWidget({ offerId, widgetsConfig, forceBuyerView }: Props) {
+function ManageOfferWidget({
+  offerId,
+  exchangeId,
+  widgetsConfig,
+  forceBuyerView
+}: Props) {
   const { widgetsUrl, chainId, ipfsMetadataUrl } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     offerId,
+    exchangeId,
     chainId,
     ipfsMetadataUrl,
     ...(forceBuyerView && { forceBuyerView })

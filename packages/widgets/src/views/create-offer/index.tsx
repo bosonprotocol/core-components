@@ -8,12 +8,13 @@ import { Button } from "../../lib/components/Button";
 import { SuccessModal } from "../../lib/components/modals/SuccessModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import { constants } from "ethers";
-import { columnGap, OfferDetails } from "../../lib/components/OfferDetails";
+import { columnGap } from "../../lib/components/details/shared-styles";
 import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
 import { SpinnerCircular } from "spinners-react";
 import { hooks } from "../../lib/connectors/metamask";
 import { closeWidget } from "../../lib/closeWidget";
 import { colors } from "../../lib/colors";
+import { OfferDetails } from "../../lib/components/details/OfferDetails";
 
 const Spacer = styled.div`
   height: 20px;

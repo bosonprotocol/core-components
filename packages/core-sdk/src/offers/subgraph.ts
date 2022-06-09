@@ -2,6 +2,17 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { fetchSubgraph, MultiQueryOpts } from "../utils/subgraph";
 import { RawOfferFromSubgraph } from "./types";
 
+export const exchangeFieldsFragment = `
+fragment exchangeFields on Exchange {
+  id
+  committedDate
+  redeemedDate
+  finalizedDate
+  expired
+  disputed
+}
+`;
+
 export const offerFieldsFragment = `
 fragment offerFields on Offer {
   id
@@ -39,7 +50,11 @@ fragment offerFields on Offer {
     schemaUrl
     type
   }
+  exchanges {
+    ...exchangeFields
+  }
 }
+${exchangeFieldsFragment}
 `;
 
 export const getOfferByIdQuery = `

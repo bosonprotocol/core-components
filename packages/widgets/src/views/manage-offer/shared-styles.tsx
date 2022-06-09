@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../lib/colors";
 import { Button, buttonWidth } from "../../lib/components/Button";
-import { columnGap } from "../../lib/components/OfferDetails";
+import { columnGap } from "../../lib/components/details/shared-styles";
 
 export const SecondaryButton = styled(Button)`
   background-color: ${colors.cyberSpaceGray};
