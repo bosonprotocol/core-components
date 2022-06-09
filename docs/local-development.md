@@ -34,6 +34,11 @@ npm ci
 
 ### Local e2e services
 
+Requires:
+
+- Docker compose >= v2
+- Docker engine >= v20
+
 If you want to run a local e2e setup with a deployed subgraph and contracts, run in the root of this monorepo
 
 ```bash
