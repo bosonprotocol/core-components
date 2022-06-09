@@ -60,7 +60,6 @@ export function getDefaultConfig(filter: {
   chainId?: number;
 }): ProtocolConfig {
   const { envName, chainId } = filter;
-  console.log(envName);
 
   if (!envName && !chainId) {
     throw new Error(`filter.envName or filter.chainId has to be set`);

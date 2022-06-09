@@ -31,10 +31,10 @@ describe("core-sdk", () => {
     const txReceipt = await txResponse.wait();
     const createdOfferId = coreSdk.getCreatedOfferIdFromLogs(txReceipt.logs);
 
+    // we need to wait for the graph node to pick up the new events
     await wait(15_000);
 
     const offer = await coreSdk.getOfferById(createdOfferId);
-    console.log(offer);
 
     expect(offer).toBeTruthy();
   });
