@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.7.0...@bosonprotocol/example-parent-app@1.8.0) (2022-06-09)
+
+### Features
+
+* add Exchange view in the widget ([#103](https://github.com/bosonprotocol/core-components/issues/103)) ([b9098d4](https://github.com/bosonprotocol/core-components/commit/b9098d40e1a8955f960c1cfa3014b2ebad226650))
+
 # [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.6.0...@bosonprotocol/example-parent-app@1.7.0) (2022-05-27)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.6.1...@bosonprotocol/widgets@1.7.0) (2022-06-09)
+
+### Features
+
+* add Exchange view in the widget ([#103](https://github.com/bosonprotocol/core-components/issues/103)) ([b9098d4](https://github.com/bosonprotocol/core-components/commit/b9098d40e1a8955f960c1cfa3014b2ebad226650))
+
 ## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.6.0...@bosonprotocol/widgets@1.6.1) (2022-05-27)
 
 **Note:** Version bump only for package @bosonprotocol/widgets

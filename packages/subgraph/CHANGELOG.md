@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.3.0...@bosonprotocol/subgraph@1.4.0) (2022-06-09)
+
+### Features
+
+* add code coverage and build status badges ([#97](https://github.com/bosonprotocol/core-components/issues/97)) ([7710760](https://github.com/bosonprotocol/core-components/commit/7710760051a7d77c0fd570f78aa5c7604c586317)), closes [#100](https://github.com/bosonprotocol/core-components/issues/100)
+
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.2.3...@bosonprotocol/subgraph@1.3.0) (2022-05-27)
 
 ### Features
