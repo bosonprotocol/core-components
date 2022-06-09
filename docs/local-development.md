@@ -25,7 +25,7 @@ It is also beneficial to have a rough understanding of the [monorepo tools](./mo
 
 ```bash
 # checkout repo
-git checkout https://github.com/bosonprotocol/core-components.git
+git clone --recursive https://github.com/bosonprotocol/core-components.git
 
 # install deps
 cd core-components
@@ -42,6 +42,7 @@ Requires:
 If you want to run a local e2e setup with a deployed subgraph and contracts, run in the root of this monorepo
 
 ```bash
+npm run build:sdks
 npm run e2e:services
 ```
 
