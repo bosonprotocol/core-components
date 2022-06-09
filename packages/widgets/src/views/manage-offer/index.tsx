@@ -2,11 +2,10 @@ import { WidgetLayout } from "../../lib/components/WidgetLayout";
 import {
   Entry,
   Label,
-  OfferDetails,
   Row,
   Spacer,
   Value
-} from "../../lib/components/OfferDetails";
+} from "../../lib/components/details/shared-styles";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
 import styled from "styled-components";
 import { getURLParams } from "../../lib/parseUrlParams";
@@ -14,7 +13,7 @@ import { colors } from "../../lib/colors";
 import { SpinnerCircular } from "spinners-react";
 import { closeWidget } from "../../lib/closeWidget";
 import { SellerActions } from "./SellerActions";
-import { getOfferStatus } from "./getOfferStatus";
+import { getOfferStatus, OfferState } from "./getOfferStatus";
 import { useManageOfferData } from "./useManageOfferData";
 import { hooks } from "../../lib/connectors/metamask";
 import { BuyerActions } from "./BuyerActions";
@@ -22,6 +21,8 @@ import { Actions, SecondaryButton } from "./shared-styles";
 import { connectWallet } from "../../lib/connectWallet";
 import { offers } from "@bosonprotocol/core-sdk";
 import { getConfig } from "../../lib/config";
+import { ExchangeDetails } from "../../lib/components/details/ExchangeDetails";
+import { OfferDetails } from "../../lib/components/details/OfferDetails";
 
 const Center = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ function isAccountSeller(offer: offers.RawOfferFromSubgraph, account: string) {
 }
 
 export default function ManageOffer() {
-  const { offerId, forceBuyerView } = getURLParams();
+  const { offerId, forceBuyerView, exchangeId } = getURLParams();
   const { offerData, reloadOfferData } = useManageOfferData(offerId);
   const { chainId } = getConfig();
   const account = hooks.useAccount();
@@ -65,24 +66,28 @@ export default function ManageOffer() {
   const { offer } = offerData;
 
   const isSeller = isAccountSeller(offer, account ?? "") && !forceBuyerView;
-
+  const offerStatus = getOfferStatus(offer, exchangeId);
+  const isExchange = [OfferState.COMMITTED].includes(offerStatus);
+  const title = isExchange ? "Exchange" : "Offer";
+  const BodyComponent = isExchange ? ExchangeDetails : OfferDetails;
+  const offerName = offer.metadata?.name ?? "";
   return (
     <WidgetLayout
       hideCloseButton
-      title="Offer"
-      offerName={offer.metadata?.name ?? ""}
+      title={title}
+      offerName={isExchange ? "" : offerName}
     >
       <Row>
         <Entry>
-          <Label>Offer ID</Label>
-          <Value>{offer.id}</Value>
+          <Label>{title} ID</Label>
+          <Value>{isExchange ? exchangeId : offer.id}</Value>
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{getOfferStatus(offer)}</Value>
+          <Value>{offerStatus}</Value>
         </Entry>
       </Row>
-      <OfferDetails
+      <BodyComponent
         createOfferArgs={{
           sellerDeposit: offer.sellerDeposit,
           exchangeToken: offer.exchangeToken.address,
@@ -98,6 +103,7 @@ export default function ManageOffer() {
             Number(offer.fulfillmentPeriodDuration) * 1000,
           redeemableFromDateInMS: Number(offer.redeemableFromDate) * 1000
         }}
+        name={offerName}
         currency={offer.exchangeToken.symbol}
       />
       <Spacer />
@@ -108,9 +114,17 @@ export default function ManageOffer() {
           </ConnectButton>
         </Actions>
       ) : isSeller ? (
-        <SellerActions offer={offer} reloadOfferData={reloadOfferData} />
+        <SellerActions
+          offer={offer}
+          reloadOfferData={reloadOfferData}
+          exchangeId={isExchange ? exchangeId : null}
+        />
       ) : (
-        <BuyerActions offer={offer} reloadOfferData={reloadOfferData} />
+        <BuyerActions
+          offer={offer}
+          reloadOfferData={reloadOfferData}
+          exchangeId={isExchange ? exchangeId : null}
+        />
       )}
     </WidgetLayout>
   );

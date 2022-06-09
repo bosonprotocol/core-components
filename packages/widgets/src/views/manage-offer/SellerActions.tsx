@@ -11,11 +11,13 @@ import { Actions, SecondaryButton, PrimaryButton } from "./shared-styles";
 interface Props {
   offer: offers.RawOfferFromSubgraph;
   reloadOfferData: () => void;
+  exchangeId: string | null;
 }
 
-export function SellerActions({ offer, reloadOfferData }: Props) {
+export function SellerActions({ offer, reloadOfferData, exchangeId }: Props) {
   const coreSDK = useCoreSDK();
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showVoidOfferConfirmModal, setShowVoidOfferConfirmModal] =
+    useState(false);
   const [transaction, setTransaction] = useState<
     | {
         status: "idle";
@@ -35,21 +37,37 @@ export function SellerActions({ offer, reloadOfferData }: Props) {
       }
   >({ status: "idle" });
 
+  const offerStatus = getOfferStatus(offer, exchangeId);
+
   const voidOfferAvailable = [
     OfferState.VALID,
     OfferState.NOT_YET_VALID
-  ].includes(getOfferStatus(offer));
+  ].includes(offerStatus);
 
+  const revokeOfferAvailable = OfferState.COMMITTED === offerStatus;
+
+  const hasSecondaryButton = voidOfferAvailable || revokeOfferAvailable;
   return (
     <>
       <Actions>
         {voidOfferAvailable && (
-          <SecondaryButton onClick={async () => setShowConfirmModal(true)}>
+          <SecondaryButton
+            onClick={async () => setShowVoidOfferConfirmModal(true)}
+          >
             Void Offer
           </SecondaryButton>
         )}
+        {revokeOfferAvailable && (
+          <SecondaryButton
+            onClick={() => {
+              console.log("revoke offer"); // TODO: implement
+            }}
+          >
+            Revoke
+          </SecondaryButton>
+        )}
         <PrimaryButton
-          style={{ width: !voidOfferAvailable ? "100%" : undefined }}
+          style={{ width: !hasSecondaryButton ? "100%" : undefined }}
         >
           Withdraw
         </PrimaryButton>
@@ -70,11 +88,11 @@ export function SellerActions({ offer, reloadOfferData }: Props) {
           onClose={() => setTransaction({ status: "idle" })}
         />
       )}
-      {showConfirmModal && (
+      {showVoidOfferConfirmModal && (
         <ConfirmModal
-          onCancel={() => setShowConfirmModal(false)}
+          onCancel={() => setShowVoidOfferConfirmModal(false)}
           onConfirm={async () => {
-            setShowConfirmModal(false);
+            setShowVoidOfferConfirmModal(false);
             try {
               const txResponse = await coreSDK.voidOffer(offer.id);
 
