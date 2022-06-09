@@ -85,7 +85,18 @@ jobs:
         with:
           node-version: "16"
           cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
       - run: npm ci
+      - name: Build sdks
+        run: |
+          npm run build:sdks -- --cache-dir=".turbo"
       - name: Run e2e tests
         run: npm run e2e:suite
 
