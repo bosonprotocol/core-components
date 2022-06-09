@@ -58,7 +58,11 @@ export function SellerActions({ offer, reloadOfferData, exchangeId }: Props) {
           </SecondaryButton>
         )}
         {revokeOfferAvailable && (
-          <SecondaryButton onClick={() => console.log("revoke offer")}>
+          <SecondaryButton
+            onClick={() => {
+              console.log("revoke offer"); // TODO: implement
+            }}
+          >
             Revoke
           </SecondaryButton>
         )}

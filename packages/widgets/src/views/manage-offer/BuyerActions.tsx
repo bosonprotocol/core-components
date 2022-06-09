@@ -80,10 +80,18 @@ export function BuyerActions({ offer, reloadOfferData, exchangeId }: Props) {
       <Actions>
         {exchangeId ? (
           <>
-            <CancelButton onClick={() => console.log("cancel offer")}>
+            <CancelButton
+              onClick={() => {
+                console.log("cancel offer"); // TODO: implement
+              }}
+            >
               Cancel
             </CancelButton>
-            <RedeemButton onClick={() => console.log("redeem offer")}>
+            <RedeemButton
+              onClick={() => {
+                console.log("redeem offer"); // TODO: implement
+              }}
+            >
               Redeem
             </RedeemButton>
           </>
