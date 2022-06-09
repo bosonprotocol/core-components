@@ -11,7 +11,6 @@ function cleanup() {
 
 cd e2e
 
-docker-compose pull
 docker-compose up -d
 
 echo "Waiting for services..."
