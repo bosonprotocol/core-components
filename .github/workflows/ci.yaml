@@ -72,6 +72,43 @@ jobs:
           files: ./packages/metadata/coverage/coverage-final.json
           flags: unittests,metadata
 
+  e2e-tests:
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+    needs: [lint-build-test]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "true"
+          token: ${{ secrets.PAT }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
+      - run: npm ci
+      - name: Build sdks
+        run: |
+          npm run build:sdks -- --cache-dir=".turbo"
+      # Pull the latest image to build, and avoid caching pull-only images.
+      # (docker pull is faster than caching in most cases.)
+      - run: cd e2e && docker-compose pull && cd ..
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      - name: Run e2e tests
+        run: npm run e2e:suite
+
   job-summary:
     name: Create Job Summary
     runs-on: ubuntu-latest

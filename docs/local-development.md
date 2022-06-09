@@ -25,12 +25,29 @@ It is also beneficial to have a rough understanding of the [monorepo tools](./mo
 
 ```bash
 # checkout repo
-git checkout https://github.com/bosonprotocol/core-components.git
+git clone --recursive https://github.com/bosonprotocol/core-components.git
 
 # install deps
 cd core-components
 npm ci
 ```
+
+### Local e2e services
+
+Requires:
+
+- Docker compose >= v2
+- Docker engine >= v20
+
+If you want to run a local e2e setup with a deployed subgraph and contracts, run in the root of this monorepo
+
+```bash
+npm run build:sdks
+npm run e2e:services
+```
+
+This will start a dockerized IPFS node, Graph node, PostgresDB and hardhat node and deploy all required contracts and subgraph.
+For details have a look at the [`e2e/docker-compose.yml`](../e2e/docker-compose.yml) file.
 
 ### Local widgets and example parent app
 
@@ -44,10 +61,15 @@ npm run build
 npm run dev
 ```
 
-This will build every package and start dev servers for the [widgets]() and the [example parent app]():
+This will build every package and start dev servers for the [widgets](../packages/widgets/) and the [example parent app](../packages/example-parent-app/):
 
 - widgets -> http://localhost:3000
 - example parent app -> http://localhost:4000
+
+Per default the example app will be connected to our staging environment.
+You can change the chain id by modifying the respective value in the [`.env`](../packages/example-parent-app/.env) file of the example app.
+
+If you want to connect to the local e2e setup from above, then you need to use the chain id `31337`.
 
 ## Linting
 
@@ -85,6 +107,20 @@ npm run test -- --scope="@bosonprotocol/core-sdk"
 
 # test single package without dependent packages
 npm run test -- --scope="@bosonprotocol/core-sdk" --no-deps
+```
+
+### e2e tests
+
+In the root of this monorepo run
+
+```bash
+# starts all e2e services, deploys contracts and subgraph, and runs e2e tests
+npm run e2e:suite
+
+# OR
+
+# only runs e2e tests. useful if you have the e2e services already running
+npm run e2e:test
 ```
 
 ## Building

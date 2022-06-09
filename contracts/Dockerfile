@@ -10,4 +10,4 @@ RUN npx hardhat compile
 
 EXPOSE 8545
 
-ENTRYPOINT /app/docker/entrypoint.sh
+CMD [ "npm", "run", "node" ]

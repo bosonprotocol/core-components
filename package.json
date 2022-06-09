@@ -10,9 +10,14 @@
     "dev": "turbo run dev --parallel --no-cache",
     "lint": "turbo run lint",
     "build": "turbo run build",
+    "build:sdks": "turbo run build --filter=!@bosonprotocol/widgets --filter=!@bosonprotocol/example-parent-app",
     "test": "turbo run test",
     "clean": "turbo run clean",
-    "version": "echo 'not implemented'"
+    "version": "echo 'not implemented'",
+    "e2e:suite": "./e2e/run-e2e-suite.sh",
+    "e2e:test": "jest -c ./e2e/jest.config.js",
+    "e2e:services": "./e2e/run-e2e-services.sh",
+    "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local"
   },
   "repository": {
     "type": "git",

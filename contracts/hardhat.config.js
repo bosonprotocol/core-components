@@ -1,5 +1,6 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const { task } = require("hardhat/config");
+const { ACCOUNTS } = require("./accounts");
 
 require("@nomiclabs/hardhat-waffle");
 
@@ -22,7 +23,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.9",
   localhost: {
-    chainId: 31337
+    chainId: 31337,
+    accounts: ACCOUNTS.map(({ privateKey }) => privateKey)
   },
   paths: {
     sources: "./protocol-contracts/contracts"
