@@ -6,7 +6,7 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
   "scripts": {
-    "dev": "tsc --build tsconfig.cjs.json --watch --preserveWatchOutput",
+    "dev": "tsc --watch --preserveWatchOutput",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts .",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",

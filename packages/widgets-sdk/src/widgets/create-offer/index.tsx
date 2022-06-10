@@ -7,13 +7,17 @@ import { WidgetConfig } from "../../types";
 interface CreateOfferRequest {
   price: string;
   sellerDeposit: string;
+  protocolFee: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   validFromDateInMS: string;
   validUntilDateInMS: string;
-  redeemableFromDateInMS: string;
+  voucherRedeemableFromDateInMS: string;
+  voucherRedeemableUntilDateInMS: string;
+  voucherValidDurationInMS?: string;
   fulfillmentPeriodDurationInMS: string;
-  voucherValidDurationInMS: string;
+  resolutionPeriodDurationInMS: string;
+  disputeResolverId: string;
   metadataUri: string;
   offerChecksum: string;
 }

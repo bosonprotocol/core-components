@@ -23,16 +23,19 @@ export function HomeView() {
       description: "Lore ipsum",
       externalUrl: "https://external-url.com",
       schemaUrl: "https://schema.org/schema",
-      price: "1",
+      disputeResolverId: "1",
+      price: "2",
       sellerDeposit: "2",
+      protocolFee: "1",
       buyerCancelPenalty: "1",
       quantityAvailable: "10",
       exchangeToken: "0x0000000000000000000000000000000000000000",
-      redeemableFromDateInMS: (Date.now() + minuteInMS).toString(),
+      voucherRedeemableFromDateInMS: (Date.now() + minuteInMS).toString(),
+      voucherRedeemableUntilDateInMS: (Date.now() + 2 * dayInMs).toString(),
       validFromDateInMS: (Date.now() + minuteInMS).toString(),
       validUntilDateInMS: (Date.now() + dayInMs).toString(),
       fulfillmentPeriodDurationInMS: dayInMs.toString(),
-      voucherValidDurationInMS: dayInMs.toString()
+      resolutionPeriodDurationInMS: dayInMs.toString()
     },
     onSubmit: async (values) => {
       const storage = new IpfsMetadata({
@@ -54,6 +57,7 @@ export function HomeView() {
           price: parseEther(values.price).toString(),
           sellerDeposit: parseEther(values.sellerDeposit).toString(),
           buyerCancelPenalty: parseEther(values.buyerCancelPenalty).toString(),
+          protocolFee: parseEther(values.protocolFee).toString(),
           offerChecksum: metadataHash, // TODO: use correct checksum
           metadataUri
         },
@@ -92,7 +96,7 @@ export function HomeView() {
             />
           </Form.Group>
         </Row>
-        <Row className="mb-3">
+        <Row className="mb-5">
           <Form.Group as={Col}>
             <Form.Label>externalUrl</Form.Label>
             <Form.Control
@@ -114,7 +118,7 @@ export function HomeView() {
             />
           </Form.Group>
         </Row>
-        <Row className="mb-3">
+        <Row className="mb-5">
           <Form.Group as={Col}>
             <Form.Label>price</Form.Label>
             <Form.Control
@@ -135,8 +139,6 @@ export function HomeView() {
               placeholder="..."
             />
           </Form.Group>
-        </Row>
-        <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label>buyerCancelPenalty</Form.Label>
             <Form.Control
@@ -148,6 +150,18 @@ export function HomeView() {
             />
           </Form.Group>
           <Form.Group as={Col}>
+            <Form.Label>protocolFee</Form.Label>
+            <Form.Control
+              value={formik.values.protocolFee}
+              onChange={formik.handleChange}
+              name="protocolFee"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col}>
             <Form.Label>quantityAvailable</Form.Label>
             <Form.Control
               value={formik.values.quantityAvailable}
@@ -157,18 +171,18 @@ export function HomeView() {
               placeholder="..."
             />
           </Form.Group>
-        </Row>
-        <Row className="mb-3">
           <Form.Group as={Col}>
-            <Form.Label>voucherValidDurationInMS</Form.Label>
+            <Form.Label>disputeResolverId</Form.Label>
             <Form.Control
-              value={formik.values.voucherValidDurationInMS}
+              value={formik.values.disputeResolverId}
               onChange={formik.handleChange}
-              name="voucherValidDurationInMS"
+              name="disputeResolverId"
               type="text"
               placeholder="..."
             />
           </Form.Group>
+        </Row>
+        <Row className="mb-5">
           <Form.Group as={Col}>
             <Form.Label>exchangeToken</Form.Label>
             <Form.Control
@@ -203,23 +217,45 @@ export function HomeView() {
             />
           </Form.Group>
         </Row>
-        <Row className="mb-3">
+        <Row className="mb-5">
           <Form.Group as={Col}>
-            <Form.Label>redeemableFromDateInMS</Form.Label>
+            <Form.Label>voucherRedeemableFromDateInMS</Form.Label>
             <Form.Control
-              value={formik.values.redeemableFromDateInMS}
+              value={formik.values.voucherRedeemableFromDateInMS}
               onChange={formik.handleChange}
-              name="redeemableFromDateInMS"
+              name="voucherRedeemableFromDateInMS"
               type="text"
               placeholder="..."
             />
           </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>voucherRedeemableUntilDateInMS</Form.Label>
+            <Form.Control
+              value={formik.values.voucherRedeemableUntilDateInMS}
+              onChange={formik.handleChange}
+              name="voucherRedeemableUntilDateInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
           <Form.Group as={Col}>
             <Form.Label>fulfillmentPeriodDurationInMS</Form.Label>
             <Form.Control
               value={formik.values.fulfillmentPeriodDurationInMS}
               onChange={formik.handleChange}
               name="fulfillmentPeriodDurationInMS"
+              type="text"
+              placeholder="..."
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Label>resolutionPeriodDurationInMS</Form.Label>
+            <Form.Control
+              value={formik.values.resolutionPeriodDurationInMS}
+              onChange={formik.handleChange}
+              name="resolutionPeriodDurationInMS"
               type="text"
               placeholder="..."
             />

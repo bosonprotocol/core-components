@@ -1,4 +1,9 @@
-import { CoreSDK, offers, AnyMetadata } from "@bosonprotocol/core-sdk";
+import {
+  CoreSDK,
+  offers,
+  AnyMetadata,
+  accounts
+} from "@bosonprotocol/core-sdk";
 import { constants, BigNumber } from "ethers";
 import { useState } from "react";
 import { hooks } from "../../lib/connectors/metamask";
@@ -9,7 +14,6 @@ import { useAsyncEffect } from "use-async-effect";
 import * as yup from "yup";
 import { assert } from "../../lib/assert";
 import { isAddress } from "@ethersproject/address";
-import { RawSellerFromSubgraph } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
 
 type TokenInfo = Awaited<ReturnType<typeof getTokenInfo>>;
 export type ValidationError = Error & {
@@ -99,12 +103,16 @@ function getCreateOfferArgs() {
     price: urlParams["price"],
     sellerDeposit: urlParams["sellerDeposit"],
     buyerCancelPenalty: urlParams["buyerCancelPenalty"],
+    protocolFee: urlParams["protocolFee"],
     quantityAvailable: urlParams["quantityAvailable"],
     validFromDateInMS: urlParams["validFromDateInMS"],
     validUntilDateInMS: urlParams["validUntilDateInMS"],
-    redeemableFromDateInMS: urlParams["redeemableFromDateInMS"],
+    voucherRedeemableFromDateInMS: urlParams["voucherRedeemableFromDateInMS"],
+    voucherRedeemableUntilDateInMS: urlParams["voucherRedeemableUntilDateInMS"],
     fulfillmentPeriodDurationInMS: urlParams["fulfillmentPeriodDurationInMS"],
     voucherValidDurationInMS: urlParams["voucherValidDurationInMS"],
+    resolutionPeriodDurationInMS: urlParams["resolutionPeriodDurationInMS"],
+    disputeResolverId: urlParams["disputeResolverId"],
     exchangeToken: urlParams["exchangeToken"],
     metadataUri: urlParams["metadataUri"],
     offerChecksum: urlParams["offerChecksum"]
@@ -123,7 +131,7 @@ export function useCreateOfferData() {
         metadata: AnyMetadata;
         tokenInfo: TokenInfo;
         createOfferArgs: offers.CreateOfferArgs;
-        seller?: RawSellerFromSubgraph;
+        seller?: accounts.RawSellerFromSubgraph;
       }
     | { status: "loading" }
     | { status: "error"; error: Error }
