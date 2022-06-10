@@ -1,7 +1,7 @@
 import { MetadataStorage, AnyMetadata } from "@bosonprotocol/metadata";
 import { validateMetadata } from "../validation";
 import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "../utils";
-import { BaseIpfsStorage } from "./baseIpfsStorage";
+import { BaseIpfsStorage } from "./base";
 import { Options } from "ipfs-http-client";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
