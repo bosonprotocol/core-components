@@ -17,8 +17,8 @@ export class BaseIpfsStorage {
     });
   }
 
-  public async add(value: unknown) {
-    const addResult = await this.ipfsClient.add(JSON.stringify(value), {
+  public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
+    const addResult = await this.ipfsClient.add(value, {
       pin: true
     });
     const cid = addResult.cid.toString();
