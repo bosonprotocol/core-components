@@ -23,7 +23,7 @@ export class IpfsMetadataStorage
     validateMetadata(metadata);
     const metadataConformingToERC721 = convertToERC721Metadata(metadata);
     const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
-    const cid = await this.add(metadataWithSortedKeys);
+    const cid = await this.add(JSON.stringify(metadataWithSortedKeys));
     return cid;
   }
 
