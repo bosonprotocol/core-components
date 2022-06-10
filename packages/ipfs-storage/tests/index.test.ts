@@ -1,8 +1,8 @@
-import { constants, IpfsMetadata } from "../src/index";
+import { constants, IpfsMetadataStorage } from "../src/index";
 
 describe("index entrypoint", () => {
-  test("export IpfsMetadata", () => {
-    expect(IpfsMetadata).toBeTruthy();
+  test("export IpfsMetadataStorage", () => {
+    expect(IpfsMetadataStorage).toBeTruthy();
   });
 
   test("export constants", () => {

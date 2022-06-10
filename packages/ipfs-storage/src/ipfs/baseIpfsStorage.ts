@@ -4,7 +4,7 @@ import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
-export class BaseIpfs {
+export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
@@ -12,7 +12,7 @@ export class BaseIpfs {
   }
 
   static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
-    return new BaseIpfs({
+    return new BaseIpfsStorage({
       url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }

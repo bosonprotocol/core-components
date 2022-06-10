@@ -1,17 +1,20 @@
 import { MetadataStorage, AnyMetadata } from "@bosonprotocol/metadata";
 import { validateMetadata } from "../validation";
 import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "../utils";
-import { BaseIpfs } from "./baseIpfs";
+import { BaseIpfsStorage } from "./baseIpfsStorage";
 import { Options } from "ipfs-http-client";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
-export class IpfsMetadata extends BaseIpfs implements MetadataStorage {
+export class IpfsMetadataStorage
+  extends BaseIpfsStorage
+  implements MetadataStorage
+{
   constructor(opts: Options) {
     super(opts);
   }
 
   static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
-    return new IpfsMetadata({
+    return new IpfsMetadataStorage({
       url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }

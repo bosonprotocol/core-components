@@ -2,7 +2,7 @@ import { createOffer } from "@bosonprotocol/widgets-sdk";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { MetadataType } from "@bosonprotocol/common";
 import { parseEther } from "@ethersproject/units";
 import { CONFIG } from "../../lib/config";
@@ -35,7 +35,7 @@ export function HomeView() {
       voucherValidDurationInMS: dayInMs.toString()
     },
     onSubmit: async (values) => {
-      const storage = new IpfsMetadata({
+      const storage = new IpfsMetadataStorage({
         url: CONFIG.ipfsMetadataUrl
       });
 

@@ -1,4 +1,4 @@
-import { IpfsMetadata } from "../src/ipfs";
+import { IpfsMetadataStorage } from "../src/";
 import { DEFAULT_THE_GRAPH_IPFS_URL } from "../src/constants";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
 import { MetadataType } from "@bosonprotocol/metadata";
@@ -27,7 +27,7 @@ describe("#fromTheGraphIpfsUrl()", () => {
       })
     );
 
-    const theGraphIpfsStorage = IpfsMetadata.fromTheGraphIpfsUrl();
+    const theGraphIpfsStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl();
     const endpointConfig = theGraphIpfsStorage.ipfsClient.getEndpointConfig();
 
     expect(endpointConfig.host).toEqual("api.thegraph.com");
@@ -36,7 +36,7 @@ describe("#fromTheGraphIpfsUrl()", () => {
 
 describe("#storeMetadata()", () => {
   it("throw if invalid metadata", async () => {
-    const ipfsStorage = new IpfsMetadata({
+    const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });
 
@@ -52,7 +52,7 @@ describe("#storeMetadata()", () => {
         cid: IPFS_HASH
       })
     });
-    const ipfsStorage = new IpfsMetadata({
+    const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });
 
@@ -102,7 +102,7 @@ describe("#getMetadata()", () => {
     mockedUint8arrays.toString.mockReturnValueOnce(
       JSON.stringify(METADATA_FROM_IPFS)
     );
-    const ipfsStorage = new IpfsMetadata({
+    const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });
 
@@ -120,7 +120,7 @@ describe("#getMetadata()", () => {
     mockedFetch.mockResolvedValueOnce(
       new Response(JSON.stringify(METADATA_FROM_IPFS))
     );
-    const ipfsStorage = new IpfsMetadata({
+    const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });
 
@@ -137,7 +137,7 @@ describe("#getMetadata()", () => {
       })
     });
     mockedFetch.mockResolvedValueOnce(new Response(JSON.stringify({})));
-    const ipfsStorage = new IpfsMetadata({
+    const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });
 
