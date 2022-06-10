@@ -17,7 +17,7 @@ export class BaseIpfs {
     });
   }
 
-  public async add(value: Record<string, unknown>) {
+  public async add(value: unknown) {
     const addResult = await this.ipfsClient.add(JSON.stringify(value), {
       pin: true
     });
