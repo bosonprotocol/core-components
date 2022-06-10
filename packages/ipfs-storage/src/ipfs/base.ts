@@ -1,13 +1,10 @@
-import { MetadataStorage, AnyMetadata } from "@bosonprotocol/metadata";
 import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
-import { validateMetadata } from "./validation";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "./constants";
-import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "./utils";
+import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
-export class IpfsMetadata implements MetadataStorage {
+export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
@@ -15,27 +12,12 @@ export class IpfsMetadata implements MetadataStorage {
   }
 
   static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
-    return new IpfsMetadata({
+    return new BaseIpfsStorage({
       url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }
 
-  public async storeMetadata(metadata: AnyMetadata): Promise<string> {
-    validateMetadata(metadata);
-    const metadataConformingToERC721 = convertToERC721Metadata(metadata);
-    const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
-    const cid = await this.add(metadataWithSortedKeys);
-    return cid;
-  }
-
-  public async getMetadata(metadataUriOrHash: string): Promise<AnyMetadata> {
-    const metadata = await this.get<ERC721Metadata>(metadataUriOrHash);
-    validateMetadata(metadata);
-
-    return metadata;
-  }
-
-  public async add(value: Record<string, unknown>) {
+  public async add(value: unknown) {
     const addResult = await this.ipfsClient.add(JSON.stringify(value), {
       pin: true
     });
