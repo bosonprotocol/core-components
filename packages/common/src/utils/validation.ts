@@ -4,87 +4,156 @@ import { isAddress } from "@ethersproject/address";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
+const positiveIntTestArgs: [string, string, typeof isPositiveInt] = [
+  "is-positive-int",
+  "${path} has to be a positive integer",
+  isPositiveInt
+];
+const futureDateTestArgs: [string, string, typeof isFutureDate] = [
+  "is-future-date",
+  "${path} has to be a date in the future",
+  isFutureDate
+];
+const addressTestArgs: [string, string, typeof isAddress] = [
+  "is-address",
+  "${path} has to be a valid address",
+  (value: string) => isAddress(value || "")
+];
+
 export const createOfferArgsSchema = object({
   price: string()
     .required()
-    .test("is-valid-price", (value) => isPositiveBigNumber(value)),
+    .test(...positiveIntTestArgs),
   sellerDeposit: string()
     .required()
-    .test("is-valid-deposit", (value) => isPositiveBigNumber(value)),
+    .test(...positiveIntTestArgs),
+  protocolFee: string()
+    .required()
+    .test(...positiveIntTestArgs),
   buyerCancelPenalty: string()
     .required()
-    .test("is-positive-number", (value) => isPositiveBigNumber(value))
+    .test(...positiveIntTestArgs)
     .test(
-      "penalty-lte-price",
-      "${path} has to be less than or equal price",
+      "is-less-than-or-equal-price",
+      "${path} + protocolFee has to be less than or equal price",
       (value, ctx) =>
-        BigNumber.from(value).lte(BigNumber.from(ctx.parent.price))
+        BigNumber.from(value)
+          .add(BigNumber.from(ctx.parent.protocolFee))
+          .lte(BigNumber.from(ctx.parent.price))
     ),
   quantityAvailable: string()
     .required()
-    .test("is-valid-quantity", (value) => isPositiveBigNumber(value)),
+    .test(...positiveIntTestArgs),
   validFromDateInMS: string()
     .required()
-    .test("is-valid-from-date", (value, ctx) => {
-      return (
-        isPositiveBigNumber(value) &&
-        BigNumber.from(value).gt(Date.now()) &&
-        BigNumber.from(ctx.parent.validUntilDateInMS).gt(BigNumber.from(value))
-      );
-    }),
+    .test(...positiveIntTestArgs)
+    .test(...futureDateTestArgs)
+    .test(
+      "is-before-valid-until-date",
+      "${path} has to be before validUntilDate",
+      (value, ctx) => {
+        return BigNumber.from(ctx.parent.validUntilDateInMS).gt(
+          BigNumber.from(value)
+        );
+      }
+    ),
   validUntilDateInMS: string()
     .required()
-    .test("is-valid-until-date", (value, ctx) => {
-      return (
-        isPositiveBigNumber(value) &&
-        BigNumber.from(value).gt(Date.now()) &&
-        BigNumber.from(ctx.parent.validFromDateInMS).lt(BigNumber.from(value))
-      );
-    }),
-  redeemableFromDateInMS: string()
-    .required()
+    .test(...positiveIntTestArgs)
+    .test(...futureDateTestArgs)
     .test(
-      "is-valid-redeemable-date",
-      (value) =>
-        isPositiveBigNumber(value) && BigNumber.from(value).gt(Date.now())
+      "is-after-valid-from-date",
+      "${path} has to be after validFromDate",
+      (value, ctx) => {
+        return BigNumber.from(ctx.parent.validFromDateInMS).lt(
+          BigNumber.from(value)
+        );
+      }
     ),
+  voucherRedeemableFromDateInMS: string()
+    .required()
+    .test(...positiveIntTestArgs)
+    .test(...futureDateTestArgs)
+    .test(
+      "is-before-redeemable-until-date",
+      "${path} has be before voucherRedeemableUntilDateInMS",
+      (value, ctx) => {
+        return BigNumber.from(ctx.parent.voucherRedeemableUntilDateInMS).gt(
+          BigNumber.from(value)
+        );
+      }
+    ),
+  voucherRedeemableUntilDateInMS: string()
+    .required()
+    .test(...positiveIntTestArgs)
+    .test(...futureDateTestArgs)
+    .test(
+      "is-after-redeemable-from-date",
+      "${path} has to be after voucherRedeemableFromDateInMS",
+      (value, ctx) => {
+        return BigNumber.from(ctx.parent.voucherRedeemableFromDateInMS).lt(
+          BigNumber.from(value)
+        );
+      }
+    )
+    .test(
+      "is-after-valid-until-date",
+      "${path} has to be after or equal validUntilDateInMS",
+      (value, ctx) => {
+        return BigNumber.from(ctx.parent.validUntilDateInMS).lte(
+          BigNumber.from(value)
+        );
+      }
+    ),
+  voucherValidDurationInMS: string()
+    .optional()
+    .nullable()
+    .test(...positiveIntTestArgs),
   fulfillmentPeriodDurationInMS: string()
     .required()
-    .test("is-valid-fulfillment-period", (value) => isPositiveBigNumber(value)),
-  voucherValidDurationInMS: string()
+    .test(...positiveIntTestArgs),
+  resolutionPeriodDurationInMS: string()
     .required()
-    .test("is-valid-duration", (value) => isPositiveBigNumber(value)),
+    .test(...positiveIntTestArgs),
   exchangeToken: string()
     .required()
-    .test("is-valid-exchange-token", (value) => isAddress(value || "")),
+    .test(...addressTestArgs),
   metadataUri: string()
     .required()
-    .test("is-valid-metadata-uri", (value) => isMetadataUri(value)), // TODO: validate if
+    .test(
+      "is-valid-metadata-uri",
+      "${path} has to be a valid uri",
+      isMetadataUri
+    ),
   offerChecksum: string().required()
 });
 
 export const createSellerArgsSchema = object({
   operator: string()
     .required()
-    .test("is-valid-address", (value) => isAddress(value || "")),
+    .test(...addressTestArgs),
   admin: string()
     .required()
-    .test("is-valid-address", (value) => isAddress(value || "")),
+    .test(...addressTestArgs),
   clerk: string()
     .required()
-    .test("is-valid-address", (value) => isAddress(value || "")),
+    .test(...addressTestArgs),
   treasury: string()
     .required()
-    .test("is-valid-address", (value) => isAddress(value || ""))
+    .test(...addressTestArgs)
 });
 
-function isPositiveBigNumber(value: unknown) {
+function isPositiveInt(value: unknown) {
   try {
-    const bigNumber = BigNumber.from(value);
+    const bigNumber = BigNumber.from(value || 0);
     return !bigNumber.isNegative();
   } catch (error) {
     return false;
   }
+}
+
+function isFutureDate(value: string) {
+  return BigNumber.from(value).gt(Date.now());
 }
 
 function isMetadataUri(value: unknown) {
