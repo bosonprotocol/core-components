@@ -34,6 +34,7 @@ export async function commitToOffer(args: {
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCommitToOffer(args.buyer, args.offerId)
+    data: encodeCommitToOffer(args.buyer, args.offerId),
+    value: offer.price
   });
 }
