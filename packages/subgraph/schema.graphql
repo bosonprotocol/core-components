@@ -82,17 +82,26 @@ type Offer @entity {
   createdAt: BigInt!
   price: BigInt!
   sellerDeposit: BigInt!
+  protocolFee: BigInt!
   buyerCancelPenalty: BigInt!
   quantityInitial: BigInt!
   quantityAvailable: BigInt!
+
+  "Offer dates"
   validFromDate: BigInt!
   validUntilDate: BigInt!
-  redeemableFromDate: BigInt!
+  voucherRedeemableFromDate: BigInt!
+  voucherRedeemableUntilDate: BigInt!
+
+  "Offer durations"
   fulfillmentPeriodDuration: BigInt!
   voucherValidDuration: BigInt!
+  resolutionPeriodDuration: BigInt!
+
   metadataUri: String!
   offerChecksum: String!
   voided: Boolean!
+  disputeResolverId: BigInt!
   sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!

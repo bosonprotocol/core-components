@@ -36,7 +36,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool))
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256))
           handler: handleOfferCreatedEvent
         - event: OfferVoided(indexed uint256,indexed uint256)
           handler: handleOfferVoidedEvent
@@ -99,6 +99,6 @@ dataSources:
         - name: ProtocolDiamond
           file: ../common/src/abis/ProtocolDiamond.json
       eventHandlers:
-        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),bool,uint8))
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8))
           handler: handleBuyerCommittedEvent
       file: ./src/mappings/exchange-handler.ts

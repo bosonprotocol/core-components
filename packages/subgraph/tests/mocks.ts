@@ -1,5 +1,7 @@
 import {
   OfferCreated,
+  OfferCreatedOfferDatesStruct,
+  OfferCreatedOfferDurationsStruct,
   OfferCreatedOfferStruct,
   OfferVoided
 } from "../generated/BosonOfferHandler/IBosonOfferHandler";
@@ -26,14 +28,18 @@ export function createOfferCreatedEvent(
   sellerId: i32,
   price: i32,
   sellerDeposit: i32,
+  protocolFee: i32,
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
   validFromDate: i32,
   validUntilDate: i32,
-  redeemableFromDate: i32,
+  voucherRedeemableFromDate: i32,
+  voucherRedeemableUntilDate: i32,
   fulfillmentPeriodDuration: i32,
   voucherValidDuration: i32,
+  resolutionPeriodDuration: i32,
   exchangeToken: string,
+  disputeResolverId: i32,
   metadataUri: string,
   offerChecksum: string,
   voided: boolean
@@ -57,17 +63,35 @@ export function createOfferCreatedEvent(
         sellerId,
         price,
         sellerDeposit,
+        protocolFee,
         buyerCancelPenalty,
         quantityAvailable,
-        validFromDate,
-        validUntilDate,
-        redeemableFromDate,
-        fulfillmentPeriodDuration,
-        voucherValidDuration,
         exchangeToken,
+        disputeResolverId,
         metadataUri,
         offerChecksum,
         voided
+      )
+    )
+  );
+  let offerDatesParams = new ethereum.EventParam(
+    "offerDates",
+    ethereum.Value.fromTuple(
+      createOfferDatesStruct(
+        validFromDate,
+        validUntilDate,
+        voucherRedeemableFromDate,
+        voucherRedeemableUntilDate
+      )
+    )
+  );
+  let offerDurationsParams = new ethereum.EventParam(
+    "offerDurations",
+    ethereum.Value.fromTuple(
+      createOfferDurationsStruct(
+        fulfillmentPeriodDuration,
+        voucherValidDuration,
+        resolutionPeriodDuration
       )
     )
   );
@@ -75,6 +99,8 @@ export function createOfferCreatedEvent(
   offerCreatedEvent.parameters.push(offerIdParam);
   offerCreatedEvent.parameters.push(sellerIdParam);
   offerCreatedEvent.parameters.push(offerParam);
+  offerCreatedEvent.parameters.push(offerDatesParams);
+  offerCreatedEvent.parameters.push(offerDurationsParams);
 
   return offerCreatedEvent;
 }
@@ -256,14 +282,11 @@ export function createOfferStruct(
   sellerId: i32,
   price: i32,
   sellerDeposit: i32,
+  protocolFee: i32,
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
-  validFromDate: i32,
-  validUntilDate: i32,
-  redeemableFromDate: i32,
-  fulfillmentPeriodDuration: i32,
-  voucherValidDuration: i32,
   exchangeToken: string,
+  disputeResolverId: i32,
   metadataUri: string,
   offerChecksum: string,
   voided: boolean
@@ -273,17 +296,40 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromI32(sellerId));
   tuple.push(ethereum.Value.fromI32(price));
   tuple.push(ethereum.Value.fromI32(sellerDeposit));
+  tuple.push(ethereum.Value.fromI32(protocolFee));
   tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
   tuple.push(ethereum.Value.fromI32(quantityAvailable));
-  tuple.push(ethereum.Value.fromI32(validFromDate));
-  tuple.push(ethereum.Value.fromI32(validUntilDate));
-  tuple.push(ethereum.Value.fromI32(redeemableFromDate));
-  tuple.push(ethereum.Value.fromI32(fulfillmentPeriodDuration));
-  tuple.push(ethereum.Value.fromI32(voucherValidDuration));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
+  tuple.push(ethereum.Value.fromI32(disputeResolverId));
   tuple.push(ethereum.Value.fromString(metadataUri));
   tuple.push(ethereum.Value.fromString(offerChecksum));
   tuple.push(ethereum.Value.fromBoolean(voided));
+  return tuple;
+}
+
+export function createOfferDatesStruct(
+  validFromDate: i32,
+  validUntilDate: i32,
+  voucherRedeemableFromDate: i32,
+  voucherRedeemableUntilDate: i32
+): OfferCreatedOfferDatesStruct {
+  const tuple = new OfferCreatedOfferDatesStruct();
+  tuple.push(ethereum.Value.fromI32(validFromDate));
+  tuple.push(ethereum.Value.fromI32(validUntilDate));
+  tuple.push(ethereum.Value.fromI32(voucherRedeemableFromDate));
+  tuple.push(ethereum.Value.fromI32(voucherRedeemableUntilDate));
+  return tuple;
+}
+
+export function createOfferDurationsStruct(
+  fulfillmentPeriodDuration: i32,
+  voucherValidDuration: i32,
+  resolutionPeriodDuration: i32
+): OfferCreatedOfferDurationsStruct {
+  const tuple = new OfferCreatedOfferDurationsStruct();
+  tuple.push(ethereum.Value.fromI32(fulfillmentPeriodDuration));
+  tuple.push(ethereum.Value.fromI32(voucherValidDuration));
+  tuple.push(ethereum.Value.fromI32(resolutionPeriodDuration));
   return tuple;
 }
 

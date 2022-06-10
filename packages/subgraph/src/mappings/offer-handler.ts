@@ -14,19 +14,25 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
 
   if (offer === null) {
     const offerStruct = event.params.offer;
+    const offerDatesStruct = event.params.offerDates;
+    const offerDurationsStruct = event.params.offerDurations;
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;
     offer.price = offerStruct.price;
     offer.sellerDeposit = offerStruct.sellerDeposit;
+    offer.protocolFee = offerStruct.protocolFee;
     offer.buyerCancelPenalty = offerStruct.buyerCancelPenalty;
     offer.quantityInitial = offerStruct.quantityAvailable;
     offer.quantityAvailable = offerStruct.quantityAvailable;
-    offer.validFromDate = offerStruct.validFromDate;
-    offer.validUntilDate = offerStruct.validUntilDate;
-    offer.redeemableFromDate = offerStruct.redeemableFromDate;
-    offer.fulfillmentPeriodDuration = offerStruct.fulfillmentPeriodDuration;
-    offer.voucherValidDuration = offerStruct.voucherValidDuration;
+    offer.validFromDate = offerDatesStruct.validFrom;
+    offer.validUntilDate = offerDatesStruct.validUntil;
+    offer.voucherRedeemableFromDate = offerDatesStruct.voucherRedeemableFrom;
+    offer.voucherRedeemableUntilDate = offerDatesStruct.voucherRedeemableUntil;
+    offer.fulfillmentPeriodDuration = offerDurationsStruct.fulfillmentPeriod;
+    offer.voucherValidDuration = offerDurationsStruct.voucherValid;
+    offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
+    offer.disputeResolverId = offerStruct.disputeResolverId;
     offer.sellerId = offerStruct.sellerId;
     offer.seller = offerStruct.sellerId.toString();
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
