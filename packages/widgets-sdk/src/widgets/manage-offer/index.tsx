@@ -54,10 +54,10 @@ function ManageOfferWidget({
 
   const urlParams = new URLSearchParams({
     offerId,
-    exchangeId,
     chainId,
     ipfsMetadataUrl,
-    ...(forceBuyerView && { forceBuyerView })
+    ...(forceBuyerView && { forceBuyerView }),
+    ...(exchangeId && { exchangeId })
   } as unknown as Record<string, string>).toString();
 
   return (

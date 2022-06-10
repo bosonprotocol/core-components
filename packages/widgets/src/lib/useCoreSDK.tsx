@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { IpfsMetadata } from "@bosonprotocol/ipfs-storage";
+import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { hooks } from "./connectors/metamask";
 import { providers } from "ethers";
 import { getConfig, Config } from "./config";
@@ -33,8 +33,10 @@ function initCoreSDK(provider: providers.JsonRpcProvider, config: Config) {
     web3Lib: new EthersAdapter(provider),
     protocolDiamond: config.protocolDiamond,
     subgraphUrl: config.subgraphUrl,
-    theGraphStorage: IpfsMetadata.fromTheGraphIpfsUrl(config.theGraphIpfsUrl),
-    metadataStorage: new IpfsMetadata({
+    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl(
+      config.theGraphIpfsUrl
+    ),
+    metadataStorage: new IpfsMetadataStorage({
       url: config.ipfsMetadataUrl
     })
   });
