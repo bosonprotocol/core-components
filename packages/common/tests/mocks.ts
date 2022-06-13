@@ -13,7 +13,7 @@ import {
 import { MetadataType } from "@bosonprotocol/metadata";
 
 export const IPFS_HASH = "QmYXc12ov6F2MZVZwPs5XeCBbf61cW3wKRk8h3D5NTYj4T";
-export const IPFS_URI = `https://ipfs.io/ipfs/${IPFS_HASH}`;
+export const IPFS_URI = `ipfs://${IPFS_HASH}`;
 
 export const ADDRESS = "0x57faFe1fB7C682216FCe44e50946C5249192b9D5";
 
@@ -62,12 +62,12 @@ export function mockCreateOfferArgs(
   overrides?: Partial<CreateOfferArgs>
 ): CreateOfferArgs {
   return {
-    price: parseEther("3"),
-    sellerDeposit: parseEther("1"),
-    protocolFee: parseEther("1"),
-    buyerCancelPenalty: parseEther("1"),
+    price: parseEther("0.03"),
+    sellerDeposit: parseEther("0.01"),
+    protocolFee: parseEther("0.001"),
+    buyerCancelPenalty: parseEther("0.01"),
     quantityAvailable: 10,
-    validFromDateInMS: Date.now() + 1 * 60 * 1000,
+    validFromDateInMS: Date.now() + 3000,
     validUntilDateInMS: Date.now() + 2 * 60 * 1000,
     voucherRedeemableFromDateInMS: Date.now() + 1 * 60 * 1000,
     voucherRedeemableUntilDateInMS: Date.now() + 2 * 60 * 1000,
