@@ -9,7 +9,7 @@ dataSources:
     network: {{network}}
     source:
       address: "{{protocolDiamond}}"
-      abi: IBosonOfferHandler 
+      abi: IBosonOfferHandler
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -19,16 +19,11 @@ dataSources:
         - BaseMetadataEntity
         - ProductV1MetadataEntity
         - Offer
-        - Seller
         - ExchangeToken
         - ProductV1Brand
       abis:
         - name: IBosonOfferHandler
           file: ../common/src/abis/IBosonOfferHandler.json
-        - name: IBosonAccountHandler
-          file: ../common/src/abis/IBosonAccountHandler.json
-        - name: ProtocolDiamond
-          file: ../common/src/abis/ProtocolDiamond.json
         - name: ERC20
           file: ../common/src/abis/ERC20.json
         - name: ERC20NameBytes
@@ -46,25 +41,19 @@ dataSources:
     network: {{network}}
     source:
       address: "{{protocolDiamond}}"
-      abi: IBosonAccountHandler 
+      abi: IBosonAccountHandler
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - BaseMetadataEntity
-        - ProductV1MetadataEntity
-        - Offer
         - Seller
-        - ExchangeToken
+        - Buyer
+        - DisputeResolver
       abis:
-        - name: IBosonOfferHandler
-          file: ../common/src/abis/IBosonOfferHandler.json
         - name: IBosonAccountHandler
           file: ../common/src/abis/IBosonAccountHandler.json
-        - name: ProtocolDiamond
-          file: ../common/src/abis/ProtocolDiamond.json
       eventHandlers:
         - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool))
           handler: handleSellerCreatedEvent
@@ -72,13 +61,15 @@ dataSources:
           handler: handleSellerUpdatedEvent
         - event: BuyerCreated(indexed uint256,(uint256,address,bool))
           handler: handleBuyerCreatedEvent
+        - event: DisputeResolverCreated(indexed uint256,(uint256,address,bool))
+          handler: handleDisputeResolverCreatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
     name: BosonExchangeHandler
     network: {{network}}
     source:
       address: "{{protocolDiamond}}"
-      abi: IBosonExchangeHandler 
+      abi: IBosonExchangeHandler
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -86,19 +77,38 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Offer
-        - Seller
-        - Buyer
         - Exchange
       abis:
-        - name: IBosonOfferHandler
-          file: ../common/src/abis/IBosonOfferHandler.json
-        - name: IBosonAccountHandler
-          file: ../common/src/abis/IBosonAccountHandler.json
         - name: IBosonExchangeHandler
           file: ../common/src/abis/IBosonExchangeHandler.json
-        - name: ProtocolDiamond
-          file: ../common/src/abis/ProtocolDiamond.json
       eventHandlers:
         - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8))
           handler: handleBuyerCommittedEvent
       file: ./src/mappings/exchange-handler.ts
+  - kind: ethereum/contract
+    name: BosonFundsHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonFundsHandler
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - FundsEntity
+        - FundsToken
+      abis:
+        - name: IBosonFundsHandler
+          file: ../common/src/abis/IBosonFundsHandler.json
+      eventHandlers:
+        - event: FundsDeposited(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleFundsDepositedEvent
+        - event: FundsReleased(indexed uint256,indexed uint256,indexed address,uint256)
+          handler: handleFundsReleasedEvent
+        - event: FundsEncumbered(indexed uint256,indexed address,uint256)
+          handler: handleFundsEncumberedEvent
+        - event: FundsWithdrawn(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleFundsWithdrawnEvent
+      file: ./src/mappings/funds-handler.ts
