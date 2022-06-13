@@ -231,9 +231,7 @@ async function main() {
     wallet: deployer,
     active: true
   });
-  console.log(`✅ Dispute resolver deployed.`);
-
-  console.log("\n");
+  console.log(`✅ Dispute resolver deployed. \n`);
 }
 
 main()

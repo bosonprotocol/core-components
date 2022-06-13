@@ -44,18 +44,18 @@ export function createOfferCreatedEvent(
   offerChecksum: string,
   voided: boolean
 ): OfferCreated {
-  let offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
+  const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
   offerCreatedEvent.parameters = new Array();
 
-  let offerIdParam = new ethereum.EventParam(
+  const offerIdParam = new ethereum.EventParam(
     "offerId",
     ethereum.Value.fromI32(offerId)
   );
-  let sellerIdParam = new ethereum.EventParam(
+  const sellerIdParam = new ethereum.EventParam(
     "sellerId",
     ethereum.Value.fromI32(sellerId)
   );
-  let offerParam = new ethereum.EventParam(
+  const offerParam = new ethereum.EventParam(
     "offer",
     ethereum.Value.fromTuple(
       createOfferStruct(
@@ -74,7 +74,7 @@ export function createOfferCreatedEvent(
       )
     )
   );
-  let offerDatesParams = new ethereum.EventParam(
+  const offerDatesParams = new ethereum.EventParam(
     "offerDates",
     ethereum.Value.fromTuple(
       createOfferDatesStruct(
@@ -85,7 +85,7 @@ export function createOfferCreatedEvent(
       )
     )
   );
-  let offerDurationsParams = new ethereum.EventParam(
+  const offerDurationsParams = new ethereum.EventParam(
     "offerDurations",
     ethereum.Value.fromTuple(
       createOfferDurationsStruct(
@@ -109,14 +109,14 @@ export function createOfferVoidedEvent(
   offerId: i32,
   sellerId: i32
 ): OfferVoided {
-  let offerVoidedEvent = changetype<OfferVoided>(newMockEvent());
+  const offerVoidedEvent = changetype<OfferVoided>(newMockEvent());
   offerVoidedEvent.parameters = new Array();
 
-  let offerIdParam = new ethereum.EventParam(
+  const offerIdParam = new ethereum.EventParam(
     "offerId",
     ethereum.Value.fromI32(offerId)
   );
-  let sellerIdParam = new ethereum.EventParam(
+  const sellerIdParam = new ethereum.EventParam(
     "sellerId",
     ethereum.Value.fromI32(sellerId)
   );
