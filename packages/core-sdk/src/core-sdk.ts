@@ -7,11 +7,14 @@ import {
   Log
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { AddressZero } from "@ethersproject/constants";
+
 import * as accounts from "./accounts";
 import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
+import * as funds from "./funds";
 import { getValueFromLogs } from "./utils/logs";
 import { MultiQueryOpts } from "./utils/subgraph";
 
@@ -250,5 +253,25 @@ export class CoreSDK {
       value,
       web3Lib: this._web3Lib
     });
+  }
+
+  public async depositFunds(
+    sellerId: BigNumberish,
+    fundsAmount: BigNumberish,
+    fundsTokenAddress: string = AddressZero
+  ): Promise<TransactionResponse> {
+    return funds.handler.depositFunds({
+      sellerId,
+      fundsAmount,
+      fundsTokenAddress,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async getFundsByAccountId(
+    accountId: BigNumberish
+  ): Promise<funds.RawFundsEntityFromSubgraph[]> {
+    return funds.subgraph.getFundsByAccountId(this._subgraphUrl, accountId);
   }
 }

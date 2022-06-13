@@ -5,6 +5,7 @@ export * as accounts from "./accounts";
 export * as exchanges from "./exchanges";
 export * as orchestration from "./orchestration";
 export * as erc20 from "./erc20";
+export * as funds from "./funds";
 
 export { defaultConfigs, getDefaultConfig } from "@bosonprotocol/common";
 
