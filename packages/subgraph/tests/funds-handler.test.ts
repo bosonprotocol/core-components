@@ -28,7 +28,7 @@ test("handle FundsDepositedEvent", () => {
 
   handleFundsDepositedEvent(fundsDepositedEvent);
 
-  const fundsId = sellerId.toString() + tokenAddress;
+  const fundsId = getFundsId(sellerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "100");
   assert.fieldEquals("FundsEntity", fundsId, "tokenAddress", tokenAddress);
@@ -47,7 +47,7 @@ test("handle FundsReleasedEvent", () => {
 
   handleFundsReleasedEvent(fundsReleasedEvent);
 
-  const fundsId = buyerId.toString() + tokenAddress;
+  const fundsId = getFundsId(buyerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "200");
   assert.fieldEquals("FundsEntity", fundsId, "tokenAddress", tokenAddress);
@@ -72,7 +72,7 @@ test("handle FundsEncumberedEvent", () => {
   );
   handleFundsEncumberedEvent(fundsEncumberedEvent);
 
-  const fundsId = sellerId.toString() + tokenAddress;
+  const fundsId = getFundsId(sellerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "90");
 
@@ -96,9 +96,13 @@ test("handle FundsWithdrawnEvent", () => {
   );
   handleFundsWithdrawnEvent(fundsWithdrawnEvent);
 
-  const fundsId = sellerId.toString() + tokenAddress;
+  const fundsId = getFundsId(sellerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "90");
 
   clearStore();
 });
+
+function getFundsId(entityId: i32, tokenAddress: string): string {
+  return entityId.toString() + "-" + tokenAddress;
+}
