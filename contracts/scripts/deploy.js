@@ -28,6 +28,7 @@ function getConfig() {
   const maxTwinsPerBundle = "100";
   const maxOffersPerBundle = "100";
   const maxOffersPerBatch = "100";
+  const maxTokensPerWithdrawal = "100";
 
   return {
     gasLimit: "20000000",
@@ -37,7 +38,8 @@ function getConfig() {
     maxOffersPerGroup,
     maxTwinsPerBundle,
     maxOffersPerBundle,
-    maxOffersPerBatch
+    maxOffersPerBatch,
+    maxTokensPerWithdrawal
   };
 }
 
@@ -46,15 +48,16 @@ function getConfig() {
  */
 function getNoArgFacetNames() {
   return [
+    "AccountHandlerFacet",
+    "BundleHandlerFacet",
     "DisputeHandlerFacet",
     "ExchangeHandlerFacet",
-    //      "FundsHandlerFacet", // No functions yet
-    "OfferHandlerFacet",
-    "TwinHandlerFacet",
-    "BundleHandlerFacet",
-    "AccountHandlerFacet",
+    "FundsHandlerFacet",
     "GroupHandlerFacet",
-    "OrchestrationHandlerFacet"
+    "MetaTransactionsHandlerFacet",
+    "OfferHandlerFacet",
+    "OrchestrationHandlerFacet",
+    "TwinHandlerFacet"
   ];
 }
 
@@ -84,7 +87,7 @@ async function main() {
   );
   console.log(divider);
 
-  console.log(`Deploying mock tokens...`);
+  console.log(`\n💎 Deploying mock tokens...`);
   const [mockBosonToken] = await deployMockTokens(config.gasLimit);
   deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
 
@@ -124,9 +127,12 @@ async function main() {
     config.maxOffersPerGroup,
     config.maxTwinsPerBundle,
     config.maxOffersPerBundle,
-    config.maxOffersPerBatch
+    config.maxOffersPerBatch,
+    config.maxTokensPerWithdrawal
   ];
-  const [configHandlerFacet] = await deployProtocolConfigFacet(
+  const {
+    facets: [configHandlerFacet]
+  } = await deployProtocolConfigFacet(
     protocolDiamond,
     protocolConfig,
     config.gasLimit
@@ -212,6 +218,20 @@ async function main() {
   await accessController.grantRole(Role.CLIENT, bosonVoucher.address);
 
   console.log(`✅ Granted roles to appropriate contract and addresses.`);
+
+  // Some custom stuff for e2e setup
+  console.log(`\n🌐️Custom stuff...`);
+
+  const accountHandler = await ethers.getContractAt(
+    "IBosonAccountHandler",
+    protocolDiamond.address
+  );
+  await accountHandler.createDisputeResolver({
+    id: "1",
+    wallet: deployer,
+    active: true
+  });
+  console.log(`✅ Dispute resolver deployed. \n`);
 }
 
 main()

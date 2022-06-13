@@ -21,7 +21,6 @@ import { Actions, SecondaryButton } from "./shared-styles";
 import { connectWallet } from "../../lib/connectWallet";
 import { offers } from "@bosonprotocol/core-sdk";
 import { getConfig } from "../../lib/config";
-import { ExchangeDetails } from "../../lib/components/details/ExchangeDetails";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 
 const Center = styled.div`
@@ -67,9 +66,8 @@ export default function ManageOffer() {
 
   const isSeller = isAccountSeller(offer, account ?? "") && !forceBuyerView;
   const offerStatus = getOfferStatus(offer, exchangeId);
-  const isExchange = [OfferState.COMMITTED].includes(offerStatus);
-  const title = isExchange ? "Exchange" : "Offer";
-  const BodyComponent = isExchange ? ExchangeDetails : OfferDetails;
+  const isExchange = [OfferState.COMMITTED].includes(offerStatus); // TODO: refactor into own view
+  const title = isExchange ? "Exchange" : "Offer"; // TODO: refactor into own view
   const offerName = offer.metadata?.name ?? "";
   return (
     <WidgetLayout
@@ -87,24 +85,24 @@ export default function ManageOffer() {
           <Value>{offerStatus}</Value>
         </Entry>
       </Row>
-      <BodyComponent
-        createOfferArgs={{
-          sellerDeposit: offer.sellerDeposit,
-          exchangeToken: offer.exchangeToken.address,
-          offerChecksum: offer.offerChecksum,
-          metadataUri: offer.metadataUri,
-          buyerCancelPenalty: offer.buyerCancelPenalty,
-          price: offer.price,
-          quantityAvailable: offer.quantityAvailable,
-          validFromDateInMS: Number(offer.validFromDate) * 1000,
-          validUntilDateInMS: Number(offer.validUntilDate) * 1000,
-          voucherValidDurationInMS: Number(offer.voucherValidDuration) * 1000,
-          fulfillmentPeriodDurationInMS:
-            Number(offer.fulfillmentPeriodDuration) * 1000,
-          redeemableFromDateInMS: Number(offer.redeemableFromDate) * 1000
-        }}
+      <OfferDetails
         name={offerName}
-        currency={offer.exchangeToken.symbol}
+        protocolFeeInWei={offer.protocolFee}
+        currencySymbol={offer.exchangeToken.symbol}
+        priceInWei={offer.price}
+        buyerCancelPenaltyInWei={offer.buyerCancelPenalty}
+        sellerDepositInWei={offer.sellerDeposit}
+        validFromDateInMS={Number(offer.validFromDate) * 1000}
+        validUntilDateInMS={Number(offer.validUntilDate) * 1000}
+        voucherRedeemableFromDateInMS={
+          Number(offer.voucherRedeemableFromDate) * 1000
+        }
+        voucherRedeemableUntilDateInMS={
+          Number(offer.voucherRedeemableUntilDate) * 1000
+        }
+        fulfillmentPeriodInMS={offer.fulfillmentPeriodDuration}
+        resolutionPeriodInMS={offer.resolutionPeriodDuration}
+        metadataUri={offer.metadataUri}
       />
       <Spacer />
       {!account ? (

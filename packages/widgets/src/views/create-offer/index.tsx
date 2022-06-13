@@ -95,7 +95,7 @@ export default function CreateOffer() {
     constants.MaxInt256.div(2)
   );
 
-  async function handleTokenApproval() {
+  async function handleCreateOffer() {
     try {
       const operatorAddress = account || seller?.operator || "";
 
@@ -133,7 +133,7 @@ export default function CreateOffer() {
     }
   }
 
-  async function handleCreateOffer() {
+  async function handleTokenApproval() {
     try {
       const txResponse = await coreSDK.approveExchangeToken(
         createOfferArgs.exchangeToken,
@@ -160,15 +160,32 @@ export default function CreateOffer() {
   return (
     <WidgetLayout title="Create Offer" offerName={metadata?.name}>
       <OfferDetails
-        createOfferArgs={createOfferArgs}
-        currency={tokenInfo.symbol}
+        currencySymbol={tokenInfo.symbol}
+        currencyDecimals={tokenInfo.decimals}
+        priceInWei={createOfferArgs.price}
+        quantityAvailable={createOfferArgs.quantityAvailable}
+        buyerCancelPenaltyInWei={createOfferArgs.buyerCancelPenalty}
+        sellerDepositInWei={createOfferArgs.sellerDeposit}
+        validFromDateInMS={createOfferArgs.validFromDateInMS}
+        validUntilDateInMS={createOfferArgs.validUntilDateInMS}
+        voucherRedeemableFromDateInMS={
+          createOfferArgs.voucherRedeemableFromDateInMS
+        }
+        voucherRedeemableUntilDateInMS={
+          createOfferArgs.voucherRedeemableUntilDateInMS
+        }
+        metadataUri={createOfferArgs.metadataUri}
+        offerChecksum={createOfferArgs.offerChecksum}
+        protocolFeeInWei={createOfferArgs.protocolFee}
+        fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
+        resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}
       />
       <Spacer />
       <Actions>
-        <Button disabled={!tokenApprovalNeeded} onClick={handleCreateOffer}>
+        <Button disabled={!tokenApprovalNeeded} onClick={handleTokenApproval}>
           Approve Tokens
         </Button>
-        <Button disabled={tokenApprovalNeeded} onClick={handleTokenApproval}>
+        <Button disabled={tokenApprovalNeeded} onClick={handleCreateOffer}>
           Create Offer
         </Button>
       </Actions>

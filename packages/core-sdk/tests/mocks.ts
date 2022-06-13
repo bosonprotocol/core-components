@@ -39,19 +39,28 @@ export function mockRawOfferFromSubgraph(
 
   return {
     id: "1",
+    disputeResolverId: "1",
     createdAt: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     price: "1",
     sellerDeposit: "2",
     buyerCancelPenalty: "0",
+    quantityInitial: "10",
     quantityAvailable: "10",
     validFromDate: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     validUntilDate: utils.timestamp.msToSec(Date.now() + DAY_IN_MS).toString(),
-    redeemableFromDate: utils.timestamp.msToSec(Date.now()).toString(),
+    voucherRedeemableFromDate: utils.timestamp
+      .msToSec(Date.now() + DAY_IN_MS)
+      .toString(),
+    voucherRedeemableUntilDate: utils.timestamp
+      .msToSec(Date.now() + 2 * DAY_IN_MS)
+      .toString(),
     fulfillmentPeriodDuration: "864000",
     voucherValidDuration: "86400",
+    resolutionPeriodDuration: "86400",
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     offerChecksum: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     voidedAt: null,
+    protocolFee: "1",
     seller: {
       id: "1",
       operator: ZERO_ADDRESS,

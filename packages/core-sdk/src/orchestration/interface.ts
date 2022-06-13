@@ -1,7 +1,7 @@
 import { abis } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { createSellerArgsToStruct } from "../accounts/interface";
-import { createOfferArgsToStruct } from "../offers/interface";
+import { createOfferArgsToStructs } from "../offers/interface";
 
 import { CreateSellerArgs } from "../accounts/types";
 import { CreateOfferArgs } from "../offers/types";
@@ -16,6 +16,6 @@ export function encodeCreateSellerAndOffer(
 ) {
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndOffer",
-    [createSellerArgsToStruct(seller), createOfferArgsToStruct(offer)]
+    [createSellerArgsToStruct(seller), ...createOfferArgsToStructs(offer)]
   );
 }

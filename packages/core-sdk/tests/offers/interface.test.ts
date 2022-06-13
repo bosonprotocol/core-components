@@ -10,58 +10,81 @@ describe("#encodeCreateOffer()", () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs();
 
     const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
+    const decodedCalldata = bosonOfferHandlerIface.decodeFunctionData(
+      "createOffer",
+      encodedCalldata
+    );
     const [
       id,
-      ,
+      sellerId,
       price,
       sellerDeposit,
+      protocolFee,
       buyerCancelPenalty,
       quantityAvailable,
-      validFromDate,
-      validUntilDate,
-      redeemableFromDate,
-      fulfillmentPeriodDuration,
-      voucherValidDuration,
       exchangeToken,
+      disputeResolverId,
       metadataUri,
-      offerChecksum
-    ] = bosonOfferHandlerIface
-      .decodeFunctionData("createOffer", encodedCalldata)[0]
-      .toString()
-      .split(",");
+      offerChecksum,
+      voided
+    ] = decodedCalldata[0].toString().split(","); // Offer struct
+    const [
+      validFrom,
+      validUntil,
+      voucherRedeemableFrom,
+      voucherRedeemableUntil
+    ] = decodedCalldata[1].toString().split(","); // OfferDates struct
+    const [fulfillmentPeriod, voucherValid, resolutionPeriod] =
+      decodedCalldata[2].toString().split(","); // OfferDurations struct
 
     expect(id).toBeTruthy();
+    expect(sellerId).toBeTruthy();
+    expect(voided).toBeTruthy();
     expect(price).toBe(mockedCreateOfferArgs.price.toString());
     expect(sellerDeposit).toBe(mockedCreateOfferArgs.sellerDeposit.toString());
+    expect(protocolFee).toBe(mockedCreateOfferArgs.protocolFee.toString());
     expect(buyerCancelPenalty).toBe(
       mockedCreateOfferArgs.buyerCancelPenalty.toString()
     );
     expect(quantityAvailable).toBe(
       mockedCreateOfferArgs.quantityAvailable.toString()
     );
-    expect(validFromDate).toBe(
+    expect(disputeResolverId).toBe(
+      mockedCreateOfferArgs.disputeResolverId.toString()
+    );
+    expect(validFrom).toBe(
       utils.timestamp
         .msToSec(mockedCreateOfferArgs.validFromDateInMS)
         .toString()
     );
-    expect(validUntilDate).toBe(
+    expect(validUntil).toBe(
       utils.timestamp
         .msToSec(mockedCreateOfferArgs.validUntilDateInMS)
         .toString()
     );
-    expect(redeemableFromDate).toBe(
+    expect(voucherRedeemableFrom).toBe(
       utils.timestamp
-        .msToSec(mockedCreateOfferArgs.redeemableFromDateInMS)
+        .msToSec(mockedCreateOfferArgs.voucherRedeemableFromDateInMS)
         .toString()
     );
-    expect(fulfillmentPeriodDuration).toBe(
+    expect(voucherRedeemableUntil).toBe(
+      utils.timestamp
+        .msToSec(mockedCreateOfferArgs.voucherRedeemableUntilDateInMS)
+        .toString()
+    );
+    expect(resolutionPeriod).toBe(
+      utils.timestamp
+        .msToSec(mockedCreateOfferArgs.resolutionPeriodDurationInMS)
+        .toString()
+    );
+    expect(fulfillmentPeriod).toBe(
       utils.timestamp
         .msToSec(mockedCreateOfferArgs.fulfillmentPeriodDurationInMS)
         .toString()
     );
-    expect(voucherValidDuration).toBe(
+    expect(voucherValid).toBe(
       utils.timestamp
-        .msToSec(mockedCreateOfferArgs.voucherValidDurationInMS)
+        .msToSec(mockedCreateOfferArgs.voucherValidDurationInMS || "0")
         .toString()
     );
     expect(exchangeToken).toBe(mockedCreateOfferArgs.exchangeToken);

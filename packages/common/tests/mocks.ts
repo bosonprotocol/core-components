@@ -6,7 +6,9 @@ import {
   OfferStruct,
   MetadataStorage,
   AnyMetadata,
-  CreateOfferArgs
+  CreateOfferArgs,
+  OfferDatesStruct,
+  OfferDurationsStruct
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -18,16 +20,13 @@ export const ADDRESS = "0x57faFe1fB7C682216FCe44e50946C5249192b9D5";
 export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
   return {
     id: "1",
+    disputeResolverId: "1",
     voided: false,
     price: parseEther("1"),
+    protocolFee: parseEther("1"),
     sellerDeposit: parseEther("1"),
     buyerCancelPenalty: parseEther("1"),
     quantityAvailable: 10,
-    validFromDate: Math.floor(Date.now() / 1000),
-    validUntilDate: Math.floor((Date.now() + 2 * 60 * 1000) / 1000),
-    redeemableFromDate: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
-    fulfillmentPeriodDuration: 60 * 60,
-    voucherValidDuration: 60 * 60,
     sellerId: "1",
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
@@ -36,20 +35,47 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
   };
 }
 
+export function mockOfferDatesStruct(
+  overrides?: Partial<OfferDatesStruct>
+): OfferDatesStruct {
+  return {
+    validFrom: Math.floor(Date.now() / 1000),
+    validUntil: Math.floor((Date.now() + 2 * 60 * 1000) / 1000),
+    voucherRedeemableFrom: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
+    voucherRedeemableUntil: Math.floor((Date.now() + 1 * 60 * 1000) / 1000),
+    ...overrides
+  };
+}
+
+export function mockOfferDurationsStruct(
+  overrides?: Partial<OfferDurationsStruct>
+): OfferDurationsStruct {
+  return {
+    fulfillmentPeriod: 60 * 60,
+    voucherValid: 60 * 60,
+    resolutionPeriod: 60 * 60,
+    ...overrides
+  };
+}
+
 export function mockCreateOfferArgs(
   overrides?: Partial<CreateOfferArgs>
 ): CreateOfferArgs {
   return {
-    price: parseEther("1"),
+    price: parseEther("3"),
     sellerDeposit: parseEther("1"),
+    protocolFee: parseEther("1"),
     buyerCancelPenalty: parseEther("1"),
     quantityAvailable: 10,
     validFromDateInMS: Date.now() + 1 * 60 * 1000,
     validUntilDateInMS: Date.now() + 2 * 60 * 1000,
-    redeemableFromDateInMS: Date.now() + 1 * 60 * 1000,
+    voucherRedeemableFromDateInMS: Date.now() + 1 * 60 * 1000,
+    voucherRedeemableUntilDateInMS: Date.now() + 2 * 60 * 1000,
     fulfillmentPeriodDurationInMS: 60 * 60 * 1000,
-    voucherValidDurationInMS: 60 * 60 * 1000,
+    voucherValidDurationInMS: 0,
+    resolutionPeriodDurationInMS: 60 * 60 * 1000,
     exchangeToken: AddressZero,
+    disputeResolverId: "1",
     metadataUri: IPFS_URI,
     offerChecksum: IPFS_HASH, // TODO: use correct checksum
     ...overrides

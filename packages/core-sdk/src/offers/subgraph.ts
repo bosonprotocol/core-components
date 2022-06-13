@@ -19,16 +19,21 @@ fragment offerFields on Offer {
   createdAt
   price
   sellerDeposit
+  protocolFee
   buyerCancelPenalty
   quantityAvailable
+  quantityInitial
   validFromDate
   validUntilDate
-  redeemableFromDate
+  voucherRedeemableFromDate
+  voucherRedeemableUntilDate
   fulfillmentPeriodDuration
   voucherValidDuration
+  resolutionPeriodDuration
   metadataUri
   offerChecksum
   voidedAt
+  disputeResolverId
   seller {
     id
     operator
