@@ -49,6 +49,11 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -58,34 +63,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
           },
           {
             internalType: "string",
@@ -106,6 +91,57 @@ const _abi = [
         indexed: false,
         internalType: "struct BosonTypes.Offer",
         name: "offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.OfferDates",
+        name: "offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "offerDurations",
         type: "tuple",
       },
     ],
@@ -128,90 +164,13 @@ const _abi = [
         type: "uint256",
       },
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "price",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "buyerCancelPenalty",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "quantityAvailable",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "exchangeToken",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "metadataUri",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "offerChecksum",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "voided",
-            type: "bool",
-          },
-        ],
         indexed: false,
-        internalType: "struct BosonTypes.Offer",
-        name: "offer",
-        type: "tuple",
+        internalType: "uint256",
+        name: "validUntilDate",
+        type: "uint256",
       },
     ],
-    name: "OfferUpdated",
+    name: "OfferExtended",
     type: "event",
   },
   {
@@ -259,6 +218,11 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -268,34 +232,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
           },
           {
             internalType: "string",
@@ -315,6 +259,55 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
         type: "tuple",
       },
     ],
@@ -349,6 +342,11 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -358,34 +356,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
           },
           {
             internalType: "string",
@@ -405,6 +383,55 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.Offer[]",
         name: "_offers",
+        type: "tuple[]",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates[]",
+        name: "_offerDates",
+        type: "tuple[]",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations[]",
+        name: "_offerDurations",
         type: "tuple[]",
       },
     ],
@@ -427,6 +454,24 @@ const _abi = [
       },
     ],
     name: "extendOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "_offerIds",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256",
+        name: "_validUntilDate",
+        type: "uint256",
+      },
+    ],
+    name: "extendOfferBatch",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -483,6 +528,11 @@ const _abi = [
           },
           {
             internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -492,34 +542,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
             internalType: "address",
             name: "exchangeToken",
             type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
           },
           {
             internalType: "string",
@@ -541,29 +571,54 @@ const _abi = [
         name: "offer",
         type: "tuple",
       },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "offerDates",
+        type: "tuple",
       },
-    ],
-    name: "isOfferUpdateable",
-    outputs: [
       {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
-      },
-      {
-        internalType: "bool",
-        name: "offerUpdateable",
-        type: "bool",
+        components: [
+          {
+            internalType: "uint256",
+            name: "fulfillmentPeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "offerDurations",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -591,96 +646,6 @@ const _abi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "price",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "buyerCancelPenalty",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "quantityAvailable",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "validUntilDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "redeemableFromDate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "fulfillmentPeriodDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "voucherValidDuration",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "exchangeToken",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "metadataUri",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "offerChecksum",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "voided",
-            type: "bool",
-          },
-        ],
-        internalType: "struct BosonTypes.Offer",
-        name: "_offer",
-        type: "tuple",
-      },
-    ],
-    name: "updateOffer",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -43,7 +44,6 @@ export declare namespace BosonTypes {
     buyerId: BigNumberish;
     finalizedDate: BigNumberish;
     voucher: BosonTypes.VoucherStruct;
-    disputed: boolean;
     state: BigNumberish;
   };
 
@@ -53,7 +53,6 @@ export declare namespace BosonTypes {
     BigNumber,
     BigNumber,
     BosonTypes.VoucherStructOutput,
-    boolean,
     number
   ] & {
     id: BigNumber;
@@ -61,7 +60,6 @@ export declare namespace BosonTypes {
     buyerId: BigNumber;
     finalizedDate: BigNumber;
     voucher: BosonTypes.VoucherStructOutput;
-    disputed: boolean;
     state: number;
   };
 }
@@ -69,16 +67,34 @@ export declare namespace BosonTypes {
 export interface IBosonExchangeHandlerInterface extends utils.Interface {
   contractName: "IBosonExchangeHandler";
   functions: {
+    "cancelVoucher(uint256)": FunctionFragment;
     "commitToOffer(address,uint256)": FunctionFragment;
+    "completeExchange(uint256)": FunctionFragment;
+    "expireVoucher(uint256)": FunctionFragment;
     "getExchange(uint256)": FunctionFragment;
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
     "isExchangeFinalized(uint256)": FunctionFragment;
+    "onVoucherTransferred(uint256,address)": FunctionFragment;
+    "redeemVoucher(uint256)": FunctionFragment;
+    "revokeVoucher(uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
+    functionFragment: "cancelVoucher",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "commitToOffer",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "completeExchange",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "expireVoucher",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getExchange",
@@ -96,9 +112,33 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     functionFragment: "isExchangeFinalized",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "onVoucherTransferred",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "redeemVoucher",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeVoucher",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(
+    functionFragment: "cancelVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "commitToOffer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "completeExchange",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "expireVoucher",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -117,12 +157,44 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     functionFragment: "isExchangeFinalized",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "onVoucherTransferred",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "redeemVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeVoucher",
+    data: BytesLike
+  ): Result;
 
   events: {
     "BuyerCommitted(uint256,uint256,uint256,tuple)": EventFragment;
+    "ExchangeCompleted(uint256,uint256,uint256)": EventFragment;
+    "ExchangeFee(uint256,address,uint256)": EventFragment;
+    "FundsEncumbered(uint256,address,uint256)": EventFragment;
+    "FundsReleased(uint256,uint256,address,uint256)": EventFragment;
+    "FundsWithdrawn(uint256,address,address,uint256)": EventFragment;
+    "VoucherCanceled(uint256,uint256,address)": EventFragment;
+    "VoucherExpired(uint256,uint256,address)": EventFragment;
+    "VoucherRedeemed(uint256,uint256,address)": EventFragment;
+    "VoucherRevoked(uint256,uint256,address)": EventFragment;
+    "VoucherTransferred(uint256,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCommitted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExchangeFee"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherCanceled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherExpired"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherRedeemed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherTransferred"): EventFragment;
 }
 
 export type BuyerCommittedEvent = TypedEvent<
@@ -136,6 +208,88 @@ export type BuyerCommittedEvent = TypedEvent<
 >;
 
 export type BuyerCommittedEventFilter = TypedEventFilter<BuyerCommittedEvent>;
+
+export type ExchangeCompletedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  { offerId: BigNumber; buyerId: BigNumber; exchangeId: BigNumber }
+>;
+
+export type ExchangeCompletedEventFilter =
+  TypedEventFilter<ExchangeCompletedEvent>;
+
+export type ExchangeFeeEvent = TypedEvent<
+  [BigNumber, string, BigNumber],
+  { exchangeId: BigNumber; exchangeToken: string; amount: BigNumber }
+>;
+
+export type ExchangeFeeEventFilter = TypedEventFilter<ExchangeFeeEvent>;
+
+export type FundsEncumberedEvent = TypedEvent<
+  [BigNumber, string, BigNumber],
+  { entityId: BigNumber; exchangeToken: string; amount: BigNumber }
+>;
+
+export type FundsEncumberedEventFilter = TypedEventFilter<FundsEncumberedEvent>;
+
+export type FundsReleasedEvent = TypedEvent<
+  [BigNumber, BigNumber, string, BigNumber],
+  {
+    exchangeId: BigNumber;
+    entityId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+  }
+>;
+
+export type FundsReleasedEventFilter = TypedEventFilter<FundsReleasedEvent>;
+
+export type FundsWithdrawnEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  {
+    sellerId: BigNumber;
+    withdrawnTo: string;
+    tokenAddress: string;
+    amount: BigNumber;
+  }
+>;
+
+export type FundsWithdrawnEventFilter = TypedEventFilter<FundsWithdrawnEvent>;
+
+export type VoucherCanceledEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; canceledBy: string }
+>;
+
+export type VoucherCanceledEventFilter = TypedEventFilter<VoucherCanceledEvent>;
+
+export type VoucherExpiredEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; expiredBy: string }
+>;
+
+export type VoucherExpiredEventFilter = TypedEventFilter<VoucherExpiredEvent>;
+
+export type VoucherRedeemedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; redeemedBy: string }
+>;
+
+export type VoucherRedeemedEventFilter = TypedEventFilter<VoucherRedeemedEvent>;
+
+export type VoucherRevokedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; exchangeId: BigNumber; revokedBy: string }
+>;
+
+export type VoucherRevokedEventFilter = TypedEventFilter<VoucherRevokedEvent>;
+
+export type VoucherTransferredEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  { offerId: BigNumber; exchangeId: BigNumber; newBuyerId: BigNumber }
+>;
+
+export type VoucherTransferredEventFilter =
+  TypedEventFilter<VoucherTransferredEvent>;
 
 export interface IBosonExchangeHandler extends BaseContract {
   contractName: "IBosonExchangeHandler";
@@ -165,9 +319,24 @@ export interface IBosonExchangeHandler extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    cancelVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    completeExchange(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    expireVoucher(
+      _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -194,11 +363,42 @@ export interface IBosonExchangeHandler extends BaseContract {
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
+
+    onVoucherTransferred(
+      _exchangeId: BigNumberish,
+      _newBuyer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    redeemVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    revokeVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
+
+  cancelVoucher(
+    _exchangeId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   commitToOffer(
     _buyer: string,
     _offerId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  completeExchange(
+    _exchangeId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  expireVoucher(
+    _exchangeId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -224,10 +424,41 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: CallOverrides
   ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
 
+  onVoucherTransferred(
+    _exchangeId: BigNumberish,
+    _newBuyer: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  redeemVoucher(
+    _exchangeId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  revokeVoucher(
+    _exchangeId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    cancelVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    completeExchange(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    expireVoucher(
+      _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -252,6 +483,22 @@ export interface IBosonExchangeHandler extends BaseContract {
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean, boolean] & { exists: boolean; isFinalized: boolean }>;
+
+    onVoucherTransferred(
+      _exchangeId: BigNumberish,
+      _newBuyer: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    redeemVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    revokeVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -267,12 +514,141 @@ export interface IBosonExchangeHandler extends BaseContract {
       exchangeId?: BigNumberish | null,
       exchange?: null
     ): BuyerCommittedEventFilter;
+
+    "ExchangeCompleted(uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null
+    ): ExchangeCompletedEventFilter;
+    ExchangeCompleted(
+      offerId?: BigNumberish | null,
+      buyerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null
+    ): ExchangeCompletedEventFilter;
+
+    "ExchangeFee(uint256,address,uint256)"(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): ExchangeFeeEventFilter;
+    ExchangeFee(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): ExchangeFeeEventFilter;
+
+    "FundsEncumbered(uint256,address,uint256)"(
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): FundsEncumberedEventFilter;
+    FundsEncumbered(
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): FundsEncumberedEventFilter;
+
+    "FundsReleased(uint256,uint256,address,uint256)"(
+      exchangeId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): FundsReleasedEventFilter;
+    FundsReleased(
+      exchangeId?: BigNumberish | null,
+      entityId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null
+    ): FundsReleasedEventFilter;
+
+    "FundsWithdrawn(uint256,address,address,uint256)"(
+      sellerId?: BigNumberish | null,
+      withdrawnTo?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsWithdrawnEventFilter;
+    FundsWithdrawn(
+      sellerId?: BigNumberish | null,
+      withdrawnTo?: string | null,
+      tokenAddress?: string | null,
+      amount?: null
+    ): FundsWithdrawnEventFilter;
+
+    "VoucherCanceled(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      canceledBy?: string | null
+    ): VoucherCanceledEventFilter;
+    VoucherCanceled(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      canceledBy?: string | null
+    ): VoucherCanceledEventFilter;
+
+    "VoucherExpired(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      expiredBy?: string | null
+    ): VoucherExpiredEventFilter;
+    VoucherExpired(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      expiredBy?: string | null
+    ): VoucherExpiredEventFilter;
+
+    "VoucherRedeemed(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      redeemedBy?: string | null
+    ): VoucherRedeemedEventFilter;
+    VoucherRedeemed(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      redeemedBy?: string | null
+    ): VoucherRedeemedEventFilter;
+
+    "VoucherRevoked(uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      revokedBy?: string | null
+    ): VoucherRevokedEventFilter;
+    VoucherRevoked(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      revokedBy?: string | null
+    ): VoucherRevokedEventFilter;
+
+    "VoucherTransferred(uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      newBuyerId?: BigNumberish | null
+    ): VoucherTransferredEventFilter;
+    VoucherTransferred(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      newBuyerId?: BigNumberish | null
+    ): VoucherTransferredEventFilter;
   };
 
   estimateGas: {
+    cancelVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    completeExchange(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    expireVoucher(
+      _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -292,12 +668,43 @@ export interface IBosonExchangeHandler extends BaseContract {
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    onVoucherTransferred(
+      _exchangeId: BigNumberish,
+      _newBuyer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    redeemVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    revokeVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    cancelVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    completeExchange(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    expireVoucher(
+      _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -316,6 +723,22 @@ export interface IBosonExchangeHandler extends BaseContract {
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    onVoucherTransferred(
+      _exchangeId: BigNumberish,
+      _newBuyer: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    redeemVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revokeVoucher(
+      _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

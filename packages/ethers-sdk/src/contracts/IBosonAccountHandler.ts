@@ -30,6 +30,18 @@ export declare namespace BosonTypes {
     active: boolean;
   };
 
+  export type DisputeResolverStruct = {
+    id: BigNumberish;
+    wallet: string;
+    active: boolean;
+  };
+
+  export type DisputeResolverStructOutput = [BigNumber, string, boolean] & {
+    id: BigNumber;
+    wallet: string;
+    active: boolean;
+  };
+
   export type SellerStruct = {
     id: BigNumberish;
     operator: string;
@@ -60,11 +72,15 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   contractName: "IBosonAccountHandler";
   functions: {
     "createBuyer((uint256,address,bool))": FunctionFragment;
+    "createDisputeResolver((uint256,address,bool))": FunctionFragment;
     "createSeller((uint256,address,address,address,address,bool))": FunctionFragment;
     "getBuyer(uint256)": FunctionFragment;
+    "getDisputeResolver(uint256)": FunctionFragment;
     "getNextAccountId()": FunctionFragment;
     "getSeller(uint256)": FunctionFragment;
     "getSellerByAddress(address)": FunctionFragment;
+    "updateBuyer((uint256,address,bool))": FunctionFragment;
+    "updateDisputeResolver((uint256,address,bool))": FunctionFragment;
     "updateSeller((uint256,address,address,address,address,bool))": FunctionFragment;
   };
 
@@ -73,11 +89,19 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [BosonTypes.BuyerStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "createDisputeResolver",
+    values: [BosonTypes.DisputeResolverStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createSeller",
     values: [BosonTypes.SellerStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "getBuyer",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDisputeResolver",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -93,6 +117,14 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateBuyer",
+    values: [BosonTypes.BuyerStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateDisputeResolver",
+    values: [BosonTypes.DisputeResolverStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateSeller",
     values: [BosonTypes.SellerStruct]
   ): string;
@@ -102,10 +134,18 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "createDisputeResolver",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "createSeller",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getBuyer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getDisputeResolver",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getNextAccountId",
     data: BytesLike
@@ -116,17 +156,31 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "updateBuyer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateDisputeResolver",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "updateSeller",
     data: BytesLike
   ): Result;
 
   events: {
     "BuyerCreated(uint256,tuple)": EventFragment;
+    "BuyerUpdated(uint256,tuple)": EventFragment;
+    "DisputeResolverCreated(uint256,tuple)": EventFragment;
+    "DisputeResolverUpdated(uint256,tuple)": EventFragment;
     "SellerCreated(uint256,tuple)": EventFragment;
     "SellerUpdated(uint256,tuple)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BuyerUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisputeResolverCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisputeResolverUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdated"): EventFragment;
 }
@@ -137,6 +191,35 @@ export type BuyerCreatedEvent = TypedEvent<
 >;
 
 export type BuyerCreatedEventFilter = TypedEventFilter<BuyerCreatedEvent>;
+
+export type BuyerUpdatedEvent = TypedEvent<
+  [BigNumber, BosonTypes.BuyerStructOutput],
+  { buyerId: BigNumber; buyer: BosonTypes.BuyerStructOutput }
+>;
+
+export type BuyerUpdatedEventFilter = TypedEventFilter<BuyerUpdatedEvent>;
+
+export type DisputeResolverCreatedEvent = TypedEvent<
+  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  {
+    disputeResolverId: BigNumber;
+    disputeResolver: BosonTypes.DisputeResolverStructOutput;
+  }
+>;
+
+export type DisputeResolverCreatedEventFilter =
+  TypedEventFilter<DisputeResolverCreatedEvent>;
+
+export type DisputeResolverUpdatedEvent = TypedEvent<
+  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  {
+    disputeResolverId: BigNumber;
+    disputeResolver: BosonTypes.DisputeResolverStructOutput;
+  }
+>;
+
+export type DisputeResolverUpdatedEventFilter =
+  TypedEventFilter<DisputeResolverUpdatedEvent>;
 
 export type SellerCreatedEvent = TypedEvent<
   [BigNumber, BosonTypes.SellerStructOutput],
@@ -185,6 +268,11 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    createDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     createSeller(
       _seller: BosonTypes.SellerStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -197,6 +285,16 @@ export interface IBosonAccountHandler extends BaseContract {
       [boolean, BosonTypes.BuyerStructOutput] & {
         exists: boolean;
         buyer: BosonTypes.BuyerStructOutput;
+      }
+    >;
+
+    getDisputeResolver(
+      _disputeResolverId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BosonTypes.DisputeResolverStructOutput] & {
+        exists: boolean;
+        disputeResolver: BosonTypes.DisputeResolverStructOutput;
       }
     >;
 
@@ -224,6 +322,16 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    updateBuyer(
+      _buyer: BosonTypes.BuyerStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     updateSeller(
       _seller: BosonTypes.SellerStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -232,6 +340,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
   createBuyer(
     _buyer: BosonTypes.BuyerStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  createDisputeResolver(
+    _disputeResolver: BosonTypes.DisputeResolverStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -247,6 +360,16 @@ export interface IBosonAccountHandler extends BaseContract {
     [boolean, BosonTypes.BuyerStructOutput] & {
       exists: boolean;
       buyer: BosonTypes.BuyerStructOutput;
+    }
+  >;
+
+  getDisputeResolver(
+    _disputeResolverId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [boolean, BosonTypes.DisputeResolverStructOutput] & {
+      exists: boolean;
+      disputeResolver: BosonTypes.DisputeResolverStructOutput;
     }
   >;
 
@@ -272,6 +395,16 @@ export interface IBosonAccountHandler extends BaseContract {
     }
   >;
 
+  updateBuyer(
+    _buyer: BosonTypes.BuyerStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateDisputeResolver(
+    _disputeResolver: BosonTypes.DisputeResolverStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   updateSeller(
     _seller: BosonTypes.SellerStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -280,6 +413,11 @@ export interface IBosonAccountHandler extends BaseContract {
   callStatic: {
     createBuyer(
       _buyer: BosonTypes.BuyerStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    createDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -295,6 +433,16 @@ export interface IBosonAccountHandler extends BaseContract {
       [boolean, BosonTypes.BuyerStructOutput] & {
         exists: boolean;
         buyer: BosonTypes.BuyerStructOutput;
+      }
+    >;
+
+    getDisputeResolver(
+      _disputeResolverId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BosonTypes.DisputeResolverStructOutput] & {
+        exists: boolean;
+        disputeResolver: BosonTypes.DisputeResolverStructOutput;
       }
     >;
 
@@ -320,6 +468,16 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    updateBuyer(
+      _buyer: BosonTypes.BuyerStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     updateSeller(
       _seller: BosonTypes.SellerStruct,
       overrides?: CallOverrides
@@ -335,6 +493,33 @@ export interface IBosonAccountHandler extends BaseContract {
       buyerId?: BigNumberish | null,
       buyer?: null
     ): BuyerCreatedEventFilter;
+
+    "BuyerUpdated(uint256,tuple)"(
+      buyerId?: BigNumberish | null,
+      buyer?: null
+    ): BuyerUpdatedEventFilter;
+    BuyerUpdated(
+      buyerId?: BigNumberish | null,
+      buyer?: null
+    ): BuyerUpdatedEventFilter;
+
+    "DisputeResolverCreated(uint256,tuple)"(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null
+    ): DisputeResolverCreatedEventFilter;
+    DisputeResolverCreated(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null
+    ): DisputeResolverCreatedEventFilter;
+
+    "DisputeResolverUpdated(uint256,tuple)"(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null
+    ): DisputeResolverUpdatedEventFilter;
+    DisputeResolverUpdated(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null
+    ): DisputeResolverUpdatedEventFilter;
 
     "SellerCreated(uint256,tuple)"(
       sellerId?: BigNumberish | null,
@@ -361,6 +546,11 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    createDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     createSeller(
       _seller: BosonTypes.SellerStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -368,6 +558,11 @@ export interface IBosonAccountHandler extends BaseContract {
 
     getBuyer(
       _buyerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDisputeResolver(
+      _disputeResolverId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -383,6 +578,16 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    updateBuyer(
+      _buyer: BosonTypes.BuyerStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     updateSeller(
       _seller: BosonTypes.SellerStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -392,6 +597,11 @@ export interface IBosonAccountHandler extends BaseContract {
   populateTransaction: {
     createBuyer(
       _buyer: BosonTypes.BuyerStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    createDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -405,6 +615,11 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getDisputeResolver(
+      _disputeResolverId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getNextAccountId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getSeller(
@@ -415,6 +630,16 @@ export interface IBosonAccountHandler extends BaseContract {
     getSellerByAddress(
       _associatedAddress: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    updateBuyer(
+      _buyer: BosonTypes.BuyerStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateDisputeResolver(
+      _disputeResolver: BosonTypes.DisputeResolverStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     updateSeller(
