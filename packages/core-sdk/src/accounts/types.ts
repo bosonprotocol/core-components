@@ -1,3 +1,5 @@
+import { RawFundsEntityFromSubgraph } from "../funds/types";
+
 export { CreateSellerArgs } from "@bosonprotocol/common";
 
 export type RawSellerFromSubgraph = {
@@ -7,4 +9,5 @@ export type RawSellerFromSubgraph = {
   clerk: string;
   treasury: string;
   active: boolean;
+  funds: Omit<RawFundsEntityFromSubgraph, "id" | "accountId">[];
 };

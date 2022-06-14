@@ -150,10 +150,16 @@ export function useCreateOfferData() {
         const [metadata, tokenInfo, seller] = await Promise.all([
           coreSDK.getMetadata(createOfferArgs.metadataUri),
           getTokenInfo(coreSDK, createOfferArgs.exchangeToken, account),
-          coreSDK.getSellerByOperator(account || "")
+          coreSDK.getSellerByOperator(
+            account || "",
+            createOfferArgs.exchangeToken.toLowerCase()
+          )
         ]);
 
-        if (!isActive()) return;
+        if (!isActive()) {
+          return;
+        }
+
         setData({
           status: "loaded",
           metadata,
