@@ -97,11 +97,12 @@ export default function CreateOffer() {
   );
   const showDepositFundsButton =
     seller &&
-    getMinimalFundsAmountNeeded(
+    getMinimalFundsAmountNeeded({
       seller,
-      createOfferArgs.sellerDeposit,
-      createOfferArgs.exchangeToken
-    ).gt(0);
+      sellerDeposit: createOfferArgs.sellerDeposit,
+      exchangeToken: createOfferArgs.exchangeToken,
+      quantity: createOfferArgs.quantityAvailable
+    }).gt(0);
 
   async function handleCreateOffer() {
     try {
@@ -176,11 +177,12 @@ export default function CreateOffer() {
 
       const txResponse = await coreSDK.depositFunds(
         seller.id,
-        getMinimalFundsAmountNeeded(
+        getMinimalFundsAmountNeeded({
           seller,
-          createOfferArgs.sellerDeposit,
-          createOfferArgs.exchangeToken
-        ),
+          sellerDeposit: createOfferArgs.sellerDeposit,
+          exchangeToken: createOfferArgs.exchangeToken,
+          quantity: createOfferArgs.quantityAvailable
+        }),
         createOfferArgs.exchangeToken
       );
 
