@@ -12,7 +12,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
 
   let seller = Seller.load(sellerId);
 
-  if (seller === null) {
+  if (!seller) {
     seller = new Seller(sellerId);
     seller.sellerId = event.params.sellerId;
     seller.operator = sellerFromEvent.operator;
@@ -30,7 +30,7 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
 
   let seller = Seller.load(sellerId);
 
-  if (seller === null) {
+  if (!seller) {
     seller = new Seller(sellerId);
   }
 
@@ -48,7 +48,7 @@ export function handleBuyerCreatedEvent(event: BuyerCreated): void {
 
   let buyer = Buyer.load(buyerId);
 
-  if (buyer === null) {
+  if (!buyer) {
     buyer = new Buyer(buyerId);
   }
 
@@ -65,7 +65,7 @@ export function handleDisputeResolverCreatedEvent(
 
   let disputeResolver = DisputeResolver.load(disputeResolverId);
 
-  if (disputeResolver === null) {
+  if (!disputeResolver) {
     disputeResolver = new DisputeResolver(disputeResolverId);
   }
 

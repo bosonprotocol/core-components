@@ -50,7 +50,7 @@ function handleDecreasingFundsEvent(
   const fundsId = getFundsEntityId(entityId, tokenAddress);
   const fundsEntity = FundsEntity.load(fundsId);
 
-  if (fundsEntity !== null) {
+  if (fundsEntity) {
     fundsEntity.availableAmount = fundsEntity.availableAmount.minus(amount);
     fundsEntity.save();
   }
@@ -66,7 +66,7 @@ function handleIncreasingFundsEvent(
   const fundsId = getFundsEntityId(entityId, tokenAddress);
   let fundsEntity = FundsEntity.load(fundsId);
 
-  if (fundsEntity === null) {
+  if (!fundsEntity) {
     fundsEntity = new FundsEntity(fundsId);
     fundsEntity.availableAmount = amount;
     fundsEntity.tokenAddress = tokenAddress;
@@ -80,5 +80,5 @@ function handleIncreasingFundsEvent(
 }
 
 function getFundsEntityId(accountId: BigInt, tokenAddress: Bytes): string {
-  return accountId.toString() + "-" + tokenAddress.toHexString();
+  return `${accountId.toString()}-${tokenAddress.toHexString()}`;
 }
