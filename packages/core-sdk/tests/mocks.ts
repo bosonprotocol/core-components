@@ -23,6 +23,7 @@ export function mockRawSellerFromSubgraph(
     operator: ZERO_ADDRESS,
     treasury: ZERO_ADDRESS,
     active: true,
+    funds: [],
     ...overrides
   };
 }
