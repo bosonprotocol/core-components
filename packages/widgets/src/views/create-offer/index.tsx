@@ -15,6 +15,7 @@ import { hooks } from "../../lib/connectors/metamask";
 import { closeWidget } from "../../lib/closeWidget";
 import { colors } from "../../lib/colors";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
+import { getMinimalFundsAmountNeeded } from "../../lib/funds";
 
 const Spacer = styled.div`
   height: 20px;
@@ -94,6 +95,13 @@ export default function CreateOffer() {
   const tokenApprovalNeeded = tokenInfo.allowance.lt(
     constants.MaxInt256.div(2)
   );
+  const showDepositFundsButton =
+    seller &&
+    getMinimalFundsAmountNeeded(
+      seller,
+      createOfferArgs.sellerDeposit,
+      createOfferArgs.exchangeToken
+    ).gt(0);
 
   async function handleCreateOffer() {
     try {
@@ -117,7 +125,7 @@ export default function CreateOffer() {
         txHash: txResponse.hash
       });
 
-      const txReceipt = await txResponse.wait(1);
+      const txReceipt = await txResponse.wait(2);
       const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
 
       setTransaction({
@@ -125,6 +133,8 @@ export default function CreateOffer() {
         txHash: txResponse.hash,
         offerId: offerId || ""
       });
+
+      reloadCreateOfferData();
     } catch (e) {
       setTransaction({
         status: "error",
@@ -145,10 +155,45 @@ export default function CreateOffer() {
         txHash: txResponse.hash
       });
 
-      await txResponse.wait();
+      await txResponse.wait(2);
+
+      setTransaction({ status: "idle" });
 
       reloadCreateOfferData();
+    } catch (e) {
+      setTransaction({
+        status: "error",
+        error: e as Error
+      });
+    }
+  }
+
+  async function handleDepositFunds() {
+    try {
+      if (!seller) {
+        return;
+      }
+
+      const txResponse = await coreSDK.depositFunds(
+        seller.id,
+        getMinimalFundsAmountNeeded(
+          seller,
+          createOfferArgs.sellerDeposit,
+          createOfferArgs.exchangeToken
+        ),
+        createOfferArgs.exchangeToken
+      );
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      await txResponse.wait(2);
+
       setTransaction({ status: "idle" });
+
+      reloadCreateOfferData();
     } catch (e) {
       setTransaction({
         status: "error",
@@ -188,6 +233,9 @@ export default function CreateOffer() {
         <Button disabled={tokenApprovalNeeded} onClick={handleCreateOffer}>
           Create Offer
         </Button>
+        {showDepositFundsButton && (
+          <Button onClick={handleDepositFunds}>Deposit Funds</Button>
+        )}
       </Actions>
       <StageIndicator stage={tokenApprovalNeeded ? 1 : 2} />
       {transaction.status === "pending" && (
