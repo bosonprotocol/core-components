@@ -17,7 +17,7 @@ export function saveBaseMetadata(
 
   let baseMetadataEntity = BaseMetadataEntity.load(metadataId);
 
-  if (baseMetadataEntity == null) {
+  if (!baseMetadataEntity) {
     baseMetadataEntity = new BaseMetadataEntity(metadataId);
   }
 

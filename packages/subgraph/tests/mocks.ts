@@ -18,6 +18,12 @@ import {
   BuyerCreatedBuyerStruct
 } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
+  FundsDeposited,
+  FundsEncumbered,
+  FundsReleased,
+  FundsWithdrawn
+} from "../generated/BosonFundsHandler/IBosonFundsHandler";
+import {
   newMockEvent,
   createMockedFunction
 } from "matchstick-as/assembly/index";
@@ -275,6 +281,136 @@ export function createBuyerCreatedEvent(
   buyerCreatedEvent.parameters.push(buyerParam);
 
   return buyerCreatedEvent;
+}
+
+export function createFundsDepositedEvent(
+  sellerId: i32,
+  depositedBy: string,
+  tokenAddress: string,
+  amount: i32
+): FundsDeposited {
+  const fundsDepositedEvent = changetype<FundsDeposited>(newMockEvent());
+  fundsDepositedEvent.parameters = new Array();
+
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const depositedByParam = new ethereum.EventParam(
+    "depositedBy",
+    ethereum.Value.fromAddress(Address.fromString(depositedBy))
+  );
+  const tokenAddressParam = new ethereum.EventParam(
+    "tokenAddress",
+    ethereum.Value.fromAddress(Address.fromString(tokenAddress))
+  );
+  const amountParam = new ethereum.EventParam(
+    "amount",
+    ethereum.Value.fromI32(amount)
+  );
+
+  fundsDepositedEvent.parameters.push(sellerIdParam);
+  fundsDepositedEvent.parameters.push(depositedByParam);
+  fundsDepositedEvent.parameters.push(tokenAddressParam);
+  fundsDepositedEvent.parameters.push(amountParam);
+
+  return fundsDepositedEvent;
+}
+
+export function createFundsEncumberedEvent(
+  entityId: i32,
+  exchangeToken: string,
+  amount: i32
+): FundsEncumbered {
+  const fundsEncumberedEvent = changetype<FundsEncumbered>(newMockEvent());
+  fundsEncumberedEvent.parameters = new Array();
+
+  const entityIdParam = new ethereum.EventParam(
+    "entityId",
+    ethereum.Value.fromI32(entityId)
+  );
+  const exchangeTokenParam = new ethereum.EventParam(
+    "exchangeToken",
+    ethereum.Value.fromAddress(Address.fromString(exchangeToken))
+  );
+  const amountParam = new ethereum.EventParam(
+    "amount",
+    ethereum.Value.fromI32(amount)
+  );
+
+  fundsEncumberedEvent.parameters.push(entityIdParam);
+  fundsEncumberedEvent.parameters.push(exchangeTokenParam);
+  fundsEncumberedEvent.parameters.push(amountParam);
+
+  return fundsEncumberedEvent;
+}
+
+export function createFundsReleasedEvent(
+  exchangeId: i32,
+  entityId: i32,
+  exchangeToken: string,
+  amount: i32
+): FundsReleased {
+  const fundsReleasedEvent = changetype<FundsReleased>(newMockEvent());
+  fundsReleasedEvent.parameters = new Array();
+
+  const exchangeIdParam = new ethereum.EventParam(
+    "exchangeId",
+    ethereum.Value.fromI32(exchangeId)
+  );
+  const entityIdParam = new ethereum.EventParam(
+    "entityId",
+    ethereum.Value.fromI32(entityId)
+  );
+  const exchangeTokenParam = new ethereum.EventParam(
+    "exchangeToken",
+    ethereum.Value.fromAddress(Address.fromString(exchangeToken))
+  );
+  const amountParam = new ethereum.EventParam(
+    "amount",
+    ethereum.Value.fromI32(amount)
+  );
+
+  fundsReleasedEvent.parameters.push(exchangeIdParam);
+  fundsReleasedEvent.parameters.push(entityIdParam);
+  fundsReleasedEvent.parameters.push(exchangeTokenParam);
+  fundsReleasedEvent.parameters.push(amountParam);
+
+  return fundsReleasedEvent;
+}
+
+export function createFundsWithdrawnEvent(
+  sellerId: i32,
+  withdrawnTo: string,
+  tokenAddress: string,
+  amount: i32
+): FundsWithdrawn {
+  const fundsWithdrawnEvent = changetype<FundsWithdrawn>(newMockEvent());
+  fundsWithdrawnEvent.parameters = new Array();
+
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const withdrawnToParam = new ethereum.EventParam(
+    "withdrawnTo",
+    ethereum.Value.fromAddress(Address.fromString(withdrawnTo))
+  );
+  const tokenAddressParam = new ethereum.EventParam(
+    "tokenAddress",
+    ethereum.Value.fromAddress(Address.fromString(tokenAddress))
+  );
+  const amountParam = new ethereum.EventParam(
+    "amount",
+    ethereum.Value.fromI32(amount)
+  );
+
+  fundsWithdrawnEvent.parameters.push(sellerIdParam);
+  fundsWithdrawnEvent.parameters.push(withdrawnToParam);
+  fundsWithdrawnEvent.parameters.push(tokenAddressParam);
+  fundsWithdrawnEvent.parameters.push(amountParam);
+
+  return fundsWithdrawnEvent;
 }
 
 export function createOfferStruct(

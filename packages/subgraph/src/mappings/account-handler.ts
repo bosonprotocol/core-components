@@ -1,9 +1,10 @@
 import {
   SellerCreated,
   SellerUpdated,
-  BuyerCreated
+  BuyerCreated,
+  DisputeResolverCreated
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
-import { Seller, Buyer } from "../../generated/schema";
+import { Seller, Buyer, DisputeResolver } from "../../generated/schema";
 
 export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
@@ -11,7 +12,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
 
   let seller = Seller.load(sellerId);
 
-  if (seller === null) {
+  if (!seller) {
     seller = new Seller(sellerId);
     seller.sellerId = event.params.sellerId;
     seller.operator = sellerFromEvent.operator;
@@ -29,7 +30,7 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
 
   let seller = Seller.load(sellerId);
 
-  if (seller === null) {
+  if (!seller) {
     seller = new Seller(sellerId);
   }
 
@@ -47,11 +48,28 @@ export function handleBuyerCreatedEvent(event: BuyerCreated): void {
 
   let buyer = Buyer.load(buyerId);
 
-  if (buyer === null) {
+  if (!buyer) {
     buyer = new Buyer(buyerId);
   }
 
   buyer.wallet = buyerFromEvent.wallet;
   buyer.active = true;
   buyer.save();
+}
+
+export function handleDisputeResolverCreatedEvent(
+  event: DisputeResolverCreated
+): void {
+  const disputeResolverFromEvent = event.params.disputeResolver;
+  const disputeResolverId = disputeResolverFromEvent.id.toString();
+
+  let disputeResolver = DisputeResolver.load(disputeResolverId);
+
+  if (!disputeResolver) {
+    disputeResolver = new DisputeResolver(disputeResolverId);
+  }
+
+  disputeResolver.wallet = disputeResolverFromEvent.wallet;
+  disputeResolver.active = true;
+  disputeResolver.save();
 }

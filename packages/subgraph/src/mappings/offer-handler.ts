@@ -12,7 +12,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
 
   let offer = Offer.load(offerId.toString());
 
-  if (offer === null) {
+  if (!offer) {
     const offerStruct = event.params.offer;
     const offerDatesStruct = event.params.offerDates;
     const offerDurationsStruct = event.params.offerDurations;
@@ -53,7 +53,7 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
 
   const offer = Offer.load(offerId.toString());
 
-  if (offer !== null) {
+  if (offer) {
     offer.voided = true;
     offer.voidedAt = event.block.timestamp;
 

@@ -102,6 +102,7 @@ type Offer @entity {
   offerChecksum: String!
   voided: Boolean!
   disputeResolverId: BigInt!
+  disputeResolver: DisputeResolver!
   sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
@@ -138,7 +139,12 @@ type Exchange @entity {
 """
 Accounts
 """
-type Seller @entity {
+interface Account {
+  id: ID!
+  funds: [FundsEntity!]! @derivedFrom(field: "account")
+}
+
+type Seller implements Account @entity {
   id: ID! # Offer.sellerId
   sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
@@ -148,13 +154,34 @@ type Seller @entity {
   clerk: Bytes!
   treasury: Bytes!
   active: Boolean!
+  funds: [FundsEntity!]! @derivedFrom(field: "account")
 }
 
-type Buyer @entity {
+type Buyer implements Account @entity {
   id: ID!
   exchanges: [Exchange!]! @derivedFrom(field: "buyer")
   wallet: Bytes!
   active: Boolean!
+  funds: [FundsEntity!]! @derivedFrom(field: "account")
+}
+
+type DisputeResolver @entity {
+  id: ID!
+  wallet: Bytes!
+  active: Boolean!
+  offers: [Offer!]! @derivedFrom(field: "disputeResolver")
+}
+
+"""
+Funds
+"""
+type FundsEntity @entity {
+  id: ID! # sellerId + "-" + tokenAddress
+  availableAmount: BigInt!
+  tokenAddress: Bytes!
+  token: ExchangeToken!
+  accountId: BigInt!
+  account: Account!
 }
 
 """
@@ -163,9 +190,9 @@ Tokens
 type ExchangeToken @entity {
   id: ID!
   address: Bytes!
-  offers: [Offer!]! @derivedFrom(field: "exchangeToken")
   decimals: BigInt!
   symbol: String!
   name: String!
-  # TODO: add more fields
+  offers: [Offer!]! @derivedFrom(field: "exchangeToken")
+  funds: [FundsEntity!]! @derivedFrom(field: "token")
 }

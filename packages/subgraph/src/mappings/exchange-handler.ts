@@ -8,13 +8,13 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
 
   let exchange = Exchange.load(exchangeId);
 
-  if (exchange === null) {
+  if (!exchange) {
     exchange = new Exchange(exchangeId);
   }
 
   const offer = Offer.load(exchangeFromEvent.offerId.toString());
 
-  if (offer !== null) {
+  if (offer) {
     offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
     offer.save();
 

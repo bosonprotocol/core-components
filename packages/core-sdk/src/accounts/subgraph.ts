@@ -27,11 +27,9 @@ export async function getSellerByOperator(
   subgraphUrl: string,
   operatorAddress: string
 ): Promise<RawSellerFromSubgraph> {
-  const { sellers } = await fetchSubgraph<{ sellers: RawSellerFromSubgraph }>(
-    subgraphUrl,
-    getSellerByOperatorQuery,
-    { operator: operatorAddress }
-  );
+  const { sellers = [] } = await fetchSubgraph<{
+    sellers: RawSellerFromSubgraph[];
+  }>(subgraphUrl, getSellerByOperatorQuery, { operator: operatorAddress });
 
   return sellers[0];
 }
@@ -51,11 +49,9 @@ export async function getSellerByAdmin(
   subgraphUrl: string,
   adminAddress: string
 ): Promise<RawSellerFromSubgraph> {
-  const { sellers } = await fetchSubgraph<{ sellers: RawSellerFromSubgraph }>(
-    subgraphUrl,
-    getSellerByOperatorQuery,
-    { admin: adminAddress }
-  );
+  const { sellers = [] } = await fetchSubgraph<{
+    sellers: RawSellerFromSubgraph[];
+  }>(subgraphUrl, getSellerByAdminQuery, { admin: adminAddress });
 
   return sellers[0];
 }
@@ -75,11 +71,9 @@ export async function getSellerByClerk(
   subgraphUrl: string,
   clerkAddress: string
 ): Promise<RawSellerFromSubgraph> {
-  const { sellers } = await fetchSubgraph<{ sellers: RawSellerFromSubgraph }>(
-    subgraphUrl,
-    getSellerByOperatorQuery,
-    { clerk: clerkAddress }
-  );
+  const { sellers = [] } = await fetchSubgraph<{
+    sellers: RawSellerFromSubgraph[];
+  }>(subgraphUrl, getSellerByClerkQuery, { clerk: clerkAddress });
 
   return sellers[0];
 }

@@ -27,7 +27,7 @@ export function saveProductV1Metadata(
 
   let productV1MetadataEntity = ProductV1MetadataEntity.load(metadataId);
 
-  if (productV1MetadataEntity == null) {
+  if (!productV1MetadataEntity) {
     productV1MetadataEntity = new ProductV1MetadataEntity(metadataId);
   }
 
@@ -55,7 +55,7 @@ function saveProductV1Brand(brandName: string): void {
   const brandId = brandName.toLowerCase();
   let brand = ProductV1Brand.load(brandId);
 
-  if (brand == null) {
+  if (!brand) {
     brand = new ProductV1Brand(brandId);
     brand.name = brandName;
     brand.save();
