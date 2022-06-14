@@ -5,7 +5,7 @@ import {
   FundsWithdrawn,
   FundsEncumbered
 } from "../../generated/BosonFundsHandler/IBosonFundsHandler";
-import { FundsEntity } from "../../generated/schema";
+import { FundsEntity, Seller } from "../../generated/schema";
 import { saveExchangeToken } from "../entities/token";
 
 export function handleFundsDepositedEvent(event: FundsDeposited): void {
@@ -25,11 +25,15 @@ export function handleFundsReleasedEvent(event: FundsReleased): void {
 }
 
 export function handleFundsEncumberedEvent(event: FundsEncumbered): void {
-  handleDecreasingFundsEvent(
-    event.params.entityId,
-    event.params.amount,
-    event.params.exchangeToken
-  );
+  const seller = Seller.load(event.params.entityId.toString());
+
+  if (seller) {
+    handleDecreasingFundsEvent(
+      event.params.entityId,
+      event.params.amount,
+      event.params.exchangeToken
+    );
+  }
 }
 
 export function handleFundsWithdrawnEvent(event: FundsWithdrawn): void {

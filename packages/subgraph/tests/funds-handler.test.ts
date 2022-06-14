@@ -5,11 +5,13 @@ import {
   handleFundsEncumberedEvent,
   handleFundsReleasedEvent
 } from "../src/mappings/funds-handler";
+import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
 import {
   createFundsDepositedEvent,
   createFundsEncumberedEvent,
   createFundsReleasedEvent,
-  createFundsWithdrawnEvent
+  createFundsWithdrawnEvent,
+  createSellerCreatedEvent
 } from "./mocks";
 
 const sellerId = 1;
@@ -57,6 +59,15 @@ test("handle FundsReleasedEvent", () => {
 });
 
 test("handle FundsEncumberedEvent", () => {
+  handleSellerCreatedEvent(
+    createSellerCreatedEvent(
+      sellerId,
+      sellerAddress,
+      sellerAddress,
+      sellerAddress,
+      sellerAddress
+    )
+  );
   const fundsDepositedEvent = createFundsDepositedEvent(
     sellerId,
     sellerAddress,
