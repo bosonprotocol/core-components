@@ -86,8 +86,10 @@ describe("core-sdk", () => {
        * Step 2-2: Assert that subgraph indexed `Offer` and `Seller` entities
        */
       await waitForGraphNodeIndexing();
-      const offer = await sellerCoreSDK.getOfferById(createdOfferId || 0);
-      const seller = await sellerCoreSDK.getSellerByAddress(newSeller.address);
+      const [offer, seller] = await Promise.all([
+        sellerCoreSDK.getOfferById(createdOfferId || 0),
+        sellerCoreSDK.getSellerByAddress(newSeller.address)
+      ]);
 
       expect(offer).toBeTruthy();
       expect(offer.metadata).toMatchObject(metadata);
