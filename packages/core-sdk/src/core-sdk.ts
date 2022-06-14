@@ -78,21 +78,36 @@ export class CoreSDK {
   }
 
   public async getSellerByOperator(
-    operator: string
+    operator: string,
+    fundsTokenAddress?: string
   ): Promise<accounts.RawSellerFromSubgraph> {
-    return accounts.subgraph.getSellerByOperator(this._subgraphUrl, operator);
+    return accounts.subgraph.getSellerByOperator(
+      this._subgraphUrl,
+      operator,
+      fundsTokenAddress
+    );
   }
 
   public async getSellerByClerk(
-    clerk: string
+    clerk: string,
+    fundsTokenAddress?: string
   ): Promise<accounts.RawSellerFromSubgraph> {
-    return accounts.subgraph.getSellerByClerk(this._subgraphUrl, clerk);
+    return accounts.subgraph.getSellerByClerk(
+      this._subgraphUrl,
+      clerk,
+      fundsTokenAddress
+    );
   }
 
   public async getSellerByAddress(
-    address: string
+    address: string,
+    fundsTokenAddress?: string
   ): Promise<accounts.RawSellerFromSubgraph> {
-    return accounts.subgraph.getSellerByAddress(this._subgraphUrl, address);
+    return accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      address,
+      fundsTokenAddress
+    );
   }
 
   public async createSellerAndOffer(
