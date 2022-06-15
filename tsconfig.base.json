@@ -9,8 +9,6 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
     "preserveSymlinks": true,
     "preserveWatchOutput": true,
     "pretty": false,
