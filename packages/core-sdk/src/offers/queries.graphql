@@ -1,0 +1,75 @@
+query getOfferByIdQuery($offerId: ID!) {
+  offer(id: $offerId) {
+    ...OfferFields
+  }
+}
+
+query getAllOffersOfOperatorQuery(
+  $operator: Bytes!
+  $first: Int
+  $skip: Int
+  $orderBy: Offer_orderBy
+  $orderDirection: OrderDirection
+) {
+  sellers(where: { operator: $operator }) {
+    offers(
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
+      ...OfferFields
+    }
+  }
+}
+
+fragment OfferFields on Offer {
+  id
+  createdAt
+  price
+  sellerDeposit
+  protocolFee
+  buyerCancelPenalty
+  quantityAvailable
+  quantityInitial
+  validFromDate
+  validUntilDate
+  voucherRedeemableFromDate
+  voucherRedeemableUntilDate
+  fulfillmentPeriodDuration
+  voucherValidDuration
+  resolutionPeriodDuration
+  metadataUri
+  offerChecksum
+  voidedAt
+  disputeResolverId
+  seller {
+    id
+    operator
+    admin
+    clerk
+    treasury
+    active
+  }
+  exchangeToken {
+    address
+    decimals
+    name
+    symbol
+  }
+  metadata {
+    name
+    description
+    externalUrl
+    schemaUrl
+    type
+  }
+  exchanges {
+    id
+    committedDate
+    redeemedDate
+    finalizedDate
+    expired
+    disputed
+  }
+}

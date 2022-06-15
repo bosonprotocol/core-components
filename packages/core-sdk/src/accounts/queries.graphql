@@ -1,0 +1,35 @@
+query getSellerByOperatorQuery($operator: Bytes!, $fundsTokenAddress: Bytes) {
+  sellers(where: { operator: $operator }) {
+    ...SellerFields
+  }
+}
+
+query getSellerByAdminQuery($admin: Bytes!, $fundsTokenAddress: Bytes) {
+  sellers(where: { admin: $admin }) {
+    ...SellerFields
+  }
+}
+
+query getSellerByClerkQuery($clerk: Bytes!, $fundsTokenAddress: Bytes) {
+  sellers(where: { clerk: $clerk }) {
+    ...SellerFields
+  }
+}
+
+fragment SellerFields on Seller {
+  id
+  operator
+  admin
+  clerk
+  treasury
+  active
+  funds(where: { tokenAddress: $fundsTokenAddress }) {
+    availableAmount
+    token {
+      address
+      decimals
+      name
+      symbol
+    }
+  }
+}
