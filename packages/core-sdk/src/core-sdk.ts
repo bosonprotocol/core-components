@@ -15,8 +15,9 @@ import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
 import * as funds from "./funds";
+import * as subgraph from "./subgraph";
+
 import { getValueFromLogs } from "./utils/logs";
-import { MultiQueryOpts } from "./utils/subgraph";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -80,7 +81,7 @@ export class CoreSDK {
   public async getSellerByOperator(
     operator: string,
     fundsTokenAddress?: string
-  ): Promise<accounts.RawSellerFromSubgraph> {
+  ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByOperator(
       this._subgraphUrl,
       operator,
@@ -91,7 +92,7 @@ export class CoreSDK {
   public async getSellerByClerk(
     clerk: string,
     fundsTokenAddress?: string
-  ): Promise<accounts.RawSellerFromSubgraph> {
+  ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByClerk(
       this._subgraphUrl,
       clerk,
@@ -102,7 +103,7 @@ export class CoreSDK {
   public async getSellerByAddress(
     address: string,
     fundsTokenAddress?: string
-  ): Promise<accounts.RawSellerFromSubgraph> {
+  ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
@@ -177,7 +178,7 @@ export class CoreSDK {
 
   public async getOfferById(
     offerId: BigNumberish
-  ): Promise<offers.RawOfferFromSubgraph> {
+  ): Promise<subgraph.OfferFieldsFragment> {
     return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
   }
 
@@ -186,8 +187,8 @@ export class CoreSDK {
       operatorAddress: string;
       // TODO: add support for sellerId, adminAddress, clerkAddress, treasuryAddress
     },
-    opts: MultiQueryOpts = {}
-  ): Promise<offers.RawOfferFromSubgraph[]> {
+    opts?: offers.subgraph.MultiQueryOpts
+  ): Promise<subgraph.OfferFieldsFragment[]> {
     if (sellerFilter.operatorAddress) {
       return offers.subgraph.getAllOffersOfOperator(
         this._subgraphUrl,
@@ -286,7 +287,7 @@ export class CoreSDK {
 
   public async getFundsByAccountId(
     accountId: BigNumberish
-  ): Promise<funds.RawFundsEntityFromSubgraph[]> {
+  ): Promise<subgraph.FundsEntityFieldsFragment[]> {
     return funds.subgraph.getFundsByAccountId(this._subgraphUrl, accountId);
   }
 }
