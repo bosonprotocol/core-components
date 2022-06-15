@@ -1,4 +1,4 @@
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 export enum OfferState {
   VOIDED = "VOIDED",
@@ -13,7 +13,7 @@ export enum OfferState {
 }
 
 export function getOfferStatus(
-  offer: offers.RawOfferFromSubgraph,
+  offer: subgraph.OfferFieldsFragment,
   exchangeId: string | null
 ) {
   const toTimeStamp = (numberString: string) => Number(numberString) * 1000;

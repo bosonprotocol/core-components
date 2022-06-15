@@ -4,7 +4,7 @@ import { Layout } from "../../lib/components/Layout";
 import { PageTitle } from "../../lib/components/PageTitle";
 import { CONFIG } from "../../lib/config";
 import { OfferSelect } from "./OfferSelect";
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { Col, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ const WidgetContainer = styled.div`
 `;
 
 export function Manage() {
-  const [offer, setOffer] = useState<offers.RawOfferFromSubgraph>();
+  const [offer, setOffer] = useState<subgraph.OfferFieldsFragment>();
   const widgetRef = useRef<HTMLDivElement>(null);
   const [selectedExchangeId, setSelectedExchangeId] = useState<string>();
 
@@ -68,7 +68,7 @@ export function Manage() {
             <Form.Group as={Col}>
               <Form.Label>Name</Form.Label>
               <Form.Control
-                value={offer.metadata?.name}
+                value={offer.metadata?.name || ""}
                 disabled
                 placeholder="..."
               />
@@ -77,7 +77,7 @@ export function Manage() {
           <Form.Group className="mb-3">
             <Form.Label>Description</Form.Label>
             <Form.Control
-              value={offer.metadata?.description}
+              value={offer.metadata?.description || ""}
               disabled
               placeholder="..."
             />

@@ -2,7 +2,7 @@ import {
   CoreSDK,
   offers,
   AnyMetadata,
-  accounts
+  subgraph
 } from "@bosonprotocol/core-sdk";
 import { constants, BigNumber } from "ethers";
 import { useState } from "react";
@@ -131,7 +131,7 @@ export function useCreateOfferData() {
         metadata: AnyMetadata;
         tokenInfo: TokenInfo;
         createOfferArgs: offers.CreateOfferArgs;
-        seller?: accounts.RawSellerFromSubgraph;
+        seller?: subgraph.SellerFieldsFragment;
       }
     | { status: "loading" }
     | { status: "error"; error: Error }

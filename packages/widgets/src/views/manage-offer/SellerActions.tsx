@@ -1,4 +1,4 @@
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
 import { ErrorModal } from "../../lib/components/modals/ErrorModal";
@@ -9,7 +9,7 @@ import { getOfferStatus, OfferState } from "./getOfferStatus";
 import { Actions, SecondaryButton, PrimaryButton } from "./shared-styles";
 
 interface Props {
-  offer: offers.RawOfferFromSubgraph;
+  offer: subgraph.OfferFieldsFragment;
   reloadOfferData: () => void;
   exchangeId: string | null;
 }

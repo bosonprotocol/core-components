@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { useReloadToken } from "../../lib/useReloadToken";
 import { useAsyncEffect } from "use-async-effect";
@@ -10,7 +10,7 @@ export function useManageOfferData(offerId: string) {
   const [offer, setOffer] = useState<
     | {
         status: "loaded";
-        offer: offers.RawOfferFromSubgraph;
+        offer: subgraph.OfferFieldsFragment;
       }
     | { status: "loading" }
     | { status: "error"; error: Error }
