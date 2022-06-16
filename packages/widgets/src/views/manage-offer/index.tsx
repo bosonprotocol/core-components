@@ -8,13 +8,13 @@ import {
 } from "../../lib/components/details/shared-styles";
 import { getURLParams } from "../../lib/parseUrlParams";
 import { SellerActions } from "./SellerActions";
-import { getOfferStatus } from "./getOfferStatus";
 import { useManageOfferData } from "./useManageOfferData";
 import { hooks } from "../../lib/connectors/metamask";
 import { BuyerActions } from "./BuyerActions";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
 import { isAccountSeller } from "../../lib/seller";
+import { offers } from "@bosonprotocol/core-sdk";
 
 export default function ManageOffer() {
   const { offerId, forceBuyerView } = getURLParams();
@@ -41,7 +41,7 @@ export default function ManageOffer() {
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{getOfferStatus(offer)}</Value>
+          <Value>{offers.getOfferStatus(offer)}</Value>
         </Entry>
       </Row>
       <OfferDetails

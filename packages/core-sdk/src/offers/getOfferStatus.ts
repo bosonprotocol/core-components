@@ -1,4 +1,4 @@
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { subgraph } from "..";
 
 export enum OfferState {
   VOIDED = "VOIDED",
