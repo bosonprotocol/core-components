@@ -57,7 +57,7 @@ export default function CreateOffer() {
           : CreateOfferStage.CREATE_OFFER
       );
     }
-  }, [createOfferData.status, reloadCounter, stage]);
+  }, [createOfferData, reloadCounter, stage]);
 
   if (createOfferData.status === "error") {
     return (
