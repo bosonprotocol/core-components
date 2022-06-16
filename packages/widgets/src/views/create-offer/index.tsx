@@ -1,94 +1,40 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { WidgetLayout } from "../../lib/components/WidgetLayout";
+import { constants } from "ethers";
+import { WidgetWrapper } from "../../lib/components/WidgetWrapper";
 import { StageIndicator } from "./StageIndicator";
-import { TransactionPendingModal } from "../../lib/components/modals/TransactionPendingModal";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { Button } from "../../lib/components/Button";
-import { SuccessModal } from "../../lib/components/modals/SuccessModal";
-import { ErrorModal } from "../../lib/components/modals/ErrorModal";
-import { constants } from "ethers";
-import { columnGap } from "../../lib/components/details/shared-styles";
-import { useCreateOfferData, ValidationError } from "./useCreateOfferData";
-import { SpinnerCircular } from "spinners-react";
+import { Actions } from "../../lib/components/actions/shared-styles";
+import { useCreateOfferData } from "./useCreateOfferData";
 import { hooks } from "../../lib/connectors/metamask";
-import { closeWidget } from "../../lib/closeWidget";
-import { colors } from "../../lib/colors";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 import { getMinimalFundsAmountNeeded } from "../../lib/funds";
-
-const Spacer = styled.div`
-  height: 20px;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${columnGap}px;
-`;
-
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-`;
-
-function formatErrorMessage(error: Error | ValidationError) {
-  if (error.name === "ValidationError") {
-    const err = error as ValidationError;
-    return JSON.stringify(
-      { providedValue: err.value, validationError: err.errors },
-      null,
-      2
-    );
-  }
-
-  return error.message;
-}
+import {
+  TransactionModal,
+  Transaction
+} from "../../lib/components/modals/TransactionModal";
+import { Spacer } from "../../lib/components/Spacer";
 
 export default function CreateOffer() {
   const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
-  const [transaction, setTransaction] = useState<
-    | {
-        status: "idle";
-      }
-    | {
-        status: "pending";
-        txHash: string;
-      }
-    | {
-        status: "error";
-        error: Error;
-      }
-    | {
-        status: "success";
-        txHash: string;
-        offerId: string;
-      }
-  >({ status: "idle" });
+  const [transaction, setTransaction] = useState<Transaction>({
+    status: "idle"
+  });
 
   const { data: createOfferData, reload: reloadCreateOfferData } =
     useCreateOfferData();
 
-  if (createOfferData.status === "error")
+  if (createOfferData.status === "error") {
     return (
-      <WidgetLayout title="" offerName="" hideWallet>
-        <ErrorModal
-          message={formatErrorMessage(createOfferData.error)}
-          onClose={closeWidget}
-        />
-      </WidgetLayout>
+      <WidgetWrapper loadingStatus="error" error={createOfferData.error} />
     );
+  }
 
-  if (createOfferData.status === "loading")
-    return (
-      <WidgetLayout title="" offerName="" hideWallet>
-        <Center>
-          <SpinnerCircular className="" size={80} color={colors.satinWhite} />
-        </Center>
-      </WidgetLayout>
-    );
+  if (createOfferData.status === "loading") {
+    return <WidgetWrapper loadingStatus="loading" />;
+  }
 
   const { tokenInfo, createOfferArgs, metadata, seller } = createOfferData;
 
@@ -132,7 +78,10 @@ export default function CreateOffer() {
       setTransaction({
         status: "success",
         txHash: txResponse.hash,
-        offerId: offerId || ""
+        dataToPreview: {
+          label: "Successfully created offer",
+          value: `Offer ID: ${offerId}`
+        }
       });
 
       reloadCreateOfferData();
@@ -158,7 +107,14 @@ export default function CreateOffer() {
 
       await txResponse.wait(2);
 
-      setTransaction({ status: "idle" });
+      setTransaction({
+        status: "success",
+        txHash: txResponse.hash,
+        dataToPreview: {
+          label: "Successfully approved token",
+          value: ""
+        }
+      });
 
       reloadCreateOfferData();
     } catch (e) {
@@ -193,7 +149,14 @@ export default function CreateOffer() {
 
       await txResponse.wait(2);
 
-      setTransaction({ status: "idle" });
+      setTransaction({
+        status: "success",
+        txHash: txResponse.hash,
+        dataToPreview: {
+          label: "Successfully deposited funds",
+          value: ""
+        }
+      });
 
       reloadCreateOfferData();
     } catch (e) {
@@ -205,7 +168,7 @@ export default function CreateOffer() {
   }
 
   return (
-    <WidgetLayout title="Create Offer" offerName={metadata?.name}>
+    <WidgetWrapper title="Create Offer" offerName={metadata?.name}>
       <OfferDetails
         currencySymbol={tokenInfo.symbol}
         currencyDecimals={tokenInfo.decimals}
@@ -240,22 +203,10 @@ export default function CreateOffer() {
         )}
       </Actions>
       <StageIndicator stage={tokenApprovalNeeded ? 1 : 2} />
-      {transaction.status === "pending" && (
-        <TransactionPendingModal txHash={transaction.txHash} />
-      )}
-      {transaction.status === "success" && (
-        <SuccessModal
-          txHash={transaction.txHash}
-          dataToPreview={{ label: "Offer ID", value: transaction.offerId }}
-          onClose={() => setTransaction({ status: "idle" })}
-        />
-      )}
-      {transaction.status === "error" && (
-        <ErrorModal
-          message={formatErrorMessage(transaction.error)}
-          onClose={() => setTransaction({ status: "idle" })}
-        />
-      )}
-    </WidgetLayout>
+      <TransactionModal
+        transaction={transaction}
+        onClose={() => setTransaction({ status: "idle" })}
+      />
+    </WidgetWrapper>
   );
 }

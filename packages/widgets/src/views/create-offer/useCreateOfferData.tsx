@@ -9,7 +9,7 @@ import { useState } from "react";
 import { hooks } from "../../lib/connectors/metamask";
 import { getURLParams } from "../../lib/parseUrlParams";
 import { useCoreSDK } from "../../lib/useCoreSDK";
-import { useReloadToken } from "../../lib/useReloadToken";
+import { useReloadCounter } from "../../lib/useReloadCounter";
 import { useAsyncEffect } from "use-async-effect";
 import * as yup from "yup";
 import { assert } from "../../lib/assert";
@@ -139,7 +139,7 @@ export function useCreateOfferData() {
 
   const coreSDK = useCoreSDK();
   const account = hooks.useAccount();
-  const { reloadToken, reload } = useReloadToken();
+  const { reloadCounter, reload } = useReloadCounter();
 
   useAsyncEffect(
     (isActive) => {
@@ -170,7 +170,7 @@ export function useCreateOfferData() {
       }
       load().catch((e) => setData({ status: "error", error: e as Error }));
     },
-    [account, coreSDK, reloadToken]
+    [account, coreSDK, reloadCounter]
   );
 
   return { data, reload };

@@ -2,13 +2,7 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import { closeWidget } from "../../closeWidget";
 import { colors } from "../../colors";
-import { hooks, metaMask } from "../../connectors/metamask";
 import { ReactComponent as Logo } from "./logo.svg";
-import { ReactComponent as Close } from "./close.svg";
-import { connectWallet } from "../../connectWallet";
-import { getConfig } from "../../config";
-import { ErrorModal } from "../modals/ErrorModal";
-import { useWalletChangeNotification } from "../../useWalletChangeNotification";
 
 const StyledLogo = styled(Logo)`
   margin-top: 16px;
@@ -37,47 +31,6 @@ const OfferName = styled.div`
   font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
-`;
-
-const WalletConnection = styled.div`
-  position: absolute;
-  top: 16px;
-  left: 16px;
-`;
-
-const ConnectButton = styled.button`
-  all: unset;
-  background-color: ${colors.cyberSpaceGray};
-  border: solid 1px ${colors.neonGreen};
-  text-align: center;
-  color: white;
-  padding: 0px 8px;
-  height: 30px;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(1.05);
-  }
-`;
-
-const ConnectionSuccess = styled.button`
-  all: unset;
-  background-color: ${colors.cyberSpaceGray};
-  border: solid 1px ${colors.neonGreen};
-  color: white;
-  padding: 0px 4px 0px 10px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-
-  > svg {
-    display: inline-block;
-    margin-left: 4px;
-  }
-  cursor: pointer;
 `;
 
 const CloseButton = styled.button`
@@ -124,68 +77,26 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-interface Props {
-  children: ReactNode;
-  title: string;
-  offerName: string;
-  hideWallet?: boolean;
+export interface Props {
+  children?: ReactNode;
+  WalletConnection?: ReactNode;
+  title?: string;
+  offerName?: string;
   hideCloseButton?: boolean;
 }
 
-export function WidgetLayout({
-  children,
-  title,
-  offerName,
-  hideWallet,
-  hideCloseButton
-}: Props) {
-  const isActive = hooks.useIsActive();
-  const account = hooks.useAccount();
-  const connectedChainId = hooks.useChainId();
-  const { chainId } = getConfig();
-
-  function truncateAddress(address: string) {
-    const start = address.slice(0, 6);
-    const end = address.slice(address.length - 6, address.length);
-
-    return `${start}...${end}`;
-  }
-
-  useWalletChangeNotification(account);
-
-  if (account && isActive && chainId !== connectedChainId) {
-    return (
-      <ErrorModal
-        message={`Your wallet is connected to a wrong network. Please switch to a network with chain id: ${chainId}`}
-        onClose={() => connectWallet(chainId)}
-        buttonLabel="Switch network"
-      />
-    );
-  }
-
+export function WidgetLayout(props: Props) {
   return (
     <Root>
-      {!hideCloseButton && (
+      {!props.hideCloseButton && (
         <CloseButton onClick={closeWidget}>
           <CloseIcon />
         </CloseButton>
       )}
-      {!hideWallet && (
-        <WalletConnection>
-          {isActive ? (
-            <ConnectionSuccess onClick={() => metaMask.deactivate()}>
-              {truncateAddress(account as string)} <Close />
-            </ConnectionSuccess>
-          ) : (
-            <ConnectButton onClick={() => connectWallet(chainId)}>
-              Connect Wallet
-            </ConnectButton>
-          )}
-        </WalletConnection>
-      )}
-      <Title>{title}</Title>
-      <OfferName>{offerName}</OfferName>
-      <Content>{children}</Content>
+      {props.WalletConnection && props.WalletConnection}
+      {props.title && <Title>{props.title}</Title>}
+      {props.offerName && <OfferName>{props.offerName}</OfferName>}
+      <Content>{props.children}</Content>
       <Center>
         <StyledLogo />
       </Center>

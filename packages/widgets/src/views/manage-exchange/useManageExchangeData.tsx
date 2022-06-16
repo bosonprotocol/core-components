@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { useCoreSDK } from "../../lib/useCoreSDK";
-import { useReloadCounter } from "../../lib/useReloadCounter";
 import { useAsyncEffect } from "use-async-effect";
 
-export function useManageOfferData(offerId: string) {
+import { useCoreSDK } from "../../lib/useCoreSDK";
+import { useReloadCounter } from "../../lib/useReloadCounter";
+
+export function useManageExchangeData(exchangeId: string) {
   const coreSDK = useCoreSDK();
   const { reload, reloadCounter } = useReloadCounter();
-  const [offer, setOffer] = useState<
+  const [exchange, setExchange] = useState<
     | {
-        status: "success";
-        offer: subgraph.OfferFieldsFragment;
+        status: "loaded";
+        exchange: subgraph.ExchangeFieldsFragment;
       }
     | { status: "loading" }
     | { status: "error"; error: Error }
@@ -19,18 +20,18 @@ export function useManageOfferData(offerId: string) {
   useAsyncEffect(
     (isActive) => {
       coreSDK
-        .getOfferById(offerId)
-        .then((offer) => {
+        .getExchangeById(exchangeId)
+        .then((exchange) => {
           if (!isActive()) return;
-          setOffer({ status: "success", offer });
+          setExchange({ status: "loaded", exchange });
         })
         .catch((e) => {
           if (!isActive()) return;
-          setOffer({ status: "error", error: e });
+          setExchange({ status: "error", error: e });
         });
     },
-    [offerId, reloadCounter]
+    [exchangeId, reloadCounter]
   );
 
-  return { offerData: offer, reloadOfferData: reload };
+  return { exchangeData: exchange, reloadExchangeData: reload };
 }
