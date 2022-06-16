@@ -1,0 +1,13 @@
+overwrite: true
+schema: http://localhost:8000/subgraphs/name/boson/corecomponents
+documents: "./packages/core-sdk/src/**/*.graphql"
+generates:
+  ./packages/core-sdk/src/subgraph.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"
+    config:
+      scalars:
+        Bytes: string
+        BigInt: string

@@ -1,6 +1,9 @@
-import { RawOfferFromSubgraph } from "../src/offers/types";
-import { RawSellerFromSubgraph } from "../src/accounts/types";
-import { MetadataType, utils } from "@bosonprotocol/common";
+import { utils } from "@bosonprotocol/common";
+import {
+  SellerFieldsFragment,
+  OfferFieldsFragment,
+  MetadataType
+} from "../src/subgraph";
 import nock from "nock";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
@@ -14,8 +17,8 @@ export function interceptSubgraph() {
 }
 
 export function mockRawSellerFromSubgraph(
-  overrides: Partial<RawSellerFromSubgraph> = {}
-): RawSellerFromSubgraph {
+  overrides: Partial<SellerFieldsFragment> = {}
+): SellerFieldsFragment {
   return {
     id: "1",
     admin: ZERO_ADDRESS,
@@ -29,8 +32,8 @@ export function mockRawSellerFromSubgraph(
 }
 
 export function mockRawOfferFromSubgraph(
-  overrides: Partial<RawOfferFromSubgraph> = {}
-): RawOfferFromSubgraph {
+  overrides: Partial<OfferFieldsFragment> = {}
+): OfferFieldsFragment {
   const {
     seller = {},
     exchangeToken = {},
@@ -83,7 +86,7 @@ export function mockRawOfferFromSubgraph(
       description: "Description",
       externalUrl: "externalUrl",
       schemaUrl: "schemaUrl",
-      type: MetadataType.BASE,
+      type: MetadataType.Base,
       ...metadata
     },
     exchanges: [],

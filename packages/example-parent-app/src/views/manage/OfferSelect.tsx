@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { offers as offersApi } from "@bosonprotocol/core-sdk";
+import { offers as offersApi, subgraph } from "@bosonprotocol/core-sdk";
 import { CONFIG } from "../../lib/config";
 import styled from "styled-components";
 import { isAddress } from "@ethersproject/address";
@@ -17,12 +17,12 @@ const InputContainer = styled.div`
 `;
 
 interface Props {
-  onOfferSelect(offer: offersApi.RawOfferFromSubgraph): void;
+  onOfferSelect(offer: subgraph.OfferFieldsFragment): void;
   onReset(): void;
 }
 
 export function OfferSelect({ onOfferSelect, onReset }: Props) {
-  const [offers, setOffers] = useState<offersApi.RawOfferFromSubgraph[]>([]);
+  const [offers, setOffers] = useState<subgraph.OfferFieldsFragment[]>([]);
   const [sellerAddress, setSellerAddress] = useState("");
 
   function retrieveOffers(sellerAddress: string) {

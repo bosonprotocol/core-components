@@ -1,8 +1,8 @@
-import { accounts } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { BigNumber, BigNumberish } from "ethers";
 
 export function getMinimalFundsAmountNeeded(args: {
-  seller: accounts.RawSellerFromSubgraph;
+  seller: subgraph.SellerFieldsFragment;
   sellerDeposit: BigNumberish;
   exchangeToken: string;
   quantity: BigNumberish;

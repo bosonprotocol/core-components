@@ -19,7 +19,7 @@ import { hooks } from "../../lib/connectors/metamask";
 import { BuyerActions } from "./BuyerActions";
 import { Actions, SecondaryButton } from "./shared-styles";
 import { connectWallet } from "../../lib/connectWallet";
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { getConfig } from "../../lib/config";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 
@@ -33,7 +33,7 @@ const ConnectButton = styled(SecondaryButton)`
   width: 100%;
 `;
 
-function isAccountSeller(offer: offers.RawOfferFromSubgraph, account: string) {
+function isAccountSeller(offer: subgraph.OfferFieldsFragment, account: string) {
   if (offer.seller.clerk.toLowerCase() === account.toLowerCase()) return true;
   if (offer.seller.operator.toLowerCase() === account.toLowerCase())
     return true;

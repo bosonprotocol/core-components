@@ -1,0 +1,17 @@
+query getFundsByAccountIdQuery($accountId: BigInt!) {
+  fundsEntities(where: { accountId: $accountId }) {
+    ...FundsEntityFields
+  }
+}
+
+fragment FundsEntityFields on FundsEntity {
+  id
+  availableAmount
+  token {
+    address
+    name
+    symbol
+    decimals
+  }
+  accountId
+}

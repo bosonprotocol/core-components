@@ -1,4 +1,4 @@
-import { offers } from "@bosonprotocol/core-sdk";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
 import styled from "styled-components";
 import { ConfirmModal } from "../../lib/components/modals/ConfirmModal";
@@ -34,7 +34,7 @@ const CancelButton = styled(SecondaryButton)`
 `;
 
 function isCommitDisabled(
-  offer: offers.RawOfferFromSubgraph,
+  offer: subgraph.OfferFieldsFragment,
   exchangeId: string | null
 ) {
   const offerStatus = getOfferStatus(offer, exchangeId);
@@ -47,7 +47,7 @@ function isCommitDisabled(
 }
 
 interface Props {
-  offer: offers.RawOfferFromSubgraph;
+  offer: subgraph.OfferFieldsFragment;
   reloadOfferData: () => void;
   exchangeId: string | null;
 }

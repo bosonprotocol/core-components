@@ -1,130 +1,43 @@
 import { BigNumberish } from "@ethersproject/bignumber";
-import { fetchSubgraph, MultiQueryOpts } from "../utils/subgraph";
-import { RawOfferFromSubgraph } from "./types";
+import { getSubgraphSdk } from "../utils/graphql";
+import {
+  OfferFieldsFragment,
+  OrderDirection,
+  Offer_OrderBy
+} from "../subgraph";
 
-export const exchangeFieldsFragment = `
-fragment exchangeFields on Exchange {
-  id
-  committedDate
-  redeemedDate
-  finalizedDate
-  expired
-  disputed
-}
-`;
-
-export const offerFieldsFragment = `
-fragment offerFields on Offer {
-  id
-  createdAt
-  price
-  sellerDeposit
-  protocolFee
-  buyerCancelPenalty
-  quantityAvailable
-  quantityInitial
-  validFromDate
-  validUntilDate
-  voucherRedeemableFromDate
-  voucherRedeemableUntilDate
-  fulfillmentPeriodDuration
-  voucherValidDuration
-  resolutionPeriodDuration
-  metadataUri
-  offerChecksum
-  voidedAt
-  disputeResolverId
-  seller {
-    id
-    operator
-    admin
-    clerk
-    treasury
-    active
-  }
-  exchangeToken {
-    address
-    decimals
-    name
-    symbol
-  }
-  metadata {
-    name 
-    description
-    externalUrl
-    schemaUrl
-    type
-  }
-  exchanges {
-    ...exchangeFields
-  }
-}
-${exchangeFieldsFragment}
-`;
-
-export const getOfferByIdQuery = `
-query GetOfferById($offerId: ID!) {
-  offer(id: $offerId) {
-    ...offerFields
-  }
-}
-${offerFieldsFragment}
-`;
+export type MultiQueryOpts = {
+  orderBy: Offer_OrderBy;
+  orderDirection: OrderDirection;
+};
 
 export async function getOfferById(
   subgraphUrl: string,
   offerId: BigNumberish
-): Promise<RawOfferFromSubgraph> {
-  const { offer } = await fetchSubgraph<{ offer: RawOfferFromSubgraph }>(
-    subgraphUrl,
-    getOfferByIdQuery,
-    { offerId: offerId.toString() }
-  );
+): Promise<OfferFieldsFragment> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+
+  const { offer } = await subgraphSdk.getOfferByIdQuery({
+    offerId: offerId.toString()
+  });
 
   return offer;
 }
 
-export const getAllOffersOfOperatorQuery = `
-query GetAllOffersOfOperatorQuery(
-  $operator: String!,
-  $first: Int,
-  $skip: Int,
-  $orderBy: String,
-  $orderDirection: String
-) {
-  sellers(where: {
-    operator: $operator
-  }) {
-    offers(
-      first: $first
-      skip: $skip
-      orderBy: $orderBy
-      orderDirection: $orderDirection
-    ) {
-      ...offerFields
-    }
-  }
-}
-${offerFieldsFragment}
-`;
-
 export async function getAllOffersOfOperator(
   subgraphUrl: string,
   operatorAddress: string,
-  opts: MultiQueryOpts = {}
-): Promise<RawOfferFromSubgraph[]> {
-  const { sellers } = await fetchSubgraph<{
-    sellers: { offers: RawOfferFromSubgraph[] };
-  }>(subgraphUrl, getAllOffersOfOperatorQuery, {
-    operator: operatorAddress.toLowerCase(),
-    first: 100,
-    skip: 0,
-    orderBy: "createdAt",
-    orderDirection: "desc",
-    ...opts
+  opts?: MultiQueryOpts
+): Promise<OfferFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+
+  const { sellers = [] } = await subgraphSdk.getAllOffersOfOperatorQuery({
+    operator: operatorAddress,
+    orderBy: opts?.orderBy,
+    orderDirection: opts?.orderDirection
   });
 
-  if (!sellers) {
+  if (!sellers || sellers.length === 0) {
     return [];
   }
 
