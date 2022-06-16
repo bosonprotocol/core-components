@@ -22,11 +22,17 @@ export default function ManageExchange() {
   const account = hooks.useAccount();
 
   if (exchangeData.status === "error") {
-    return <WidgetWrapper loadingStatus="error" error={exchangeData.error} />;
+    return (
+      <WidgetWrapper
+        loadingStatus="error"
+        error={exchangeData.error}
+        hideCloseButton
+      />
+    );
   }
 
   if (exchangeData.status === "loading") {
-    return <WidgetWrapper loadingStatus="loading" />;
+    return <WidgetWrapper loadingStatus="loading" hideCloseButton />;
   }
 
   const { exchange } = exchangeData;
@@ -35,7 +41,7 @@ export default function ManageExchange() {
   const offerName = offer.metadata?.name || "";
 
   return (
-    <WidgetWrapper title="Exchange" offerName={offerName}>
+    <WidgetWrapper title="Exchange" offerName={offerName} hideCloseButton>
       <Row>
         <Entry>
           <Label>Exchange ID</Label>

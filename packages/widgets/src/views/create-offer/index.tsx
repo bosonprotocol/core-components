@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { constants } from "ethers";
+import { useEffect, useState } from "react";
+import { BigNumber, constants, utils } from "ethers";
 import { WidgetWrapper } from "../../lib/components/WidgetWrapper";
 import { StageIndicator } from "./StageIndicator";
 import { useCoreSDK } from "../../lib/useCoreSDK";
@@ -8,12 +8,22 @@ import { Actions } from "../../lib/components/actions/shared-styles";
 import { useCreateOfferData } from "./useCreateOfferData";
 import { hooks } from "../../lib/connectors/metamask";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
-import { getMinimalFundsAmountNeeded } from "../../lib/funds";
+import { FundsDetails } from "../../lib/components/details/FundsDetails";
+import {
+  getMinimalFundsAmountNeeded,
+  getAvailableFundsOfSeller
+} from "../../lib/funds";
 import {
   TransactionModal,
   Transaction
 } from "../../lib/components/modals/TransactionModal";
 import { Spacer } from "../../lib/components/Spacer";
+
+enum CreateOfferStage {
+  APPROVE_TOKEN = 0,
+  CREATE_OFFER = 1,
+  DEPOSIT_FUNDS = 2
+}
 
 export default function CreateOffer() {
   const coreSDK = useCoreSDK();
@@ -21,9 +31,33 @@ export default function CreateOffer() {
   const [transaction, setTransaction] = useState<Transaction>({
     status: "idle"
   });
+  const [stage, setStage] = useState<CreateOfferStage>(
+    CreateOfferStage.APPROVE_TOKEN
+  );
 
-  const { data: createOfferData, reload: reloadCreateOfferData } =
-    useCreateOfferData();
+  const {
+    data: createOfferData,
+    reload: reloadCreateOfferData,
+    reloadCounter
+  } = useCreateOfferData();
+
+  useEffect(() => {
+    if (
+      createOfferData.status === "loaded" &&
+      createOfferData.tokenInfo &&
+      stage !== CreateOfferStage.DEPOSIT_FUNDS
+    ) {
+      const tokenApprovalNeeded = BigNumber.from(
+        createOfferData.tokenInfo.allowance
+      ).lt(constants.MaxInt256.div(2));
+
+      setStage(
+        tokenApprovalNeeded
+          ? CreateOfferStage.APPROVE_TOKEN
+          : CreateOfferStage.CREATE_OFFER
+      );
+    }
+  }, [createOfferData, reloadCounter, stage]);
 
   if (createOfferData.status === "error") {
     return (
@@ -36,18 +70,17 @@ export default function CreateOffer() {
   }
 
   const { tokenInfo, createOfferArgs, metadata, seller } = createOfferData;
-
-  const tokenApprovalNeeded = tokenInfo.allowance.lt(
-    constants.MaxInt256.div(2)
-  );
-  const showDepositFundsButton =
-    seller &&
-    getMinimalFundsAmountNeeded({
-      seller,
-      sellerDeposit: createOfferArgs.sellerDeposit,
-      exchangeToken: createOfferArgs.exchangeToken,
-      quantity: createOfferArgs.quantityAvailable
-    }).gt(0);
+  const minRequiredFunds = seller
+    ? getMinimalFundsAmountNeeded({
+        seller,
+        sellerDeposit: createOfferArgs.sellerDeposit,
+        exchangeToken: createOfferArgs.exchangeToken,
+        quantity: createOfferArgs.quantityAvailable
+      })
+    : "0";
+  const availableFunds = seller
+    ? getAvailableFundsOfSeller(seller, createOfferArgs.exchangeToken)
+    : "0";
 
   async function handleCreateOffer() {
     try {
@@ -71,19 +104,18 @@ export default function CreateOffer() {
         txHash: txResponse.hash
       });
 
-      const txReceipt = await txResponse.wait(2);
+      const txReceipt = await txResponse.wait();
       const offerId = coreSDK.getCreatedOfferIdFromLogs(txReceipt.logs);
 
       setTransaction({
         status: "success",
         txHash: txResponse.hash,
+        message: "Successfully Created Offer",
         dataToPreview: {
-          label: "Successfully created offer",
-          value: `Offer ID: ${offerId}`
+          label: "Offer ID",
+          value: String(offerId)
         }
       });
-
-      reloadCreateOfferData();
     } catch (e) {
       setTransaction({
         status: "error",
@@ -104,18 +136,17 @@ export default function CreateOffer() {
         txHash: txResponse.hash
       });
 
-      await txResponse.wait(2);
+      await txResponse.wait();
 
       setTransaction({
         status: "success",
         txHash: txResponse.hash,
+        message: "Successfully Approved Token",
         dataToPreview: {
-          label: "Successfully approved token",
-          value: ""
+          label: "Token Address",
+          value: createOfferArgs.exchangeToken
         }
       });
-
-      reloadCreateOfferData();
     } catch (e) {
       setTransaction({
         status: "error",
@@ -130,14 +161,13 @@ export default function CreateOffer() {
         return;
       }
 
+      const depositAmount = BigNumber.from(
+        createOfferArgs.quantityAvailable
+      ).mul(createOfferArgs.sellerDeposit);
+
       const txResponse = await coreSDK.depositFunds(
         seller.id,
-        getMinimalFundsAmountNeeded({
-          seller,
-          sellerDeposit: createOfferArgs.sellerDeposit,
-          exchangeToken: createOfferArgs.exchangeToken,
-          quantity: createOfferArgs.quantityAvailable
-        }),
+        depositAmount,
         createOfferArgs.exchangeToken
       );
 
@@ -146,18 +176,19 @@ export default function CreateOffer() {
         txHash: txResponse.hash
       });
 
-      await txResponse.wait(2);
+      await txResponse.wait();
 
       setTransaction({
         status: "success",
         txHash: txResponse.hash,
+        message: "Successfully Deposited Funds",
         dataToPreview: {
-          label: "Successfully deposited funds",
-          value: ""
+          label: "Amount",
+          value: `${utils.formatUnits(depositAmount, tokenInfo.decimals)} ${
+            tokenInfo.symbol
+          }`
         }
       });
-
-      reloadCreateOfferData();
     } catch (e) {
       setTransaction({
         status: "error",
@@ -166,45 +197,70 @@ export default function CreateOffer() {
     }
   }
 
+  function handleCloseTxModal() {
+    setStage((prevState) => (prevState + 1) % 3);
+    setTransaction({ status: "idle" });
+    reloadCreateOfferData();
+  }
+
   return (
     <WidgetWrapper title="Create Offer" offerName={metadata?.name}>
-      <OfferDetails
-        currencySymbol={tokenInfo.symbol}
-        currencyDecimals={tokenInfo.decimals}
-        priceInWei={createOfferArgs.price}
-        quantityAvailable={createOfferArgs.quantityAvailable}
-        buyerCancelPenaltyInWei={createOfferArgs.buyerCancelPenalty}
-        sellerDepositInWei={createOfferArgs.sellerDeposit}
-        validFromDateInMS={createOfferArgs.validFromDateInMS}
-        validUntilDateInMS={createOfferArgs.validUntilDateInMS}
-        voucherRedeemableFromDateInMS={
-          createOfferArgs.voucherRedeemableFromDateInMS
-        }
-        voucherRedeemableUntilDateInMS={
-          createOfferArgs.voucherRedeemableUntilDateInMS
-        }
-        metadataUri={createOfferArgs.metadataUri}
-        offerChecksum={createOfferArgs.offerChecksum}
-        protocolFeeInWei={createOfferArgs.protocolFee}
-        fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
-        resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}
-      />
+      {stage === CreateOfferStage.DEPOSIT_FUNDS ? (
+        <FundsDetails
+          currencySymbol={tokenInfo.symbol}
+          currencyDecimals={tokenInfo.decimals}
+          availableFundsInWei={availableFunds}
+          minRequiredFundsInWei={minRequiredFunds}
+        />
+      ) : (
+        <OfferDetails
+          currencySymbol={tokenInfo.symbol}
+          currencyDecimals={tokenInfo.decimals}
+          priceInWei={createOfferArgs.price}
+          quantityAvailable={createOfferArgs.quantityAvailable}
+          buyerCancelPenaltyInWei={createOfferArgs.buyerCancelPenalty}
+          sellerDepositInWei={createOfferArgs.sellerDeposit}
+          validFromDateInMS={createOfferArgs.validFromDateInMS}
+          validUntilDateInMS={createOfferArgs.validUntilDateInMS}
+          voucherRedeemableFromDateInMS={
+            createOfferArgs.voucherRedeemableFromDateInMS
+          }
+          voucherRedeemableUntilDateInMS={
+            createOfferArgs.voucherRedeemableUntilDateInMS
+          }
+          metadataUri={createOfferArgs.metadataUri}
+          offerChecksum={createOfferArgs.offerChecksum}
+          protocolFeeInWei={createOfferArgs.protocolFee}
+          fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
+          resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}
+        />
+      )}
+
       <Spacer />
       <Actions>
-        <Button disabled={!tokenApprovalNeeded} onClick={handleTokenApproval}>
+        <Button
+          disabled={stage !== CreateOfferStage.APPROVE_TOKEN}
+          onClick={handleTokenApproval}
+        >
           Approve Tokens
         </Button>
-        <Button disabled={tokenApprovalNeeded} onClick={handleCreateOffer}>
+        <Button
+          disabled={stage !== CreateOfferStage.CREATE_OFFER}
+          onClick={handleCreateOffer}
+        >
           Create Offer
         </Button>
-        {showDepositFundsButton && (
-          <Button onClick={handleDepositFunds}>Deposit Funds</Button>
-        )}
+        <Button
+          disabled={stage !== CreateOfferStage.DEPOSIT_FUNDS}
+          onClick={handleDepositFunds}
+        >
+          Deposit Funds
+        </Button>
       </Actions>
-      <StageIndicator stage={tokenApprovalNeeded ? 1 : 2} />
+      <StageIndicator stage={stage + 1} />
       <TransactionModal
         transaction={transaction}
-        onClose={() => setTransaction({ status: "idle" })}
+        onClose={handleCloseTxModal}
       />
     </WidgetWrapper>
   );

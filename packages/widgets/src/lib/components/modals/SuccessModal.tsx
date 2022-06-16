@@ -3,19 +3,29 @@ import { Button } from "../Button";
 import { Title, Label, Value, Center } from "./shared-styles";
 
 interface Props {
+  message?: string;
   txHash: string;
-  dataToPreview: { label: string; value: string };
+  dataToPreview?: { label: string; value: string };
   onClose: () => void;
 }
 
-export function SuccessModal({ txHash, dataToPreview, onClose }: Props) {
+export function SuccessModal({
+  message = "Success",
+  txHash,
+  dataToPreview,
+  onClose
+}: Props) {
   return (
     <Modal>
-      <Title>Success</Title>
+      <Title>{message}</Title>
       <Label>Tx Hash</Label>
       <Value>{txHash}</Value>
-      <Label>{dataToPreview.label}</Label>
-      <Value>{dataToPreview.value}</Value>
+      {dataToPreview && (
+        <>
+          <Label>{dataToPreview.label}</Label>
+          <Value>{dataToPreview.value}</Value>
+        </>
+      )}
       <Center>
         <Button onClick={onClose}>Close</Button>
       </Center>

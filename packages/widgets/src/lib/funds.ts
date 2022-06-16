@@ -7,20 +7,32 @@ export function getMinimalFundsAmountNeeded(args: {
   exchangeToken: string;
   quantity: BigNumberish;
 }) {
-  const allFunds = args.seller.funds || [];
-  const exchangeTokenFunds = allFunds.find(
-    (funds) =>
-      funds.token.address.toLowerCase() === args.exchangeToken.toLowerCase()
+  const availableFunds = getAvailableFundsOfSeller(
+    args.seller,
+    args.exchangeToken
   );
-  const minimalFundsAmountNeeded = BigNumber.from(args.sellerDeposit).mul(
-    args.quantity
-  );
+  const minimalFundsAmountNeededForOffer = BigNumber.from(
+    args.sellerDeposit
+  ).mul(args.quantity);
 
-  if (!exchangeTokenFunds) {
-    return minimalFundsAmountNeeded;
+  if (parseInt(availableFunds) === 0) {
+    return minimalFundsAmountNeededForOffer;
   }
 
-  return BigNumber.from(minimalFundsAmountNeeded).sub(
-    exchangeTokenFunds.availableAmount
+  const delta = BigNumber.from(minimalFundsAmountNeededForOffer).sub(
+    BigNumber.from(availableFunds)
   );
+
+  return delta.isNegative() ? BigNumber.from(0) : delta;
+}
+
+export function getAvailableFundsOfSeller(
+  seller: subgraph.SellerFieldsFragment,
+  exchangeToken: string
+) {
+  const allFunds = seller.funds || [];
+  const exchangeTokenFunds = allFunds.find(
+    (funds) => funds.token.address.toLowerCase() === exchangeToken.toLowerCase()
+  );
+  return exchangeTokenFunds ? exchangeTokenFunds.availableAmount : "0";
 }

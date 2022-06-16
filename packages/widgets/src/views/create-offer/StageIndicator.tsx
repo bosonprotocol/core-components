@@ -24,7 +24,7 @@ const StagePoint = styled.div`
   color: black;
 `;
 
-const Line = styled.div<{ stage: Props["stage"] }>`
+const BaseLine = styled.div<{ stage: Props["stage"] }>`
   height: 16px;
   width: 240px;
   background: rgb(15, 251, 173);
@@ -37,8 +37,36 @@ const Line = styled.div<{ stage: Props["stage"] }>`
   border: 2px solid ${colors.concreteGray};
 `;
 
+const Line1 = styled(BaseLine)<{ stage: Props["stage"] }>`
+  background: ${(p) => {
+    if (p.stage === 3) {
+      return "rgba(193, 193, 193, 1)";
+    }
+    return `linear-gradient(
+      ${p.stage === 1 ? "90deg" : "270deg"},
+    rgba(15, 251, 173, 1) 0%,
+    rgba(200, 200, 200, 1) 60%,
+    rgba(193, 193, 193, 1) 100%
+    )`;
+  }};
+`;
+
+const Line2 = styled(BaseLine)<{ stage: Props["stage"] }>`
+  background: ${(p) => {
+    if (p.stage === 1) {
+      return "rgba(193, 193, 193, 1)";
+    }
+    return `linear-gradient(
+      ${p.stage === 2 ? "90deg" : "270deg"},
+    rgba(15, 251, 173, 1) 0%,
+    rgba(200, 200, 200, 1) 60%,
+    rgba(193, 193, 193, 1) 100%
+    )`;
+  }};
+`;
+
 interface Props {
-  stage: 1 | 2;
+  stage: number;
 }
 
 export function StageIndicator({ stage }: Props) {
@@ -51,13 +79,21 @@ export function StageIndicator({ stage }: Props) {
       >
         1
       </StagePoint>
-      <Line stage={stage} />
+      <Line1 stage={stage} />
       <StagePoint
         style={{
           backgroundColor: stage === 2 ? colors.neonGreen : colors.stoneWallGray
         }}
       >
         2
+      </StagePoint>
+      <Line2 stage={stage} />
+      <StagePoint
+        style={{
+          backgroundColor: stage === 3 ? colors.neonGreen : colors.stoneWallGray
+        }}
+      >
+        3
       </StagePoint>
     </Root>
   );
