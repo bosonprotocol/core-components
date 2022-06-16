@@ -401,7 +401,7 @@ export type Exchange = {
   id: Scalars["ID"];
   offer: Offer;
   redeemedDate?: Maybe<Scalars["BigInt"]>;
-  seller?: Maybe<Seller>;
+  seller: Seller;
   state: ExchangeState;
   validUntilDate?: Maybe<Scalars["BigInt"]>;
 };
@@ -2364,6 +2364,265 @@ export type SellerFieldsFragment = {
   }>;
 };
 
+export type GetExchangeByIdQueryQueryVariables = Exact<{
+  exchangeId: Scalars["ID"];
+}>;
+
+export type GetExchangeByIdQueryQuery = {
+  __typename?: "Query";
+  exchange?: {
+    __typename?: "Exchange";
+    id: string;
+    disputed: boolean;
+    state: ExchangeState;
+    committedDate: string;
+    finalizedDate?: string | null;
+    validUntilDate?: string | null;
+    redeemedDate?: string | null;
+    expired: boolean;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      fulfillmentPeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      offerChecksum: string;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        active: boolean;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        address: string;
+        decimals: string;
+        name: string;
+        symbol: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            schemaUrl?: string | null;
+            type: MetadataType;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            schemaUrl?: string | null;
+            type: MetadataType;
+          }
+        | null;
+    };
+  } | null;
+};
+
+export type GetExchangesByOfferIdQueryVariables = Exact<{
+  offerId: Scalars["String"];
+  first?: InputMaybe<Scalars["Int"]>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Exchange_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+}>;
+
+export type GetExchangesByOfferIdQuery = {
+  __typename?: "Query";
+  exchanges: Array<{
+    __typename?: "Exchange";
+    id: string;
+    disputed: boolean;
+    state: ExchangeState;
+    committedDate: string;
+    finalizedDate?: string | null;
+    validUntilDate?: string | null;
+    redeemedDate?: string | null;
+    expired: boolean;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      fulfillmentPeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      offerChecksum: string;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        active: boolean;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        address: string;
+        decimals: string;
+        name: string;
+        symbol: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            schemaUrl?: string | null;
+            type: MetadataType;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            schemaUrl?: string | null;
+            type: MetadataType;
+          }
+        | null;
+    };
+  }>;
+};
+
+export type ExchangeFieldsFragment = {
+  __typename?: "Exchange";
+  id: string;
+  disputed: boolean;
+  state: ExchangeState;
+  committedDate: string;
+  finalizedDate?: string | null;
+  validUntilDate?: string | null;
+  redeemedDate?: string | null;
+  expired: boolean;
+  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
+  seller: {
+    __typename?: "Seller";
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    active: boolean;
+  };
+  offer: {
+    __typename?: "Offer";
+    id: string;
+    createdAt: string;
+    price: string;
+    sellerDeposit: string;
+    protocolFee: string;
+    buyerCancelPenalty: string;
+    quantityAvailable: string;
+    quantityInitial: string;
+    validFromDate: string;
+    validUntilDate: string;
+    voucherRedeemableFromDate: string;
+    voucherRedeemableUntilDate: string;
+    fulfillmentPeriodDuration: string;
+    voucherValidDuration: string;
+    resolutionPeriodDuration: string;
+    metadataUri: string;
+    offerChecksum: string;
+    voidedAt?: string | null;
+    disputeResolverId: string;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    exchangeToken: {
+      __typename?: "ExchangeToken";
+      address: string;
+      decimals: string;
+      name: string;
+      symbol: string;
+    };
+    metadata?:
+      | {
+          __typename?: "BaseMetadataEntity";
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          schemaUrl?: string | null;
+          type: MetadataType;
+        }
+      | {
+          __typename?: "ProductV1MetadataEntity";
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          schemaUrl?: string | null;
+          type: MetadataType;
+        }
+      | null;
+  };
+};
+
 export type GetFundsByAccountIdQueryQueryVariables = Exact<{
   accountId: Scalars["BigInt"];
 }>;
@@ -2460,15 +2719,6 @@ export type GetOfferByIdQueryQuery = {
           type: MetadataType;
         }
       | null;
-    exchanges: Array<{
-      __typename?: "Exchange";
-      id: string;
-      committedDate: string;
-      redeemedDate?: string | null;
-      finalizedDate?: string | null;
-      expired: boolean;
-      disputed: boolean;
-    }>;
   } | null;
 };
 
@@ -2539,15 +2789,6 @@ export type GetAllOffersOfOperatorQueryQuery = {
             type: MetadataType;
           }
         | null;
-      exchanges: Array<{
-        __typename?: "Exchange";
-        id: string;
-        committedDate: string;
-        redeemedDate?: string | null;
-        finalizedDate?: string | null;
-        expired: boolean;
-        disputed: boolean;
-      }>;
     }>;
   }>;
 };
@@ -2607,15 +2848,6 @@ export type OfferFieldsFragment = {
         type: MetadataType;
       }
     | null;
-  exchanges: Array<{
-    __typename?: "Exchange";
-    id: string;
-    committedDate: string;
-    redeemedDate?: string | null;
-    finalizedDate?: string | null;
-    expired: boolean;
-    disputed: boolean;
-  }>;
 };
 
 export const SellerFieldsFragmentDoc = gql`
@@ -2635,19 +2867,6 @@ export const SellerFieldsFragmentDoc = gql`
         symbol
       }
     }
-  }
-`;
-export const FundsEntityFieldsFragmentDoc = gql`
-  fragment FundsEntityFields on FundsEntity {
-    id
-    availableAmount
-    token {
-      address
-      name
-      symbol
-      decimals
-    }
-    accountId
   }
 `;
 export const OfferFieldsFragmentDoc = gql`
@@ -2692,14 +2911,47 @@ export const OfferFieldsFragmentDoc = gql`
       schemaUrl
       type
     }
-    exchanges {
+  }
+`;
+export const ExchangeFieldsFragmentDoc = gql`
+  fragment ExchangeFields on Exchange {
+    id
+    buyer {
       id
-      committedDate
-      redeemedDate
-      finalizedDate
-      expired
-      disputed
+      wallet
+      active
     }
+    seller {
+      operator
+      admin
+      clerk
+      treasury
+      active
+    }
+    disputed
+    state
+    committedDate
+    finalizedDate
+    validUntilDate
+    redeemedDate
+    expired
+    offer {
+      ...OfferFields
+    }
+  }
+  ${OfferFieldsFragmentDoc}
+`;
+export const FundsEntityFieldsFragmentDoc = gql`
+  fragment FundsEntityFields on FundsEntity {
+    id
+    availableAmount
+    token {
+      address
+      name
+      symbol
+      decimals
+    }
+    accountId
   }
 `;
 export const GetSellerByOperatorQueryDocument = gql`
@@ -2725,6 +2977,34 @@ export const GetSellerByClerkQueryDocument = gql`
     }
   }
   ${SellerFieldsFragmentDoc}
+`;
+export const GetExchangeByIdQueryDocument = gql`
+  query getExchangeByIdQuery($exchangeId: ID!) {
+    exchange(id: $exchangeId) {
+      ...ExchangeFields
+    }
+  }
+  ${ExchangeFieldsFragmentDoc}
+`;
+export const GetExchangesByOfferIdDocument = gql`
+  query getExchangesByOfferId(
+    $offerId: String!
+    $first: Int
+    $skip: Int
+    $orderBy: Exchange_orderBy
+    $orderDirection: OrderDirection
+  ) {
+    exchanges(
+      where: { offer: $offerId }
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
+      ...ExchangeFields
+    }
+  }
+  ${ExchangeFieldsFragmentDoc}
 `;
 export const GetFundsByAccountIdQueryDocument = gql`
   query getFundsByAccountIdQuery($accountId: BigInt!) {
@@ -2823,6 +3103,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getSellerByClerkQuery",
+        "query"
+      );
+    },
+    getExchangeByIdQuery(
+      variables: GetExchangeByIdQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetExchangeByIdQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetExchangeByIdQueryQuery>(
+            GetExchangeByIdQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getExchangeByIdQuery",
+        "query"
+      );
+    },
+    getExchangesByOfferId(
+      variables: GetExchangesByOfferIdQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetExchangesByOfferIdQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetExchangesByOfferIdQuery>(
+            GetExchangesByOfferIdDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getExchangesByOfferId",
         "query"
       );
     },

@@ -187,7 +187,7 @@ export class CoreSDK {
       operatorAddress: string;
       // TODO: add support for sellerId, adminAddress, clerkAddress, treasuryAddress
     },
-    opts?: offers.subgraph.MultiQueryOpts
+    opts?: offers.subgraph.AllOffersQueryOpts
   ): Promise<subgraph.OfferFieldsFragment[]> {
     if (sellerFilter.operatorAddress) {
       return offers.subgraph.getAllOffersOfOperator(
@@ -289,5 +289,22 @@ export class CoreSDK {
     accountId: BigNumberish
   ): Promise<subgraph.FundsEntityFieldsFragment[]> {
     return funds.subgraph.getFundsByAccountId(this._subgraphUrl, accountId);
+  }
+
+  public async getExchangeById(
+    exchangeId: BigNumberish
+  ): Promise<subgraph.ExchangeFieldsFragment> {
+    return exchanges.subgraph.getExchangeById(this._subgraphUrl, exchangeId);
+  }
+
+  public async getExchangesByOfferId(
+    offerId: BigNumberish,
+    opts?: exchanges.subgraph.ExchangesQueryOpts
+  ): Promise<subgraph.ExchangeFieldsFragment[]> {
+    return exchanges.subgraph.getExchangesByOfferId(
+      this._subgraphUrl,
+      offerId,
+      opts
+    );
   }
 }
