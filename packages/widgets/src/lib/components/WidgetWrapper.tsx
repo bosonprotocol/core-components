@@ -31,10 +31,10 @@ export function WidgetWrapper(props: Props) {
 
   useWalletChangeNotification(account);
 
-  const isWalletConnectToCorrectChain =
+  const isWalletNotConnectedToCorrectChain =
     account && isActive && chainId !== connectedChainId;
 
-  if (isWalletConnectToCorrectChain) {
+  if (isWalletNotConnectedToCorrectChain) {
     return (
       <WidgetLayout>
         <ErrorModal
