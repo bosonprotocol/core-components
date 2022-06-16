@@ -1,10 +1,10 @@
-import { manageOffer } from "@bosonprotocol/widgets-sdk";
+import { manageOffer, manageExchange } from "@bosonprotocol/widgets-sdk";
 import { useRef, useState } from "react";
 import { Layout } from "../../lib/components/Layout";
 import { PageTitle } from "../../lib/components/PageTitle";
 import { CONFIG } from "../../lib/config";
 import { OfferSelect } from "./OfferSelect";
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { subgraph, exchanges as exchangesApi } from "@bosonprotocol/core-sdk";
 import { Col, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -24,13 +24,25 @@ const WidgetContainer = styled.div`
 
 export function Manage() {
   const [offer, setOffer] = useState<subgraph.OfferFieldsFragment>();
+  const [exchanges, setExchanges] = useState<subgraph.ExchangeFieldsFragment[]>(
+    []
+  );
   const widgetRef = useRef<HTMLDivElement>(null);
-  const [selectedExchangeId, setSelectedExchangeId] = useState<string>();
+  const [selectedExchangeId, setSelectedExchangeId] = useState<string>("");
+
+  useEffect(() => {
+    if (offer) {
+      exchangesApi.subgraph
+        .getExchangesByOfferId(CONFIG.subgraphUrl, offer.id)
+        .then(setExchanges)
+        .catch((e) => console.error(e));
+    }
+  }, [offer]);
 
   useEffect(() => {
     assert(widgetRef.current);
 
-    if (offer) {
+    if (offer && !selectedExchangeId) {
       const el = document.createElement("div");
       widgetRef.current.appendChild(el);
       manageOffer(
@@ -41,8 +53,7 @@ export function Manage() {
         },
         el,
         {
-          forceBuyerView: false,
-          exchangeId: selectedExchangeId
+          forceBuyerView: false
         }
       );
 
@@ -51,6 +62,31 @@ export function Manage() {
 
     return;
   }, [offer, selectedExchangeId]);
+
+  useEffect(() => {
+    assert(widgetRef.current);
+
+    if (selectedExchangeId) {
+      const el = document.createElement("div");
+      widgetRef.current.appendChild(el);
+      manageExchange(
+        selectedExchangeId,
+        {
+          ...CONFIG,
+          widgetsUrl: "http://localhost:3000"
+        },
+        el,
+        {
+          forceBuyerView: false
+        }
+      );
+
+      return () => el.remove();
+    }
+
+    return;
+  }, [selectedExchangeId]);
+
   return (
     <Layout>
       <PageTitle>Manage Offer</PageTitle>
@@ -85,20 +121,20 @@ export function Manage() {
           <div>
             <Form.Label>Exchange ID</Form.Label>
             <Form.Select
-              value=""
+              value={selectedExchangeId}
               onChange={(e) => setSelectedExchangeId(e.target.value)}
-              disabled={offer.exchanges.length === 0}
+              disabled={exchanges.length === 0}
             >
-              {offer.exchanges.length === 0 ? (
+              {exchanges.length === 0 ? (
                 <option value="">No exchanges found for this offer</option>
               ) : (
                 <>
                   <option value="">
-                    {offer.exchanges.length === 1
+                    {exchanges.length === 1
                       ? `--- 1 Exchange found ---`
-                      : `--- ${offer.exchanges.length} Exchanges found ---`}
+                      : `--- ${exchanges.length} Exchanges found ---`}
                   </option>
-                  {offer.exchanges.map((exchange) => (
+                  {exchanges.map((exchange) => (
                     <option key={exchange.id} value={exchange.id}>
                       {exchange.id}
                     </option>
