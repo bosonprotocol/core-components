@@ -8,6 +8,7 @@ generates:
       - "typescript-operations"
       - "typescript-graphql-request"
     config:
+      gqlImport: graphql-request#gql
       scalars:
         Bytes: string
         BigInt: string
