@@ -89,7 +89,6 @@ export function mockRawOfferFromSubgraph(
       type: MetadataType.Base,
       ...metadata
     },
-    exchanges: [],
     ...restOverrides
   };
 }
