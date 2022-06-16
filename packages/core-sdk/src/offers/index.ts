@@ -5,6 +5,7 @@ export * as subgraph from "./subgraph";
 export * as iface from "./interface";
 export * as storage from "./storage";
 export * from "./types";
+export * from "./getOfferStatus";
 
 export const validation = {
   createOfferArgsSchema: utils.validation.createOfferArgsSchema

@@ -1,11 +1,10 @@
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { subgraph, offers } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
 import {
   TransactionModal,
   Transaction
 } from "../../lib/components/modals/TransactionModal";
 import { useCoreSDK } from "../../lib/useCoreSDK";
-import { getOfferStatus, OfferState } from "./getOfferStatus";
 import {
   Actions,
   SecondaryButton,
@@ -23,11 +22,11 @@ export function SellerActions({ offer, reloadOfferData }: Props) {
     status: "idle"
   });
 
-  const offerStatus = getOfferStatus(offer);
+  const offerStatus = offers.getOfferStatus(offer);
 
   const voidOfferAvailable = [
-    OfferState.VALID,
-    OfferState.NOT_YET_VALID
+    offers.OfferState.VALID,
+    offers.OfferState.NOT_YET_VALID
   ].includes(offerStatus);
 
   async function handleVoid() {
