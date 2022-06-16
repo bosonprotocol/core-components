@@ -17,6 +17,7 @@ export type Transaction =
   | {
       status: "success";
       txHash: string;
+      message?: string;
       dataToPreview?: {
         label: string;
         value: string;
@@ -41,10 +42,8 @@ export function TransactionModal({ transaction, onClose }: Props) {
     return (
       <SuccessModal
         txHash={transaction.txHash}
-        dataToPreview={{
-          label: transaction.dataToPreview?.label || "",
-          value: transaction.dataToPreview?.value || ""
-        }}
+        dataToPreview={transaction.dataToPreview}
+        message={transaction.message}
         onClose={onClose}
       />
     );

@@ -173,5 +173,5 @@ export function useCreateOfferData() {
     [account, coreSDK, reloadCounter]
   );
 
-  return { data, reload };
+  return { data, reload, reloadCounter };
 }
