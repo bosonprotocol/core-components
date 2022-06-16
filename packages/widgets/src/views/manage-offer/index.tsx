@@ -22,18 +22,24 @@ export default function ManageOffer() {
   const account = hooks.useAccount();
 
   if (offerData.status === "error") {
-    return <WidgetWrapper loadingStatus="error" error={offerData.error} />;
+    return (
+      <WidgetWrapper
+        loadingStatus="error"
+        error={offerData.error}
+        hideCloseButton
+      />
+    );
   }
 
   if (offerData.status === "loading") {
-    return <WidgetWrapper loadingStatus="loading" />;
+    return <WidgetWrapper loadingStatus="loading" hideCloseButton />;
   }
 
   const { offer } = offerData;
   const offerName = offer.metadata?.name ?? "";
 
   return (
-    <WidgetWrapper title={"Offer"} offerName={offerName}>
+    <WidgetWrapper title={"Offer"} offerName={offerName} hideCloseButton>
       <Row>
         <Entry>
           <Label>Offer ID</Label>
