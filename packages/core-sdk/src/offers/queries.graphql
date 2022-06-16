@@ -64,12 +64,4 @@ fragment OfferFields on Offer {
     schemaUrl
     type
   }
-  exchanges {
-    id
-    committedDate
-    redeemedDate
-    finalizedDate
-    expired
-    disputed
-  }
 }

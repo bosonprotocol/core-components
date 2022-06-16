@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 import { StyledIframe } from "../../lib/StyledIframe";
 import { Modal } from "../../lib/Modal";
 import { WidgetConfig } from "../../types";
+import {
+  DEFAULT_IFRAME_HEIGHT,
+  DEFAULT_IFRAME_WIDTH
+} from "../../lib/constants";
 
 interface CreateOfferRequest {
   price: string;
@@ -65,8 +69,8 @@ function CreateOfferWidget({ request, widgetsConfig }: Props) {
       <StyledIframe
         style={{ boxShadow: "none" }}
         src={`${widgetsUrl}?${urlParams}`}
-        width={600}
-        height={541}
+        width={restConfig.width || DEFAULT_IFRAME_WIDTH}
+        height={restConfig.height || DEFAULT_IFRAME_HEIGHT}
       />
     </Modal>
   );

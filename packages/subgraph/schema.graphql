@@ -126,7 +126,7 @@ type Exchange @entity {
   id: ID!
   offer: Offer!
   buyer: Buyer!
-  seller: Seller
+  seller: Seller!
   disputed: Boolean!
   state: ExchangeState!
   committedDate: BigInt!

@@ -8,40 +8,42 @@ import {
 } from "../../lib/components/details/shared-styles";
 import { getURLParams } from "../../lib/parseUrlParams";
 import { SellerActions } from "./SellerActions";
-import { getOfferStatus } from "./getOfferStatus";
-import { useManageOfferData } from "./useManageOfferData";
+import { useManageExchangeData } from "./useManageExchangeData";
 import { hooks } from "../../lib/connectors/metamask";
 import { BuyerActions } from "./BuyerActions";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
-import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
 import { isAccountSeller } from "../../lib/seller";
+import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
 
-export default function ManageOffer() {
-  const { offerId, forceBuyerView } = getURLParams();
-  const { offerData, reloadOfferData } = useManageOfferData(offerId);
+export default function ManageExchange() {
+  const { forceBuyerView, exchangeId } = getURLParams();
+  const { exchangeData, reloadExchangeData } =
+    useManageExchangeData(exchangeId);
   const account = hooks.useAccount();
 
-  if (offerData.status === "error") {
-    return <WidgetWrapper loadingStatus="error" error={offerData.error} />;
+  if (exchangeData.status === "error") {
+    return <WidgetWrapper loadingStatus="error" error={exchangeData.error} />;
   }
 
-  if (offerData.status === "loading") {
+  if (exchangeData.status === "loading") {
     return <WidgetWrapper loadingStatus="loading" />;
   }
 
-  const { offer } = offerData;
-  const offerName = offer.metadata?.name ?? "";
+  const { exchange } = exchangeData;
+  const { offer } = exchange;
+
+  const offerName = offer.metadata?.name || "";
 
   return (
-    <WidgetWrapper title={"Offer"} offerName={offerName}>
+    <WidgetWrapper title="Exchange" offerName={offerName}>
       <Row>
         <Entry>
-          <Label>Offer ID</Label>
-          <Value>{offer.id}</Value>
+          <Label>Exchange ID</Label>
+          <Value>{exchangeId}</Value>
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{getOfferStatus(offer)}</Value>
+          <Value>{exchange.state}</Value>
         </Entry>
       </Row>
       <OfferDetails
@@ -66,10 +68,16 @@ export default function ManageOffer() {
       <Spacer />
       <ActionsWrapper
         BuyerActions={
-          <BuyerActions offer={offer} reloadOfferData={reloadOfferData} />
+          <BuyerActions
+            exchange={exchange}
+            reloadExchangeData={reloadExchangeData}
+          />
         }
         SellerActions={
-          <SellerActions offer={offer} reloadOfferData={reloadOfferData} />
+          <SellerActions
+            exchange={exchange}
+            reloadExchangeData={reloadExchangeData}
+          />
         }
         isSeller={
           isAccountSeller(account ?? "", offer.seller) && !forceBuyerView

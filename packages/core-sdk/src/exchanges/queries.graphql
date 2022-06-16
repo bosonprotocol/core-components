@@ -1,0 +1,49 @@
+query getExchangeByIdQuery($exchangeId: ID!) {
+  exchange(id: $exchangeId) {
+    ...ExchangeFields
+  }
+}
+
+query getExchangesByOfferId(
+  $offerId: String!
+  $first: Int
+  $skip: Int
+  $orderBy: Exchange_orderBy
+  $orderDirection: OrderDirection
+) {
+  exchanges(
+    where: { offer: $offerId }
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    ...ExchangeFields
+  }
+}
+
+fragment ExchangeFields on Exchange {
+  id
+  buyer {
+    id
+    wallet
+    active
+  }
+  seller {
+    operator
+    admin
+    clerk
+    treasury
+    active
+  }
+  disputed
+  state
+  committedDate
+  finalizedDate
+  validUntilDate
+  redeemedDate
+  expired
+  offer {
+    ...OfferFields
+  }
+}

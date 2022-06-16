@@ -6,4 +6,10 @@ export type WidgetConfig = {
   jsonRpcUrl?: string;
   theGraphIpfsUrl?: string;
   ipfsMetadataUrl?: string;
+  height?: number;
+  width?: number;
 };
+
+export interface OptionalParams {
+  forceBuyerView?: boolean;
+}

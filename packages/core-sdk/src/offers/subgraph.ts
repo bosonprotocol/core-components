@@ -1,15 +1,11 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 import { getSubgraphSdk } from "../utils/graphql";
-import {
-  OfferFieldsFragment,
-  OrderDirection,
-  Offer_OrderBy
-} from "../subgraph";
+import { OfferFieldsFragment, QueryOffersArgs } from "../subgraph";
 
-export type MultiQueryOpts = {
-  orderBy: Offer_OrderBy;
-  orderDirection: OrderDirection;
-};
+export type AllOffersQueryOpts = Pick<
+  QueryOffersArgs,
+  "first" | "orderBy" | "orderDirection" | "skip"
+>;
 
 export async function getOfferById(
   subgraphUrl: string,
@@ -27,14 +23,13 @@ export async function getOfferById(
 export async function getAllOffersOfOperator(
   subgraphUrl: string,
   operatorAddress: string,
-  opts?: MultiQueryOpts
+  opts: AllOffersQueryOpts = {}
 ): Promise<OfferFieldsFragment[]> {
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
 
   const { sellers = [] } = await subgraphSdk.getAllOffersOfOperatorQuery({
     operator: operatorAddress,
-    orderBy: opts?.orderBy,
-    orderDirection: opts?.orderDirection
+    ...opts
   });
 
   if (!sellers || sellers.length === 0) {

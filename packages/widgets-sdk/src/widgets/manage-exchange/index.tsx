@@ -8,15 +8,15 @@ import {
 } from "../../lib/constants";
 import { WidgetConfig, OptionalParams } from "../../types";
 
-export function manageOffer(
-  offerId: string,
+export function manageExchange(
+  exchangeId: string,
   config: WidgetConfig,
   element: HTMLElement,
   params?: OptionalParams
 ) {
   ReactDOM.render(
     <ManageOfferWidget
-      offerId={offerId}
+      exchangeId={exchangeId}
       widgetsConfig={config}
       forceBuyerView={params?.forceBuyerView ?? false}
     />,
@@ -29,12 +29,16 @@ export function manageOffer(
 }
 
 interface Props {
-  offerId: string;
+  exchangeId: string;
   widgetsConfig: WidgetConfig;
   forceBuyerView: boolean;
 }
 
-function ManageOfferWidget({ offerId, widgetsConfig, forceBuyerView }: Props) {
+function ManageOfferWidget({
+  exchangeId,
+  widgetsConfig,
+  forceBuyerView
+}: Props) {
   const {
     widgetsUrl,
     chainId,
@@ -44,7 +48,7 @@ function ManageOfferWidget({ offerId, widgetsConfig, forceBuyerView }: Props) {
   } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
-    offerId,
+    exchangeId,
     chainId,
     ipfsMetadataUrl,
     ...(forceBuyerView && { forceBuyerView })
