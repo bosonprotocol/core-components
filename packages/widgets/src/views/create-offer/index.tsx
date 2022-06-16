@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { constants } from "ethers";
 import { WidgetWrapper } from "../../lib/components/WidgetWrapper";
 import { StageIndicator } from "./StageIndicator";

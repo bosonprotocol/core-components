@@ -5,7 +5,6 @@ import {
   TransactionModal,
   Transaction
 } from "../../lib/components/modals/TransactionModal";
-import { useCoreSDK } from "../../lib/useCoreSDK";
 import {
   Actions,
   PrimaryButton,
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export function SellerActions({ exchange, reloadExchangeData }: Props) {
-  const coreSDK = useCoreSDK();
-
   const [transaction, setTransaction] = useState<Transaction>({
     status: "idle"
   });
