@@ -38,26 +38,3 @@ export async function commitToOffer(args: {
     value: offer.price
   });
 }
-
-// export async function completeExchange(args: {
-//   exchangeId: BigNumberish;
-//   contractAddress: string;
-//   subgraphUrl: string;
-//   web3Lib: Web3LibAdapter;
-// }): Promise<TransactionResponse> {
-//   const exchange = await getExchangeById(args.subgraphUrl, args.exchangeId);
-
-//   if (!exchange) {
-//     throwExchangeDoesNotExist(args.exchangeId);
-//   }
-
-//   const callerAddress = await args.web3Lib.getSignerAddress();
-//   const sellerByOperator = await getSellerByOperator(
-//     args.subgraphUrl,
-//     callerAddress
-//   );
-// }
-
-function throwExchangeDoesNotExist(exchangeId: BigNumberish) {
-  throw new Error(`Exchange with id "${exchangeId}" does not exist`);
-}
