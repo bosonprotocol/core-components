@@ -23,7 +23,7 @@ const WidgetContainer = styled.div`
 `;
 
 export function Manage() {
-  const [offer, setOffer] = useState<subgraph.OfferFieldsFragment>();
+  const [offer, setOffer] = useState<subgraph.BaseOfferFieldsFragment>();
   const [exchanges, setExchanges] = useState<subgraph.ExchangeFieldsFragment[]>(
     []
   );
@@ -33,7 +33,11 @@ export function Manage() {
   useEffect(() => {
     if (offer) {
       exchangesApi.subgraph
-        .getExchangesByOfferId(CONFIG.subgraphUrl, offer.id)
+        .getExchanges(CONFIG.subgraphUrl, {
+          exchangesFilter: {
+            offer: offer.id
+          }
+        })
         .then(setExchanges)
         .catch((e) => console.error(e));
     }

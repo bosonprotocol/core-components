@@ -27,6 +27,8 @@ export function mockRawSellerFromSubgraph(
     treasury: ZERO_ADDRESS,
     active: true,
     funds: [],
+    offers: [],
+    exchanges: [],
     ...overrides
   };
 }
@@ -89,6 +91,7 @@ export function mockRawOfferFromSubgraph(
       type: MetadataType.Base,
       ...metadata
     },
+    exchanges: [],
     ...restOverrides
   };
 }

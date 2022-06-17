@@ -12,3 +12,31 @@ export function encodeCommitToOffer(buyer: string, offerId: BigNumberish) {
     offerId
   ]);
 }
+
+export function encodeCompleteExchange(exchangeId: BigNumberish) {
+  return bosonExchangeHandlerIface.encodeFunctionData("completeExchange", [
+    exchangeId
+  ]);
+}
+
+export function encodeRevokeVoucher(exchangeId: BigNumberish) {
+  return bosonExchangeHandlerIface.encodeFunctionData("revokeVoucher", [
+    exchangeId
+  ]);
+}
+
+export function encodeCancelVoucher(exchangeId: BigNumberish) {
+  return bosonExchangeHandlerIface.encodeFunctionData("cancelVoucher", [
+    exchangeId
+  ]);
+}
+export function encodeExpireVoucher(exchangeId: BigNumberish) {
+  return bosonExchangeHandlerIface.encodeFunctionData("expireVoucher", [
+    exchangeId
+  ]);
+}
+export function encodeRedeemVoucher(exchangeId: BigNumberish) {
+  return bosonExchangeHandlerIface.encodeFunctionData("redeemVoucher", [
+    exchangeId
+  ]);
+}

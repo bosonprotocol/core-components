@@ -1,40 +1,38 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 import { getSubgraphSdk } from "../utils/graphql";
-import { OfferFieldsFragment, QueryOffersArgs } from "../subgraph";
+import {
+  OfferFieldsFragment,
+  GetOfferByIdQueryQueryVariables,
+  GetOffersQueryQueryVariables
+} from "../subgraph";
 
-export type AllOffersQueryOpts = Pick<
-  QueryOffersArgs,
-  "first" | "orderBy" | "orderDirection" | "skip"
+export type SingleOfferQueryVariables = Omit<
+  GetOfferByIdQueryQueryVariables,
+  "offerId"
 >;
 
 export async function getOfferById(
   subgraphUrl: string,
-  offerId: BigNumberish
+  offerId: BigNumberish,
+  queryVars: SingleOfferQueryVariables = {}
 ): Promise<OfferFieldsFragment> {
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
-
   const { offer } = await subgraphSdk.getOfferByIdQuery({
-    offerId: offerId.toString()
+    offerId: offerId.toString(),
+    ...queryVars
   });
 
   return offer;
 }
 
-export async function getAllOffersOfOperator(
+export async function getOffers(
   subgraphUrl: string,
-  operatorAddress: string,
-  opts: AllOffersQueryOpts = {}
+  queryVars: GetOffersQueryQueryVariables = {}
 ): Promise<OfferFieldsFragment[]> {
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
-
-  const { sellers = [] } = await subgraphSdk.getAllOffersOfOperatorQuery({
-    operator: operatorAddress,
-    ...opts
+  const { offers = [] } = await subgraphSdk.getOffersQuery({
+    ...queryVars
   });
 
-  if (!sellers || sellers.length === 0) {
-    return [];
-  }
-
-  return sellers[0].offers;
+  return offers;
 }

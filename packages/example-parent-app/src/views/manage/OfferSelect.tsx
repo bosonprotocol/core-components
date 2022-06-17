@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { offers as offersApi, subgraph } from "@bosonprotocol/core-sdk";
+import { accounts as accountsApi, subgraph } from "@bosonprotocol/core-sdk";
 import { CONFIG } from "../../lib/config";
 import styled from "styled-components";
 import { isAddress } from "@ethersproject/address";
@@ -17,20 +17,23 @@ const InputContainer = styled.div`
 `;
 
 interface Props {
-  onOfferSelect(offer: subgraph.OfferFieldsFragment): void;
+  onOfferSelect(offer: subgraph.BaseOfferFieldsFragment): void;
   onReset(): void;
 }
 
 export function OfferSelect({ onOfferSelect, onReset }: Props) {
-  const [offers, setOffers] = useState<subgraph.OfferFieldsFragment[]>([]);
+  const [offers, setOffers] = useState<subgraph.BaseOfferFieldsFragment[]>([]);
   const [sellerAddress, setSellerAddress] = useState("");
 
   function retrieveOffers(sellerAddress: string) {
     if (!sellerAddress) return;
 
-    offersApi.subgraph
-      .getAllOffersOfOperator(CONFIG.subgraphUrl, sellerAddress)
-      .then(setOffers)
+    accountsApi.subgraph
+      .getSellerByOperator(CONFIG.subgraphUrl, sellerAddress, {
+        includeOffers: true,
+        offersOrderBy: subgraph.Offer_OrderBy.CreatedAt
+      })
+      .then((seller) => setOffers(seller && seller.offers ? seller.offers : []))
       .catch(console.log);
   }
 

@@ -1,29 +1,55 @@
-query getOfferByIdQuery($offerId: ID!) {
+query getOfferByIdQuery(
+  $offerId: ID!
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+) {
   offer(id: $offerId) {
     ...OfferFields
   }
 }
 
-query getAllOffersOfOperatorQuery(
-  $operator: Bytes!
-  $first: Int
-  $skip: Int
-  $orderBy: Offer_orderBy
-  $orderDirection: OrderDirection
+query getOffersQuery(
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
 ) {
-  sellers(where: { operator: $operator }) {
-    offers(
-      first: $first
-      skip: $skip
-      orderBy: $orderBy
-      orderDirection: $orderDirection
-    ) {
-      ...OfferFields
-    }
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) {
+    ...OfferFields
   }
 }
 
 fragment OfferFields on Offer {
+  ...BaseOfferFields
+  exchanges(
+    skip: $exchangesSkip
+    first: $exchangesFirst
+    orderBy: $exchangesOrderBy
+    orderDirection: $exchangesOrderDirection
+    where: $exchangesFilter
+  ) @include(if: $includeExchanges) {
+    ...BaseExchangeFields
+  }
+}
+
+fragment BaseOfferFields on Offer {
   id
   createdAt
   price
@@ -44,12 +70,7 @@ fragment OfferFields on Offer {
   voidedAt
   disputeResolverId
   seller {
-    id
-    operator
-    admin
-    clerk
-    treasury
-    active
+    ...BaseSellerFields
   }
   exchangeToken {
     address

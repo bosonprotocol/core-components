@@ -1,8 +1,4 @@
-import {
-  getOfferById,
-  getAllOffersOfOperator
-} from "../../src/offers/subgraph";
-import { ADDRESS } from "@bosonprotocol/common/tests/mocks";
+import { getOfferById, getOffers } from "../../src/offers/subgraph";
 import {
   SUBGRAPH_URL,
   interceptSubgraph,
@@ -41,13 +37,11 @@ describe("#getOfferById()", () => {
   });
 });
 
-describe("#getAllOffersOfOperator()", () => {
+describe("#getOffers()", () => {
   test("throw if response not okay", async () => {
     interceptSubgraph().reply(500);
 
-    await expect(
-      getAllOffersOfOperator(SUBGRAPH_URL, ADDRESS)
-    ).rejects.toThrow();
+    await expect(getOffers(SUBGRAPH_URL)).rejects.toThrow();
   });
 
   test("throw if graphql errors", async () => {
@@ -55,24 +49,18 @@ describe("#getAllOffersOfOperator()", () => {
       errors: ["some errors"]
     });
 
-    await expect(
-      getAllOffersOfOperator(SUBGRAPH_URL, ADDRESS)
-    ).rejects.toThrow();
+    await expect(getOffers(SUBGRAPH_URL)).rejects.toThrow();
   });
 
   test("return raw offers from subgraph", async () => {
     const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph();
     interceptSubgraph().reply(200, {
       data: {
-        sellers: [
-          {
-            offers: [mockedRawOfferFromSubgraph]
-          }
-        ]
+        offers: [mockedRawOfferFromSubgraph]
       }
     });
 
-    const rawOffers = await getAllOffersOfOperator(SUBGRAPH_URL, ADDRESS);
+    const rawOffers = await getOffers(SUBGRAPH_URL);
 
     expect(rawOffers).toMatchObject([mockedRawOfferFromSubgraph]);
   });

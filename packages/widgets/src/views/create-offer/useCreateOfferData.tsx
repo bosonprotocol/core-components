@@ -150,10 +150,12 @@ export function useCreateOfferData() {
         const [metadata, tokenInfo, seller] = await Promise.all([
           coreSDK.getMetadata(createOfferArgs.metadataUri),
           getTokenInfo(coreSDK, createOfferArgs.exchangeToken, account),
-          coreSDK.getSellerByOperator(
-            account || "",
-            createOfferArgs.exchangeToken.toLowerCase()
-          )
+          coreSDK.getSellerByOperator(account || "", {
+            includeFunds: true,
+            fundsFilter: {
+              token: createOfferArgs.exchangeToken.toLowerCase()
+            }
+          })
         ]);
 
         if (!isActive()) {

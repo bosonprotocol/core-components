@@ -115,7 +115,11 @@ describe("core-sdk", () => {
        */
       await waitForGraphNodeIndexing();
 
-      const funds = await sellerCoreSDK.getFundsByAccountId(offer.seller.id);
+      const funds = await sellerCoreSDK.getFunds({
+        fundsFilter: {
+          accountId: offer.seller.id
+        }
+      });
 
       expect(funds.length).toBe(1);
       expect(funds[0].availableAmount).toBe(
