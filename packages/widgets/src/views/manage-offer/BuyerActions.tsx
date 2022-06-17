@@ -11,6 +11,7 @@ import {
   Actions,
   PrimaryButton
 } from "../../lib/components/actions/shared-styles";
+import { createdExchange } from "../../lib/createdExchange";
 
 const CommitButton = styled(PrimaryButton)`
   width: 100%;
@@ -64,6 +65,7 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
           value: exchangeId || ""
         }
       });
+      createdExchange(exchangeId || "");
     } catch (e) {
       setTransaction({
         status: "error",
