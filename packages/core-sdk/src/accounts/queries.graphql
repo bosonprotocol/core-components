@@ -1,35 +1,107 @@
-query getSellerByOperatorQuery($operator: Bytes!, $fundsTokenAddress: Bytes) {
-  sellers(where: { operator: $operator }) {
+query getSellerByIdQuery(
+  $sellerId: ID!
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+  $includeOffers: Boolean = false
+  $includeFunds: Boolean = false
+) {
+  seller(id: $sellerId) {
     ...SellerFields
   }
 }
 
-query getSellerByAdminQuery($admin: Bytes!, $fundsTokenAddress: Bytes) {
-  sellers(where: { admin: $admin }) {
-    ...SellerFields
-  }
-}
-
-query getSellerByClerkQuery($clerk: Bytes!, $fundsTokenAddress: Bytes) {
-  sellers(where: { clerk: $clerk }) {
+query getSellersQuery(
+  $sellersSkip: Int
+  $sellersFirst: Int
+  $sellersOrderBy: Seller_orderBy
+  $sellersOrderDirection: OrderDirection
+  $sellersFilter: Seller_filter
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+  $includeOffers: Boolean = false
+  $includeFunds: Boolean = false
+) {
+  sellers(
+    skip: $sellersSkip
+    first: $sellersFirst
+    orderBy: $sellersOrderBy
+    orderDirection: $sellersOrderDirection
+    where: $sellersFilter
+  ) {
     ...SellerFields
   }
 }
 
 fragment SellerFields on Seller {
+  ...BaseSellerFields
+  funds(
+    skip: $fundsSkip
+    first: $fundsFirst
+    orderBy: $fundsOrderBy
+    orderDirection: $fundsOrderDirection
+    where: $fundsFilter
+  ) @include(if: $includeFunds) {
+    ...FundsEntityFields
+  }
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) @include(if: $includeOffers) {
+    ...BaseOfferFields
+  }
+  exchanges(
+    skip: $exchangesSkip
+    first: $exchangesFirst
+    orderBy: $exchangesOrderBy
+    orderDirection: $exchangesOrderDirection
+    where: $exchangesFilter
+  ) @include(if: $includeExchanges) {
+    ...BaseExchangeFields
+  }
+}
+
+fragment BaseSellerFields on Seller {
   id
   operator
   admin
   clerk
   treasury
   active
-  funds(where: { tokenAddress: $fundsTokenAddress }) {
-    availableAmount
-    token {
-      address
-      decimals
-      name
-      symbol
-    }
-  }
+}
+
+fragment BaseBuyerFields on Buyer {
+  id
+  wallet
+  active
 }

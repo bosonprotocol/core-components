@@ -4,38 +4,39 @@ query getExchangeByIdQuery($exchangeId: ID!) {
   }
 }
 
-query getExchangesByOfferId(
-  $offerId: String!
-  $first: Int
-  $skip: Int
-  $orderBy: Exchange_orderBy
-  $orderDirection: OrderDirection
+query getExchangesQuery(
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
 ) {
   exchanges(
-    where: { offer: $offerId }
-    first: $first
-    skip: $skip
-    orderBy: $orderBy
-    orderDirection: $orderDirection
+    skip: $exchangesSkip
+    first: $exchangesFirst
+    orderBy: $exchangesOrderBy
+    orderDirection: $exchangesOrderDirection
+    where: $exchangesFilter
   ) {
     ...ExchangeFields
   }
 }
 
 fragment ExchangeFields on Exchange {
-  id
+  ...BaseExchangeFields
   buyer {
-    id
-    wallet
-    active
+    ...BaseBuyerFields
   }
   seller {
-    operator
-    admin
-    clerk
-    treasury
-    active
+    ...BaseSellerFields
   }
+  offer {
+    ...BaseOfferFields
+  }
+}
+
+fragment BaseExchangeFields on Exchange {
+  id
   disputed
   state
   committedDate
@@ -43,7 +44,4 @@ fragment ExchangeFields on Exchange {
   validUntilDate
   redeemedDate
   expired
-  offer {
-    ...OfferFields
-  }
 }

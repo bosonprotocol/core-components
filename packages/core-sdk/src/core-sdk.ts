@@ -78,37 +78,54 @@ export class CoreSDK {
     return this._metadataStorage.getMetadata(metadataHashOrUri);
   }
 
+  public async getSellerById(
+    sellerId: BigNumberish,
+    queryVars?: accounts.subgraph.SingleSellerQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment> {
+    return accounts.subgraph.getSellerById(
+      this._subgraphUrl,
+      sellerId,
+      queryVars
+    );
+  }
+
   public async getSellerByOperator(
     operator: string,
-    fundsTokenAddress?: string
+    queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByOperator(
       this._subgraphUrl,
       operator,
-      fundsTokenAddress
+      queryVars
     );
   }
 
   public async getSellerByClerk(
     clerk: string,
-    fundsTokenAddress?: string
+    queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByClerk(
       this._subgraphUrl,
       clerk,
-      fundsTokenAddress
+      queryVars
     );
   }
 
   public async getSellerByAddress(
     address: string,
-    fundsTokenAddress?: string
+    queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
     return accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
-      fundsTokenAddress
+      queryVars
     );
+  }
+
+  public async getSellers(
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment[]> {
+    return accounts.subgraph.getSellers(this._subgraphUrl, queryVars);
   }
 
   public async createSellerAndOffer(
@@ -177,26 +194,16 @@ export class CoreSDK {
   }
 
   public async getOfferById(
-    offerId: BigNumberish
+    offerId: BigNumberish,
+    queryVars?: offers.subgraph.SingleOfferQueryVariables
   ): Promise<subgraph.OfferFieldsFragment> {
-    return offers.subgraph.getOfferById(this._subgraphUrl, offerId);
+    return offers.subgraph.getOfferById(this._subgraphUrl, offerId, queryVars);
   }
 
-  public async getAllOffersOfSeller(
-    sellerFilter: {
-      operatorAddress: string;
-      // TODO: add support for sellerId, adminAddress, clerkAddress, treasuryAddress
-    },
-    opts?: offers.subgraph.AllOffersQueryOpts
+  public async getOffers(
+    queryVars?: subgraph.GetOffersQueryQueryVariables
   ): Promise<subgraph.OfferFieldsFragment[]> {
-    if (sellerFilter.operatorAddress) {
-      return offers.subgraph.getAllOffersOfOperator(
-        this._subgraphUrl,
-        sellerFilter.operatorAddress,
-        opts
-      );
-    }
-    return [];
+    return offers.subgraph.getOffers(this._subgraphUrl, queryVars);
   }
 
   public async commitToOffer(
@@ -285,26 +292,33 @@ export class CoreSDK {
     });
   }
 
-  public async getFundsByAccountId(
-    accountId: BigNumberish
+  public async getFundsById(
+    fundsId: BigNumberish,
+    queryVars?: subgraph.GetFundsByIdQueryVariables
+  ): Promise<subgraph.FundsEntityFieldsFragment> {
+    return funds.subgraph.getFundsById(this._subgraphUrl, fundsId, queryVars);
+  }
+
+  public async getFunds(
+    queryVars?: subgraph.GetFundsQueryVariables
   ): Promise<subgraph.FundsEntityFieldsFragment[]> {
-    return funds.subgraph.getFundsByAccountId(this._subgraphUrl, accountId);
+    return funds.subgraph.getFunds(this._subgraphUrl, queryVars);
   }
 
   public async getExchangeById(
-    exchangeId: BigNumberish
+    exchangeId: BigNumberish,
+    queryVars?: subgraph.GetExchangeByIdQueryQueryVariables
   ): Promise<subgraph.ExchangeFieldsFragment> {
-    return exchanges.subgraph.getExchangeById(this._subgraphUrl, exchangeId);
+    return exchanges.subgraph.getExchangeById(
+      this._subgraphUrl,
+      exchangeId,
+      queryVars
+    );
   }
 
-  public async getExchangesByOfferId(
-    offerId: BigNumberish,
-    opts?: exchanges.subgraph.ExchangesQueryOpts
+  public async getExchanges(
+    queryVars?: subgraph.GetExchangesQueryQueryVariables
   ): Promise<subgraph.ExchangeFieldsFragment[]> {
-    return exchanges.subgraph.getExchangesByOfferId(
-      this._subgraphUrl,
-      offerId,
-      opts
-    );
+    return exchanges.subgraph.getExchanges(this._subgraphUrl, queryVars);
   }
 }
