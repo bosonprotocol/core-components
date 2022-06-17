@@ -10,6 +10,7 @@ import {
   PrimaryButton,
   SecondaryButton
 } from "../../lib/components/actions/shared-styles";
+import { ExchangeState } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 
 const RedeemButton = styled(PrimaryButton)`
   width: 50%;
@@ -27,15 +28,31 @@ const CancelButton = styled(SecondaryButton)`
   }
 `;
 
+function isRedeemDisabled(
+  offer: subgraph.OfferFieldsFragment,
+  exchange: subgraph.ExchangeFieldsFragment
+) {
+  const exchangeStatus = exchange.state;
+
+  const isRedeemable =
+    exchangeStatus === ExchangeState.Committed &&
+    Number(offer.voucherRedeemableFromDate) * 1000 < Date.now();
+
+  return !isRedeemable;
+}
+
 interface Props {
+  offer: subgraph.OfferFieldsFragment;
   exchange: subgraph.ExchangeFieldsFragment;
   reloadExchangeData: () => void;
 }
 
-export function BuyerActions({ exchange, reloadExchangeData }: Props) {
+export function BuyerActions({ offer, exchange, reloadExchangeData }: Props) {
   const [transaction, setTransaction] = useState<Transaction>({
     status: "idle"
   });
+
+  const redeemDisabled = isRedeemDisabled(offer, exchange);
 
   return (
     <>
@@ -48,6 +65,7 @@ export function BuyerActions({ exchange, reloadExchangeData }: Props) {
           Cancel
         </CancelButton>
         <RedeemButton
+          disabled={redeemDisabled}
           onClick={() => {
             console.log("redeem voucher"); // TODO: implement
           }}

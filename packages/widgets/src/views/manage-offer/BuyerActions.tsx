@@ -23,6 +23,7 @@ const CommitButton = styled(PrimaryButton)`
 function isCommitDisabled(offer: subgraph.OfferFieldsFragment) {
   const offerStatus = offers.getOfferStatus(offer);
 
+  if (offerStatus === offers.OfferState.NOT_YET_VALID) return true;
   if (offerStatus === offers.OfferState.EXPIRED) return true;
   if (offerStatus === offers.OfferState.VOIDED) return true;
   if (Number(offer.quantityAvailable) <= 0) return true;

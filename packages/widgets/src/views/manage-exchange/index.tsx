@@ -75,6 +75,7 @@ export default function ManageExchange() {
       <ActionsWrapper
         BuyerActions={
           <BuyerActions
+            offer={offer}
             exchange={exchange}
             reloadExchangeData={reloadExchangeData}
           />

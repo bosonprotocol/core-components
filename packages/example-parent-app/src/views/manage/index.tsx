@@ -1,4 +1,3 @@
-import { manageOffer, manageExchange } from "@bosonprotocol/widgets-sdk";
 import { useRef, useState } from "react";
 import { Layout } from "../../lib/components/Layout";
 import { PageTitle } from "../../lib/components/PageTitle";
@@ -8,7 +7,8 @@ import { subgraph, exchanges as exchangesApi } from "@bosonprotocol/core-sdk";
 import { Col, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
 import { useEffect } from "react";
-import { assert } from "../../lib/assert";
+import { useManageOffer } from "./useManageOffer";
+import { useManageExchange } from "./useManageExchange";
 
 const Root = styled.div`
   margin-top: 16px;
@@ -23,11 +23,12 @@ const WidgetContainer = styled.div`
 `;
 
 export function Manage() {
-  const [offer, setOffer] = useState<subgraph.BaseOfferFieldsFragment>();
+  const [offer, setOffer] = useState<subgraph.OfferFieldsFragment>();
   const [exchanges, setExchanges] = useState<subgraph.ExchangeFieldsFragment[]>(
     []
   );
-  const widgetRef = useRef<HTMLDivElement>(null);
+  const buyerWidgetRef = useRef<HTMLDivElement>(null);
+  const sellerWidgetRef = useRef<HTMLDivElement>(null);
   const [selectedExchangeId, setSelectedExchangeId] = useState<string>("");
 
   useEffect(() => {
@@ -43,53 +44,33 @@ export function Manage() {
     }
   }, [offer]);
 
-  useEffect(() => {
-    assert(widgetRef.current);
+  useManageOffer({
+    ref: buyerWidgetRef,
+    offer,
+    selectedExchangeId,
+    forceBuyerView: true
+  });
 
-    if (offer && !selectedExchangeId) {
-      const el = document.createElement("div");
-      widgetRef.current.appendChild(el);
-      manageOffer(
-        offer.id,
-        {
-          ...CONFIG,
-          widgetsUrl: "http://localhost:3000"
-        },
-        el,
-        {
-          forceBuyerView: false
-        }
-      );
+  useManageOffer({
+    ref: sellerWidgetRef,
+    offer,
+    selectedExchangeId,
+    forceBuyerView: false
+  });
 
-      return () => el.remove();
-    }
+  useManageExchange({
+    ref: buyerWidgetRef,
+    offer,
+    selectedExchangeId,
+    forceBuyerView: true
+  });
 
-    return;
-  }, [offer, selectedExchangeId]);
-
-  useEffect(() => {
-    assert(widgetRef.current);
-
-    if (selectedExchangeId) {
-      const el = document.createElement("div");
-      widgetRef.current.appendChild(el);
-      manageExchange(
-        selectedExchangeId,
-        {
-          ...CONFIG,
-          widgetsUrl: "http://localhost:3000"
-        },
-        el,
-        {
-          forceBuyerView: false
-        }
-      );
-
-      return () => el.remove();
-    }
-
-    return;
-  }, [selectedExchangeId]);
+  useManageExchange({
+    ref: sellerWidgetRef,
+    offer,
+    selectedExchangeId,
+    forceBuyerView: false
+  });
 
   return (
     <Layout>
@@ -149,7 +130,10 @@ export function Manage() {
           </div>
         </Root>
       )}
-      <WidgetContainer ref={widgetRef} />
+      <p style={{ margin: "15px 0 0 0" }}>Buyer view</p>
+      <WidgetContainer ref={buyerWidgetRef} />
+      <p style={{ margin: 0 }}>Seller view</p>
+      <WidgetContainer ref={sellerWidgetRef} />
     </Layout>
   );
 }
