@@ -1,2 +1,2 @@
-export const DEFAULT_IFRAME_HEIGHT = 564;
+export const DEFAULT_IFRAME_HEIGHT = 575;
 export const DEFAULT_IFRAME_WIDTH = 640;
