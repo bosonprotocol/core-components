@@ -7,6 +7,7 @@ import {
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
+import { BigNumber } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
@@ -49,8 +50,7 @@ export function argsToOfferDatesStruct(
   const {
     validFromDateInMS,
     validUntilDateInMS,
-    voucherRedeemableFromDateInMS,
-    voucherRedeemableUntilDateInMS
+    voucherRedeemableFromDateInMS
   } = args;
 
   return {
@@ -59,9 +59,10 @@ export function argsToOfferDatesStruct(
     voucherRedeemableFrom: utils.timestamp.msToSec(
       voucherRedeemableFromDateInMS
     ),
-    voucherRedeemableUntil: utils.timestamp.msToSec(
-      voucherRedeemableUntilDateInMS
-    )
+    voucherRedeemableUntil:
+      // NOTE: Field `voucherRedeemableUntil` not yet fully supported in protocol.
+      // Therefore converting to `voucherValid` field.
+      "0"
   };
 }
 
@@ -70,13 +71,22 @@ export function argsToOfferDurationsStruct(
 ): Partial<OfferDurationsStruct> {
   const {
     fulfillmentPeriodDurationInMS,
+    voucherRedeemableUntilDateInMS,
+    voucherRedeemableFromDateInMS,
     voucherValidDurationInMS = 0,
     resolutionPeriodDurationInMS
   } = args;
 
   return {
     fulfillmentPeriod: utils.timestamp.msToSec(fulfillmentPeriodDurationInMS),
-    voucherValid: utils.timestamp.msToSec(voucherValidDurationInMS),
+    voucherValid: utils.timestamp.msToSec(
+      voucherValidDurationInMS ||
+        // NOTE: Field `voucherRedeemableUntil` not yet fully supported in protocol.
+        // Therefore converting to `voucherValid` field.
+        BigNumber.from(voucherRedeemableUntilDateInMS).sub(
+          BigNumber.from(voucherRedeemableFromDateInMS)
+        )
+    ),
     resolutionPeriod: utils.timestamp.msToSec(resolutionPeriodDurationInMS)
   };
 }

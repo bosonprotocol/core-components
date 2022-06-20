@@ -1,4 +1,4 @@
-import { utils, BigNumberish } from "ethers";
+import { utils, BigNumberish, BigNumber } from "ethers";
 import {
   Row,
   Entry,
@@ -13,8 +13,8 @@ import { formatDate } from "./shared-utils";
 interface Props {
   currencySymbol: string;
   currencyDecimals?: number;
-  name?: string;
   quantityAvailable?: BigNumberish;
+  quantityInitial?: BigNumberish;
   priceInWei: BigNumberish;
   buyerCancelPenaltyInWei: BigNumberish;
   sellerDepositInWei: BigNumberish;
@@ -22,6 +22,7 @@ interface Props {
   validUntilDateInMS: BigNumberish;
   voucherRedeemableFromDateInMS: BigNumberish;
   voucherRedeemableUntilDateInMS: BigNumberish;
+  voucherValidDurationInMS?: BigNumberish;
   metadataUri: string;
   offerChecksum?: string;
   protocolFeeInWei: BigNumberish;
@@ -32,7 +33,7 @@ interface Props {
 export function OfferDetails({
   currencySymbol,
   currencyDecimals = 18,
-  name,
+  quantityInitial,
   quantityAvailable,
   priceInWei,
   buyerCancelPenaltyInWei,
@@ -41,6 +42,7 @@ export function OfferDetails({
   validUntilDateInMS,
   voucherRedeemableFromDateInMS,
   voucherRedeemableUntilDateInMS,
+  voucherValidDurationInMS,
   metadataUri,
   offerChecksum,
   protocolFeeInWei,
@@ -50,18 +52,18 @@ export function OfferDetails({
   return (
     <>
       <Row>
-        {name && (
-          <Entry>
-            <Label>Name / Title</Label>
-            <Value title={name}>{name}</Value>
-          </Entry>
-        )}
         {quantityAvailable && (
           <Entry>
-            <Label>Quantity</Label>
+            <Label>Available (Qty.)</Label>
             <Value title={quantityAvailable.toString()}>
               {quantityAvailable}
             </Value>
+          </Entry>
+        )}
+        {quantityInitial && (
+          <Entry>
+            <Label>Initial (Qty.)</Label>
+            <Value title={quantityInitial.toString()}>{quantityInitial}</Value>
           </Entry>
         )}
       </Row>
@@ -138,8 +140,18 @@ export function OfferDetails({
         </Entry>
         <Entry>
           <Label>Redeemable Until</Label>
-          <Value title={formatDate(voucherRedeemableUntilDateInMS.toString())}>
-            {formatDate(voucherRedeemableUntilDateInMS.toString())}
+          <Value
+            title={getRedeemableUntilDate({
+              voucherRedeemableFromDateInMS,
+              voucherRedeemableUntilDateInMS,
+              voucherValidDurationInMS
+            })}
+          >
+            {getRedeemableUntilDate({
+              voucherRedeemableFromDateInMS,
+              voucherRedeemableUntilDateInMS,
+              voucherValidDurationInMS
+            })}
           </Value>
         </Entry>
       </Row>
@@ -171,5 +183,21 @@ export function OfferDetails({
         )}
       </Row>
     </>
+  );
+}
+
+function getRedeemableUntilDate(args: {
+  voucherRedeemableFromDateInMS: BigNumberish;
+  voucherRedeemableUntilDateInMS: BigNumberish;
+  voucherValidDurationInMS?: BigNumberish;
+}) {
+  if (BigNumber.from(args.voucherRedeemableUntilDateInMS).gt(0)) {
+    return formatDate(args.voucherRedeemableUntilDateInMS.toString());
+  }
+
+  return formatDate(
+    BigNumber.from(args.voucherRedeemableFromDateInMS)
+      .add(BigNumber.from(args.voucherValidDurationInMS))
+      .toString()
   );
 }

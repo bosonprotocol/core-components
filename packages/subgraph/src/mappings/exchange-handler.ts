@@ -1,5 +1,11 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { BuyerCommitted } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
+import {
+  BuyerCommitted,
+  VoucherCanceled,
+  VoucherRevoked,
+  VoucherRedeemed,
+  ExchangeCompleted
+} from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { Exchange, Offer } from "../../generated/schema";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
@@ -19,6 +25,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     offer.save();
 
     exchange.seller = offer.seller;
+    exchange.validUntilDate = exchangeFromEvent.voucher.validUntilDate;
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();
@@ -29,4 +36,52 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   exchange.expired = false;
 
   exchange.save();
+}
+
+export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "REVOKED";
+    exchange.revokedDate = event.block.timestamp;
+    exchange.save();
+  }
+}
+
+export function handleVoucherCanceledEvent(event: VoucherCanceled): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "CANCELLED";
+    exchange.cancelledDate = event.block.timestamp;
+    exchange.save();
+  }
+}
+
+export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "REDEEMED";
+    exchange.redeemedDate = event.block.timestamp;
+    exchange.save();
+  }
+}
+
+export function handleExchangeCompletedEvent(event: ExchangeCompleted): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "COMPLETED";
+    exchange.completedDate = event.block.timestamp;
+    exchange.save();
+  }
 }

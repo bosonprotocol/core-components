@@ -131,8 +131,11 @@ type Exchange @entity {
   state: ExchangeState!
   committedDate: BigInt!
   finalizedDate: BigInt
-  validUntilDate: BigInt
+  validUntilDate: BigInt!
   redeemedDate: BigInt
+  revokedDate: BigInt
+  completedDate: BigInt
+  cancelledDate: BigInt
   expired: Boolean!
 }
 

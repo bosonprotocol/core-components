@@ -51,7 +51,8 @@ export default function ManageOffer() {
         </Entry>
       </Row>
       <OfferDetails
-        name={offerName}
+        quantityAvailable={offer.quantityAvailable}
+        quantityInitial={offer.quantityInitial}
         protocolFeeInWei={offer.protocolFee}
         currencySymbol={offer.exchangeToken.symbol}
         priceInWei={offer.price}
@@ -65,6 +66,7 @@ export default function ManageOffer() {
         voucherRedeemableUntilDateInMS={
           Number(offer.voucherRedeemableUntilDate) * 1000
         }
+        voucherValidDurationInMS={Number(offer.voucherValidDuration) * 1000}
         fulfillmentPeriodInMS={offer.fulfillmentPeriodDuration}
         resolutionPeriodInMS={offer.resolutionPeriodDuration}
         metadataUri={offer.metadataUri}

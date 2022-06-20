@@ -7,7 +7,10 @@ import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 
 describe("#encodeCreateOffer()", () => {
   test("encode correct calldata", () => {
-    const mockedCreateOfferArgs = mockCreateOfferArgs();
+    const mockedCreateOfferArgs = mockCreateOfferArgs({
+      voucherValidDurationInMS: 1000,
+      voucherRedeemableUntilDateInMS: 0
+    });
 
     const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
     const decodedCalldata = bosonOfferHandlerIface.decodeFunctionData(

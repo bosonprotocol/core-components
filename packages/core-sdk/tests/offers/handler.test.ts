@@ -62,7 +62,7 @@ describe("#voidOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" does not exist`);
+    ).rejects.toThrow(/does not exist/);
   });
 
   test("throw if offer already voided", async () => {
@@ -81,7 +81,7 @@ describe("#voidOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" is already voided`);
+    ).rejects.toThrow(/already voided/);
   });
 
   test("throw if offer seller doesn't match signer", async () => {
@@ -112,9 +112,7 @@ describe("#voidOffer()", () => {
           getSignerAddress: signerAddress
         })
       })
-    ).rejects.toThrow(
-      `Signer with address "${signerAddress}" is not the operator "${sellerAddress}"`
-    );
+    ).rejects.toThrow(/not the operator/);
   });
 
   test("return tx response", async () => {

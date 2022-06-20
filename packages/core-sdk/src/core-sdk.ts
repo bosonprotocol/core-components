@@ -321,4 +321,37 @@ export class CoreSDK {
   ): Promise<subgraph.ExchangeFieldsFragment[]> {
     return exchanges.subgraph.getExchanges(this._subgraphUrl, queryVars);
   }
+
+  public async revokeVoucher(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.revokeVoucher({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeId,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
+
+  public async cancelVoucher(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.cancelVoucher({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeId,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
+
+  public async redeemVoucher(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.redeemVoucher({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeId,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
 }

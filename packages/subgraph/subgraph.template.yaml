@@ -84,6 +84,14 @@ dataSources:
       eventHandlers:
         - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8))
           handler: handleBuyerCommittedEvent
+        - event: VoucherRevoked(indexed uint256,indexed uint256,indexed address)
+          handler: handleVoucherRevokedEvent
+        - event: VoucherCanceled(indexed uint256,indexed uint256,indexed address)
+          handler: handleVoucherCanceledEvent
+        - event: VoucherRedeemed(indexed uint256,indexed uint256,indexed address)
+          handler: handleVoucherRedeemedEvent
+        - event: ExchangeCompleted(indexed uint256,indexed uint256,indexed uint256)
+          handler: handleExchangeCompletedEvent
       file: ./src/mappings/exchange-handler.ts
   - kind: ethereum/contract
     name: BosonFundsHandler
