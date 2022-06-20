@@ -86,6 +86,10 @@ export default function CreateOffer() {
     try {
       const operatorAddress = account || seller?.operator || "";
 
+      setTransaction({
+        status: "awaiting-confirm"
+      });
+
       const txResponse = seller
         ? await coreSDK.createOffer(createOfferArgs)
         : await coreSDK.createSellerAndOffer(
@@ -126,6 +130,10 @@ export default function CreateOffer() {
 
   async function handleTokenApproval() {
     try {
+      setTransaction({
+        status: "awaiting-confirm"
+      });
+
       const txResponse = await coreSDK.approveExchangeToken(
         createOfferArgs.exchangeToken,
         constants.MaxInt256.sub(createOfferArgs.sellerDeposit)
@@ -160,6 +168,10 @@ export default function CreateOffer() {
       if (!seller) {
         return;
       }
+
+      setTransaction({
+        status: "awaiting-confirm"
+      });
 
       const depositAmount = BigNumber.from(
         createOfferArgs.quantityAvailable
@@ -198,7 +210,9 @@ export default function CreateOffer() {
   }
 
   function handleCloseTxModal() {
-    setStage((prevState) => (prevState + 1) % 3);
+    if (transaction.status !== "error") {
+      setStage((prevState) => (prevState + 1) % 3);
+    }
     setTransaction({ status: "idle" });
     reloadCreateOfferData();
   }

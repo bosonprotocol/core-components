@@ -10,6 +10,8 @@ import {
   PrimaryButton,
   SecondaryButton
 } from "../../lib/components/actions/shared-styles";
+import { useCoreSDK } from "../../lib/useCoreSDK";
+import { postRevokedVoucher } from "../../lib/iframe";
 
 interface Props {
   exchange: subgraph.ExchangeFieldsFragment;
@@ -17,35 +19,59 @@ interface Props {
 }
 
 export function SellerActions({ exchange, reloadExchangeData }: Props) {
+  const coreSDK = useCoreSDK();
   const [transaction, setTransaction] = useState<Transaction>({
     status: "idle"
   });
 
   const isCommitted = exchange.state === subgraph.ExchangeState.Committed;
 
+  async function handleRevoke() {
+    try {
+      setTransaction({
+        status: "awaiting-confirm"
+      });
+
+      const txResponse = await coreSDK.revokeVoucher(exchange.id);
+
+      setTransaction({
+        status: "pending",
+        txHash: txResponse.hash
+      });
+
+      await txResponse.wait(1);
+      setTransaction({
+        status: "success",
+        txHash: txResponse.hash,
+        message: "Successfully revoked"
+      });
+      postRevokedVoucher(exchange.id);
+    } catch (error) {
+      setTransaction({
+        status: "error",
+        error: error as Error
+      });
+    }
+  }
+
   return (
     <>
       <Actions>
         {isCommitted && (
-          <SecondaryButton
-            onClick={() => {
-              console.log("revoke voucher"); // TODO: implement
-            }}
-          >
-            Revoke
-          </SecondaryButton>
+          <SecondaryButton onClick={handleRevoke}>Revoke</SecondaryButton>
         )}
         <PrimaryButton
-          onClick={() => {
-            console.log("withdraw voucher"); // TODO: implement
-          }}
+          disabled // TODO: implement
         >
           Withdraw
         </PrimaryButton>
       </Actions>
       <TransactionModal
         transaction={transaction}
-        onClose={() => setTransaction({ status: "idle" })}
+        onClose={() => {
+          setTransaction({ status: "idle" });
+          reloadExchangeData();
+        }}
       />
     </>
   );
