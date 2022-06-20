@@ -25,8 +25,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://boson-widgets-staging.surge.sh",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/actions/runs/2195933699
-      protocolDiamond: "0xcb936f50e21A5Fd16960f67f90b2DC9dA495Ad59"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/2c8f13bb5581638b1b7a573f38fd307537f460ee
+      protocolDiamond: "0x3E2fEC2a45D92f53DB626bdB5553f375aB190367"
     }
   },
   {
