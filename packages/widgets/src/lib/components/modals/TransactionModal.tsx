@@ -7,6 +7,9 @@ export type Transaction =
       status: "idle";
     }
   | {
+      status: "awaiting-confirm";
+    }
+  | {
       status: "pending";
       txHash: string;
     }
@@ -30,8 +33,17 @@ type Props = {
 };
 
 export function TransactionModal({ transaction, onClose }: Props) {
+  if (transaction.status === "awaiting-confirm") {
+    return <TransactionPendingModal status={transaction.status} />;
+  }
+
   if (transaction.status === "pending") {
-    return <TransactionPendingModal txHash={transaction.txHash} />;
+    return (
+      <TransactionPendingModal
+        status={transaction.status}
+        txHash={transaction.txHash}
+      />
+    );
   }
 
   if (transaction.status === "error") {
