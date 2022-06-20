@@ -394,16 +394,19 @@ export enum DisputeResolver_OrderBy {
 export type Exchange = {
   __typename?: "Exchange";
   buyer: Buyer;
+  cancelledDate?: Maybe<Scalars["BigInt"]>;
   committedDate: Scalars["BigInt"];
+  completedDate?: Maybe<Scalars["BigInt"]>;
   disputed: Scalars["Boolean"];
   expired: Scalars["Boolean"];
   finalizedDate?: Maybe<Scalars["BigInt"]>;
   id: Scalars["ID"];
   offer: Offer;
   redeemedDate?: Maybe<Scalars["BigInt"]>;
+  revokedDate?: Maybe<Scalars["BigInt"]>;
   seller: Seller;
   state: ExchangeState;
-  validUntilDate?: Maybe<Scalars["BigInt"]>;
+  validUntilDate: Scalars["BigInt"];
 };
 
 /**
@@ -553,6 +556,14 @@ export type Exchange_Filter = {
   buyer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   buyer_starts_with?: InputMaybe<Scalars["String"]>;
   buyer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  cancelledDate?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  cancelledDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_not?: InputMaybe<Scalars["BigInt"]>;
+  cancelledDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   committedDate?: InputMaybe<Scalars["BigInt"]>;
   committedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   committedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -561,6 +572,14 @@ export type Exchange_Filter = {
   committedDate_lte?: InputMaybe<Scalars["BigInt"]>;
   committedDate_not?: InputMaybe<Scalars["BigInt"]>;
   committedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  completedDate?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  completedDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_not?: InputMaybe<Scalars["BigInt"]>;
+  completedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   disputed?: InputMaybe<Scalars["Boolean"]>;
   disputed_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   disputed_not?: InputMaybe<Scalars["Boolean"]>;
@@ -613,6 +632,14 @@ export type Exchange_Filter = {
   redeemedDate_lte?: InputMaybe<Scalars["BigInt"]>;
   redeemedDate_not?: InputMaybe<Scalars["BigInt"]>;
   redeemedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  revokedDate?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  revokedDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_not?: InputMaybe<Scalars["BigInt"]>;
+  revokedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_contains?: InputMaybe<Scalars["String"]>;
   seller_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -649,13 +676,16 @@ export type Exchange_Filter = {
 
 export enum Exchange_OrderBy {
   Buyer = "buyer",
+  CancelledDate = "cancelledDate",
   CommittedDate = "committedDate",
+  CompletedDate = "completedDate",
   Disputed = "disputed",
   Expired = "expired",
   FinalizedDate = "finalizedDate",
   Id = "id",
   Offer = "offer",
   RedeemedDate = "redeemedDate",
+  RevokedDate = "revokedDate",
   Seller = "seller",
   State = "state",
   ValidUntilDate = "validUntilDate"
@@ -2364,8 +2394,10 @@ export type GetSellerByIdQueryQuery = {
       state: ExchangeState;
       committedDate: string;
       finalizedDate?: string | null;
-      validUntilDate?: string | null;
+      validUntilDate: string;
       redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
       expired: boolean;
     }>;
   } | null;
@@ -2483,8 +2515,10 @@ export type GetSellersQueryQuery = {
       state: ExchangeState;
       committedDate: string;
       finalizedDate?: string | null;
-      validUntilDate?: string | null;
+      validUntilDate: string;
       redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
       expired: boolean;
     }>;
   }>;
@@ -2574,8 +2608,10 @@ export type SellerFieldsFragment = {
     state: ExchangeState;
     committedDate: string;
     finalizedDate?: string | null;
-    validUntilDate?: string | null;
+    validUntilDate: string;
     redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
     expired: boolean;
   }>;
 };
@@ -2610,8 +2646,10 @@ export type GetExchangeByIdQueryQuery = {
     state: ExchangeState;
     committedDate: string;
     finalizedDate?: string | null;
-    validUntilDate?: string | null;
+    validUntilDate: string;
     redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2704,8 +2742,10 @@ export type GetExchangesQueryQuery = {
     state: ExchangeState;
     committedDate: string;
     finalizedDate?: string | null;
-    validUntilDate?: string | null;
+    validUntilDate: string;
     redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2788,8 +2828,10 @@ export type ExchangeFieldsFragment = {
   state: ExchangeState;
   committedDate: string;
   finalizedDate?: string | null;
-  validUntilDate?: string | null;
+  validUntilDate: string;
   redeemedDate?: string | null;
+  revokedDate?: string | null;
+  cancelledDate?: string | null;
   expired: boolean;
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
   seller: {
@@ -2866,8 +2908,10 @@ export type BaseExchangeFieldsFragment = {
   state: ExchangeState;
   committedDate: string;
   finalizedDate?: string | null;
-  validUntilDate?: string | null;
+  validUntilDate: string;
   redeemedDate?: string | null;
+  revokedDate?: string | null;
+  cancelledDate?: string | null;
   expired: boolean;
 };
 
@@ -2971,8 +3015,10 @@ export type GetOfferByIdQueryQuery = {
       state: ExchangeState;
       committedDate: string;
       finalizedDate?: string | null;
-      validUntilDate?: string | null;
+      validUntilDate: string;
       redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3056,8 +3102,10 @@ export type GetOffersQueryQuery = {
       state: ExchangeState;
       committedDate: string;
       finalizedDate?: string | null;
-      validUntilDate?: string | null;
+      validUntilDate: string;
       redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3125,8 +3173,10 @@ export type OfferFieldsFragment = {
     state: ExchangeState;
     committedDate: string;
     finalizedDate?: string | null;
-    validUntilDate?: string | null;
+    validUntilDate: string;
     redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
     expired: boolean;
   }>;
   seller: {
@@ -3294,6 +3344,8 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     finalizedDate
     validUntilDate
     redeemedDate
+    revokedDate
+    cancelledDate
     expired
   }
 `;

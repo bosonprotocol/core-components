@@ -25,7 +25,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     offer.save();
 
     exchange.seller = offer.seller;
-    exchange.validUntilDate = offer.voucherRedeemableUntilDate;
+    exchange.validUntilDate = exchangeFromEvent.voucher.validUntilDate;
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();
