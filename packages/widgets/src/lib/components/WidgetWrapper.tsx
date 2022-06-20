@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { SpinnerCircular } from "spinners-react";
 
-import { closeWidget } from "../closeWidget";
+import { postCloseWidget } from "../iframe";
 import { colors } from "../colors";
 import { hooks } from "../connectors/metamask";
 import { connectWallet } from "../connectWallet";
@@ -49,7 +49,7 @@ export function WidgetWrapper(props: Props) {
   if (props.loadingStatus === "error") {
     return (
       <WidgetLayout>
-        <ErrorModal error={props.error} onClose={closeWidget} />
+        <ErrorModal error={props.error} onClose={postCloseWidget} />
       </WidgetLayout>
     );
   }

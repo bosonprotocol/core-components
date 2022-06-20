@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { closeWidget } from "../../closeWidget";
+import { postCloseWidget } from "../../iframe";
 import { colors } from "../../colors";
 import { ReactComponent as Logo } from "./logo.svg";
 
@@ -89,7 +89,7 @@ export function WidgetLayout(props: Props) {
   return (
     <Root>
       {!props.hideCloseButton && (
-        <CloseButton onClick={closeWidget}>
+        <CloseButton onClick={postCloseWidget}>
           <CloseIcon />
         </CloseButton>
       )}
