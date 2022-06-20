@@ -31,6 +31,10 @@ export function SellerActions({ offer, reloadOfferData }: Props) {
 
   async function handleVoid() {
     try {
+      setTransaction({
+        status: "awaiting-confirm"
+      });
+
       const txResponse = await coreSDK.voidOffer(offer.id);
 
       setTransaction({
@@ -67,7 +71,9 @@ export function SellerActions({ offer, reloadOfferData }: Props) {
         {voidOfferAvailable && (
           <SecondaryButton onClick={handleVoid}>Void Offer</SecondaryButton>
         )}
-        <PrimaryButton onClick={handleWithdraw}>Withdraw</PrimaryButton>
+        <PrimaryButton disabled onClick={handleWithdraw}>
+          Withdraw
+        </PrimaryButton>
       </Actions>
       <TransactionModal
         transaction={transaction}

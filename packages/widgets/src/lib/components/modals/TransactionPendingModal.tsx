@@ -4,15 +4,24 @@ import { Title, Label, Value, Center } from "./shared-styles";
 import { colors } from "../../colors";
 
 interface Props {
-  txHash: string;
+  status: "awaiting-confirm" | "pending";
+  txHash?: string;
 }
 
-export function TransactionPendingModal({ txHash }: Props) {
+export function TransactionPendingModal({ status, txHash }: Props) {
   return (
     <Modal>
-      <Title>Transaction Processing</Title>
-      <Label>Tx Hash</Label>
-      <Value>{txHash}</Value>
+      <Title>
+        {status === "awaiting-confirm"
+          ? "Awaiting User Confirmation"
+          : "Transaction Processing"}
+      </Title>
+      {txHash && (
+        <>
+          <Label>Tx Hash</Label>
+          <Value>{txHash}</Value>
+        </>
+      )}
       <Center>
         <SpinnerCircular className="" size={80} color={colors.neonGreen} />
       </Center>

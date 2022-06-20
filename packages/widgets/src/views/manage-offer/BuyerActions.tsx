@@ -10,7 +10,7 @@ import {
   Actions,
   PrimaryButton
 } from "../../lib/components/actions/shared-styles";
-import { createdExchange } from "../../lib/createdExchange";
+import { postCreatedExchange } from "../../lib/iframe";
 
 const CommitButton = styled(PrimaryButton)`
   width: 100%;
@@ -46,6 +46,10 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
 
   async function handleCommit() {
     try {
+      setTransaction({
+        status: "awaiting-confirm"
+      });
+
       const txResponse = await coreSDK.commitToOffer(offer.id);
 
       setTransaction({
@@ -53,7 +57,7 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
         txHash: txResponse.hash
       });
 
-      const txReceipt = await txResponse.wait(2);
+      const txReceipt = await txResponse.wait(1);
       const exchangeId = coreSDK.getCommittedExchangeIdFromLogs(txReceipt.logs);
 
       reloadOfferData();
@@ -65,7 +69,7 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
           value: exchangeId || ""
         }
       });
-      createdExchange(exchangeId || "");
+      postCreatedExchange(exchangeId || "");
     } catch (e) {
       setTransaction({
         status: "error",
