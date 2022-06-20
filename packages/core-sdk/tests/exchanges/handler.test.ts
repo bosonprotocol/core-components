@@ -23,7 +23,7 @@ describe("#commitToOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" does not exist`);
+    ).rejects.toThrow(/not exist/);
   });
 
   test("throw if offer already voided", async () => {
@@ -43,7 +43,7 @@ describe("#commitToOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" has been voided`);
+    ).rejects.toThrow(/voided/);
   });
 
   test("throw if offer is not valid yet", async () => {
@@ -63,7 +63,7 @@ describe("#commitToOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" is not valid yet`);
+    ).rejects.toThrow(/not valid/);
   });
 
   test("throw if offer is not valid anymore", async () => {
@@ -83,7 +83,7 @@ describe("#commitToOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" is not valid anymore`);
+    ).rejects.toThrow(/not valid/);
   });
 
   test("throw if offer is sold out", async () => {
@@ -103,7 +103,7 @@ describe("#commitToOffer()", () => {
         offerId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(`Offer with id "1" is sold out`);
+    ).rejects.toThrow(/sold out/);
   });
 
   test("return tx response", async () => {
