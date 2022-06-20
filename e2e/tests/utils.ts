@@ -83,7 +83,7 @@ async function createFundedWallet(
     value: utils.parseEther(fundAmountInEth),
     to: fundedWallet.address
   });
-  fundingTx.wait();
+  await fundingTx.wait();
 
   return fundedWallet;
 }

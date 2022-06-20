@@ -224,8 +224,6 @@ async function commitToOffer(args: {
     commitToOfferTxReceipt.logs
   );
 
-  expect(exchangeId).toBeTruthy();
-
   await waitForGraphNodeIndexing();
   const exchange = await args.sellerCoreSDK.getExchangeById(
     exchangeId as string
