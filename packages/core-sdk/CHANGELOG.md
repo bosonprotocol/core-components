@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.5.0...@bosonprotocol/core-sdk@1.6.0) (2022-06-20)
+
+### Bug Fixes
+
+* **core-sdk:** gql import from graphql-request ([#113](https://github.com/bosonprotocol/core-components/issues/113)) ([4ac3624](https://github.com/bosonprotocol/core-components/commit/4ac362470729b67c82f395ac55cd95eef37ec65d))
+
+### Features
+
+* **core-sdk:** expose typed subgraph query helpers ([#118](https://github.com/bosonprotocol/core-components/issues/118)) ([f2e2945](https://github.com/bosonprotocol/core-components/commit/f2e294589c27d51528b98090a89f3d532f862723))
+* revoke, cancel and redeem ([#120](https://github.com/bosonprotocol/core-components/issues/120)) ([c1612cb](https://github.com/bosonprotocol/core-components/commit/c1612cb7eb27f3a1071b8414d4e6f16d7a03f062))
+* rudimentary deposit funds in widgets ([#110](https://github.com/bosonprotocol/core-components/issues/110)) ([2913068](https://github.com/bosonprotocol/core-components/commit/2913068026c0f8875485ed1c07cfbafd691c4e55))
+* rudimentary funds handler support ([#108](https://github.com/bosonprotocol/core-components/issues/108)) ([76b7336](https://github.com/bosonprotocol/core-components/commit/76b733615598034b4787eff50b75a5de5b366f53))
+* update create offer flow to new contracts ([#107](https://github.com/bosonprotocol/core-components/issues/107)) ([f5934a1](https://github.com/bosonprotocol/core-components/commit/f5934a18968d2a70fe0a3a3ffdf08cb785d1f63e))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.4.1...@bosonprotocol/core-sdk@1.5.0) (2022-06-09)
 
 ### Features

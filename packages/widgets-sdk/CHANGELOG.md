@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.5.0...@bosonprotocol/widgets-sdk@1.6.0) (2022-06-20)
+
+### Bug Fixes
+
+* add exchangeId query param in the manage-offer widget if it's truthy only ([#104](https://github.com/bosonprotocol/core-components/issues/104)) ([cc6c75a](https://github.com/bosonprotocol/core-components/commit/cc6c75a018a2d6b37d91ce8e5cbc60137bc3dd33))
+
+### Features
+
+* update create offer flow to new contracts ([#107](https://github.com/bosonprotocol/core-components/issues/107)) ([f5934a1](https://github.com/bosonprotocol/core-components/commit/f5934a18968d2a70fe0a3a3ffdf08cb785d1f63e))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.4.0...@bosonprotocol/widgets-sdk@1.5.0) (2022-06-09)
 
 ### Features

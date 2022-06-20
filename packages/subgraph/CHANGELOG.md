@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.4.0...@bosonprotocol/subgraph@1.5.0) (2022-06-20)
+
+### Features
+
+* revoke, cancel and redeem ([#120](https://github.com/bosonprotocol/core-components/issues/120)) ([c1612cb](https://github.com/bosonprotocol/core-components/commit/c1612cb7eb27f3a1071b8414d4e6f16d7a03f062))
+* rudimentary deposit funds in widgets ([#110](https://github.com/bosonprotocol/core-components/issues/110)) ([2913068](https://github.com/bosonprotocol/core-components/commit/2913068026c0f8875485ed1c07cfbafd691c4e55))
+* rudimentary funds handler support ([#108](https://github.com/bosonprotocol/core-components/issues/108)) ([76b7336](https://github.com/bosonprotocol/core-components/commit/76b733615598034b4787eff50b75a5de5b366f53))
+* update create offer flow to new contracts ([#107](https://github.com/bosonprotocol/core-components/issues/107)) ([f5934a1](https://github.com/bosonprotocol/core-components/commit/f5934a18968d2a70fe0a3a3ffdf08cb785d1f63e))
+
 # [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.3.0...@bosonprotocol/subgraph@1.4.0) (2022-06-09)
 
 ### Features

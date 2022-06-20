@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.4.1...@bosonprotocol/ipfs-storage@1.5.0) (2022-06-20)
+
+### Features
+
+* update create offer flow to new contracts ([#107](https://github.com/bosonprotocol/core-components/issues/107)) ([f5934a1](https://github.com/bosonprotocol/core-components/commit/f5934a18968d2a70fe0a3a3ffdf08cb785d1f63e))
+
 ## [1.4.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.4.0...@bosonprotocol/ipfs-storage@1.4.1) (2022-05-27)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

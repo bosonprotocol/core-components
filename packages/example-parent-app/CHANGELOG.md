@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.8.0...@bosonprotocol/example-parent-app@1.9.0) (2022-06-20)
+
+### Features
+
+* add both buyer/seller views in manage-offer & disable redeem button if the exchange is not redeemable & disable commit button if offer is not yet valid ([#119](https://github.com/bosonprotocol/core-components/issues/119)) ([089d047](https://github.com/bosonprotocol/core-components/commit/089d047d1a2440fcd75c278aa211c5cc7e90671a))
+* **core-sdk:** expose typed subgraph query helpers ([#118](https://github.com/bosonprotocol/core-components/issues/118)) ([f2e2945](https://github.com/bosonprotocol/core-components/commit/f2e294589c27d51528b98090a89f3d532f862723))
+* update create offer flow to new contracts ([#107](https://github.com/bosonprotocol/core-components/issues/107)) ([f5934a1](https://github.com/bosonprotocol/core-components/commit/f5934a18968d2a70fe0a3a3ffdf08cb785d1f63e))
+* **widgets:** explicit deposit funds step ([#114](https://github.com/bosonprotocol/core-components/issues/114)) ([c95fd89](https://github.com/bosonprotocol/core-components/commit/c95fd893a4aa86569ce621b03f80af7db58eecc2))
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.7.0...@bosonprotocol/example-parent-app@1.8.0) (2022-06-09)
 
 ### Features
