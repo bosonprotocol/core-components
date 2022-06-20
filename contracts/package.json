@@ -2,6 +2,7 @@
   "name": "hardhat-project",
   "scripts": {
     "deploy": "hardhat run ./scripts/deploy.js --network localhost",
+    "deploy:ropsten": "hardhat run ./scripts/deploy.js --network ropsten",
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
@@ -10,6 +11,7 @@
     "@openzeppelin/contracts": "^4.6.0",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
     "chai": "^4.3.6",
+    "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.8",
     "hardhat": "^2.9.7",

@@ -1,6 +1,7 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const { task } = require("hardhat/config");
 const { ACCOUNTS } = require("./accounts");
+require("dotenv").config();
 
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-abi-exporter");
@@ -38,6 +39,11 @@ module.exports = {
     localhost: {
       chainId: 31337,
       accounts: ACCOUNTS.map(({ privateKey }) => privateKey)
+    },
+    ropsten: {
+      chainId: 3,
+      accounts: [process.env.DEPLOYER_PK],
+      url: process.env.JSON_RPC_URL
     }
   },
   paths: {
