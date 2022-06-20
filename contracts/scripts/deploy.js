@@ -23,6 +23,10 @@ const {
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
 
 function getConfig() {
+  const bosonTokenMap = {
+    ropsten: "0xf47e4fd9d2ebd6182f597ee12e487cca37fc524c"
+  };
+
   const feePercentage = "150"; // 1.5%  = 150
   const maxOffersPerGroup = "100";
   const maxTwinsPerBundle = "100";
@@ -31,6 +35,7 @@ function getConfig() {
   const maxTokensPerWithdrawal = "100";
 
   return {
+    bosonTokenAddress: bosonTokenMap[hre.network.name],
     gasLimit: "20000000",
     treasuryAddress: ethers.constants.AddressZero,
     voucherAddress: ethers.constants.AddressZero,
@@ -87,9 +92,14 @@ async function main() {
   );
   console.log(divider);
 
-  console.log(`\n💎 Deploying mock tokens...`);
-  const [mockBosonToken] = await deployMockTokens(config.gasLimit);
-  deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
+  let bosonTokenAddress = config.bosonTokenAddress;
+
+  if (hre.network.name === "localhost") {
+    console.log(`\n💎 Deploying mock tokens...`);
+    const [mockBosonToken] = await deployMockTokens(config.gasLimit);
+    deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
+    bosonTokenAddress = mockBosonToken.address;
+  }
 
   console.log(
     `\n💎 Deploying AccessController, ProtocolDiamond, and Diamond utility facets...`
@@ -120,7 +130,7 @@ async function main() {
 
   // Cut the ConfigHandlerFacet facet into the Diamond
   const protocolConfig = [
-    mockBosonToken.address,
+    bosonTokenAddress,
     config.treasuryAddress,
     config.voucherAddress,
     config.feePercentage,
