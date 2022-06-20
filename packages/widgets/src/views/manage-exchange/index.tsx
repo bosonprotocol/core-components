@@ -53,7 +53,6 @@ export default function ManageExchange() {
         </Entry>
       </Row>
       <OfferDetails
-        name={offerName}
         protocolFeeInWei={offer.protocolFee}
         currencySymbol={offer.exchangeToken.symbol}
         priceInWei={offer.price}
@@ -64,9 +63,7 @@ export default function ManageExchange() {
         voucherRedeemableFromDateInMS={
           Number(offer.voucherRedeemableFromDate) * 1000
         }
-        voucherRedeemableUntilDateInMS={
-          Number(offer.voucherRedeemableUntilDate) * 1000
-        }
+        voucherRedeemableUntilDateInMS={Number(exchange.validUntilDate) * 1000}
         fulfillmentPeriodInMS={offer.fulfillmentPeriodDuration}
         resolutionPeriodInMS={offer.resolutionPeriodDuration}
         metadataUri={offer.metadataUri}
