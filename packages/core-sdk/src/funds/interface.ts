@@ -15,3 +15,15 @@ export function encodeDepositFunds(
     amount
   ]);
 }
+
+export function encodeWithdrawFunds(
+  sellerId: BigNumberish,
+  tokensToWithdraw: Array<string>,
+  amountsToWithdraw: Array<BigNumberish>
+) {
+  return bosonFundsHandlerIface.encodeFunctionData("withdrawFunds", [
+    sellerId,
+    tokensToWithdraw,
+    amountsToWithdraw
+  ]);
+}

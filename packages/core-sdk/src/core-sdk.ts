@@ -305,6 +305,20 @@ export class CoreSDK {
     return funds.subgraph.getFunds(this._subgraphUrl, queryVars);
   }
 
+  public async withdrawFunds(
+    sellerId: BigNumberish,
+    tokensToWithdraw: Array<string>,
+    amountsToWithdraw: Array<BigNumberish>
+  ): Promise<TransactionResponse> {
+    return funds.handler.withdrawFunds({
+      sellerId,
+      tokensToWithdraw,
+      amountsToWithdraw,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
   public async getExchangeById(
     exchangeId: BigNumberish,
     queryVars?: subgraph.GetExchangeByIdQueryQueryVariables

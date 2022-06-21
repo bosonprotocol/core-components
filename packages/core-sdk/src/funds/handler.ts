@@ -2,7 +2,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
-import { encodeDepositFunds } from "./interface";
+import { encodeDepositFunds, encodeWithdrawFunds } from "./interface";
 
 export async function depositFunds(args: {
   sellerId: BigNumberish;
@@ -27,5 +27,22 @@ export async function depositFunds(args: {
       args.fundsAmount
     ),
     value: isNativeCoin ? args.fundsAmount : "0"
+  });
+}
+
+export async function withdrawFunds(args: {
+  sellerId: BigNumberish;
+  tokensToWithdraw: Array<string>;
+  amountsToWithdraw: Array<BigNumberish>;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeWithdrawFunds(
+      args.sellerId,
+      args.tokensToWithdraw,
+      args.amountsToWithdraw
+    )
   });
 }
