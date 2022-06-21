@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.8.0...@bosonprotocol/widgets@1.8.1) (2022-06-21)
+
+### Bug Fixes
+
+* disable state on redeem button in manage-exchange ([#123](https://github.com/bosonprotocol/core-components/issues/123)) ([fb18599](https://github.com/bosonprotocol/core-components/commit/fb185998cd02fd959fbaebc25988d7f7a3ddfe6c))
+* **widgets:** exchange state ([#124](https://github.com/bosonprotocol/core-components/issues/124)) ([89ad32d](https://github.com/bosonprotocol/core-components/commit/89ad32dcee0415b5619e9e4e1bda4d6248ca3215))
+* **widgets:** seller action on exchange view ([#126](https://github.com/bosonprotocol/core-components/issues/126)) ([fa13fac](https://github.com/bosonprotocol/core-components/commit/fa13face5f9c98e935f56d8ddcec1d8dffd5420f))
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.7.0...@bosonprotocol/widgets@1.8.0) (2022-06-20)
 
 ### Features
