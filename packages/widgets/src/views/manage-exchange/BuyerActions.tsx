@@ -129,7 +129,7 @@ function isRedeemDisabled(exchange: subgraph.ExchangeFieldsFragment) {
 
   const isRedeemable =
     exchangeStatus === subgraph.ExchangeState.Committed &&
-    Number(exchange.validUntilDate) * 1000 < Date.now();
+    Number(exchange.validUntilDate) * 1000 > Date.now();
 
   return !isRedeemable;
 }
