@@ -156,6 +156,42 @@ describe("core-sdk", () => {
       expect(exchangeAfterRevoke.state).toBe(ExchangeState.Redeemed);
       expect(exchangeAfterRevoke.redeemedDate).toBeTruthy();
     });
+
+    test("withdraw funds", async () => {
+      const sellerFundsDepositInEth = "5";
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const createdOffer = await createSellerAndOffer(
+        coreSDK,
+        fundedWallet.address
+      );
+
+      const funds = await depositFunds({
+        coreSDK,
+        fundsDepositAmountInEth: sellerFundsDepositInEth,
+        sellerId: createdOffer.seller.id
+      });
+      expect(funds.availableAmount).toEqual(utils.parseEther(sellerFundsDepositInEth).toString());
+
+      const tokenAddress = funds.token.address;
+
+      const withdrawResponse = await coreSDK.withdrawFunds(
+        createdOffer.seller.id,
+        [tokenAddress],
+        [utils.parseEther(sellerFundsDepositInEth)]
+      );
+      const txR = await withdrawResponse.wait();
+      console.log(txR);
+
+      await waitForGraphNodeIndexing();
+      const updatedFunds = await coreSDK.getFunds({
+        fundsFilter: {
+          accountId: createdOffer.seller.id,
+          token: constants.AddressZero
+        }
+      });
+
+      expect(updatedFunds[0].availableAmount).toEqual("0");
+    });
   });
 });
 
