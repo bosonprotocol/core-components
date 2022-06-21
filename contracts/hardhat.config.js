@@ -16,8 +16,9 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
+const accountsFromEnv = process.env.DEPLOYER_PK
+  ? [process.env.DEPLOYER_PK]
+  : [];
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -42,8 +43,8 @@ module.exports = {
     },
     ropsten: {
       chainId: 3,
-      accounts: [process.env.DEPLOYER_PK],
-      url: process.env.JSON_RPC_URL
+      accounts: accountsFromEnv,
+      url: process.env.JSON_RPC_URL || ""
     }
   },
   paths: {
