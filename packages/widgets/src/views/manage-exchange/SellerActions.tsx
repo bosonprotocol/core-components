@@ -1,6 +1,6 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
-
+import styled from "styled-components";
 import {
   TransactionModal,
   Transaction
@@ -12,6 +12,23 @@ import {
 } from "../../lib/components/actions/shared-styles";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { postRevokedVoucher } from "../../lib/iframe";
+import { getExchangeState } from "../../lib/exchanges";
+
+const RevokeButton = styled(SecondaryButton)`
+  width: 50%;
+
+  &[disabled] {
+    opacity: 0.2;
+  }
+`;
+
+const WithdrawButton = styled(PrimaryButton)`
+  width: 50%;
+
+  &[disabled] {
+    opacity: 0.2;
+  }
+`;
 
 interface Props {
   exchange: subgraph.ExchangeFieldsFragment;
@@ -24,7 +41,8 @@ export function SellerActions({ exchange, reloadExchangeData }: Props) {
     status: "idle"
   });
 
-  const isCommitted = exchange.state === subgraph.ExchangeState.Committed;
+  const exchangeState = getExchangeState(exchange);
+  const isCommitted = exchangeState === subgraph.ExchangeState.Committed;
 
   async function handleRevoke() {
     try {
@@ -57,14 +75,14 @@ export function SellerActions({ exchange, reloadExchangeData }: Props) {
   return (
     <>
       <Actions>
-        {isCommitted && (
-          <SecondaryButton onClick={handleRevoke}>Revoke</SecondaryButton>
-        )}
-        <PrimaryButton
+        <RevokeButton disabled={!isCommitted} onClick={handleRevoke}>
+          Revoke
+        </RevokeButton>
+        <WithdrawButton
           disabled // TODO: implement
         >
           Withdraw
-        </PrimaryButton>
+        </WithdrawButton>
       </Actions>
       <TransactionModal
         transaction={transaction}
