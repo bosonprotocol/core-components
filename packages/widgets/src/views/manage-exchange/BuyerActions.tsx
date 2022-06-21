@@ -12,6 +12,7 @@ import {
 } from "../../lib/components/actions/shared-styles";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { postCancelledVoucher, postRedeemedVoucher } from "../../lib/iframe";
+import { getExchangeState } from "../../lib/exchanges";
 
 const RedeemButton = styled(PrimaryButton)`
   width: 50%;
@@ -30,16 +31,18 @@ const CancelButton = styled(SecondaryButton)`
 `;
 
 interface Props {
-  offer: subgraph.OfferFieldsFragment;
   exchange: subgraph.ExchangeFieldsFragment;
   reloadExchangeData: () => void;
 }
 
-export function BuyerActions({ offer, exchange, reloadExchangeData }: Props) {
+export function BuyerActions({ exchange, reloadExchangeData }: Props) {
   const coreSDK = useCoreSDK();
   const [transaction, setTransaction] = useState<Transaction>({
     status: "idle"
   });
+
+  const exchangeState = getExchangeState(exchange);
+  const isCommitted = exchangeState === subgraph.ExchangeState.Committed;
 
   async function handleCancel() {
     try {
@@ -100,16 +103,10 @@ export function BuyerActions({ offer, exchange, reloadExchangeData }: Props) {
   return (
     <>
       <Actions>
-        <CancelButton
-          disabled={isCancelDisabled(exchange)}
-          onClick={handleCancel}
-        >
+        <CancelButton disabled={!isCommitted} onClick={handleCancel}>
           Cancel
         </CancelButton>
-        <RedeemButton
-          disabled={isRedeemDisabled(exchange)}
-          onClick={handleRedeem}
-        >
+        <RedeemButton disabled={!isCommitted} onClick={handleRedeem}>
           Redeem
         </RedeemButton>
       </Actions>
@@ -122,18 +119,4 @@ export function BuyerActions({ offer, exchange, reloadExchangeData }: Props) {
       />
     </>
   );
-}
-
-function isRedeemDisabled(exchange: subgraph.ExchangeFieldsFragment) {
-  const exchangeStatus = exchange.state;
-
-  const isRedeemable =
-    exchangeStatus === subgraph.ExchangeState.Committed &&
-    Number(exchange.validUntilDate) * 1000 > Date.now();
-
-  return !isRedeemable;
-}
-
-function isCancelDisabled(exchange: subgraph.ExchangeFieldsFragment) {
-  return exchange.state !== subgraph.ExchangeState.Committed;
 }
