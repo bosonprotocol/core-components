@@ -2,7 +2,11 @@ import { utils, constants, BigNumberish } from "ethers";
 
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
-import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
+import {
+  ExchangeState,
+  FundsEntityFieldsFragment,
+  OfferFieldsFragment
+} from "../../packages/core-sdk/src/subgraph";
 
 import {
   initCoreSDKWithFundedWallet,
@@ -170,27 +174,20 @@ describe("core-sdk", () => {
         fundsDepositAmountInEth: sellerFundsDepositInEth,
         sellerId: createdOffer.seller.id
       });
-      expect(funds.availableAmount).toEqual(utils.parseEther(sellerFundsDepositInEth).toString());
+      expect(funds.availableAmount).toEqual(
+        utils.parseEther(sellerFundsDepositInEth).toString()
+      );
 
       const tokenAddress = funds.token.address;
 
-      const withdrawResponse = await coreSDK.withdrawFunds(
-        createdOffer.seller.id,
-        [tokenAddress],
-        [utils.parseEther(sellerFundsDepositInEth)]
-      );
-      const txR = await withdrawResponse.wait();
-      console.log(txR);
-
-      await waitForGraphNodeIndexing();
-      const updatedFunds = await coreSDK.getFunds({
-        fundsFilter: {
-          accountId: createdOffer.seller.id,
-          token: constants.AddressZero
-        }
+      const updatedFunds = await withdrawFunds({
+        coreSDK,
+        sellerId: createdOffer.seller.id,
+        tokenAddress,
+        sellerFundsDepositInEth
       });
 
-      expect(updatedFunds[0].availableAmount).toEqual("0");
+      expect(updatedFunds.availableAmount).toEqual("0");
     });
   });
 });
@@ -229,7 +226,7 @@ async function depositFunds(args: {
   coreSDK: CoreSDK;
   sellerId: string;
   fundsDepositAmountInEth?: string;
-}) {
+}): Promise<FundsEntityFieldsFragment> {
   const depositFundsTxResponse = await args.coreSDK.depositFunds(
     args.sellerId,
     utils.parseEther(args.fundsDepositAmountInEth || "5")
@@ -237,6 +234,30 @@ async function depositFunds(args: {
   await depositFundsTxResponse.wait();
 
   await waitForGraphNodeIndexing();
+  const funds = await args.coreSDK.getFunds({
+    fundsFilter: {
+      accountId: args.sellerId,
+      token: constants.AddressZero
+    }
+  });
+
+  return funds[0];
+}
+
+async function withdrawFunds(args: {
+  coreSDK: CoreSDK;
+  sellerId: string;
+  tokenAddress: string;
+  sellerFundsDepositInEth: string;
+}): Promise<FundsEntityFieldsFragment> {
+  const withdrawResponse = await args.coreSDK.withdrawFunds(
+    args.sellerId,
+    [args.tokenAddress],
+    [utils.parseEther(args.sellerFundsDepositInEth)]
+  );
+  await withdrawResponse.wait();
+  await waitForGraphNodeIndexing();
+
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {
       accountId: args.sellerId,
