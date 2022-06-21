@@ -14,6 +14,7 @@ import { BuyerActions } from "./BuyerActions";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 import { isAccountSeller } from "../../lib/seller";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
+import { getExchangeState } from "../../lib/exchanges";
 
 export default function ManageExchange() {
   const { forceBuyerView, exchangeId } = getURLParams();
@@ -39,6 +40,7 @@ export default function ManageExchange() {
   const { offer } = exchange;
 
   const offerName = offer.metadata?.name || "";
+  const exchangeState = getExchangeState(exchange);
 
   return (
     <WidgetWrapper title="Exchange" offerName={offerName} hideCloseButton>
@@ -49,7 +51,7 @@ export default function ManageExchange() {
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{exchange.state}</Value>
+          <Value>{exchangeState}</Value>
         </Entry>
       </Row>
       <OfferDetails
@@ -72,7 +74,6 @@ export default function ManageExchange() {
       <ActionsWrapper
         BuyerActions={
           <BuyerActions
-            offer={offer}
             exchange={exchange}
             reloadExchangeData={reloadExchangeData}
           />
