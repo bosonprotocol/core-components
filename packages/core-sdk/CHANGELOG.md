@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.6.0...@bosonprotocol/core-sdk@1.7.0) (2022-06-22)
+
+### Features
+
+* rudimentary withdraw funds logic ([#127](https://github.com/bosonprotocol/core-components/issues/127)) ([47d6a0f](https://github.com/bosonprotocol/core-components/commit/47d6a0fc0f281b8fcf96532cfdbec75d0dcac69f))
+
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.5.0...@bosonprotocol/core-sdk@1.6.0) (2022-06-20)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.8.1...@bosonprotocol/widgets@1.9.0) (2022-06-22)
+
+### Features
+
+* remove valid from/until fields in manage-exchange widget ([#128](https://github.com/bosonprotocol/core-components/issues/128)) ([a3c3849](https://github.com/bosonprotocol/core-components/commit/a3c3849c44a10402a2e59ceb99cb36f55fe197ef))
+
 ## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.8.0...@bosonprotocol/widgets@1.8.1) (2022-06-21)
 
 ### Bug Fixes

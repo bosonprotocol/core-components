@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.9.0...@bosonprotocol/example-parent-app@1.9.1) (2022-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/example-parent-app
+
 # [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/example-parent-app@1.8.0...@bosonprotocol/example-parent-app@1.9.0) (2022-06-20)
 
 ### Features
