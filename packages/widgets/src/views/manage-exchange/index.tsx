@@ -11,7 +11,7 @@ import { SellerActions } from "./SellerActions";
 import { useManageExchangeData } from "./useManageExchangeData";
 import { hooks } from "../../lib/connectors/metamask";
 import { BuyerActions } from "./BuyerActions";
-import { OfferDetails } from "../../lib/components/details/OfferDetails";
+import { ExchangeDetails } from "../../lib/components/details/ExchangeDetails";
 import { isAccountSeller } from "../../lib/seller";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
 import { getExchangeState } from "../../lib/exchanges";
@@ -54,14 +54,12 @@ export default function ManageExchange() {
           <Value>{exchangeState}</Value>
         </Entry>
       </Row>
-      <OfferDetails
+      <ExchangeDetails
         protocolFeeInWei={offer.protocolFee}
         currencySymbol={offer.exchangeToken.symbol}
         priceInWei={offer.price}
         buyerCancelPenaltyInWei={offer.buyerCancelPenalty}
         sellerDepositInWei={offer.sellerDeposit}
-        validFromDateInMS={Number(offer.validFromDate) * 1000}
-        validUntilDateInMS={Number(offer.validUntilDate) * 1000}
         voucherRedeemableFromDateInMS={
           Number(offer.voucherRedeemableFromDate) * 1000
         }
