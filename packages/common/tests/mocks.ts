@@ -8,7 +8,8 @@ import {
   AnyMetadata,
   CreateOfferArgs,
   OfferDatesStruct,
-  OfferDurationsStruct
+  OfferDurationsStruct,
+  TransactionRequest
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -109,6 +110,8 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
 export class MockWeb3LibAdapter implements Web3LibAdapter {
   private _returnValues: MockedWeb3LibReturnValues;
 
+  sendTransactionArgs: Array<TransactionRequest> = [];
+
   constructor(returnValues: Partial<MockedWeb3LibReturnValues> = {}) {
     this._returnValues = {
       ...defaultMockedReturnValues,
@@ -128,7 +131,8 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
     return this._returnValues.getBalance;
   }
 
-  async sendTransaction() {
+  async sendTransaction(args: TransactionRequest) {
+    this.sendTransactionArgs.push(args);
     return this._returnValues.sendTransaction;
   }
 

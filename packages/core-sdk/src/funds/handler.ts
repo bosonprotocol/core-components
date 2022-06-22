@@ -3,6 +3,7 @@ import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
 import { encodeDepositFunds, encodeWithdrawFunds } from "./interface";
+import { getFunds } from "./subgraph";
 
 export async function depositFunds(args: {
   sellerId: BigNumberish;
@@ -43,6 +44,40 @@ export async function withdrawFunds(args: {
       args.sellerId,
       args.tokensToWithdraw,
       args.amountsToWithdraw
+    )
+  });
+}
+
+export async function withdrawAllAvailableFunds(args: {
+  sellerId: BigNumberish;
+  subgraphUrl: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  const funds = await getFunds(args.subgraphUrl, {
+    fundsFilter: {
+      accountId: args.sellerId.toString()
+    }
+  });
+
+  const { tokensToWithdraw, amountsToWithdraw } = funds.reduce(
+    (acc, fund) => {
+      acc.tokensToWithdraw.push(fund.token.address);
+      acc.amountsToWithdraw.push(fund.availableAmount);
+      return acc;
+    },
+    {
+      tokensToWithdraw: [],
+      amountsToWithdraw: []
+    }
+  );
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeWithdrawFunds(
+      args.sellerId,
+      tokensToWithdraw,
+      amountsToWithdraw
     )
   });
 }
