@@ -1,4 +1,4 @@
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
 import styled from "styled-components";
 import {
@@ -12,7 +12,6 @@ import {
 } from "../../lib/components/actions/shared-styles";
 import { useCoreSDK } from "../../lib/useCoreSDK";
 import { postCancelledVoucher, postRedeemedVoucher } from "../../lib/iframe";
-import { getExchangeState } from "../../lib/exchanges";
 
 const RedeemButton = styled(PrimaryButton)`
   width: 50%;
@@ -41,7 +40,7 @@ export function BuyerActions({ exchange, reloadExchangeData }: Props) {
     status: "idle"
   });
 
-  const exchangeState = getExchangeState(exchange);
+  const exchangeState = exchanges.getExchangeState(exchange);
   const isCommitted = exchangeState === subgraph.ExchangeState.Committed;
 
   async function handleCancel() {

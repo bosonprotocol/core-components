@@ -14,12 +14,27 @@ import { BuyerActions } from "./BuyerActions";
 import { ExchangeDetails } from "../../lib/components/details/ExchangeDetails";
 import { isAccountSeller } from "../../lib/seller";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
-import { getExchangeState } from "../../lib/exchanges";
+import { AnyMetadata, exchanges } from "@bosonprotocol/core-sdk";
+import { validation } from "@bosonprotocol/ipfs-storage";
+import { useMemo } from "react";
 
 export default function ManageExchange() {
   const { forceBuyerView, exchangeId } = getURLParams();
   const { exchangeData, reloadExchangeData } =
     useManageExchangeData(exchangeId);
+  const isMetadataValid = useMemo(() => {
+    if (
+      exchangeData.status === "loaded" &&
+      exchangeData.exchange.offer.metadata
+    ) {
+      return exchangeData.exchange.offer.metadata
+        ? validation.validateMetadata(
+            exchangeData.exchange.offer.metadata as AnyMetadata
+          )
+        : false;
+    }
+    return false;
+  }, [exchangeData]);
   const account = hooks.useAccount();
 
   if (exchangeData.status === "error") {
@@ -40,7 +55,9 @@ export default function ManageExchange() {
   const { offer } = exchange;
 
   const offerName = offer.metadata?.name || "";
-  const exchangeState = getExchangeState(exchange);
+  const uiState = isMetadataValid
+    ? exchanges.getExchangeState(exchange)
+    : `${exchanges.getExchangeState(exchange)} / UNSUPPORTED`;
 
   return (
     <WidgetWrapper title="Exchange" offerName={offerName} hideCloseButton>
@@ -51,7 +68,7 @@ export default function ManageExchange() {
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{exchangeState}</Value>
+          <Value>{uiState}</Value>
         </Entry>
       </Row>
       <ExchangeDetails

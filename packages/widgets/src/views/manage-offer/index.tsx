@@ -14,11 +14,21 @@ import { BuyerActions } from "./BuyerActions";
 import { OfferDetails } from "../../lib/components/details/OfferDetails";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
 import { isAccountSeller } from "../../lib/seller";
-import { offers } from "@bosonprotocol/core-sdk";
+import { AnyMetadata, offers } from "@bosonprotocol/core-sdk";
+import { useMemo } from "react";
+import { validation } from "@bosonprotocol/ipfs-storage";
 
 export default function ManageOffer() {
   const { offerId, forceBuyerView } = getURLParams();
   const { offerData, reloadOfferData } = useManageOfferData(offerId);
+  const isMetadataValid = useMemo(() => {
+    if (offerData.status === "success" && offerData.offer.metadata) {
+      return offerData.offer.metadata
+        ? validation.validateMetadata(offerData.offer.metadata as AnyMetadata)
+        : false;
+    }
+    return false;
+  }, [offerData]);
   const account = hooks.useAccount();
 
   if (offerData.status === "error") {
@@ -37,6 +47,9 @@ export default function ManageOffer() {
 
   const { offer } = offerData;
   const offerName = offer.metadata?.name ?? "";
+  const uiStatus = isMetadataValid
+    ? offers.getOfferStatus(offer)
+    : `${offers.getOfferStatus(offer)} / UNSUPPORTED`;
 
   return (
     <WidgetWrapper title={"Offer"} offerName={offerName} hideCloseButton>
@@ -47,7 +60,7 @@ export default function ManageOffer() {
         </Entry>
         <Entry>
           <Label>Status</Label>
-          <Value>{offers.getOfferStatus(offer)}</Value>
+          <Value>{uiStatus}</Value>
         </Entry>
       </Row>
       <OfferDetails
