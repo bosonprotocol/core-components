@@ -14,7 +14,7 @@ import { BuyerActions } from "./BuyerActions";
 import { ExchangeDetails } from "../../lib/components/details/ExchangeDetails";
 import { isAccountSeller } from "../../lib/seller";
 import { ActionsWrapper } from "../../lib/components/actions/ActionsWrapper";
-import { getExchangeState } from "../../lib/exchanges";
+import { exchanges } from "@bosonprotocol/core-sdk";
 
 export default function ManageExchange() {
   const { forceBuyerView, exchangeId } = getURLParams();
@@ -40,7 +40,7 @@ export default function ManageExchange() {
   const { offer } = exchange;
 
   const offerName = offer.metadata?.name || "";
-  const exchangeState = getExchangeState(exchange);
+  const exchangeState = exchanges.getExchangeState(exchange);
 
   return (
     <WidgetWrapper title="Exchange" offerName={offerName} hideCloseButton>
