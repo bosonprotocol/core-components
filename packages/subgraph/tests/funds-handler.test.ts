@@ -44,7 +44,8 @@ test("handle FundsReleasedEvent", () => {
     exchangeId,
     buyerId,
     tokenAddress,
-    200
+    200,
+    sellerAddress
   );
 
   handleFundsReleasedEvent(fundsReleasedEvent);
@@ -65,6 +66,7 @@ test("handle FundsEncumberedEvent", () => {
       sellerAddress,
       sellerAddress,
       sellerAddress,
+      sellerAddress,
       sellerAddress
     )
   );
@@ -79,7 +81,8 @@ test("handle FundsEncumberedEvent", () => {
   const fundsEncumberedEvent = createFundsEncumberedEvent(
     sellerId,
     tokenAddress,
-    10
+    10,
+    sellerAddress
   );
   handleFundsEncumberedEvent(fundsEncumberedEvent);
 
@@ -103,7 +106,8 @@ test("handle FundsWithdrawnEvent", () => {
     sellerId,
     sellerAddress,
     tokenAddress,
-    10
+    10,
+    sellerAddress
   );
   handleFundsWithdrawnEvent(fundsWithdrawnEvent);
 

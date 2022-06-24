@@ -113,7 +113,8 @@ export function createOfferCreatedEvent(
 
 export function createOfferVoidedEvent(
   offerId: i32,
-  sellerId: i32
+  sellerId: i32,
+  executedBy: string
 ): OfferVoided {
   const offerVoidedEvent = changetype<OfferVoided>(newMockEvent());
   offerVoidedEvent.parameters = new Array();
@@ -126,9 +127,14 @@ export function createOfferVoidedEvent(
     "sellerId",
     ethereum.Value.fromI32(sellerId)
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   offerVoidedEvent.parameters.push(offerIdParam);
   offerVoidedEvent.parameters.push(sellerIdParam);
+  offerVoidedEvent.parameters.push(executedByParam);
 
   return offerVoidedEvent;
 }
@@ -211,7 +217,8 @@ export function createSellerCreatedEvent(
   operator: string,
   admin: string,
   clerk: string,
-  treasury: string
+  treasury: string,
+  executedBy: string
 ): SellerCreated {
   const sellerCreatedEvent = changetype<SellerCreated>(newMockEvent());
   sellerCreatedEvent.parameters = new Array();
@@ -226,9 +233,14 @@ export function createSellerCreatedEvent(
       createSellerStruct(sellerId, operator, admin, clerk, treasury, false)
     )
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   sellerCreatedEvent.parameters.push(sellerIdParam);
   sellerCreatedEvent.parameters.push(sellerParam);
+  sellerCreatedEvent.parameters.push(executedByParam);
 
   return sellerCreatedEvent;
 }
@@ -239,7 +251,8 @@ export function createSellerUpdatedEvent(
   admin: string,
   clerk: string,
   treasury: string,
-  active: boolean
+  active: boolean,
+  executedBy: string
 ): SellerUpdated {
   const sellerUpdatedEvent = changetype<SellerUpdated>(newMockEvent());
   sellerUpdatedEvent.parameters = new Array();
@@ -254,16 +267,22 @@ export function createSellerUpdatedEvent(
       createSellerStruct(sellerId, operator, admin, clerk, treasury, active)
     )
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   sellerUpdatedEvent.parameters.push(sellerIdParam);
   sellerUpdatedEvent.parameters.push(sellerParam);
+  sellerUpdatedEvent.parameters.push(executedByParam);
 
   return sellerUpdatedEvent;
 }
 
 export function createBuyerCreatedEvent(
   buyerId: i32,
-  wallet: string
+  wallet: string,
+  executedBy: string
 ): BuyerCreated {
   const buyerCreatedEvent = changetype<BuyerCreated>(newMockEvent());
   buyerCreatedEvent.parameters = new Array();
@@ -276,9 +295,14 @@ export function createBuyerCreatedEvent(
     "buyer",
     ethereum.Value.fromTuple(createBuyerStruct(buyerId, wallet, true))
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   buyerCreatedEvent.parameters.push(buyerIdParam);
   buyerCreatedEvent.parameters.push(buyerParam);
+  buyerCreatedEvent.parameters.push(executedByParam);
 
   return buyerCreatedEvent;
 }
@@ -320,7 +344,8 @@ export function createFundsDepositedEvent(
 export function createFundsEncumberedEvent(
   entityId: i32,
   exchangeToken: string,
-  amount: i32
+  amount: i32,
+  executedBy: string
 ): FundsEncumbered {
   const fundsEncumberedEvent = changetype<FundsEncumbered>(newMockEvent());
   fundsEncumberedEvent.parameters = new Array();
@@ -337,10 +362,15 @@ export function createFundsEncumberedEvent(
     "amount",
     ethereum.Value.fromI32(amount)
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   fundsEncumberedEvent.parameters.push(entityIdParam);
   fundsEncumberedEvent.parameters.push(exchangeTokenParam);
   fundsEncumberedEvent.parameters.push(amountParam);
+  fundsEncumberedEvent.parameters.push(executedByParam);
 
   return fundsEncumberedEvent;
 }
@@ -349,7 +379,8 @@ export function createFundsReleasedEvent(
   exchangeId: i32,
   entityId: i32,
   exchangeToken: string,
-  amount: i32
+  amount: i32,
+  executedBy: string
 ): FundsReleased {
   const fundsReleasedEvent = changetype<FundsReleased>(newMockEvent());
   fundsReleasedEvent.parameters = new Array();
@@ -370,11 +401,16 @@ export function createFundsReleasedEvent(
     "amount",
     ethereum.Value.fromI32(amount)
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   fundsReleasedEvent.parameters.push(exchangeIdParam);
   fundsReleasedEvent.parameters.push(entityIdParam);
   fundsReleasedEvent.parameters.push(exchangeTokenParam);
   fundsReleasedEvent.parameters.push(amountParam);
+  fundsReleasedEvent.parameters.push(executedByParam);
 
   return fundsReleasedEvent;
 }
@@ -383,7 +419,8 @@ export function createFundsWithdrawnEvent(
   sellerId: i32,
   withdrawnTo: string,
   tokenAddress: string,
-  amount: i32
+  amount: i32,
+  executedBy: string
 ): FundsWithdrawn {
   const fundsWithdrawnEvent = changetype<FundsWithdrawn>(newMockEvent());
   fundsWithdrawnEvent.parameters = new Array();
@@ -404,11 +441,16 @@ export function createFundsWithdrawnEvent(
     "amount",
     ethereum.Value.fromI32(amount)
   );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   fundsWithdrawnEvent.parameters.push(sellerIdParam);
   fundsWithdrawnEvent.parameters.push(withdrawnToParam);
   fundsWithdrawnEvent.parameters.push(tokenAddressParam);
   fundsWithdrawnEvent.parameters.push(amountParam);
+  fundsWithdrawnEvent.parameters.push(executedByParam);
 
   return fundsWithdrawnEvent;
 }

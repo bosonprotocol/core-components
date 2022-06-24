@@ -132,7 +132,7 @@ test("handle OfferVoidedEvent", () => {
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
   handleOfferCreatedEvent(offerCreatedEvent);
 
-  const offerVoidedEvent = createOfferVoidedEvent(1, 1);
+  const offerVoidedEvent = createOfferVoidedEvent(1, 1, exchangeTokenAddress);
   handleOfferVoidedEvent(offerVoidedEvent);
 
   assert.fieldEquals("Offer", "1", "voided", "true");
