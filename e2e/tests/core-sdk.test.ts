@@ -207,7 +207,7 @@ async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
       treasury: sellerAddress
     },
     mockCreateOfferArgs({
-      offerChecksum: metadataHash,
+      metadataHash,
       metadataUri
     })
   );

@@ -24,7 +24,7 @@ interface Props {
   voucherRedeemableUntilDateInMS: BigNumberish;
   voucherValidDurationInMS?: BigNumberish;
   metadataUri: string;
-  offerChecksum?: string;
+  metadataHash?: string;
   protocolFeeInWei: BigNumberish;
   fulfillmentPeriodInMS: BigNumberish;
   resolutionPeriodInMS: BigNumberish;
@@ -44,7 +44,7 @@ export function OfferDetails({
   voucherRedeemableUntilDateInMS,
   voucherValidDurationInMS,
   metadataUri,
-  offerChecksum,
+  metadataHash,
   protocolFeeInWei,
   fulfillmentPeriodInMS,
   resolutionPeriodInMS
@@ -175,10 +175,10 @@ export function OfferDetails({
           <Label>Metadata URI</Label>
           <Value title={metadataUri}>{metadataUri}</Value>
         </Entry>
-        {offerChecksum && (
+        {metadataHash && (
           <Entry>
             <Label>Offer Checksum</Label>
-            <Value title={offerChecksum}>{offerChecksum}</Value>
+            <Value title={metadataHash}>{metadataHash}</Value>
           </Entry>
         )}
       </Row>

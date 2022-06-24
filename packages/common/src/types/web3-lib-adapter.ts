@@ -38,4 +38,5 @@ export interface Web3LibAdapter {
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse>;
   call(transactionRequest: TransactionRequest): Promise<string>;
+  send(rpcMethod: string, payload: unknown[]): Promise<string>;
 }

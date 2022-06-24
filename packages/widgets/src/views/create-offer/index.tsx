@@ -243,7 +243,7 @@ export default function CreateOffer() {
             createOfferArgs.voucherRedeemableUntilDateInMS
           }
           metadataUri={createOfferArgs.metadataUri}
-          offerChecksum={createOfferArgs.offerChecksum}
+          metadataHash={createOfferArgs.metadataHash}
           protocolFeeInWei={createOfferArgs.protocolFee}
           fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
           resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}

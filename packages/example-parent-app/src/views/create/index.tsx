@@ -58,7 +58,7 @@ export function HomeView() {
           sellerDeposit: parseEther(values.sellerDeposit).toString(),
           buyerCancelPenalty: parseEther(values.buyerCancelPenalty).toString(),
           protocolFee: parseEther(values.protocolFee).toString(),
-          offerChecksum: metadataHash, // TODO: use correct checksum
+          metadataHash,
           metadataUri
         },
         {

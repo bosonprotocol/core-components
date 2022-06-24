@@ -66,7 +66,7 @@ fragment BaseOfferFields on Offer {
   voucherValidDuration
   resolutionPeriodDuration
   metadataUri
-  offerChecksum
+  metadataHash
   voidedAt
   disputeResolverId
   seller {

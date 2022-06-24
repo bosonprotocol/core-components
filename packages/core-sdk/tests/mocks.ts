@@ -64,7 +64,7 @@ export function mockRawOfferFromSubgraph(
     voucherValidDuration: "86400",
     resolutionPeriodDuration: "86400",
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
-    offerChecksum: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
+    metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     voidedAt: null,
     protocolFee: "1",
     seller: {

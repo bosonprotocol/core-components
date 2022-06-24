@@ -68,7 +68,7 @@
           },
           {
             "internalType": "string",
-            "name": "offerChecksum",
+            "name": "metadataHash",
             "type": "string"
           },
           {
@@ -132,6 +132,12 @@
         "internalType": "struct BosonTypes.OfferDurations",
         "name": "offerDurations",
         "type": "tuple"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "OfferCreated",
@@ -157,6 +163,12 @@
         "internalType": "uint256",
         "name": "validUntilDate",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "OfferExtended",
@@ -176,6 +188,12 @@
         "internalType": "uint256",
         "name": "sellerId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "OfferVoided",
@@ -237,7 +255,7 @@
           },
           {
             "internalType": "string",
-            "name": "offerChecksum",
+            "name": "metadataHash",
             "type": "string"
           },
           {
@@ -361,7 +379,7 @@
           },
           {
             "internalType": "string",
-            "name": "offerChecksum",
+            "name": "metadataHash",
             "type": "string"
           },
           {
@@ -547,7 +565,7 @@
           },
           {
             "internalType": "string",
-            "name": "offerChecksum",
+            "name": "metadataHash",
             "type": "string"
           },
           {

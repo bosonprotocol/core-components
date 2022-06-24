@@ -125,7 +125,7 @@ export const createOfferArgsSchema = object({
       "${path} has to be a valid uri",
       isMetadataUri
     ),
-  offerChecksum: string().required()
+  metadataHash: string().required()
 });
 
 export const createSellerArgsSchema = object({

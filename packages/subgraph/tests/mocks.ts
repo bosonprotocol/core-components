@@ -47,7 +47,7 @@ export function createOfferCreatedEvent(
   exchangeToken: string,
   disputeResolverId: i32,
   metadataUri: string,
-  offerChecksum: string,
+  metadataHash: string,
   voided: boolean
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
@@ -75,7 +75,7 @@ export function createOfferCreatedEvent(
         exchangeToken,
         disputeResolverId,
         metadataUri,
-        offerChecksum,
+        metadataHash,
         voided
       )
     )
@@ -424,7 +424,7 @@ export function createOfferStruct(
   exchangeToken: string,
   disputeResolverId: i32,
   metadataUri: string,
-  offerChecksum: string,
+  metadataHash: string,
   voided: boolean
 ): OfferCreatedOfferStruct {
   const tuple = new OfferCreatedOfferStruct();
@@ -438,7 +438,7 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
   tuple.push(ethereum.Value.fromI32(disputeResolverId));
   tuple.push(ethereum.Value.fromString(metadataUri));
-  tuple.push(ethereum.Value.fromString(offerChecksum));
+  tuple.push(ethereum.Value.fromString(metadataHash));
   tuple.push(ethereum.Value.fromBoolean(voided));
   return tuple;
 }

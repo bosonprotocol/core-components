@@ -30,7 +30,7 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     sellerId: "1",
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
-    offerChecksum: IPFS_HASH, // TODO: use correct checksum
+    metadataHash: IPFS_HASH,
     ...overrides
   };
 }
@@ -77,7 +77,7 @@ export function mockCreateOfferArgs(
     exchangeToken: AddressZero,
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
-    offerChecksum: IPFS_HASH, // TODO: use correct checksum
+    metadataHash: IPFS_HASH,
     ...overrides
   };
 }

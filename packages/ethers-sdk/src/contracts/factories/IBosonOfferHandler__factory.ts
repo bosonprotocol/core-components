@@ -79,7 +79,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -144,6 +144,12 @@ const _abi = [
         name: "offerDurations",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "OfferCreated",
     type: "event",
@@ -169,6 +175,12 @@ const _abi = [
         name: "validUntilDate",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "OfferExtended",
     type: "event",
@@ -187,6 +199,12 @@ const _abi = [
         internalType: "uint256",
         name: "sellerId",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "OfferVoided",
@@ -248,7 +266,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -372,7 +390,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -558,7 +576,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
