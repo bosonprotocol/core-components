@@ -319,6 +319,17 @@ export class CoreSDK {
     });
   }
 
+  public async withdrawAllAvailableFunds(
+    sellerId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return funds.handler.withdrawAllAvailableFunds({
+      sellerId,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
   public async getExchangeById(
     exchangeId: BigNumberish,
     queryVars?: subgraph.GetExchangeByIdQueryQueryVariables
