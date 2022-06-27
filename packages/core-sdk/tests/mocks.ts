@@ -2,7 +2,9 @@ import { utils } from "@bosonprotocol/common";
 import {
   SellerFieldsFragment,
   OfferFieldsFragment,
-  MetadataType
+  ExchangeFieldsFragment,
+  MetadataType,
+  ExchangeState
 } from "../src/subgraph";
 import nock from "nock";
 
@@ -92,6 +94,41 @@ export function mockRawOfferFromSubgraph(
       ...metadata
     },
     exchanges: [],
+    ...restOverrides
+  };
+}
+
+export function mockRawExchangeFromSubgraph(
+  overrides: Partial<ExchangeFieldsFragment> = {},
+  offerOverrides: Partial<OfferFieldsFragment> = {}
+): ExchangeFieldsFragment {
+  const { buyer = {}, seller = {}, offer = {}, ...restOverrides } = overrides;
+
+  return {
+    id: "1",
+    disputed: false,
+    state: ExchangeState.Committed,
+    committedDate: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
+    validUntilDate: utils.timestamp
+      .msToSec(Date.now() + 3 * DAY_IN_MS)
+      .toString(),
+    expired: false,
+    buyer: {
+      id: "2",
+      wallet: ZERO_ADDRESS,
+      active: true,
+      ...buyer
+    },
+    seller: {
+      id: "3",
+      operator: ZERO_ADDRESS,
+      admin: ZERO_ADDRESS,
+      clerk: ZERO_ADDRESS,
+      treasury: ZERO_ADDRESS,
+      active: true,
+      ...seller
+    },
+    offer: mockRawOfferFromSubgraph(offerOverrides),
     ...restOverrides
   };
 }

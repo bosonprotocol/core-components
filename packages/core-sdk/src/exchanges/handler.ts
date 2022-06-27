@@ -1,22 +1,30 @@
 import { BigNumberish } from "@ethersproject/bignumber";
+import { AddressZero } from "@ethersproject/constants";
 import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
 import {
   encodeCancelVoucher,
   encodeCommitToOffer,
+  encodeCompleteExchange,
   encodeRevokeVoucher,
+  encodeExpireVoucher,
   encodeRedeemVoucher
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById } from "../exchanges/subgraph";
 import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
 
-export async function commitToOffer(args: {
-  buyer: string;
-  offerId: BigNumberish;
+type BaseExchangeHandlerArgs = {
   contractAddress: string;
   subgraphUrl: string;
   web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+};
+
+export async function commitToOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
   if (!offer) {
@@ -42,16 +50,53 @@ export async function commitToOffer(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
-    value: offer.price
+    value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
   });
 }
 
-export async function revokeVoucher(args: {
-  exchangeId: BigNumberish;
-  contractAddress: string;
-  subgraphUrl: string;
-  web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+export async function completeExchange(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+  }
+) {
+  const [exchange, signerAddress] = await Promise.all([
+    getExchangeById(args.subgraphUrl, args.exchangeId),
+    args.web3Lib.getSignerAddress()
+  ]);
+
+  assertExchange(args.exchangeId, exchange);
+
+  const { isSignerSeller } = assertSignerIsBuyerOrOperator(
+    signerAddress,
+    exchange
+  );
+
+  if (isSignerSeller) {
+    const elapsedSinceRedeemMS =
+      Date.now() - Number(exchange.redeemedDate || "0") * 1000;
+    const didFulfillmentPeriodElapse =
+      elapsedSinceRedeemMS >
+      Number(exchange.offer.fulfillmentPeriodDuration) * 1000;
+    if (!didFulfillmentPeriodElapse) {
+      throw new Error(
+        `Fulfillment period of ${
+          Number(exchange.offer.fulfillmentPeriodDuration) * 1000
+        } ms did not elapsed since redeem.`
+      );
+    }
+  }
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCompleteExchange(args.exchangeId)
+  });
+}
+
+export async function revokeVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -67,12 +112,11 @@ export async function revokeVoucher(args: {
   });
 }
 
-export async function cancelVoucher(args: {
-  exchangeId: BigNumberish;
-  contractAddress: string;
-  subgraphUrl: string;
-  web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+export async function cancelVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -88,12 +132,30 @@ export async function cancelVoucher(args: {
   });
 }
 
-export async function redeemVoucher(args: {
-  exchangeId: BigNumberish;
-  contractAddress: string;
-  subgraphUrl: string;
-  web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+export async function expireVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
+  const exchange = await getExchangeById(args.subgraphUrl, args.exchangeId);
+
+  assertExchange(args.exchangeId, exchange);
+
+  if (Date.now() < Number(exchange.validUntilDate) * 1000) {
+    throw new Error(`Voucher is still valid`);
+  }
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeExpireVoucher(args.exchangeId)
+  });
+}
+
+export async function redeemVoucher(
+  args: BaseExchangeHandlerArgs & {
+    exchangeId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
   const [exchange, signerAddress] = await Promise.all([
     getExchangeById(args.subgraphUrl, args.exchangeId),
     args.web3Lib.getSignerAddress()
@@ -154,4 +216,19 @@ function assertSignerIsBuyer(signer: string, exchange: ExchangeFieldsFragment) {
       `Signer ${signer} is not the buyer ${exchange.buyer.wallet}`
     );
   }
+}
+
+function assertSignerIsBuyerOrOperator(
+  signer: string,
+  exchange: ExchangeFieldsFragment
+) {
+  const { seller, buyer } = exchange;
+  const isSignerSeller = signer.toLowerCase() === seller.operator.toLowerCase();
+  const isSignerBuyer = signer.toLowerCase() === buyer.wallet.toLowerCase();
+
+  if (!isSignerSeller || !isSignerBuyer) {
+    throw new Error(`Signer ${signer} is required to be the buyer or operator`);
+  }
+
+  return { isSignerBuyer, isSignerSeller };
 }
