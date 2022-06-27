@@ -171,25 +171,25 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "BuyerCommitted(uint256,uint256,uint256,tuple)": EventFragment;
-    "ExchangeCompleted(uint256,uint256,uint256)": EventFragment;
-    "ExchangeFee(uint256,address,uint256)": EventFragment;
-    "FundsEncumbered(uint256,address,uint256)": EventFragment;
-    "FundsReleased(uint256,uint256,address,uint256)": EventFragment;
-    "FundsWithdrawn(uint256,address,address,uint256)": EventFragment;
+    "BuyerCommitted(uint256,uint256,uint256,tuple,address)": EventFragment;
+    "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
+    "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
+    "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
+    "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
+    "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
     "VoucherCanceled(uint256,uint256,address)": EventFragment;
     "VoucherExpired(uint256,uint256,address)": EventFragment;
     "VoucherRedeemed(uint256,uint256,address)": EventFragment;
     "VoucherRevoked(uint256,uint256,address)": EventFragment;
-    "VoucherTransferred(uint256,uint256,uint256)": EventFragment;
+    "VoucherTransferred(uint256,uint256,uint256,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCommitted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExchangeFee"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherExpired"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherRedeemed"): EventFragment;
@@ -198,94 +198,118 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 }
 
 export type BuyerCommittedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, BosonTypes.ExchangeStructOutput],
+  [BigNumber, BigNumber, BigNumber, BosonTypes.ExchangeStructOutput, string],
   {
     offerId: BigNumber;
     buyerId: BigNumber;
     exchangeId: BigNumber;
     exchange: BosonTypes.ExchangeStructOutput;
+    executedBy: string;
   }
 >;
 
 export type BuyerCommittedEventFilter = TypedEventFilter<BuyerCommittedEvent>;
 
 export type ExchangeCompletedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  { offerId: BigNumber; buyerId: BigNumber; exchangeId: BigNumber }
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    exchangeId: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type ExchangeCompletedEventFilter =
   TypedEventFilter<ExchangeCompletedEvent>;
 
-export type ExchangeFeeEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  { exchangeId: BigNumber; exchangeToken: string; amount: BigNumber }
->;
-
-export type ExchangeFeeEventFilter = TypedEventFilter<ExchangeFeeEvent>;
-
 export type FundsEncumberedEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  { entityId: BigNumber; exchangeToken: string; amount: BigNumber }
+  [BigNumber, string, BigNumber, string],
+  {
+    entityId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type FundsEncumberedEventFilter = TypedEventFilter<FundsEncumberedEvent>;
 
 export type FundsReleasedEvent = TypedEvent<
-  [BigNumber, BigNumber, string, BigNumber],
+  [BigNumber, BigNumber, string, BigNumber, string],
   {
     exchangeId: BigNumber;
     entityId: BigNumber;
     exchangeToken: string;
     amount: BigNumber;
+    executedBy: string;
   }
 >;
 
 export type FundsReleasedEventFilter = TypedEventFilter<FundsReleasedEvent>;
 
 export type FundsWithdrawnEvent = TypedEvent<
-  [BigNumber, string, string, BigNumber],
+  [BigNumber, string, string, BigNumber, string],
   {
     sellerId: BigNumber;
     withdrawnTo: string;
     tokenAddress: string;
     amount: BigNumber;
+    executedBy: string;
   }
 >;
 
 export type FundsWithdrawnEventFilter = TypedEventFilter<FundsWithdrawnEvent>;
 
+export type ProtocolFeeCollectedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string],
+  {
+    exchangeId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type ProtocolFeeCollectedEventFilter =
+  TypedEventFilter<ProtocolFeeCollectedEvent>;
+
 export type VoucherCanceledEvent = TypedEvent<
   [BigNumber, BigNumber, string],
-  { offerId: BigNumber; exchangeId: BigNumber; canceledBy: string }
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
 >;
 
 export type VoucherCanceledEventFilter = TypedEventFilter<VoucherCanceledEvent>;
 
 export type VoucherExpiredEvent = TypedEvent<
   [BigNumber, BigNumber, string],
-  { offerId: BigNumber; exchangeId: BigNumber; expiredBy: string }
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
 >;
 
 export type VoucherExpiredEventFilter = TypedEventFilter<VoucherExpiredEvent>;
 
 export type VoucherRedeemedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
-  { offerId: BigNumber; exchangeId: BigNumber; redeemedBy: string }
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
 >;
 
 export type VoucherRedeemedEventFilter = TypedEventFilter<VoucherRedeemedEvent>;
 
 export type VoucherRevokedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
-  { offerId: BigNumber; exchangeId: BigNumber; revokedBy: string }
+  { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
 >;
 
 export type VoucherRevokedEventFilter = TypedEventFilter<VoucherRevokedEvent>;
 
 export type VoucherTransferredEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  { offerId: BigNumber; exchangeId: BigNumber; newBuyerId: BigNumber }
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    exchangeId: BigNumber;
+    newBuyerId: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type VoucherTransferredEventFilter =
@@ -502,131 +526,145 @@ export interface IBosonExchangeHandler extends BaseContract {
   };
 
   filters: {
-    "BuyerCommitted(uint256,uint256,uint256,tuple)"(
+    "BuyerCommitted(uint256,uint256,uint256,tuple,address)"(
       offerId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      exchange?: null
+      exchange?: null,
+      executedBy?: null
     ): BuyerCommittedEventFilter;
     BuyerCommitted(
       offerId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      exchange?: null
+      exchange?: null,
+      executedBy?: null
     ): BuyerCommittedEventFilter;
 
-    "ExchangeCompleted(uint256,uint256,uint256)"(
+    "ExchangeCompleted(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
-      exchangeId?: BigNumberish | null
+      exchangeId?: BigNumberish | null,
+      executedBy?: null
     ): ExchangeCompletedEventFilter;
     ExchangeCompleted(
       offerId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
-      exchangeId?: BigNumberish | null
+      exchangeId?: BigNumberish | null,
+      executedBy?: null
     ): ExchangeCompletedEventFilter;
 
-    "ExchangeFee(uint256,address,uint256)"(
-      exchangeId?: BigNumberish | null,
-      exchangeToken?: string | null,
-      amount?: null
-    ): ExchangeFeeEventFilter;
-    ExchangeFee(
-      exchangeId?: BigNumberish | null,
-      exchangeToken?: string | null,
-      amount?: null
-    ): ExchangeFeeEventFilter;
-
-    "FundsEncumbered(uint256,address,uint256)"(
+    "FundsEncumbered(uint256,address,uint256,address)"(
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: string | null
     ): FundsEncumberedEventFilter;
     FundsEncumbered(
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: string | null
     ): FundsEncumberedEventFilter;
 
-    "FundsReleased(uint256,uint256,address,uint256)"(
+    "FundsReleased(uint256,uint256,address,uint256,address)"(
       exchangeId?: BigNumberish | null,
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsReleasedEventFilter;
     FundsReleased(
       exchangeId?: BigNumberish | null,
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsReleasedEventFilter;
 
-    "FundsWithdrawn(uint256,address,address,uint256)"(
+    "FundsWithdrawn(uint256,address,address,uint256,address)"(
       sellerId?: BigNumberish | null,
       withdrawnTo?: string | null,
       tokenAddress?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsWithdrawnEventFilter;
     FundsWithdrawn(
       sellerId?: BigNumberish | null,
       withdrawnTo?: string | null,
       tokenAddress?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsWithdrawnEventFilter;
+
+    "ProtocolFeeCollected(uint256,address,uint256,address)"(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
+    ProtocolFeeCollected(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
 
     "VoucherCanceled(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      canceledBy?: string | null
+      executedBy?: string | null
     ): VoucherCanceledEventFilter;
     VoucherCanceled(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      canceledBy?: string | null
+      executedBy?: string | null
     ): VoucherCanceledEventFilter;
 
     "VoucherExpired(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      expiredBy?: string | null
+      executedBy?: string | null
     ): VoucherExpiredEventFilter;
     VoucherExpired(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      expiredBy?: string | null
+      executedBy?: string | null
     ): VoucherExpiredEventFilter;
 
     "VoucherRedeemed(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      redeemedBy?: string | null
+      executedBy?: string | null
     ): VoucherRedeemedEventFilter;
     VoucherRedeemed(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      redeemedBy?: string | null
+      executedBy?: string | null
     ): VoucherRedeemedEventFilter;
 
     "VoucherRevoked(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      revokedBy?: string | null
+      executedBy?: string | null
     ): VoucherRevokedEventFilter;
     VoucherRevoked(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      revokedBy?: string | null
+      executedBy?: string | null
     ): VoucherRevokedEventFilter;
 
-    "VoucherTransferred(uint256,uint256,uint256)"(
+    "VoucherTransferred(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      newBuyerId?: BigNumberish | null
+      newBuyerId?: BigNumberish | null,
+      executedBy?: null
     ): VoucherTransferredEventFilter;
     VoucherTransferred(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
-      newBuyerId?: BigNumberish | null
+      newBuyerId?: BigNumberish | null,
+      executedBy?: null
     ): VoucherTransferredEventFilter;
   };
 

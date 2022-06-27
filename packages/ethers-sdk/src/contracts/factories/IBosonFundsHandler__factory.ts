@@ -16,38 +16,13 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "exchangeId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "exchangeToken",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "ExchangeFee",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
         name: "sellerId",
         type: "uint256",
       },
       {
         indexed: true,
         internalType: "address",
-        name: "depositedBy",
+        name: "executedBy",
         type: "address",
       },
       {
@@ -87,6 +62,12 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "FundsEncumbered",
     type: "event",
@@ -117,6 +98,12 @@ const _abi = [
         internalType: "uint256",
         name: "amount",
         type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "FundsReleased",
@@ -149,8 +136,45 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "FundsWithdrawn",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "exchangeToken",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "ProtocolFeeCollected",
     type: "event",
   },
   {

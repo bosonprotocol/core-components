@@ -29,7 +29,7 @@ export declare namespace BosonTypes {
     exchangeToken: string;
     disputeResolverId: BigNumberish;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voided: boolean;
   };
 
@@ -57,7 +57,7 @@ export declare namespace BosonTypes {
     exchangeToken: string;
     disputeResolverId: BigNumber;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voided: boolean;
   };
 
@@ -184,9 +184,9 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple)": EventFragment;
-    "OfferExtended(uint256,uint256,uint256)": EventFragment;
-    "OfferVoided(uint256,uint256)": EventFragment;
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)": EventFragment;
+    "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
+    "OfferVoided(uint256,uint256,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "OfferCreated"): EventFragment;
@@ -200,7 +200,8 @@ export type OfferCreatedEvent = TypedEvent<
     BigNumber,
     BosonTypes.OfferStructOutput,
     BosonTypes.OfferDatesStructOutput,
-    BosonTypes.OfferDurationsStructOutput
+    BosonTypes.OfferDurationsStructOutput,
+    string
   ],
   {
     offerId: BigNumber;
@@ -208,21 +209,27 @@ export type OfferCreatedEvent = TypedEvent<
     offer: BosonTypes.OfferStructOutput;
     offerDates: BosonTypes.OfferDatesStructOutput;
     offerDurations: BosonTypes.OfferDurationsStructOutput;
+    executedBy: string;
   }
 >;
 
 export type OfferCreatedEventFilter = TypedEventFilter<OfferCreatedEvent>;
 
 export type OfferExtendedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  { offerId: BigNumber; sellerId: BigNumber; validUntilDate: BigNumber }
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    validUntilDate: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type OfferExtendedEventFilter = TypedEventFilter<OfferExtendedEvent>;
 
 export type OfferVoidedEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  { offerId: BigNumber; sellerId: BigNumber }
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; sellerId: BigNumber; executedBy: string }
 >;
 
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
@@ -438,39 +445,45 @@ export interface IBosonOfferHandler extends BaseContract {
   };
 
   filters: {
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple)"(
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       offer?: null,
       offerDates?: null,
-      offerDurations?: null
+      offerDurations?: null,
+      executedBy?: string | null
     ): OfferCreatedEventFilter;
     OfferCreated(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       offer?: null,
       offerDates?: null,
-      offerDurations?: null
+      offerDurations?: null,
+      executedBy?: string | null
     ): OfferCreatedEventFilter;
 
-    "OfferExtended(uint256,uint256,uint256)"(
+    "OfferExtended(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      validUntilDate?: null
+      validUntilDate?: null,
+      executedBy?: string | null
     ): OfferExtendedEventFilter;
     OfferExtended(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      validUntilDate?: null
+      validUntilDate?: null,
+      executedBy?: string | null
     ): OfferExtendedEventFilter;
 
-    "OfferVoided(uint256,uint256)"(
+    "OfferVoided(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): OfferVoidedEventFilter;
     OfferVoided(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): OfferVoidedEventFilter;
   };
 

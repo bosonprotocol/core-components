@@ -18,6 +18,7 @@ test("handle SellerCreatedEvent", () => {
     sellerAddress,
     sellerAddress,
     sellerAddress,
+    sellerAddress,
     sellerAddress
   );
 
@@ -37,7 +38,8 @@ test("handle SellerUpdatedEvent", () => {
     sellerAddress,
     sellerAddress,
     sellerAddress,
-    false
+    false,
+    sellerAddress
   );
 
   handleSellerUpdatedEvent(sellerUpdatedEvent);
@@ -48,7 +50,11 @@ test("handle SellerUpdatedEvent", () => {
 });
 
 test("handle BuyerCreatedEvent", () => {
-  const buyerCreatedEvent = createBuyerCreatedEvent(1, sellerAddress);
+  const buyerCreatedEvent = createBuyerCreatedEvent(
+    1,
+    sellerAddress,
+    sellerAddress
+  );
 
   handleBuyerCreatedEvent(buyerCreatedEvent);
 

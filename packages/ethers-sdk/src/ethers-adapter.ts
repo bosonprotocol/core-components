@@ -41,4 +41,8 @@ export class EthersAdapter implements Web3LibAdapter {
   public async call(transactionRequest: TransactionRequest): Promise<string> {
     return this._provider.call(transactionRequest);
   }
+
+  public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
+    return this._provider.send(rpcMethod, payload);
+  }
 }

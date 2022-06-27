@@ -63,6 +63,10 @@ export class EthConnectAdapter implements Web3LibAdapter {
     );
   }
 
+  public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
+    throw new Error("Not implemented");
+  }
+
   private async _wait(txHash: string, confirmations?: number): Promise<any> {
     throw new Error("Not implemented");
   }

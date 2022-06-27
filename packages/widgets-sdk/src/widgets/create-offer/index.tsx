@@ -23,7 +23,7 @@ interface CreateOfferRequest {
   resolutionPeriodDurationInMS: string;
   disputeResolverId: string;
   metadataUri: string;
-  offerChecksum: string;
+  metadataHash: string;
 }
 
 export function createOffer(request: CreateOfferRequest, config: WidgetConfig) {

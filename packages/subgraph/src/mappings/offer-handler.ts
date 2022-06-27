@@ -37,7 +37,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.seller = offerStruct.sellerId.toString();
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
-    offer.offerChecksum = offerStruct.offerChecksum;
+    offer.metadataHash = offerStruct.metadataHash;
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
 

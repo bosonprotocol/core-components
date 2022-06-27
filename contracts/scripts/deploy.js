@@ -16,11 +16,15 @@ const {
   deployProtocolHandlerFacets
 } = require("../protocol-contracts/scripts/util/deploy-protocol-handler-facets.js");
 const {
-  deploymentComplete
+  deploymentComplete,
+  verifyOnEtherscan,
+  delay
 } = require("../protocol-contracts/scripts/util/report-verify-deployments");
 const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
+
+const gasLimit = "20000000";
 
 function getConfig() {
   const bosonTokenMap = {
@@ -28,24 +32,31 @@ function getConfig() {
   };
 
   const feePercentage = "150"; // 1.5%  = 150
+  const protocolFeeFlatBoson = "0";
   const maxOffersPerGroup = "100";
   const maxTwinsPerBundle = "100";
   const maxOffersPerBundle = "100";
   const maxOffersPerBatch = "100";
   const maxTokensPerWithdrawal = "100";
 
-  return {
-    bosonTokenAddress: bosonTokenMap[hre.network.name],
-    gasLimit: "20000000",
-    treasuryAddress: ethers.constants.AddressZero,
-    voucherAddress: ethers.constants.AddressZero,
-    feePercentage,
-    maxOffersPerGroup,
-    maxTwinsPerBundle,
-    maxOffersPerBundle,
-    maxOffersPerBatch,
-    maxTokensPerWithdrawal
-  };
+  return [
+    {
+      tokenAddress: bosonTokenMap[hre.network.name],
+      treasuryAddress: ethers.constants.AddressZero,
+      voucherAddress: ethers.constants.AddressZero
+    },
+    {
+      maxOffersPerGroup,
+      maxTwinsPerBundle,
+      maxOffersPerBundle,
+      maxOffersPerBatch,
+      maxTokensPerWithdrawal
+    },
+    {
+      percentage: feePercentage,
+      flatBoson: protocolFeeFlatBoson
+    }
+  ];
 }
 
 /**
@@ -92,13 +103,11 @@ async function main() {
   );
   console.log(divider);
 
-  let bosonTokenAddress = config.bosonTokenAddress;
-
-  if (hre.network.name === "localhost") {
+  if (hre.network.name === "localhost" || !config[0].tokenAddress) {
     console.log(`\n💎 Deploying mock tokens...`);
-    const [mockBosonToken] = await deployMockTokens(config.gasLimit);
+    const [mockBosonToken] = await deployMockTokens(gasLimit);
     deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
-    bosonTokenAddress = mockBosonToken.address;
+    config[0].tokenAddress = mockBosonToken.address;
   }
 
   console.log(
@@ -107,7 +116,7 @@ async function main() {
 
   // Deploy the Diamond
   const [protocolDiamond, dlf, dcf, accessController, diamondArgs] =
-    await deployProtocolDiamond(config.gasLimit);
+    await deployProtocolDiamond(gasLimit);
   deploymentComplete(
     "AccessController",
     accessController.address,
@@ -128,25 +137,9 @@ async function main() {
   // Temporarily grant UPGRADER role to deployer account
   await accessController.grantRole(Role.UPGRADER, deployer);
 
-  // Cut the ConfigHandlerFacet facet into the Diamond
-  const protocolConfig = [
-    bosonTokenAddress,
-    config.treasuryAddress,
-    config.voucherAddress,
-    config.feePercentage,
-    config.maxOffersPerGroup,
-    config.maxTwinsPerBundle,
-    config.maxOffersPerBundle,
-    config.maxOffersPerBatch,
-    config.maxTokensPerWithdrawal
-  ];
   const {
     facets: [configHandlerFacet]
-  } = await deployProtocolConfigFacet(
-    protocolDiamond,
-    protocolConfig,
-    config.gasLimit
-  );
+  } = await deployProtocolConfigFacet(protocolDiamond, config, gasLimit);
   deploymentComplete(
     "ConfigHandlerFacet",
     configHandlerFacet.address,
@@ -158,7 +151,7 @@ async function main() {
   const deployedFacets = await deployProtocolHandlerFacets(
     protocolDiamond,
     getNoArgFacetNames(),
-    config.gasLimit
+    gasLimit
   );
   for (let i = 0; i < deployedFacets.length; i++) {
     const deployedFacet = deployedFacets[i];
@@ -179,7 +172,7 @@ async function main() {
   ];
   const [impls, proxies, clients] = await deployProtocolClients(
     protocolClientArgs,
-    config.gasLimit
+    gasLimit
   );
   const [bosonVoucherImpl] = impls;
   const [bosonVoucherProxy] = proxies;
@@ -242,6 +235,24 @@ async function main() {
     active: true
   });
   console.log(`✅ Dispute resolver deployed. \n`);
+
+  // Bail now if deploying locally
+  if (hre.network.name === "localhost") {
+    process.exit();
+  }
+
+  // Wait a minute after deployment completes and then verify contracts on etherscan
+  console.log(
+    "⏲ Pause one minute, allowing deployments to propagate to Etherscan backend..."
+  );
+  await delay(60_000).then(async () => {
+    console.log("🔍 Verifying contracts on Etherscan...");
+    for (const contract of contracts) {
+      await verifyOnEtherscan(contract);
+    }
+  });
+
+  console.log("\n");
 }
 
 main()

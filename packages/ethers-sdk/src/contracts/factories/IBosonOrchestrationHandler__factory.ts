@@ -53,6 +53,12 @@ const _abi = [
         name: "bundle",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "BundleCreated",
     type: "event",
@@ -71,6 +77,12 @@ const _abi = [
         internalType: "uint256",
         name: "sellerId",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "BundleDeleted",
@@ -119,6 +131,12 @@ const _abi = [
         name: "bundle",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "BundleUpdated",
     type: "event",
@@ -154,6 +172,12 @@ const _abi = [
         internalType: "struct BosonTypes.Buyer",
         name: "buyer",
         type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "BuyerCreated",
@@ -191,6 +215,12 @@ const _abi = [
         name: "buyer",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "BuyerUpdated",
     type: "event",
@@ -227,6 +257,12 @@ const _abi = [
         name: "disputeResolver",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "DisputeResolverCreated",
     type: "event",
@@ -262,6 +298,12 @@ const _abi = [
         internalType: "struct BosonTypes.DisputeResolver",
         name: "disputeResolver",
         type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "DisputeResolverUpdated",
@@ -332,6 +374,12 @@ const _abi = [
         name: "group",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "GroupCreated",
     type: "event",
@@ -400,6 +448,12 @@ const _abi = [
         internalType: "struct BosonTypes.Group",
         name: "group",
         type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "GroupUpdated",
@@ -474,7 +528,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -539,6 +593,12 @@ const _abi = [
         name: "offerDurations",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "OfferCreated",
     type: "event",
@@ -564,6 +624,12 @@ const _abi = [
         name: "validUntilDate",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "OfferExtended",
     type: "event",
@@ -582,6 +648,12 @@ const _abi = [
         internalType: "uint256",
         name: "sellerId",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "OfferVoided",
@@ -634,6 +706,12 @@ const _abi = [
         name: "seller",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "SellerCreated",
     type: "event",
@@ -684,6 +762,12 @@ const _abi = [
         internalType: "struct BosonTypes.Seller",
         name: "seller",
         type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "SellerUpdated",
@@ -747,6 +831,12 @@ const _abi = [
         name: "twin",
         type: "tuple",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
     ],
     name: "TwinCreated",
     type: "event",
@@ -765,6 +855,12 @@ const _abi = [
         internalType: "uint256",
         name: "sellerId",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
       },
     ],
     name: "TwinDeleted",
@@ -826,7 +922,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -955,7 +1051,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -1121,7 +1217,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -1272,7 +1368,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -1502,7 +1598,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -1663,7 +1759,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -1866,7 +1962,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {
@@ -2054,7 +2150,7 @@ const _abi = [
           },
           {
             internalType: "string",
-            name: "offerChecksum",
+            name: "metadataHash",
             type: "string",
           },
           {

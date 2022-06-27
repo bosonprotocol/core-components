@@ -28,7 +28,7 @@ describe("#encodeCreateOffer()", () => {
       exchangeToken,
       disputeResolverId,
       metadataUri,
-      offerChecksum,
+      metadataHash,
       voided
     ] = decodedCalldata[0].toString().split(","); // Offer struct
     const [
@@ -92,6 +92,6 @@ describe("#encodeCreateOffer()", () => {
     );
     expect(exchangeToken).toBe(mockedCreateOfferArgs.exchangeToken);
     expect(metadataUri).toBe(mockedCreateOfferArgs.metadataUri);
-    expect(offerChecksum).toBe(mockedCreateOfferArgs.offerChecksum);
+    expect(metadataHash).toBe(mockedCreateOfferArgs.metadataHash);
   });
 });

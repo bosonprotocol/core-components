@@ -1034,8 +1034,8 @@ export type Offer = {
   fulfillmentPeriodDuration: Scalars["BigInt"];
   id: Scalars["ID"];
   metadata?: Maybe<MetadataInterface>;
+  metadataHash: Scalars["String"];
   metadataUri: Scalars["String"];
-  offerChecksum: Scalars["String"];
   price: Scalars["BigInt"];
   protocolFee: Scalars["BigInt"];
   quantityAvailable: Scalars["BigInt"];
@@ -1148,6 +1148,26 @@ export type Offer_Filter = {
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
   metadata?: InputMaybe<Scalars["String"]>;
+  metadataHash?: InputMaybe<Scalars["String"]>;
+  metadataHash_contains?: InputMaybe<Scalars["String"]>;
+  metadataHash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_gt?: InputMaybe<Scalars["String"]>;
+  metadataHash_gte?: InputMaybe<Scalars["String"]>;
+  metadataHash_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataHash_lt?: InputMaybe<Scalars["String"]>;
+  metadataHash_lte?: InputMaybe<Scalars["String"]>;
+  metadataHash_not?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataHash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri?: InputMaybe<Scalars["String"]>;
   metadataUri_contains?: InputMaybe<Scalars["String"]>;
   metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1187,26 +1207,6 @@ export type Offer_Filter = {
   metadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadata_starts_with?: InputMaybe<Scalars["String"]>;
   metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum?: InputMaybe<Scalars["String"]>;
-  offerChecksum_contains?: InputMaybe<Scalars["String"]>;
-  offerChecksum_contains_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum_ends_with?: InputMaybe<Scalars["String"]>;
-  offerChecksum_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum_gt?: InputMaybe<Scalars["String"]>;
-  offerChecksum_gte?: InputMaybe<Scalars["String"]>;
-  offerChecksum_in?: InputMaybe<Array<Scalars["String"]>>;
-  offerChecksum_lt?: InputMaybe<Scalars["String"]>;
-  offerChecksum_lte?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_contains?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_ends_with?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  offerChecksum_not_starts_with?: InputMaybe<Scalars["String"]>;
-  offerChecksum_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  offerChecksum_starts_with?: InputMaybe<Scalars["String"]>;
-  offerChecksum_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   price?: InputMaybe<Scalars["BigInt"]>;
   price_gt?: InputMaybe<Scalars["BigInt"]>;
   price_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1347,8 +1347,8 @@ export enum Offer_OrderBy {
   FulfillmentPeriodDuration = "fulfillmentPeriodDuration",
   Id = "id",
   Metadata = "metadata",
+  MetadataHash = "metadataHash",
   MetadataUri = "metadataUri",
-  OfferChecksum = "offerChecksum",
   Price = "price",
   ProtocolFee = "protocolFee",
   QuantityAvailable = "quantityAvailable",
@@ -2349,7 +2349,7 @@ export type GetSellerByIdQueryQuery = {
       voucherValidDuration: string;
       resolutionPeriodDuration: string;
       metadataUri: string;
-      offerChecksum: string;
+      metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
       seller: {
@@ -2470,7 +2470,7 @@ export type GetSellersQueryQuery = {
       voucherValidDuration: string;
       resolutionPeriodDuration: string;
       metadataUri: string;
-      offerChecksum: string;
+      metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
       seller: {
@@ -2563,7 +2563,7 @@ export type SellerFieldsFragment = {
     voucherValidDuration: string;
     resolutionPeriodDuration: string;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
     seller: {
@@ -2684,7 +2684,7 @@ export type GetExchangeByIdQueryQuery = {
       voucherValidDuration: string;
       resolutionPeriodDuration: string;
       metadataUri: string;
-      offerChecksum: string;
+      metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
       seller: {
@@ -2780,7 +2780,7 @@ export type GetExchangesQueryQuery = {
       voucherValidDuration: string;
       resolutionPeriodDuration: string;
       metadataUri: string;
-      offerChecksum: string;
+      metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
       seller: {
@@ -2861,7 +2861,7 @@ export type ExchangeFieldsFragment = {
     voucherValidDuration: string;
     resolutionPeriodDuration: string;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
     seller: {
@@ -3005,7 +3005,7 @@ export type GetOfferByIdQueryQuery = {
     voucherValidDuration: string;
     resolutionPeriodDuration: string;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
     exchanges?: Array<{
@@ -3092,7 +3092,7 @@ export type GetOffersQueryQuery = {
     voucherValidDuration: string;
     resolutionPeriodDuration: string;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
     exchanges?: Array<{
@@ -3163,7 +3163,7 @@ export type OfferFieldsFragment = {
   voucherValidDuration: string;
   resolutionPeriodDuration: string;
   metadataUri: string;
-  offerChecksum: string;
+  metadataHash: string;
   voidedAt?: string | null;
   disputeResolverId: string;
   exchanges?: Array<{
@@ -3233,7 +3233,7 @@ export type BaseOfferFieldsFragment = {
   voucherValidDuration: string;
   resolutionPeriodDuration: string;
   metadataUri: string;
-  offerChecksum: string;
+  metadataHash: string;
   voidedAt?: string | null;
   disputeResolverId: string;
   seller: {
@@ -3313,7 +3313,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
     voucherValidDuration
     resolutionPeriodDuration
     metadataUri
-    offerChecksum
+    metadataHash
     voidedAt
     disputeResolverId
     seller {

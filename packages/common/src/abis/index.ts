@@ -4,6 +4,7 @@ import ERC20ABI from "./ERC20.json";
 import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
 import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
+import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.json";
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import ProtocolDiamondABI from "./ProtocolDiamond.json";
@@ -13,6 +14,7 @@ export {
   IBosonAccountHandlerABI,
   IBosonExchangeHandlerABI,
   IBosonFundsHandlerABI,
+  IBosonMetaTransactionsHandlerABI,
   IBosonOfferHandlerABI,
   IBosonOrchestrationHandlerABI,
   ProtocolDiamondABI
