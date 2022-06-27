@@ -1,10 +1,12 @@
-import { commitToOffer } from "../../src/exchanges/handler";
+import { commitToOffer, completeExchange } from "../../src/exchanges/handler";
 import { MockWeb3LibAdapter, ADDRESS } from "@bosonprotocol/common/tests/mocks";
 import {
   interceptSubgraph,
   SUBGRAPH_URL,
   DAY_IN_MS,
-  mockRawOfferFromSubgraph
+  mockRawOfferFromSubgraph,
+  mockRawExchangeFromSubgraph,
+  ZERO_ADDRESS
 } from "../mocks";
 
 describe("#commitToOffer()", () => {
@@ -119,6 +121,94 @@ describe("#commitToOffer()", () => {
       subgraphUrl: SUBGRAPH_URL,
       offerId: 1,
       web3Lib: new MockWeb3LibAdapter()
+    });
+
+    expect(typeof txResponse.hash === "string").toBeTruthy();
+  });
+});
+
+describe("#completeExchange()", () => {
+  test("throw if offer not existent", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        exchange: null
+      }
+    });
+
+    await expect(
+      completeExchange({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        exchangeId: 1,
+        web3Lib: new MockWeb3LibAdapter()
+      })
+    ).rejects.toThrow(/not exist/);
+  });
+
+  test("throw if signer not buyer or operator", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        exchange: mockRawExchangeFromSubgraph()
+      }
+    });
+
+    await expect(
+      completeExchange({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        exchangeId: 1,
+        web3Lib: new MockWeb3LibAdapter()
+      })
+    ).rejects.toThrow(/buyer or operator/);
+  });
+
+  test("throw if fulfillment period not elapsed", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        exchange: mockRawExchangeFromSubgraph(
+          {
+            redeemedDate: (Date.now() / 1000).toString()
+          },
+          {
+            fulfillmentPeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
+          }
+        )
+      }
+    });
+
+    await expect(
+      completeExchange({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        exchangeId: 1,
+        web3Lib: new MockWeb3LibAdapter({
+          getSignerAddress: ZERO_ADDRESS
+        })
+      })
+    ).rejects.toThrow(/not elapsed/);
+  });
+
+  test("return tx response", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        exchange: mockRawExchangeFromSubgraph(
+          {
+            redeemedDate: (Date.now() / 1000).toString()
+          },
+          {
+            fulfillmentPeriodDuration: "0"
+          }
+        )
+      }
+    });
+
+    const txResponse = await completeExchange({
+      contractAddress: ADDRESS,
+      subgraphUrl: SUBGRAPH_URL,
+      exchangeId: 1,
+      web3Lib: new MockWeb3LibAdapter({
+        getSignerAddress: ZERO_ADDRESS
+      })
     });
 
     expect(typeof txResponse.hash === "string").toBeTruthy();
