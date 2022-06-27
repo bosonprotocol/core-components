@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/eth-connect-sdk",
-  "version": "1.2.0-alpha.0",
+  "version": "1.2.0",
   "description": "> TODO: description",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -30,7 +30,7 @@
     "access": "restricted"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.7.0-alpha.0"
+    "@bosonprotocol/common": "^1.7.0"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
