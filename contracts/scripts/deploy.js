@@ -234,7 +234,13 @@ async function main() {
     wallet: deployer,
     active: true
   });
-  console.log(`✅ Dispute resolver deployed. \n`);
+  console.log(`✅ Dispute resolver deployed.`);
+
+  // Deploy ERC20-compliant mock token for testing
+  if (hre.network.name === "localhost" || !config[0].tokenAddress) {
+    const [foreign20Token] = await deployMockTokens(gasLimit, ["Foreign20"]);
+    deploymentComplete("Foreign20", foreign20Token.address, [], contracts);
+  }
 
   // Bail now if deploying locally
   if (hre.network.name === "localhost") {
@@ -243,7 +249,7 @@ async function main() {
 
   // Wait a minute after deployment completes and then verify contracts on etherscan
   console.log(
-    "⏲ Pause one minute, allowing deployments to propagate to Etherscan backend..."
+    "\n⏲ Pause one minute, allowing deployments to propagate to Etherscan backend..."
   );
   await delay(60_000).then(async () => {
     console.log("🔍 Verifying contracts on Etherscan...");
