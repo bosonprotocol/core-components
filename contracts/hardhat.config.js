@@ -5,6 +5,7 @@ require("dotenv").config();
 
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-abi-exporter");
+require("@nomiclabs/hardhat-etherscan");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -44,8 +45,16 @@ module.exports = {
     ropsten: {
       chainId: 3,
       accounts: accountsFromEnv,
-      url: process.env.JSON_RPC_URL || ""
+      url: process.env.JSON_RPC_URL_ROPSTEN || ""
+    },
+    kovan: {
+      chainId: 42,
+      accounts: accountsFromEnv,
+      url: process.env.JSON_RPC_URL_KOVAN || ""
     }
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY
   },
   paths: {
     sources: "./protocol-contracts/contracts"
@@ -60,7 +69,8 @@ module.exports = {
       "IBosonExchangeHandler",
       "IBosonFundsHandler",
       "IBosonOfferHandler",
-      "IBosonOrchestrationHandler"
+      "IBosonOrchestrationHandler",
+      "IBosonMetaTransactionsHandler"
     ]
   }
 };

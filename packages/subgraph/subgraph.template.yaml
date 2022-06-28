@@ -31,9 +31,9 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256))
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),indexed address)
           handler: handleOfferCreatedEvent
-        - event: OfferVoided(indexed uint256,indexed uint256)
+        - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferVoidedEvent
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
@@ -54,14 +54,20 @@ dataSources:
       abis:
         - name: IBosonAccountHandler
           file: ../common/src/abis/IBosonAccountHandler.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool))
+        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),indexed address)
           handler: handleSellerCreatedEvent
-        - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool))
+        - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),indexed address)
           handler: handleSellerUpdatedEvent
-        - event: BuyerCreated(indexed uint256,(uint256,address,bool))
+        - event: BuyerCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleBuyerCreatedEvent
-        - event: DisputeResolverCreated(indexed uint256,(uint256,address,bool))
+        - event: DisputeResolverCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleDisputeResolverCreatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
@@ -81,8 +87,14 @@ dataSources:
       abis:
         - name: IBosonExchangeHandler
           file: ../common/src/abis/IBosonExchangeHandler.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8))
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8),address)
           handler: handleBuyerCommittedEvent
         - event: VoucherRevoked(indexed uint256,indexed uint256,indexed address)
           handler: handleVoucherRevokedEvent
@@ -90,7 +102,7 @@ dataSources:
           handler: handleVoucherCanceledEvent
         - event: VoucherRedeemed(indexed uint256,indexed uint256,indexed address)
           handler: handleVoucherRedeemedEvent
-        - event: ExchangeCompleted(indexed uint256,indexed uint256,indexed uint256)
+        - event: ExchangeCompleted(indexed uint256,indexed uint256,indexed uint256,address)
           handler: handleExchangeCompletedEvent
       file: ./src/mappings/exchange-handler.ts
   - kind: ethereum/contract
@@ -110,13 +122,19 @@ dataSources:
       abis:
         - name: IBosonFundsHandler
           file: ../common/src/abis/IBosonFundsHandler.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: FundsDeposited(indexed uint256,indexed address,indexed address,uint256)
           handler: handleFundsDepositedEvent
-        - event: FundsReleased(indexed uint256,indexed uint256,indexed address,uint256)
+        - event: FundsReleased(indexed uint256,indexed uint256,indexed address,uint256,address)
           handler: handleFundsReleasedEvent
-        - event: FundsEncumbered(indexed uint256,indexed address,uint256)
+        - event: FundsEncumbered(indexed uint256,indexed address,uint256,indexed address)
           handler: handleFundsEncumberedEvent
-        - event: FundsWithdrawn(indexed uint256,indexed address,indexed address,uint256)
+        - event: FundsWithdrawn(indexed uint256,indexed address,indexed address,uint256,address)
           handler: handleFundsWithdrawnEvent
       file: ./src/mappings/funds-handler.ts

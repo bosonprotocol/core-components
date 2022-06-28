@@ -16,7 +16,7 @@ export type CreateOfferArgs = {
   exchangeToken: string;
   disputeResolverId: BigNumberish;
   metadataUri: string;
-  offerChecksum: string;
+  metadataHash: string;
 };
 
 export type OfferStruct = {
@@ -30,7 +30,7 @@ export type OfferStruct = {
   quantityAvailable: BigNumberish;
   exchangeToken: string;
   metadataUri: string;
-  offerChecksum: string;
+  metadataHash: string;
   voided: boolean;
 };
 

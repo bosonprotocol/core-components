@@ -379,4 +379,26 @@ export class CoreSDK {
       subgraphUrl: this._subgraphUrl
     });
   }
+
+  public async completeExchange(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.completeExchange({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeId,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
+
+  public async expireVoucher(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.expireVoucher({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeId,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
 }

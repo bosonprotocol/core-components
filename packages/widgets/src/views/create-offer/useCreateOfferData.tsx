@@ -115,7 +115,7 @@ function getCreateOfferArgs() {
     disputeResolverId: urlParams["disputeResolverId"],
     exchangeToken: urlParams["exchangeToken"],
     metadataUri: urlParams["metadataUri"],
-    offerChecksum: urlParams["offerChecksum"]
+    metadataHash: urlParams["metadataHash"]
   };
 
   return createOfferArgs;

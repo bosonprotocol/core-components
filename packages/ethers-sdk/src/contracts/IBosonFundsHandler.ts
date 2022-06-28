@@ -76,32 +76,25 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "ExchangeFee(uint256,address,uint256)": EventFragment;
     "FundsDeposited(uint256,address,address,uint256)": EventFragment;
-    "FundsEncumbered(uint256,address,uint256)": EventFragment;
-    "FundsReleased(uint256,uint256,address,uint256)": EventFragment;
-    "FundsWithdrawn(uint256,address,address,uint256)": EventFragment;
+    "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
+    "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
+    "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
+    "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ExchangeFee"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
 }
-
-export type ExchangeFeeEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  { exchangeId: BigNumber; exchangeToken: string; amount: BigNumber }
->;
-
-export type ExchangeFeeEventFilter = TypedEventFilter<ExchangeFeeEvent>;
 
 export type FundsDepositedEvent = TypedEvent<
   [BigNumber, string, string, BigNumber],
   {
     sellerId: BigNumber;
-    depositedBy: string;
+    executedBy: string;
     tokenAddress: string;
     amount: BigNumber;
   }
@@ -110,35 +103,55 @@ export type FundsDepositedEvent = TypedEvent<
 export type FundsDepositedEventFilter = TypedEventFilter<FundsDepositedEvent>;
 
 export type FundsEncumberedEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
-  { entityId: BigNumber; exchangeToken: string; amount: BigNumber }
+  [BigNumber, string, BigNumber, string],
+  {
+    entityId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type FundsEncumberedEventFilter = TypedEventFilter<FundsEncumberedEvent>;
 
 export type FundsReleasedEvent = TypedEvent<
-  [BigNumber, BigNumber, string, BigNumber],
+  [BigNumber, BigNumber, string, BigNumber, string],
   {
     exchangeId: BigNumber;
     entityId: BigNumber;
     exchangeToken: string;
     amount: BigNumber;
+    executedBy: string;
   }
 >;
 
 export type FundsReleasedEventFilter = TypedEventFilter<FundsReleasedEvent>;
 
 export type FundsWithdrawnEvent = TypedEvent<
-  [BigNumber, string, string, BigNumber],
+  [BigNumber, string, string, BigNumber, string],
   {
     sellerId: BigNumber;
     withdrawnTo: string;
     tokenAddress: string;
     amount: BigNumber;
+    executedBy: string;
   }
 >;
 
 export type FundsWithdrawnEventFilter = TypedEventFilter<FundsWithdrawnEvent>;
+
+export type ProtocolFeeCollectedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, string],
+  {
+    exchangeId: BigNumber;
+    exchangeToken: string;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type ProtocolFeeCollectedEventFilter =
+  TypedEventFilter<ProtocolFeeCollectedEvent>;
 
 export interface IBosonFundsHandler extends BaseContract {
   contractName: "IBosonFundsHandler";
@@ -251,66 +264,74 @@ export interface IBosonFundsHandler extends BaseContract {
   };
 
   filters: {
-    "ExchangeFee(uint256,address,uint256)"(
-      exchangeId?: BigNumberish | null,
-      exchangeToken?: string | null,
-      amount?: null
-    ): ExchangeFeeEventFilter;
-    ExchangeFee(
-      exchangeId?: BigNumberish | null,
-      exchangeToken?: string | null,
-      amount?: null
-    ): ExchangeFeeEventFilter;
-
     "FundsDeposited(uint256,address,address,uint256)"(
       sellerId?: BigNumberish | null,
-      depositedBy?: string | null,
+      executedBy?: string | null,
       tokenAddress?: string | null,
       amount?: null
     ): FundsDepositedEventFilter;
     FundsDeposited(
       sellerId?: BigNumberish | null,
-      depositedBy?: string | null,
+      executedBy?: string | null,
       tokenAddress?: string | null,
       amount?: null
     ): FundsDepositedEventFilter;
 
-    "FundsEncumbered(uint256,address,uint256)"(
+    "FundsEncumbered(uint256,address,uint256,address)"(
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: string | null
     ): FundsEncumberedEventFilter;
     FundsEncumbered(
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: string | null
     ): FundsEncumberedEventFilter;
 
-    "FundsReleased(uint256,uint256,address,uint256)"(
+    "FundsReleased(uint256,uint256,address,uint256,address)"(
       exchangeId?: BigNumberish | null,
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsReleasedEventFilter;
     FundsReleased(
       exchangeId?: BigNumberish | null,
       entityId?: BigNumberish | null,
       exchangeToken?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsReleasedEventFilter;
 
-    "FundsWithdrawn(uint256,address,address,uint256)"(
+    "FundsWithdrawn(uint256,address,address,uint256,address)"(
       sellerId?: BigNumberish | null,
       withdrawnTo?: string | null,
       tokenAddress?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsWithdrawnEventFilter;
     FundsWithdrawn(
       sellerId?: BigNumberish | null,
       withdrawnTo?: string | null,
       tokenAddress?: string | null,
-      amount?: null
+      amount?: null,
+      executedBy?: null
     ): FundsWithdrawnEventFilter;
+
+    "ProtocolFeeCollected(uint256,address,uint256,address)"(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
+    ProtocolFeeCollected(
+      exchangeId?: BigNumberish | null,
+      exchangeToken?: string | null,
+      amount?: null,
+      executedBy?: string | null
+    ): ProtocolFeeCollectedEventFilter;
   };
 
   estimateGas: {

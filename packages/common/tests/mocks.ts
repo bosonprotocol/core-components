@@ -31,7 +31,7 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     sellerId: "1",
     exchangeToken: AddressZero,
     metadataUri: IPFS_URI,
-    offerChecksum: IPFS_HASH, // TODO: use correct checksum
+    metadataHash: IPFS_HASH,
     ...overrides
   };
 }
@@ -78,7 +78,7 @@ export function mockCreateOfferArgs(
     exchangeToken: AddressZero,
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
-    offerChecksum: IPFS_HASH, // TODO: use correct checksum
+    metadataHash: IPFS_HASH,
     ...overrides
   };
 }
@@ -89,6 +89,7 @@ type MockedWeb3LibReturnValues = {
   getBalance: string;
   sendTransaction: TransactionResponse;
   call: string;
+  send: string;
 };
 
 const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
@@ -104,6 +105,7 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
       logs: []
     })
   },
+  send: "0x",
   call: "0x"
 };
 
@@ -138,6 +140,10 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
 
   async call() {
     return this._returnValues.call;
+  }
+
+  async send() {
+    return this._returnValues.send;
   }
 }
 

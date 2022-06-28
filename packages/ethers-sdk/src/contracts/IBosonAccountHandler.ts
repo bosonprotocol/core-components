@@ -169,12 +169,12 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "BuyerCreated(uint256,tuple)": EventFragment;
-    "BuyerUpdated(uint256,tuple)": EventFragment;
-    "DisputeResolverCreated(uint256,tuple)": EventFragment;
-    "DisputeResolverUpdated(uint256,tuple)": EventFragment;
-    "SellerCreated(uint256,tuple)": EventFragment;
-    "SellerUpdated(uint256,tuple)": EventFragment;
+    "BuyerCreated(uint256,tuple,address)": EventFragment;
+    "BuyerUpdated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverCreated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverUpdated(uint256,tuple,address)": EventFragment;
+    "SellerCreated(uint256,tuple,address)": EventFragment;
+    "SellerUpdated(uint256,tuple,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCreated"): EventFragment;
@@ -186,24 +186,33 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
 }
 
 export type BuyerCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.BuyerStructOutput],
-  { buyerId: BigNumber; buyer: BosonTypes.BuyerStructOutput }
+  [BigNumber, BosonTypes.BuyerStructOutput, string],
+  {
+    buyerId: BigNumber;
+    buyer: BosonTypes.BuyerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type BuyerCreatedEventFilter = TypedEventFilter<BuyerCreatedEvent>;
 
 export type BuyerUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.BuyerStructOutput],
-  { buyerId: BigNumber; buyer: BosonTypes.BuyerStructOutput }
+  [BigNumber, BosonTypes.BuyerStructOutput, string],
+  {
+    buyerId: BigNumber;
+    buyer: BosonTypes.BuyerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type BuyerUpdatedEventFilter = TypedEventFilter<BuyerUpdatedEvent>;
 
 export type DisputeResolverCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
   {
     disputeResolverId: BigNumber;
     disputeResolver: BosonTypes.DisputeResolverStructOutput;
+    executedBy: string;
   }
 >;
 
@@ -211,10 +220,11 @@ export type DisputeResolverCreatedEventFilter =
   TypedEventFilter<DisputeResolverCreatedEvent>;
 
 export type DisputeResolverUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
   {
     disputeResolverId: BigNumber;
     disputeResolver: BosonTypes.DisputeResolverStructOutput;
+    executedBy: string;
   }
 >;
 
@@ -222,15 +232,23 @@ export type DisputeResolverUpdatedEventFilter =
   TypedEventFilter<DisputeResolverUpdatedEvent>;
 
 export type SellerCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.SellerStructOutput],
-  { sellerId: BigNumber; seller: BosonTypes.SellerStructOutput }
+  [BigNumber, BosonTypes.SellerStructOutput, string],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type SellerCreatedEventFilter = TypedEventFilter<SellerCreatedEvent>;
 
 export type SellerUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.SellerStructOutput],
-  { sellerId: BigNumber; seller: BosonTypes.SellerStructOutput }
+  [BigNumber, BosonTypes.SellerStructOutput, string],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type SellerUpdatedEventFilter = TypedEventFilter<SellerUpdatedEvent>;
@@ -485,58 +503,70 @@ export interface IBosonAccountHandler extends BaseContract {
   };
 
   filters: {
-    "BuyerCreated(uint256,tuple)"(
+    "BuyerCreated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerCreatedEventFilter;
     BuyerCreated(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerCreatedEventFilter;
 
-    "BuyerUpdated(uint256,tuple)"(
+    "BuyerUpdated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerUpdatedEventFilter;
     BuyerUpdated(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerUpdatedEventFilter;
 
-    "DisputeResolverCreated(uint256,tuple)"(
+    "DisputeResolverCreated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
     DisputeResolverCreated(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
 
-    "DisputeResolverUpdated(uint256,tuple)"(
+    "DisputeResolverUpdated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverUpdatedEventFilter;
     DisputeResolverUpdated(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverUpdatedEventFilter;
 
-    "SellerCreated(uint256,tuple)"(
+    "SellerCreated(uint256,tuple,address)"(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerCreatedEventFilter;
     SellerCreated(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerCreatedEventFilter;
 
-    "SellerUpdated(uint256,tuple)"(
+    "SellerUpdated(uint256,tuple,address)"(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerUpdatedEventFilter;
     SellerUpdated(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerUpdatedEventFilter;
   };
 

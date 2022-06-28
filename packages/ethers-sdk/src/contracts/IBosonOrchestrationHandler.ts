@@ -105,7 +105,7 @@ export declare namespace BosonTypes {
     exchangeToken: string;
     disputeResolverId: BigNumberish;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voided: boolean;
   };
 
@@ -133,7 +133,7 @@ export declare namespace BosonTypes {
     exchangeToken: string;
     disputeResolverId: BigNumber;
     metadataUri: string;
-    offerChecksum: string;
+    metadataHash: string;
     voided: boolean;
   };
 
@@ -347,22 +347,22 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "BundleCreated(uint256,uint256,tuple)": EventFragment;
-    "BundleDeleted(uint256,uint256)": EventFragment;
-    "BundleUpdated(uint256,uint256,tuple)": EventFragment;
-    "BuyerCreated(uint256,tuple)": EventFragment;
-    "BuyerUpdated(uint256,tuple)": EventFragment;
-    "DisputeResolverCreated(uint256,tuple)": EventFragment;
-    "DisputeResolverUpdated(uint256,tuple)": EventFragment;
-    "GroupCreated(uint256,uint256,tuple)": EventFragment;
-    "GroupUpdated(uint256,uint256,tuple)": EventFragment;
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple)": EventFragment;
-    "OfferExtended(uint256,uint256,uint256)": EventFragment;
-    "OfferVoided(uint256,uint256)": EventFragment;
-    "SellerCreated(uint256,tuple)": EventFragment;
-    "SellerUpdated(uint256,tuple)": EventFragment;
-    "TwinCreated(uint256,uint256,tuple)": EventFragment;
-    "TwinDeleted(uint256,uint256)": EventFragment;
+    "BundleCreated(uint256,uint256,tuple,address)": EventFragment;
+    "BundleDeleted(uint256,uint256,address)": EventFragment;
+    "BundleUpdated(uint256,uint256,tuple,address)": EventFragment;
+    "BuyerCreated(uint256,tuple,address)": EventFragment;
+    "BuyerUpdated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverCreated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverUpdated(uint256,tuple,address)": EventFragment;
+    "GroupCreated(uint256,uint256,tuple,address)": EventFragment;
+    "GroupUpdated(uint256,uint256,tuple,address)": EventFragment;
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)": EventFragment;
+    "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
+    "OfferVoided(uint256,uint256,address)": EventFragment;
+    "SellerCreated(uint256,tuple,address)": EventFragment;
+    "SellerUpdated(uint256,tuple,address)": EventFragment;
+    "TwinCreated(uint256,uint256,tuple,address)": EventFragment;
+    "TwinDeleted(uint256,uint256,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BundleCreated"): EventFragment;
@@ -384,53 +384,64 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
 }
 
 export type BundleCreatedEvent = TypedEvent<
-  [BigNumber, BigNumber, BosonTypes.BundleStructOutput],
+  [BigNumber, BigNumber, BosonTypes.BundleStructOutput, string],
   {
     bundleId: BigNumber;
     sellerId: BigNumber;
     bundle: BosonTypes.BundleStructOutput;
+    executedBy: string;
   }
 >;
 
 export type BundleCreatedEventFilter = TypedEventFilter<BundleCreatedEvent>;
 
 export type BundleDeletedEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  { bundleId: BigNumber; sellerId: BigNumber }
+  [BigNumber, BigNumber, string],
+  { bundleId: BigNumber; sellerId: BigNumber; executedBy: string }
 >;
 
 export type BundleDeletedEventFilter = TypedEventFilter<BundleDeletedEvent>;
 
 export type BundleUpdatedEvent = TypedEvent<
-  [BigNumber, BigNumber, BosonTypes.BundleStructOutput],
+  [BigNumber, BigNumber, BosonTypes.BundleStructOutput, string],
   {
     bundleId: BigNumber;
     sellerId: BigNumber;
     bundle: BosonTypes.BundleStructOutput;
+    executedBy: string;
   }
 >;
 
 export type BundleUpdatedEventFilter = TypedEventFilter<BundleUpdatedEvent>;
 
 export type BuyerCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.BuyerStructOutput],
-  { buyerId: BigNumber; buyer: BosonTypes.BuyerStructOutput }
+  [BigNumber, BosonTypes.BuyerStructOutput, string],
+  {
+    buyerId: BigNumber;
+    buyer: BosonTypes.BuyerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type BuyerCreatedEventFilter = TypedEventFilter<BuyerCreatedEvent>;
 
 export type BuyerUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.BuyerStructOutput],
-  { buyerId: BigNumber; buyer: BosonTypes.BuyerStructOutput }
+  [BigNumber, BosonTypes.BuyerStructOutput, string],
+  {
+    buyerId: BigNumber;
+    buyer: BosonTypes.BuyerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type BuyerUpdatedEventFilter = TypedEventFilter<BuyerUpdatedEvent>;
 
 export type DisputeResolverCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
   {
     disputeResolverId: BigNumber;
     disputeResolver: BosonTypes.DisputeResolverStructOutput;
+    executedBy: string;
   }
 >;
 
@@ -438,10 +449,11 @@ export type DisputeResolverCreatedEventFilter =
   TypedEventFilter<DisputeResolverCreatedEvent>;
 
 export type DisputeResolverUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.DisputeResolverStructOutput],
+  [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
   {
     disputeResolverId: BigNumber;
     disputeResolver: BosonTypes.DisputeResolverStructOutput;
+    executedBy: string;
   }
 >;
 
@@ -449,22 +461,24 @@ export type DisputeResolverUpdatedEventFilter =
   TypedEventFilter<DisputeResolverUpdatedEvent>;
 
 export type GroupCreatedEvent = TypedEvent<
-  [BigNumber, BigNumber, BosonTypes.GroupStructOutput],
+  [BigNumber, BigNumber, BosonTypes.GroupStructOutput, string],
   {
     groupId: BigNumber;
     sellerId: BigNumber;
     group: BosonTypes.GroupStructOutput;
+    executedBy: string;
   }
 >;
 
 export type GroupCreatedEventFilter = TypedEventFilter<GroupCreatedEvent>;
 
 export type GroupUpdatedEvent = TypedEvent<
-  [BigNumber, BigNumber, BosonTypes.GroupStructOutput],
+  [BigNumber, BigNumber, BosonTypes.GroupStructOutput, string],
   {
     groupId: BigNumber;
     sellerId: BigNumber;
     group: BosonTypes.GroupStructOutput;
+    executedBy: string;
   }
 >;
 
@@ -476,7 +490,8 @@ export type OfferCreatedEvent = TypedEvent<
     BigNumber,
     BosonTypes.OfferStructOutput,
     BosonTypes.OfferDatesStructOutput,
-    BosonTypes.OfferDurationsStructOutput
+    BosonTypes.OfferDurationsStructOutput,
+    string
   ],
   {
     offerId: BigNumber;
@@ -484,49 +499,68 @@ export type OfferCreatedEvent = TypedEvent<
     offer: BosonTypes.OfferStructOutput;
     offerDates: BosonTypes.OfferDatesStructOutput;
     offerDurations: BosonTypes.OfferDurationsStructOutput;
+    executedBy: string;
   }
 >;
 
 export type OfferCreatedEventFilter = TypedEventFilter<OfferCreatedEvent>;
 
 export type OfferExtendedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  { offerId: BigNumber; sellerId: BigNumber; validUntilDate: BigNumber }
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    sellerId: BigNumber;
+    validUntilDate: BigNumber;
+    executedBy: string;
+  }
 >;
 
 export type OfferExtendedEventFilter = TypedEventFilter<OfferExtendedEvent>;
 
 export type OfferVoidedEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  { offerId: BigNumber; sellerId: BigNumber }
+  [BigNumber, BigNumber, string],
+  { offerId: BigNumber; sellerId: BigNumber; executedBy: string }
 >;
 
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
 
 export type SellerCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.SellerStructOutput],
-  { sellerId: BigNumber; seller: BosonTypes.SellerStructOutput }
+  [BigNumber, BosonTypes.SellerStructOutput, string],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type SellerCreatedEventFilter = TypedEventFilter<SellerCreatedEvent>;
 
 export type SellerUpdatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.SellerStructOutput],
-  { sellerId: BigNumber; seller: BosonTypes.SellerStructOutput }
+  [BigNumber, BosonTypes.SellerStructOutput, string],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type SellerUpdatedEventFilter = TypedEventFilter<SellerUpdatedEvent>;
 
 export type TwinCreatedEvent = TypedEvent<
-  [BigNumber, BigNumber, BosonTypes.TwinStructOutput],
-  { twinId: BigNumber; sellerId: BigNumber; twin: BosonTypes.TwinStructOutput }
+  [BigNumber, BigNumber, BosonTypes.TwinStructOutput, string],
+  {
+    twinId: BigNumber;
+    sellerId: BigNumber;
+    twin: BosonTypes.TwinStructOutput;
+    executedBy: string;
+  }
 >;
 
 export type TwinCreatedEventFilter = TypedEventFilter<TwinCreatedEvent>;
 
 export type TwinDeletedEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  { twinId: BigNumber; sellerId: BigNumber }
+  [BigNumber, BigNumber, string],
+  { twinId: BigNumber; sellerId: BigNumber; executedBy: string }
 >;
 
 export type TwinDeletedEventFilter = TypedEventFilter<TwinDeletedEvent>;
@@ -770,166 +804,198 @@ export interface IBosonOrchestrationHandler extends BaseContract {
   };
 
   filters: {
-    "BundleCreated(uint256,uint256,tuple)"(
+    "BundleCreated(uint256,uint256,tuple,address)"(
       bundleId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      bundle?: null
+      bundle?: null,
+      executedBy?: string | null
     ): BundleCreatedEventFilter;
     BundleCreated(
       bundleId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      bundle?: null
+      bundle?: null,
+      executedBy?: string | null
     ): BundleCreatedEventFilter;
 
-    "BundleDeleted(uint256,uint256)"(
+    "BundleDeleted(uint256,uint256,address)"(
       bundleId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): BundleDeletedEventFilter;
     BundleDeleted(
       bundleId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): BundleDeletedEventFilter;
 
-    "BundleUpdated(uint256,uint256,tuple)"(
+    "BundleUpdated(uint256,uint256,tuple,address)"(
       bundleId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      bundle?: null
+      bundle?: null,
+      executedBy?: string | null
     ): BundleUpdatedEventFilter;
     BundleUpdated(
       bundleId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      bundle?: null
+      bundle?: null,
+      executedBy?: string | null
     ): BundleUpdatedEventFilter;
 
-    "BuyerCreated(uint256,tuple)"(
+    "BuyerCreated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerCreatedEventFilter;
     BuyerCreated(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerCreatedEventFilter;
 
-    "BuyerUpdated(uint256,tuple)"(
+    "BuyerUpdated(uint256,tuple,address)"(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerUpdatedEventFilter;
     BuyerUpdated(
       buyerId?: BigNumberish | null,
-      buyer?: null
+      buyer?: null,
+      executedBy?: string | null
     ): BuyerUpdatedEventFilter;
 
-    "DisputeResolverCreated(uint256,tuple)"(
+    "DisputeResolverCreated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
     DisputeResolverCreated(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
 
-    "DisputeResolverUpdated(uint256,tuple)"(
+    "DisputeResolverUpdated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverUpdatedEventFilter;
     DisputeResolverUpdated(
       disputeResolverId?: BigNumberish | null,
-      disputeResolver?: null
+      disputeResolver?: null,
+      executedBy?: string | null
     ): DisputeResolverUpdatedEventFilter;
 
-    "GroupCreated(uint256,uint256,tuple)"(
+    "GroupCreated(uint256,uint256,tuple,address)"(
       groupId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      group?: null
+      group?: null,
+      executedBy?: string | null
     ): GroupCreatedEventFilter;
     GroupCreated(
       groupId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      group?: null
+      group?: null,
+      executedBy?: string | null
     ): GroupCreatedEventFilter;
 
-    "GroupUpdated(uint256,uint256,tuple)"(
+    "GroupUpdated(uint256,uint256,tuple,address)"(
       groupId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      group?: null
+      group?: null,
+      executedBy?: string | null
     ): GroupUpdatedEventFilter;
     GroupUpdated(
       groupId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      group?: null
+      group?: null,
+      executedBy?: string | null
     ): GroupUpdatedEventFilter;
 
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple)"(
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       offer?: null,
       offerDates?: null,
-      offerDurations?: null
+      offerDurations?: null,
+      executedBy?: string | null
     ): OfferCreatedEventFilter;
     OfferCreated(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       offer?: null,
       offerDates?: null,
-      offerDurations?: null
+      offerDurations?: null,
+      executedBy?: string | null
     ): OfferCreatedEventFilter;
 
-    "OfferExtended(uint256,uint256,uint256)"(
+    "OfferExtended(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      validUntilDate?: null
+      validUntilDate?: null,
+      executedBy?: string | null
     ): OfferExtendedEventFilter;
     OfferExtended(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      validUntilDate?: null
+      validUntilDate?: null,
+      executedBy?: string | null
     ): OfferExtendedEventFilter;
 
-    "OfferVoided(uint256,uint256)"(
+    "OfferVoided(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): OfferVoidedEventFilter;
     OfferVoided(
       offerId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): OfferVoidedEventFilter;
 
-    "SellerCreated(uint256,tuple)"(
+    "SellerCreated(uint256,tuple,address)"(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerCreatedEventFilter;
     SellerCreated(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerCreatedEventFilter;
 
-    "SellerUpdated(uint256,tuple)"(
+    "SellerUpdated(uint256,tuple,address)"(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerUpdatedEventFilter;
     SellerUpdated(
       sellerId?: BigNumberish | null,
-      seller?: null
+      seller?: null,
+      executedBy?: string | null
     ): SellerUpdatedEventFilter;
 
-    "TwinCreated(uint256,uint256,tuple)"(
+    "TwinCreated(uint256,uint256,tuple,address)"(
       twinId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      twin?: null
+      twin?: null,
+      executedBy?: string | null
     ): TwinCreatedEventFilter;
     TwinCreated(
       twinId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      twin?: null
+      twin?: null,
+      executedBy?: string | null
     ): TwinCreatedEventFilter;
 
-    "TwinDeleted(uint256,uint256)"(
+    "TwinDeleted(uint256,uint256,address)"(
       twinId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): TwinDeletedEventFilter;
     TwinDeleted(
       twinId?: BigNumberish | null,
-      sellerId?: BigNumberish | null
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
     ): TwinDeletedEventFilter;
   };
 

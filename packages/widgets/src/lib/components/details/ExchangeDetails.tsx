@@ -18,8 +18,6 @@ interface Props {
   priceInWei: BigNumberish;
   buyerCancelPenaltyInWei: BigNumberish;
   sellerDepositInWei: BigNumberish;
-  validFromDateInMS: BigNumberish;
-  validUntilDateInMS: BigNumberish;
   voucherRedeemableFromDateInMS: BigNumberish;
   voucherRedeemableUntilDateInMS: BigNumberish;
   voucherValidDurationInMS?: BigNumberish;
@@ -30,7 +28,7 @@ interface Props {
   resolutionPeriodInMS: BigNumberish;
 }
 
-export function OfferDetails({
+export function ExchangeDetails({
   currencySymbol,
   currencyDecimals = 18,
   quantityInitial,
@@ -38,8 +36,6 @@ export function OfferDetails({
   priceInWei,
   buyerCancelPenaltyInWei,
   sellerDepositInWei,
-  validFromDateInMS,
-  validUntilDateInMS,
   voucherRedeemableFromDateInMS,
   voucherRedeemableUntilDateInMS,
   voucherValidDurationInMS,
@@ -119,20 +115,6 @@ export function OfferDetails({
       <Spacer />
       <Row>
         <Entry>
-          <Label>Valid From Date</Label>
-          <Value title={formatDate(validFromDateInMS.toString())}>
-            {formatDate(validFromDateInMS.toString())}
-          </Value>
-        </Entry>
-        <Entry>
-          <Label>Valid Until Date</Label>
-          <Value title={formatDate(validUntilDateInMS.toString())}>
-            {formatDate(validUntilDateInMS.toString())}
-          </Value>
-        </Entry>
-      </Row>
-      <Row>
-        <Entry>
           <Label>Redeemable From</Label>
           <Value title={formatDate(voucherRedeemableFromDateInMS.toString())}>
             {formatDate(voucherRedeemableFromDateInMS.toString())}
@@ -177,7 +159,7 @@ export function OfferDetails({
         </Entry>
         {metadataHash && (
           <Entry>
-            <Label>Offer Checksum</Label>
+            <Label>Metadata Hash</Label>
             <Value title={metadataHash}>{metadataHash}</Value>
           </Entry>
         )}

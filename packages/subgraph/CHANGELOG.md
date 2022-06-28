@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.5.0...@bosonprotocol/subgraph@1.6.0) (2022-06-27)
+
+### Features
+
+* adapt to new set of contracts ([#131](https://github.com/bosonprotocol/core-components/issues/131)) ([ffe5fc7](https://github.com/bosonprotocol/core-components/commit/ffe5fc7c64f5743b06212fb969f293cd64046459))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.4.0...@bosonprotocol/subgraph@1.5.0) (2022-06-20)
 
 ### Features

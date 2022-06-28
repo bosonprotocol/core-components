@@ -79,6 +79,12 @@
         "internalType": "struct BosonTypes.Exchange",
         "name": "exchange",
         "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "BuyerCommitted",
@@ -104,34 +110,15 @@
         "internalType": "uint256",
         "name": "exchangeId",
         "type": "uint256"
-      }
-    ],
-    "name": "ExchangeCompleted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "exchangeId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "exchangeToken",
-        "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
-    "name": "ExchangeFee",
+    "name": "ExchangeCompleted",
     "type": "event"
   },
   {
@@ -154,6 +141,12 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "FundsEncumbered",
@@ -185,6 +178,12 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "FundsReleased",
@@ -216,9 +215,46 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "FundsWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "exchangeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "exchangeToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "ProtocolFeeCollected",
     "type": "event"
   },
   {
@@ -239,7 +275,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "canceledBy",
+        "name": "executedBy",
         "type": "address"
       }
     ],
@@ -264,7 +300,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "expiredBy",
+        "name": "executedBy",
         "type": "address"
       }
     ],
@@ -289,7 +325,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "redeemedBy",
+        "name": "executedBy",
         "type": "address"
       }
     ],
@@ -314,7 +350,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "revokedBy",
+        "name": "executedBy",
         "type": "address"
       }
     ],
@@ -341,6 +377,12 @@
         "internalType": "uint256",
         "name": "newBuyerId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
       }
     ],
     "name": "VoucherTransferred",
