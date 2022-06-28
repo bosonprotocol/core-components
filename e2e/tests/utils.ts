@@ -112,16 +112,16 @@ export const setHolderBalanceAbi = [
     inputs: [
       {
         internalType: "address",
-        name: "_holder",
+        name: "_account",
         type: "address"
       },
       {
         internalType: "uint256",
-        name: "_balance",
+        name: "_amount",
         type: "uint256"
       }
     ],
-    name: "setHolderBalance",
+    name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
