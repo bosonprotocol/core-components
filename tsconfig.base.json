@@ -4,7 +4,11 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["esnext", "es5", "dom"],
+    "lib": [
+      "esnext",
+      "es5",
+      "dom"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -23,6 +27,7 @@
     "packages/**/dist/**",
     "**/*.spec.ts",
     "**/*.test.ts",
-    "dist"
+    "**/*.stories.*",
+    "dist",
   ]
 }

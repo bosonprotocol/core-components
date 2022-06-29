@@ -1,0 +1,15 @@
+{
+  "site": {
+    "id": "eebf4712-9eae-45ed-8f1a-9ebe0f672c60",
+    "team": "0934fc94-ebb5-4572-ab25-5a7429a882ef",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "billowing-sound-6347"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "build",
+    "command": "npm run build",
+    "rootDir": ""
+  }
+}
