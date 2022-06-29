@@ -11,6 +11,7 @@
     "lint:fix": "npm run lint -- --fix",
     "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json",
     "test": "jest",
+    "test:watch": "jest --watch",
     "clean": "rimraf dist coverage .turbo node_modules"
   },
   "repository": {
