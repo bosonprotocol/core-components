@@ -6,6 +6,12 @@ export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
 );
 
+export function encodeCreateAccount(seller: CreateSellerArgs) {
+  return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
+    createSellerArgsToStruct(seller)
+  ]);
+}
+
 export function createSellerArgsToStruct(
   args: CreateSellerArgs
 ): Partial<SellerStruct> {

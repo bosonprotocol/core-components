@@ -1,30 +1,23 @@
-import { utils, constants, BigNumberish, Contract, Wallet } from "ethers";
-import { TransactionReceipt } from "../../packages/common/src/types";
+import { utils, constants, BigNumberish } from "ethers";
 
-import {
-  ADDRESS,
-  mockCreateOfferArgs
-} from "../../packages/common/tests/mocks";
-import { CoreSDK, getDefaultConfig } from "../../packages/core-sdk/src";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { CoreSDK } from "../../packages/core-sdk/src";
 import {
   ExchangeState,
-  FundsEntityFieldsFragment,
-  OfferFieldsFragment
+  FundsEntityFieldsFragment
 } from "../../packages/core-sdk/src/subgraph";
-import { contracts } from "../../packages/ethers-sdk/src";
 
 import {
   initCoreSDKWithFundedWallet,
   initSellerAndBuyerSDKs,
   metadata,
-  provider,
-  setHolderBalanceAbi,
+  ensureCreatedSeller,
+  ensureMintedAndAllowedTokens,
+  MOCK_ERC20_ADDRESS,
   waitForGraphNodeIndexing
 } from "./utils";
 
 jest.setTimeout(60_000);
-
-const mockERC20TokenAddress = "0x95401dc811bb5740090279Ba06cfA8fcF6113778";
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
@@ -48,15 +41,12 @@ describe("core-sdk", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
-        const createdOffer = await createSellerAndOffer(
-          coreSDK,
-          fundedWallet.address
-        );
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
           coreSDK,
           fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: createdOffer.seller.id
+          sellerId: seller.id
         });
 
         expect(funds).toBeTruthy();
@@ -69,22 +59,15 @@ describe("core-sdk", () => {
       test("ERC20", async () => {
         const sellerFundsDeposit = "5";
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
-        const createdOffer = await createSellerAndOffer(
-          coreSDK,
-          fundedWallet.address
-        );
+        const seller = await ensureCreatedSeller(fundedWallet);
 
-        await fundWalletWithMockToken({
-          wallet: fundedWallet,
-          coreSDK: coreSDK,
-          amount: utils.parseEther(sellerFundsDeposit)
-        });
+        await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
 
         const funds = await depositFunds({
           coreSDK,
           fundsDepositAmountInEth: sellerFundsDeposit,
-          sellerId: createdOffer.seller.id,
-          fundsTokenAddress: mockERC20TokenAddress
+          sellerId: seller.id,
+          fundsTokenAddress: MOCK_ERC20_ADDRESS
         });
 
         expect(funds).toBeTruthy();
@@ -204,15 +187,12 @@ describe("core-sdk", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
-        const createdOffer = await createSellerAndOffer(
-          coreSDK,
-          fundedWallet.address
-        );
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
           coreSDK,
           fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: createdOffer.seller.id
+          sellerId: seller.id
         });
         expect(funds.availableAmount).toEqual(
           utils.parseEther(sellerFundsDepositInEth).toString()
@@ -222,7 +202,7 @@ describe("core-sdk", () => {
 
         const updatedFunds = await withdrawFunds({
           coreSDK,
-          sellerId: createdOffer.seller.id,
+          sellerId: seller.id,
           tokenAddresses: [tokenAddress],
           amountsInEth: [sellerFundsDepositInEth]
         });
@@ -233,32 +213,28 @@ describe("core-sdk", () => {
       test("ETH and ERC20", async () => {
         const sellerFundsDepositInEth = "5";
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
-        const createdOffer = await createSellerAndOffer(
-          coreSDK,
-          fundedWallet.address
-        );
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const ethFunds = await depositFunds({
           coreSDK,
           fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: createdOffer.seller.id,
+          sellerId: seller.id,
           fundsTokenAddress: constants.AddressZero
         });
         expect(ethFunds.availableAmount).toEqual(
           utils.parseEther(sellerFundsDepositInEth).toString()
         );
 
-        await fundWalletWithMockToken({
-          wallet: fundedWallet,
-          coreSDK: coreSDK,
-          amount: utils.parseEther(sellerFundsDepositInEth)
-        });
+        await ensureMintedAndAllowedTokens(
+          [fundedWallet],
+          sellerFundsDepositInEth
+        );
 
         const mockErc20Funds = await depositFunds({
           coreSDK,
           fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: createdOffer.seller.id,
-          fundsTokenAddress: mockERC20TokenAddress
+          sellerId: seller.id,
+          fundsTokenAddress: MOCK_ERC20_ADDRESS
         });
 
         expect(mockErc20Funds.availableAmount).toEqual(
@@ -267,8 +243,8 @@ describe("core-sdk", () => {
 
         const updatedFunds = await withdrawFunds({
           coreSDK,
-          sellerId: createdOffer.seller.id,
-          tokenAddresses: [constants.AddressZero, mockERC20TokenAddress],
+          sellerId: seller.id,
+          tokenAddresses: [constants.AddressZero, MOCK_ERC20_ADDRESS],
           amountsInEth: [sellerFundsDepositInEth, sellerFundsDepositInEth]
         });
 
@@ -278,7 +254,7 @@ describe("core-sdk", () => {
         const mockErc20FundsAvailable = updatedFunds.find(
           (fund) =>
             fund.token.address.toLowerCase() ===
-            mockERC20TokenAddress.toLowerCase()
+            MOCK_ERC20_ADDRESS.toLowerCase()
         )?.availableAmount;
         expect(ethFundsAvailable).toEqual("0");
         expect(mockErc20FundsAvailable).toEqual("0");
@@ -388,30 +364,4 @@ async function commitToOffer(args: {
     exchangeId as string
   );
   return exchange;
-}
-
-async function fundWalletWithMockToken(args: {
-  wallet: Wallet;
-  coreSDK: CoreSDK;
-  amount: BigNumberish;
-}) {
-  const signer = args.wallet.connect(provider);
-  const address = signer.address;
-
-  const mockTokenContract = new Contract(
-    mockERC20TokenAddress,
-    setHolderBalanceAbi,
-    signer
-  );
-  const approveTokenTx = await mockTokenContract.approve(address, args.amount);
-  await approveTokenTx.wait();
-
-  const approveProtocolTx = await args.coreSDK.approveExchangeToken(
-    mockERC20TokenAddress,
-    args.amount
-  );
-  await approveProtocolTx.wait();
-
-  const mintMockTokensTx = await mockTokenContract.mint(address, args.amount);
-  await mintMockTokensTx.wait();
 }
