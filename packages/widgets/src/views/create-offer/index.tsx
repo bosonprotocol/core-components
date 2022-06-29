@@ -213,8 +213,12 @@ export default function CreateOffer() {
     if (transaction.status !== "error") {
       setStage((prevState) => (prevState + 1) % 3);
     }
+
+    if (stage !== CreateOfferStage.CREATE_OFFER) {
+      reloadCreateOfferData();
+    }
+
     setTransaction({ status: "idle" });
-    reloadCreateOfferData();
   }
 
   return (

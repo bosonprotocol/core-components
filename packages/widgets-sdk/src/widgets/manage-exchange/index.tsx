@@ -41,17 +41,15 @@ function ManageOfferWidget({
 }: Props) {
   const {
     widgetsUrl,
-    chainId,
-    ipfsMetadataUrl,
     height = DEFAULT_IFRAME_HEIGHT,
-    width = DEFAULT_IFRAME_WIDTH
+    width = DEFAULT_IFRAME_WIDTH,
+    ...restConfig
   } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     exchangeId,
-    chainId,
-    ipfsMetadataUrl,
-    ...(forceBuyerView && { forceBuyerView })
+    ...(forceBuyerView && { forceBuyerView }),
+    ...restConfig
   } as unknown as Record<string, string>).toString();
 
   return (

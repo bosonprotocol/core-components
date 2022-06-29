@@ -8,6 +8,7 @@ export type WidgetConfig = {
   ipfsMetadataUrl?: string;
   height?: number;
   width?: number;
+  metaTransactionsApiKey?: string;
 };
 
 export interface OptionalParams {
