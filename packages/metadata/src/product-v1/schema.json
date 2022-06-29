@@ -21,7 +21,7 @@
       "type": "object",
       "properties": {
         "url": { "type": "string" },
-        "type": { "type": "string", "enum": ["PRODUCT_V1"] },
+        "type": { "type": "string", "enum": ["PRODUCT_V1"] }
       },
       "required": ["url", "type"]
     },
@@ -93,32 +93,32 @@
             }
           },
           "required": ["images"]
-        }
-      },
-      "packaging": {
-        "type": "object",
-        "properties": {
-          "packageQuantity": { "type": "string" },
-          "dimensions": {
-            "type": "object",
-            "properties": {
-              "length": { "type": "string"},
-              "width": { "type": "string"},
-              "height": { "type": "string"},
-              "unit": { "type": "string"}
-            },
-            "required": ["unit"]
-          },
-          "weight": {
-            "type": "object",
-            "properties": {
-              "value": { "type": "string"},
-              "unit": { "type": "string"}
-            },
-            "required": ["value", "unit"]
-          }
         },
-        "required": []
+        "packaging": {
+          "type": "object",
+          "properties": {
+            "packageQuantity": { "type": "string" },
+            "dimensions": {
+              "type": "object",
+              "properties": {
+                "length": { "type": "string"},
+                "width": { "type": "string"},
+                "height": { "type": "string"},
+                "unit": { "type": "string"}
+              },
+              "required": ["unit"]
+            },
+            "weight": {
+              "type": "object",
+              "properties": {
+                "value": { "type": "string"},
+                "unit": { "type": "string"}
+              },
+              "required": ["value", "unit"]
+            }
+          },
+          "required": []
+        }
       },
       "required": ["uuid", "version", "title", "description", "productionInformation", "visuals"]
     },
@@ -127,12 +127,11 @@
       "items": {
         "type": "object",
         "properties": {
-          "type": "string",
-          "option": "string"
+          "type": { "type": "string" },
+          "option": { "type": "string" }
         },
         "required": ["type", "option"]
-      },
-      "required": []
+      }
     },
     "seller": {
       "type": "object",
@@ -160,7 +159,7 @@
     "shipping": {
       "type": "object",
       "properties": {
-        "countryOfOrigin": { "type": "string "},
+        "countryOfOrigin": { "type": "string" },
         "supportedJurisdictions": {
           "type": "array",
           "items": {
