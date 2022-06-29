@@ -11,6 +11,7 @@ export function useBiconomy() {
     | { status: "initializing" }
     | {
         status: "initialized";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         biconomy: any;
         biconomyProvider: providers.JsonRpcProvider;
       }
