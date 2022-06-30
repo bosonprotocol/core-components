@@ -8,6 +8,8 @@ export type BaseMetadata = {
   name: string;
   description: string;
   externalUrl: string;
-  schemaUrl: string;
-  type: "BASE";
+  schema: {
+    url: string;
+    type: "BASE";
+  };
 };

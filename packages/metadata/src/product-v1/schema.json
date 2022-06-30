@@ -1,6 +1,7 @@
 {
   "type": "object",
   "properties": {
+    "uuid": { "type": "string" },
     "name": { "type": "string" },
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
@@ -15,7 +16,8 @@
           "display_type": { "type": "string"}
         },
         "required": ["trait_type", "value"]
-      }
+      },
+      "minItems": 2
     },
     "schema": {
       "type": "object",
@@ -29,7 +31,7 @@
       "type": "object",
       "properties": {
         "uuid": { "type": "string" },
-        "version": { "type": "string" },
+        "version": { "type": "number" },
         "title": { "type": "string" },
         "description": { "type": "string" },
         "identification": {
@@ -63,7 +65,7 @@
             "sections": { "type": "array", "items": { "type": "string" } },
             "personalisation": { "type": "array", "items": { "type": "string" } }
           },
-          "required": []
+          "required": ["offerCategory"]
         },
         "visuals": {
           "type": "object",
@@ -93,7 +95,9 @@
             }
           },
           "required": ["images"]
-        },
+        }
+      },
+      "optionalProperties": {
         "packaging": {
           "type": "object",
           "properties": {
@@ -120,7 +124,7 @@
           "required": []
         }
       },
-      "required": ["uuid", "version", "title", "description", "productionInformation", "visuals"]
+      "required": ["uuid", "version", "title", "description", "productionInformation", "details", "visuals"]
     },
     "variations": {
       "type": "array",
@@ -136,29 +140,42 @@
     "seller": {
       "type": "object",
       "properties": {
-        "uuid": { "type": "string" },
-        "version": { "type": "string" },
+        "defaultVersion": { "type": "number" },
         "name": { "type": "string" },
         "description": { "type": "string" },
         "externalUrl": { "type": "string" },
+        "tokenId": { "type": "string" },
         "images": {
           "type": "array",
-          "items": { "type": "string" },
-          "minItems": 1
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url"]
+          },
+          "minItems": 0
         },
         "contactLinks": {
           "type": "array",
-          "items": { "type": "string" },
-          "minItems": 1
-        },
-        "encryptionScheme": { "type": "string" },
-        "encryptionPubKey": { "type": "string" }
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "tag": { "type": "string" }
+            },
+            "required": ["url", "tag"]
+          },
+          "minItems": 0
+        }
       },
-      "required": ["uuid", "version", "name", "images", "contactLinks"]
+      "required": []
     },
     "shipping": {
       "type": "object",
       "properties": {
+        "defaultVersion": { "type": "number" },
         "countryOfOrigin": { "type": "string" },
         "supportedJurisdictions": {
           "type": "array",
@@ -179,7 +196,7 @@
       "type": "object",
       "properties": {
         "uuid": { "type": "string" },
-        "version": { "type": "string" },
+        "version": { "type": "number" },
         "label": { "type": "string" },
         "template": { "type": "string" }
       },
@@ -237,7 +254,9 @@
             }
           },
           "required": []
-        },
+        }
+      },
+      "optionalProperties": {
         "packaging": {
           "type": "object",
           "properties": {
@@ -261,17 +280,19 @@
               "required": ["value", "unit"]
             }
           },
-          "required": []
+          "required": ["weight"]
         }
       },
       "required": []
     }
   },
   "required": [
+    "uuid",
     "name",
     "description",
     "externalUrl",
     "image",
+    "attributes",
     "schema",
     "product",
     "seller",

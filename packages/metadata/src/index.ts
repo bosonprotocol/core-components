@@ -14,21 +14,26 @@ export interface MetadataStorage {
 }
 
 function validateMetadata(metadata: AnyMetadata) {
-  switch (metadata.type) {
-    case MetadataType.BASE:
-      base.baseMetadataSchema.validateSync(metadata, {
-        abortEarly: false
-      });
-      return true;
-    case MetadataType.PRODUCT_V1:
-      productV1.productV1MetadataSchema.validateSync(metadata, {
-        abortEarly: false
-      });
-      return true;
-    default:
-      throw new Error(
-        `Metadata validation failed for unknown type: ${metadata.type}`
-      );
+  // eslint-disable-next-line no-useless-catch
+  try {
+    switch (metadata.schema.type) {
+      case MetadataType.BASE:
+        base.baseMetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.PRODUCT_V1:
+        productV1.productV1MetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      default:
+        throw new Error(
+          `Metadata validation failed for unknown type: ${metadata.schema.type}`
+        );
+    }
+  } catch (e) {
+    throw e.errors ? new Error(e.message + "\n" + e.errors.join("\n")) : e;
   }
 }
 

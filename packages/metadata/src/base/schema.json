@@ -4,8 +4,14 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
-    "schemaUrl": { "type": "string" },
-    "type": { "type": "string", "enum": ["BASE"] }
+    "schema": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "type": { "type": "string", "enum": ["BASE"] }
+      },
+      "required": ["url", "type"]
+    }
   },
-  "required": ["name", "description", "externalUrl", "schemaUrl", "type"]
+  "required": ["name", "description", "externalUrl", "schema"]
 }
