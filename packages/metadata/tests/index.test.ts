@@ -6,9 +6,7 @@ describe("#validateMetadata()", () => {
   test("throw for invalid type", () => {
     expect(() =>
       validateMetadata({
-        schema: {
-          type: "invalid"
-        }
+        type: "invalid"
       } as any as AnyMetadata)
     ).toThrow();
   });
@@ -17,9 +15,7 @@ describe("#validateMetadata()", () => {
     test("throw for invalid object", () => {
       expect(() =>
         validateMetadata({
-          schema: {
-            type: "BASE"
-          }
+          type: "BASE"
         } as any as AnyMetadata)
       ).toThrow();
     });
@@ -27,13 +23,11 @@ describe("#validateMetadata()", () => {
     test("not throw for valid object", () => {
       expect(
         validateMetadata({
+          schemaUrl: "example.com",
+          type: "BASE",
           name: "name",
           description: "description",
-          externalUrl: "example.com",
-          schema: {
-            url: "example.com",
-            type: "BASE"
-          }
+          externalUrl: "example.com"
         })
       ).toBeTruthy();
     });
@@ -43,9 +37,7 @@ describe("#validateMetadata()", () => {
     test("throw for invalid object", () => {
       expect(() =>
         validateMetadata({
-          schema: {
-            type: "PRODUCT_V1"
-          }
+          type: "PRODUCT_V1"
         } as any as AnyMetadata)
       ).toThrow();
     });

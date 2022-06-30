@@ -96,6 +96,8 @@ type ExchangePolicy = {
 };
 
 export type ProductV1Metadata = {
+  schemaUrl: string;
+  type: "PRODUCT_V1";
   uuid: string;
   name: string;
   description: string;
@@ -106,10 +108,6 @@ export type ProductV1Metadata = {
     value: string;
     display_type?: string;
   }[];
-  schema: {
-    url: string;
-    type: "PRODUCT_V1";
-  };
   product:
     | ProductBase
     | {

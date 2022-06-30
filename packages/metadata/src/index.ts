@@ -16,7 +16,7 @@ export interface MetadataStorage {
 function validateMetadata(metadata: AnyMetadata) {
   // eslint-disable-next-line no-useless-catch
   try {
-    switch (metadata.schema.type) {
+    switch (metadata.type) {
       case MetadataType.BASE:
         base.baseMetadataSchema.validateSync(metadata, {
           abortEarly: false
@@ -29,7 +29,7 @@ function validateMetadata(metadata: AnyMetadata) {
         return true;
       default:
         throw new Error(
-          `Metadata validation failed for unknown type: ${metadata.schema.type}`
+          `Metadata validation failed for unknown type: ${metadata.type}`
         );
     }
   } catch (e) {

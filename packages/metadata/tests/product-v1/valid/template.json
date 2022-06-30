@@ -1,4 +1,6 @@
 {
+  "schemaUrl": "",
+  "type": "",
   "uuid": "",
   "name": "",
   "description": "",
@@ -15,10 +17,6 @@
       "display_type": ""
     }
   ],
-  "schema": {
-    "url": "",
-    "type": ""
-  },
   "product": {
     "uuid": "",
     "version": 0,

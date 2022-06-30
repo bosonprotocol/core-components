@@ -1,6 +1,8 @@
 {
   "type": "object",
   "properties": {
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["PRODUCT_V1"] },
     "uuid": { "type": "string" },
     "name": { "type": "string" },
     "description": { "type": "string" },
@@ -18,14 +20,6 @@
         "required": ["trait_type", "value"]
       },
       "minItems": 2
-    },
-    "schema": {
-      "type": "object",
-      "properties": {
-        "url": { "type": "string" },
-        "type": { "type": "string", "enum": ["PRODUCT_V1"] }
-      },
-      "required": ["url", "type"]
     },
     "product": {
       "type": "object",
@@ -287,13 +281,14 @@
     }
   },
   "required": [
+    "schemaUrl",
+    "type",
     "uuid",
     "name",
     "description",
     "externalUrl",
     "image",
     "attributes",
-    "schema",
     "product",
     "seller",
     "exchangePolicy"

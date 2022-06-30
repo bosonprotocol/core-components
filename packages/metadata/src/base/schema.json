@@ -1,17 +1,11 @@
 {
   "type": "object",
   "properties": {
+    "schemaUrl": { "type": "string" },
+    "type": { "type": "string", "enum": ["BASE"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
-    "externalUrl": { "type": "string" },
-    "schema": {
-      "type": "object",
-      "properties": {
-        "url": { "type": "string" },
-        "type": { "type": "string", "enum": ["BASE"] }
-      },
-      "required": ["url", "type"]
-    }
+    "externalUrl": { "type": "string" }
   },
-  "required": ["name", "description", "externalUrl", "schema"]
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl"]
 }
