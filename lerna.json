@@ -13,6 +13,7 @@
   "ignoreChanges": [
     "e2e/**",
     "contracts/**",
+    "examples/**",
     ".github/**",
     "**/*.test.*",
     "**/*.spec.*",
