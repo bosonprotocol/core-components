@@ -5,7 +5,7 @@ import Card from "../components/card/card";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Card",
-  component: Card,
+  component: Card
 } as ComponentMeta<typeof Card>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
@@ -24,5 +24,3 @@ Primary.args = {
     console.log("buy");
   }
 };
-
-
