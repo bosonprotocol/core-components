@@ -28,6 +28,7 @@ export function saveBaseMetadata(
   baseMetadataEntity.createdAt = timestamp;
   baseMetadataEntity.validFromDate = offer.validFromDate;
   baseMetadataEntity.validUntilDate = offer.validUntilDate;
+  baseMetadataEntity.quantityAvailable = offer.quantityAvailable;
   baseMetadataEntity.type = "BASE";
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;

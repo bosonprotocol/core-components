@@ -39,6 +39,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.voided = offer.voided;
   productV1MetadataEntity.validFromDate = offer.validFromDate;
   productV1MetadataEntity.validUntilDate = offer.validUntilDate;
+  productV1MetadataEntity.quantityAvailable = offer.quantityAvailable;
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
