@@ -61,6 +61,7 @@ const productMissingArguments = [
   {
     arg: "exchangePolicy.version not a number",
     data: { exchangePolicy: { version: "not_a_number" } },
+    // eslint-disable-next-line no-useless-escape
     error: /exchangePolicy.version must be a \`number\` type/
   },
   {
@@ -81,6 +82,7 @@ const productMissingArguments = [
   {
     arg: "product.version not a number",
     data: { product: { version: "not_a_number" } },
+    // eslint-disable-next-line no-useless-escape
     error: /product.version must be a \`number\` type/
   },
   {
@@ -233,7 +235,7 @@ describe("#validateMetadata()", () => {
 
     test.each(productMissingArguments)(
       "throw for missing argument '$arg'",
-      ({ arg, data, error }) => {
+      ({ data, error }) => {
         const product = (data as any).product
           ? ((data as any).product as any).productionInformation
             ? {
