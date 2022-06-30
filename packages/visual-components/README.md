@@ -1,7 +1,15 @@
-# `@bosonprotocol/widgets`
+# `@bosonprotocol/visual-components`
 
-React-based widgets that implement the core user flows of the Boson Protocol.
+List os react visual components and storybook stories for them that allow to easily test them.
+
+
+## INSTALLATION
+```bash
+npm ci
+```
 
 ## Usage
 
-> TODO
+```bash
+npm run storybook
+```
