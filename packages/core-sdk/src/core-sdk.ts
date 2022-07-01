@@ -15,6 +15,7 @@ import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
 import * as funds from "./funds";
+import * as metaTx from "./meta-tx";
 import * as subgraph from "./subgraph";
 
 import { getValueFromLogs } from "./utils/logs";
@@ -126,6 +127,19 @@ export class CoreSDK {
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment[]> {
     return accounts.subgraph.getSellers(this._subgraphUrl, queryVars);
+  }
+
+  public async createSeller(
+    sellerToCreate: accounts.CreateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.createSeller({
+      sellerToCreate,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
   }
 
   public async createSellerAndOffer(
@@ -399,6 +413,58 @@ export class CoreSDK {
       contractAddress: this._protocolDiamond,
       exchangeId,
       subgraphUrl: this._subgraphUrl
+    });
+  }
+
+  public async signExecuteMetaTx(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTx>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTx({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  public async signExecuteMetaTxCommitToOffer(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxCommitToOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  public async signExecuteMetaTxCancelVoucher(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxCancelVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxCancelVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  public async signExecuteMetaTxRedeemVoucher(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxRedeemVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
     });
   }
 }

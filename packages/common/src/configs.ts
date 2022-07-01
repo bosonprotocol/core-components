@@ -49,7 +49,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/2c8f13bb5581638b1b7a573f38fd307537f460ee
       protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
     }
   }
