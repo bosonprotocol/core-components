@@ -28,4 +28,4 @@ jobs:
       - run: npm install -g surge
       - run: npm ci
       - run: npm run build -- --cache-dir=".turbo"
-      - run: surge ./packages/widgets/build https://boson-widgets-testing.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      - run: surge ./apps/widgets/build https://boson-widgets-testing.surge.sh --token ${{ secrets.SURGE_TOKEN }}
