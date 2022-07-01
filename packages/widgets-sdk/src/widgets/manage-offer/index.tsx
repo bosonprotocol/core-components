@@ -37,17 +37,15 @@ interface Props {
 function ManageOfferWidget({ offerId, widgetsConfig, forceBuyerView }: Props) {
   const {
     widgetsUrl,
-    chainId,
-    ipfsMetadataUrl,
     height = DEFAULT_IFRAME_HEIGHT,
-    width = DEFAULT_IFRAME_WIDTH
+    width = DEFAULT_IFRAME_WIDTH,
+    ...restConfig
   } = widgetsConfig;
 
   const urlParams = new URLSearchParams({
     offerId,
-    chainId,
-    ipfsMetadataUrl,
-    ...(forceBuyerView && { forceBuyerView })
+    ...(forceBuyerView && { forceBuyerView }),
+    ...restConfig
   } as unknown as Record<string, string>).toString();
 
   return (

@@ -8,6 +8,7 @@ export type Config = {
   jsonRpcUrl: string;
   theGraphIpfsUrl?: string;
   ipfsMetadataUrl: string;
+  metaTransactionsApiKey?: string;
 };
 
 export function getConfig(): Config {
@@ -25,7 +26,8 @@ export function getConfig(): Config {
     theGraphIpfsUrl:
       configFromUrl.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl,
     ipfsMetadataUrl:
-      configFromUrl.ipfsMetadataUrl || defaultConfig.ipfsMetadataUrl
+      configFromUrl.ipfsMetadataUrl || defaultConfig.ipfsMetadataUrl,
+    metaTransactionsApiKey: configFromUrl.metaTransactionsApiKey
   };
 }
 
@@ -38,6 +40,7 @@ export function getConfigFromUrl(): Partial<Config> {
     subgraphUrl: urlParams["subgraphUrl"],
     jsonRpcUrl: urlParams["jsonRpcUrl"],
     theGraphIpfsUrl: urlParams["theGraphIpfsUrl"],
-    ipfsMetadataUrl: urlParams["ipfsMetadataUrl"]
+    ipfsMetadataUrl: urlParams["ipfsMetadataUrl"],
+    metaTransactionsApiKey: urlParams["metaTransactionsApiKey"]
   };
 }
