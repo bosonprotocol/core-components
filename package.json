@@ -38,7 +38,7 @@
     "url": "https://github.com/bosonprotocol/core-components/issues"
   },
   "homepage": "https://github.com/bosonprotocol/core-components#readme",
-  "packageManager": "npm@8.5.3",
+  "packageManager": "npm@8.11.0",
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript": "^2.5.1",
