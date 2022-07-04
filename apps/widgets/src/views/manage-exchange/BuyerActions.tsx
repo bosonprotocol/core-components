@@ -129,7 +129,7 @@ export function BuyerActions({ exchange, reloadExchangeData }: Props) {
           v
         );
       } else {
-        txResponse = await coreSDK.cancelVoucher(exchange.id);
+        txResponse = await coreSDK.redeemVoucher(exchange.id);
       }
 
       setTransaction({
