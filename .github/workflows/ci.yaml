@@ -19,8 +19,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-          # NOTE: Disabled until https://github.com/actions/setup-node/issues/516 is resolved
-          # cache: "npm"
+          cache: "npm"
       - name: Turbo Cache
         id: turbo-cache
         uses: actions/cache@v3
