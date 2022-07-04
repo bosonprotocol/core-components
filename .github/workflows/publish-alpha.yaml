@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
           # pulls all commits (needed for lerna / semantic release to correctly version)
           fetch-depth: "0"
       - name: Setup .npmrc file for publish
@@ -38,8 +38,8 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Bump next versions
         env:
-          GH_TOKEN: ${{ secrets.PAT }}
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.BSNORG_ACTIONS_SECRET }}
         run: |
           npx lerna version \
             --yes \
