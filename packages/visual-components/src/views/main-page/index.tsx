@@ -6,7 +6,12 @@ import CommitButton from "../../components/button/CommitButton";
 
 export default function MainPage() {
   // ts-ignore
-  const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+  let web3Provider: ethers.providers.Web3Provider;
+  if (!window.ethereum) {
+    return <p>Please install MetaMask</p>;
+  } else {
+    web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+  }
 
   return (
     <MainPageContainer>
