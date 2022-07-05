@@ -70,13 +70,11 @@ const CommitButton = ({
           if (metaTransactionApiKey && metaTxContract && account) {
             const nonce = Date.now();
 
-
             const { r, s, v } = await coreSDK.signExecuteMetaTxCommitToOffer({
               chainId,
               offerId,
               nonce
             });
-
 
             txResponse = await metaTxContract.executeMetaTxCommitToOffer(
               account,
