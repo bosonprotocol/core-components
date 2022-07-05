@@ -30,7 +30,7 @@ interface CommitButtonProps {
   }: {
     offerId: string;
     txHash: string;
-    exchangeId: string;
+    exchangeId: string | null;
   }) => void;
   onError: ({ offerId, message }: { offerId: string; message: string }) => void;
 }
@@ -70,11 +70,13 @@ const CommitButton = ({
           if (metaTransactionApiKey && metaTxContract && account) {
             const nonce = Date.now();
 
+
             const { r, s, v } = await coreSDK.signExecuteMetaTxCommitToOffer({
               chainId,
               offerId,
               nonce
             });
+
 
             txResponse = await metaTxContract.executeMetaTxCommitToOffer(
               account,
