@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.10.0...@bosonprotocol/widgets@1.10.1) (2022-07-05)
+
+### Bug Fixes
+
+* **widgets:** redeem voucher ([#140](https://github.com/bosonprotocol/core-components/issues/140)) ([b6a4f0b](https://github.com/bosonprotocol/core-components/commit/b6a4f0be165d8eabdb51477e705db9356a45edca))
+
 # [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.9.0...@bosonprotocol/widgets@1.10.0) (2022-06-27)
 
 ### Features

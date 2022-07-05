@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.6.0...@bosonprotocol/subgraph@1.7.0) (2022-07-05)
+
+### Features
+
+* **subgraph:** enrich metadata with `quantityAvailable` field ([#138](https://github.com/bosonprotocol/core-components/issues/138)) ([7c3cbdc](https://github.com/bosonprotocol/core-components/commit/7c3cbdcfffb8110a44d0c085ee7d19da410026e4))
+
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.5.0...@bosonprotocol/subgraph@1.6.0) (2022-06-27)
 
 ### Features

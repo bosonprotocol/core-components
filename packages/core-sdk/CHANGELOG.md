@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.8.0...@bosonprotocol/core-sdk@1.9.0) (2022-07-05)
+
+### Features
+
+* **core-sdk:** expose `completeExchange` ([#132](https://github.com/bosonprotocol/core-components/issues/132)) ([129c84c](https://github.com/bosonprotocol/core-components/commit/129c84cc32060ab1761854148ec76aa9fe695f66))
+* **core-sdk:** meta tx handler ([#135](https://github.com/bosonprotocol/core-components/issues/135)) ([ddaa489](https://github.com/bosonprotocol/core-components/commit/ddaa4890f043a7ca1b25daaec078fb16c4254db3))
+* withdraw all funds ([#129](https://github.com/bosonprotocol/core-components/issues/129)) ([6ef814b](https://github.com/bosonprotocol/core-components/commit/6ef814bd6edf64556e5e1114a7a3953460c75eb4))
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.7.0...@bosonprotocol/core-sdk@1.8.0) (2022-06-27)
 
 ### Features

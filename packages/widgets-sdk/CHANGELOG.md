@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.7.0...@bosonprotocol/widgets-sdk@1.8.0) (2022-07-05)
+
+### Features
+
+* widgets optional biconomy support ([#136](https://github.com/bosonprotocol/core-components/issues/136)) ([683ecc2](https://github.com/bosonprotocol/core-components/commit/683ecc2c79cff1de46f6d2de383845c53923d9fb))
+
 # [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.6.0...@bosonprotocol/widgets-sdk@1.7.0) (2022-06-27)
 
 ### Features
