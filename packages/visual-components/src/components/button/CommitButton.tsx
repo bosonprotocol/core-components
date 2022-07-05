@@ -1,4 +1,4 @@
-import { CoreSDK } from "@bosonprotocol/core-sdk";
+import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { providers } from "ethers";
 import { useState } from "react";
@@ -6,7 +6,6 @@ import { useState } from "react";
 import Button from "./button";
 import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";
 import { hooks } from "../../lib/connectors/metamask";
-import { useCoreSDK } from "../../lib/useCoreSDK";
 
 interface CommitButtonProps {
   offerId: string;
@@ -54,11 +53,15 @@ const CommitButton = ({
     <Button
       variant="primary"
       onClick={async () => {
-        console.log("on button click");
+        const defaultConfig = getDefaultConfig({
+          chainId
+        });
 
-        const coreSDK = CoreSDK.fromDefaultConfig({
+        const coreSDK = new CoreSDK({
           web3Lib: new EthersAdapter(web3Provider),
-          chainId: chainId
+          subgraphUrl: subgraphUrl || defaultConfig.subgraphUrl,
+          protocolDiamond:
+            protocolDiamond || defaultConfig.contracts.protocolDiamond
         });
 
         try {
