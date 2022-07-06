@@ -18,12 +18,11 @@ export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  web3Provider: new ethers.providers.Web3Provider(window.ethereum as any),
+  web3Provider: "" as any,
   chainId: 0,
   offerId: "0x0",
   subgraphUrl: "https://api.thegraph.com",
   protocolDiamond: "0x0",
-  metaTransactionApiKey: "",
   onSuccess: ({ offerId, txHash }) => {
     console.log("on success");
     console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ txHash", txHash);
