@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import Loading from "../loading";
 
 interface ButtonProps {
   onClick: () => void;
@@ -32,7 +33,7 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      <span>{children}</span>
+      {props.loading ? <Loading /> : <span>{children}</span>}
     </ButtonStyle>
   );
 };
@@ -55,6 +56,7 @@ const ButtonStyle = styled.button.attrs(
   margin: 1px;
   cursor: pointer;
   box-shadow: 0px 0px 0px #000000;
+  width: 200px;
 
   span {
     font-style: normal;

@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 
 import Card from "../../components/card/card";
 import CommitButton from "../../components/button/CommitButton";
+import Loading from "../../components/loading";
 
 export default function MainPage() {
   // ts-ignore
@@ -15,6 +16,7 @@ export default function MainPage() {
 
   return (
     <MainPageContainer>
+      <Loading></Loading>
       <CommitButton
         offerId="0x0"
         web3Provider={web3Provider}

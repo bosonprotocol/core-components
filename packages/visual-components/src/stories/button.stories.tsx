@@ -19,6 +19,8 @@ export const Ghost: ComponentStory<typeof Button> = Template.bind({});
 
 export const Disabled: ComponentStory<typeof Button> = Template.bind({});
 
+export const Loading: ComponentStory<typeof Button> = Template.bind({});
+
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
   children: "Button Text",
@@ -59,6 +61,17 @@ Disabled.args = {
   },
   disabled: true,
   loading: false,
+  size: "medium",
+  variant: "primary",
+  children: "Button Text"
+};
+
+Loading.args = {
+  onClick: () => {
+    console.log("buy");
+  },
+  disabled: false,
+  loading: true,
   size: "medium",
   variant: "primary",
   children: "Button Text"
