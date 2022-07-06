@@ -61,5 +61,5 @@ Disabled.args = {
   loading: false,
   size: "medium",
   variant: "primary",
-  children: "Button Text"  
+  children: "Button Text"
 };

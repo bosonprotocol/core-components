@@ -56,29 +56,23 @@ const CommitButton = ({
         const defaultConfig = getDefaultConfig({
           chainId
         });
-
         const coreSDK = new CoreSDK({
           web3Lib: new EthersAdapter(web3Provider),
           subgraphUrl: subgraphUrl || defaultConfig.subgraphUrl,
           protocolDiamond:
             protocolDiamond || defaultConfig.contracts.protocolDiamond
         });
-
         try {
           setIsLoading(true);
           onPending({ offerId, isLoading });
-
           let txResponse;
-
           if (metaTransactionApiKey && metaTxContract && account) {
             const nonce = Date.now();
-
             const { r, s, v } = await coreSDK.signExecuteMetaTxCommitToOffer({
               chainId,
               offerId,
               nonce
             });
-
             txResponse = await metaTxContract.executeMetaTxCommitToOffer(
               account,
               { buyer: account, offerId },
@@ -90,14 +84,11 @@ const CommitButton = ({
           } else {
             txResponse = await coreSDK.commitToOffer(offerId);
           }
-
           const txReceipt = await txResponse.wait(1);
-
           const txHash = txResponse.hash;
           const exchangeId = coreSDK.getCommittedExchangeIdFromLogs(
             txReceipt.logs
           );
-
           onSuccess({ offerId, txHash, exchangeId });
           setIsLoading(false);
           onPending({ offerId, isLoading });
