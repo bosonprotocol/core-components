@@ -31,7 +31,15 @@ interface CommitButtonProps {
     txHash: string;
     exchangeId: string | null;
   }) => void;
-  onError: ({ offerId, message }: { offerId: string; message: string }) => void;
+  onError: ({
+    offerId,
+    message,
+    error
+  }: {
+    offerId: string;
+    message: string;
+    error: unknown;
+  }) => void;
 }
 
 const CommitButton = ({
@@ -106,7 +114,7 @@ const CommitButton = ({
         } catch (error) {
           setIsLoading(false);
           onPending({ offerId, isLoading });
-          onError({ offerId, message: "error commiting the item" });
+          onError({ offerId, message: "error commiting the item", error });
         }
       }}
     >

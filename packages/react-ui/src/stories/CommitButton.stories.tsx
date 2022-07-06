@@ -20,17 +20,18 @@ Primary.args = {
   chainId: 1234,
   offerId: "1",
   onSuccess: ({ offerId, txHash }) => {
-    console.log("on success");
+    console.log("----------ON SUCCESS-------------");
     console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ txHash", txHash);
     console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ offerId", offerId);
   },
-  onError: ({ offerId, message }) => {
-    console.log("on error");
-    console.log("🚀 ~ file: index.tsx ~ line 29 ~ MainPage ~ message", message);
-    console.log("🚀 ~ file: index.tsx ~ line 29 ~ MainPage ~ offerId", offerId);
+  onError: ({ offerId, message, error }) => {
+    console.log("----------ON ERROR-------------");
+    console.log("error", error);
+    console.log("message", message);
+    console.log("offerId", offerId);
   },
   onPending: ({ offerId, isLoading }) => {
-    console.log("on pending", isLoading);
+    console.log("----------ON PENDING-------------");
     console.log(
       "🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ isLoading",
       isLoading
