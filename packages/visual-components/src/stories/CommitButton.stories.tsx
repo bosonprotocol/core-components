@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ethers } from "ethers";
 
 import CommitButton from "../components/button/CommitButton";
 
@@ -18,11 +17,8 @@ export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  web3Provider: "" as any,
-  chainId: 0,
-  offerId: "0x0",
-  subgraphUrl: "https://api.thegraph.com",
-  protocolDiamond: "0x0",
+  chainId: 1234,
+  offerId: "1",
   onSuccess: ({ offerId, txHash }) => {
     console.log("on success");
     console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ txHash", txHash);
@@ -34,7 +30,7 @@ Primary.args = {
     console.log("🚀 ~ file: index.tsx ~ line 29 ~ MainPage ~ offerId", offerId);
   },
   onPending: ({ offerId, isLoading }) => {
-    console.log("on pending");
+    console.log("on pending", isLoading);
     console.log(
       "🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ isLoading",
       isLoading
