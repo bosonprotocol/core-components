@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CommitButton from "../components/button/CommitButton";
+import CommitButton from "../../components/button/CommitButton";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/CommitButton",
+  title: "Visual Components/Buttons/CommitButton",
   component: CommitButton
 } as ComponentMeta<typeof CommitButton>;
 
@@ -18,7 +18,7 @@ export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
   chainId: 1234,
-  offerId: "1",
+  offerId: "28",
   onSuccess: ({ offerId, txHash }) => {
     console.log("----------ON SUCCESS-------------");
     console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ txHash", txHash);

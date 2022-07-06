@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import Card from "../components/card/card";
+import Card from "../../components/card/card";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/Card",
+  title: "Sample Stories/Card",
   component: Card
 } as ComponentMeta<typeof Card>;
 

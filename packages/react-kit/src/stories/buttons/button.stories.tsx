@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import Button from "../components/button/button";
+import Button from "../../components/button/button";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/Button",
+  title: "Visual Components/Buttons/Button",
   component: Button
 } as ComponentMeta<typeof Button>;
 
