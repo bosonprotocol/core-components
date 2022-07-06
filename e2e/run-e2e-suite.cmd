@@ -17,7 +17,12 @@ call npm run subgraph:deploy:local
 echo [92m*** Successfully deployed subgraph ***[0m
 echo.
 
-set /p DUMMY=*** Press any key to shutdown services ***
-docker-compose down -v
-rmdir /S /Q .\data
+echo [92m*** Run e2e tests... ***[0m
 cd ..
+call npm run e2e:test
+set EXIT_STATUS=%ERRORLEVEL%
+
+cd e2e
+docker-compose down -v
+cd ..
+exit %EXIT_STATUS%
