@@ -5,22 +5,22 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
-type Provider = providers.UrlJsonRpcProvider |
-    providers.AlchemyProvider |
-    providers.AlchemyWebSocketProvider |
-    providers.AnkrProvider |
-    providers.CloudflareProvider |
-    providers.InfuraProvider |
-    providers.InfuraWebSocketProvider |
-    providers.JsonRpcProvider |
-    providers.JsonRpcBatchProvider |
-    providers.NodesmithProvider |
-    providers.PocketProvider |
-    providers.StaticJsonRpcProvider |
-    providers.Web3Provider |
-    providers.WebSocketProvider |
-    providers.IpcProvider;
-
+type Provider =
+  | providers.UrlJsonRpcProvider
+  | providers.AlchemyProvider
+  | providers.AlchemyWebSocketProvider
+  | providers.AnkrProvider
+  | providers.CloudflareProvider
+  | providers.InfuraProvider
+  | providers.InfuraWebSocketProvider
+  | providers.JsonRpcProvider
+  | providers.JsonRpcBatchProvider
+  | providers.NodesmithProvider
+  | providers.PocketProvider
+  | providers.StaticJsonRpcProvider
+  | providers.Web3Provider
+  | providers.WebSocketProvider
+  | providers.IpcProvider;
 
 export class EthersAdapter implements Web3LibAdapter {
   private _signer: Signer;
