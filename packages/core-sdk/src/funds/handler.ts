@@ -60,17 +60,19 @@ export async function withdrawAllAvailableFunds(args: {
     }
   });
 
-  const { tokensToWithdraw, amountsToWithdraw } = funds.reduce(
-    (acc, fund) => {
-      acc.tokensToWithdraw.push(fund.token.address);
-      acc.amountsToWithdraw.push(fund.availableAmount);
-      return acc;
-    },
-    {
-      tokensToWithdraw: [],
-      amountsToWithdraw: []
-    }
-  );
+  const { tokensToWithdraw, amountsToWithdraw } = funds
+    .filter((fund) => Number(fund.availableAmount))
+    .reduce(
+      (acc, fund) => {
+        acc.tokensToWithdraw.push(fund.token.address);
+        acc.amountsToWithdraw.push(fund.availableAmount);
+        return acc;
+      },
+      {
+        tokensToWithdraw: [],
+        amountsToWithdraw: []
+      }
+    );
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
