@@ -1,15 +1,14 @@
 import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { providers } from "ethers";
 import React, { useState } from "react";
 
 import Button from "./button";
 import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";
 import { hooks } from "../../lib/connectors/metamask";
+import getWeb3Provider from "../../lib/getWeb3Provider";
 
 interface CommitButtonProps {
   offerId: string;
-  web3Provider?: providers.Web3Provider;
   chainId: number;
   subgraphUrl?: string;
   protocolDiamond?: string;
@@ -44,7 +43,6 @@ interface CommitButtonProps {
 
 const CommitButton = ({
   offerId,
-  web3Provider,
   chainId,
   subgraphUrl,
   protocolDiamond,
@@ -60,13 +58,10 @@ const CommitButton = ({
   return (
     <Button
       variant="primary"
+      loading={isLoading}
       onClick={async () => {
-        // connect to wallet
-        let localWeb3Provider = web3Provider;
-        if (!web3Provider && window.ethereum) {
-          const provider = new providers.Web3Provider(window.ethereum);
-          localWeb3Provider = provider;
-        }
+        const localWeb3Provider = await getWeb3Provider();
+
         if (!localWeb3Provider) {
           return;
         }

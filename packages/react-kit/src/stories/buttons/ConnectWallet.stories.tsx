@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import ConnectWallet from "../../components/connectWallet";
+import ConnectWallet from "../../components/buttons/connectWallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

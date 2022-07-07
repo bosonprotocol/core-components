@@ -1,4 +1,4 @@
-export * from "./components/connectWallet";
+export * from "./components/buttons/connectWallet";
 export * from "./components/loading";
-export * from "./components/button/CommitButton";
-export * from "./components/button/button";
+export * from "./components/buttons/commitButton";
+export * from "./components/buttons/button";
