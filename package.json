@@ -17,9 +17,13 @@
     "test": "turbo run test",
     "clean": "turbo run clean",
     "version": "echo 'not implemented'",
-    "e2e:suite": "./e2e/run-e2e-suite.sh",
+    "e2e:suite": "run-script-os",
+    "e2e:suite:default": "./e2e/run-e2e-suite.sh",
+    "e2e:suite:win32": "cmd /c .\\e2e\\run-e2e-suite.cmd",
     "e2e:test": "jest -c ./e2e/jest.config.js",
-    "e2e:services": "./e2e/run-e2e-services.sh",
+    "e2e:services": "run-script-os",
+    "e2e:services:default": "./e2e/run-e2e-services.sh",
+    "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
     "export-abis": "ts-node ./scripts/export-abis.ts",
     "codegen:core-sdk": "graphql-codegen --config ./packages/core-sdk/codegen.yml && npm run lint:fix"
@@ -47,6 +51,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "graphql": "^16.5.0",
     "prettier": "^2.6.2",
+    "run-script-os": "^1.1.6",
     "ts-node": "^10.8.1",
     "turbo": "^1.1.6"
   },
