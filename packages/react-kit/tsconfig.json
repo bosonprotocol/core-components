@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "dist/esm",
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "strict": true,
+    "jsx": "react",
+    "skipLibCheck": true
+  },
+  
+  "include": ["src"],
+  "exclude": [
+    "**/*.stories.tsx",
+    "node_modules"
+  ]
+}
