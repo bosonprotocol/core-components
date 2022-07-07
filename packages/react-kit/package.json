@@ -1,7 +1,12 @@
 {
   "name": "@bosonprotocol/react-kit",
   "version": "0.0.1",
-  "private": true,
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "@biconomy/mexa": "^2.0.32",
@@ -29,7 +34,6 @@
     "react-scripts": "5.0.0",
     "spinners-react": "^1.0.6",
     "styled-components": "^5.3.5",
-    "typescript": "^4.5.5",
     "use-async-effect": "^2.2.5",
     "web-vitals": "^2.1.4",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -40,7 +44,8 @@
     "eject": "react-scripts eject",
     "clean": "rimraf build coverage .turbo node_modules",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "build": "rimraf dist && tsc && tsc --build tsconfig.cjs.json"
   },
   "eslintConfig": {
     "extends": [
@@ -92,7 +97,9 @@
     "@types/styled-components": "^5.1.25",
     "babel-plugin-named-exports-order": "^0.0.2",
     "prop-types": "^15.8.1",
+    "rimraf": "^3.0.2",
     "storybook-addon-styled-component-theme": "^2.0.0",
+    "typescript": "^4.7.4",
     "webpack": "^5.73.0"
   }
 }
