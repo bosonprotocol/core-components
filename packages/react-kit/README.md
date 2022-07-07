@@ -1,20 +1,25 @@
 # `@bosonprotocol/react-kit
 
-`
-
-List os react visual components and storybook stories for them that allow to easily test them.
+This is a set of react components which provide building blocks for interacting with the Boson Protocol and developer tooling. This includes a storybook which allows for simpler testing and configuration."
 
 ## INSTALLATION
 
-run on the root of the project:
+```bash
+npm install @bosonprotocol/react-kit
+```
+
+## Local development
+
+Run on the root of the project:
 
 ```bash
 npm ci
+npm run build:sdks
 ```
 
 ## Usage
 
-run inside of react-kit folder:
+Run inside of react-kit folder:
 
 ```bash
 npm run storybook
