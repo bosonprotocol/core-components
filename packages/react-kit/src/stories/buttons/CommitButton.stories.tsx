@@ -2,16 +2,33 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import CommitButton from "../../components/button/CommitButton";
 
+import { connectWallet, hooks, metaMask } from "../helpers/connect-wallet";
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/Buttons/CommitButton",
   component: CommitButton
 } as ComponentMeta<typeof CommitButton>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof CommitButton> = (args) => (
-  <CommitButton {...args} />
-);
+// TODO: Move connect wallet button into reusable template
+const Template: ComponentStory<typeof CommitButton> = (args) => {
+  const account = hooks.useAccount();
+  const provider = hooks.useProvider();
+
+  return (
+    <>
+      {account ? (
+        <>
+          <div>Connected: {account}</div>
+          <button onClick={() => metaMask.deactivate()}>Disconnect MM</button>
+        </>
+      ) : (
+        <button onClick={() => connectWallet()}>Connect MM</button>
+      )}
+      <CommitButton web3Provider={provider} {...args} />
+    </>
+  );
+};
 
 export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
 

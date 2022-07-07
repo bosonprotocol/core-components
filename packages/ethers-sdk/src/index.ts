@@ -1,3 +1,3 @@
-export { EthersAdapter } from "./ethers-adapter";
+export { EthersAdapter, Provider } from "./ethers-adapter";
 
 export * as contracts from "./contracts";
