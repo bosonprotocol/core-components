@@ -3,7 +3,7 @@ import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { providers } from "ethers";
 import React, { useState } from "react";
 
-import Button from "./button";
+import Button from "../button/button";
 import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";
 import { hooks } from "../../lib/connectors/metamask";
 
