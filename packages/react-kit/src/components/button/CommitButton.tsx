@@ -1,7 +1,7 @@
 import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { providers } from "ethers";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import Button from "./button";
 import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";

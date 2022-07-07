@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import React from "react";
 
 const Loading = () => {
   return <LoadingStyle></LoadingStyle>;

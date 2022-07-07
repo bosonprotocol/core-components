@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import React from "react";
 import Loading from "../loading";
 
 interface ButtonProps {

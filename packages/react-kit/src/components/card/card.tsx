@@ -1,3 +1,4 @@
+import React from "react";
 import { CardArticle, CardBottom, CardLink, CardTop } from "./card.styles";
 
 interface Props {
