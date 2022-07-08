@@ -1,6 +1,6 @@
 import React from "react";
 
-import Button from "../../buttons/button";
+import Button from "../../buttons/Button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 
 type VoidButtonProps = CoreSdkConfig & {

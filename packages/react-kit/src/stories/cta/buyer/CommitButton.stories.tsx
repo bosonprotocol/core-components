@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CommitButton from "../../../components/cta/buyer/commitButton";
+import CommitButton from "../../../components/cta/buyer/CommitButton";
 
 import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 

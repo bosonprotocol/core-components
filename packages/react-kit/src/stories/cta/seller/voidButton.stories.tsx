@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import VoidButton from "../../../components/cta/seller/voidButton";
+import VoidButton from "../../../components/cta/seller/VoidButton";
 
 import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 

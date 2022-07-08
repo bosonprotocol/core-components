@@ -1,5 +1,5 @@
-export * from "./components/loading";
-export * from "./components/cta/buyer/commitButton";
-export * from "./components/cta/seller/voidButton";
-export * from "./components/buttons/button";
+export * from "./components/Loading";
+export * from "./components/cta/buyer/CommitButton";
+export * from "./components/cta/seller/VoidButton";
+export * from "./components/buttons/Button";
 export * as hooks from "./hooks";
