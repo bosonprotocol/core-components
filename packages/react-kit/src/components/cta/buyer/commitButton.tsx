@@ -9,7 +9,7 @@ import { hooks } from "../../../lib/connectors/metamask";
 
 interface CommitButtonProps {
   offerId: string;
-  web3Provider?: providers.Web3Provider;
+  web3Provider: providers.Web3Provider;
   chainId: number;
   subgraphUrl?: string;
   protocolDiamond?: string;
@@ -61,22 +61,13 @@ const CommitButton = ({
     <Button
       variant="primary"
       onClick={async () => {
-        // connect to wallet
-        let localWeb3Provider = web3Provider;
-        if (!web3Provider && window.ethereum) {
-          const provider = new providers.Web3Provider(window.ethereum);
-          localWeb3Provider = provider;
-        }
-        if (!localWeb3Provider) {
-          return;
-        }
 
         // set default config for chaind Id
         const defaultConfig = getDefaultConfig({
           chainId
         });
         const coreSDK = new CoreSDK({
-          web3Lib: new EthersAdapter(localWeb3Provider),
+          web3Lib: new EthersAdapter(web3Provider),
           subgraphUrl: subgraphUrl || defaultConfig.subgraphUrl,
           protocolDiamond:
             protocolDiamond || defaultConfig.contracts.protocolDiamond
