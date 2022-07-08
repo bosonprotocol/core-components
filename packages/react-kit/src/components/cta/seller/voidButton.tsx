@@ -59,7 +59,7 @@ const VoidButton = ({
         }
       }}
     >
-      Void Offer {offerId}
+      Void Offer
     </Button>
   );
 };
