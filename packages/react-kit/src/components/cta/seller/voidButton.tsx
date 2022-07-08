@@ -24,6 +24,7 @@ type VoidButtonProps = CoreSdkConfig & {
     message: string;
     error: unknown;
   }) => void;
+  children?: React.ReactNode;
 };
 
 const VoidButton = ({
@@ -33,6 +34,7 @@ const VoidButton = ({
   onPending,
   onSuccess,
   onError,
+  children,
   ...coreSdkConfig
 }: VoidButtonProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -57,7 +59,7 @@ const VoidButton = ({
         }
       }}
     >
-      Void Offer
+      {children || "Void Offer"}
     </Button>
   );
 };

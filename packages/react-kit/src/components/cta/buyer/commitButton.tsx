@@ -34,12 +34,14 @@ type CommitButtonProps = CoreSdkConfig & {
     message: string;
     error: unknown;
   }) => void;
+  children?: React.ReactNode;
 };
 
 const CommitButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
+  children,
   onPending,
   onSuccess,
   onError,
@@ -92,7 +94,7 @@ const CommitButton = ({
         }
       }}
     >
-      Commit
+      {children || "Commit"}
     </Button>
   );
 };
