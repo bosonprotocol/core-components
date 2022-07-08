@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
-import Button from "../../buttons/Button";
+import Button from "../../buttons/button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 
 type VoidButtonProps = CoreSdkConfig & {
   offerId: string;
   metaTransactionsApiKey?: string;
+  disabled?: boolean;
   onPending: ({
     offerId,
     isLoading
@@ -28,6 +29,7 @@ type VoidButtonProps = CoreSdkConfig & {
 const VoidButton = ({
   offerId,
   metaTransactionsApiKey,
+  disabled = false,
   onPending,
   onSuccess,
   onError,
@@ -40,6 +42,7 @@ const VoidButton = ({
   return (
     <Button
       variant="primary"
+      disabled={disabled}
       onClick={async () => {
         try {
           setIsLoading(true);

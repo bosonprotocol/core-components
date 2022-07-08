@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Button from "../../buttons/Button";
+import Button from "../../buttons/button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
