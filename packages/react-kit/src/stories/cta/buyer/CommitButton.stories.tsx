@@ -36,10 +36,11 @@ export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
 Primary.args = {
   chainId: 1234,
   offerId: "28",
-  onSuccess: ({ offerId, txHash }) => {
+  onSuccess: ({ offerId, txHash, exchangeId }) => {
     console.log("----------ON SUCCESS-------------");
     console.log("txHash", txHash);
     console.log("offerId", offerId);
+    console.log("exchangeId", exchangeId);
   },
   onError: ({ offerId, message, error }) => {
     console.log("----------ON ERROR-------------");
