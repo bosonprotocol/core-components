@@ -10,51 +10,39 @@ export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
 type ProductBase = {
   title: string;
   description: string;
-  identification?: {
-    sKU?: string;
-    productId?: string;
-    productIdType?: string;
-  };
-  productionInformation: {
-    brandName: string;
-    manufacturer?: string;
-    manufacturerPartNumber?: string;
-    modelNumber?: string;
-    materials?: string[];
-  };
-  visuals: {
-    images: {
-      url: string;
-      tag?: string;
-    }[];
-    videos?: {
-      url: string;
-      tag?: string;
-    }[];
-  };
-  packaging?: {
-    packageQuantity?: string;
-    dimensions?: {
-      length?: string;
-      width?: string;
-      height?: string;
-      unit: string;
-    };
-    weight?: {
-      value: string;
-      unit: string;
-    };
-  };
+  identification_sKU?: string;
+  identification_productId?: string;
+  identification_productIdType?: string;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string;
+  productionInformation_manufacturerPartNumber?: string;
+  productionInformation_modelNumber?: string;
+  productionInformation_materials?: string[];
+  visuals_images: {
+    url: string;
+    tag?: string;
+  }[];
+  visuals_videos?: {
+    url: string;
+    tag?: string;
+  }[];
+  packaging_packageQuantity?: string;
+  packaging_dimensions_length?: string;
+  packaging_dimensions_width?: string;
+  packaging_dimensions_height?: string;
+  packaging_dimensions_unit: string;
+  packaging_weight_value: string;
+  packaging_weight_unit: string;
 };
 
 type ProductDetails = {
-  category?: string;
-  subCategory?: string;
-  subCategory2?: string;
-  offerCategory: string;
-  tags?: string[];
-  sections?: string[];
-  personalisation?: string[];
+  details_category?: string;
+  details_subCategory?: string;
+  details_subCategory2?: string;
+  details_offerCategory: string;
+  details_tags?: string[];
+  details_sections?: string[];
+  details_personalisation?: string[];
 };
 
 type Variation = {
@@ -110,14 +98,14 @@ export type ProductV1Metadata = {
   }[];
   product:
     | ProductBase
+    | ProductDetails
     | {
         uuid: string;
         version: number;
-        details: ProductDetails;
       };
   variations?: Variation[];
   seller: SellerMetadata;
   shipping?: ShippingMetadata;
   exchangePolicy: ExchangePolicy;
-  "product.overrides"?: ProductBase;
+  productOverrides?: ProductBase;
 };

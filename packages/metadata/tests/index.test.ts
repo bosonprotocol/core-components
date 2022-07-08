@@ -96,26 +96,19 @@ const productMissingArguments = [
     error: /product.description is a required field/
   },
   {
-    arg: "product.productionInformation",
-    data: { product: { productionInformation: undefined } }
+    arg: "product.productionInformation_brandName",
+    data: { product: { productionInformation_brandName: undefined } },
+    error: /product.productionInformation_brandName is a required field/
   },
   {
-    arg: "product.productionInformation.brandName",
-    data: { product: { productionInformation: { brandName: undefined } } },
-    error: /product.productionInformation.brandName is a required field/
+    arg: "product.details_offerCategory",
+    data: { product: { details_offerCategory: undefined } },
+    error: /product.details_offerCategory is a required field/
   },
   {
-    arg: "product.details",
-    data: { product: { details: undefined } }
-  },
-  {
-    arg: "product.details.offerCategory",
-    data: { product: { details: { offerCategory: undefined } } },
-    error: /product.details.offerCategory is a required field/
-  },
-  {
-    arg: "product.visuals",
-    data: { product: { visuals: undefined } }
+    arg: "product.visuals_images",
+    data: { product: { visuals_images: undefined } },
+    error: /product.visuals_images is a required field/
   },
   {
     arg: "variations[x].type",
@@ -237,54 +230,14 @@ describe("#validateMetadata()", () => {
       "throw for missing argument '$arg'",
       ({ data, error }) => {
         const product = (data as any).product
-          ? ((data as any).product as any).productionInformation
-            ? {
-                ...productV1ValidFullOffer,
-                ...data,
-                product: {
-                  ...productV1ValidFullOffer.product,
-                  productionInformation: {
-                    ...productV1ValidFullOffer.product.productionInformation,
-                    ...((data as any).product as any).productionInformation
-                  }
-                }
+          ? {
+              ...productV1ValidFullOffer,
+              ...data,
+              product: {
+                ...productV1ValidFullOffer.product,
+                ...(data as any).product
               }
-            : ((data as any).product as any).details
-            ? {
-                ...productV1ValidFullOffer,
-                ...data,
-                product: {
-                  ...productV1ValidFullOffer.product,
-                  details: {
-                    ...productV1ValidFullOffer.product.details,
-                    ...((data as any).product as any).details
-                  }
-                }
-              }
-            : (((data as any).product as any)?.packaging as any)?.dimensions
-            ? {
-                ...productV1ValidFullOffer,
-                ...data,
-                product: {
-                  ...productV1ValidFullOffer.product,
-                  packaging: {
-                    ...productV1ValidFullOffer.product.packaging,
-                    dimensions: {
-                      ...productV1ValidFullOffer.product.packaging.dimensions,
-                      ...(((data as any).product as any).packaging as any)
-                        .dimensions
-                    }
-                  }
-                }
-              }
-            : {
-                ...productV1ValidFullOffer,
-                ...data,
-                product: {
-                  ...productV1ValidFullOffer.product,
-                  ...(data as any).product
-                }
-              }
+            }
           : (data as any).exchangePolicy
           ? {
               ...productV1ValidFullOffer,
