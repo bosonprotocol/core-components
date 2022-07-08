@@ -48,7 +48,7 @@ Primary.args = {
     console.log("message", message);
     console.log("offerId", offerId);
   },
-  onPending: ({ offerId, isLoading }) => {
+  onPendingUserConfirmation: ({ offerId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("offerId", offerId);

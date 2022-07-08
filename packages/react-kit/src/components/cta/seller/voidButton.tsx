@@ -8,7 +8,7 @@ type VoidButtonProps = CoreSdkConfig & {
   metaTransactionsApiKey?: string;
   disabled?: boolean;
   waitBlocks?: number;
-  onPending: ({
+  onPendingUserConfirmation: ({
     offerId,
     isLoading
   }: {
@@ -17,7 +17,6 @@ type VoidButtonProps = CoreSdkConfig & {
   }) => void;
   onSuccess: ({ offerId, txHash }: { offerId: string; txHash: string }) => void;
   onPendingTransactionConfirmation: (txHash: string) => void;
-  onPendingUserConfirmation: () => void;
   onError: ({
     offerId,
     message,
@@ -34,7 +33,6 @@ const VoidButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
-  onPending,
   onSuccess,
   onError,
   onPendingUserConfirmation,
@@ -51,18 +49,17 @@ const VoidButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPending({ offerId, isLoading: true });
+          onPendingUserConfirmation({ offerId, isLoading: true });
 
           const txResponse = await coreSdk.voidOffer(offerId);
-          onPendingUserConfirmation(); // This allows to handle pending wallet confirmation state
           await txResponse.wait(waitBlocks);
           const txHash: string = txResponse.hash;
           onPendingTransactionConfirmation(txHash); // This allows to handle pending block confirmations
 
           onSuccess({ offerId, txHash });
-          onPending({ offerId, isLoading: false });
+          onPendingUserConfirmation({ offerId, isLoading: false });
         } catch (error) {
-          onPending({ offerId, isLoading: false });
+          onPendingUserConfirmation({ offerId, isLoading: false });
           onError({ offerId, message: "error voiding the item", error });
         }
       }}
