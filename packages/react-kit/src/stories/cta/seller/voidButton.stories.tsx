@@ -6,7 +6,7 @@ import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/CTA/Buyer/CommitButton",
+  title: "Visual Components/CTA/Seller/VoidButton",
   component: VoidButton
 } as ComponentMeta<typeof VoidButton>;
 
