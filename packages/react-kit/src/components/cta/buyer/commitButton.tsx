@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Button from "../../buttons/button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
@@ -8,6 +8,7 @@ import { useSignerAddress } from "../../../hooks/useSignerAddress";
 type CommitButtonProps = CoreSdkConfig & {
   offerId: string;
   metaTransactionsApiKey?: string;
+  disabled?: boolean;
   onPending: ({
     offerId,
     isLoading
@@ -38,6 +39,7 @@ type CommitButtonProps = CoreSdkConfig & {
 const CommitButton = ({
   offerId,
   metaTransactionsApiKey,
+  disabled = false,
   onPending,
   onSuccess,
   onError,
@@ -51,15 +53,13 @@ const CommitButton = ({
     web3Provider: coreSdkConfig.web3Provider
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <Button
       variant="primary"
+      disabled={disabled}
       onClick={async () => {
         try {
-          setIsLoading(true);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: true });
           let txResponse;
           if (metaTransactionsApiKey && metaTxContract && signerAddress) {
             const nonce = Date.now();
@@ -85,11 +85,9 @@ const CommitButton = ({
             txReceipt.logs
           );
           onSuccess({ offerId, txHash, exchangeId });
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: false });
         } catch (error) {
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: false });
           onError({ offerId, message: "error commiting the item", error });
         }
       }}

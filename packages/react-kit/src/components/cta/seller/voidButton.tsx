@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Button from "../../buttons/button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
@@ -37,27 +37,22 @@ const VoidButton = ({
 }: VoidButtonProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <Button
       variant="primary"
       disabled={disabled}
       onClick={async () => {
         try {
-          setIsLoading(true);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: true });
 
           const txResponse = await coreSdk.voidOffer(offerId);
           await txResponse.wait(1);
           const txHash = txResponse.hash;
 
           onSuccess({ offerId, txHash });
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: false });
         } catch (error) {
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPending({ offerId, isLoading: false });
           onError({ offerId, message: "error voiding the item", error });
         }
       }}
