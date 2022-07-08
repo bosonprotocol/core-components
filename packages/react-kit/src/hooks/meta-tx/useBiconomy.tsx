@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { providers } from "ethers";
 // @ts-expect-error: v1 mexa sdk doesn't support typescript
 import { Biconomy } from "@biconomy/mexa";
-import { getConfig } from "../config";
+import { getDefaultConfig } from "@bosonprotocol/core-sdk";
 
-export function useBiconomy() {
-  const config = getConfig();
+export type BiconomyConfig = {
+  chainId: number;
+  metaTransactionsApiKey?: string;
+  jsonRpcUrl?: string;
+};
+
+export function useBiconomy(config: BiconomyConfig) {
+  const defaultConfig = getDefaultConfig({ chainId: config.chainId });
   const [biconomyState, setBiconomyState] = useState<
     | { status: "idle" }
     | { status: "initializing" }
@@ -23,7 +29,9 @@ export function useBiconomy() {
       setBiconomyState({ status: "initializing" });
 
       const biconomy = new Biconomy(
-        new providers.JsonRpcProvider(config.jsonRpcUrl),
+        new providers.JsonRpcProvider(
+          config.jsonRpcUrl || defaultConfig.jsonRpcUrl
+        ),
         {
           apiKey: config.metaTransactionsApiKey,
           debug: true
@@ -47,7 +55,11 @@ export function useBiconomy() {
           });
         });
     }
-  }, [config.jsonRpcUrl, config.metaTransactionsApiKey]);
+  }, [
+    config.jsonRpcUrl,
+    config.metaTransactionsApiKey,
+    defaultConfig.jsonRpcUrl
+  ]);
 
   return biconomyState;
 }
