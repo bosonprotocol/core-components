@@ -1,0 +1,198 @@
+{
+  "schemaUrl": "",
+  "type": "",
+  "uuid": "",
+  "name": "",
+  "description": "",
+  "externalUrl": "",
+  "image": "",
+  "attributes": [
+    {
+      "trait_type": "",
+      "value": "",
+      "display_type": ""
+    },{
+      "trait_type": "",
+      "value": "",
+      "display_type": ""
+    }
+  ],
+  "product": {
+    "uuid": "",
+    "version": 0,
+    "title": "",
+    "description": "",
+    "identification": {
+      "sKU": "",
+      "productId": "",
+      "productIdType": ""
+    },
+    "productionInformation": {
+      "brandName": "",
+      "manufacturer": "",
+      "manufacturerPartNumber": "",
+      "modelNumber": "",
+      "materials": [
+        "",
+        ""
+      ]
+    },
+    "details": {
+      "category": "",
+      "subCategory1": "",
+      "subCategory2": "",
+      "offerCategory": "",
+      "tags": [
+        "",
+        ""
+      ],
+      "sections": [
+        "",
+        ""
+      ],
+      "personalisation": [
+        "",
+        ""
+      ]
+    },
+    "visuals": {
+      "images": [
+        {
+          "url": "",
+          "tag": ""
+        },{
+          "url": "",
+          "tag": ""
+        }
+      ],
+      "videos": [
+        {
+          "url": "",
+          "tag": ""
+        },{
+          "url": "",
+          "tag": ""
+        }
+      ]
+    },
+    "packaging": {
+      "packageQuantity": "",
+      "dimensions": {
+        "length": "",
+        "width": "",
+        "height": "",
+        "unit": ""
+      },
+      "weight": {
+        "value": "",
+        "unit": ""
+      }
+    }
+  },
+  "variations": [
+    {
+      "type": "",
+      "option": ""
+    },{
+      "type": "",
+      "option": ""
+    }
+  ],
+  "seller": {
+    "defaultVersion": 0,
+    "name": "",
+    "description": "",
+    "externalUrl": "",
+    "tokenId": "",
+    "images": [
+      {
+        "url": "",
+        "tag": ""
+      },{
+        "url": "",
+        "tag": ""
+      }
+    ],
+    "contactLinks": [
+      {
+        "url": "",
+        "tag": ""
+      },{
+        "url": "",
+        "tag": ""
+      }
+    ]
+  },
+  "shipping": {
+    "defaultVersion": 0,
+    "countryOfOrigin": "",
+    "supportedJurisdictions": [
+      {
+        "label": "",
+        "deliveryTime": ""
+      },{
+        "label": "",
+        "deliveryTime": ""
+      }
+    ],
+    "redemptionPoint": ""
+  },
+  "exchangePolicy": {
+    "uuid": "",
+    "version": 0,
+    "label": "",
+    "template": ""
+  },
+  "product.overrides": {
+    "title": "",
+    "description": "",
+    "identification": {
+      "sKU": "",
+      "productId": "",
+      "productIdType": ""
+    },
+    "productionInformation": {
+      "brandName": "",
+      "manufacturer": "",
+      "manufacturerPartNumber": "",
+      "modelNumber": "",
+      "materials": [
+        "",
+        ""
+      ]
+    },
+    "visuals": {
+      "images": [
+        {
+          "url": "",
+          "tag": ""
+        },{
+          "url": "",
+          "tag": ""
+        }
+      ],
+      "videos": [
+        {
+          "url": "",
+          "tag": ""
+        },{
+          "url": "",
+          "tag": ""
+        }
+      ]
+    },
+    "packaging": {
+      "packageQuantity": "",
+      "dimensions": {
+        "length": "",
+        "width": "",
+        "height": "",
+        "unit": ""
+      },
+      "weight": {
+        "value": "",
+        "unit": ""
+      }
+    }   
+  }
+}
