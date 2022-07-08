@@ -36,6 +36,8 @@ export const Primary: ComponentStory<typeof VoidButton> = Template.bind({});
 Primary.args = {
   chainId: 1234,
   offerId: "28",
+  metaTransactionsApiKey: undefined,
+  web3Provider: undefined,
   onSuccess: ({ offerId, txHash }) => {
     console.log("----------ON SUCCESS-------------");
     console.log("txHash", txHash);
