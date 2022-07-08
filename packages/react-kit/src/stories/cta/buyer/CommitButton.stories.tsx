@@ -1,12 +1,12 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CommitButton from "../../components/button/CommitButton";
+import CommitButton from "../../../components/cta/buyer/commitButton";
 
 import { connectWallet, hooks, metaMask } from "../helpers/connect-wallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/Buttons/CommitButton",
+  title: "Visual Components/CTA/Buyer/CommitButton",
   component: CommitButton
 } as ComponentMeta<typeof CommitButton>;
 
@@ -38,8 +38,8 @@ Primary.args = {
   offerId: "28",
   onSuccess: ({ offerId, txHash }) => {
     console.log("----------ON SUCCESS-------------");
-    console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ txHash", txHash);
-    console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ offerId", offerId);
+    console.log("txHash", txHash);
+    console.log("offerId", offerId);
   },
   onError: ({ offerId, message, error }) => {
     console.log("----------ON ERROR-------------");
@@ -49,10 +49,7 @@ Primary.args = {
   },
   onPending: ({ offerId, isLoading }) => {
     console.log("----------ON PENDING-------------");
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ isLoading",
-      isLoading
-    );
-    console.log("🚀 ~ file: index.tsx ~ line 32 ~ MainPage ~ offerId", offerId);
+    console.log("isLoading", isLoading);
+    console.log("offerId", offerId);
   }
 };
