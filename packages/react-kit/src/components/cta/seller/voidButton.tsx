@@ -1,20 +1,11 @@
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
-import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
-import { providers } from "ethers";
 import React, { useState } from "react";
 
-import Button from "../../button/button";
-import { useMetaTxHandlerContract } from "../../../lib/meta-transactions/useMetaTxHandlerContract";
-import { hooks } from "../../../lib/connectors/metamask";
+import Button from "../../buttons/Button";
+import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 
-interface VoidButtonProps {
+type VoidButtonProps = CoreSdkConfig & {
   offerId: string;
-  web3Provider: providers.Web3Provider;
-  chainId: number;
-  subgraphUrl?: string;
-  protocolDiamond?: string;
-  metaTransactionApiKey?: string;
-  theGraphStorage?: string;
+  metaTransactionsApiKey?: string;
   onPending: ({
     offerId,
     isLoading
@@ -32,55 +23,39 @@ interface VoidButtonProps {
     message: string;
     error: unknown;
   }) => void;
-}
+};
 
 const VoidButton = ({
   offerId,
-  web3Provider,
-  chainId,
-  subgraphUrl,
-  protocolDiamond,
-  metaTransactionApiKey,
+  metaTransactionsApiKey,
   onPending,
   onSuccess,
-  onError
+  onError,
+  ...coreSdkConfig
 }: VoidButtonProps) => {
+  const coreSdk = useCoreSdk(coreSdkConfig);
+
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Button
       variant="primary"
       onClick={async () => {
-        // set default config for chaind Id
-        const defaultConfig = getDefaultConfig({
-          chainId
-        });
-        const coreSDK = new CoreSDK({
-          web3Lib: new EthersAdapter(web3Provider),
-          subgraphUrl: subgraphUrl || defaultConfig.subgraphUrl,
-          protocolDiamond:
-            protocolDiamond || defaultConfig.contracts.protocolDiamond
-        });
         try {
           setIsLoading(true);
           onPending({ offerId, isLoading });
 
-          const txResponse = await coreSDK.voidOffer(offerId);
-
+          const txResponse = await coreSdk.voidOffer(offerId);
           await txResponse.wait(1);
           const txHash = txResponse.hash;
-          onSuccess({ offerId, txHash });
 
+          onSuccess({ offerId, txHash });
           setIsLoading(false);
           onPending({ offerId, isLoading });
         } catch (error) {
           setIsLoading(false);
           onPending({ offerId, isLoading });
-          onError({
-            offerId,
-            message: `error voiding the offer ${offerId}`,
-            error
-          });
+          onError({ offerId, message: "error voiding the item", error });
         }
       }}
     >

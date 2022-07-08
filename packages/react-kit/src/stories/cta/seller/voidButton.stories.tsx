@@ -2,13 +2,14 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import VoidButton from "../../../components/cta/seller/voidButton";
 
+import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/CTA/Buyer/CommitButton",
   component: VoidButton
 } as ComponentMeta<typeof VoidButton>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 // TODO: Move connect wallet button into reusable template
 const Template: ComponentStory<typeof VoidButton> = (args) => {
   const account = hooks.useAccount();
