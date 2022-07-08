@@ -33,7 +33,10 @@ function validateMetadata(metadata: AnyMetadata) {
         );
     }
   } catch (e) {
-    throw e.errors ? new Error(e.message + "\n" + e.errors.join("\n")) : e;
+    if (e.errors && e.errors.length > 1) {
+      e.message = e.message + "\n" + e.errors.join("\n");
+    }
+    throw e;
   }
 }
 
