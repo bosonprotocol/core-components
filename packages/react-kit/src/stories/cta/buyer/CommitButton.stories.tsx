@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import CommitButton from "../../../components/cta/buyer/commitButton";
 
-import { connectWallet, hooks, metaMask } from "../helpers/connect-wallet";
+import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
