@@ -1,50 +1,45 @@
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
-import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { providers } from "ethers";
-import React, { useState } from "react";
+import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 
 import Button from "../button/button";
-import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";
+import React, { useState } from "react";
+import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { hooks } from "../../lib/connectors/metamask";
+import { useMetaTxHandlerContract } from "../../lib/meta-transactions/useMetaTxHandlerContract";
 
-interface CommitButtonProps {
-  offerId: string;
-  web3Provider?: providers.Web3Provider;
+interface CancelButtonProps {
+  exchangeId: string;
   chainId: number;
   subgraphUrl?: string;
   protocolDiamond?: string;
   metaTransactionApiKey?: string;
-  theGraphStorage?: string;
   onPending: ({
-    offerId,
+    exchangeId,
     isLoading
   }: {
-    offerId: string;
+    exchangeId: string;
     isLoading: boolean;
   }) => void;
   onSuccess: ({
-    offerId,
-    txHash,
-    exchangeId
+    exchangeId,
+    txHash
   }: {
-    offerId: string;
+    exchangeId: string;
     txHash: string;
-    exchangeId: string | null;
   }) => void;
   onError: ({
-    offerId,
+    exchangeId,
     message,
     error
   }: {
-    offerId: string;
+    exchangeId: string;
     message: string;
     error: unknown;
   }) => void;
 }
 
-const CommitButton = ({
-  offerId,
-  web3Provider,
+const CancelButton = ({
+  exchangeId,
   chainId,
   subgraphUrl,
   protocolDiamond,
@@ -52,10 +47,9 @@ const CommitButton = ({
   onPending,
   onSuccess,
   onError
-}: CommitButtonProps) => {
+}: CancelButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const metaTxContract = useMetaTxHandlerContract();
-  const account = hooks.useAccount();
 
   return (
     <Button
@@ -63,8 +57,8 @@ const CommitButton = ({
       onClick={async () => {
         try {
           // connect to wallet
-          let localWeb3Provider = web3Provider;
-          if (!web3Provider && window.ethereum) {
+          let localWeb3Provider;
+          if (window.ethereum) {
             const provider = new providers.Web3Provider(window.ethereum);
             localWeb3Provider = provider;
           }
@@ -84,44 +78,50 @@ const CommitButton = ({
           });
 
           setIsLoading(true);
-          onPending({ offerId, isLoading });
+          onPending({ exchangeId, isLoading });
+
+          const account = hooks.useAccount();
+
           let txResponse;
+
           if (metaTransactionApiKey && metaTxContract && account) {
             const nonce = Date.now();
-            const { r, s, v } = await coreSDK.signExecuteMetaTxCommitToOffer({
+
+            const { r, s, v } = await coreSDK.signExecuteMetaTxCancelVoucher({
               chainId,
-              offerId,
+              exchangeId,
               nonce
             });
-            txResponse = await metaTxContract.executeMetaTxCommitToOffer(
+
+            txResponse = await metaTxContract.executeMetaTxCancelVoucher(
               account,
-              { buyer: account, offerId },
+              {
+                exchangeId
+              },
               nonce,
               r,
               s,
               v
             );
           } else {
-            txResponse = await coreSDK.commitToOffer(offerId);
+            txResponse = await coreSDK.cancelVoucher(exchangeId);
           }
-          const txReceipt = await txResponse.wait(1);
-          const txHash = txResponse.hash;
-          const exchangeId = coreSDK.getCommittedExchangeIdFromLogs(
-            txReceipt.logs
-          );
-          onSuccess({ offerId, txHash, exchangeId });
+
+          await txResponse.wait(1);
           setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onSuccess({ exchangeId, txHash: txResponse.hash });
+
+          onPending({ exchangeId, isLoading });
         } catch (error) {
           setIsLoading(false);
-          onPending({ offerId, isLoading });
-          onError({ offerId, message: "error commiting the item", error });
+          onPending({ exchangeId, isLoading });
+          onError({ exchangeId, message: "error canceling the item", error });
         }
       }}
     >
-      Commit
+      Cancel Exchange {exchangeId}
     </Button>
   );
 };
 
-export default CommitButton;
+export default CancelButton;

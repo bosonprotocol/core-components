@@ -1,55 +1,58 @@
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
-import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 import { providers } from "ethers";
-import React, { useState } from "react";
+import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 
 import Button from "../button/button";
+import React, { useState } from "react";
+import { EthersAdapter } from "@bosonprotocol/ethers-sdk";
 
-interface VoidButtonProps {
-  offerId: string;
-  web3Provider?: providers.Web3Provider;
+interface RevokeButtonProps {
+  exchangeId: string;
   chainId: number;
   subgraphUrl?: string;
   protocolDiamond?: string;
   onPending: ({
-    offerId,
+    exchangeId,
     isLoading
   }: {
-    offerId: string;
+    exchangeId: string;
     isLoading: boolean;
   }) => void;
-  onSuccess: ({ offerId, txHash }: { offerId: string; txHash: string }) => void;
+  onSuccess: ({
+    exchangeId,
+    txHash
+  }: {
+    exchangeId: string;
+    txHash: string;
+  }) => void;
   onError: ({
-    offerId,
+    exchangeId,
     message,
     error
   }: {
-    offerId: string;
+    exchangeId: string;
     message: string;
     error: unknown;
   }) => void;
 }
 
-const VoidButton = ({
-  offerId,
-  web3Provider,
+const RevokeButton = ({
+  exchangeId,
   chainId,
   subgraphUrl,
   protocolDiamond,
   onPending,
   onSuccess,
   onError
-}: VoidButtonProps) => {
+}: RevokeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-
   return (
     <Button
       variant="primary"
       onClick={async () => {
         try {
           // connect to wallet
-          let localWeb3Provider = web3Provider;
-          if (!web3Provider && window.ethereum) {
+          let localWeb3Provider;
+          if (window.ethereum) {
             const provider = new providers.Web3Provider(window.ethereum);
             localWeb3Provider = provider;
           }
@@ -69,23 +72,24 @@ const VoidButton = ({
           });
 
           setIsLoading(true);
-          const txResponse = await coreSDK.voidOffer(offerId);
+          onPending({ exchangeId, isLoading });
 
+          const txResponse = await coreSDK.revokeVoucher(exchangeId);
           await txResponse.wait(1);
-          const txHash = txResponse.hash;
-          onSuccess({ offerId, txHash });
 
           setIsLoading(false);
+          onPending({ exchangeId, isLoading });
+          onSuccess({ exchangeId, txHash: txResponse.hash });
         } catch (error) {
           setIsLoading(false);
-          onPending({ offerId, isLoading });
-          onError({ offerId, message: "error voiding the item", error });
+          onPending({ exchangeId, isLoading });
+          onError({ exchangeId, message: "error revoking the item", error });
         }
       }}
     >
-      Void Offer {offerId}
+      Revoke Exchange {exchangeId}
     </Button>
   );
 };
 
-export default VoidButton;
+export default RevokeButton;
