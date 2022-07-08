@@ -1,9 +1,9 @@
 import React from "react";
 
-import Button from "../../buttons/Button";
-import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
-import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
+import Button from "./Button";
+import { useMetaTxHandlerContract } from "../../hooks/meta-tx/useMetaTxHandlerContract";
+import { useCoreSdk, CoreSdkConfig } from "../../hooks/useCoreSdk";
+import { useSignerAddress } from "../../hooks/useSignerAddress";
 
 type CommitButtonProps = CoreSdkConfig & {
   offerId: string;

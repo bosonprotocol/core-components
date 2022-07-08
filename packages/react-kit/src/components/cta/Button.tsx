@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import React from "react";
-import Loading from "../Loading";
+import Loading from "./seller/Loading";
 
 interface ButtonProps {
   onClick: () => void;
