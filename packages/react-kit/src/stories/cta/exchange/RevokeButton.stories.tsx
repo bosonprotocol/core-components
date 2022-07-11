@@ -1,18 +1,17 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CommitButton from "../../../components/cta/offer/CommitButton";
-
+import RevokeButton from "../../../components/cta/exchange/RevokeButton";
 import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Visual Components/CTA/Offer/CommitButton",
-  component: CommitButton
-} as ComponentMeta<typeof CommitButton>;
+  title: "Visual Components/CTA/Exchange/RevokeButton",
+  component: RevokeButton
+} as ComponentMeta<typeof RevokeButton>;
 
 // TODO: Move connect wallet button into reusable template
-const Template: ComponentStory<typeof CommitButton> = (args) => {
+const Template: ComponentStory<typeof RevokeButton> = (args) => {
   const account = hooks.useAccount();
   const provider = hooks.useProvider();
 
@@ -26,34 +25,32 @@ const Template: ComponentStory<typeof CommitButton> = (args) => {
       ) : (
         <button onClick={() => connectWallet()}>Connect MM</button>
       )}
-      <CommitButton web3Provider={provider} {...args} />
+      <RevokeButton web3Provider={provider} {...args} />
     </>
   );
 };
 
-export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
+export const Primary: ComponentStory<typeof RevokeButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
   chainId: 1234,
-  offerId: "28",
-  metaTransactionsApiKey: undefined,
+  exchangeId: "28",
   web3Provider: undefined,
-  onSuccess: ({ offerId, txHash, exchangeId }) => {
+  onSuccess: ({ exchangeId, txHash }) => {
     console.log("----------ON SUCCESS-------------");
     console.log("txHash", txHash);
-    console.log("offerId", offerId);
     console.log("exchangeId", exchangeId);
   },
-  onError: ({ offerId, message, error }) => {
+  onError: ({ exchangeId, message, error }) => {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
     console.log("message", message);
-    console.log("offerId", offerId);
+    console.log("exchangeId", exchangeId);
   },
-  onPending: ({ offerId, isLoading }) => {
+  onPending: ({ exchangeId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
-    console.log("offerId", offerId);
+    console.log("exchangeId", exchangeId);
   }
 };
