@@ -105,8 +105,10 @@ const CancelButton = ({
         }
       }}
     >
+      <>
       {children || "Cancel"}
       {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+      </>
     </Button>
   );
 };

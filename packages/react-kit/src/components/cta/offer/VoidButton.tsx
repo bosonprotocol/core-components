@@ -67,8 +67,10 @@ const VoidButton = ({
         }
       }}
     >
+      <>
       {children || "Void"}
       {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+      </>
     </Button>
   );
 };

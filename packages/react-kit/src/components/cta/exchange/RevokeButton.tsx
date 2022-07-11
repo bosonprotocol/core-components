@@ -70,8 +70,10 @@ const RevokeButton = ({
         }
       }}
     >
+      <>
       {children || "Revoke"}
       {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+      </>
     </Button>
   );
 };
