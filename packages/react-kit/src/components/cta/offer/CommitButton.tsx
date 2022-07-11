@@ -103,8 +103,8 @@ const CommitButton = ({
       }}
     >
       <>
-      {children || "Commit"}
-      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {children || "Commit"}
+        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
       </>
     </Button>
   );

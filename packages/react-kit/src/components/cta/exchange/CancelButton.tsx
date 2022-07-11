@@ -1,43 +1,11 @@
 import React from "react";
 
 import Button from "../../buttons/Button";
-import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
+import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { ExtraInfo } from "../styles/common.styles";
-
-type CancelButtonProps = CoreSdkConfig & {
-  exchangeId: string;
-  metaTransactionsApiKey?: string;
-  disabled?: boolean;
-  waitBlocks?: number;
-  extraInfo?: string;
-  onPendingUserConfirmation: ({
-    exchangeId,
-    isLoading
-  }: {
-    exchangeId: string;
-    isLoading: boolean;
-  }) => void;
-  onPendingTransactionConfirmation: (txHash: string) => void;
-  onSuccess: ({
-    exchangeId,
-    txHash
-  }: {
-    exchangeId: string;
-    txHash: string;
-  }) => void;
-  onError: ({
-    exchangeId,
-    message,
-    error
-  }: {
-    exchangeId: string;
-    message: string;
-    error: unknown;
-  }) => void;
-  children?: React.ReactNode;
-};
+import { ExchangeCtaProps } from "./common/types";
 
 const CancelButton = ({
   exchangeId,
@@ -51,7 +19,7 @@ const CancelButton = ({
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: CancelButtonProps) => {
+}: ExchangeCtaProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
@@ -106,8 +74,8 @@ const CancelButton = ({
       }}
     >
       <>
-      {children || "Cancel"}
-      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {children || "Cancel"}
+        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
       </>
     </Button>
   );

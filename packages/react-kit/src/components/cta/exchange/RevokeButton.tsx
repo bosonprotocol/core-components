@@ -1,40 +1,9 @@
 import React from "react";
 
 import Button from "../../buttons/Button";
-import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
+import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ExtraInfo } from "../styles/common.styles";
-
-type RevokeButtonProps = CoreSdkConfig & {
-  exchangeId: string;
-  disabled?: boolean;
-  extraInfo?: string;
-  waitBlocks?: number;
-  onPendingUserConfirmation: ({
-    exchangeId,
-    isLoading
-  }: {
-    exchangeId: string;
-    isLoading: boolean;
-  }) => void;
-  onPendingTransactionConfirmation: (txHash: string) => void;
-  onSuccess: ({
-    exchangeId,
-    txHash
-  }: {
-    exchangeId: string;
-    txHash: string;
-  }) => void;
-  onError: ({
-    exchangeId,
-    message,
-    error
-  }: {
-    exchangeId: string;
-    message: string;
-    error: unknown;
-  }) => void;
-  children?: React.ReactNode;
-};
+import { ExchangeCtaProps } from "./common/types";
 
 const RevokeButton = ({
   exchangeId,
@@ -47,7 +16,7 @@ const RevokeButton = ({
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: RevokeButtonProps) => {
+}: ExchangeCtaProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   return (
@@ -71,8 +40,8 @@ const RevokeButton = ({
       }}
     >
       <>
-      {children || "Revoke"}
-      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {children || "Revoke"}
+        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
       </>
     </Button>
   );
