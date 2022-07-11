@@ -61,7 +61,7 @@ const CancelButton = ({
 
   return (
     <Button
-      variant="primary"
+      variant="secondary"
       disabled={disabled}
       onClick={async () => {
         try {

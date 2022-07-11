@@ -50,7 +50,7 @@ const RevokeButton = ({
 
   return (
     <Button
-      variant="primary"
+      variant="secondary"
       disabled={disabled}
       onClick={async () => {
         try {
