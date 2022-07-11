@@ -159,7 +159,7 @@ describe("#completeExchange()", () => {
         exchangeId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(/buyer or operator/);
+    ).rejects.toThrow(/buyer.*or operator.*/);
   });
 
   test("throw if fulfillment period not elapsed", async () => {

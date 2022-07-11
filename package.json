@@ -57,5 +57,9 @@
   },
   "overrides": {
     "autoprefixer": "10.4.5"
+  },
+  "volta": {
+    "node": "16.16.0",
+    "npm": "8.11.0"
   }
 }
