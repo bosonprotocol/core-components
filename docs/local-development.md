@@ -14,10 +14,9 @@
 
 ## Prerequisites
 
-This project requires the following versions of node.js and npm:
+## Node & npm
 
-- node.js >= 16.14.0
-- npm@8.5.3
+Installing the correct versions of node and npm can be done by installing [`volta`](https://volta.sh/). Volta will automatically get those versions from the root package.json file.
 
 It is also beneficial to have a rough understanding of the [monorepo tools](./monorepo-tools.md) that we use in this project.
 
