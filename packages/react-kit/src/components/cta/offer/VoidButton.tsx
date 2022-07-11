@@ -2,12 +2,14 @@ import React from "react";
 
 import Button from "../../buttons/Button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
+import { ExtraInfo } from "../styles/common.styles";
 
 type VoidButtonProps = CoreSdkConfig & {
   offerId: string;
   metaTransactionsApiKey?: string;
   disabled?: boolean;
   waitBlocks?: number;
+  extraInfo?: string;
   onPendingUserConfirmation: ({
     offerId,
     isLoading
@@ -33,6 +35,7 @@ const VoidButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
+  extraInfo,
   onSuccess,
   onError,
   onPendingUserConfirmation,
@@ -64,7 +67,8 @@ const VoidButton = ({
         }
       }}
     >
-      {children || "Void Offer"}
+      {children || "Void"}
+      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
     </Button>
   );
 };

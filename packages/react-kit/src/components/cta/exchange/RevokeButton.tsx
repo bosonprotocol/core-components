@@ -2,7 +2,7 @@ import React from "react";
 
 import Button from "../../buttons/Button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
-import styled from "styled-components";
+import { ExtraInfo } from "../styles/common.styles";
 
 type RevokeButtonProps = CoreSdkConfig & {
   exchangeId: string;
@@ -68,19 +68,9 @@ const RevokeButton = ({
       }}
     >
       {children || "Revoke"}
-      <RevokeStep>{extraInfo}</RevokeStep>
+      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
     </Button>
   );
 };
 
 export default RevokeButton;
-
-const RevokeStep = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 150%;
-  margin-left: 60px;
-  color: ${({ theme }) => theme?.colors?.light.black};
-  opacity: 0.5;
-`;

@@ -4,12 +4,14 @@ import Button from "../../buttons/Button";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
+import { ExtraInfo } from "../styles/common.styles";
 
 type CancelButtonProps = CoreSdkConfig & {
   exchangeId: string;
   metaTransactionsApiKey?: string;
   disabled?: boolean;
   waitBlocks?: number;
+  extraInfo?: string;
   onPending: ({
     exchangeId,
     isLoading
@@ -40,6 +42,7 @@ const CancelButton = ({
   exchangeId,
   metaTransactionsApiKey,
   disabled = false,
+  extraInfo,
   onSuccess,
   onError,
   onPending,
@@ -99,7 +102,8 @@ const CancelButton = ({
         }
       }}
     >
-      {children || "Cancel exchange"}
+      {children || "Cancel"}
+      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
     </Button>
   );
 };

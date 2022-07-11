@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 
 import Button from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
+import { ExtraInfo } from "../styles/common.styles";
 
 type CommitButtonProps = CoreSdkConfig & {
   offerId: string;
@@ -100,19 +100,11 @@ const CommitButton = ({
       }}
     >
       {children || "Commit"}
-      <CommitStep>{extraInfo}</CommitStep>
+      {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
     </Button>
   );
 };
 
 export default CommitButton;
 
-const CommitStep = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 150%;
-  margin-left: 60px;
-  color: ${({ theme }) => theme?.colors?.light.black};
-  opacity: 0.5;
-`;
+
