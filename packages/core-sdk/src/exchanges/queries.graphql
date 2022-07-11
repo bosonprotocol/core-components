@@ -45,5 +45,6 @@ fragment BaseExchangeFields on Exchange {
   redeemedDate
   revokedDate
   cancelledDate
+  completedDate
   expired
 }

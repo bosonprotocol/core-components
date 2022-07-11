@@ -155,7 +155,7 @@ describe("core-sdk", () => {
       expect(exchangeAfterRevoke.cancelledDate).toBeTruthy();
     });
 
-    test("redeem", async () => {
+    test("redeem + finalize", async () => {
       const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
         await initSellerAndBuyerSDKs();
       const createdOffer = await createSellerAndOffer(
@@ -181,6 +181,14 @@ describe("core-sdk", () => {
 
       expect(exchangeAfterRevoke.state).toBe(ExchangeState.Redeemed);
       expect(exchangeAfterRevoke.redeemedDate).toBeTruthy();
+
+      const exchangeAfterComplete = await completeExchange({
+        coreSDK: buyerCoreSDK,
+        exchangeId: exchange.id
+      });
+
+      expect(exchangeAfterComplete.state).toBe(ExchangeState.Completed);
+      expect(exchangeAfterComplete.completedDate).toBeTruthy();
     });
 
     describe("withdraw funds", () => {
@@ -364,4 +372,19 @@ async function commitToOffer(args: {
     exchangeId as string
   );
   return exchange;
+}
+
+async function completeExchange(args: {
+  coreSDK: CoreSDK;
+  exchangeId: BigNumberish;
+}) {
+  const completeExchangeTxResponse = await args.coreSDK.completeExchange(
+    args.exchangeId
+  );
+  await completeExchangeTxResponse.wait();
+  await waitForGraphNodeIndexing();
+  const exchangeAfterComplete = await args.coreSDK.getExchangeById(
+    args.exchangeId
+  );
+  return exchangeAfterComplete;
 }

@@ -1,4 +1,4 @@
-# `@bosonprotocol/react-kit
+# @bosonprotocol/react-kit
 
 This is a set of react components which provide building blocks for interacting with the Boson Protocol and developer tooling. This includes a storybook which allows for simpler testing and configuration."
 

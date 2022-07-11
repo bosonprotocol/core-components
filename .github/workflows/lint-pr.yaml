@@ -27,5 +27,6 @@ jobs:
             widgets
             deps
             metadata
+            react-kit
           subjectPattern: ^(?![A-Z]).+$
           validateSingleCommit: true

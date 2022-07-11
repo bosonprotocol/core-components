@@ -5,7 +5,7 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
-type Provider =
+export type Provider =
   | providers.UrlJsonRpcProvider
   | providers.AlchemyProvider
   | providers.AlchemyWebSocketProvider

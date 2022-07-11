@@ -8,6 +8,8 @@ import {
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { Exchange, Offer } from "../../generated/schema";
 
+import { saveMetadata } from "../entities/metadata/handler";
+
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
   const exchangeId = exchangeFromEvent.id.toString();
@@ -23,6 +25,8 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   if (offer) {
     offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
     offer.save();
+
+    saveMetadata(offer, offer.createdAt);
 
     exchange.seller = offer.seller;
     exchange.validUntilDate = exchangeFromEvent.voucher.validUntilDate;

@@ -63,6 +63,10 @@ export enum Account_OrderBy {
 
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  /**
+   * Enriched fields from offer entity to allow nested query workaround
+   *
+   */
   createdAt: Scalars["BigInt"];
   description?: Maybe<Scalars["String"]>;
   exchangeToken: ExchangeToken;
@@ -70,6 +74,7 @@ export type BaseMetadataEntity = MetadataInterface & {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   offer: Offer;
+  quantityAvailable: Scalars["BigInt"];
   schemaUrl?: Maybe<Scalars["String"]>;
   seller: Seller;
   type: MetadataType;
@@ -195,6 +200,14 @@ export type BaseMetadataEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  quantityAvailable_lt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_lte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   schemaUrl?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -269,6 +282,7 @@ export enum BaseMetadataEntity_OrderBy {
   Id = "id",
   Name = "name",
   Offer = "offer",
+  QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
   Type = "type",
@@ -803,6 +817,7 @@ export type MetadataInterface = {
   name?: Maybe<Scalars["String"]>;
   /** Reference to related Offer entity */
   offer: Offer;
+  quantityAvailable: Scalars["BigInt"];
   /** JSON schema URL */
   schemaUrl?: Maybe<Scalars["String"]>;
   /** Reference to related Seller entity */
@@ -931,6 +946,14 @@ export type MetadataInterface_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  quantityAvailable_lt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_lte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   schemaUrl?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1005,6 +1028,7 @@ export enum MetadataInterface_OrderBy {
   Id = "id",
   Name = "name",
   Offer = "offer",
+  QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
   Type = "type",
@@ -1428,6 +1452,10 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
   brand: ProductV1Brand;
   brandName?: Maybe<Scalars["String"]>;
+  /**
+   * Enriched fields from offer entity to allow nested query workaround
+   *
+   */
   createdAt: Scalars["BigInt"];
   description?: Maybe<Scalars["String"]>;
   exchangeToken: ExchangeToken;
@@ -1440,6 +1468,7 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   images?: Maybe<Array<Scalars["String"]>>;
   name?: Maybe<Scalars["String"]>;
   offer: Offer;
+  quantityAvailable: Scalars["BigInt"];
   schemaUrl?: Maybe<Scalars["String"]>;
   seller: Seller;
   tags?: Maybe<Array<Scalars["String"]>>;
@@ -1612,6 +1641,14 @@ export type ProductV1MetadataEntity_Filter = {
   offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offer_starts_with?: InputMaybe<Scalars["String"]>;
   offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  quantityAvailable_lt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_lte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   schemaUrl?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains?: InputMaybe<Scalars["String"]>;
   schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1695,6 +1732,7 @@ export enum ProductV1MetadataEntity_OrderBy {
   Images = "images",
   Name = "name",
   Offer = "offer",
+  QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",
   Tags = "tags",
@@ -2398,6 +2436,7 @@ export type GetSellerByIdQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
   } | null;
@@ -2519,6 +2558,123 @@ export type GetSellersQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
+      expired: boolean;
+    }>;
+  }>;
+};
+
+export type GetBuyerByIdQueryQueryVariables = Exact<{
+  buyerId: Scalars["ID"];
+  fundsSkip?: InputMaybe<Scalars["Int"]>;
+  fundsFirst?: InputMaybe<Scalars["Int"]>;
+  fundsOrderBy?: InputMaybe<FundsEntity_OrderBy>;
+  fundsOrderDirection?: InputMaybe<OrderDirection>;
+  fundsFilter?: InputMaybe<FundsEntity_Filter>;
+  exchangesSkip?: InputMaybe<Scalars["Int"]>;
+  exchangesFirst?: InputMaybe<Scalars["Int"]>;
+  exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
+  exchangesOrderDirection?: InputMaybe<OrderDirection>;
+  exchangesFilter?: InputMaybe<Exchange_Filter>;
+  includeExchanges?: InputMaybe<Scalars["Boolean"]>;
+  includeFunds?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetBuyerByIdQueryQuery = {
+  __typename?: "Query";
+  buyer?: {
+    __typename?: "Buyer";
+    id: string;
+    wallet: string;
+    active: boolean;
+    funds?: Array<{
+      __typename?: "FundsEntity";
+      id: string;
+      availableAmount: string;
+      accountId: string;
+      token: {
+        __typename?: "ExchangeToken";
+        address: string;
+        name: string;
+        symbol: string;
+        decimals: string;
+      };
+    }>;
+    exchanges?: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      expired: boolean;
+    }>;
+  } | null;
+};
+
+export type GetBuyersQueryQueryVariables = Exact<{
+  BuyersSkip?: InputMaybe<Scalars["Int"]>;
+  BuyersFirst?: InputMaybe<Scalars["Int"]>;
+  BuyersOrderBy?: InputMaybe<Buyer_OrderBy>;
+  BuyersOrderDirection?: InputMaybe<OrderDirection>;
+  BuyersFilter?: InputMaybe<Buyer_Filter>;
+  fundsSkip?: InputMaybe<Scalars["Int"]>;
+  fundsFirst?: InputMaybe<Scalars["Int"]>;
+  fundsOrderBy?: InputMaybe<FundsEntity_OrderBy>;
+  fundsOrderDirection?: InputMaybe<OrderDirection>;
+  fundsFilter?: InputMaybe<FundsEntity_Filter>;
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  exchangesSkip?: InputMaybe<Scalars["Int"]>;
+  exchangesFirst?: InputMaybe<Scalars["Int"]>;
+  exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
+  exchangesOrderDirection?: InputMaybe<OrderDirection>;
+  exchangesFilter?: InputMaybe<Exchange_Filter>;
+  includeExchanges?: InputMaybe<Scalars["Boolean"]>;
+  includeOffers?: InputMaybe<Scalars["Boolean"]>;
+  includeFunds?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetBuyersQueryQuery = {
+  __typename?: "Query";
+  buyers: Array<{
+    __typename?: "Buyer";
+    id: string;
+    wallet: string;
+    active: boolean;
+    funds?: Array<{
+      __typename?: "FundsEntity";
+      id: string;
+      availableAmount: string;
+      accountId: string;
+      token: {
+        __typename?: "ExchangeToken";
+        address: string;
+        name: string;
+        symbol: string;
+        decimals: string;
+      };
+    }>;
+    exchanges?: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
   }>;
@@ -2612,6 +2768,7 @@ export type SellerFieldsFragment = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
   }>;
 };
@@ -2624,6 +2781,40 @@ export type BaseSellerFieldsFragment = {
   clerk: string;
   treasury: string;
   active: boolean;
+};
+
+export type BuyerFieldsFragment = {
+  __typename?: "Buyer";
+  id: string;
+  wallet: string;
+  active: boolean;
+  funds?: Array<{
+    __typename?: "FundsEntity";
+    id: string;
+    availableAmount: string;
+    accountId: string;
+    token: {
+      __typename?: "ExchangeToken";
+      address: string;
+      name: string;
+      symbol: string;
+      decimals: string;
+    };
+  }>;
+  exchanges?: Array<{
+    __typename?: "Exchange";
+    id: string;
+    disputed: boolean;
+    state: ExchangeState;
+    committedDate: string;
+    finalizedDate?: string | null;
+    validUntilDate: string;
+    redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
+    completedDate?: string | null;
+    expired: boolean;
+  }>;
 };
 
 export type BaseBuyerFieldsFragment = {
@@ -2650,6 +2841,7 @@ export type GetExchangeByIdQueryQuery = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2746,6 +2938,7 @@ export type GetExchangesQueryQuery = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2832,6 +3025,7 @@ export type ExchangeFieldsFragment = {
   redeemedDate?: string | null;
   revokedDate?: string | null;
   cancelledDate?: string | null;
+  completedDate?: string | null;
   expired: boolean;
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
   seller: {
@@ -2912,6 +3106,7 @@ export type BaseExchangeFieldsFragment = {
   redeemedDate?: string | null;
   revokedDate?: string | null;
   cancelledDate?: string | null;
+  completedDate?: string | null;
   expired: boolean;
 };
 
@@ -3019,6 +3214,7 @@ export type GetOfferByIdQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3106,6 +3302,7 @@ export type GetOffersQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3177,6 +3374,7 @@ export type OfferFieldsFragment = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
   }>;
   seller: {
@@ -3346,6 +3544,7 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     redeemedDate
     revokedDate
     cancelledDate
+    completedDate
     expired
   }
 `;
@@ -3391,6 +3590,32 @@ export const BaseBuyerFieldsFragmentDoc = gql`
     wallet
     active
   }
+`;
+export const BuyerFieldsFragmentDoc = gql`
+  fragment BuyerFields on Buyer {
+    ...BaseBuyerFields
+    funds(
+      skip: $fundsSkip
+      first: $fundsFirst
+      orderBy: $fundsOrderBy
+      orderDirection: $fundsOrderDirection
+      where: $fundsFilter
+    ) @include(if: $includeFunds) {
+      ...FundsEntityFields
+    }
+    exchanges(
+      skip: $exchangesSkip
+      first: $exchangesFirst
+      orderBy: $exchangesOrderBy
+      orderDirection: $exchangesOrderDirection
+      where: $exchangesFilter
+    ) @include(if: $includeExchanges) {
+      ...BaseExchangeFields
+    }
+  }
+  ${BaseBuyerFieldsFragmentDoc}
+  ${FundsEntityFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
 `;
 export const ExchangeFieldsFragmentDoc = gql`
   fragment ExchangeFields on Exchange {
@@ -3491,6 +3716,66 @@ export const GetSellersQueryDocument = gql`
     }
   }
   ${SellerFieldsFragmentDoc}
+`;
+export const GetBuyerByIdQueryDocument = gql`
+  query getBuyerByIdQuery(
+    $buyerId: ID!
+    $fundsSkip: Int
+    $fundsFirst: Int
+    $fundsOrderBy: FundsEntity_orderBy
+    $fundsOrderDirection: OrderDirection
+    $fundsFilter: FundsEntity_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+    $includeFunds: Boolean = false
+  ) {
+    buyer(id: $buyerId) {
+      ...BuyerFields
+    }
+  }
+  ${BuyerFieldsFragmentDoc}
+`;
+export const GetBuyersQueryDocument = gql`
+  query getBuyersQuery(
+    $BuyersSkip: Int
+    $BuyersFirst: Int
+    $BuyersOrderBy: Buyer_orderBy
+    $BuyersOrderDirection: OrderDirection
+    $BuyersFilter: Buyer_filter
+    $fundsSkip: Int
+    $fundsFirst: Int
+    $fundsOrderBy: FundsEntity_orderBy
+    $fundsOrderDirection: OrderDirection
+    $fundsFilter: FundsEntity_filter
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+    $includeOffers: Boolean = false
+    $includeFunds: Boolean = false
+  ) {
+    buyers(
+      skip: $BuyersSkip
+      first: $BuyersFirst
+      orderBy: $BuyersOrderBy
+      orderDirection: $BuyersOrderDirection
+      where: $BuyersFilter
+    ) {
+      ...BuyerFields
+    }
+  }
+  ${BuyerFieldsFragmentDoc}
 `;
 export const GetExchangeByIdQueryDocument = gql`
   query getExchangeByIdQuery($exchangeId: ID!) {
@@ -3635,6 +3920,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getSellersQuery",
+        "query"
+      );
+    },
+    getBuyerByIdQuery(
+      variables: GetBuyerByIdQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetBuyerByIdQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetBuyerByIdQueryQuery>(
+            GetBuyerByIdQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getBuyerByIdQuery",
+        "query"
+      );
+    },
+    getBuyersQuery(
+      variables?: GetBuyersQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetBuyersQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetBuyersQueryQuery>(
+            GetBuyersQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getBuyersQuery",
         "query"
       );
     },

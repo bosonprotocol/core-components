@@ -60,6 +60,62 @@ query getSellersQuery(
   }
 }
 
+query getBuyerByIdQuery(
+  $buyerId: ID!
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+  $includeFunds: Boolean = false
+) {
+  buyer(id: $buyerId) {
+    ...BuyerFields
+  }
+}
+
+query getBuyersQuery(
+  $BuyersSkip: Int
+  $BuyersFirst: Int
+  $BuyersOrderBy: Buyer_orderBy
+  $BuyersOrderDirection: OrderDirection
+  $BuyersFilter: Buyer_filter
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+  $includeOffers: Boolean = false
+  $includeFunds: Boolean = false
+) {
+  buyers(
+    skip: $BuyersSkip
+    first: $BuyersFirst
+    orderBy: $BuyersOrderBy
+    orderDirection: $BuyersOrderDirection
+    where: $BuyersFilter
+  ) {
+    ...BuyerFields
+  }
+}
+
 fragment SellerFields on Seller {
   ...BaseSellerFields
   funds(
@@ -98,6 +154,28 @@ fragment BaseSellerFields on Seller {
   clerk
   treasury
   active
+}
+
+fragment BuyerFields on Buyer {
+  ...BaseBuyerFields
+  funds(
+    skip: $fundsSkip
+    first: $fundsFirst
+    orderBy: $fundsOrderBy
+    orderDirection: $fundsOrderDirection
+    where: $fundsFilter
+  ) @include(if: $includeFunds) {
+    ...FundsEntityFields
+  }
+  exchanges(
+    skip: $exchangesSkip
+    first: $exchangesFirst
+    orderBy: $exchangesOrderBy
+    orderDirection: $exchangesOrderDirection
+    where: $exchangesFilter
+  ) @include(if: $includeExchanges) {
+    ...BaseExchangeFields
+  }
 }
 
 fragment BaseBuyerFields on Buyer {
