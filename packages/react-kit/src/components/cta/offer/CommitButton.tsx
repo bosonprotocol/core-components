@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import Button from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
@@ -9,6 +10,8 @@ type CommitButtonProps = CoreSdkConfig & {
   offerId: string;
   metaTransactionsApiKey?: string;
   disabled?: boolean;
+  showStep?: boolean;
+  extraInfo?: string;
   onPending: ({
     offerId,
     isLoading
@@ -41,6 +44,8 @@ const CommitButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
+  showStep = false,
+  extraInfo = "",
   children,
   onPending,
   onSuccess,
@@ -95,8 +100,19 @@ const CommitButton = ({
       }}
     >
       {children || "Commit"}
+      <CommitStep>{extraInfo}</CommitStep>
     </Button>
   );
 };
 
 export default CommitButton;
+
+const CommitStep = styled.span`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  margin-left: 60px;
+  color: ${({ theme }) => theme?.colors?.light.black};
+  opacity: 0.5;
+`;
