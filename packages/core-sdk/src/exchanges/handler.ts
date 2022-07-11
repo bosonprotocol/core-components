@@ -66,12 +66,12 @@ export async function completeExchange(
 
   assertExchange(args.exchangeId, exchange);
 
-  const { isSignerSeller } = assertSignerIsBuyerOrOperator(
+  const { isSignerOperator } = assertSignerIsBuyerOrOperator(
     signerAddress,
     exchange
   );
 
-  if (isSignerSeller) {
+  if (isSignerOperator) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
     const didFulfillmentPeriodElapse =
@@ -223,12 +223,17 @@ function assertSignerIsBuyerOrOperator(
   exchange: ExchangeFieldsFragment
 ) {
   const { seller, buyer } = exchange;
-  const isSignerSeller = signer.toLowerCase() === seller.operator.toLowerCase();
-  const isSignerBuyer = signer.toLowerCase() === buyer.wallet.toLowerCase();
+  const buyerAddress = buyer.wallet;
+  const operatorAddress = seller.operator;
+  const isSignerOperator =
+    signer.toLowerCase() === operatorAddress.toLowerCase();
+  const isSignerBuyer = signer.toLowerCase() === buyerAddress.toLowerCase();
 
-  if (!isSignerSeller || !isSignerBuyer) {
-    throw new Error(`Signer ${signer} is required to be the buyer or operator`);
+  if (!isSignerOperator && !isSignerBuyer) {
+    throw new Error(
+      `Signer ${signer} is required to be the buyer ${buyerAddress} or operator ${operatorAddress}`
+    );
   }
 
-  return { isSignerBuyer, isSignerSeller };
+  return { isSignerBuyer, isSignerOperator };
 }

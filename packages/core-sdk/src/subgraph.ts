@@ -2398,6 +2398,7 @@ export type GetSellerByIdQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
   } | null;
@@ -2519,6 +2520,7 @@ export type GetSellersQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
   }>;
@@ -2612,6 +2614,7 @@ export type SellerFieldsFragment = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
   }>;
 };
@@ -2650,6 +2653,7 @@ export type GetExchangeByIdQueryQuery = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2746,6 +2750,7 @@ export type GetExchangesQueryQuery = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
     buyer: {
       __typename?: "Buyer";
@@ -2832,6 +2837,7 @@ export type ExchangeFieldsFragment = {
   redeemedDate?: string | null;
   revokedDate?: string | null;
   cancelledDate?: string | null;
+  completedDate?: string | null;
   expired: boolean;
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
   seller: {
@@ -2912,6 +2918,7 @@ export type BaseExchangeFieldsFragment = {
   redeemedDate?: string | null;
   revokedDate?: string | null;
   cancelledDate?: string | null;
+  completedDate?: string | null;
   expired: boolean;
 };
 
@@ -3019,6 +3026,7 @@ export type GetOfferByIdQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3106,6 +3114,7 @@ export type GetOffersQueryQuery = {
       redeemedDate?: string | null;
       revokedDate?: string | null;
       cancelledDate?: string | null;
+      completedDate?: string | null;
       expired: boolean;
     }>;
     seller: {
@@ -3177,6 +3186,7 @@ export type OfferFieldsFragment = {
     redeemedDate?: string | null;
     revokedDate?: string | null;
     cancelledDate?: string | null;
+    completedDate?: string | null;
     expired: boolean;
   }>;
   seller: {
@@ -3346,6 +3356,7 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     redeemedDate
     revokedDate
     cancelledDate
+    completedDate
     expired
   }
 `;
