@@ -52,8 +52,8 @@ const ButtonStyle = styled.button.attrs(
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 16px 24px;
-  gap: 8px;
+  padding: 1rem 1.5px;
+  gap: 0.5rem;
   margin: 1px;
   cursor: pointer;
   box-shadow: 0px 0px 0px #000000;
@@ -62,7 +62,7 @@ const ButtonStyle = styled.button.attrs(
   span {
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 150%;
   }
 
