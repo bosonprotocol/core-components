@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import VoidButton from "../../../components/cta/offer/VoidButton";
@@ -55,6 +56,10 @@ Primary.args = {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("offerId", offerId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };
 WithExtraInfo.args = {
@@ -77,5 +82,9 @@ WithExtraInfo.args = {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("offerId", offerId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };

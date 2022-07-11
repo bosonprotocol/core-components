@@ -12,13 +12,14 @@ type CancelButtonProps = CoreSdkConfig & {
   disabled?: boolean;
   waitBlocks?: number;
   extraInfo?: string;
-  onPending: ({
+  onPendingUserConfirmation: ({
     exchangeId,
     isLoading
   }: {
     exchangeId: string;
     isLoading: boolean;
   }) => void;
+  onPendingTransactionConfirmation: (txHash: string) => void;
   onSuccess: ({
     exchangeId,
     txHash
@@ -45,7 +46,8 @@ const CancelButton = ({
   extraInfo,
   onSuccess,
   onError,
-  onPending,
+  onPendingUserConfirmation,
+  onPendingTransactionConfirmation,
   waitBlocks = 1,
   children,
   ...coreSdkConfig
@@ -65,7 +67,7 @@ const CancelButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPending({ exchangeId, isLoading: true });
+          onPendingUserConfirmation({ exchangeId, isLoading: true });
 
           let txResponse;
 
@@ -93,11 +95,12 @@ const CancelButton = ({
           }
 
           await txResponse.wait(waitBlocks);
+          onPendingTransactionConfirmation(txResponse.hash);
 
           onSuccess({ exchangeId, txHash: txResponse.hash });
-          onPending({ exchangeId, isLoading: false });
+          onPendingUserConfirmation({ exchangeId, isLoading: false });
         } catch (error) {
-          onPending({ exchangeId, isLoading: false });
+          onPendingUserConfirmation({ exchangeId, isLoading: false });
           onError({ exchangeId, message: "error canceling the item", error });
         }
       }}

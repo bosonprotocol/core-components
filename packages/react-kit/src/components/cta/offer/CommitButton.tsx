@@ -12,13 +12,14 @@ type CommitButtonProps = CoreSdkConfig & {
   disabled?: boolean;
   showStep?: boolean;
   extraInfo?: string;
-  onPending: ({
+  onPendingUserConfirmation: ({
     offerId,
     isLoading
   }: {
     offerId: string;
     isLoading: boolean;
   }) => void;
+  onPendingTransactionConfirmation: (txHash: string) => void;
   onSuccess: ({
     offerId,
     txHash,
@@ -47,7 +48,8 @@ const CommitButton = ({
   showStep = false,
   extraInfo = "",
   children,
-  onPending,
+  onPendingUserConfirmation,
+  onPendingTransactionConfirmation,
   onSuccess,
   onError,
   ...coreSdkConfig
@@ -66,7 +68,7 @@ const CommitButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPending({ offerId, isLoading: true });
+          onPendingUserConfirmation({ offerId, isLoading: true });
           let txResponse;
           if (metaTransactionsApiKey && metaTxContract && signerAddress) {
             const nonce = Date.now();
@@ -88,13 +90,14 @@ const CommitButton = ({
           }
           const txReceipt = await txResponse.wait(1);
           const txHash = txResponse.hash;
+          onPendingTransactionConfirmation(txHash);
           const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
             txReceipt.logs
           );
           onSuccess({ offerId, txHash, exchangeId });
-          onPending({ offerId, isLoading: false });
+          onPendingUserConfirmation({ offerId, isLoading: false });
         } catch (error) {
-          onPending({ offerId, isLoading: false });
+          onPendingUserConfirmation({ offerId, isLoading: false });
           onError({ offerId, message: "error commiting the item", error });
         }
       }}
@@ -106,5 +109,3 @@ const CommitButton = ({
 };
 
 export default CommitButton;
-
-

@@ -52,10 +52,14 @@ Primary.args = {
     console.log("message", message);
     console.log("exchangeId", exchangeId);
   },
-  onPending: ({ exchangeId, isLoading }) => {
+  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("exchangeId", exchangeId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };
 
@@ -76,9 +80,13 @@ WithExtraInfo.args = {
     console.log("message", message);
     console.log("exchangeId", exchangeId);
   },
-  onPending: ({ exchangeId, isLoading }) => {
+  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("exchangeId", exchangeId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };

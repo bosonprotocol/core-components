@@ -50,12 +50,17 @@ Primary.args = {
     console.log("message", message);
     console.log("exchangeId", exchangeId);
   },
-  onPending: ({ exchangeId, isLoading }) => {
+  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("exchangeId", exchangeId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };
+
 WithStep.args = {
   chainId: 1234,
   exchangeId: "28",
@@ -73,9 +78,13 @@ WithStep.args = {
     console.log("message", message);
     console.log("exchangeId", exchangeId);
   },
-  onPending: ({ exchangeId, isLoading }) => {
+  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
     console.log("----------ON PENDING-------------");
     console.log("isLoading", isLoading);
     console.log("exchangeId", exchangeId);
+  },
+  onPendingTransactionConfirmation: (txHash: string) => {
+    console.log("----------ON PENDING-------------");
+    console.log("txHash", txHash);
   }
 };

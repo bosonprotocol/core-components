@@ -17,8 +17,8 @@ type VoidButtonProps = CoreSdkConfig & {
     offerId: string;
     isLoading: boolean;
   }) => void;
-  onSuccess: ({ offerId, txHash }: { offerId: string; txHash: string }) => void;
   onPendingTransactionConfirmation: (txHash: string) => void;
+  onSuccess: ({ offerId, txHash }: { offerId: string; txHash: string }) => void;
   onError: ({
     offerId,
     message,

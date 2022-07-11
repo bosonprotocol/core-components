@@ -9,13 +9,14 @@ type RevokeButtonProps = CoreSdkConfig & {
   disabled?: boolean;
   extraInfo?: string;
   waitBlocks?: number;
-  onPending: ({
+  onPendingUserConfirmation: ({
     exchangeId,
     isLoading
   }: {
     exchangeId: string;
     isLoading: boolean;
   }) => void;
+  onPendingTransactionConfirmation: (txHash: string) => void;
   onSuccess: ({
     exchangeId,
     txHash
@@ -41,7 +42,8 @@ const RevokeButton = ({
   extraInfo = "",
   onSuccess,
   onError,
-  onPending,
+  onPendingUserConfirmation,
+  onPendingTransactionConfirmation,
   waitBlocks = 1,
   children,
   ...coreSdkConfig
@@ -54,15 +56,16 @@ const RevokeButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPending({ exchangeId, isLoading: true });
+          onPendingUserConfirmation({ exchangeId, isLoading: true });
 
           const txResponse = await coreSdk.revokeVoucher(exchangeId);
           await txResponse.wait(waitBlocks);
+          onPendingTransactionConfirmation(txResponse.hash);
 
           onSuccess({ exchangeId, txHash: txResponse.hash });
-          onPending({ exchangeId, isLoading: false });
+          onPendingUserConfirmation({ exchangeId, isLoading: false });
         } catch (error) {
-          onPending({ exchangeId, isLoading: false });
+          onPendingUserConfirmation({ exchangeId, isLoading: false });
           onError({ exchangeId, message: "error revoking the item", error });
         }
       }}
