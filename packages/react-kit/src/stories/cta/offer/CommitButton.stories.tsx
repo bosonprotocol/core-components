@@ -32,6 +32,7 @@ const Template: ComponentStory<typeof CommitButton> = (args) => {
 };
 
 export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
+export const WithStep: ComponentStory<typeof CommitButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
@@ -39,6 +40,34 @@ Primary.args = {
   offerId: "28",
   metaTransactionsApiKey: undefined,
   web3Provider: undefined,
+  extraInfo: "",
+  disabled: false,
+  onSuccess: ({ offerId, txHash, exchangeId }) => {
+    console.log("----------ON SUCCESS-------------");
+    console.log("txHash", txHash);
+    console.log("offerId", offerId);
+    console.log("exchangeId", exchangeId);
+  },
+  onError: ({ offerId, message, error }) => {
+    console.log("----------ON ERROR-------------");
+    console.log("error", error);
+    console.log("message", message);
+    console.log("offerId", offerId);
+  },
+  onPending: ({ offerId, isLoading }) => {
+    console.log("----------ON PENDING-------------");
+    console.log("isLoading", isLoading);
+    console.log("offerId", offerId);
+  }
+};
+
+WithStep.args = {
+  chainId: 1234,
+  offerId: "28",
+  metaTransactionsApiKey: undefined,
+  web3Provider: undefined,
+  extraInfo: "Step 1",
+  disabled: false,
   onSuccess: ({ offerId, txHash, exchangeId }) => {
     console.log("----------ON SUCCESS-------------");
     console.log("txHash", txHash);

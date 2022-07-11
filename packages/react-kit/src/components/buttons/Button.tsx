@@ -52,12 +52,12 @@ const ButtonStyle = styled.button.attrs(
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 16px 32px;
+  padding: 16px 24px;
   gap: 8px;
   margin: 1px;
   cursor: pointer;
   box-shadow: 0px 0px 0px #000000;
-  width: 200px;
+  min-width: 200px;
 
   span {
     font-style: normal;
@@ -82,6 +82,7 @@ const ButtonStyle = styled.button.attrs(
       border: 2px solid #7829f9;
       color: white;
     `}
+
   ${(props) =>
     props.variant === "ghost" &&
     css`
@@ -89,6 +90,7 @@ const ButtonStyle = styled.button.attrs(
       border: 0px solid transparent;
       color: ${({ theme }) => theme?.colors?.light.secondary};
     `}
+
   ${(props) =>
     props.disabled &&
     css`
