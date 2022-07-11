@@ -9,12 +9,18 @@ type BaseMetaTxArgs = {
   chainId: number;
 };
 
+export interface ECSignature {
+  r: string;
+  s: string;
+  v: number;
+}
+
 export async function signExecuteMetaTx(
   args: BaseMetaTxArgs & {
     functionName: string;
     functionSignature: string;
   }
-) {
+): Promise<ECSignature> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -49,7 +55,7 @@ export async function signExecuteMetaTxCommitToOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   const offerType = [
     { name: "buyer", type: "address" },
     { name: "offerId", type: "uint256" }
@@ -93,7 +99,7 @@ export async function signExecuteMetaTxCancelVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   return makeExchangeMetaTxSigner("cancelVoucher(uint256)")(args);
 }
 
@@ -101,7 +107,7 @@ export async function signExecuteMetaTxRedeemVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   return makeExchangeMetaTxSigner("redeemVoucher(uint256)")(args);
 }
 
@@ -109,7 +115,7 @@ export async function signExecuteMetaTxCompleteExchange(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   return makeExchangeMetaTxSigner("completeExchange(uint256)")(args);
 }
 
@@ -117,7 +123,7 @@ export async function signExecuteMetaTxRetractDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   return makeExchangeMetaTxSigner("retractDispute(uint256)")(args);
 }
 
@@ -125,7 +131,7 @@ export async function signExecuteMetaTxEscalateDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
-) {
+): Promise<ECSignature> {
   return makeExchangeMetaTxSigner("escalateDispute(uint256)")(args);
 }
 
@@ -134,7 +140,7 @@ export async function signExecuteMetaTxRaiseDispute(
     exchangeId: BigNumberish;
     complaint: string;
   }
-) {
+): Promise<ECSignature> {
   const disputeType = [
     { name: "exchangeId", type: "uint256" },
     { name: "complaint", type: "string" }
@@ -182,7 +188,7 @@ export async function signExecuteMetaTxResolveDispute(
       v: string;
     };
   }
-) {
+): Promise<ECSignature> {
   const disputeResolutionType = [
     { name: "exchangeId", type: "uint256" },
     { name: "buyerPercent", type: "uint256" },
@@ -232,7 +238,7 @@ export async function signExecuteMetaTxWithdrawFunds(
     tokenList: string[];
     tokenAmounts: BigNumberish[];
   }
-) {
+): Promise<ECSignature> {
   const fundType = [
     { name: "entityId", type: "uint256" },
     { name: "tokenList", type: "address[]" },
@@ -284,7 +290,7 @@ function makeExchangeMetaTxSigner(
     args: BaseMetaTxArgs & {
       exchangeId: BigNumberish;
     }
-  ) {
+  ): Promise<ECSignature> {
     const exchangeType = [{ name: "exchangeId", type: "uint256" }];
 
     const metaTransactionType = [
@@ -327,7 +333,7 @@ export async function prepareDataSignatureParameters(
     primaryType: string;
     message: Record<string, unknown>;
   }
-) {
+): Promise<ECSignature> {
   const domainType = [
     { name: "name", type: "string" },
     { name: "version", type: "string" },
@@ -363,7 +369,7 @@ export async function prepareDataSignatureParameters(
   return getSignatureParameters(signature);
 }
 
-export function getSignatureParameters(signature: string) {
+export function getSignatureParameters(signature: string): ECSignature {
   if (!isHexString(signature)) {
     throw new Error(`Value "${signature}" is not a valid hex string`);
   }

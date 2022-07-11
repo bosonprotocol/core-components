@@ -19,6 +19,7 @@ import * as metaTx from "./meta-tx";
 import * as subgraph from "./subgraph";
 
 import { getValueFromLogs } from "./utils/logs";
+import { ECSignature } from "./meta-tx/handler";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -48,7 +49,7 @@ export class CoreSDK {
     chainId?: number;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
-  }) {
+  }): CoreSDK {
     const defaultConfig = getDefaultConfig({
       envName: args.envName,
       chainId: args.chainId
@@ -421,7 +422,7 @@ export class CoreSDK {
       Parameters<typeof metaTx.handler.signExecuteMetaTx>[0],
       "web3Lib" | "metaTxHandlerAddress"
     >
-  ) {
+  ): Promise<ECSignature> {
     return metaTx.handler.signExecuteMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
@@ -434,7 +435,7 @@ export class CoreSDK {
       Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
       "web3Lib" | "metaTxHandlerAddress"
     >
-  ) {
+  ): Promise<ECSignature> {
     return metaTx.handler.signExecuteMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,

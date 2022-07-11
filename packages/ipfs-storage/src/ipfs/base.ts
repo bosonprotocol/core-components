@@ -11,13 +11,15 @@ export class BaseIpfsStorage {
     this.ipfsClient = create(opts);
   }
 
-  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
+  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string): BaseIpfsStorage {
     return new BaseIpfsStorage({
       url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }
 
-  public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
+  public async add(
+    value: Parameters<IPFSHTTPClient["add"]>[0]
+  ): Promise<string> {
     const addResult = await this.ipfsClient.add(value, {
       pin: true
     });
