@@ -1,51 +1,16 @@
 import React from "react";
 
-import Button from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
-import { useCoreSdk, CoreSdkConfig } from "../../../hooks/useCoreSdk";
+import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ExtraInfo } from "../styles/common.styles";
+import { OfferCtaProps } from "./common/types";
 
-type CommitButtonProps = CoreSdkConfig & {
-  offerId: string;
-  metaTransactionsApiKey?: string;
-  disabled?: boolean;
-  showStep?: boolean;
-  extraInfo?: string;
-  onPendingUserConfirmation: ({
-    offerId,
-    isLoading
-  }: {
-    offerId: string;
-    isLoading: boolean;
-  }) => void;
-  onPendingTransactionConfirmation: (txHash: string) => void;
-  onSuccess: ({
-    offerId,
-    txHash,
-    exchangeId
-  }: {
-    offerId: string;
-    txHash: string;
-    exchangeId: string | null;
-  }) => void;
-  onError: ({
-    offerId,
-    message,
-    error
-  }: {
-    offerId: string;
-    message: string;
-    error: unknown;
-  }) => void;
-  children?: React.ReactNode;
-};
-
-const CommitButton = ({
+export const CommitButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
-  showStep = false,
   extraInfo = "",
   children,
   onPendingUserConfirmation,
@@ -53,7 +18,7 @@ const CommitButton = ({
   onSuccess,
   onError,
   ...coreSdkConfig
-}: CommitButtonProps) => {
+}: OfferCtaProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
   const metaTxContract = useMetaTxHandlerContract({
@@ -109,5 +74,3 @@ const CommitButton = ({
     </Button>
   );
 };
-
-export default CommitButton;

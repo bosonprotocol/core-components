@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CancelButton from "../../../components/cta/exchange/CancelButton";
+import { CancelButton } from "../../../components/cta/exchange/CancelButton";
 import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CommitButton from "../../../components/cta/offer/CommitButton";
+import { CommitButton } from "../../../components/cta/offer/CommitButton";
 
 import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
 

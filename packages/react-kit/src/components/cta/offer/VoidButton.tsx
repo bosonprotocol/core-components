@@ -1,10 +1,11 @@
 import React from "react";
 
-import Button from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ExtraInfo } from "../styles/common.styles";
+import { OfferCtaProps } from "./common/types";
 
-const VoidButton = ({
+export const VoidButton = ({
   offerId,
   metaTransactionsApiKey,
   disabled = false,
@@ -16,7 +17,7 @@ const VoidButton = ({
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: VoidButtonProps) => {
+}: OfferCtaProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   return (
@@ -47,5 +48,3 @@ const VoidButton = ({
     </Button>
   );
 };
-
-export default VoidButton;

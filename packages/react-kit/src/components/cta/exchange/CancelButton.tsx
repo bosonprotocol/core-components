@@ -1,13 +1,13 @@
 import React from "react";
 
-import Button from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { ExtraInfo } from "../styles/common.styles";
 import { ExchangeCtaProps } from "./common/types";
 
-const CancelButton = ({
+export const CancelButton = ({
   exchangeId,
   metaTransactionsApiKey,
   disabled = false,
@@ -80,5 +80,3 @@ const CancelButton = ({
     </Button>
   );
 };
-
-export default CancelButton;

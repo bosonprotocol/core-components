@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "../Loading";
+import { Loading } from "../Loading";
 
 import { ButtonStyle } from "./Button.styles";
 
@@ -19,7 +19,7 @@ interface ButtonProps {
   children?: React.ReactNode;
 }
 
-const Button = ({
+export const Button = ({
   children,
   onClick,
   className,
@@ -38,5 +38,3 @@ const Button = ({
     </ButtonStyle>
   );
 };
-
-export default Button;

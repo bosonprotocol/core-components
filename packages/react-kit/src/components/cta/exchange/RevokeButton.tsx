@@ -1,11 +1,11 @@
 import React from "react";
 
-import Button from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ExtraInfo } from "../styles/common.styles";
 import { ExchangeCtaProps } from "./common/types";
 
-const RevokeButton = ({
+export const RevokeButton = ({
   exchangeId,
   disabled = false,
   extraInfo = "",
@@ -46,5 +46,3 @@ const RevokeButton = ({
     </Button>
   );
 };
-
-export default RevokeButton;

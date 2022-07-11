@@ -14,7 +14,15 @@ export type OfferCtaProps = CoreSdkConfig & {
     isLoading: boolean;
   }) => void;
   onPendingTransactionConfirmation: (txHash: string) => void;
-  onSuccess: ({ offerId, txHash }: { offerId: string; txHash: string }) => void;
+  onSuccess: ({
+    offerId,
+    txHash,
+    exchangeId
+  }: {
+    offerId: string;
+    txHash: string;
+    exchangeId?: string | null;
+  }) => void;
   onError: ({
     offerId,
     message,
