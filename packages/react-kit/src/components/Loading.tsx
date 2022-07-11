@@ -1,11 +1,9 @@
 import styled, { keyframes } from "styled-components";
 import React from "react";
 
-const Loading = () => {
+export const Loading = () => {
   return <LoadingStyle></LoadingStyle>;
 };
-
-export default Loading;
 
 const loadingAnimation = keyframes`
  0% { transform: rotate(0deg); }

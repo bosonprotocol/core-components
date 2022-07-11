@@ -1,48 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Button from "./Button";
-import { useMetaTxHandlerContract } from "../../hooks/meta-tx/useMetaTxHandlerContract";
-import { useCoreSdk, CoreSdkConfig } from "../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../hooks/useSignerAddress";
+import { Button } from "../../buttons/Button";
+import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
+import { useCoreSdk } from "../../../hooks/useCoreSdk";
+import { useSignerAddress } from "../../../hooks/useSignerAddress";
+import { ExtraInfo } from "../styles/common.styles";
+import { OfferCtaProps } from "./common/types";
 
-type CommitButtonProps = CoreSdkConfig & {
-  offerId: string;
-  metaTransactionsApiKey?: string;
-  onPending: ({
-    offerId,
-    isLoading
-  }: {
-    offerId: string;
-    isLoading: boolean;
-  }) => void;
-  onSuccess: ({
-    offerId,
-    txHash,
-    exchangeId
-  }: {
-    offerId: string;
-    txHash: string;
-    exchangeId: string | null;
-  }) => void;
-  onError: ({
-    offerId,
-    message,
-    error
-  }: {
-    offerId: string;
-    message: string;
-    error: unknown;
-  }) => void;
-};
-
-const CommitButton = ({
+export const CommitButton = ({
   offerId,
   metaTransactionsApiKey,
-  onPending,
+  disabled = false,
+  extraInfo = "",
+  children,
+  onPendingUserConfirmation,
+  onPendingTransactionConfirmation,
   onSuccess,
   onError,
   ...coreSdkConfig
-}: CommitButtonProps) => {
+}: OfferCtaProps) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
   const metaTxContract = useMetaTxHandlerContract({
@@ -51,15 +27,13 @@ const CommitButton = ({
     web3Provider: coreSdkConfig.web3Provider
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
   return (
     <Button
       variant="primary"
+      disabled={disabled}
       onClick={async () => {
         try {
-          setIsLoading(true);
-          onPending({ offerId, isLoading });
+          onPendingUserConfirmation({ offerId, isLoading: true });
           let txResponse;
           if (metaTransactionsApiKey && metaTxContract && signerAddress) {
             const nonce = Date.now();
@@ -81,22 +55,22 @@ const CommitButton = ({
           }
           const txReceipt = await txResponse.wait(1);
           const txHash = txResponse.hash;
+          onPendingTransactionConfirmation(txHash);
           const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
             txReceipt.logs
           );
           onSuccess({ offerId, txHash, exchangeId });
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPendingUserConfirmation({ offerId, isLoading: false });
         } catch (error) {
-          setIsLoading(false);
-          onPending({ offerId, isLoading });
+          onPendingUserConfirmation({ offerId, isLoading: false });
           onError({ offerId, message: "error commiting the item", error });
         }
       }}
     >
-      Commit
+      <>
+        {children || "Commit"}
+        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
+      </>
     </Button>
   );
 };
-
-export default CommitButton;
