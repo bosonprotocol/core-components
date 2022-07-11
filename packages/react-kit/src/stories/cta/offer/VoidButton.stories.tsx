@@ -31,13 +31,13 @@ const Template: ComponentStory<typeof VoidButton> = (args) => {
   );
 };
 
-export const Primary: ComponentStory<typeof VoidButton> = Template.bind({});
+export const Simple: ComponentStory<typeof VoidButton> = Template.bind({});
 export const WithExtraInfo: ComponentStory<typeof VoidButton> = Template.bind(
   {}
 );
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
+Simple.args = {
   chainId: 1234,
   offerId: "28",
   web3Provider: undefined,
@@ -62,6 +62,7 @@ Primary.args = {
     console.log("txHash", txHash);
   }
 };
+
 WithExtraInfo.args = {
   chainId: 1234,
   offerId: "28",

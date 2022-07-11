@@ -31,11 +31,11 @@ const Template: ComponentStory<typeof CommitButton> = (args) => {
   );
 };
 
-export const Primary: ComponentStory<typeof CommitButton> = Template.bind({});
+export const Simple: ComponentStory<typeof CommitButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof CommitButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
+Simple.args = {
   chainId: 1234,
   offerId: "28",
   metaTransactionsApiKey: undefined,

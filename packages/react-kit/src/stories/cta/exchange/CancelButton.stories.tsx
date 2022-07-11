@@ -30,13 +30,13 @@ const Template: ComponentStory<typeof CancelButton> = (args) => {
   );
 };
 
-export const Primary: ComponentStory<typeof CancelButton> = Template.bind({});
+export const Simple: ComponentStory<typeof CancelButton> = Template.bind({});
 export const WithExtraInfo: ComponentStory<typeof CancelButton> = Template.bind(
   {}
 );
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
+Simple.args = {
   chainId: 1234,
   exchangeId: "28",
   web3Provider: undefined,

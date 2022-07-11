@@ -30,11 +30,11 @@ const Template: ComponentStory<typeof RevokeButton> = (args) => {
   );
 };
 
-export const Primary: ComponentStory<typeof RevokeButton> = Template.bind({});
+export const Simple: ComponentStory<typeof RevokeButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof RevokeButton> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
+Simple.args = {
   chainId: 1234,
   exchangeId: "28",
   web3Provider: undefined,
