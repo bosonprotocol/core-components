@@ -7,10 +7,10 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
   disabled?: boolean;
   waitBlocks?: number;
   extraInfo?: string;
-  onPendingSignature: () => void;
-  onPendingTransaction: (txHash: string) => void;
-  onSuccess: (receipt: providers.TransactionReceipt, payload: T) => void;
-  onError: (error: Error) => void;
+  onPendingSignature?: () => void;
+  onPendingTransaction?: (txHash: string) => void;
+  onSuccess?: (receipt: providers.TransactionReceipt, payload: T) => void;
+  onError?: (error: Error) => void;
   children?: React.ReactNode;
   size?: ButtonSize;
   className?: string;
