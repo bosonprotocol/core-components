@@ -42,7 +42,7 @@ export const CancelButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingSignature();
+          onPendingSignature && onPendingSignature();
 
           let txResponse;
 
@@ -69,12 +69,13 @@ export const CancelButton = ({
             txResponse = await coreSdk.cancelVoucher(exchangeId);
           }
 
-          onPendingTransaction(txResponse.hash);
+          onPendingTransaction && onPendingTransaction(txResponse.hash);
           const receipt = await txResponse.wait(waitBlocks);
 
-          onSuccess(receipt as providers.TransactionReceipt, { exchangeId });
+          onSuccess &&
+            onSuccess(receipt as providers.TransactionReceipt, { exchangeId });
         } catch (error) {
-          onError(error as Error);
+          onError && onError(error as Error);
         }
       }}
     >
