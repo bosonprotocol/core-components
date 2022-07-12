@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.2.1...@bosonprotocol/metadata@1.3.0) (2022-07-12)
+
+### Features
+
+* propose new schema for product metadata ([#134](https://github.com/bosonprotocol/core-components/issues/134)) ([1e81830](https://github.com/bosonprotocol/core-components/commit/1e818307a2c1dbd611c2bf50c4ff7080646899f7))
+
 ## [1.2.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.2.0...@bosonprotocol/metadata@1.2.1) (2022-06-20)
 
 **Note:** Version bump only for package @bosonprotocol/metadata

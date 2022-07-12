@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.4.1...@bosonprotocol/ethers-sdk@1.5.0) (2022-07-12)
+
+### Features
+
+* add more types of Providers in ethers-adapter.ts ([#142](https://github.com/bosonprotocol/core-components/issues/142)) ([25361f1](https://github.com/bosonprotocol/core-components/commit/25361f1a3a0c449e440ba21493c2b36d2745dce9))
+
 ## [1.4.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.4.0...@bosonprotocol/ethers-sdk@1.4.1) (2022-07-05)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.7.0...@bosonprotocol/subgraph@1.8.0) (2022-07-12)
+
+### Features
+
+* **subgraph:** add buyer query and fix available quantity field ([#152](https://github.com/bosonprotocol/core-components/issues/152)) ([f7c7b82](https://github.com/bosonprotocol/core-components/commit/f7c7b827152e63d15956da3acf1346532f712267))
+
 # [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.6.0...@bosonprotocol/subgraph@1.7.0) (2022-07-05)
 
 ### Features

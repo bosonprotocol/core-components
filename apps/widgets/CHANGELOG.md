@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.10.1...@bosonprotocol/widgets@1.11.0) (2022-07-12)
+
+### Features
+
+* allow windows env ([#143](https://github.com/bosonprotocol/core-components/issues/143)) ([93ab346](https://github.com/bosonprotocol/core-components/commit/93ab346d899aaa4bc91ccd46a987637f060c1f9c))
+
 ## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.10.0...@bosonprotocol/widgets@1.10.1) (2022-07-05)
 
 ### Bug Fixes
