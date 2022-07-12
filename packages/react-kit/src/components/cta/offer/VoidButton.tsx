@@ -1,9 +1,14 @@
 import React from "react";
+import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { ExtraInfo } from "../styles/common.styles";
-import { OfferCtaProps } from "./common/types";
+import { ExtraInfo } from "../common/styles";
+import { CtaButtonProps } from "../common/types";
+
+type Props = { offerId: BigNumberish } & CtaButtonProps<{
+  offerId: BigNumberish;
+}>;
 
 export const VoidButton = ({
   offerId,
@@ -12,12 +17,12 @@ export const VoidButton = ({
   extraInfo,
   onSuccess,
   onError,
-  onPendingUserConfirmation,
-  onPendingTransactionConfirmation,
+  onPendingSignature,
+  onPendingTransaction,
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: OfferCtaProps) => {
+}: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   return (
@@ -26,18 +31,15 @@ export const VoidButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingUserConfirmation({ offerId, isLoading: true });
-
+          onPendingSignature();
           const txResponse = await coreSdk.voidOffer(offerId);
-          await txResponse.wait(waitBlocks);
-          const txHash: string = txResponse.hash;
-          onPendingTransactionConfirmation(txHash); // This allows to handle pending block confirmations
 
-          onSuccess({ offerId, txHash });
-          onPendingUserConfirmation({ offerId, isLoading: false });
+          onPendingTransaction(txResponse.hash);
+          const receipt = await txResponse.wait(waitBlocks);
+
+          onSuccess(receipt as providers.TransactionReceipt, { offerId });
         } catch (error) {
-          onPendingUserConfirmation({ offerId, isLoading: false });
-          onError({ offerId, message: "error voiding the item", error });
+          onError(error as Error);
         }
       }}
     >

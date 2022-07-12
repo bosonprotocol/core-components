@@ -1,11 +1,16 @@
 import React from "react";
+import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { ExtraInfo } from "../styles/common.styles";
-import { OfferCtaProps } from "./common/types";
+import { ExtraInfo } from "../common/styles";
+import { CtaButtonProps } from "../common/types";
+
+type Props = { offerId: BigNumberish } & CtaButtonProps<{
+  exchangeId: BigNumberish;
+}>;
 
 export const CommitButton = ({
   offerId,
@@ -13,12 +18,13 @@ export const CommitButton = ({
   disabled = false,
   extraInfo = "",
   children,
-  onPendingUserConfirmation,
-  onPendingTransactionConfirmation,
+  onPendingSignature,
+  onPendingTransaction,
   onSuccess,
   onError,
+  waitBlocks = 1,
   ...coreSdkConfig
-}: OfferCtaProps) => {
+}: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
   const metaTxContract = useMetaTxHandlerContract({
@@ -33,8 +39,10 @@ export const CommitButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingUserConfirmation({ offerId, isLoading: true });
+          onPendingSignature();
+
           let txResponse;
+
           if (metaTransactionsApiKey && metaTxContract && signerAddress) {
             const nonce = Date.now();
             const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
@@ -53,17 +61,18 @@ export const CommitButton = ({
           } else {
             txResponse = await coreSdk.commitToOffer(offerId);
           }
-          const txReceipt = await txResponse.wait(1);
-          const txHash = txResponse.hash;
-          onPendingTransactionConfirmation(txHash);
+
+          onPendingTransaction(txResponse.hash);
+          const receipt = await txResponse.wait(waitBlocks);
           const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
-            txReceipt.logs
+            receipt.logs
           );
-          onSuccess({ offerId, txHash, exchangeId });
-          onPendingUserConfirmation({ offerId, isLoading: false });
+
+          onSuccess(receipt as providers.TransactionReceipt, {
+            exchangeId: exchangeId || ""
+          });
         } catch (error) {
-          onPendingUserConfirmation({ offerId, isLoading: false });
-          onError({ offerId, message: "error commiting the item", error });
+          onError(error as Error);
         }
       }}
     >

@@ -1,22 +1,26 @@
 import React from "react";
+import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { ExtraInfo } from "../styles/common.styles";
-import { ExchangeCtaProps } from "./common/types";
+import { ExtraInfo } from "../common/styles";
+import { CtaButtonProps } from "../common/types";
 
+type Props = { exchangeId: BigNumberish } & CtaButtonProps<{
+  exchangeId: BigNumberish;
+}>;
 export const RevokeButton = ({
   exchangeId,
   disabled = false,
   extraInfo = "",
   onSuccess,
   onError,
-  onPendingUserConfirmation,
-  onPendingTransactionConfirmation,
+  onPendingSignature,
+  onPendingTransaction,
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: ExchangeCtaProps) => {
+}: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   return (
@@ -25,17 +29,15 @@ export const RevokeButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingUserConfirmation({ exchangeId, isLoading: true });
-
+          onPendingSignature();
           const txResponse = await coreSdk.revokeVoucher(exchangeId);
-          await txResponse.wait(waitBlocks);
-          onPendingTransactionConfirmation(txResponse.hash);
 
-          onSuccess({ exchangeId, txHash: txResponse.hash });
-          onPendingUserConfirmation({ exchangeId, isLoading: false });
+          onPendingTransaction(txResponse.hash);
+          const receipt = await txResponse.wait(waitBlocks);
+
+          onSuccess(receipt as providers.TransactionReceipt, { exchangeId });
         } catch (error) {
-          onPendingUserConfirmation({ exchangeId, isLoading: false });
-          onError({ exchangeId, message: "error revoking the item", error });
+          onError(error as Error);
         }
       }}
     >

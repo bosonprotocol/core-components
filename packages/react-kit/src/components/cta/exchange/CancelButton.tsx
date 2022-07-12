@@ -1,11 +1,16 @@
 import React from "react";
+import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
-import { ExtraInfo } from "../styles/common.styles";
-import { ExchangeCtaProps } from "./common/types";
+import { ExtraInfo } from "../common/styles";
+import { CtaButtonProps } from "../common/types";
+
+type Props = { exchangeId: BigNumberish } & CtaButtonProps<{
+  exchangeId: BigNumberish;
+}>;
 
 export const CancelButton = ({
   exchangeId,
@@ -14,12 +19,12 @@ export const CancelButton = ({
   extraInfo,
   onSuccess,
   onError,
-  onPendingUserConfirmation,
-  onPendingTransactionConfirmation,
+  onPendingSignature,
+  onPendingTransaction,
   waitBlocks = 1,
   children,
   ...coreSdkConfig
-}: ExchangeCtaProps) => {
+}: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
 
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
@@ -35,7 +40,7 @@ export const CancelButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingUserConfirmation({ exchangeId, isLoading: true });
+          onPendingSignature();
 
           let txResponse;
 
@@ -62,14 +67,12 @@ export const CancelButton = ({
             txResponse = await coreSdk.cancelVoucher(exchangeId);
           }
 
-          await txResponse.wait(waitBlocks);
-          onPendingTransactionConfirmation(txResponse.hash);
+          onPendingTransaction(txResponse.hash);
+          const receipt = await txResponse.wait(waitBlocks);
 
-          onSuccess({ exchangeId, txHash: txResponse.hash });
-          onPendingUserConfirmation({ exchangeId, isLoading: false });
+          onSuccess(receipt as providers.TransactionReceipt, { exchangeId });
         } catch (error) {
-          onPendingUserConfirmation({ exchangeId, isLoading: false });
-          onError({ exchangeId, message: "error canceling the item", error });
+          onError(error as Error);
         }
       }}
     >
