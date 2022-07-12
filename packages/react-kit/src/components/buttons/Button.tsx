@@ -3,11 +3,17 @@ import { Loading } from "../Loading";
 
 import { ButtonStyle } from "./Button.styles";
 
+export enum ButtonSize {
+  Small = "small",
+  Medium = "medium",
+  Large = "large"
+}
+
 interface ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   loading?: boolean;
-  size?: "small" | "medium" | "large";
+  size?: ButtonSize;
   variant?:
     | "primary"
     | "secondary"
@@ -23,15 +29,17 @@ export const Button = ({
   children,
   onClick,
   className,
-  size = "medium",
+  size = ButtonSize.Medium,
   variant = "primary",
   ...props
 }: ButtonProps) => {
+  console.log("🚀 ~ file: Button.tsx ~ line 33 ~ size", size);
   return (
     <ButtonStyle
       variant={variant}
       className={className}
       onClick={onClick}
+      size={size}
       {...props}
     >
       {props.loading ? <Loading /> : <span>{children}</span>}

@@ -1,7 +1,7 @@
 import React from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button } from "../../buttons/Button";
+import { Button, ButtonSize } from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
@@ -23,6 +23,7 @@ export const CommitButton = ({
   onSuccess,
   onError,
   waitBlocks = 1,
+  size = ButtonSize.Large,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -36,6 +37,7 @@ export const CommitButton = ({
   return (
     <Button
       variant="primary"
+      size={size}
       disabled={disabled}
       onClick={async () => {
         try {

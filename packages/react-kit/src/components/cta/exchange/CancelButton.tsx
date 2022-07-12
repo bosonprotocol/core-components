@@ -1,7 +1,7 @@
 import React from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button } from "../../buttons/Button";
+import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
@@ -23,6 +23,7 @@ export const CancelButton = ({
   onPendingTransaction,
   waitBlocks = 1,
   children,
+  size = ButtonSize.Large,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -37,6 +38,7 @@ export const CancelButton = ({
   return (
     <Button
       variant="secondary"
+      size={size}
       disabled={disabled}
       onClick={async () => {
         try {

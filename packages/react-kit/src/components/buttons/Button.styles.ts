@@ -1,7 +1,8 @@
+import { ButtonSize } from "./Button";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = styled.button.attrs(
-  (props: { size: string; variant: string }) => ({
+  (props: { size: ButtonSize; variant: string }) => ({
     variant: props.variant,
     size: props.size
   })
@@ -25,33 +26,65 @@ export const ButtonStyle = styled.button.attrs(
     line-height: 150%;
   }
 
-  ${(props) =>
-    props.variant === "primary" &&
-    !props.disabled &&
+  ${({ size }) =>
+    size === ButtonSize.Small &&
+    css`
+      height: 2.125rem;
+      padding: 0.5rem 1rem;
+      span {
+        font-size: 0.75rem;
+      }
+    `}
+
+  ${({ size }) =>
+    size === ButtonSize.Medium &&
+    css`
+      height: 2.813rem;
+      padding: 0.75rem 1.5rem;
+      span {
+        font-size: 0.875rem;
+      }
+    `}
+
+  ${({ size }) =>
+    size === ButtonSize.Large &&
+    css`
+      padding: 1rem 2rem;
+      height: 3.5rem;
+      span {
+        font-size: 1rem;
+      }
+    `}
+
+  ${({ variant, disabled }) =>
+    variant === "primary" &&
+    !disabled &&
     css`
       background-color: ${({ theme }) => theme?.colors?.light.primary};
       border: 2px solid ${({ theme }) => theme?.colors?.light.primary};
       color: ${({ theme }) => theme?.colors?.light.black};
     `}
 
-  ${(props) =>
-    props.variant === "secondary" &&
+  ${({ variant, disabled }) =>
+    variant === "secondary" &&
+    !disabled &&
     css`
       background-color: ${({ theme }) => theme?.colors?.light.secondary};
       border: 2px solid #7829f9;
       color: white;
     `}
   
-    ${(props) =>
-    props.variant === "ghost" &&
+    ${({ variant, disabled }) =>
+    variant === "ghost" &&
+    !disabled &&
     css`
       background: transparent;
       border: 0px solid transparent;
       color: ${({ theme }) => theme?.colors?.light.secondary};
     `}
   
-    ${(props) =>
-    props.disabled &&
+    ${({ disabled }) =>
+    disabled &&
     css`
       background: #f1f3f9;
       opacity: 0.5;
