@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { RevokeButton } from "../../../components/cta/exchange/RevokeButton";
 import { hooks } from "../../helpers/connect-wallet";
-import { CtaButtonWrapper } from "../../helpers/CtaButtonWrappet";
+import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/RevokeButton",

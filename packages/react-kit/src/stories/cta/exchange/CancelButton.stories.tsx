@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { CancelButton } from "../../../components/cta/exchange/CancelButton";
 import { hooks } from "../../helpers/connect-wallet";
-import { CtaButtonWrapper } from "../../helpers/CtaButtonWrappet";
+import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/CancelButton",

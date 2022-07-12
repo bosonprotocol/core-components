@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { VoidButton } from "../../../components/cta/offer/VoidButton";
 
 import { hooks } from "../../helpers/connect-wallet";
-import { CtaButtonWrapper } from "../../helpers/CtaButtonWrappet";
+import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Offer/VoidButton",
