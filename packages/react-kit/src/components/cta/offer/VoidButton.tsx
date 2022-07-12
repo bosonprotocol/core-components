@@ -33,14 +33,13 @@ export const VoidButton = ({
       size={size}
       onClick={async () => {
         try {
-          onPendingSignature && onPendingSignature();
+          onPendingSignature?.();
           const txResponse = await coreSdk.voidOffer(offerId);
 
-          onPendingTransaction && onPendingTransaction(txResponse.hash);
+          onPendingTransaction?.(txResponse.hash);
           const receipt = await txResponse.wait(waitBlocks);
 
-          onSuccess &&
-            onSuccess(receipt as providers.TransactionReceipt, { offerId });
+          onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
         } catch (error) {
           onError && onError(error as Error);
         }

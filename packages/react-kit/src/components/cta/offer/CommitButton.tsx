@@ -41,7 +41,7 @@ export const CommitButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingSignature && onPendingSignature();
+          onPendingSignature?.();
 
           let txResponse;
 
@@ -64,18 +64,17 @@ export const CommitButton = ({
             txResponse = await coreSdk.commitToOffer(offerId);
           }
 
-          onPendingTransaction && onPendingTransaction(txResponse.hash);
+          onPendingTransaction?.(txResponse.hash);
           const receipt = await txResponse.wait(waitBlocks);
           const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
             receipt.logs
           );
 
-          onSuccess &&
-            onSuccess(receipt as providers.TransactionReceipt, {
-              exchangeId: exchangeId || ""
-            });
+          onSuccess?.(receipt as providers.TransactionReceipt, {
+            exchangeId: exchangeId || ""
+          });
         } catch (error) {
-          onError && onError(error as Error);
+          onError?.(error as Error);
         }
       }}
     >

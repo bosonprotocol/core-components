@@ -31,16 +31,15 @@ export const RevokeButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
-          onPendingSignature && onPendingSignature();
+          onPendingSignature?.();
           const txResponse = await coreSdk.revokeVoucher(exchangeId);
 
-          onPendingTransaction && onPendingTransaction(txResponse.hash);
+          onPendingTransaction?.(txResponse.hash);
           const receipt = await txResponse.wait(waitBlocks);
 
-          onSuccess &&
-            onSuccess(receipt as providers.TransactionReceipt, { exchangeId });
+          onSuccess?.(receipt as providers.TransactionReceipt, { exchangeId });
         } catch (error) {
-          onError && onError(error as Error);
+          onError?.(error as Error);
         }
       }}
     >
