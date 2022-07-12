@@ -2,31 +2,21 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { CancelButton } from "../../../components/cta/exchange/CancelButton";
-import { connectWallet, hooks, metaMask } from "../../helpers/connect-wallet";
+import { hooks } from "../../helpers/connect-wallet";
+import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Visual Components/CTA/Exchange/CancelButton",
   component: CancelButton
 } as ComponentMeta<typeof CancelButton>;
 
-// TODO: Move connect wallet button into reusable template
 const Template: ComponentStory<typeof CancelButton> = (args) => {
-  const account = hooks.useAccount();
   const provider = hooks.useProvider();
 
   return (
-    <>
-      {account ? (
-        <>
-          <div>Connected: {account}</div>
-          <button onClick={() => metaMask.deactivate()}>Disconnect MM</button>
-        </>
-      ) : (
-        <button onClick={() => connectWallet()}>Connect MM</button>
-      )}
+    <CtaButtonWrapper>
       <CancelButton web3Provider={provider} {...args} />
-    </>
+    </CtaButtonWrapper>
   );
 };
 
@@ -35,31 +25,26 @@ export const WithExtraInfo: ComponentStory<typeof CancelButton> = Template.bind(
   {}
 );
 
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 Simple.args = {
   chainId: 1234,
   exchangeId: "28",
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,
-  onSuccess: ({ exchangeId, txHash }) => {
-    console.log("----------ON SUCCESS-------------");
-    console.log("txHash", txHash);
-    console.log("exchangeId", exchangeId);
+  onPendingSignature: () => {
+    console.log("----------ON PENDING SIGNATURE-------------");
   },
-  onError: ({ exchangeId, message, error }) => {
+  onPendingTransaction: (txHash: string) => {
+    console.log("----------ON PENDING TRANSACTION-------------");
+    console.log("txHash", txHash);
+  },
+  onSuccess: (receipt, payload) => {
+    console.log("----------ON SUCCESS-------------");
+    console.log("receipt", receipt);
+    console.log("payload", payload);
+  },
+  onError: (error) => {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
-    console.log("message", message);
-    console.log("exchangeId", exchangeId);
-  },
-  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
-    console.log("----------ON PENDING-------------");
-    console.log("isLoading", isLoading);
-    console.log("exchangeId", exchangeId);
-  },
-  onPendingTransactionConfirmation: (txHash: string) => {
-    console.log("----------ON PENDING-------------");
-    console.log("txHash", txHash);
   }
 };
 
@@ -69,24 +54,20 @@ WithExtraInfo.args = {
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
-  onSuccess: ({ exchangeId, txHash }) => {
-    console.log("----------ON SUCCESS-------------");
-    console.log("txHash", txHash);
-    console.log("exchangeId", exchangeId);
+  onPendingSignature: () => {
+    console.log("----------ON PENDING SIGNATURE-------------");
   },
-  onError: ({ exchangeId, message, error }) => {
+  onPendingTransaction: (txHash: string) => {
+    console.log("----------ON PENDING TRANSACTION-------------");
+    console.log("txHash", txHash);
+  },
+  onSuccess: (receipt, payload) => {
+    console.log("----------ON SUCCESS-------------");
+    console.log("receipt", receipt);
+    console.log("payload", payload);
+  },
+  onError: (error) => {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
-    console.log("message", message);
-    console.log("exchangeId", exchangeId);
-  },
-  onPendingUserConfirmation: ({ exchangeId, isLoading }) => {
-    console.log("----------ON PENDING-------------");
-    console.log("isLoading", isLoading);
-    console.log("exchangeId", exchangeId);
-  },
-  onPendingTransactionConfirmation: (txHash: string) => {
-    console.log("----------ON PENDING-------------");
-    console.log("txHash", txHash);
   }
 };
