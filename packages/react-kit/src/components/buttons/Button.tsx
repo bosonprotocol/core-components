@@ -33,7 +33,6 @@ export const Button = ({
   variant = "primary",
   ...props
 }: ButtonProps) => {
-  console.log("🚀 ~ file: Button.tsx ~ line 33 ~ size", size);
   return (
     <ButtonStyle
       variant={variant}
