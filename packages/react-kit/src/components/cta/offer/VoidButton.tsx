@@ -1,7 +1,7 @@
 import React from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button } from "../../buttons/Button";
+import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ExtraInfo } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
@@ -20,6 +20,7 @@ export const VoidButton = ({
   onPendingSignature,
   onPendingTransaction,
   waitBlocks = 1,
+  size = ButtonSize.Large,
   children,
   ...coreSdkConfig
 }: Props) => {
@@ -29,6 +30,7 @@ export const VoidButton = ({
     <Button
       variant="primary"
       disabled={disabled}
+      size={size}
       onClick={async () => {
         try {
           onPendingSignature();
