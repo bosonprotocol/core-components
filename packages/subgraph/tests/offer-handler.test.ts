@@ -1,4 +1,5 @@
 import {
+  beforeEach,
   test,
   assert,
   mockIpfsFile,
@@ -59,6 +60,10 @@ const offerCreatedEvent = createOfferCreatedEvent(
   false
 );
 
+beforeEach(() => {
+  clearStore();
+});
+
 test("handle OfferCreatedEvent with BASE metadata", () => {
   mockExchangeTokenContractCalls(
     exchangeTokenAddress,
@@ -84,8 +89,6 @@ test("handle OfferCreatedEvent with BASE metadata", () => {
     exchangeTokenName
   );
   assert.fieldEquals("BaseMetadataEntity", "1-metadata", "type", "BASE");
-
-  clearStore();
 });
 
 test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
@@ -95,7 +98,7 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
     exchangeTokenName,
     exchangeTokenSymbol
   );
-  mockIpfsFile(metadataHash, "tests/metadata/product-v1.json");
+  mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
 
   handleOfferCreatedEvent(offerCreatedEvent);
 
@@ -118,8 +121,6 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
     "type",
     "PRODUCT_V1"
   );
-
-  clearStore();
 });
 
 test("handle OfferVoidedEvent", () => {

@@ -4,21 +4,22 @@ enum MetadataType {
 }
 
 interface MetadataInterface {
-  "<OFFER_ID>-metadata"
-  id: ID!
-  name: String
-  description: String
-  "Arbitrary URL which is linked to metadata"
-  externalUrl: String
-  "JSON schema URL"
-  schemaUrl: String
-  "Enum"
+  """
+  Fields compliant to metadata standard
+  """
+  id: ID! # [OFFER_ID]-metadata
+  name: String!
+  description: String!
+  externalUrl: String! # Arbitrary URL which is linked to metadata
+  schemaUrl: String! # JSON schema URL
   type: MetadataType!
-  "Reference to related Offer entity"
+  image: String!
+  attributes: [MetadataAttribute!]
+  """
+  References to entities
+  """
   offer: Offer!
-  "Reference to related Seller entity"
   seller: Seller!
-  "Reference to related ExchangeToken entity"
   exchangeToken: ExchangeToken!
   """
   Enriched fields from offer entity to allow nested query workaround
@@ -30,13 +31,29 @@ interface MetadataInterface {
   quantityAvailable: BigInt!
 }
 
-type BaseMetadataEntity implements MetadataInterface @entity {
+type MetadataAttribute @entity {
   id: ID!
-  name: String
-  description: String
-  externalUrl: String
-  schemaUrl: String
-  type: MetadataType! # MetadataType.BASE
+  traitType: String!
+  value: String!
+  displayType: String!
+}
+
+type BaseMetadataEntity implements MetadataInterface @entity {
+  """
+  Fields compliant to metadata standard
+  """
+  id: ID!
+  name: String!
+  description: String!
+  externalUrl: String! # Arbitrary URL which is linked to metadata
+  schemaUrl: String! # JSON schema URL
+  "MetadataType.BASE"
+  type: MetadataType!
+  image: String!
+  attributes: [MetadataAttribute!]
+  """
+  References to entities
+  """
   offer: Offer!
   seller: Seller!
   exchangeToken: ExchangeToken!
@@ -51,12 +68,21 @@ type BaseMetadataEntity implements MetadataInterface @entity {
 }
 
 type ProductV1MetadataEntity implements MetadataInterface @entity {
+  """
+  Fields compliant to metadata standard
+  """
   id: ID!
-  name: String
-  description: String
-  externalUrl: String
-  schemaUrl: String
-  type: MetadataType! # MetadataType.PRODUCT
+  name: String!
+  description: String!
+  externalUrl: String! # Arbitrary URL which is linked to metadata
+  schemaUrl: String! # JSON schema URL
+  "MetadataType.PRODUCT_V1"
+  type: MetadataType!
+  image: String!
+  attributes: [MetadataAttribute!]
+  """
+  References to entities
+  """
   offer: Offer!
   seller: Seller!
   exchangeToken: ExchangeToken!
@@ -69,18 +95,188 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   validUntilDate: BigInt!
   quantityAvailable: BigInt!
   """
-  ProductV1MetadataEntity specific fields
+  PRODUCT_V1 specific fields
   """
-  images: [String!]
-  tags: [String!]
-  brandName: String
-  brand: ProductV1Brand!
+  uuid: String!
+  product: ProductV1Product!
+  variations: [ProductV1Variation!]
+  productV1Seller: ProductV1Seller!
+  shipping: ProductV1ShippingOption!
+  exchangePolicy: ProductV1ExchangePolicy!
+  productOverrides: ProductV1ProductOverrides
+}
+
+type ProductV1Product @entity {
+  id: ID!
+  uuid: String!
+  version: Int!
+  title: String!
+  description: String!
+  """
+  Identification fields
+  """
+  identification_sKU: String
+  identification_productId: String
+  identification_productIdType: String
+  """
+  Product information fields
+  """
+  productionInformation_brandName: String!
+  brand: ProductV1Brand! # ref by productionInformation_brandName
+  productionInformation_manufacturer: String
+  productionInformation_manufacturerPartNumber: String
+  productionInformation_modelNumber: String
+  productionInformation_materials: [String!]
+  """
+  Details fields
+  """
+  details_category: String
+  category: ProductV1Category
+  details_subCategory: String
+  subCategory: ProductV1Category
+  details_subCategory2: String
+  subCategory2: ProductV1Category
+  details_offerCategory: String!
+  offerCategory: ProductV1OfferCategory!
+  details_tags: [String!]
+  tags: [ProductV1Tag!]
+  details_sections: [String!]
+  sections: [ProductV1Section!]
+  details_personalisation: [String!]
+  personalisation: [ProductV1Personalisation!]
+  """
+  Visuals
+  """
+  visuals_images: [ProductV1Media!]!
+  visuals_videos: [ProductV1Media!]
+  """
+  Packaging
+  """
+  packaging_packageQuantity: String
+  packaging_dimensions_length: String
+  packaging_dimensions_width: String
+  packaging_dimensions_height: String
+  packaging_dimensions_unit: String
+  packaging_weight_value: String
+  packaging_weight_unit: String
 }
 
 type ProductV1Brand @entity {
   id: ID!
   name: String!
-  products: [ProductV1MetadataEntity!]! @derivedFrom(field: "brand")
+  products: [ProductV1Product!]! @derivedFrom(field: "brand")
+}
+
+type ProductV1Category @entity {
+  id: ID!
+  name: String!
+}
+
+type ProductV1Tag @entity {
+  id: ID!
+  name: String!
+}
+
+type ProductV1Section @entity {
+  id: ID!
+  name: String!
+}
+
+type ProductV1Media @entity {
+  id: ID!
+  url: String!
+  tag: String
+  type: ProductV1MediaType!
+}
+
+type ProductV1Personalisation @entity {
+  id: ID!
+  name: String!
+}
+
+type ProductV1Variation @entity {
+  id: ID!
+  type: String!
+  option: String!
+}
+
+type ProductV1Seller @entity {
+  id: ID!
+  defaultVersion: Int
+  name: String
+  description: String
+  externalUrl: String
+  tokenId: String
+  images: [ProductV1Media!]
+  contactLinks: [ProductV1SellerContactLink!]
+  """
+  Refs
+  """
+  seller: Seller!
+}
+
+type ProductV1SellerContactLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+type ProductV1ShippingOption @entity {
+  id: ID!
+  defaultVersion: Int
+  countryOfOrigin: String
+  supportedJurisdictions: [ProductV1ShippingJurisdiction!]
+  redemptionPoint: String
+}
+
+type ProductV1ShippingJurisdiction @entity {
+  id: ID!
+  label: String!
+  deliveryTime: String!
+}
+
+type ProductV1ExchangePolicy @entity {
+  id: ID!
+  uuid: String!
+  version: Int!
+  label: String
+  template: String!
+}
+
+type ProductV1ProductOverrides @entity {
+  id: ID!
+  version: Int!
+  title: String!
+  description: String!
+  identification_sKU: String
+  identification_productId: String
+  identification_productIdType: String
+  productionInformation_brandName: String!
+  brand: ProductV1Brand!
+  productionInformation_manufacturer: String
+  productionInformation_manufacturerPartNumber: String
+  productionInformation_modelNumber: String
+  productionInformation_materials: [String!]
+  visuals_images: [ProductV1Media!]!
+  visuals_videos: [ProductV1Media!]
+  packaging_packageQuantity: String
+  packaging_dimensions_length: String
+  packaging_dimensions_width: String
+  packaging_dimensions_height: String
+  packaging_dimensions_unit: String
+  packaging_weight_value: String
+  packaging_weight_unit: String
+}
+
+enum ProductV1OfferCategory {
+  PHYSICAL
+  PHYGITAL
+  DIGITAL
+}
+
+enum ProductV1MediaType {
+  IMAGE
+  VIDEO
 }
 
 """
