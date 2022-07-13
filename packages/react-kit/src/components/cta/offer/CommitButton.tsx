@@ -43,51 +43,53 @@ export const CommitButton = ({
       size={size}
       disabled={disabled}
       onClick={async () => {
-        try {
-          setIsLoading(true);
-          onPendingSignature?.();
+        if (!isLoading) {
+          try {
+            setIsLoading(true);
+            onPendingSignature?.();
 
-          let txResponse;
+            let txResponse;
 
-          if (metaTransactionsApiKey && metaTxContract && signerAddress) {
-            const nonce = Date.now();
-            const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
-              chainId: coreSdkConfig.chainId,
-              offerId,
-              nonce
-            });
-            txResponse = await metaTxContract.executeMetaTxCommitToOffer(
-              signerAddress,
-              { buyer: signerAddress, offerId },
-              nonce,
-              r,
-              s,
-              v
+            if (metaTransactionsApiKey && metaTxContract && signerAddress) {
+              const nonce = Date.now();
+              const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
+                chainId: coreSdkConfig.chainId,
+                offerId,
+                nonce
+              });
+              txResponse = await metaTxContract.executeMetaTxCommitToOffer(
+                signerAddress,
+                { buyer: signerAddress, offerId },
+                nonce,
+                r,
+                s,
+                v
+              );
+            } else {
+              txResponse = await coreSdk.commitToOffer(offerId);
+            }
+
+            onPendingTransaction?.(txResponse.hash);
+            const receipt = await txResponse.wait(waitBlocks);
+            const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
+              receipt.logs
             );
-          } else {
-            txResponse = await coreSdk.commitToOffer(offerId);
+
+            setIsLoading(false);
+            onSuccess?.(receipt as providers.TransactionReceipt, {
+              exchangeId: exchangeId || ""
+            });
+          } catch (error) {
+            setIsLoading(false);
+            onError?.(error as Error);
           }
-
-          onPendingTransaction?.(txResponse.hash);
-          const receipt = await txResponse.wait(waitBlocks);
-          const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
-            receipt.logs
-          );
-
-          setIsLoading(false);
-          onSuccess?.(receipt as providers.TransactionReceipt, {
-            exchangeId: exchangeId || ""
-          });
-        } catch (error) {
-          setIsLoading(false);
-          onError?.(error as Error);
         }
       }}
     >
       <ButtonTextWrapper>
         {children || "Commit"}
         {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
-        {isLoading && (
+        {extraInfo && isLoading && (
           <LoadingWrapper>
             <Loading />
           </LoadingWrapper>

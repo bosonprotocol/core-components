@@ -51,7 +51,7 @@ Simple.args = {
 
 WithStep.args = {
   chainId: 1234,
-  offerId: "51",
+  offerId: "52",
   metaTransactionsApiKey: undefined,
   web3Provider: undefined,
   extraInfo: "Step 1",
