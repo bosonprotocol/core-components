@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
+import { Loading } from "../../Loading";
 
 type Props = { offerId: BigNumberish } & CtaButtonProps<{
   exchangeId: BigNumberish;
@@ -34,54 +35,66 @@ export const CommitButton = ({
     web3Provider: coreSdkConfig.web3Provider
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <Button
       variant="primary"
       size={size}
       disabled={disabled}
       onClick={async () => {
-        try {
-          onPendingSignature?.();
+        if (!isLoading) {
+          try {
+            setIsLoading(true);
+            onPendingSignature?.();
 
-          let txResponse;
+            let txResponse;
 
-          if (metaTransactionsApiKey && metaTxContract && signerAddress) {
-            const nonce = Date.now();
-            const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
-              chainId: coreSdkConfig.chainId,
-              offerId,
-              nonce
-            });
-            txResponse = await metaTxContract.executeMetaTxCommitToOffer(
-              signerAddress,
-              { buyer: signerAddress, offerId },
-              nonce,
-              r,
-              s,
-              v
+            if (metaTransactionsApiKey && metaTxContract && signerAddress) {
+              const nonce = Date.now();
+              const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
+                chainId: coreSdkConfig.chainId,
+                offerId,
+                nonce
+              });
+              txResponse = await metaTxContract.executeMetaTxCommitToOffer(
+                signerAddress,
+                { buyer: signerAddress, offerId },
+                nonce,
+                r,
+                s,
+                v
+              );
+            } else {
+              txResponse = await coreSdk.commitToOffer(offerId);
+            }
+
+            onPendingTransaction?.(txResponse.hash);
+            const receipt = await txResponse.wait(waitBlocks);
+            const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
+              receipt.logs
             );
-          } else {
-            txResponse = await coreSdk.commitToOffer(offerId);
+
+            onSuccess?.(receipt as providers.TransactionReceipt, {
+              exchangeId: exchangeId || ""
+            });
+          } catch (error) {
+            onError?.(error as Error);
+          } finally {
+            setIsLoading(false);
           }
-
-          onPendingTransaction?.(txResponse.hash);
-          const receipt = await txResponse.wait(waitBlocks);
-          const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
-            receipt.logs
-          );
-
-          onSuccess?.(receipt as providers.TransactionReceipt, {
-            exchangeId: exchangeId || ""
-          });
-        } catch (error) {
-          onError?.(error as Error);
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Commit"}
-        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {extraInfo && isLoading && (
+          <LoadingWrapper>
+            <Loading />
+          </LoadingWrapper>
+        )}
+      </ButtonTextWrapper>
     </Button>
   );
 };

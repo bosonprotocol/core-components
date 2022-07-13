@@ -52,7 +52,7 @@ WithExtraInfo.args = {
   chainId: 1234,
   offerId: "28",
   web3Provider: undefined,
-  extraInfo: "STEP X",
+  extraInfo: "Step x",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },

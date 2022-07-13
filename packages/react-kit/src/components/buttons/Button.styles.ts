@@ -19,11 +19,15 @@ export const ButtonStyle = styled.button.attrs(
   box-shadow: 0px 0px 0px #000000;
   min-width: 200px;
 
-  span {
+  #buttonText {
     font-style: normal;
     font-weight: 600;
     font-size: 1rem;
     line-height: 150%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 
   ${({ size }) =>
@@ -31,7 +35,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       height: 2.125rem;
       padding: 0.5rem 1rem;
-      span {
+      #buttonText {
         font-size: 0.75rem;
       }
     `}
@@ -41,7 +45,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       height: 2.813rem;
       padding: 0.75rem 1.5rem;
-      span {
+      #buttonText {
         font-size: 0.875rem;
       }
     `}
@@ -51,7 +55,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       padding: 1rem 2rem;
       height: 3.5rem;
-      span {
+      #buttonText {
         font-size: 1rem;
       }
     `}

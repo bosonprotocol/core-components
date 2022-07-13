@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
+import { Loading } from "../../Loading";
 
 type Props = { offerId: BigNumberish } & CtaButtonProps<{
   offerId: BigNumberish;
@@ -25,6 +26,7 @@ export const VoidButton = ({
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <Button
@@ -32,23 +34,33 @@ export const VoidButton = ({
       disabled={disabled}
       size={size}
       onClick={async () => {
-        try {
-          onPendingSignature?.();
-          const txResponse = await coreSdk.voidOffer(offerId);
+        if (!isLoading) {
+          try {
+            setIsLoading(true);
+            onPendingSignature?.();
+            const txResponse = await coreSdk.voidOffer(offerId);
 
-          onPendingTransaction?.(txResponse.hash);
-          const receipt = await txResponse.wait(waitBlocks);
+            onPendingTransaction?.(txResponse.hash);
+            const receipt = await txResponse.wait(waitBlocks);
 
-          onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
-        } catch (error) {
-          onError && onError(error as Error);
+            onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
+          } catch (error) {
+            onError?.(error as Error);
+          } finally {
+            setIsLoading(false);
+          }
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Void"}
-        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {extraInfo && isLoading && (
+          <LoadingWrapper>
+            <Loading />
+          </LoadingWrapper>
+        )}
+      </ButtonTextWrapper>
     </Button>
   );
 };
