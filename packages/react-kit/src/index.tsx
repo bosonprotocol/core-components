@@ -1,3 +1,7 @@
+export * from "@bosonprotocol/core-sdk";
+export * from "@bosonprotocol/ethers-sdk";
+export * from "@bosonprotocol/ipfs-storage";
+
 export * from "./components/Loading";
 export * from "./components/cta/exchange/CancelButton";
 export * from "./components/cta/exchange/RevokeButton";
