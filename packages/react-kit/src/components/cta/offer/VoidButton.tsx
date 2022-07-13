@@ -3,7 +3,7 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 
 type Props = { offerId: BigNumberish } & CtaButtonProps<{
@@ -45,10 +45,10 @@ export const VoidButton = ({
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Void"}
         {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+      </ButtonTextWrapper>
     </Button>
   );
 };

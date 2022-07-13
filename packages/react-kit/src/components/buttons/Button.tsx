@@ -41,7 +41,7 @@ export const Button = ({
       size={size}
       {...props}
     >
-      {props.loading ? <Loading /> : <span>{children}</span>}
+      {props.loading ? <Loading /> : <span id="buttonText">{children}</span>}
     </ButtonStyle>
   );
 };

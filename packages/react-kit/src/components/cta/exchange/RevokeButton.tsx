@@ -3,7 +3,7 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 
 type Props = { exchangeId: BigNumberish } & CtaButtonProps<{
@@ -43,10 +43,10 @@ export const RevokeButton = ({
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Revoke"}
         {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+      </ButtonTextWrapper>
     </Button>
   );
 };

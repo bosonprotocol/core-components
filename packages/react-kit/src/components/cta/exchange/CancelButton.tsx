@@ -5,7 +5,7 @@ import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 
 type Props = { exchangeId: BigNumberish } & CtaButtonProps<{
@@ -78,10 +78,10 @@ export const CancelButton = ({
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Cancel"}
         {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+      </ButtonTextWrapper>
     </Button>
   );
 };

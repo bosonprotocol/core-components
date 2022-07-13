@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { ExtraInfo } from "../common/styles";
+import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
+import { Loading } from "../../Loading";
 
 type Props = { offerId: BigNumberish } & CtaButtonProps<{
   exchangeId: BigNumberish;
@@ -34,6 +35,8 @@ export const CommitButton = ({
     web3Provider: coreSdkConfig.web3Provider
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <Button
       variant="primary"
@@ -41,6 +44,7 @@ export const CommitButton = ({
       disabled={disabled}
       onClick={async () => {
         try {
+          setIsLoading(true);
           onPendingSignature?.();
 
           let txResponse;
@@ -70,18 +74,25 @@ export const CommitButton = ({
             receipt.logs
           );
 
+          setIsLoading(false);
           onSuccess?.(receipt as providers.TransactionReceipt, {
             exchangeId: exchangeId || ""
           });
         } catch (error) {
+          setIsLoading(false);
           onError?.(error as Error);
         }
       }}
     >
-      <>
+      <ButtonTextWrapper>
         {children || "Commit"}
-        {extraInfo && <ExtraInfo>{extraInfo}</ExtraInfo>}
-      </>
+        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
+        {isLoading && (
+          <LoadingWrapper>
+            <Loading />
+          </LoadingWrapper>
+        )}
+      </ButtonTextWrapper>
     </Button>
   );
 };
