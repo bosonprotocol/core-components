@@ -43,11 +43,11 @@ export const VoidButton = ({
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
 
-            setIsLoading(false);
             onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
           } catch (error) {
-            setIsLoading(false);
             onError?.(error as Error);
+          } finally {
+            setIsLoading(false);
           }
         }
       }}

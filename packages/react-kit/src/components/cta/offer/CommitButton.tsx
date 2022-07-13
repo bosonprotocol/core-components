@@ -75,13 +75,13 @@ export const CommitButton = ({
               receipt.logs
             );
 
-            setIsLoading(false);
             onSuccess?.(receipt as providers.TransactionReceipt, {
               exchangeId: exchangeId || ""
             });
           } catch (error) {
-            setIsLoading(false);
             onError?.(error as Error);
+          } finally {
+            setIsLoading(false);
           }
         }
       }}
