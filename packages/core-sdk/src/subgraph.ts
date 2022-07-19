@@ -63,27 +63,52 @@ export enum Account_OrderBy {
 
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
    */
   createdAt: Scalars["BigInt"];
-  description?: Maybe<Scalars["String"]>;
+  description: Scalars["String"];
   exchangeToken: ExchangeToken;
-  externalUrl?: Maybe<Scalars["String"]>;
+  externalUrl: Scalars["String"];
+  /**
+   * Fields compliant to metadata standard
+   *
+   */
   id: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
+  image: Scalars["String"];
+  name: Scalars["String"];
+  /**
+   * References to entities
+   *
+   */
   offer: Offer;
   quantityAvailable: Scalars["BigInt"];
-  schemaUrl?: Maybe<Scalars["String"]>;
+  schemaUrl: Scalars["String"];
   seller: Seller;
+  /** MetadataType.BASE */
   type: MetadataType;
   validFromDate: Scalars["BigInt"];
   validUntilDate: Scalars["BigInt"];
   voided: Scalars["Boolean"];
 };
 
+export type BaseMetadataEntityAttributesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<MetadataAttribute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
 export type BaseMetadataEntity_Filter = {
+  attributes?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -160,6 +185,26 @@ export type BaseMetadataEntity_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  image?: InputMaybe<Scalars["String"]>;
+  image_contains?: InputMaybe<Scalars["String"]>;
+  image_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_ends_with?: InputMaybe<Scalars["String"]>;
+  image_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_gt?: InputMaybe<Scalars["String"]>;
+  image_gte?: InputMaybe<Scalars["String"]>;
+  image_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_lt?: InputMaybe<Scalars["String"]>;
+  image_lte?: InputMaybe<Scalars["String"]>;
+  image_not?: InputMaybe<Scalars["String"]>;
+  image_not_contains?: InputMaybe<Scalars["String"]>;
+  image_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_not_starts_with?: InputMaybe<Scalars["String"]>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_starts_with?: InputMaybe<Scalars["String"]>;
+  image_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
   name_contains?: InputMaybe<Scalars["String"]>;
   name_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -275,11 +320,13 @@ export type BaseMetadataEntity_Filter = {
 };
 
 export enum BaseMetadataEntity_OrderBy {
+  Attributes = "attributes",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
   ExternalUrl = "externalUrl",
   Id = "id",
+  Image = "image",
   Name = "name",
   Offer = "offer",
   QuantityAvailable = "quantityAvailable",
@@ -801,35 +848,138 @@ export enum FundsEntity_OrderBy {
   TokenAddress = "tokenAddress"
 }
 
+export type MetadataAttribute = {
+  __typename?: "MetadataAttribute";
+  displayType: Scalars["String"];
+  id: Scalars["ID"];
+  traitType: Scalars["String"];
+  value: Scalars["String"];
+};
+
+export type MetadataAttribute_Filter = {
+  displayType?: InputMaybe<Scalars["String"]>;
+  displayType_contains?: InputMaybe<Scalars["String"]>;
+  displayType_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayType_ends_with?: InputMaybe<Scalars["String"]>;
+  displayType_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayType_gt?: InputMaybe<Scalars["String"]>;
+  displayType_gte?: InputMaybe<Scalars["String"]>;
+  displayType_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayType_lt?: InputMaybe<Scalars["String"]>;
+  displayType_lte?: InputMaybe<Scalars["String"]>;
+  displayType_not?: InputMaybe<Scalars["String"]>;
+  displayType_not_contains?: InputMaybe<Scalars["String"]>;
+  displayType_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  displayType_not_ends_with?: InputMaybe<Scalars["String"]>;
+  displayType_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayType_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  displayType_not_starts_with?: InputMaybe<Scalars["String"]>;
+  displayType_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  displayType_starts_with?: InputMaybe<Scalars["String"]>;
+  displayType_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  traitType?: InputMaybe<Scalars["String"]>;
+  traitType_contains?: InputMaybe<Scalars["String"]>;
+  traitType_contains_nocase?: InputMaybe<Scalars["String"]>;
+  traitType_ends_with?: InputMaybe<Scalars["String"]>;
+  traitType_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  traitType_gt?: InputMaybe<Scalars["String"]>;
+  traitType_gte?: InputMaybe<Scalars["String"]>;
+  traitType_in?: InputMaybe<Array<Scalars["String"]>>;
+  traitType_lt?: InputMaybe<Scalars["String"]>;
+  traitType_lte?: InputMaybe<Scalars["String"]>;
+  traitType_not?: InputMaybe<Scalars["String"]>;
+  traitType_not_contains?: InputMaybe<Scalars["String"]>;
+  traitType_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  traitType_not_ends_with?: InputMaybe<Scalars["String"]>;
+  traitType_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  traitType_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  traitType_not_starts_with?: InputMaybe<Scalars["String"]>;
+  traitType_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  traitType_starts_with?: InputMaybe<Scalars["String"]>;
+  traitType_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  value?: InputMaybe<Scalars["String"]>;
+  value_contains?: InputMaybe<Scalars["String"]>;
+  value_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_ends_with?: InputMaybe<Scalars["String"]>;
+  value_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_gt?: InputMaybe<Scalars["String"]>;
+  value_gte?: InputMaybe<Scalars["String"]>;
+  value_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_lt?: InputMaybe<Scalars["String"]>;
+  value_lte?: InputMaybe<Scalars["String"]>;
+  value_not?: InputMaybe<Scalars["String"]>;
+  value_not_contains?: InputMaybe<Scalars["String"]>;
+  value_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with?: InputMaybe<Scalars["String"]>;
+  value_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  value_not_starts_with?: InputMaybe<Scalars["String"]>;
+  value_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  value_starts_with?: InputMaybe<Scalars["String"]>;
+  value_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum MetadataAttribute_OrderBy {
+  DisplayType = "displayType",
+  Id = "id",
+  TraitType = "traitType",
+  Value = "value"
+}
+
 export type MetadataInterface = {
+  attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
    */
   createdAt: Scalars["BigInt"];
-  description?: Maybe<Scalars["String"]>;
-  /** Reference to related ExchangeToken entity */
+  description: Scalars["String"];
   exchangeToken: ExchangeToken;
-  /** Arbitrary URL which is linked to metadata */
-  externalUrl?: Maybe<Scalars["String"]>;
-  /** <OFFER_ID>-metadata */
+  externalUrl: Scalars["String"];
+  /**
+   * Fields compliant to metadata standard
+   *
+   */
   id: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
-  /** Reference to related Offer entity */
+  image: Scalars["String"];
+  name: Scalars["String"];
+  /**
+   * References to entities
+   *
+   */
   offer: Offer;
   quantityAvailable: Scalars["BigInt"];
-  /** JSON schema URL */
-  schemaUrl?: Maybe<Scalars["String"]>;
-  /** Reference to related Seller entity */
+  schemaUrl: Scalars["String"];
   seller: Seller;
-  /** Enum */
   type: MetadataType;
   validFromDate: Scalars["BigInt"];
   validUntilDate: Scalars["BigInt"];
   voided: Scalars["Boolean"];
 };
 
+export type MetadataInterfaceAttributesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<MetadataAttribute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
 export type MetadataInterface_Filter = {
+  attributes?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -906,6 +1056,26 @@ export type MetadataInterface_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  image?: InputMaybe<Scalars["String"]>;
+  image_contains?: InputMaybe<Scalars["String"]>;
+  image_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_ends_with?: InputMaybe<Scalars["String"]>;
+  image_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_gt?: InputMaybe<Scalars["String"]>;
+  image_gte?: InputMaybe<Scalars["String"]>;
+  image_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_lt?: InputMaybe<Scalars["String"]>;
+  image_lte?: InputMaybe<Scalars["String"]>;
+  image_not?: InputMaybe<Scalars["String"]>;
+  image_not_contains?: InputMaybe<Scalars["String"]>;
+  image_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_not_starts_with?: InputMaybe<Scalars["String"]>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_starts_with?: InputMaybe<Scalars["String"]>;
+  image_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
   name_contains?: InputMaybe<Scalars["String"]>;
   name_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1021,11 +1191,13 @@ export type MetadataInterface_Filter = {
 };
 
 export enum MetadataInterface_OrderBy {
+  Attributes = "attributes",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
   ExternalUrl = "externalUrl",
   Id = "id",
+  Image = "image",
   Name = "name",
   Offer = "offer",
   QuantityAvailable = "quantityAvailable",
@@ -1400,15 +1572,15 @@ export type ProductV1Brand = {
   __typename?: "ProductV1Brand";
   id: Scalars["ID"];
   name: Scalars["String"];
-  products: Array<ProductV1MetadataEntity>;
+  products: Array<ProductV1Product>;
 };
 
 export type ProductV1BrandProductsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<ProductV1MetadataEntity_OrderBy>;
+  orderBy?: InputMaybe<ProductV1Product_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
-  where?: InputMaybe<ProductV1MetadataEntity_Filter>;
+  where?: InputMaybe<ProductV1Product_Filter>;
 };
 
 export type ProductV1Brand_Filter = {
@@ -1448,77 +1620,286 @@ export enum ProductV1Brand_OrderBy {
   Products = "products"
 }
 
+export type ProductV1Category = {
+  __typename?: "ProductV1Category";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type ProductV1Category_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Category_OrderBy {
+  Id = "id",
+  Name = "name"
+}
+
+export type ProductV1ExchangePolicy = {
+  __typename?: "ProductV1ExchangePolicy";
+  id: Scalars["ID"];
+  label?: Maybe<Scalars["String"]>;
+  template: Scalars["String"];
+  uuid: Scalars["String"];
+  version: Scalars["Int"];
+};
+
+export type ProductV1ExchangePolicy_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  label?: InputMaybe<Scalars["String"]>;
+  label_contains?: InputMaybe<Scalars["String"]>;
+  label_contains_nocase?: InputMaybe<Scalars["String"]>;
+  label_ends_with?: InputMaybe<Scalars["String"]>;
+  label_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_gt?: InputMaybe<Scalars["String"]>;
+  label_gte?: InputMaybe<Scalars["String"]>;
+  label_in?: InputMaybe<Array<Scalars["String"]>>;
+  label_lt?: InputMaybe<Scalars["String"]>;
+  label_lte?: InputMaybe<Scalars["String"]>;
+  label_not?: InputMaybe<Scalars["String"]>;
+  label_not_contains?: InputMaybe<Scalars["String"]>;
+  label_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  label_not_ends_with?: InputMaybe<Scalars["String"]>;
+  label_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  label_not_starts_with?: InputMaybe<Scalars["String"]>;
+  label_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_starts_with?: InputMaybe<Scalars["String"]>;
+  label_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  template?: InputMaybe<Scalars["String"]>;
+  template_contains?: InputMaybe<Scalars["String"]>;
+  template_contains_nocase?: InputMaybe<Scalars["String"]>;
+  template_ends_with?: InputMaybe<Scalars["String"]>;
+  template_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  template_gt?: InputMaybe<Scalars["String"]>;
+  template_gte?: InputMaybe<Scalars["String"]>;
+  template_in?: InputMaybe<Array<Scalars["String"]>>;
+  template_lt?: InputMaybe<Scalars["String"]>;
+  template_lte?: InputMaybe<Scalars["String"]>;
+  template_not?: InputMaybe<Scalars["String"]>;
+  template_not_contains?: InputMaybe<Scalars["String"]>;
+  template_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  template_not_ends_with?: InputMaybe<Scalars["String"]>;
+  template_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  template_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  template_not_starts_with?: InputMaybe<Scalars["String"]>;
+  template_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  template_starts_with?: InputMaybe<Scalars["String"]>;
+  template_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid?: InputMaybe<Scalars["String"]>;
+  uuid_contains?: InputMaybe<Scalars["String"]>;
+  uuid_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_gt?: InputMaybe<Scalars["String"]>;
+  uuid_gte?: InputMaybe<Scalars["String"]>;
+  uuid_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_lt?: InputMaybe<Scalars["String"]>;
+  uuid_lte?: InputMaybe<Scalars["String"]>;
+  uuid_not?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_not_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["Int"]>;
+  version_gt?: InputMaybe<Scalars["Int"]>;
+  version_gte?: InputMaybe<Scalars["Int"]>;
+  version_in?: InputMaybe<Array<Scalars["Int"]>>;
+  version_lt?: InputMaybe<Scalars["Int"]>;
+  version_lte?: InputMaybe<Scalars["Int"]>;
+  version_not?: InputMaybe<Scalars["Int"]>;
+  version_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum ProductV1ExchangePolicy_OrderBy {
+  Id = "id",
+  Label = "label",
+  Template = "template",
+  Uuid = "uuid",
+  Version = "version"
+}
+
+export type ProductV1Media = {
+  __typename?: "ProductV1Media";
+  id: Scalars["ID"];
+  tag?: Maybe<Scalars["String"]>;
+  type: ProductV1MediaType;
+  url: Scalars["String"];
+};
+
+export enum ProductV1MediaType {
+  Image = "IMAGE",
+  Video = "VIDEO"
+}
+
+export type ProductV1Media_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<ProductV1MediaType>;
+  type_in?: InputMaybe<Array<ProductV1MediaType>>;
+  type_not?: InputMaybe<ProductV1MediaType>;
+  type_not_in?: InputMaybe<Array<ProductV1MediaType>>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Media_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Type = "type",
+  Url = "url"
+}
+
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
-  brand: ProductV1Brand;
-  brandName?: Maybe<Scalars["String"]>;
+  attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
    */
   createdAt: Scalars["BigInt"];
-  description?: Maybe<Scalars["String"]>;
+  description: Scalars["String"];
+  exchangePolicy: ProductV1ExchangePolicy;
   exchangeToken: ExchangeToken;
-  externalUrl?: Maybe<Scalars["String"]>;
-  id: Scalars["ID"];
+  externalUrl: Scalars["String"];
   /**
-   * ProductV1MetadataEntity specific fields
+   * Fields compliant to metadata standard
    *
    */
-  images?: Maybe<Array<Scalars["String"]>>;
-  name?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  image: Scalars["String"];
+  name: Scalars["String"];
+  /**
+   * References to entities
+   *
+   */
   offer: Offer;
+  product: ProductV1Product;
+  productOverrides?: Maybe<ProductV1ProductOverrides>;
+  productV1Seller: ProductV1Seller;
   quantityAvailable: Scalars["BigInt"];
-  schemaUrl?: Maybe<Scalars["String"]>;
+  schemaUrl: Scalars["String"];
   seller: Seller;
-  tags?: Maybe<Array<Scalars["String"]>>;
+  shipping: ProductV1ShippingOption;
+  /** MetadataType.PRODUCT_V1 */
   type: MetadataType;
+  /**
+   * PRODUCT_V1 specific fields
+   *
+   */
+  uuid: Scalars["String"];
   validFromDate: Scalars["BigInt"];
   validUntilDate: Scalars["BigInt"];
+  variations?: Maybe<Array<ProductV1Variation>>;
   voided: Scalars["Boolean"];
 };
 
+export type ProductV1MetadataEntityAttributesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<MetadataAttribute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
+export type ProductV1MetadataEntityVariationsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variation_Filter>;
+};
+
 export type ProductV1MetadataEntity_Filter = {
-  brand?: InputMaybe<Scalars["String"]>;
-  brandName?: InputMaybe<Scalars["String"]>;
-  brandName_contains?: InputMaybe<Scalars["String"]>;
-  brandName_contains_nocase?: InputMaybe<Scalars["String"]>;
-  brandName_ends_with?: InputMaybe<Scalars["String"]>;
-  brandName_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  brandName_gt?: InputMaybe<Scalars["String"]>;
-  brandName_gte?: InputMaybe<Scalars["String"]>;
-  brandName_in?: InputMaybe<Array<Scalars["String"]>>;
-  brandName_lt?: InputMaybe<Scalars["String"]>;
-  brandName_lte?: InputMaybe<Scalars["String"]>;
-  brandName_not?: InputMaybe<Scalars["String"]>;
-  brandName_not_contains?: InputMaybe<Scalars["String"]>;
-  brandName_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  brandName_not_ends_with?: InputMaybe<Scalars["String"]>;
-  brandName_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  brandName_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  brandName_not_starts_with?: InputMaybe<Scalars["String"]>;
-  brandName_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  brandName_starts_with?: InputMaybe<Scalars["String"]>;
-  brandName_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  brand_contains?: InputMaybe<Scalars["String"]>;
-  brand_contains_nocase?: InputMaybe<Scalars["String"]>;
-  brand_ends_with?: InputMaybe<Scalars["String"]>;
-  brand_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  brand_gt?: InputMaybe<Scalars["String"]>;
-  brand_gte?: InputMaybe<Scalars["String"]>;
-  brand_in?: InputMaybe<Array<Scalars["String"]>>;
-  brand_lt?: InputMaybe<Scalars["String"]>;
-  brand_lte?: InputMaybe<Scalars["String"]>;
-  brand_not?: InputMaybe<Scalars["String"]>;
-  brand_not_contains?: InputMaybe<Scalars["String"]>;
-  brand_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  brand_not_ends_with?: InputMaybe<Scalars["String"]>;
-  brand_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  brand_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  brand_not_starts_with?: InputMaybe<Scalars["String"]>;
-  brand_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  brand_starts_with?: InputMaybe<Scalars["String"]>;
-  brand_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  attributes?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -1547,6 +1928,26 @@ export type ProductV1MetadataEntity_Filter = {
   description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   description_starts_with?: InputMaybe<Scalars["String"]>;
   description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_contains?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_ends_with?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_gt?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_gte?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchangePolicy_lt?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_lte?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_contains?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_ends_with?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchangePolicy_not_starts_with?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_starts_with?: InputMaybe<Scalars["String"]>;
+  exchangePolicy_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   exchangeToken?: InputMaybe<Scalars["String"]>;
   exchangeToken_contains?: InputMaybe<Scalars["String"]>;
   exchangeToken_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1567,6 +1968,1972 @@ export type ProductV1MetadataEntity_Filter = {
   exchangeToken_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   exchangeToken_starts_with?: InputMaybe<Scalars["String"]>;
   exchangeToken_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl?: InputMaybe<Scalars["String"]>;
+  externalUrl_contains?: InputMaybe<Scalars["String"]>;
+  externalUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  externalUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl_gt?: InputMaybe<Scalars["String"]>;
+  externalUrl_gte?: InputMaybe<Scalars["String"]>;
+  externalUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  externalUrl_lt?: InputMaybe<Scalars["String"]>;
+  externalUrl_lte?: InputMaybe<Scalars["String"]>;
+  externalUrl_not?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  externalUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  externalUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  externalUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  image?: InputMaybe<Scalars["String"]>;
+  image_contains?: InputMaybe<Scalars["String"]>;
+  image_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_ends_with?: InputMaybe<Scalars["String"]>;
+  image_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_gt?: InputMaybe<Scalars["String"]>;
+  image_gte?: InputMaybe<Scalars["String"]>;
+  image_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_lt?: InputMaybe<Scalars["String"]>;
+  image_lte?: InputMaybe<Scalars["String"]>;
+  image_not?: InputMaybe<Scalars["String"]>;
+  image_not_contains?: InputMaybe<Scalars["String"]>;
+  image_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_not_starts_with?: InputMaybe<Scalars["String"]>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_starts_with?: InputMaybe<Scalars["String"]>;
+  image_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer?: InputMaybe<Scalars["String"]>;
+  offer_contains?: InputMaybe<Scalars["String"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_gt?: InputMaybe<Scalars["String"]>;
+  offer_gte?: InputMaybe<Scalars["String"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]>;
+  offer_lte?: InputMaybe<Scalars["String"]>;
+  offer_not?: InputMaybe<Scalars["String"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  product?: InputMaybe<Scalars["String"]>;
+  productOverrides?: InputMaybe<Scalars["String"]>;
+  productOverrides_contains?: InputMaybe<Scalars["String"]>;
+  productOverrides_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productOverrides_ends_with?: InputMaybe<Scalars["String"]>;
+  productOverrides_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productOverrides_gt?: InputMaybe<Scalars["String"]>;
+  productOverrides_gte?: InputMaybe<Scalars["String"]>;
+  productOverrides_in?: InputMaybe<Array<Scalars["String"]>>;
+  productOverrides_lt?: InputMaybe<Scalars["String"]>;
+  productOverrides_lte?: InputMaybe<Scalars["String"]>;
+  productOverrides_not?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_contains?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productOverrides_not_starts_with?: InputMaybe<Scalars["String"]>;
+  productOverrides_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productOverrides_starts_with?: InputMaybe<Scalars["String"]>;
+  productOverrides_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller?: InputMaybe<Scalars["String"]>;
+  productV1Seller_contains?: InputMaybe<Scalars["String"]>;
+  productV1Seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_ends_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_gt?: InputMaybe<Scalars["String"]>;
+  productV1Seller_gte?: InputMaybe<Scalars["String"]>;
+  productV1Seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  productV1Seller_lt?: InputMaybe<Scalars["String"]>;
+  productV1Seller_lte?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_contains?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productV1Seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productV1Seller_starts_with?: InputMaybe<Scalars["String"]>;
+  productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_contains?: InputMaybe<Scalars["String"]>;
+  product_contains_nocase?: InputMaybe<Scalars["String"]>;
+  product_ends_with?: InputMaybe<Scalars["String"]>;
+  product_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_gt?: InputMaybe<Scalars["String"]>;
+  product_gte?: InputMaybe<Scalars["String"]>;
+  product_in?: InputMaybe<Array<Scalars["String"]>>;
+  product_lt?: InputMaybe<Scalars["String"]>;
+  product_lte?: InputMaybe<Scalars["String"]>;
+  product_not?: InputMaybe<Scalars["String"]>;
+  product_not_contains?: InputMaybe<Scalars["String"]>;
+  product_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  product_not_ends_with?: InputMaybe<Scalars["String"]>;
+  product_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  product_not_starts_with?: InputMaybe<Scalars["String"]>;
+  product_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_starts_with?: InputMaybe<Scalars["String"]>;
+  product_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  quantityAvailable_lt?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_lte?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not?: InputMaybe<Scalars["BigInt"]>;
+  quantityAvailable_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  schemaUrl?: InputMaybe<Scalars["String"]>;
+  schemaUrl_contains?: InputMaybe<Scalars["String"]>;
+  schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_gt?: InputMaybe<Scalars["String"]>;
+  schemaUrl_gte?: InputMaybe<Scalars["String"]>;
+  schemaUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  schemaUrl_lt?: InputMaybe<Scalars["String"]>;
+  schemaUrl_lte?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  schemaUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller?: InputMaybe<Scalars["String"]>;
+  seller_contains?: InputMaybe<Scalars["String"]>;
+  seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_gt?: InputMaybe<Scalars["String"]>;
+  seller_gte?: InputMaybe<Scalars["String"]>;
+  seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_lt?: InputMaybe<Scalars["String"]>;
+  seller_lte?: InputMaybe<Scalars["String"]>;
+  seller_not?: InputMaybe<Scalars["String"]>;
+  seller_not_contains?: InputMaybe<Scalars["String"]>;
+  seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  shipping?: InputMaybe<Scalars["String"]>;
+  shipping_contains?: InputMaybe<Scalars["String"]>;
+  shipping_contains_nocase?: InputMaybe<Scalars["String"]>;
+  shipping_ends_with?: InputMaybe<Scalars["String"]>;
+  shipping_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  shipping_gt?: InputMaybe<Scalars["String"]>;
+  shipping_gte?: InputMaybe<Scalars["String"]>;
+  shipping_in?: InputMaybe<Array<Scalars["String"]>>;
+  shipping_lt?: InputMaybe<Scalars["String"]>;
+  shipping_lte?: InputMaybe<Scalars["String"]>;
+  shipping_not?: InputMaybe<Scalars["String"]>;
+  shipping_not_contains?: InputMaybe<Scalars["String"]>;
+  shipping_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  shipping_not_ends_with?: InputMaybe<Scalars["String"]>;
+  shipping_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  shipping_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  shipping_not_starts_with?: InputMaybe<Scalars["String"]>;
+  shipping_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  shipping_starts_with?: InputMaybe<Scalars["String"]>;
+  shipping_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<MetadataType>;
+  type_in?: InputMaybe<Array<MetadataType>>;
+  type_not?: InputMaybe<MetadataType>;
+  type_not_in?: InputMaybe<Array<MetadataType>>;
+  uuid?: InputMaybe<Scalars["String"]>;
+  uuid_contains?: InputMaybe<Scalars["String"]>;
+  uuid_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_gt?: InputMaybe<Scalars["String"]>;
+  uuid_gte?: InputMaybe<Scalars["String"]>;
+  uuid_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_lt?: InputMaybe<Scalars["String"]>;
+  uuid_lte?: InputMaybe<Scalars["String"]>;
+  uuid_not?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_not_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  validFromDate?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  validFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_not?: InputMaybe<Scalars["BigInt"]>;
+  validFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  validUntilDate?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  validUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
+  validUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  variations?: InputMaybe<Array<Scalars["String"]>>;
+  variations_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  voided?: InputMaybe<Scalars["Boolean"]>;
+  voided_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  voided_not?: InputMaybe<Scalars["Boolean"]>;
+  voided_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+};
+
+export enum ProductV1MetadataEntity_OrderBy {
+  Attributes = "attributes",
+  CreatedAt = "createdAt",
+  Description = "description",
+  ExchangePolicy = "exchangePolicy",
+  ExchangeToken = "exchangeToken",
+  ExternalUrl = "externalUrl",
+  Id = "id",
+  Image = "image",
+  Name = "name",
+  Offer = "offer",
+  Product = "product",
+  ProductOverrides = "productOverrides",
+  ProductV1Seller = "productV1Seller",
+  QuantityAvailable = "quantityAvailable",
+  SchemaUrl = "schemaUrl",
+  Seller = "seller",
+  Shipping = "shipping",
+  Type = "type",
+  Uuid = "uuid",
+  ValidFromDate = "validFromDate",
+  ValidUntilDate = "validUntilDate",
+  Variations = "variations",
+  Voided = "voided"
+}
+
+export enum ProductV1OfferCategory {
+  Digital = "DIGITAL",
+  Phygital = "PHYGITAL",
+  Physical = "PHYSICAL"
+}
+
+export type ProductV1Personalisation = {
+  __typename?: "ProductV1Personalisation";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type ProductV1Personalisation_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Personalisation_OrderBy {
+  Id = "id",
+  Name = "name"
+}
+
+export type ProductV1Product = {
+  __typename?: "ProductV1Product";
+  brand: ProductV1Brand;
+  category?: Maybe<ProductV1Category>;
+  description: Scalars["String"];
+  /**
+   * Details fields
+   *
+   */
+  details_category?: Maybe<Scalars["String"]>;
+  details_offerCategory: Scalars["String"];
+  details_personalisation?: Maybe<Array<Scalars["String"]>>;
+  details_sections?: Maybe<Array<Scalars["String"]>>;
+  details_subCategory?: Maybe<Scalars["String"]>;
+  details_subCategory2?: Maybe<Scalars["String"]>;
+  details_tags?: Maybe<Array<Scalars["String"]>>;
+  id: Scalars["ID"];
+  identification_productId?: Maybe<Scalars["String"]>;
+  identification_productIdType?: Maybe<Scalars["String"]>;
+  /**
+   * Identification fields
+   *
+   */
+  identification_sKU?: Maybe<Scalars["String"]>;
+  offerCategory: ProductV1OfferCategory;
+  packaging_dimensions_height?: Maybe<Scalars["String"]>;
+  packaging_dimensions_length?: Maybe<Scalars["String"]>;
+  packaging_dimensions_unit?: Maybe<Scalars["String"]>;
+  packaging_dimensions_width?: Maybe<Scalars["String"]>;
+  /**
+   * Packaging
+   *
+   */
+  packaging_packageQuantity?: Maybe<Scalars["String"]>;
+  packaging_weight_unit?: Maybe<Scalars["String"]>;
+  packaging_weight_value?: Maybe<Scalars["String"]>;
+  personalisation?: Maybe<Array<ProductV1Personalisation>>;
+  /**
+   * Product information fields
+   *
+   */
+  productionInformation_brandName: Scalars["String"];
+  productionInformation_manufacturer?: Maybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
+  productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
+  productionInformation_modelNumber?: Maybe<Scalars["String"]>;
+  sections?: Maybe<Array<ProductV1Section>>;
+  subCategory?: Maybe<ProductV1Category>;
+  subCategory2?: Maybe<ProductV1Category>;
+  tags?: Maybe<Array<ProductV1Tag>>;
+  title: Scalars["String"];
+  uuid: Scalars["String"];
+  version: Scalars["Int"];
+  /**
+   * Visuals
+   *
+   */
+  visuals_images: Array<ProductV1Media>;
+  visuals_videos?: Maybe<Array<ProductV1Media>>;
+};
+
+export type ProductV1ProductPersonalisationArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Personalisation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Personalisation_Filter>;
+};
+
+export type ProductV1ProductSectionsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Section_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Section_Filter>;
+};
+
+export type ProductV1ProductTagsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Tag_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type ProductV1ProductVisuals_ImagesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
+export type ProductV1ProductVisuals_VideosArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
+export type ProductV1ProductOverrides = {
+  __typename?: "ProductV1ProductOverrides";
+  brand: ProductV1Brand;
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  identification_productId?: Maybe<Scalars["String"]>;
+  identification_productIdType?: Maybe<Scalars["String"]>;
+  identification_sKU?: Maybe<Scalars["String"]>;
+  packaging_dimensions_height?: Maybe<Scalars["String"]>;
+  packaging_dimensions_length?: Maybe<Scalars["String"]>;
+  packaging_dimensions_unit?: Maybe<Scalars["String"]>;
+  packaging_dimensions_width?: Maybe<Scalars["String"]>;
+  packaging_packageQuantity?: Maybe<Scalars["String"]>;
+  packaging_weight_unit?: Maybe<Scalars["String"]>;
+  packaging_weight_value?: Maybe<Scalars["String"]>;
+  productionInformation_brandName: Scalars["String"];
+  productionInformation_manufacturer?: Maybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
+  productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
+  productionInformation_modelNumber?: Maybe<Scalars["String"]>;
+  title: Scalars["String"];
+  version: Scalars["Int"];
+  visuals_images: Array<ProductV1Media>;
+  visuals_videos?: Maybe<Array<ProductV1Media>>;
+};
+
+export type ProductV1ProductOverridesVisuals_ImagesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
+export type ProductV1ProductOverridesVisuals_VideosArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
+export type ProductV1ProductOverrides_Filter = {
+  brand?: InputMaybe<Scalars["String"]>;
+  brand_contains?: InputMaybe<Scalars["String"]>;
+  brand_contains_nocase?: InputMaybe<Scalars["String"]>;
+  brand_ends_with?: InputMaybe<Scalars["String"]>;
+  brand_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_gt?: InputMaybe<Scalars["String"]>;
+  brand_gte?: InputMaybe<Scalars["String"]>;
+  brand_in?: InputMaybe<Array<Scalars["String"]>>;
+  brand_lt?: InputMaybe<Scalars["String"]>;
+  brand_lte?: InputMaybe<Scalars["String"]>;
+  brand_not?: InputMaybe<Scalars["String"]>;
+  brand_not_contains?: InputMaybe<Scalars["String"]>;
+  brand_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  brand_not_ends_with?: InputMaybe<Scalars["String"]>;
+  brand_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  brand_not_starts_with?: InputMaybe<Scalars["String"]>;
+  brand_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_starts_with?: InputMaybe<Scalars["String"]>;
+  brand_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  identification_productId?: InputMaybe<Scalars["String"]>;
+  identification_productIdType?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_contains?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_gt?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_gte?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productIdType_lt?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_lte?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productIdType_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productId_contains?: InputMaybe<Scalars["String"]>;
+  identification_productId_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_gt?: InputMaybe<Scalars["String"]>;
+  identification_productId_gte?: InputMaybe<Scalars["String"]>;
+  identification_productId_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productId_lt?: InputMaybe<Scalars["String"]>;
+  identification_productId_lte?: InputMaybe<Scalars["String"]>;
+  identification_productId_not?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productId_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productId_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU?: InputMaybe<Scalars["String"]>;
+  identification_sKU_contains?: InputMaybe<Scalars["String"]>;
+  identification_sKU_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_gt?: InputMaybe<Scalars["String"]>;
+  identification_sKU_gte?: InputMaybe<Scalars["String"]>;
+  identification_sKU_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_sKU_lt?: InputMaybe<Scalars["String"]>;
+  identification_sKU_lte?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_sKU_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_height_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_height_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_length_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_length_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_unit_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_unit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_width_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_width_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_contains?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_gt?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_gte?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_packageQuantity_lt?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_lte?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_packageQuantity_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_packageQuantity_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_packageQuantity_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_gt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_gte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_unit_lt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_lte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_unit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_gt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_gte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_value_lt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_lte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_value_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_brandName_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_brandName_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_starts_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_gt?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_gte?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturerPartNumber_lt?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_lte?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturerPartNumber_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_manufacturer_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturer_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_materials?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_materials_contains?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_not?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_materials_not_contains?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_not_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_modelNumber?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_modelNumber_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_modelNumber_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_starts_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  title?: InputMaybe<Scalars["String"]>;
+  title_contains?: InputMaybe<Scalars["String"]>;
+  title_contains_nocase?: InputMaybe<Scalars["String"]>;
+  title_ends_with?: InputMaybe<Scalars["String"]>;
+  title_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_gt?: InputMaybe<Scalars["String"]>;
+  title_gte?: InputMaybe<Scalars["String"]>;
+  title_in?: InputMaybe<Array<Scalars["String"]>>;
+  title_lt?: InputMaybe<Scalars["String"]>;
+  title_lte?: InputMaybe<Scalars["String"]>;
+  title_not?: InputMaybe<Scalars["String"]>;
+  title_not_contains?: InputMaybe<Scalars["String"]>;
+  title_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  title_not_ends_with?: InputMaybe<Scalars["String"]>;
+  title_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  title_not_starts_with?: InputMaybe<Scalars["String"]>;
+  title_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_starts_with?: InputMaybe<Scalars["String"]>;
+  title_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["Int"]>;
+  version_gt?: InputMaybe<Scalars["Int"]>;
+  version_gte?: InputMaybe<Scalars["Int"]>;
+  version_in?: InputMaybe<Array<Scalars["Int"]>>;
+  version_lt?: InputMaybe<Scalars["Int"]>;
+  version_lte?: InputMaybe<Scalars["Int"]>;
+  version_not?: InputMaybe<Scalars["Int"]>;
+  version_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  visuals_images?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export enum ProductV1ProductOverrides_OrderBy {
+  Brand = "brand",
+  Description = "description",
+  Id = "id",
+  IdentificationProductId = "identification_productId",
+  IdentificationProductIdType = "identification_productIdType",
+  IdentificationSKu = "identification_sKU",
+  PackagingDimensionsHeight = "packaging_dimensions_height",
+  PackagingDimensionsLength = "packaging_dimensions_length",
+  PackagingDimensionsUnit = "packaging_dimensions_unit",
+  PackagingDimensionsWidth = "packaging_dimensions_width",
+  PackagingPackageQuantity = "packaging_packageQuantity",
+  PackagingWeightUnit = "packaging_weight_unit",
+  PackagingWeightValue = "packaging_weight_value",
+  ProductionInformationBrandName = "productionInformation_brandName",
+  ProductionInformationManufacturer = "productionInformation_manufacturer",
+  ProductionInformationManufacturerPartNumber = "productionInformation_manufacturerPartNumber",
+  ProductionInformationMaterials = "productionInformation_materials",
+  ProductionInformationModelNumber = "productionInformation_modelNumber",
+  Title = "title",
+  Version = "version",
+  VisualsImages = "visuals_images",
+  VisualsVideos = "visuals_videos"
+}
+
+export type ProductV1Product_Filter = {
+  brand?: InputMaybe<Scalars["String"]>;
+  brand_contains?: InputMaybe<Scalars["String"]>;
+  brand_contains_nocase?: InputMaybe<Scalars["String"]>;
+  brand_ends_with?: InputMaybe<Scalars["String"]>;
+  brand_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_gt?: InputMaybe<Scalars["String"]>;
+  brand_gte?: InputMaybe<Scalars["String"]>;
+  brand_in?: InputMaybe<Array<Scalars["String"]>>;
+  brand_lt?: InputMaybe<Scalars["String"]>;
+  brand_lte?: InputMaybe<Scalars["String"]>;
+  brand_not?: InputMaybe<Scalars["String"]>;
+  brand_not_contains?: InputMaybe<Scalars["String"]>;
+  brand_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  brand_not_ends_with?: InputMaybe<Scalars["String"]>;
+  brand_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  brand_not_starts_with?: InputMaybe<Scalars["String"]>;
+  brand_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  brand_starts_with?: InputMaybe<Scalars["String"]>;
+  brand_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  category?: InputMaybe<Scalars["String"]>;
+  category_contains?: InputMaybe<Scalars["String"]>;
+  category_contains_nocase?: InputMaybe<Scalars["String"]>;
+  category_ends_with?: InputMaybe<Scalars["String"]>;
+  category_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  category_gt?: InputMaybe<Scalars["String"]>;
+  category_gte?: InputMaybe<Scalars["String"]>;
+  category_in?: InputMaybe<Array<Scalars["String"]>>;
+  category_lt?: InputMaybe<Scalars["String"]>;
+  category_lte?: InputMaybe<Scalars["String"]>;
+  category_not?: InputMaybe<Scalars["String"]>;
+  category_not_contains?: InputMaybe<Scalars["String"]>;
+  category_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  category_not_ends_with?: InputMaybe<Scalars["String"]>;
+  category_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  category_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  category_not_starts_with?: InputMaybe<Scalars["String"]>;
+  category_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  category_starts_with?: InputMaybe<Scalars["String"]>;
+  category_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_category?: InputMaybe<Scalars["String"]>;
+  details_category_contains?: InputMaybe<Scalars["String"]>;
+  details_category_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_category_ends_with?: InputMaybe<Scalars["String"]>;
+  details_category_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_category_gt?: InputMaybe<Scalars["String"]>;
+  details_category_gte?: InputMaybe<Scalars["String"]>;
+  details_category_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_category_lt?: InputMaybe<Scalars["String"]>;
+  details_category_lte?: InputMaybe<Scalars["String"]>;
+  details_category_not?: InputMaybe<Scalars["String"]>;
+  details_category_not_contains?: InputMaybe<Scalars["String"]>;
+  details_category_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_category_not_ends_with?: InputMaybe<Scalars["String"]>;
+  details_category_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_category_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_category_not_starts_with?: InputMaybe<Scalars["String"]>;
+  details_category_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_category_starts_with?: InputMaybe<Scalars["String"]>;
+  details_category_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_contains?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_ends_with?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_gt?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_gte?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_offerCategory_lt?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_lte?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_contains?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_ends_with?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_offerCategory_not_starts_with?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_starts_with?: InputMaybe<Scalars["String"]>;
+  details_offerCategory_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_personalisation?: InputMaybe<Array<Scalars["String"]>>;
+  details_personalisation_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_personalisation_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  details_personalisation_not?: InputMaybe<Array<Scalars["String"]>>;
+  details_personalisation_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_personalisation_not_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  details_sections?: InputMaybe<Array<Scalars["String"]>>;
+  details_sections_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_sections_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  details_sections_not?: InputMaybe<Array<Scalars["String"]>>;
+  details_sections_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_sections_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  details_subCategory?: InputMaybe<Scalars["String"]>;
+  details_subCategory2?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_contains?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_ends_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_gt?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_gte?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_subCategory2_lt?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_lte?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_contains?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_ends_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_subCategory2_not_starts_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_starts_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory2_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_contains?: InputMaybe<Scalars["String"]>;
+  details_subCategory_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_ends_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_gt?: InputMaybe<Scalars["String"]>;
+  details_subCategory_gte?: InputMaybe<Scalars["String"]>;
+  details_subCategory_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_subCategory_lt?: InputMaybe<Scalars["String"]>;
+  details_subCategory_lte?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_contains?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_ends_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  details_subCategory_not_starts_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_subCategory_starts_with?: InputMaybe<Scalars["String"]>;
+  details_subCategory_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  details_tags?: InputMaybe<Array<Scalars["String"]>>;
+  details_tags_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_tags_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  details_tags_not?: InputMaybe<Array<Scalars["String"]>>;
+  details_tags_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  details_tags_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  identification_productId?: InputMaybe<Scalars["String"]>;
+  identification_productIdType?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_contains?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_gt?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_gte?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productIdType_lt?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_lte?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productIdType_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productIdType_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productIdType_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productId_contains?: InputMaybe<Scalars["String"]>;
+  identification_productId_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_gt?: InputMaybe<Scalars["String"]>;
+  identification_productId_gte?: InputMaybe<Scalars["String"]>;
+  identification_productId_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productId_lt?: InputMaybe<Scalars["String"]>;
+  identification_productId_lte?: InputMaybe<Scalars["String"]>;
+  identification_productId_not?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_productId_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  identification_productId_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_productId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU?: InputMaybe<Scalars["String"]>;
+  identification_sKU_contains?: InputMaybe<Scalars["String"]>;
+  identification_sKU_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_gt?: InputMaybe<Scalars["String"]>;
+  identification_sKU_gte?: InputMaybe<Scalars["String"]>;
+  identification_sKU_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_sKU_lt?: InputMaybe<Scalars["String"]>;
+  identification_sKU_lte?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_contains?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_ends_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  identification_sKU_not_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  identification_sKU_starts_with?: InputMaybe<Scalars["String"]>;
+  identification_sKU_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offerCategory?: InputMaybe<ProductV1OfferCategory>;
+  offerCategory_in?: InputMaybe<Array<ProductV1OfferCategory>>;
+  offerCategory_not?: InputMaybe<ProductV1OfferCategory>;
+  offerCategory_not_in?: InputMaybe<Array<ProductV1OfferCategory>>;
+  packaging_dimensions_height?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_height_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_height_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_height_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_height_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_length_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_length_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_length_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_length_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_unit_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_unit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_unit_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_unit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_gt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_gte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_width_lt?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_lte?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_dimensions_width_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_dimensions_width_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_dimensions_width_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_contains?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_gt?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_gte?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_packageQuantity_lt?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_lte?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_packageQuantity_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_packageQuantity_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  packaging_packageQuantity_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_packageQuantity_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_gt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_gte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_unit_lt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_lte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_unit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_unit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_gt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_gte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_value_lt?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_lte?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_contains?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_ends_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  packaging_weight_value_not_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_starts_with?: InputMaybe<Scalars["String"]>;
+  packaging_weight_value_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  personalisation?: InputMaybe<Array<Scalars["String"]>>;
+  personalisation_contains?: InputMaybe<Array<Scalars["String"]>>;
+  personalisation_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  personalisation_not?: InputMaybe<Array<Scalars["String"]>>;
+  personalisation_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  personalisation_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_brandName?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_brandName_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_brandName_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_brandName_starts_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_brandName_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturerPartNumber_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_gt?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_gte?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturerPartNumber_lt?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_lte?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturerPartNumber_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturerPartNumber_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_manufacturer_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_manufacturer_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_manufacturer_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_manufacturer_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_materials?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_materials_contains?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_not?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_materials_not_contains?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_materials_not_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_modelNumber?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_contains?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_ends_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_gt?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_gte?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_in?: InputMaybe<Array<Scalars["String"]>>;
+  productionInformation_modelNumber_lt?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_lte?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_not?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_not_contains?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_ends_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_in?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+  productionInformation_modelNumber_not_starts_with?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  productionInformation_modelNumber_starts_with?: InputMaybe<Scalars["String"]>;
+  productionInformation_modelNumber_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  sections?: InputMaybe<Array<Scalars["String"]>>;
+  sections_contains?: InputMaybe<Array<Scalars["String"]>>;
+  sections_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  sections_not?: InputMaybe<Array<Scalars["String"]>>;
+  sections_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  sections_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  subCategory?: InputMaybe<Scalars["String"]>;
+  subCategory2?: InputMaybe<Scalars["String"]>;
+  subCategory2_contains?: InputMaybe<Scalars["String"]>;
+  subCategory2_contains_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory2_ends_with?: InputMaybe<Scalars["String"]>;
+  subCategory2_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory2_gt?: InputMaybe<Scalars["String"]>;
+  subCategory2_gte?: InputMaybe<Scalars["String"]>;
+  subCategory2_in?: InputMaybe<Array<Scalars["String"]>>;
+  subCategory2_lt?: InputMaybe<Scalars["String"]>;
+  subCategory2_lte?: InputMaybe<Scalars["String"]>;
+  subCategory2_not?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_contains?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_ends_with?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  subCategory2_not_starts_with?: InputMaybe<Scalars["String"]>;
+  subCategory2_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory2_starts_with?: InputMaybe<Scalars["String"]>;
+  subCategory2_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_contains?: InputMaybe<Scalars["String"]>;
+  subCategory_contains_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_ends_with?: InputMaybe<Scalars["String"]>;
+  subCategory_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_gt?: InputMaybe<Scalars["String"]>;
+  subCategory_gte?: InputMaybe<Scalars["String"]>;
+  subCategory_in?: InputMaybe<Array<Scalars["String"]>>;
+  subCategory_lt?: InputMaybe<Scalars["String"]>;
+  subCategory_lte?: InputMaybe<Scalars["String"]>;
+  subCategory_not?: InputMaybe<Scalars["String"]>;
+  subCategory_not_contains?: InputMaybe<Scalars["String"]>;
+  subCategory_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_not_ends_with?: InputMaybe<Scalars["String"]>;
+  subCategory_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  subCategory_not_starts_with?: InputMaybe<Scalars["String"]>;
+  subCategory_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  subCategory_starts_with?: InputMaybe<Scalars["String"]>;
+  subCategory_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tags?: InputMaybe<Array<Scalars["String"]>>;
+  tags_contains?: InputMaybe<Array<Scalars["String"]>>;
+  tags_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  tags_not?: InputMaybe<Array<Scalars["String"]>>;
+  tags_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  tags_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  title?: InputMaybe<Scalars["String"]>;
+  title_contains?: InputMaybe<Scalars["String"]>;
+  title_contains_nocase?: InputMaybe<Scalars["String"]>;
+  title_ends_with?: InputMaybe<Scalars["String"]>;
+  title_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_gt?: InputMaybe<Scalars["String"]>;
+  title_gte?: InputMaybe<Scalars["String"]>;
+  title_in?: InputMaybe<Array<Scalars["String"]>>;
+  title_lt?: InputMaybe<Scalars["String"]>;
+  title_lte?: InputMaybe<Scalars["String"]>;
+  title_not?: InputMaybe<Scalars["String"]>;
+  title_not_contains?: InputMaybe<Scalars["String"]>;
+  title_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  title_not_ends_with?: InputMaybe<Scalars["String"]>;
+  title_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  title_not_starts_with?: InputMaybe<Scalars["String"]>;
+  title_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  title_starts_with?: InputMaybe<Scalars["String"]>;
+  title_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid?: InputMaybe<Scalars["String"]>;
+  uuid_contains?: InputMaybe<Scalars["String"]>;
+  uuid_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_gt?: InputMaybe<Scalars["String"]>;
+  uuid_gte?: InputMaybe<Scalars["String"]>;
+  uuid_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_lt?: InputMaybe<Scalars["String"]>;
+  uuid_lte?: InputMaybe<Scalars["String"]>;
+  uuid_not?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains?: InputMaybe<Scalars["String"]>;
+  uuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  uuid_not_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with?: InputMaybe<Scalars["String"]>;
+  uuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["Int"]>;
+  version_gt?: InputMaybe<Scalars["Int"]>;
+  version_gte?: InputMaybe<Scalars["Int"]>;
+  version_in?: InputMaybe<Array<Scalars["Int"]>>;
+  version_lt?: InputMaybe<Scalars["Int"]>;
+  version_lte?: InputMaybe<Scalars["Int"]>;
+  version_not?: InputMaybe<Scalars["Int"]>;
+  version_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  visuals_images?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_images_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  visuals_videos_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export enum ProductV1Product_OrderBy {
+  Brand = "brand",
+  Category = "category",
+  Description = "description",
+  DetailsCategory = "details_category",
+  DetailsOfferCategory = "details_offerCategory",
+  DetailsPersonalisation = "details_personalisation",
+  DetailsSections = "details_sections",
+  DetailsSubCategory = "details_subCategory",
+  DetailsSubCategory2 = "details_subCategory2",
+  DetailsTags = "details_tags",
+  Id = "id",
+  IdentificationProductId = "identification_productId",
+  IdentificationProductIdType = "identification_productIdType",
+  IdentificationSKu = "identification_sKU",
+  OfferCategory = "offerCategory",
+  PackagingDimensionsHeight = "packaging_dimensions_height",
+  PackagingDimensionsLength = "packaging_dimensions_length",
+  PackagingDimensionsUnit = "packaging_dimensions_unit",
+  PackagingDimensionsWidth = "packaging_dimensions_width",
+  PackagingPackageQuantity = "packaging_packageQuantity",
+  PackagingWeightUnit = "packaging_weight_unit",
+  PackagingWeightValue = "packaging_weight_value",
+  Personalisation = "personalisation",
+  ProductionInformationBrandName = "productionInformation_brandName",
+  ProductionInformationManufacturer = "productionInformation_manufacturer",
+  ProductionInformationManufacturerPartNumber = "productionInformation_manufacturerPartNumber",
+  ProductionInformationMaterials = "productionInformation_materials",
+  ProductionInformationModelNumber = "productionInformation_modelNumber",
+  Sections = "sections",
+  SubCategory = "subCategory",
+  SubCategory2 = "subCategory2",
+  Tags = "tags",
+  Title = "title",
+  Uuid = "uuid",
+  Version = "version",
+  VisualsImages = "visuals_images",
+  VisualsVideos = "visuals_videos"
+}
+
+export type ProductV1Section = {
+  __typename?: "ProductV1Section";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type ProductV1Section_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Section_OrderBy {
+  Id = "id",
+  Name = "name"
+}
+
+export type ProductV1Seller = {
+  __typename?: "ProductV1Seller";
+  contactLinks?: Maybe<Array<ProductV1SellerContactLink>>;
+  defaultVersion?: Maybe<Scalars["Int"]>;
+  description?: Maybe<Scalars["String"]>;
+  externalUrl?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  images?: Maybe<Array<ProductV1Media>>;
+  name?: Maybe<Scalars["String"]>;
+  /**
+   * Refs
+   *
+   */
+  seller: Seller;
+  tokenId?: Maybe<Scalars["String"]>;
+};
+
+export type ProductV1SellerContactLinksArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1SellerContactLink_Filter>;
+};
+
+export type ProductV1SellerImagesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
+export type ProductV1SellerContactLink = {
+  __typename?: "ProductV1SellerContactLink";
+  id: Scalars["ID"];
+  tag: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export type ProductV1SellerContactLink_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1SellerContactLink_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Url = "url"
+}
+
+export type ProductV1Seller_Filter = {
+  contactLinks?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  defaultVersion?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_gt?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_gte?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_in?: InputMaybe<Array<Scalars["Int"]>>;
+  defaultVersion_lt?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_lte?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_not?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   externalUrl?: InputMaybe<Scalars["String"]>;
   externalUrl_contains?: InputMaybe<Scalars["String"]>;
   externalUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1621,54 +3988,6 @@ export type ProductV1MetadataEntity_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  offer?: InputMaybe<Scalars["String"]>;
-  offer_contains?: InputMaybe<Scalars["String"]>;
-  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
-  offer_ends_with?: InputMaybe<Scalars["String"]>;
-  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  offer_gt?: InputMaybe<Scalars["String"]>;
-  offer_gte?: InputMaybe<Scalars["String"]>;
-  offer_in?: InputMaybe<Array<Scalars["String"]>>;
-  offer_lt?: InputMaybe<Scalars["String"]>;
-  offer_lte?: InputMaybe<Scalars["String"]>;
-  offer_not?: InputMaybe<Scalars["String"]>;
-  offer_not_contains?: InputMaybe<Scalars["String"]>;
-  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
-  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
-  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  offer_starts_with?: InputMaybe<Scalars["String"]>;
-  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  quantityAvailable?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_gt?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_gte?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  quantityAvailable_lt?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_lte?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_not?: InputMaybe<Scalars["BigInt"]>;
-  quantityAvailable_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  schemaUrl?: InputMaybe<Scalars["String"]>;
-  schemaUrl_contains?: InputMaybe<Scalars["String"]>;
-  schemaUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
-  schemaUrl_ends_with?: InputMaybe<Scalars["String"]>;
-  schemaUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  schemaUrl_gt?: InputMaybe<Scalars["String"]>;
-  schemaUrl_gte?: InputMaybe<Scalars["String"]>;
-  schemaUrl_in?: InputMaybe<Array<Scalars["String"]>>;
-  schemaUrl_lt?: InputMaybe<Scalars["String"]>;
-  schemaUrl_lte?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_contains?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  schemaUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
-  schemaUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  schemaUrl_starts_with?: InputMaybe<Scalars["String"]>;
-  schemaUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_contains?: InputMaybe<Scalars["String"]>;
   seller_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1689,57 +4008,300 @@ export type ProductV1MetadataEntity_Filter = {
   seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   seller_starts_with?: InputMaybe<Scalars["String"]>;
   seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  tags?: InputMaybe<Array<Scalars["String"]>>;
-  tags_contains?: InputMaybe<Array<Scalars["String"]>>;
-  tags_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
-  tags_not?: InputMaybe<Array<Scalars["String"]>>;
-  tags_not_contains?: InputMaybe<Array<Scalars["String"]>>;
-  tags_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
-  type?: InputMaybe<MetadataType>;
-  type_in?: InputMaybe<Array<MetadataType>>;
-  type_not?: InputMaybe<MetadataType>;
-  type_not_in?: InputMaybe<Array<MetadataType>>;
-  validFromDate?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  validFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_not?: InputMaybe<Scalars["BigInt"]>;
-  validFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  validUntilDate?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  validUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
-  validUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  voided?: InputMaybe<Scalars["Boolean"]>;
-  voided_in?: InputMaybe<Array<Scalars["Boolean"]>>;
-  voided_not?: InputMaybe<Scalars["Boolean"]>;
-  voided_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  tokenId?: InputMaybe<Scalars["String"]>;
+  tokenId_contains?: InputMaybe<Scalars["String"]>;
+  tokenId_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenId_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenId_gt?: InputMaybe<Scalars["String"]>;
+  tokenId_gte?: InputMaybe<Scalars["String"]>;
+  tokenId_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenId_lt?: InputMaybe<Scalars["String"]>;
+  tokenId_lte?: InputMaybe<Scalars["String"]>;
+  tokenId_not?: InputMaybe<Scalars["String"]>;
+  tokenId_not_contains?: InputMaybe<Scalars["String"]>;
+  tokenId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenId_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenId_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenId_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenId_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
 };
 
-export enum ProductV1MetadataEntity_OrderBy {
-  Brand = "brand",
-  BrandName = "brandName",
-  CreatedAt = "createdAt",
+export enum ProductV1Seller_OrderBy {
+  ContactLinks = "contactLinks",
+  DefaultVersion = "defaultVersion",
   Description = "description",
-  ExchangeToken = "exchangeToken",
   ExternalUrl = "externalUrl",
   Id = "id",
   Images = "images",
   Name = "name",
-  Offer = "offer",
-  QuantityAvailable = "quantityAvailable",
-  SchemaUrl = "schemaUrl",
   Seller = "seller",
-  Tags = "tags",
-  Type = "type",
-  ValidFromDate = "validFromDate",
-  ValidUntilDate = "validUntilDate",
-  Voided = "voided"
+  TokenId = "tokenId"
+}
+
+export type ProductV1ShippingJurisdiction = {
+  __typename?: "ProductV1ShippingJurisdiction";
+  deliveryTime: Scalars["String"];
+  id: Scalars["ID"];
+  label: Scalars["String"];
+};
+
+export type ProductV1ShippingJurisdiction_Filter = {
+  deliveryTime?: InputMaybe<Scalars["String"]>;
+  deliveryTime_contains?: InputMaybe<Scalars["String"]>;
+  deliveryTime_contains_nocase?: InputMaybe<Scalars["String"]>;
+  deliveryTime_ends_with?: InputMaybe<Scalars["String"]>;
+  deliveryTime_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  deliveryTime_gt?: InputMaybe<Scalars["String"]>;
+  deliveryTime_gte?: InputMaybe<Scalars["String"]>;
+  deliveryTime_in?: InputMaybe<Array<Scalars["String"]>>;
+  deliveryTime_lt?: InputMaybe<Scalars["String"]>;
+  deliveryTime_lte?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_contains?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_ends_with?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  deliveryTime_not_starts_with?: InputMaybe<Scalars["String"]>;
+  deliveryTime_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  deliveryTime_starts_with?: InputMaybe<Scalars["String"]>;
+  deliveryTime_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  label?: InputMaybe<Scalars["String"]>;
+  label_contains?: InputMaybe<Scalars["String"]>;
+  label_contains_nocase?: InputMaybe<Scalars["String"]>;
+  label_ends_with?: InputMaybe<Scalars["String"]>;
+  label_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_gt?: InputMaybe<Scalars["String"]>;
+  label_gte?: InputMaybe<Scalars["String"]>;
+  label_in?: InputMaybe<Array<Scalars["String"]>>;
+  label_lt?: InputMaybe<Scalars["String"]>;
+  label_lte?: InputMaybe<Scalars["String"]>;
+  label_not?: InputMaybe<Scalars["String"]>;
+  label_not_contains?: InputMaybe<Scalars["String"]>;
+  label_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  label_not_ends_with?: InputMaybe<Scalars["String"]>;
+  label_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  label_not_starts_with?: InputMaybe<Scalars["String"]>;
+  label_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  label_starts_with?: InputMaybe<Scalars["String"]>;
+  label_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1ShippingJurisdiction_OrderBy {
+  DeliveryTime = "deliveryTime",
+  Id = "id",
+  Label = "label"
+}
+
+export type ProductV1ShippingOption = {
+  __typename?: "ProductV1ShippingOption";
+  countryOfOrigin?: Maybe<Scalars["String"]>;
+  defaultVersion?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"];
+  redemptionPoint?: Maybe<Scalars["String"]>;
+  supportedJurisdictions?: Maybe<Array<ProductV1ShippingJurisdiction>>;
+};
+
+export type ProductV1ShippingOptionSupportedJurisdictionsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ShippingJurisdiction_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1ShippingJurisdiction_Filter>;
+};
+
+export type ProductV1ShippingOption_Filter = {
+  countryOfOrigin?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_contains?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_contains_nocase?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_ends_with?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_gt?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_gte?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_in?: InputMaybe<Array<Scalars["String"]>>;
+  countryOfOrigin_lt?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_lte?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_contains?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_ends_with?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  countryOfOrigin_not_starts_with?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_starts_with?: InputMaybe<Scalars["String"]>;
+  countryOfOrigin_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  defaultVersion?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_gt?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_gte?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_in?: InputMaybe<Array<Scalars["Int"]>>;
+  defaultVersion_lt?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_lte?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_not?: InputMaybe<Scalars["Int"]>;
+  defaultVersion_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  redemptionPoint?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_contains?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_contains_nocase?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_ends_with?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_gt?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_gte?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_in?: InputMaybe<Array<Scalars["String"]>>;
+  redemptionPoint_lt?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_lte?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_contains?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_ends_with?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  redemptionPoint_not_starts_with?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_starts_with?: InputMaybe<Scalars["String"]>;
+  redemptionPoint_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  supportedJurisdictions?: InputMaybe<Array<Scalars["String"]>>;
+  supportedJurisdictions_contains?: InputMaybe<Array<Scalars["String"]>>;
+  supportedJurisdictions_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  supportedJurisdictions_not?: InputMaybe<Array<Scalars["String"]>>;
+  supportedJurisdictions_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  supportedJurisdictions_not_contains_nocase?: InputMaybe<
+    Array<Scalars["String"]>
+  >;
+};
+
+export enum ProductV1ShippingOption_OrderBy {
+  CountryOfOrigin = "countryOfOrigin",
+  DefaultVersion = "defaultVersion",
+  Id = "id",
+  RedemptionPoint = "redemptionPoint",
+  SupportedJurisdictions = "supportedJurisdictions"
+}
+
+export type ProductV1Tag = {
+  __typename?: "ProductV1Tag";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type ProductV1Tag_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Tag_OrderBy {
+  Id = "id",
+  Name = "name"
+}
+
+export type ProductV1Variation = {
+  __typename?: "ProductV1Variation";
+  id: Scalars["ID"];
+  option: Scalars["String"];
+  type: Scalars["String"];
+};
+
+export type ProductV1Variation_Filter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  option?: InputMaybe<Scalars["String"]>;
+  option_contains?: InputMaybe<Scalars["String"]>;
+  option_contains_nocase?: InputMaybe<Scalars["String"]>;
+  option_ends_with?: InputMaybe<Scalars["String"]>;
+  option_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  option_gt?: InputMaybe<Scalars["String"]>;
+  option_gte?: InputMaybe<Scalars["String"]>;
+  option_in?: InputMaybe<Array<Scalars["String"]>>;
+  option_lt?: InputMaybe<Scalars["String"]>;
+  option_lte?: InputMaybe<Scalars["String"]>;
+  option_not?: InputMaybe<Scalars["String"]>;
+  option_not_contains?: InputMaybe<Scalars["String"]>;
+  option_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  option_not_ends_with?: InputMaybe<Scalars["String"]>;
+  option_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  option_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  option_not_starts_with?: InputMaybe<Scalars["String"]>;
+  option_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  option_starts_with?: InputMaybe<Scalars["String"]>;
+  option_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<Scalars["String"]>;
+  type_contains?: InputMaybe<Scalars["String"]>;
+  type_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_ends_with?: InputMaybe<Scalars["String"]>;
+  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_gt?: InputMaybe<Scalars["String"]>;
+  type_gte?: InputMaybe<Scalars["String"]>;
+  type_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_lt?: InputMaybe<Scalars["String"]>;
+  type_lte?: InputMaybe<Scalars["String"]>;
+  type_not?: InputMaybe<Scalars["String"]>;
+  type_not_contains?: InputMaybe<Scalars["String"]>;
+  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_not_starts_with?: InputMaybe<Scalars["String"]>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_starts_with?: InputMaybe<Scalars["String"]>;
+  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum ProductV1Variation_OrderBy {
+  Id = "id",
+  Option = "option",
+  Type = "type"
 }
 
 export type Query = {
@@ -1760,14 +4322,41 @@ export type Query = {
   exchanges: Array<Exchange>;
   fundsEntities: Array<FundsEntity>;
   fundsEntity?: Maybe<FundsEntity>;
+  metadataAttribute?: Maybe<MetadataAttribute>;
+  metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
   offer?: Maybe<Offer>;
   offers: Array<Offer>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
+  productV1Categories: Array<ProductV1Category>;
+  productV1Category?: Maybe<ProductV1Category>;
+  productV1ExchangePolicies: Array<ProductV1ExchangePolicy>;
+  productV1ExchangePolicy?: Maybe<ProductV1ExchangePolicy>;
+  productV1Media?: Maybe<ProductV1Media>;
+  productV1Medias: Array<ProductV1Media>;
   productV1MetadataEntities: Array<ProductV1MetadataEntity>;
   productV1MetadataEntity?: Maybe<ProductV1MetadataEntity>;
+  productV1Personalisation?: Maybe<ProductV1Personalisation>;
+  productV1Personalisations: Array<ProductV1Personalisation>;
+  productV1Product?: Maybe<ProductV1Product>;
+  productV1ProductOverrides: Array<ProductV1ProductOverrides>;
+  productV1Products: Array<ProductV1Product>;
+  productV1Section?: Maybe<ProductV1Section>;
+  productV1Sections: Array<ProductV1Section>;
+  productV1Seller?: Maybe<ProductV1Seller>;
+  productV1SellerContactLink?: Maybe<ProductV1SellerContactLink>;
+  productV1SellerContactLinks: Array<ProductV1SellerContactLink>;
+  productV1Sellers: Array<ProductV1Seller>;
+  productV1ShippingJurisdiction?: Maybe<ProductV1ShippingJurisdiction>;
+  productV1ShippingJurisdictions: Array<ProductV1ShippingJurisdiction>;
+  productV1ShippingOption?: Maybe<ProductV1ShippingOption>;
+  productV1ShippingOptions: Array<ProductV1ShippingOption>;
+  productV1Tag?: Maybe<ProductV1Tag>;
+  productV1Tags: Array<ProductV1Tag>;
+  productV1Variation?: Maybe<ProductV1Variation>;
+  productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
   sellers: Array<Seller>;
 };
@@ -1888,6 +4477,22 @@ export type QueryFundsEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type QueryMetadataAttributeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryMetadataAttributesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<MetadataAttribute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
 export type QueryMetadataInterfaceArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -1936,6 +4541,54 @@ export type QueryProductV1BrandsArgs = {
   where?: InputMaybe<ProductV1Brand_Filter>;
 };
 
+export type QueryProductV1CategoriesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Category_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Category_Filter>;
+};
+
+export type QueryProductV1CategoryArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1ExchangePoliciesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ExchangePolicy_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ExchangePolicy_Filter>;
+};
+
+export type QueryProductV1ExchangePolicyArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1MediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1MediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
 export type QueryProductV1MetadataEntitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -1950,6 +4603,160 @@ export type QueryProductV1MetadataEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1PersonalisationArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1PersonalisationsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Personalisation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Personalisation_Filter>;
+};
+
+export type QueryProductV1ProductArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1ProductOverridesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ProductOverrides_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ProductOverrides_Filter>;
+};
+
+export type QueryProductV1ProductsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Product_Filter>;
+};
+
+export type QueryProductV1SectionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1SectionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Section_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Section_Filter>;
+};
+
+export type QueryProductV1SellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1SellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1SellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1SellerContactLink_Filter>;
+};
+
+export type QueryProductV1SellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Seller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Seller_Filter>;
+};
+
+export type QueryProductV1ShippingJurisdictionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1ShippingJurisdictionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ShippingJurisdiction_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ShippingJurisdiction_Filter>;
+};
+
+export type QueryProductV1ShippingOptionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1ShippingOptionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ShippingOption_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ShippingOption_Filter>;
+};
+
+export type QueryProductV1TagArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1TagsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Tag_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type QueryProductV1VariationArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1VariationsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
 export type QuerySellerArgs = {
@@ -2084,14 +4891,41 @@ export type Subscription = {
   exchanges: Array<Exchange>;
   fundsEntities: Array<FundsEntity>;
   fundsEntity?: Maybe<FundsEntity>;
+  metadataAttribute?: Maybe<MetadataAttribute>;
+  metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
   offer?: Maybe<Offer>;
   offers: Array<Offer>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
+  productV1Categories: Array<ProductV1Category>;
+  productV1Category?: Maybe<ProductV1Category>;
+  productV1ExchangePolicies: Array<ProductV1ExchangePolicy>;
+  productV1ExchangePolicy?: Maybe<ProductV1ExchangePolicy>;
+  productV1Media?: Maybe<ProductV1Media>;
+  productV1Medias: Array<ProductV1Media>;
   productV1MetadataEntities: Array<ProductV1MetadataEntity>;
   productV1MetadataEntity?: Maybe<ProductV1MetadataEntity>;
+  productV1Personalisation?: Maybe<ProductV1Personalisation>;
+  productV1Personalisations: Array<ProductV1Personalisation>;
+  productV1Product?: Maybe<ProductV1Product>;
+  productV1ProductOverrides: Array<ProductV1ProductOverrides>;
+  productV1Products: Array<ProductV1Product>;
+  productV1Section?: Maybe<ProductV1Section>;
+  productV1Sections: Array<ProductV1Section>;
+  productV1Seller?: Maybe<ProductV1Seller>;
+  productV1SellerContactLink?: Maybe<ProductV1SellerContactLink>;
+  productV1SellerContactLinks: Array<ProductV1SellerContactLink>;
+  productV1Sellers: Array<ProductV1Seller>;
+  productV1ShippingJurisdiction?: Maybe<ProductV1ShippingJurisdiction>;
+  productV1ShippingJurisdictions: Array<ProductV1ShippingJurisdiction>;
+  productV1ShippingOption?: Maybe<ProductV1ShippingOption>;
+  productV1ShippingOptions: Array<ProductV1ShippingOption>;
+  productV1Tag?: Maybe<ProductV1Tag>;
+  productV1Tags: Array<ProductV1Tag>;
+  productV1Variation?: Maybe<ProductV1Variation>;
+  productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
   sellers: Array<Seller>;
 };
@@ -2212,6 +5046,22 @@ export type SubscriptionFundsEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type SubscriptionMetadataAttributeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionMetadataAttributesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<MetadataAttribute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<MetadataAttribute_Filter>;
+};
+
 export type SubscriptionMetadataInterfaceArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -2260,6 +5110,54 @@ export type SubscriptionProductV1BrandsArgs = {
   where?: InputMaybe<ProductV1Brand_Filter>;
 };
 
+export type SubscriptionProductV1CategoriesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Category_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Category_Filter>;
+};
+
+export type SubscriptionProductV1CategoryArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1ExchangePoliciesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ExchangePolicy_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ExchangePolicy_Filter>;
+};
+
+export type SubscriptionProductV1ExchangePolicyArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1MediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1MediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Media_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Media_Filter>;
+};
+
 export type SubscriptionProductV1MetadataEntitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -2274,6 +5172,160 @@ export type SubscriptionProductV1MetadataEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1PersonalisationArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1PersonalisationsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Personalisation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Personalisation_Filter>;
+};
+
+export type SubscriptionProductV1ProductArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1ProductOverridesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ProductOverrides_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ProductOverrides_Filter>;
+};
+
+export type SubscriptionProductV1ProductsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Product_Filter>;
+};
+
+export type SubscriptionProductV1SectionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1SectionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Section_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Section_Filter>;
+};
+
+export type SubscriptionProductV1SellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1SellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1SellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1SellerContactLink_Filter>;
+};
+
+export type SubscriptionProductV1SellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Seller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Seller_Filter>;
+};
+
+export type SubscriptionProductV1ShippingJurisdictionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1ShippingJurisdictionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ShippingJurisdiction_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ShippingJurisdiction_Filter>;
+};
+
+export type SubscriptionProductV1ShippingOptionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1ShippingOptionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1ShippingOption_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1ShippingOption_Filter>;
+};
+
+export type SubscriptionProductV1TagArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1TagsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Tag_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type SubscriptionProductV1VariationArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1VariationsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
 export type SubscriptionSellerArgs = {
@@ -2409,18 +5461,18 @@ export type GetSellerByIdQueryQuery = {
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | null;
@@ -2531,18 +5583,18 @@ export type GetSellersQueryQuery = {
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | null;
@@ -2741,18 +5793,18 @@ export type SellerFieldsFragment = {
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | null;
@@ -2898,18 +5950,18 @@ export type GetExchangeByIdQueryQuery = {
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | null;
@@ -2995,18 +6047,18 @@ export type GetExchangesQueryQuery = {
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            name?: string | null;
-            description?: string | null;
-            externalUrl?: string | null;
-            schemaUrl?: string | null;
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
             type: MetadataType;
           }
         | null;
@@ -3077,18 +6129,18 @@ export type ExchangeFieldsFragment = {
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | null;
@@ -3236,18 +6288,18 @@ export type GetOfferByIdQueryQuery = {
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | null;
@@ -3324,18 +6376,18 @@ export type GetOffersQueryQuery = {
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          name?: string | null;
-          description?: string | null;
-          externalUrl?: string | null;
-          schemaUrl?: string | null;
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
           type: MetadataType;
         }
       | null;
@@ -3396,18 +6448,18 @@ export type OfferFieldsFragment = {
   metadata?:
     | {
         __typename?: "BaseMetadataEntity";
-        name?: string | null;
-        description?: string | null;
-        externalUrl?: string | null;
-        schemaUrl?: string | null;
+        name: string;
+        description: string;
+        externalUrl: string;
+        schemaUrl: string;
         type: MetadataType;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        name?: string | null;
-        description?: string | null;
-        externalUrl?: string | null;
-        schemaUrl?: string | null;
+        name: string;
+        description: string;
+        externalUrl: string;
+        schemaUrl: string;
         type: MetadataType;
       }
     | null;
@@ -3453,18 +6505,18 @@ export type BaseOfferFieldsFragment = {
   metadata?:
     | {
         __typename?: "BaseMetadataEntity";
-        name?: string | null;
-        description?: string | null;
-        externalUrl?: string | null;
-        schemaUrl?: string | null;
+        name: string;
+        description: string;
+        externalUrl: string;
+        schemaUrl: string;
         type: MetadataType;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        name?: string | null;
-        description?: string | null;
-        externalUrl?: string | null;
-        schemaUrl?: string | null;
+        name: string;
+        description: string;
+        externalUrl: string;
+        schemaUrl: string;
         type: MetadataType;
       }
     | null;
