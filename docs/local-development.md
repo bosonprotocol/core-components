@@ -14,9 +14,10 @@
 
 ## Prerequisites
 
-## Node & npm
+- Node.js 16.X
+- npm 8.X
 
-Installing the correct versions of node and npm can be done by installing [`volta`](https://volta.sh/). Volta will automatically get those versions from the root package.json file.
+Installing the correct versions of node and npm can also be done by installing [`volta`](https://volta.sh/). Volta will automatically get those versions from the root package.json file.
 
 It is also beneficial to have a rough understanding of the [monorepo tools](./monorepo-tools.md) that we use in this project.
 
@@ -60,13 +61,13 @@ npm run build
 npm run dev
 ```
 
-This will build every package and start dev servers for the [widgets](../packages/widgets/) and the [example parent app](../packages/example-parent-app/):
+This will build every package and start dev servers for the [widgets](../apps/widgets/) and the [example parent react app](../examples/react-parent-app/):
 
 - widgets -> http://localhost:3000
-- example parent app -> http://localhost:4000
+- example react parent app -> http://localhost:4000
 
-Per default the example app will be connected to our staging environment.
-You can change the chain id by modifying the respective value in the [`.env`](../packages/example-parent-app/.env) file of the example app.
+Per default the example app will be connected to our testing environment.
+You can change the chain id by modifying the respective value in the [`.env`](../examples/react-parent-app/.env) file of the example app.
 
 If you want to connect to the local e2e setup from above, then you need to use the chain id `31337`.
 

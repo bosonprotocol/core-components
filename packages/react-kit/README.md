@@ -1,28 +1,39 @@
-# @bosonprotocol/react-kit
+# `@bosonprotocol/react-kit`
 
-This is a set of react components which provide building blocks for interacting with the Boson Protocol and developer tooling. This includes a storybook which allows for simpler testing and configuration."
+JS lib that contains a set of react components and hooks to provide building blocks for interacting with the Boson Protocol.
 
-## INSTALLATION
+## Installation
 
 ```bash
 npm install @bosonprotocol/react-kit
 ```
 
+## Usage
+
+```ts
+import { hooks, CommitButton } from "@bosonprotocol/react-kit";
+
+// TODO
+```
+
 ## Local development
 
-Run on the root of the project:
+Install dependencies if you haven't already by running in the root of this monorepo
 
 ```bash
 npm ci
+```
+
+### Run storybook
+
+Build the sdks of this monorepo by running in the root
+
+```bash
 npm run build:sdks
 ```
 
-## Usage
-
-Run inside of react-kit folder:
+Start the storybook
 
 ```bash
 npm run storybook
 ```
-
-NOTE: To use components that require wallet connection please use the connectWallet component first.
