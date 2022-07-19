@@ -2,25 +2,60 @@
 
 # Releases
 
-The core components of the Boson Protocol have different release targets.
+The core components of the Boson Protocol use GitHub Actions to automatically release to different targets.
 
 ## Publishing npm packages
 
-Libraries which can be consumed by other JS apps are published to npm.
-See `.github/workflows/publish-release.yaml` for details.
+Most of the workspaces in `packages/*` are libraries that can be consumed by other JS apps. They are published to npm.
+
+### Alpha packages
+
+Every merge into the `main` branch will trigger an `alpha` release of changed packages using `lerna`. For details have a look at [`.github/workflows/publish-alpha.yaml`](../.github/workflows/publish-alpha.yaml.).
+
+### Latest packages
+
+A stable release can be triggered manually by running the workflow `publish-latest.yaml` via the GitHub UI. For details have a look at [`.github/workflows/publish-latest.yaml`](../.github/workflows/publish-latest.yaml.)
 
 ## Deploying widgets
 
-Widgets are primarily consumed through an iframe.
-Have a look into `.github/workflows/deploy-to-surge.yaml` to see the workflow for deploying the `next` version of the widgets and example parent app to:
+Widgets are hosted and primarily consumed through an iframe.
 
-- https://boson-widgets-test.surge.sh
-- https://boson-parent-test.surge.sh
+### Testing widgets
 
-The `stable` version of the widgets are deployed to IPFS via [fleek](https://fleek.co/). See `.github/workflows/deploy-widgets-ipfs.yaml` for details. The url is:
+Every merge into the `main` branch will trigger a deployment of the `testing` widgets to [surge.sh](). For details have a look at [`.github/workflows/deploy-testing-widgets.yaml`](../.github/workflows/deploy-testing-widgets.yaml.). These widgets can be accessed via:
+
+- https://boson-widgets-testing.surge.sh
+
+### Staging widgets
+
+If a stable release of the packages are triggered through the GitHub UI, then a deployment of the `staging` widgets to [surge.sh]() will also start. For details have a look at [`.github/workflows/deploy-staging-widgets.yaml`](../.github/workflows/deploy-staging-widgets.yaml.). These widgets can be accessed via:
+
+- https://boson-widgets-staging.surge.sh
+
+### Production widgets
+
+A `production` widgets deployment to IPFS/Cloudflare via [fleek]() can be triggered through the GitHub UI by running the workflow `deploy-prod-widgets.yaml`. For details have a look at [`.github/workflows/deploy-prod-widgets.yaml`](../.github/workflows/deploy-prod-widgets.yaml.). These widgets can be accessed via:
 
 - https://billowing-sound-6347.on.fleek.co (TODO: replace with official one)
 
 ## Deploying subgraphs
 
-> TODO
+Subgraphs are deployed also to different environments.
+
+### Testing
+
+Every merge into the `main` branch will trigger a deployment of the subgraph which listens to our `testing` environment. For details have a look at [`.github/workflows/deploy-testing-subgraph.yaml`](../.github/workflows/deploy-testing-subgraph.yaml.). Access this subgraph via:
+
+- https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents
+
+### Staging
+
+If a stable release of the packages are triggered through the GitHub UI, then a deployment of the subgraph connected to the `staging` environment is also initiated. For details have a look at [`.github/workflows/deploy-staging-subgraph.yaml`](../.github/workflows/deploy-staging-subgraph.yaml.). Access this subgraph via:
+
+- https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten
+
+### Production widgets
+
+A `production` subgraph deployment to can be triggered through the GitHub UI by running the workflow `deploy-prod-subgraph.yaml`. For details have a look at [`.github/workflows/deploy-prod-subgraph.yaml`](../.github/workflows/deploy-prod-subgraph.yaml.). Access this subgraph via:
+
+- TODO

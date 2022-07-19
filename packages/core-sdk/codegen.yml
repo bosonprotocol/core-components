@@ -1,8 +1,8 @@
 overwrite: true
 schema: http://localhost:8000/subgraphs/name/boson/corecomponents
-documents: "./packages/core-sdk/src/**/*.graphql"
+documents: "./src/**/*.graphql"
 generates:
-  ./packages/core-sdk/src/subgraph.ts:
+  ./src/subgraph.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

@@ -16,6 +16,7 @@
     "build:sdks": "turbo run build --filter=!@bosonprotocol/widgets --filter=!@bosonprotocol/example-parent-app",
     "test": "turbo run test",
     "clean": "turbo run clean",
+    "codegen": "turbo run codegen",
     "version": "echo 'not implemented'",
     "e2e:suite": "run-script-os",
     "e2e:suite:default": "./e2e/run-e2e-suite.sh",
@@ -25,8 +26,7 @@
     "e2e:services:default": "./e2e/run-e2e-services.sh",
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
-    "export-abis": "ts-node ./scripts/export-abis.ts",
-    "codegen:core-sdk": "graphql-codegen --config ./packages/core-sdk/codegen.yml && npm run lint:fix"
+    "export-abis": "ts-node ./scripts/export-abis.ts"
   },
   "repository": {
     "type": "git",
