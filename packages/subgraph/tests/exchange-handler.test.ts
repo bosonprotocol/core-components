@@ -1,4 +1,5 @@
 import {
+  beforeEach,
   test,
   assert,
   clearStore,
@@ -8,6 +9,10 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { Offer, BaseMetadataEntity } from "../generated/schema";
 import { handleBuyerCommittedEvent } from "../src/mappings/exchange-handler";
 import { createBuyerCommittedEvent } from "./mocks";
+
+beforeEach(() => {
+  clearStore();
+});
 
 test("handle BuyerCommittedEvent", () => {
   const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
@@ -37,6 +42,4 @@ test("handle BuyerCommittedEvent", () => {
   );
   assert.fieldEquals("Exchange", "3", "id", "3");
   assert.fieldEquals("Exchange", "3", "state", "COMMITTED");
-
-  clearStore();
 });

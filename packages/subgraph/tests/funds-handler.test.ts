@@ -1,4 +1,9 @@
-import { test, assert, clearStore } from "matchstick-as/assembly/index";
+import {
+  beforeEach,
+  test,
+  assert,
+  clearStore
+} from "matchstick-as/assembly/index";
 import {
   handleFundsDepositedEvent,
   handleFundsWithdrawnEvent,
@@ -19,6 +24,10 @@ const buyerId = 2;
 const exchangeId = 3;
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const tokenAddress = "0x0000000000000000000000000000000000000000";
+
+beforeEach(() => {
+  clearStore();
+});
 
 test("handle FundsDepositedEvent", () => {
   const fundsDepositedEvent = createFundsDepositedEvent(
@@ -55,8 +64,6 @@ test("handle FundsReleasedEvent", () => {
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "200");
   assert.fieldEquals("FundsEntity", fundsId, "tokenAddress", tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "accountId", buyerId.toString());
-
-  clearStore();
 });
 
 test("handle FundsEncumberedEvent", () => {
@@ -89,8 +96,6 @@ test("handle FundsEncumberedEvent", () => {
   const fundsId = getFundsId(sellerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "90");
-
-  clearStore();
 });
 
 test("handle FundsWithdrawnEvent", () => {
@@ -114,8 +119,6 @@ test("handle FundsWithdrawnEvent", () => {
   const fundsId = getFundsId(sellerId, tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "90");
-
-  clearStore();
 });
 
 function getFundsId(entityId: i32, tokenAddress: string): string {

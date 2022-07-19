@@ -1,4 +1,9 @@
-import { test, assert, clearStore } from "matchstick-as/assembly/index";
+import {
+  beforeEach,
+  test,
+  assert,
+  clearStore
+} from "matchstick-as/assembly/index";
 import {
   handleSellerCreatedEvent,
   handleSellerUpdatedEvent,
@@ -11,6 +16,10 @@ import {
 } from "./mocks";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
+
+beforeEach(() => {
+  clearStore();
+});
 
 test("handle SellerCreatedEvent", () => {
   const sellerCreatedEvent = createSellerCreatedEvent(
@@ -27,8 +36,6 @@ test("handle SellerCreatedEvent", () => {
   assert.fieldEquals("Seller", "1", "id", "1");
   assert.fieldEquals("Seller", "1", "operator", sellerAddress.toLowerCase());
   assert.fieldEquals("Seller", "1", "active", "true");
-
-  clearStore();
 });
 
 test("handle SellerUpdatedEvent", () => {
@@ -45,8 +52,6 @@ test("handle SellerUpdatedEvent", () => {
   handleSellerUpdatedEvent(sellerUpdatedEvent);
 
   assert.fieldEquals("Seller", "1", "active", "false");
-
-  clearStore();
 });
 
 test("handle BuyerCreatedEvent", () => {
@@ -60,6 +65,4 @@ test("handle BuyerCreatedEvent", () => {
 
   assert.fieldEquals("Buyer", "1", "wallet", sellerAddress.toLowerCase());
   assert.fieldEquals("Buyer", "1", "active", "true");
-
-  clearStore();
 });
