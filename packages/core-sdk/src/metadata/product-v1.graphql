@@ -1,0 +1,285 @@
+query getProductV1BrandsQuery(
+  $brandsSkip: Int
+  $brandsFirst: Int
+  $brandsOrderBy: ProductV1Brand_orderBy
+  $brandsOrderDirection: OrderDirection
+  $brandsFilter: ProductV1Brand_filter
+) {
+  productV1Brands(
+    skip: $brandsSkip
+    first: $brandsFirst
+    orderBy: $brandsOrderBy
+    orderDirection: $brandsOrderDirection
+    where: $brandsFilter
+  ) {
+    ...BaseProductV1BrandFields
+  }
+}
+
+query getProductV1CategoriesQuery(
+  $categoriesSkip: Int
+  $categoriesFirst: Int
+  $categoriesOrderBy: ProductV1Category_orderBy
+  $categoriesOrderDirection: OrderDirection
+  $categoriesFilter: ProductV1Category_filter
+) {
+  productV1Categories(
+    skip: $categoriesSkip
+    first: $categoriesFirst
+    orderBy: $categoriesOrderBy
+    orderDirection: $categoriesOrderDirection
+    where: $categoriesFilter
+  ) {
+    ...BaseProductV1CategoryFields
+  }
+}
+
+query getProductV1MetadataEntityByIdQuery(
+  $metadataId: ID!
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: ProductV1MetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: ProductV1MetadataEntity_filter
+) {
+  productV1MetadataEntity(id: $metadataId) {
+    ...ProductV1MetadataEntityFields
+  }
+}
+
+query getProductV1MetadataEntitiesQuery(
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: ProductV1MetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: ProductV1MetadataEntity_filter
+) {
+  productV1MetadataEntities(
+    skip: $metadataSkip
+    first: $metadataFirst
+    orderBy: $metadataOrderBy
+    orderDirection: $metadataOrderDirection
+    where: $metadataFilter
+  ) {
+    ...ProductV1MetadataEntityFields
+  }
+}
+
+fragment ProductV1MetadataEntityFields on ProductV1MetadataEntity {
+  ...BaseProductV1MetadataEntityFields
+}
+
+fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
+  id
+  name
+  description
+  externalUrl
+  schemaUrl
+  type
+  image
+  attributes {
+    traitType
+    value
+    displayType
+  }
+  offer {
+    ...BaseOfferFields
+  }
+  seller {
+    ...BaseSellerFields
+  }
+  exchangeToken {
+    ...BaseExchangeTokenFields
+  }
+  createdAt
+  voided
+  validFromDate
+  validUntilDate
+  quantityAvailable
+
+  uuid
+  product {
+    ...BaseProductV1ProductFields
+  }
+  variations {
+    ...BaseProductV1VariationFields
+  }
+  productV1Seller {
+    ...BaseProductV1SellerFields
+  }
+}
+
+fragment BaseProductV1ProductFields on ProductV1Product {
+  id
+  uuid
+  version
+  title
+  description
+  identification_sKU
+  identification_productId
+  identification_productIdType
+  productionInformation_brandName
+  brand {
+    ...BaseProductV1BrandFields
+  }
+  productionInformation_manufacturer
+  productionInformation_manufacturerPartNumber
+  productionInformation_modelNumber
+  productionInformation_materials
+  details_category
+  category {
+    ...BaseProductV1CategoryFields
+  }
+  details_subCategory
+  subCategory {
+    ...BaseProductV1CategoryFields
+  }
+  details_subCategory2
+  subCategory2 {
+    ...BaseProductV1CategoryFields
+  }
+  details_offerCategory
+  offerCategory
+  details_tags
+  tags {
+    ...BaseProductV1TagFields
+  }
+  details_sections
+  sections {
+    ...BaseProductV1SectionFields
+  }
+  details_personalisation
+  personalisation {
+    ...BaseProductV1PersonalisationFields
+  }
+  visuals_images {
+    ...BaseProductV1MediaFields
+  }
+  visuals_videos {
+    ...BaseProductV1MediaFields
+  }
+  packaging_packageQuantity
+  packaging_dimensions_length
+  packaging_dimensions_width
+  packaging_dimensions_height
+  packaging_dimensions_unit
+  packaging_weight_value
+  packaging_weight_unit
+}
+
+fragment BaseProductV1BrandFields on ProductV1Brand {
+  id
+  name
+}
+
+fragment BaseProductV1CategoryFields on ProductV1Category {
+  id
+  name
+}
+
+fragment BaseProductV1TagFields on ProductV1Tag {
+  id
+  name
+}
+
+fragment BaseProductV1SectionFields on ProductV1Section {
+  id
+  name
+}
+
+fragment BaseProductV1MediaFields on ProductV1Media {
+  id
+  url
+  tag
+  type
+}
+
+fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {
+  id
+  name
+}
+
+fragment BaseProductV1VariationFields on ProductV1Variation {
+  id
+  type
+  option
+}
+
+fragment BaseProductV1SellerFields on ProductV1Seller {
+  id
+  defaultVersion
+  name
+  description
+  externalUrl
+  tokenId
+  images {
+    ...BaseProductV1MediaFields
+  }
+  contactLinks {
+    ...BaseProductV1SellerContactLinkFields
+  }
+  seller {
+    ...BaseSellerFields
+  }
+}
+
+fragment BaseProductV1SellerContactLinkFields on ProductV1SellerContactLink {
+  id
+  url
+  tag
+}
+
+fragment BaseProductV1ShippingOptionFields on ProductV1ShippingOption {
+  id
+  defaultVersion
+  countryOfOrigin
+  supportedJurisdictions {
+    ...BaseProductV1ShippingJurisdictionFields
+  }
+  redemptionPoint
+}
+
+fragment BaseProductV1ShippingJurisdictionFields on ProductV1ShippingJurisdiction {
+  id
+  label
+  deliveryTime
+}
+
+fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
+  id
+  uuid
+  version
+  label
+  template
+}
+
+fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
+  id
+  version
+  title
+  description
+  identification_sKU
+  identification_productId
+  identification_productIdType
+  productionInformation_brandName
+  brand {
+    ...BaseProductV1BrandFields
+  }
+  productionInformation_manufacturer
+  productionInformation_manufacturerPartNumber
+  productionInformation_modelNumber
+  productionInformation_materials
+  visuals_images {
+    ...BaseProductV1MediaFields
+  }
+  visuals_videos {
+    ...BaseProductV1MediaFields
+  }
+  packaging_packageQuantity
+  packaging_dimensions_length
+  packaging_dimensions_width
+  packaging_dimensions_height
+  packaging_dimensions_unit
+  packaging_weight_value
+  packaging_weight_unit
+}

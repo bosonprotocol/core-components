@@ -16,6 +16,7 @@ import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
 import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
+import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 
 import { getValueFromLogs } from "./utils/logs";
@@ -77,6 +78,24 @@ export class CoreSDK {
     }
 
     return this._metadataStorage.getMetadata(metadataHashOrUri);
+  }
+
+  public async getBaseMetadataEntities(
+    queryVars?: subgraph.GetBaseMetadataEntitiesQueryQueryVariables
+  ): Promise<subgraph.BaseMetadataEntityFieldsFragment[]> {
+    return metadata.subgraph.getBaseMetadataEntities(
+      this._subgraphUrl,
+      queryVars
+    );
+  }
+
+  public async getProductV1MetadataEntities(
+    queryVars?: subgraph.GetProductV1MetadataEntitiesQueryQueryVariables
+  ): Promise<subgraph.ProductV1MetadataEntityFieldsFragment[]> {
+    return metadata.subgraph.getProductV1MetadataEntities(
+      this._subgraphUrl,
+      queryVars
+    );
   }
 
   public async getSellerById(
