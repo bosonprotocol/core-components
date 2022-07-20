@@ -3,16 +3,20 @@ import "styled-components";
 const theme = {
   colors: {
     light: {
-      primary: "#02f7a5",
-      secondary: "#7829f9",
-      black: "#09182c",
-      grey: "#9fa0ad",
-      lightGrey: "#eef1f8",
+      primary: "#02F3A2",
+      secondary: "#7829F9",
+      black: "#09182C",
+      grey: "#9fa0ad", // ??
+      lightGrey: "#F1F3F9",
+      darkGrey: "#556072",
       white: "#ffffff",
-      green: "#b6f952",
-      blue: "#0299ee",
-      orange: "#fc6838",
-      lightBlue: "#06f7d5"
+      green: "#02F3A2",
+      blue: "#0299EE",
+      orange: "#FC6838",
+      lime: "#B6F952",
+      torquise: "#06F7D5",
+      lightBlue: "#06f7d5",
+      border: "#5560720f"
     }
   },
   mobile: "768px",
@@ -21,6 +25,10 @@ const theme = {
     small: "12px",
     medium: "16px",
     large: "24px"
+  },
+  transition: {
+    time: "150ms",
+    timing: "ease-in-out"
   }
 };
 

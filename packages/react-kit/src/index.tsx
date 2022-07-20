@@ -9,5 +9,7 @@ export * from "./components/cta/exchange/RedeemButton";
 export * from "./components/cta/offer/CommitButton";
 export * from "./components/cta/offer/VoidButton";
 export * from "./components/buttons/Button";
+export * from "./components/step/Step";
+export * from "./components/step/MultiSteps";
 
 export * as hooks from "./hooks";
