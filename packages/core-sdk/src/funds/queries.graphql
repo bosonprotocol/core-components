@@ -23,13 +23,14 @@ query getFunds(
 }
 
 fragment FundsEntityFields on FundsEntity {
+  ...BaseFundsEntityFields
+  token {
+    ...BaseExchangeTokenFields
+  }
+}
+
+fragment BaseFundsEntityFields on FundsEntity {
   id
   availableAmount
-  token {
-    address
-    name
-    symbol
-    decimals
-  }
   accountId
 }

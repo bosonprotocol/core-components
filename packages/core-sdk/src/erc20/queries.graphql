@@ -1,0 +1,84 @@
+query getExchangeTokenByIdQuery(
+  $exchangeTokenId: ID!
+  $exchangeTokensSkip: Int
+  $exchangeTokensFirst: Int
+  $exchangeTokensOrderBy: ExchangeToken_orderBy
+  $exchangeTokensOrderDirection: OrderDirection
+  $exchangeTokensFilter: ExchangeToken_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $includeOffers: Boolean = false
+  $includeFunds: Boolean = false
+) {
+  exchangeToken(id: $exchangeTokenId) {
+    ...ExchangeTokenFields
+  }
+}
+
+query getExchangeTokensQuery(
+  $exchangeTokensSkip: Int
+  $exchangeTokensFirst: Int
+  $exchangeTokensOrderBy: ExchangeToken_orderBy
+  $exchangeTokensOrderDirection: OrderDirection
+  $exchangeTokensFilter: ExchangeToken_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $includeOffers: Boolean = false
+  $fundsSkip: Int
+  $fundsFirst: Int
+  $fundsOrderBy: FundsEntity_orderBy
+  $fundsOrderDirection: OrderDirection
+  $fundsFilter: FundsEntity_filter
+  $includeFunds: Boolean = false
+) {
+  exchangeTokens(
+    skip: $exchangeTokensSkip
+    first: $exchangeTokensFirst
+    orderBy: $exchangeTokensOrderBy
+    orderDirection: $exchangeTokensOrderDirection
+    where: $exchangeTokensFilter
+  ) {
+    ...ExchangeTokenFields
+  }
+}
+
+fragment ExchangeTokenFields on ExchangeToken {
+  ...BaseExchangeTokenFields
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) @include(if: $includeOffers) {
+    ...BaseOfferFields
+  }
+  funds(
+    skip: $fundsSkip
+    first: $fundsFirst
+    orderBy: $fundsOrderBy
+    orderDirection: $fundsOrderDirection
+    where: $fundsFilter
+  ) @include(if: $includeFunds) {
+    ...BaseFundsEntityFields
+  }
+}
+
+fragment BaseExchangeTokenFields on ExchangeToken {
+  id
+  address
+  decimals
+  symbol
+  name
+}

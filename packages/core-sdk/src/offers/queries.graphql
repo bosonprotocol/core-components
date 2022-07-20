@@ -73,10 +73,7 @@ fragment BaseOfferFields on Offer {
     ...BaseSellerFields
   }
   exchangeToken {
-    address
-    decimals
-    name
-    symbol
+    ...BaseExchangeTokenFields
   }
   metadata {
     name

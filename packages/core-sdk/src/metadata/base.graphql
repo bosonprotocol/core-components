@@ -1,0 +1,63 @@
+query getBaseMetadataEntityByIdQuery(
+  $metadataId: ID!
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: BaseMetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: BaseMetadataEntity_filter
+) {
+  baseMetadataEntity(id: $metadataId) {
+    ...BaseMetadataEntityFields
+  }
+}
+
+query getBaseMetadataEntitiesQuery(
+  $metadataSkip: Int
+  $metadataFirst: Int
+  $metadataOrderBy: BaseMetadataEntity_orderBy
+  $metadataOrderDirection: OrderDirection
+  $metadataFilter: BaseMetadataEntity_filter
+) {
+  baseMetadataEntities(
+    skip: $metadataSkip
+    first: $metadataFirst
+    orderBy: $metadataOrderBy
+    orderDirection: $metadataOrderDirection
+    where: $metadataFilter
+  ) {
+    ...BaseMetadataEntityFields
+  }
+}
+
+fragment BaseMetadataEntityFields on BaseMetadataEntity {
+  ...BaseBaseMetadataEntityFields
+}
+
+fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
+  id
+  name
+  description
+  externalUrl
+  schemaUrl
+  type
+  image
+  attributes {
+    traitType
+    value
+    displayType
+  }
+  offer {
+    ...BaseOfferFields
+  }
+  seller {
+    ...BaseSellerFields
+  }
+  exchangeToken {
+    ...BaseExchangeTokenFields
+  }
+  createdAt
+  voided
+  validFromDate
+  validUntilDate
+  quantityAvailable
+}

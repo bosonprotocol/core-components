@@ -79,6 +79,7 @@ export function mockRawOfferFromSubgraph(
       ...seller
     },
     exchangeToken: {
+      id: ZERO_ADDRESS,
       address: ZERO_ADDRESS,
       decimals: "18",
       name: "Ether",
