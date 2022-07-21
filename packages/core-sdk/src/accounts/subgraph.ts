@@ -78,16 +78,32 @@ export async function getSellerByClerk(
   return sellers[0];
 }
 
+export async function getSellerByTreasury(
+  subgraphUrl: string,
+  treasuryAddress: string,
+  queryVars: GetSellersQueryQueryVariables = {}
+): Promise<SellerFieldsFragment> {
+  const sellers = await getSellers(subgraphUrl, {
+    sellersFilter: {
+      ...queryVars.sellersFilter,
+      treasury: treasuryAddress.toLowerCase()
+    },
+    ...queryVars
+  });
+  return sellers[0];
+}
+
 export async function getSellerByAddress(
   subgraphUrl: string,
   address: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
-  const [operator, admin, clerk] = await Promise.all([
+  const [operator, admin, clerk, treasury] = await Promise.all([
     getSellerByOperator(subgraphUrl, address, queryVars),
     getSellerByAdmin(subgraphUrl, address, queryVars),
-    getSellerByClerk(subgraphUrl, address, queryVars)
+    getSellerByClerk(subgraphUrl, address, queryVars),
+    getSellerByTreasury(subgraphUrl, address, queryVars)
   ]);
 
-  return operator || admin || clerk;
+  return operator || admin || clerk || treasury;
 }
