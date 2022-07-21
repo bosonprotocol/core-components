@@ -11,9 +11,15 @@ type StepData = {
 interface MultiStepsProps {
   active?: number;
   data: Array<StepData>;
+  callback?: () => void;
 }
 
-export const MultiSteps = ({ data, active, ...props }: MultiStepsProps) => {
+export const MultiSteps = ({
+  data,
+  active,
+  callback,
+  ...props
+}: MultiStepsProps) => {
   const [current, setCurrent] = useState<number>(active || 0);
   useEffect(() => {
     setCurrent(active || 0);
@@ -42,7 +48,12 @@ export const MultiSteps = ({ data, active, ...props }: MultiStepsProps) => {
                 return (
                   <Step
                     state={state}
-                    onClick={() => setCurrent(currentKey)}
+                    onClick={() => {
+                      setCurrent(currentKey);
+                      if (callback) {
+                        callback();
+                      }
+                    }}
                     key={`multi-step_${currentKey}`}
                   />
                 );
