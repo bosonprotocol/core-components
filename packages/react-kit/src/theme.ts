@@ -6,7 +6,6 @@ const theme = {
       primary: "#02F3A2",
       secondary: "#7829F9",
       black: "#09182C",
-      grey: "#9fa0ad", // ??
       lightGrey: "#F1F3F9",
       darkGrey: "#556072",
       white: "#ffffff",
@@ -15,7 +14,6 @@ const theme = {
       orange: "#FC6838",
       lime: "#B6F952",
       torquise: "#06F7D5",
-      lightBlue: "#06f7d5",
       border: "#5560720f"
     }
   },
