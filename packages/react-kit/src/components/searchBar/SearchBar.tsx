@@ -7,15 +7,19 @@ import { BaseMetadataEntityFieldsFragment } from "@bosonprotocol/core-sdk/dist/c
 interface SearchBarProps {
   placeholder?: string;
   disabled?: boolean;
-  searchResults: BaseMetadataEntityFieldsFragment[];
   chainId?: number;
+  searchResults: BaseMetadataEntityFieldsFragment[];
+  onSuccess?: (results: BaseMetadataEntityFieldsFragment[]) => void;
+  onError?: (error: Error) => void;
 }
 
 export const SearchBar = ({
   placeholder = "Search...",
   disabled = false,
   searchResults,
-  chainId = 1234
+  chainId = 1234,
+  onSuccess,
+  onError
 }: SearchBarProps) => {
   const [value, setValue] = useState("");
 
@@ -27,20 +31,19 @@ export const SearchBar = ({
   };
 
   const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      console.log(`search with =>${value}`);
-
-      searchResults = await coreSdk.getBaseMetadataEntities({
-        metadataFilter: {
-          description_contains_nocase: value,
-          name_contains_nocase: value
-        }
-      });
-      console.log(
-        "🚀 ~ file: SearchBar.tsx ~ line 40 ~ handleEnter ~ searchResults",
-        searchResults
-      );
+    try {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchResults = await coreSdk.getBaseMetadataEntities({
+          metadataFilter: {
+            description_contains_nocase: value,
+            name_contains_nocase: value
+          }
+        });
+        onSuccess?.(searchResults);
+      }
+    } catch (error) {
+      onError?.(error as Error);
     }
   };
 
