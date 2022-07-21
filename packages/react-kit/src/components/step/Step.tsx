@@ -11,7 +11,7 @@ export enum StepState {
 export interface StepProps {
   className?: string;
   onClick?: () => void;
-  state: StepState;
+  state?: StepState;
 }
 
 export const Step = ({

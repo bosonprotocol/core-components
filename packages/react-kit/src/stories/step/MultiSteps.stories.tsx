@@ -20,51 +20,49 @@ export const SecondExample: ComponentStory<typeof MultiSteps> = Template.bind(
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Example.args = {
+  active: 2,
   data: [
     {
       name: "Profile Info",
-      steps: [{ state: "done" }]
+      steps: 1
     },
     {
       name: "Product Data",
-      steps: [{ state: "done" }, { state: "active" }, { state: "inactive" }]
+      steps: 2
     },
     {
       name: "Terms of Sale",
-      steps: [
-        { state: "inactive" },
-        { state: "inactive" },
-        { state: "inactive" }
-      ]
+      steps: 3
     },
     {
       name: "Confirm",
-      steps: [{ state: "inactive" }]
+      steps: 1
     }
   ]
 };
 
 SecondExample.args = {
+  active: 2,
   data: [
     {
       name: "Choose",
-      steps: [{ state: "done" }]
+      steps: 1
     },
     {
       name: "Describe Problem",
-      steps: [{ state: "done" }]
+      steps: 1
     },
     {
       name: "Additional Details",
-      steps: [{ state: "active" }]
+      steps: 1
     },
     {
       name: "Make a Proposal",
-      steps: [{ state: "done" }]
+      steps: 1
     },
     {
       name: "Review & Submit",
-      steps: [{ state: "inactive" }]
+      steps: 1
     }
   ]
 };
