@@ -11,7 +11,7 @@ type StepData = {
 interface MultiStepsProps {
   active?: number;
   data: Array<StepData>;
-  callback?: () => void;
+  callback?: (cur: number) => void;
 }
 
 export const MultiSteps = ({
@@ -51,7 +51,7 @@ export const MultiSteps = ({
                     onClick={() => {
                       setCurrent(currentKey);
                       if (callback) {
-                        callback();
+                        callback(currentKey);
                       }
                     }}
                     key={`multi-step_${currentKey}`}

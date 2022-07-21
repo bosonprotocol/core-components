@@ -40,6 +40,9 @@ Example.args = {
 
 SecondExample.args = {
   active: 2,
+  callback: (current) => {
+    console.log(current);
+  },
   data: [
     {
       name: "Choose",
