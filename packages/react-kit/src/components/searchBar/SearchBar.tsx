@@ -23,7 +23,6 @@ export const SearchBar = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("🚀 ~ file: SearchBar.tsx ~ line 19 ~ handleChange ~ e", e);
     setValue(e.target.value);
   };
 
@@ -38,6 +37,10 @@ export const SearchBar = ({
           name_contains_nocase: value
         }
       });
+      console.log(
+        "🚀 ~ file: SearchBar.tsx ~ line 40 ~ handleEnter ~ searchResults",
+        searchResults
+      );
     }
   };
 
