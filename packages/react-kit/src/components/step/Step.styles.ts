@@ -1,5 +1,6 @@
 import { StepState } from "./Step";
 import styled, { css } from "styled-components";
+import { transition } from "../../global";
 
 export const StepStyle = styled.div.attrs((props: { state: StepState }) => ({
   state: props.state
@@ -25,8 +26,7 @@ export const StepStyle = styled.div.attrs((props: { state: StepState }) => ({
     state === StepState.Inactive &&
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
-      transition: all ${({ theme }) => theme?.transition?.time || "150ms"}
-        ${({ theme }) => theme?.transition?.timing || "ease-in-out"};
+      ${transition}
 
       :before {
         content: "";
@@ -34,10 +34,10 @@ export const StepStyle = styled.div.attrs((props: { state: StepState }) => ({
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        transition: all ${({ theme }) => theme?.transition?.time || "150ms"}
-          ${({ theme }) => theme?.transition?.timing || "ease-in-out"};
         border-radius: 50%;
         background: #d3d5db;
+
+        ${transition}
 
         width: 0.25rem;
         height: 0.25rem;
@@ -76,8 +76,7 @@ export const StepStyle = styled.div.attrs((props: { state: StepState }) => ({
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        transition: all ${({ theme }) => theme?.transition?.time || "150ms"}
-          ${({ theme }) => theme?.transition?.timing || "ease-in-out"};
+        ${transition}
         width: 0.25rem;
         height: 0.25rem;
         border-radius: 50%;
@@ -96,8 +95,7 @@ export const StepStyle = styled.div.attrs((props: { state: StepState }) => ({
         position: absolute;
         top: 50%;
         left: 50%;
-        transition: all ${({ theme }) => theme?.transition?.time || "150ms"}
-          ${({ theme }) => theme?.transition?.timing || "ease-in-out"};
+        ${transition}
         background: ${({ theme }) => theme?.colors?.light.black};
       }
       :before {
