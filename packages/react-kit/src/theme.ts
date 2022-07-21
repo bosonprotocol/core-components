@@ -10,6 +10,7 @@ const theme = {
       darkGrey: "#556072",
       white: "#ffffff",
       green: "#02F3A2",
+      red: "#FC386A",
       blue: "#0299EE",
       orange: "#FC6838",
       lime: "#B6F952",
