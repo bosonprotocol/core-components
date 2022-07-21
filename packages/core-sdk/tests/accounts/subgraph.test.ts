@@ -9,7 +9,7 @@ import {
 describe("#getSellerByAddress()", () => {
   test("return falsy if address no seller", async () => {
     interceptSubgraph()
-      .times(3)
+      .times(4)
       .reply(200, {
         data: {
           sellers: []
@@ -29,6 +29,13 @@ describe("#getSellerByAddress()", () => {
       .reply(200, {
         data: {
           sellers: [mockedRawSellerFromSubgraph]
+        }
+      });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
         }
       });
     interceptSubgraph()
@@ -76,6 +83,13 @@ describe("#getSellerByAddress()", () => {
           sellers: []
         }
       });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
+        }
+      });
 
     const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
 
@@ -105,6 +119,13 @@ describe("#getSellerByAddress()", () => {
       .reply(200, {
         data: {
           sellers: [mockedRawSellerFromSubgraph]
+        }
+      });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
         }
       });
 
