@@ -8,7 +8,6 @@ interface SearchBarProps {
   placeholder?: string;
   disabled?: boolean;
   chainId?: number;
-  searchResults: BaseMetadataEntityFieldsFragment[];
   onSuccess?: (results: BaseMetadataEntityFieldsFragment[]) => void;
   onError?: (error: Error) => void;
 }
@@ -16,7 +15,6 @@ interface SearchBarProps {
 export const SearchBar = ({
   placeholder = "Search...",
   disabled = false,
-  searchResults,
   chainId = 1234,
   onSuccess,
   onError
@@ -34,12 +32,39 @@ export const SearchBar = ({
     try {
       if (e.key === "Enter") {
         e.preventDefault();
-        searchResults = await coreSdk.getBaseMetadataEntities({
+
+        let searchResults: BaseMetadataEntityFieldsFragment[] = [];
+
+        const searchResultsDescPromise = coreSdk.getBaseMetadataEntities({
           metadataFilter: {
-            description_contains_nocase: value,
+            description_contains_nocase: value
+          }
+        });
+
+        const searchResultsNamePromise = coreSdk.getBaseMetadataEntities({
+          metadataFilter: {
             name_contains_nocase: value
           }
         });
+
+        const searchResultsIdPromise = coreSdk.getBaseMetadataEntities({
+          metadataFilter: {
+            offer: value
+          }
+        });
+
+        const [searchResultsDesc, searchResultsName, searchResultsId] =
+          await Promise.all([
+            searchResultsDescPromise,
+            searchResultsNamePromise,
+            searchResultsIdPromise
+          ]);
+
+        searchResults = [
+          ...searchResultsDesc,
+          ...searchResultsName,
+          ...searchResultsId
+        ];
         onSuccess?.(searchResults);
       }
     } catch (error) {
