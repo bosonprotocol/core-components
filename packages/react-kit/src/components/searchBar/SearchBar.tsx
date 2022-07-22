@@ -33,7 +33,7 @@ export const SearchBar = ({
       if (e.key === "Enter") {
         e.preventDefault();
 
-        let searchResults: BaseMetadataEntityFieldsFragment[] = [];
+        let searchResults: subgraph.BaseMetadataEntityFieldsFragment[] = [];
 
         const searchResultsDescPromise = coreSdk.getBaseMetadataEntities({
           metadataFilter: {
