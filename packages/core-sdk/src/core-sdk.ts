@@ -56,7 +56,7 @@ export class CoreSDK {
    * ```ts
    * const coreSdk = CoreSDK.fromDefaultConfig({
    *   ...otherArgs,
-   *   chainId: 1
+   *   chainId: 137
    * })
    * ```
    *
