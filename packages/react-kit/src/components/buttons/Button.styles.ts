@@ -90,7 +90,7 @@ export const ButtonStyle = styled.button.attrs(
     ${({ disabled }) =>
     disabled &&
     css`
-      background: #f1f3f9;
+      background: ${({ theme }) => theme?.colors?.light.lightGrey};
       opacity: 0.5;
       cursor: not-allowed;
       span {
