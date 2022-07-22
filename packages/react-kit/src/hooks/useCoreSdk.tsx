@@ -5,15 +5,44 @@ import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { providers } from "ethers";
 
 export type CoreSdkConfig = {
-  web3Provider?: Provider;
+  /**
+   * Target chain.
+   */
   chainId: number;
+  /**
+   * Ethers provider that will be passed to `CoreSDK`. Defaults to `JsonRpcProvider`
+   * connected via default URL of respective chain ID.
+   */
+  web3Provider?: Provider;
+  /**
+   * Optional override for default `JsonRpcProvider` to use.
+   */
   jsonRpcUrl?: string;
+  /**
+   * Optional override for subgraph API url to use.
+   */
   subgraphUrl?: string;
+  /**
+   * Optional override for Diamond contract address to use.
+   */
   protocolDiamond?: string;
+  /**
+   * Optional override for IPFS metadata storage to use.
+   */
   ipfsMetadataStorageUrl?: string;
+  /**
+   * Optional override for Thr Graph IPFS storage to use.
+   */
   theGraphIpfsUrl?: string;
 };
 
+/**
+ * Hook that initializes an instance of `CoreSDK` from the `@bosonprotocol/core-sdk`
+ * package. The instance will be reinitialized when the passed in `web3Provider`
+ * changes.
+ * @param config - Configuration arguments.
+ * @returns Instance of `CoreSDK`.
+ */
 export function useCoreSdk(config: CoreSdkConfig) {
   const [coreSdk, setCoreSdk] = useState<CoreSDK>(initCoreSdk(config));
 

@@ -15,5 +15,6 @@ const Template: ComponentStory<typeof SearchBar> = (args) => (
 export const Primary: ComponentStory<typeof SearchBar> = Template.bind({});
 
 Primary.args = {
-  disabled: false
+  disabled: false,
+  chainId: 1234
 };

@@ -9,7 +9,12 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = { exchangeId: BigNumberish } & CtaButtonProps<{
+type Props = {
+  /**
+   * ID of voucher/exchange to redeem.
+   */
+  exchangeId: BigNumberish;
+} & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
