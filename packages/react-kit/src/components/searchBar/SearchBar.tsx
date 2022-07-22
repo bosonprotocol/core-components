@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { MagnifyingGlass } from "../../icons/MagnifyingGlass";
 import { useCoreSdk } from "../../hooks/useCoreSdk";
 import { InputField, InputWrapper } from "./SearchBar.styles";
-import { BaseMetadataEntityFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 interface SearchBarProps {
   placeholder?: string;
   disabled?: boolean;
   chainId?: number;
-  onSuccess?: (results: BaseMetadataEntityFieldsFragment[]) => void;
+  onSuccess?: (results: subgraph.BaseMetadataEntityFieldsFragment[]) => void;
   onError?: (error: Error) => void;
 }
 
@@ -61,11 +61,14 @@ export const SearchBar = ({
           ]);
 
         searchResults = [
-          ...new Set([
-            ...searchResultsDesc,
-            ...searchResultsName,
-            ...searchResultsId
-          ])
+          // remove duplicates from search results
+          ...new Map(
+            [
+              ...searchResultsDesc,
+              ...searchResultsName,
+              ...searchResultsId
+            ].map((searchResult) => [searchResult.id, searchResult])
+          ).values()
         ];
         onSuccess?.(searchResults);
       }
