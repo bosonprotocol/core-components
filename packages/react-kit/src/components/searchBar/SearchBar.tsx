@@ -61,9 +61,11 @@ export const SearchBar = ({
           ]);
 
         searchResults = [
-          ...searchResultsDesc,
-          ...searchResultsName,
-          ...searchResultsId
+          ...new Set([
+            ...searchResultsDesc,
+            ...searchResultsName,
+            ...searchResultsId
+          ])
         ];
         onSuccess?.(searchResults);
       }
