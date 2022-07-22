@@ -87,7 +87,8 @@ export class CoreSDK {
   /** Metadata related methods */
 
   /**
-   * Stores supported offer metadata via the passed in `MetadataStorage` instance.
+   * Stores supported offer metadata via the MetadataStorage instance which was passed in
+   * at construction.
    * @param metadata - Offer metadata of type `BASE` or `PRODUCT_V1`.
    * @returns Metadata hash / identifier.
    */
@@ -101,7 +102,8 @@ export class CoreSDK {
 
   /**
    * Returns supported offer metadata from passed in `MetadataStorage` instance.
-   * @param metadataHashOrUri - Metadata hash or uri that can be handled by the storage instance.
+   * @param metadataHashOrUri - Metadata hash or uri that can be handled by the
+   * storage instance.
    * @returns Metadata hash / identifier.
    */
   public async getMetadata(metadataHashOrUri: string): Promise<AnyMetadata> {
@@ -290,7 +292,8 @@ export class CoreSDK {
   }
 
   /**
-   * Utility method to retrieve the created `offerId` from logs after calling `createOffer` or `createOfferAndSeller`.
+   * Utility method to retrieve the created `offerId` from logs after calling `createOffer`
+   * or `createOfferAndSeller`.
    * @param logs - Logs to search in.
    * @returns Created offer id.
    */
