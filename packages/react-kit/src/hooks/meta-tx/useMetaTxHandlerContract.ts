@@ -10,6 +10,12 @@ type MetaTxHandlerConfig = BiconomyConfig & {
   web3Provider?: Provider;
 };
 
+/**
+ * Hook that initializes a `MetaTransactionHandler` contract instance and connects it to
+ * a Biconomy relayer. Allows the usage of meta transactions via Biconomy.
+ * @param config - Configuration arguments.
+ * @returns Biconomy-connected contract instance.
+ */
 export function useMetaTxHandlerContract(config: MetaTxHandlerConfig) {
   const defaultConfig = getDefaultConfig({ chainId: config.chainId });
   const [metaTxHandlerContract, setMetaTxHandlerContract] = useState<

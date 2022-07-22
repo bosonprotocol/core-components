@@ -7,7 +7,12 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = { offerId: BigNumberish } & CtaButtonProps<{
+type Props = {
+  /**
+   * ID of offer to void.
+   */
+  offerId: BigNumberish;
+} & CtaButtonProps<{
   offerId: BigNumberish;
 }>;
 

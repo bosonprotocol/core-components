@@ -10,6 +10,12 @@ export type BiconomyConfig = {
   jsonRpcUrl?: string;
 };
 
+/**
+ * Hook that initializes an instance of `Biconomy`.
+ * This instance is used to enable Biconomy meta transactions.
+ * @param config - Configuration arguments of `Biconomy` instance.
+ * @returns Initialized `Biconomy` instance.
+ */
 export function useBiconomy(config: BiconomyConfig) {
   const defaultConfig = getDefaultConfig({ chainId: config.chainId });
   const [biconomyState, setBiconomyState] = useState<

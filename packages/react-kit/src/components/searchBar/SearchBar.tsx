@@ -5,17 +5,26 @@ import { InputField, InputWrapper } from "./SearchBar.styles";
 import { subgraph } from "@bosonprotocol/core-sdk";
 
 interface SearchBarProps {
+  /**
+   * Target chain.
+   */
+  chainId: number;
   placeholder?: string;
   disabled?: boolean;
-  chainId?: number;
+  /**
+   * Optional callback to invoke with search results.
+   */
   onSuccess?: (results: subgraph.BaseMetadataEntityFieldsFragment[]) => void;
+  /**
+   * Optional callback to invoke if an error happened.
+   */
   onError?: (error: Error) => void;
 }
 
 export const SearchBar = ({
   placeholder = "Search...",
   disabled = false,
-  chainId = 1234,
+  chainId,
   onSuccess,
   onError
 }: SearchBarProps) => {
