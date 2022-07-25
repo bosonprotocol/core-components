@@ -1,5 +1,8 @@
 import { getSubgraphSdk } from "../utils/graphql";
 import {
+  BuyerFieldsFragment,
+  GetBuyersQueryQueryVariables,
+  GetBuyerByIdQueryQueryVariables,
   SellerFieldsFragment,
   GetSellersQueryQueryVariables,
   GetSellerByIdQueryQueryVariables
@@ -10,6 +13,33 @@ export type SingleSellerQueryVariables = Omit<
   GetSellerByIdQueryQueryVariables,
   "sellerId"
 >;
+
+export type SingleBuyerQueryVariables = Omit<
+  GetBuyerByIdQueryQueryVariables,
+  "buyerId"
+>;
+
+export async function getBuyerById(
+  subgraphUrl: string,
+  buyerId: BigNumberish,
+  queryVars: SingleBuyerQueryVariables = {}
+): Promise<BuyerFieldsFragment> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { buyer } = await sdk.getBuyerByIdQuery({
+    buyerId: buyerId.toString(),
+    ...queryVars
+  });
+  return buyer;
+}
+
+export async function getBuyers(
+  subgraphUrl: string,
+  queryVars: GetSellersQueryQueryVariables = {}
+): Promise<BuyerFieldsFragment[]> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { buyers = [] } = await sdk.getBuyersQuery(queryVars);
+  return buyers;
+}
 
 export async function getSellerById(
   subgraphUrl: string,

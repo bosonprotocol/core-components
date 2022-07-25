@@ -84,7 +84,9 @@ export class CoreSDK {
     });
   }
 
-  /** Metadata related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                          Metadata related methods                          */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Stores supported offer metadata via the MetadataStorage instance which was passed in
@@ -142,7 +144,11 @@ export class CoreSDK {
     );
   }
 
-  /** Account related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                           Account related methods                          */
+  /* -------------------------------------------------------------------------- */
+
+  /* --------------------------------- Seller --------------------------------- */
 
   /**
    * Returns seller entity from subgraph.
@@ -267,7 +273,39 @@ export class CoreSDK {
     });
   }
 
-  /** Offer related methods */
+  /* ---------------------------------- Buyer --------------------------------- */
+
+  /**
+   * Returns buyer entity from subgraph.
+   * @param buyerId - ID of buyer entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Buyer entity from subgraph.
+   */
+  public async getBuyerById(
+    buyerId: BigNumberish,
+    queryVars?: accounts.subgraph.SingleBuyerQueryVariables
+  ): Promise<subgraph.BuyerFieldsFragment> {
+    return accounts.subgraph.getBuyerById(
+      this._subgraphUrl,
+      buyerId,
+      queryVars
+    );
+  }
+
+  /**
+   * Returns buyer entities from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Seller entities from subgraph.
+   */
+  public async getBuyers(
+    queryVars?: subgraph.GetBuyersQueryQueryVariables
+  ): Promise<subgraph.BuyerFieldsFragment[]> {
+    return accounts.subgraph.getBuyers(this._subgraphUrl, queryVars);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                            Offer related methods                           */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Creates offer by calling the `OfferHandlerFacet` contract.
@@ -361,7 +399,9 @@ export class CoreSDK {
     return offers.subgraph.getOffers(this._subgraphUrl, queryVars);
   }
 
-  /** ERC20 / Exchange Token related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                   ERC20 / Exchange Token related methods                   */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Returns the current allowance of the given token by calling the contract.
@@ -429,7 +469,9 @@ export class CoreSDK {
     });
   }
 
-  /** Funds related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                            Funds related methods                           */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Deposit funds by calling the `FundsHandlerFacet` contract.
@@ -513,7 +555,9 @@ export class CoreSDK {
     });
   }
 
-  /** Exchange related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                          Exchange related methods                          */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Returns exchange entity from subgraph.
@@ -663,7 +707,9 @@ export class CoreSDK {
     });
   }
 
-  /** Meta Tx related methods */
+  /* -------------------------------------------------------------------------- */
+  /*                           Meta Tx related methods                          */
+  /* -------------------------------------------------------------------------- */
 
   /**
    * Encodes and signs a meta transaction that can be relayed.
