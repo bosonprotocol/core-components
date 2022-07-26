@@ -1,7 +1,6 @@
 import { getSubgraphSdk } from "../utils/graphql";
 import {
   BuyerFieldsFragment,
-  GetBuyersQueryQueryVariables,
   GetBuyerByIdQueryQueryVariables,
   SellerFieldsFragment,
   GetSellersQueryQueryVariables,

@@ -5675,11 +5675,11 @@ export type GetBuyerByIdQueryQuery = {
 };
 
 export type GetBuyersQueryQueryVariables = Exact<{
-  BuyersSkip?: InputMaybe<Scalars["Int"]>;
-  BuyersFirst?: InputMaybe<Scalars["Int"]>;
-  BuyersOrderBy?: InputMaybe<Buyer_OrderBy>;
-  BuyersOrderDirection?: InputMaybe<OrderDirection>;
-  BuyersFilter?: InputMaybe<Buyer_Filter>;
+  buyersSkip?: InputMaybe<Scalars["Int"]>;
+  buyersFirst?: InputMaybe<Scalars["Int"]>;
+  buyersOrderBy?: InputMaybe<Buyer_OrderBy>;
+  buyersOrderDirection?: InputMaybe<OrderDirection>;
+  buyersFilter?: InputMaybe<Buyer_Filter>;
   fundsSkip?: InputMaybe<Scalars["Int"]>;
   fundsFirst?: InputMaybe<Scalars["Int"]>;
   fundsOrderBy?: InputMaybe<FundsEntity_OrderBy>;
