@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.8.0...@bosonprotocol/subgraph@1.9.0) (2022-07-26)
+
+### Features
+
+* **subgraph:** add handler for new PRODUCT_V1 offer type ([#160](https://github.com/bosonprotocol/core-components/issues/160)) ([c80bebf](https://github.com/bosonprotocol/core-components/commit/c80bebf4b75069b9bd03f1a1ddb7ca81dc0cba5d))
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.7.0...@bosonprotocol/subgraph@1.8.0) (2022-07-12)
 
 ### Features

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.10.0...@bosonprotocol/core-sdk@1.11.0) (2022-07-26)
+
+### Features
+
+* **core-sdk:** add subgraph wrappers for metadata entities ([#166](https://github.com/bosonprotocol/core-components/issues/166)) ([9a720aa](https://github.com/bosonprotocol/core-components/commit/9a720aac5016ba1a422d48f8d3185d44bf2a3edd))
+* **core-sdk:** expose buyer query methods ([#178](https://github.com/bosonprotocol/core-components/issues/178)) ([6fca300](https://github.com/bosonprotocol/core-components/commit/6fca3004b8cfe4b72471499a159d356628af3ec2))
+* **core-sdk:** update auto-generated subgraph sdk ([#164](https://github.com/bosonprotocol/core-components/issues/164)) ([309ee88](https://github.com/bosonprotocol/core-components/commit/309ee8865999b8cff70a77e2b88896f536edd1ec))
+
 # [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.9.0...@bosonprotocol/core-sdk@1.10.0) (2022-07-12)
 
 ### Bug Fixes
