@@ -119,10 +119,6 @@ export const SearchBar = ({
           ).values()
         ];
 
-        /**
-         *  TODO: define in case of several users with the same address
-         *  if we wanna return both (seller and buyer) or only one
-         */
         const buyers = [...buyerById, ...buyerByAddress];
 
         const sellers = [...sellerByIdList, ...sellerByAddressList];
