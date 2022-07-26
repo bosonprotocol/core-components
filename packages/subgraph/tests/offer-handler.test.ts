@@ -37,6 +37,10 @@ const fulfillmentPeriodDuration = 10;
 const voucherValidDuration = 10;
 const resolutionPeriodDuration = 10;
 const disputeResolverId = 1;
+const disputeEscalationResponsePeriod = 1;
+const disputeFeeAmount = 1;
+const disputeBuyerEscalationDeposit = 1;
+const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 
 const offerCreatedEvent = createOfferCreatedEvent(
   offerId,
@@ -55,9 +59,13 @@ const offerCreatedEvent = createOfferCreatedEvent(
   resolutionPeriodDuration,
   exchangeTokenAddress,
   disputeResolverId,
+  disputeEscalationResponsePeriod,
+  disputeFeeAmount,
+  disputeBuyerEscalationDeposit,
   "ipfs://" + metadataHash,
   metadataHash,
-  false
+  false,
+  executedBy
 );
 
 beforeEach(() => {
@@ -89,6 +97,12 @@ test("handle OfferCreatedEvent with BASE metadata", () => {
     exchangeTokenName
   );
   assert.fieldEquals("BaseMetadataEntity", "1-metadata", "type", "BASE");
+  assert.fieldEquals(
+    "DisputeResolutionTermsEntity",
+    "1-1",
+    "disputeResolverId",
+    "1"
+  );
 });
 
 test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
@@ -114,6 +128,12 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
     exchangeTokenAddress.toLowerCase(),
     "name",
     exchangeTokenName
+  );
+  assert.fieldEquals(
+    "DisputeResolutionTermsEntity",
+    "1-1",
+    "disputeResolverId",
+    "1"
   );
   assert.fieldEquals(
     "ProductV1MetadataEntity",

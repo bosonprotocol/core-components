@@ -308,6 +308,7 @@ type Offer @entity {
   voided: Boolean!
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
+  disputeResolutionTerms: DisputeResolutionTermsEntity!
   sellerId: BigInt!
   seller: Seller!
   exchangeToken: ExchangeToken!
@@ -375,9 +376,32 @@ type Buyer implements Account @entity {
 
 type DisputeResolver @entity {
   id: ID!
-  wallet: Bytes!
+  escalationResponsePeriod: BigInt!
+  admin: Bytes!
+  clerk: Bytes!
+  treasury: Bytes!
+  operator: Bytes!
+  metadataUri: String!
   active: Boolean!
   offers: [Offer!]! @derivedFrom(field: "disputeResolver")
+}
+
+type DisputeResolutionTermsEntity @entity {
+  id: ID!
+  disputeResolverId: BigInt!
+  escalationResponsePeriod: BigInt!
+  feeAmount: BigInt!
+  buyerEscalationDeposit: BigInt!
+  disputeResolver: DisputeResolver!
+  offer: Offer!
+}
+
+type DisputeResolverFee @entity {
+  id: ID!
+  tokenAddress: Bytes!
+  tokenName: String!
+  token: ExchangeToken!
+  feeAmount: BigInt!
 }
 
 """

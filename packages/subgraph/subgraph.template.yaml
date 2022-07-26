@@ -31,7 +31,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),indexed address)
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),indexed address)
           handler: handleOfferCreatedEvent
         - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferVoidedEvent
@@ -61,13 +61,13 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),indexed address)
+        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),address,indexed address)
           handler: handleSellerCreatedEvent
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),indexed address)
           handler: handleSellerUpdatedEvent
         - event: BuyerCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleBuyerCreatedEvent
-        - event: DisputeResolverCreated(indexed uint256,(uint256,address,bool),indexed address)
+        - event: DisputeResolverCreated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[],indexed address)
           handler: handleDisputeResolverCreatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
