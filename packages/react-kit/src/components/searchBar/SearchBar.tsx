@@ -65,24 +65,20 @@ export const SearchBar = ({
           }
         });
 
-        // get seller by ID
         const sellerByIdPromise = coreSdk.getSellers({
           sellersFilter: {
             id: value
           }
         });
 
-        // get seller by Address
         const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
 
-        // get buyers by Address
         const buyerByAddressPromise = coreSdk.getBuyers({
           BuyersFilter: {
             wallet: value
           }
         });
 
-        // get buyers by Address
         const buyerByIdPromise = coreSdk.getBuyers({
           BuyersFilter: {
             id: value
