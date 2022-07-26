@@ -98,7 +98,9 @@ export default function CreateOffer() {
               // TODO: Allow to set separate seller address values
               admin: operatorAddress,
               treasury: operatorAddress,
-              clerk: operatorAddress
+              clerk: operatorAddress,
+              // TODO: Allow to set from url params
+              contractUri: "ipfs://seller-contract-uri"
             },
             createOfferArgs
           );
