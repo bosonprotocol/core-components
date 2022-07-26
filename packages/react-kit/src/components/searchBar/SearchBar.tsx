@@ -65,11 +65,7 @@ export const SearchBar = ({
           }
         });
 
-        const sellerByIdPromise = coreSdk.getSellers({
-          sellersFilter: {
-            id: value
-          }
-        });
+        const sellerByIdPromise = coreSdk.getSellerById(value);
 
         const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
 
