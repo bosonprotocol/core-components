@@ -121,7 +121,7 @@ export const SearchBar = ({
         ];
 
         /**
-         *  TODO: define in case of several users with the same address 
+         *  TODO: define in case of several users with the same address
          *  if we wanna return both (seller and buyer) or only one
          */
         const users = [
