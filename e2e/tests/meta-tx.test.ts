@@ -50,19 +50,18 @@ describe("meta-tx", () => {
       const nonce = Date.now();
 
       // `Buyer` signs meta tx
-      const { r, s, v } = await buyerCoreSDK.signExecuteMetaTxCommitToOffer({
-        offerId: offer.id,
-        nonce,
-        chainId: defaultConfig.chainId
-      });
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signExecuteMetaTxCommitToOffer({
+          offerId: offer.id,
+          nonce,
+          chainId: defaultConfig.chainId
+        });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTxCommitToOffer(
+      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
         buyerWallet.address,
-        {
-          buyer: buyerWallet.address,
-          offerId: offer.id
-        },
+        functionName,
+        functionSignature,
         nonce,
         r,
         s,
@@ -88,18 +87,18 @@ describe("meta-tx", () => {
       const nonce = Date.now();
 
       // `Buyer` signs meta tx
-      const { r, s, v } = await buyerCoreSDK.signExecuteMetaTxRedeemVoucher({
-        exchangeId: Number(exchangeId),
-        nonce,
-        chainId: defaultConfig.chainId
-      });
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signExecuteMetaTxRedeemVoucher({
+          exchangeId: Number(exchangeId),
+          nonce,
+          chainId: defaultConfig.chainId
+        });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTxRedeemVoucher(
+      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
         buyerWallet.address,
-        {
-          exchangeId: exchangeId as string
-        },
+        functionName,
+        functionSignature,
         nonce,
         r,
         s,
@@ -125,18 +124,18 @@ describe("meta-tx", () => {
       const nonce = Date.now();
 
       // `Buyer` signs meta tx
-      const { r, s, v } = await buyerCoreSDK.signExecuteMetaTxCancelVoucher({
-        exchangeId: exchangeId as string,
-        nonce,
-        chainId: defaultConfig.chainId
-      });
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signExecuteMetaTxCancelVoucher({
+          exchangeId: exchangeId as string,
+          nonce,
+          chainId: defaultConfig.chainId
+        });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTxCancelVoucher(
+      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
         buyerWallet.address,
-        {
-          exchangeId: exchangeId as string
-        },
+        functionName,
+        functionSignature,
         nonce,
         r,
         s,
