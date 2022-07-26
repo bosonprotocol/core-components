@@ -21,7 +21,6 @@ export const ADDRESS = "0x57faFe1fB7C682216FCe44e50946C5249192b9D5";
 export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
   return {
     id: "1",
-    disputeResolverId: "1",
     voided: false,
     price: parseEther("1"),
     protocolFee: parseEther("1"),

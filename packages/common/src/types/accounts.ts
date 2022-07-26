@@ -5,6 +5,7 @@ export type CreateSellerArgs = {
   admin: string;
   clerk: string;
   treasury: string;
+  contractUri: string;
 };
 
 export type SellerStruct = {

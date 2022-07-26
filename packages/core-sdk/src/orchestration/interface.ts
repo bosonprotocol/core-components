@@ -16,6 +16,10 @@ export function encodeCreateSellerAndOffer(
 ) {
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndOffer",
-    [createSellerArgsToStruct(seller), ...createOfferArgsToStructs(offer)]
+    [
+      createSellerArgsToStruct(seller),
+      seller.contractUri,
+      ...createOfferArgsToStructs(offer)
+    ]
   );
 }

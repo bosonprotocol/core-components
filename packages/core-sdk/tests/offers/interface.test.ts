@@ -26,7 +26,6 @@ describe("#encodeCreateOffer()", () => {
       buyerCancelPenalty,
       quantityAvailable,
       exchangeToken,
-      disputeResolverId,
       metadataUri,
       metadataHash,
       voided
@@ -39,6 +38,7 @@ describe("#encodeCreateOffer()", () => {
     ] = decodedCalldata[1].toString().split(","); // OfferDates struct
     const [fulfillmentPeriod, voucherValid, resolutionPeriod] =
       decodedCalldata[2].toString().split(","); // OfferDurations struct
+    const disputeResolverId = decodedCalldata[3].toString();
 
     expect(id).toBeTruthy();
     expect(sellerId).toBeTruthy();
