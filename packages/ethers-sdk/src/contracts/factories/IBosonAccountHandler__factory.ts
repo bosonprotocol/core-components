@@ -16,6 +16,150 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feePercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "wallet",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Agent",
+        name: "agent",
+        type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "AgentCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feePercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "wallet",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Agent",
+        name: "agent",
+        type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "AgentUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "addedSellers",
+        type: "uint256[]",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "AllowedSellersAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "removedSellers",
+        type: "uint256[]",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "AllowedSellersRemoved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
         name: "buyerId",
         type: "uint256",
       },
@@ -111,9 +255,34 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "wallet",
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
             type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
           },
           {
             internalType: "bool",
@@ -125,6 +294,102 @@ const _abi = [
         internalType: "struct BosonTypes.DisputeResolver",
         name: "disputeResolver",
         type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DisputeResolverActivated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolver",
+        name: "disputeResolver",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "disputeResolverFees",
+        type: "tuple[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "sellerAllowList",
+        type: "uint256[]",
       },
       {
         indexed: true,
@@ -148,14 +413,106 @@ const _abi = [
       {
         components: [
           {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "disputeResolverFees",
+        type: "tuple[]",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DisputeResolverFeesAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address[]",
+        name: "feeTokensRemoved",
+        type: "address[]",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DisputeResolverFeesRemoved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
             internalType: "uint256",
             name: "id",
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "wallet",
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
             type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
           },
           {
             internalType: "bool",
@@ -224,6 +581,12 @@ const _abi = [
         internalType: "struct BosonTypes.Seller",
         name: "seller",
         type: "tuple",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "voucherCloneAddress",
+        type: "address",
       },
       {
         indexed: true,
@@ -295,6 +658,131 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+    ],
+    name: "activateDisputeResolver",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "_disputeResolverFees",
+        type: "tuple[]",
+      },
+    ],
+    name: "addFeesToDisputeResolver",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_sellerAllowList",
+        type: "uint256[]",
+      },
+    ],
+    name: "addSellersToAllowList",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_sellerIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "areSellersAllowed",
+    outputs: [
+      {
+        internalType: "bool[]",
+        name: "sellerAllowed",
+        type: "bool[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feePercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "wallet",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Agent",
+        name: "_agent",
+        type: "tuple",
+      },
+    ],
+    name: "createAgent",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -332,9 +820,34 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "wallet",
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
             type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
           },
           {
             internalType: "bool",
@@ -345,6 +858,33 @@ const _abi = [
         internalType: "struct BosonTypes.DisputeResolver",
         name: "_disputeResolver",
         type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "_disputeResolverFees",
+        type: "tuple[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_sellerAllowList",
+        type: "uint256[]",
       },
     ],
     name: "createDisputeResolver",
@@ -391,10 +931,61 @@ const _abi = [
         name: "_seller",
         type: "tuple",
       },
+      {
+        internalType: "string",
+        name: "_contractURI",
+        type: "string",
+      },
     ],
     name: "createSeller",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "getAgent",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feePercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "wallet",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Agent",
+        name: "agent",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -461,9 +1052,34 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "wallet",
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
             type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
           },
           {
             internalType: "bool",
@@ -474,6 +1090,126 @@ const _abi = [
         internalType: "struct BosonTypes.DisputeResolver",
         name: "disputeResolver",
         type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "disputeResolverFees",
+        type: "tuple[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "sellerAllowList",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_associatedAddress",
+        type: "address",
+      },
+    ],
+    name: "getDisputeResolverByAddress",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolver",
+        name: "disputeResolver",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "tokenName",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolverFee[]",
+        name: "disputeResolverFees",
+        type: "tuple[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "sellerAllowList",
+        type: "uint256[]",
       },
     ],
     stateMutability: "view",
@@ -607,6 +1343,77 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "_feeTokenAddresses",
+        type: "address[]",
+      },
+    ],
+    name: "removeFeesFromDisputeResolver",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_sellerAllowList",
+        type: "uint256[]",
+      },
+    ],
+    name: "removeSellersFromAllowList",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feePercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "address payable",
+            name: "wallet",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Agent",
+        name: "_agent",
+        type: "tuple",
+      },
+    ],
+    name: "updateAgent",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -644,9 +1451,34 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "address payable",
-            name: "wallet",
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
             type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
           },
           {
             internalType: "bool",

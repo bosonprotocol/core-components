@@ -18,6 +18,20 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace BosonTypes {
+  export type AgentStruct = {
+    id: BigNumberish;
+    feePercentage: BigNumberish;
+    wallet: string;
+    active: boolean;
+  };
+
+  export type AgentStructOutput = [BigNumber, BigNumber, string, boolean] & {
+    id: BigNumber;
+    feePercentage: BigNumber;
+    wallet: string;
+    active: boolean;
+  };
+
   export type BundleStruct = {
     id: BigNumberish;
     sellerId: BigNumberish;
@@ -51,28 +65,70 @@ export declare namespace BosonTypes {
 
   export type DisputeResolverStruct = {
     id: BigNumberish;
-    wallet: string;
+    escalationResponsePeriod: BigNumberish;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    metadataUri: string;
     active: boolean;
   };
 
-  export type DisputeResolverStructOutput = [BigNumber, string, boolean] & {
+  export type DisputeResolverStructOutput = [
+    BigNumber,
+    BigNumber,
+    string,
+    string,
+    string,
+    string,
+    string,
+    boolean
+  ] & {
     id: BigNumber;
-    wallet: string;
+    escalationResponsePeriod: BigNumber;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    metadataUri: string;
     active: boolean;
+  };
+
+  export type DisputeResolverFeeStruct = {
+    tokenAddress: string;
+    tokenName: string;
+    feeAmount: BigNumberish;
+  };
+
+  export type DisputeResolverFeeStructOutput = [string, string, BigNumber] & {
+    tokenAddress: string;
+    tokenName: string;
+    feeAmount: BigNumber;
   };
 
   export type ConditionStruct = {
     method: BigNumberish;
+    tokenType: BigNumberish;
     tokenAddress: string;
     tokenId: BigNumberish;
     threshold: BigNumberish;
+    maxCommits: BigNumberish;
   };
 
-  export type ConditionStructOutput = [number, string, BigNumber, BigNumber] & {
+  export type ConditionStructOutput = [
+    number,
+    number,
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
     method: number;
+    tokenType: number;
     tokenAddress: string;
     tokenId: BigNumber;
     threshold: BigNumber;
+    maxCommits: BigNumber;
   };
 
   export type GroupStruct = {
@@ -103,7 +159,6 @@ export declare namespace BosonTypes {
     buyerCancelPenalty: BigNumberish;
     quantityAvailable: BigNumberish;
     exchangeToken: string;
-    disputeResolverId: BigNumberish;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
@@ -118,7 +173,6 @@ export declare namespace BosonTypes {
     BigNumber,
     BigNumber,
     string,
-    BigNumber,
     string,
     string,
     boolean
@@ -131,7 +185,6 @@ export declare namespace BosonTypes {
     buyerCancelPenalty: BigNumber;
     quantityAvailable: BigNumber;
     exchangeToken: string;
-    disputeResolverId: BigNumber;
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
@@ -168,6 +221,25 @@ export declare namespace BosonTypes {
     resolutionPeriod: BigNumber;
   };
 
+  export type DisputeResolutionTermsStruct = {
+    disputeResolverId: BigNumberish;
+    escalationResponsePeriod: BigNumberish;
+    feeAmount: BigNumberish;
+    buyerEscalationDeposit: BigNumberish;
+  };
+
+  export type DisputeResolutionTermsStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    disputeResolverId: BigNumber;
+    escalationResponsePeriod: BigNumber;
+    feeAmount: BigNumber;
+    buyerEscalationDeposit: BigNumber;
+  };
+
   export type SellerStruct = {
     id: BigNumberish;
     operator: string;
@@ -196,8 +268,8 @@ export declare namespace BosonTypes {
   export type TwinStruct = {
     id: BigNumberish;
     sellerId: BigNumberish;
+    amount: BigNumberish;
     supplyAvailable: BigNumberish;
-    supplyIds: BigNumberish[];
     tokenId: BigNumberish;
     tokenAddress: string;
     tokenType: BigNumberish;
@@ -207,15 +279,15 @@ export declare namespace BosonTypes {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber[],
+    BigNumber,
     BigNumber,
     string,
     number
   ] & {
     id: BigNumber;
     sellerId: BigNumber;
+    amount: BigNumber;
     supplyAvailable: BigNumber;
-    supplyIds: BigNumber[];
     tokenId: BigNumber;
     tokenAddress: string;
     tokenType: number;
@@ -225,14 +297,14 @@ export declare namespace BosonTypes {
 export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   contractName: "IBosonOrchestrationHandler";
   functions: {
-    "createOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256)": FunctionFragment;
-    "createOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256[],uint256,address,uint8))": FunctionFragment;
-    "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint8,address,uint256,uint256))": FunctionFragment;
-    "createOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint8,address,uint256,uint256),(uint256,uint256,uint256,uint256[],uint256,address,uint8))": FunctionFragment;
-    "createSellerAndOffer((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256))": FunctionFragment;
-    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256[],uint256,address,uint8))": FunctionFragment;
-    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint8,address,uint256,uint256))": FunctionFragment;
-    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint8,address,uint256,uint256),(uint256,uint256,uint256,uint256[],uint256,address,uint8))": FunctionFragment;
+    "createOfferAddToGroup((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
+    "createOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8))": FunctionFragment;
+    "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256))": FunctionFragment;
+    "createOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8))": FunctionFragment;
+    "createSellerAndOffer((uint256,address,address,address,address,bool),string,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256)": FunctionFragment;
+    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool),string,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8))": FunctionFragment;
+    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool),string,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256))": FunctionFragment;
+    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool),string,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8))": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -241,6 +313,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BigNumberish
     ]
   ): string;
@@ -250,6 +323,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.TwinStruct
     ]
   ): string;
@@ -259,6 +333,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.ConditionStruct
     ]
   ): string;
@@ -268,6 +343,7 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct
     ]
@@ -276,18 +352,22 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     functionFragment: "createSellerAndOffer",
     values: [
       BosonTypes.SellerStruct,
+      string,
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
-      BosonTypes.OfferDurationsStruct
+      BosonTypes.OfferDurationsStruct,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "createSellerAndOfferAndTwinWithBundle",
     values: [
       BosonTypes.SellerStruct,
+      string,
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.TwinStruct
     ]
   ): string;
@@ -295,9 +375,11 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     functionFragment: "createSellerAndOfferWithCondition",
     values: [
       BosonTypes.SellerStruct,
+      string,
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.ConditionStruct
     ]
   ): string;
@@ -305,9 +387,11 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     functionFragment: "createSellerAndOfferWithConditionAndTwinAndBundle",
     values: [
       BosonTypes.SellerStruct,
+      string,
       BosonTypes.OfferStruct,
       BosonTypes.OfferDatesStruct,
       BosonTypes.OfferDurationsStruct,
+      BigNumberish,
       BosonTypes.ConditionStruct,
       BosonTypes.TwinStruct
     ]
@@ -347,30 +431,44 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "AgentCreated(uint256,tuple,address)": EventFragment;
+    "AgentUpdated(uint256,tuple,address)": EventFragment;
+    "AllowedSellersAdded(uint256,uint256[],address)": EventFragment;
+    "AllowedSellersRemoved(uint256,uint256[],address)": EventFragment;
     "BundleCreated(uint256,uint256,tuple,address)": EventFragment;
     "BundleDeleted(uint256,uint256,address)": EventFragment;
     "BundleUpdated(uint256,uint256,tuple,address)": EventFragment;
     "BuyerCreated(uint256,tuple,address)": EventFragment;
     "BuyerUpdated(uint256,tuple,address)": EventFragment;
-    "DisputeResolverCreated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverActivated(uint256,tuple,address)": EventFragment;
+    "DisputeResolverCreated(uint256,tuple,tuple[],uint256[],address)": EventFragment;
+    "DisputeResolverFeesAdded(uint256,tuple[],address)": EventFragment;
+    "DisputeResolverFeesRemoved(uint256,address[],address)": EventFragment;
     "DisputeResolverUpdated(uint256,tuple,address)": EventFragment;
     "GroupCreated(uint256,uint256,tuple,address)": EventFragment;
     "GroupUpdated(uint256,uint256,tuple,address)": EventFragment;
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)": EventFragment;
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,address)": EventFragment;
     "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
     "OfferVoided(uint256,uint256,address)": EventFragment;
-    "SellerCreated(uint256,tuple,address)": EventFragment;
+    "SellerCreated(uint256,tuple,address,address)": EventFragment;
     "SellerUpdated(uint256,tuple,address)": EventFragment;
     "TwinCreated(uint256,uint256,tuple,address)": EventFragment;
     "TwinDeleted(uint256,uint256,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AgentCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AgentUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AllowedSellersAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AllowedSellersRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BundleCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BundleDeleted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BundleUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BuyerCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BuyerUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisputeResolverActivated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisputeResolverFeesAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisputeResolverFeesRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GroupUpdated"): EventFragment;
@@ -382,6 +480,52 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "TwinCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TwinDeleted"): EventFragment;
 }
+
+export type AgentCreatedEvent = TypedEvent<
+  [BigNumber, BosonTypes.AgentStructOutput, string],
+  {
+    agentId: BigNumber;
+    agent: BosonTypes.AgentStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type AgentCreatedEventFilter = TypedEventFilter<AgentCreatedEvent>;
+
+export type AgentUpdatedEvent = TypedEvent<
+  [BigNumber, BosonTypes.AgentStructOutput, string],
+  {
+    agentId: BigNumber;
+    agent: BosonTypes.AgentStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type AgentUpdatedEventFilter = TypedEventFilter<AgentUpdatedEvent>;
+
+export type AllowedSellersAddedEvent = TypedEvent<
+  [BigNumber, BigNumber[], string],
+  {
+    disputeResolverId: BigNumber;
+    addedSellers: BigNumber[];
+    executedBy: string;
+  }
+>;
+
+export type AllowedSellersAddedEventFilter =
+  TypedEventFilter<AllowedSellersAddedEvent>;
+
+export type AllowedSellersRemovedEvent = TypedEvent<
+  [BigNumber, BigNumber[], string],
+  {
+    disputeResolverId: BigNumber;
+    removedSellers: BigNumber[];
+    executedBy: string;
+  }
+>;
+
+export type AllowedSellersRemovedEventFilter =
+  TypedEventFilter<AllowedSellersRemovedEvent>;
 
 export type BundleCreatedEvent = TypedEvent<
   [BigNumber, BigNumber, BosonTypes.BundleStructOutput, string],
@@ -436,7 +580,7 @@ export type BuyerUpdatedEvent = TypedEvent<
 
 export type BuyerUpdatedEventFilter = TypedEventFilter<BuyerUpdatedEvent>;
 
-export type DisputeResolverCreatedEvent = TypedEvent<
+export type DisputeResolverActivatedEvent = TypedEvent<
   [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
   {
     disputeResolverId: BigNumber;
@@ -445,8 +589,52 @@ export type DisputeResolverCreatedEvent = TypedEvent<
   }
 >;
 
+export type DisputeResolverActivatedEventFilter =
+  TypedEventFilter<DisputeResolverActivatedEvent>;
+
+export type DisputeResolverCreatedEvent = TypedEvent<
+  [
+    BigNumber,
+    BosonTypes.DisputeResolverStructOutput,
+    BosonTypes.DisputeResolverFeeStructOutput[],
+    BigNumber[],
+    string
+  ],
+  {
+    disputeResolverId: BigNumber;
+    disputeResolver: BosonTypes.DisputeResolverStructOutput;
+    disputeResolverFees: BosonTypes.DisputeResolverFeeStructOutput[];
+    sellerAllowList: BigNumber[];
+    executedBy: string;
+  }
+>;
+
 export type DisputeResolverCreatedEventFilter =
   TypedEventFilter<DisputeResolverCreatedEvent>;
+
+export type DisputeResolverFeesAddedEvent = TypedEvent<
+  [BigNumber, BosonTypes.DisputeResolverFeeStructOutput[], string],
+  {
+    disputeResolverId: BigNumber;
+    disputeResolverFees: BosonTypes.DisputeResolverFeeStructOutput[];
+    executedBy: string;
+  }
+>;
+
+export type DisputeResolverFeesAddedEventFilter =
+  TypedEventFilter<DisputeResolverFeesAddedEvent>;
+
+export type DisputeResolverFeesRemovedEvent = TypedEvent<
+  [BigNumber, string[], string],
+  {
+    disputeResolverId: BigNumber;
+    feeTokensRemoved: string[];
+    executedBy: string;
+  }
+>;
+
+export type DisputeResolverFeesRemovedEventFilter =
+  TypedEventFilter<DisputeResolverFeesRemovedEvent>;
 
 export type DisputeResolverUpdatedEvent = TypedEvent<
   [BigNumber, BosonTypes.DisputeResolverStructOutput, string],
@@ -491,6 +679,7 @@ export type OfferCreatedEvent = TypedEvent<
     BosonTypes.OfferStructOutput,
     BosonTypes.OfferDatesStructOutput,
     BosonTypes.OfferDurationsStructOutput,
+    BosonTypes.DisputeResolutionTermsStructOutput,
     string
   ],
   {
@@ -499,6 +688,7 @@ export type OfferCreatedEvent = TypedEvent<
     offer: BosonTypes.OfferStructOutput;
     offerDates: BosonTypes.OfferDatesStructOutput;
     offerDurations: BosonTypes.OfferDurationsStructOutput;
+    disputeResolutionTerms: BosonTypes.DisputeResolutionTermsStructOutput;
     executedBy: string;
   }
 >;
@@ -525,10 +715,11 @@ export type OfferVoidedEvent = TypedEvent<
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
 
 export type SellerCreatedEvent = TypedEvent<
-  [BigNumber, BosonTypes.SellerStructOutput, string],
+  [BigNumber, BosonTypes.SellerStructOutput, string, string],
   {
     sellerId: BigNumber;
     seller: BosonTypes.SellerStructOutput;
+    voucherCloneAddress: string;
     executedBy: string;
   }
 >;
@@ -597,6 +788,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _groupId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -605,6 +797,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -613,6 +806,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -621,6 +815,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -628,35 +823,43 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
     createSellerAndOffer(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     createSellerAndOfferAndTwinWithBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     createSellerAndOfferWithCondition(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     createSellerAndOfferWithConditionAndTwinAndBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -667,6 +870,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _groupId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -675,6 +879,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _twin: BosonTypes.TwinStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -683,6 +888,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _condition: BosonTypes.ConditionStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -691,6 +897,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -698,35 +905,43 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
   createSellerAndOffer(
     _seller: BosonTypes.SellerStruct,
+    _contractURI: string,
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   createSellerAndOfferAndTwinWithBundle(
     _seller: BosonTypes.SellerStruct,
+    _contractURI: string,
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _twin: BosonTypes.TwinStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   createSellerAndOfferWithCondition(
     _seller: BosonTypes.SellerStruct,
+    _contractURI: string,
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _condition: BosonTypes.ConditionStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   createSellerAndOfferWithConditionAndTwinAndBundle(
     _seller: BosonTypes.SellerStruct,
+    _contractURI: string,
     _offer: BosonTypes.OfferStruct,
     _offerDates: BosonTypes.OfferDatesStruct,
     _offerDurations: BosonTypes.OfferDurationsStruct,
+    _disputeResolverId: BigNumberish,
     _condition: BosonTypes.ConditionStruct,
     _twin: BosonTypes.TwinStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -737,6 +952,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _groupId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -745,6 +961,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -753,6 +970,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -761,6 +979,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: CallOverrides
@@ -768,35 +987,43 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
     createSellerAndOffer(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createSellerAndOfferAndTwinWithBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createSellerAndOfferWithCondition(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createSellerAndOfferWithConditionAndTwinAndBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: CallOverrides
@@ -804,6 +1031,50 @@ export interface IBosonOrchestrationHandler extends BaseContract {
   };
 
   filters: {
+    "AgentCreated(uint256,tuple,address)"(
+      agentId?: BigNumberish | null,
+      agent?: null,
+      executedBy?: string | null
+    ): AgentCreatedEventFilter;
+    AgentCreated(
+      agentId?: BigNumberish | null,
+      agent?: null,
+      executedBy?: string | null
+    ): AgentCreatedEventFilter;
+
+    "AgentUpdated(uint256,tuple,address)"(
+      agentId?: BigNumberish | null,
+      agent?: null,
+      executedBy?: string | null
+    ): AgentUpdatedEventFilter;
+    AgentUpdated(
+      agentId?: BigNumberish | null,
+      agent?: null,
+      executedBy?: string | null
+    ): AgentUpdatedEventFilter;
+
+    "AllowedSellersAdded(uint256,uint256[],address)"(
+      disputeResolverId?: BigNumberish | null,
+      addedSellers?: null,
+      executedBy?: string | null
+    ): AllowedSellersAddedEventFilter;
+    AllowedSellersAdded(
+      disputeResolverId?: BigNumberish | null,
+      addedSellers?: null,
+      executedBy?: string | null
+    ): AllowedSellersAddedEventFilter;
+
+    "AllowedSellersRemoved(uint256,uint256[],address)"(
+      disputeResolverId?: BigNumberish | null,
+      removedSellers?: null,
+      executedBy?: string | null
+    ): AllowedSellersRemovedEventFilter;
+    AllowedSellersRemoved(
+      disputeResolverId?: BigNumberish | null,
+      removedSellers?: null,
+      executedBy?: string | null
+    ): AllowedSellersRemovedEventFilter;
+
     "BundleCreated(uint256,uint256,tuple,address)"(
       bundleId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
@@ -863,16 +1134,53 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): BuyerUpdatedEventFilter;
 
-    "DisputeResolverCreated(uint256,tuple,address)"(
+    "DisputeResolverActivated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
       disputeResolver?: null,
+      executedBy?: string | null
+    ): DisputeResolverActivatedEventFilter;
+    DisputeResolverActivated(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null,
+      executedBy?: string | null
+    ): DisputeResolverActivatedEventFilter;
+
+    "DisputeResolverCreated(uint256,tuple,tuple[],uint256[],address)"(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolver?: null,
+      disputeResolverFees?: null,
+      sellerAllowList?: null,
       executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
     DisputeResolverCreated(
       disputeResolverId?: BigNumberish | null,
       disputeResolver?: null,
+      disputeResolverFees?: null,
+      sellerAllowList?: null,
       executedBy?: string | null
     ): DisputeResolverCreatedEventFilter;
+
+    "DisputeResolverFeesAdded(uint256,tuple[],address)"(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolverFees?: null,
+      executedBy?: string | null
+    ): DisputeResolverFeesAddedEventFilter;
+    DisputeResolverFeesAdded(
+      disputeResolverId?: BigNumberish | null,
+      disputeResolverFees?: null,
+      executedBy?: string | null
+    ): DisputeResolverFeesAddedEventFilter;
+
+    "DisputeResolverFeesRemoved(uint256,address[],address)"(
+      disputeResolverId?: BigNumberish | null,
+      feeTokensRemoved?: null,
+      executedBy?: string | null
+    ): DisputeResolverFeesRemovedEventFilter;
+    DisputeResolverFeesRemoved(
+      disputeResolverId?: BigNumberish | null,
+      feeTokensRemoved?: null,
+      executedBy?: string | null
+    ): DisputeResolverFeesRemovedEventFilter;
 
     "DisputeResolverUpdated(uint256,tuple,address)"(
       disputeResolverId?: BigNumberish | null,
@@ -911,12 +1219,13 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): GroupUpdatedEventFilter;
 
-    "OfferCreated(uint256,uint256,tuple,tuple,tuple,address)"(
+    "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       offer?: null,
       offerDates?: null,
       offerDurations?: null,
+      disputeResolutionTerms?: null,
       executedBy?: string | null
     ): OfferCreatedEventFilter;
     OfferCreated(
@@ -925,6 +1234,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       offer?: null,
       offerDates?: null,
       offerDurations?: null,
+      disputeResolutionTerms?: null,
       executedBy?: string | null
     ): OfferCreatedEventFilter;
 
@@ -952,14 +1262,16 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       executedBy?: string | null
     ): OfferVoidedEventFilter;
 
-    "SellerCreated(uint256,tuple,address)"(
+    "SellerCreated(uint256,tuple,address,address)"(
       sellerId?: BigNumberish | null,
       seller?: null,
+      voucherCloneAddress?: null,
       executedBy?: string | null
     ): SellerCreatedEventFilter;
     SellerCreated(
       sellerId?: BigNumberish | null,
       seller?: null,
+      voucherCloneAddress?: null,
       executedBy?: string | null
     ): SellerCreatedEventFilter;
 
@@ -1004,6 +1316,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _groupId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1012,6 +1325,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1020,6 +1334,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1028,6 +1343,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1035,35 +1351,43 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
     createSellerAndOffer(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     createSellerAndOfferAndTwinWithBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     createSellerAndOfferWithCondition(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     createSellerAndOfferWithConditionAndTwinAndBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1075,6 +1399,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _groupId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1083,6 +1408,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1091,6 +1417,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1099,6 +1426,7 @@ export interface IBosonOrchestrationHandler extends BaseContract {
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1106,35 +1434,43 @@ export interface IBosonOrchestrationHandler extends BaseContract {
 
     createSellerAndOffer(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     createSellerAndOfferAndTwinWithBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     createSellerAndOfferWithCondition(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     createSellerAndOfferWithConditionAndTwinAndBundle(
       _seller: BosonTypes.SellerStruct,
+      _contractURI: string,
       _offer: BosonTypes.OfferStruct,
       _offerDates: BosonTypes.OfferDatesStruct,
       _offerDurations: BosonTypes.OfferDurationsStruct,
+      _disputeResolverId: BigNumberish,
       _condition: BosonTypes.ConditionStruct,
       _twin: BosonTypes.TwinStruct,
       overrides?: Overrides & { from?: string | Promise<string> }

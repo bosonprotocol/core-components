@@ -68,11 +68,6 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "uint256",
-            name: "disputeResolverId",
-            type: "uint256",
-          },
-          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -142,6 +137,34 @@ const _abi = [
         indexed: false,
         internalType: "struct BosonTypes.OfferDurations",
         name: "offerDurations",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerEscalationDeposit",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolutionTerms",
+        name: "disputeResolutionTerms",
         type: "tuple",
       },
       {
@@ -255,11 +278,6 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "uint256",
-            name: "disputeResolverId",
-            type: "uint256",
-          },
-          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -328,6 +346,11 @@ const _abi = [
         name: "_offerDurations",
         type: "tuple",
       },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
     ],
     name: "createOffer",
     outputs: [],
@@ -377,11 +400,6 @@ const _abi = [
             internalType: "address",
             name: "exchangeToken",
             type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "disputeResolverId",
-            type: "uint256",
           },
           {
             internalType: "string",
@@ -451,6 +469,11 @@ const _abi = [
         internalType: "struct BosonTypes.OfferDurations[]",
         name: "_offerDurations",
         type: "tuple[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_disputeResolverIds",
+        type: "uint256[]",
       },
     ],
     name: "createOfferBatch",
@@ -565,11 +588,6 @@ const _abi = [
             type: "address",
           },
           {
-            internalType: "uint256",
-            name: "disputeResolverId",
-            type: "uint256",
-          },
-          {
             internalType: "string",
             name: "metadataUri",
             type: "string",
@@ -636,6 +654,33 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.OfferDurations",
         name: "offerDurations",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "feeAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerEscalationDeposit",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.DisputeResolutionTerms",
+        name: "disputeResolutionTerms",
         type: "tuple",
       },
     ],
