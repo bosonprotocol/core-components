@@ -16,7 +16,8 @@ interface SearchBarProps {
    */
   onSuccess?: (results: {
     products: subgraph.BaseMetadataEntityFieldsFragment[];
-    users: any[];
+    buyers: subgraph.BuyerFieldsFragment[];
+    sellers: subgraph.SellerFieldsFragment[];
   }) => void;
   /**
    * Optional callback to invoke if an error happened.
@@ -122,14 +123,11 @@ export const SearchBar = ({
          *  TODO: define in case of several users with the same address
          *  if we wanna return both (seller and buyer) or only one
          */
-        const users = [
-          ...sellerByIdList,
-          ...sellerByAddressList,
-          ...buyerById,
-          ...buyerByAddress
-        ];
+        const buyers = [...buyerById, ...buyerByAddress];
 
-        onSuccess?.({ products: productSearchResults, users: users });
+        const sellers = [...sellerByIdList, ...sellerByAddressList];
+
+        onSuccess?.({ products: productSearchResults, buyers, sellers });
       }
     } catch (error) {
       onError?.(error as Error);
