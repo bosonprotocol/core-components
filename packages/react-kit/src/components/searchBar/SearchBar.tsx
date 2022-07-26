@@ -14,7 +14,10 @@ interface SearchBarProps {
   /**
    * Optional callback to invoke with search results.
    */
-  onSuccess?: (results: subgraph.BaseMetadataEntityFieldsFragment[]) => void;
+  onSuccess?: (results: {
+    products: subgraph.BaseMetadataEntityFieldsFragment[];
+    users: any[];
+  }) => void;
   /**
    * Optional callback to invoke if an error happened.
    */
@@ -62,12 +65,49 @@ export const SearchBar = ({
           }
         });
 
-        const [searchResultsDesc, searchResultsName, searchResultsId] =
-          await Promise.all([
-            searchResultsDescPromise,
-            searchResultsNamePromise,
-            searchResultsIdPromise
-          ]);
+        // get seller by ID
+        const sellerByIdPromise = coreSdk.getSellers({
+          sellersFilter: {
+            id: value
+          }
+        });
+
+        // get seller by Address
+        const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
+
+        // get buyers by Address
+        const buyerByAddressPromise = coreSdk.getBuyers({
+          BuyersFilter: {
+            wallet: value
+          }
+        });
+
+        // get buyers by Address
+        const buyerByIdPromise = coreSdk.getBuyers({
+          BuyersFilter: {
+            id: value
+          }
+        });
+
+        const [
+          searchResultsDesc,
+          searchResultsName,
+          searchResultsId,
+          sellerById,
+          sellerByAddress,
+          buyerById,
+          buyerByAddress
+        ] = await Promise.all([
+          searchResultsDescPromise,
+          searchResultsNamePromise,
+          searchResultsIdPromise,
+          sellerByIdPromise,
+          sellerByAddressPromise,
+          buyerByIdPromise,
+          buyerByAddressPromise
+        ]);
+
+        const sellerByAddressList = sellerByAddress ? [sellerByAddress] : [];
 
         searchResults = [
           // remove duplicates from search results
@@ -79,7 +119,19 @@ export const SearchBar = ({
             ].map((searchResult) => [searchResult.id, searchResult])
           ).values()
         ];
-        onSuccess?.(searchResults);
+
+        /**
+         *  TODO: define in case of several users with the same address 
+         *  if we wanna return both (seller and buyer) or only one
+         */
+        const users = [
+          ...sellerById,
+          ...sellerByAddressList,
+          ...buyerById,
+          ...buyerByAddress
+        ];
+
+        onSuccess?.({ products: searchResults, users: users });
       }
     } catch (error) {
       onError?.(error as Error);
