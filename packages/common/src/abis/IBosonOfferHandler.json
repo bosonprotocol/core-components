@@ -57,11 +57,6 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "disputeResolverId",
-            "type": "uint256"
-          },
-          {
             "internalType": "string",
             "name": "metadataUri",
             "type": "string"
@@ -131,6 +126,34 @@
         "indexed": false,
         "internalType": "struct BosonTypes.OfferDurations",
         "name": "offerDurations",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "disputeResolverId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "escalationResponsePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "feeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "buyerEscalationDeposit",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.DisputeResolutionTerms",
+        "name": "disputeResolutionTerms",
         "type": "tuple"
       },
       {
@@ -244,11 +267,6 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "disputeResolverId",
-            "type": "uint256"
-          },
-          {
             "internalType": "string",
             "name": "metadataUri",
             "type": "string"
@@ -316,6 +334,11 @@
         "internalType": "struct BosonTypes.OfferDurations",
         "name": "_offerDurations",
         "type": "tuple"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_disputeResolverId",
+        "type": "uint256"
       }
     ],
     "name": "createOffer",
@@ -366,11 +389,6 @@
             "internalType": "address",
             "name": "exchangeToken",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "disputeResolverId",
-            "type": "uint256"
           },
           {
             "internalType": "string",
@@ -440,6 +458,11 @@
         "internalType": "struct BosonTypes.OfferDurations[]",
         "name": "_offerDurations",
         "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_disputeResolverIds",
+        "type": "uint256[]"
       }
     ],
     "name": "createOfferBatch",
@@ -554,11 +577,6 @@
             "type": "address"
           },
           {
-            "internalType": "uint256",
-            "name": "disputeResolverId",
-            "type": "uint256"
-          },
-          {
             "internalType": "string",
             "name": "metadataUri",
             "type": "string"
@@ -625,6 +643,33 @@
         ],
         "internalType": "struct BosonTypes.OfferDurations",
         "name": "offerDurations",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "disputeResolverId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "escalationResponsePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "feeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "buyerEscalationDeposit",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BosonTypes.DisputeResolutionTerms",
+        "name": "disputeResolutionTerms",
         "type": "tuple"
       }
     ],
