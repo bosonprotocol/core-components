@@ -12,8 +12,9 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     widgetsUrl: "https://boson-widgets-testing.surge.sh",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/d49be9f0f6de1c0b757b6fc0bbd0565b8c206286
-      protocolDiamond: "0xA7568BAdD652721097Bc4ef17FE694Be119aC9Ff"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/21169f69e685daa5fda5b748670ff907780923eb
+      protocolDiamond: "0xA7568BAdD652721097Bc4ef17FE694Be119aC9Ff",
+      testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     }
   },
   {
@@ -49,7 +50,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
-      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E"
     }
   }
 ];
