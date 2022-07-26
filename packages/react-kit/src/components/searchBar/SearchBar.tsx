@@ -14,7 +14,11 @@ interface SearchBarProps {
   /**
    * Optional callback to invoke with search results.
    */
-  onSuccess?: (results: subgraph.BaseMetadataEntityFieldsFragment[]) => void;
+  onSuccess?: (results: {
+    products: subgraph.BaseMetadataEntityFieldsFragment[];
+    buyers: subgraph.BuyerFieldsFragment[];
+    sellers: subgraph.SellerFieldsFragment[];
+  }) => void;
   /**
    * Optional callback to invoke if an error happened.
    */
@@ -42,44 +46,84 @@ export const SearchBar = ({
       if (e.key === "Enter") {
         e.preventDefault();
 
-        let searchResults: subgraph.BaseMetadataEntityFieldsFragment[] = [];
+        let productSearchResults: subgraph.BaseMetadataEntityFieldsFragment[] =
+          [];
 
-        const searchResultsDescPromise = coreSdk.getBaseMetadataEntities({
-          metadataFilter: {
-            description_contains_nocase: value
+        const productSearchResultsDescPromise = coreSdk.getBaseMetadataEntities(
+          {
+            metadataFilter: {
+              description_contains_nocase: value
+            }
           }
-        });
+        );
 
-        const searchResultsNamePromise = coreSdk.getBaseMetadataEntities({
-          metadataFilter: {
-            name_contains_nocase: value
+        const productSearchResultsNamePromise = coreSdk.getBaseMetadataEntities(
+          {
+            metadataFilter: {
+              name_contains_nocase: value
+            }
           }
-        });
+        );
 
-        const searchResultsIdPromise = coreSdk.getBaseMetadataEntities({
+        const productSearchResultsIdPromise = coreSdk.getBaseMetadataEntities({
           metadataFilter: {
             offer: value
           }
         });
 
-        const [searchResultsDesc, searchResultsName, searchResultsId] =
-          await Promise.all([
-            searchResultsDescPromise,
-            searchResultsNamePromise,
-            searchResultsIdPromise
-          ]);
+        const sellerByIdPromise = coreSdk.getSellerById(value);
 
-        searchResults = [
+        const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
+
+        const buyerByAddressPromise = coreSdk.getBuyers({
+          BuyersFilter: {
+            wallet: value
+          }
+        });
+
+        const buyerByIdPromise = coreSdk.getBuyers({
+          BuyersFilter: {
+            id: value
+          }
+        });
+
+        const [
+          productSearchResultsDesc,
+          productSearchResultsName,
+          productSearchResultsId,
+          sellerById,
+          sellerByAddress,
+          buyerById,
+          buyerByAddress
+        ] = await Promise.all([
+          productSearchResultsDescPromise,
+          productSearchResultsNamePromise,
+          productSearchResultsIdPromise,
+          sellerByIdPromise,
+          sellerByAddressPromise,
+          buyerByIdPromise,
+          buyerByAddressPromise
+        ]);
+
+        const sellerByAddressList = sellerByAddress ? [sellerByAddress] : [];
+        const sellerByIdList = sellerById ? [sellerById] : [];
+
+        productSearchResults = [
           // remove duplicates from search results
           ...new Map(
             [
-              ...searchResultsDesc,
-              ...searchResultsName,
-              ...searchResultsId
+              ...productSearchResultsDesc,
+              ...productSearchResultsName,
+              ...productSearchResultsId
             ].map((searchResult) => [searchResult.id, searchResult])
           ).values()
         ];
-        onSuccess?.(searchResults);
+
+        const buyers = [...buyerById, ...buyerByAddress];
+
+        const sellers = [...sellerByIdList, ...sellerByAddressList];
+
+        onSuccess?.({ products: productSearchResults, buyers, sellers });
       }
     } catch (error) {
       onError?.(error as Error);
