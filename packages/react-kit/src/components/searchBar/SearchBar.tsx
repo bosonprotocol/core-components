@@ -45,21 +45,26 @@ export const SearchBar = ({
       if (e.key === "Enter") {
         e.preventDefault();
 
-        let searchResults: subgraph.BaseMetadataEntityFieldsFragment[] = [];
+        let productSearchResults: subgraph.BaseMetadataEntityFieldsFragment[] =
+          [];
 
-        const searchResultsDescPromise = coreSdk.getBaseMetadataEntities({
-          metadataFilter: {
-            description_contains_nocase: value
+        const productSearchResultsDescPromise = coreSdk.getBaseMetadataEntities(
+          {
+            metadataFilter: {
+              description_contains_nocase: value
+            }
           }
-        });
+        );
 
-        const searchResultsNamePromise = coreSdk.getBaseMetadataEntities({
-          metadataFilter: {
-            name_contains_nocase: value
+        const productSearchResultsNamePromise = coreSdk.getBaseMetadataEntities(
+          {
+            metadataFilter: {
+              name_contains_nocase: value
+            }
           }
-        });
+        );
 
-        const searchResultsIdPromise = coreSdk.getBaseMetadataEntities({
+        const productSearchResultsIdPromise = coreSdk.getBaseMetadataEntities({
           metadataFilter: {
             offer: value
           }
@@ -82,17 +87,17 @@ export const SearchBar = ({
         });
 
         const [
-          searchResultsDesc,
-          searchResultsName,
-          searchResultsId,
+          productSearchResultsDesc,
+          productSearchResultsName,
+          productSearchResultsId,
           sellerById,
           sellerByAddress,
           buyerById,
           buyerByAddress
         ] = await Promise.all([
-          searchResultsDescPromise,
-          searchResultsNamePromise,
-          searchResultsIdPromise,
+          productSearchResultsDescPromise,
+          productSearchResultsNamePromise,
+          productSearchResultsIdPromise,
           sellerByIdPromise,
           sellerByAddressPromise,
           buyerByIdPromise,
@@ -100,14 +105,15 @@ export const SearchBar = ({
         ]);
 
         const sellerByAddressList = sellerByAddress ? [sellerByAddress] : [];
+        const sellerByIdList = sellerById ? [sellerById] : [];
 
-        searchResults = [
+        productSearchResults = [
           // remove duplicates from search results
           ...new Map(
             [
-              ...searchResultsDesc,
-              ...searchResultsName,
-              ...searchResultsId
+              ...productSearchResultsDesc,
+              ...productSearchResultsName,
+              ...productSearchResultsId
             ].map((searchResult) => [searchResult.id, searchResult])
           ).values()
         ];
@@ -117,13 +123,13 @@ export const SearchBar = ({
          *  if we wanna return both (seller and buyer) or only one
          */
         const users = [
-          ...sellerById,
+          ...sellerByIdList,
           ...sellerByAddressList,
           ...buyerById,
           ...buyerByAddress
         ];
 
-        onSuccess?.({ products: searchResults, users: users });
+        onSuccess?.({ products: productSearchResults, users: users });
       }
     } catch (error) {
       onError?.(error as Error);
