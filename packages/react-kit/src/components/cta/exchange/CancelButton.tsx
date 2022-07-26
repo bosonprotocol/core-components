@@ -58,17 +58,17 @@ export const CancelButton = ({
             if (metaTransactionsApiKey && metaTxContract && signerAddress) {
               const nonce = Date.now();
 
-              const { r, s, v } = await coreSdk.signExecuteMetaTxCancelVoucher({
-                chainId: coreSdkConfig.chainId,
-                exchangeId,
-                nonce
-              });
+              const { r, s, v, functionName, functionSignature } =
+                await coreSdk.signExecuteMetaTxCancelVoucher({
+                  chainId: coreSdkConfig.chainId,
+                  exchangeId,
+                  nonce
+                });
 
-              txResponse = await metaTxContract.executeMetaTxCancelVoucher(
+              txResponse = await metaTxContract.executeMetaTransaction(
                 signerAddress,
-                {
-                  exchangeId
-                },
+                functionName,
+                functionSignature,
                 nonce,
                 r,
                 s,

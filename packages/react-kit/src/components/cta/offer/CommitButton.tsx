@@ -57,14 +57,16 @@ export const CommitButton = ({
 
             if (metaTransactionsApiKey && metaTxContract && signerAddress) {
               const nonce = Date.now();
-              const { r, s, v } = await coreSdk.signExecuteMetaTxCommitToOffer({
-                chainId: coreSdkConfig.chainId,
-                offerId,
-                nonce
-              });
-              txResponse = await metaTxContract.executeMetaTxCommitToOffer(
+              const { r, s, v, functionName, functionSignature } =
+                await coreSdk.signExecuteMetaTxCommitToOffer({
+                  chainId: coreSdkConfig.chainId,
+                  offerId,
+                  nonce
+                });
+              txResponse = await metaTxContract.executeMetaTransaction(
                 signerAddress,
-                { buyer: signerAddress, offerId },
+                functionName,
+                functionSignature,
                 nonce,
                 r,
                 s,
