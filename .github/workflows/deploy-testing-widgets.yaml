@@ -25,6 +25,8 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
+      - run: npm ci
+      - run: npm run build -- --cache-dir=".turbo"
       - name: Create .fleek.json
         run: cp ./apps/widgets/.fleek/testing.json ./apps/widgets/.fleek.json
       - name: Deploy via fleek
