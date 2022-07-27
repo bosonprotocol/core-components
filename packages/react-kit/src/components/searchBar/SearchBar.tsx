@@ -76,13 +76,13 @@ export const SearchBar = ({
         const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
 
         const buyerByAddressPromise = coreSdk.getBuyers({
-          BuyersFilter: {
+          buyersFilter: {
             wallet: value
           }
         });
 
         const buyerByIdPromise = coreSdk.getBuyers({
-          BuyersFilter: {
+          buyersFilter: {
             id: value
           }
         });
