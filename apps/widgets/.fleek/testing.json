@@ -1,10 +1,10 @@
 {
   "site": {
-    "id": "eebf4712-9eae-45ed-8f1a-9ebe0f672c60",
-    "team": "0934fc94-ebb5-4572-ab25-5a7429a882ef",
+    "id": "1f42c28a-7fcf-4253-8086-257b1868e341",
+    "team": "3fb24a6e-7168-438e-848a-8b706e8bb76a",
     "platform": "ipfs",
     "source": "ipfs",
-    "name": "billowing-sound-6347"
+    "name": "widgets-test"
   },
   "build": {
     "baseDir": "",

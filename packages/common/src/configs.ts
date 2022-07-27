@@ -10,7 +10,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
-    widgetsUrl: "https://boson-widgets-testing.surge.sh",
+    widgetsUrl: "https://widgets-test.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/d49be9f0f6de1c0b757b6fc0bbd0565b8c206286
       protocolDiamond: "0xA7568BAdD652721097Bc4ef17FE694Be119aC9Ff"
@@ -18,12 +18,11 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "staging",
-    chainId: 3,
-    subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
+    chainId: 80001,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    widgetsUrl: "https://boson-widgets-staging.surge.sh",
+    widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/d49be9f0f6de1c0b757b6fc0bbd0565b8c206286
       protocolDiamond: "0x951892e0d2534f479eC0C15C62e46F17a8bD6a59"
