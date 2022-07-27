@@ -13,7 +13,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     widgetsUrl: "https://boson-widgets-testing.surge.sh",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/21169f69e685daa5fda5b748670ff907780923eb
-      protocolDiamond: "0xA7568BAdD652721097Bc4ef17FE694Be119aC9Ff",
+      protocolDiamond: "0x98D2E555195e87974086f4bD6F6ee62290A39FD1",
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     }
   },
