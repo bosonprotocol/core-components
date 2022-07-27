@@ -22,7 +22,7 @@ describe("#fromDefaultConfig()", () => {
   test("construct using default config from chain id", () => {
     const coreSDK = CoreSDK.fromDefaultConfig({
       web3Lib: new MockWeb3LibAdapter(),
-      chainId: 3
+      chainId: 1234
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
   });

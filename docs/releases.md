@@ -22,21 +22,25 @@ Widgets are hosted and primarily consumed through an iframe.
 
 ### Testing widgets
 
-Every merge into the `main` branch will trigger a deployment of the `testing` widgets to [surge.sh](). For details have a look at [`.github/workflows/deploy-testing-widgets.yaml`](../.github/workflows/deploy-testing-widgets.yaml.). These widgets can be accessed via:
+Every merge into the `main` branch will trigger a deployment of the `testing` widgets to IPFS via [fleek](https://fleek.co/).
+For details have a look at [`.github/workflows/deploy-testing-widgets.yaml`](../.github/workflows/deploy-testing-widgets.yaml.).
+These widgets can be accessed via:
 
-- https://boson-widgets-testing.surge.sh
+- https://widgets-test.on.fleek.co
 
 ### Staging widgets
 
-If a stable release of the packages are triggered through the GitHub UI, then a deployment of the `staging` widgets to [surge.sh]() will also start. For details have a look at [`.github/workflows/deploy-staging-widgets.yaml`](../.github/workflows/deploy-staging-widgets.yaml.). These widgets can be accessed via:
+If a stable release of the packages are triggered through the GitHub UI, then a deployment of the `staging` widgets to IPFS via [fleek](https://fleek.co/) will also start.
+For details have a look at [`.github/workflows/deploy-staging-widgets.yaml`](../.github/workflows/deploy-staging-widgets.yaml.).
+These widgets can be accessed via:
 
-- https://boson-widgets-staging.surge.sh
+- https://widgets-staging.on.fleek.co
 
 ### Production widgets
 
-A `production` widgets deployment to IPFS/Cloudflare via [fleek]() can be triggered through the GitHub UI by running the workflow `deploy-prod-widgets.yaml`. For details have a look at [`.github/workflows/deploy-prod-widgets.yaml`](../.github/workflows/deploy-prod-widgets.yaml.). These widgets can be accessed via:
+A `production` widgets deployment to IPFS/Cloudflare via [fleek](https://fleek.co/) can be triggered through the GitHub UI by running the workflow `deploy-prod-widgets.yaml`. For details have a look at [`.github/workflows/deploy-prod-widgets.yaml`](../.github/workflows/deploy-prod-widgets.yaml.). These widgets can be accessed via:
 
-- https://billowing-sound-6347.on.fleek.co (TODO: replace with official one)
+- https://widgets.on.fleek.co (TODO: replace with official one)
 
 ## Deploying subgraphs
 
@@ -52,7 +56,7 @@ Every merge into the `main` branch will trigger a deployment of the subgraph whi
 
 If a stable release of the packages are triggered through the GitHub UI, then a deployment of the subgraph connected to the `staging` environment is also initiated. For details have a look at [`.github/workflows/deploy-staging-subgraph.yaml`](../.github/workflows/deploy-staging-subgraph.yaml.). Access this subgraph via:
 
-- https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten
+- https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai
 
 ### Production widgets
 

@@ -25,7 +25,13 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}
-      - run: npm install -g surge
-      - run: npm ci
-      - run: npm run build -- --cache-dir=".turbo"
-      - run: surge ./apps/widgets/build https://boson-widgets-testing.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      - name: Create .fleek.json
+        run: cp ./apps/widgets/.fleek/testing.json ./apps/widgets/.fleek.json
+      - name: Deploy via fleek
+        id: deploy
+        uses: fleekhq/action-deploy@v1
+        with:
+          apiKey: ${{ secrets.FLEEK_API_KEY }}
+          workDir: ./apps/widgets
+      - name: Get the output url
+        run: echo "Deploy url is ${{ steps.deploy.outputs.deployUrl }}"

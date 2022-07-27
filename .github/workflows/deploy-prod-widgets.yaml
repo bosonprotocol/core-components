@@ -24,6 +24,8 @@ jobs:
             turbo-${{ runner.os }}
       - run: npm ci
       - run: npm run build -- --cache-dir=".turbo"
+      - name: Create .fleek.json
+        run: cp ./apps/widgets/.fleek/production.json ./apps/widgets/.fleek.json
       - name: Deploy via fleek
         id: deploy
         uses: fleekhq/action-deploy@v1
