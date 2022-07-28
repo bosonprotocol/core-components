@@ -42,6 +42,8 @@ export function mockRawOfferFromSubgraph(
     seller = {},
     exchangeToken = {},
     metadata = {},
+    disputeResolutionTerms = {},
+    disputeResolver = {},
     ...restOverrides
   } = overrides;
 
@@ -95,6 +97,32 @@ export function mockRawOfferFromSubgraph(
       ...metadata
     },
     exchanges: [],
+    disputeResolutionTerms: {
+      id: "1-1-terms",
+      disputeResolverId: "1",
+      escalationResponsePeriod: utils.timestamp
+        .msToSec(7 * DAY_IN_MS)
+        .toString(),
+      feeAmount: "0",
+      buyerEscalationDeposit: "0",
+      ...disputeResolutionTerms
+    },
+    disputeResolver: {
+      id: "1",
+      escalationResponsePeriod: utils.timestamp
+        .msToSec(7 * DAY_IN_MS)
+        .toString(),
+      admin: ZERO_ADDRESS,
+      clerk: ZERO_ADDRESS,
+      treasury: ZERO_ADDRESS,
+      operator: ZERO_ADDRESS,
+      // TODO: replace with valid uri
+      metadataUri: "ipfs://dispute-resolver-uri",
+      active: true,
+      sellerAllowList: [],
+      fees: [],
+      ...disputeResolver
+    },
     ...restOverrides
   };
 }
