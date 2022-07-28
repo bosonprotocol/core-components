@@ -99,7 +99,7 @@ test("handle OfferCreatedEvent with BASE metadata", () => {
   assert.fieldEquals("BaseMetadataEntity", "1-metadata", "type", "BASE");
   assert.fieldEquals(
     "DisputeResolutionTermsEntity",
-    "1-1",
+    "1-1-terms",
     "disputeResolverId",
     "1"
   );
@@ -131,7 +131,7 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
   );
   assert.fieldEquals(
     "DisputeResolutionTermsEntity",
-    "1-1",
+    "1-1-terms",
     "disputeResolverId",
     "1"
   );
