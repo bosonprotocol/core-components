@@ -283,7 +283,8 @@ async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
       operator: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
-      treasury: sellerAddress
+      treasury: sellerAddress,
+      contractUri: metadataUri
     },
     mockCreateOfferArgs({
       metadataHash,

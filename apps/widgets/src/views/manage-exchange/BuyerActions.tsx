@@ -61,17 +61,17 @@ export function BuyerActions({ exchange, reloadExchangeData }: Props) {
       if (areMetaTxEnabled) {
         const nonce = Date.now();
 
-        const { r, s, v } = await coreSDK.signExecuteMetaTxCancelVoucher({
-          chainId: config.chainId,
-          exchangeId: exchange.id,
-          nonce
-        });
+        const { r, s, v, functionName, functionSignature } =
+          await coreSDK.signExecuteMetaTxCancelVoucher({
+            chainId: config.chainId,
+            exchangeId: exchange.id,
+            nonce
+          });
 
-        txResponse = await metaTxContract.executeMetaTxCancelVoucher(
+        txResponse = await metaTxContract.executeMetaTransaction(
           account,
-          {
-            exchangeId: exchange.id
-          },
+          functionName,
+          functionSignature,
           nonce,
           r,
           s,
@@ -112,17 +112,17 @@ export function BuyerActions({ exchange, reloadExchangeData }: Props) {
       if (areMetaTxEnabled) {
         const nonce = Date.now();
 
-        const { r, s, v } = await coreSDK.signExecuteMetaTxRedeemVoucher({
-          chainId: config.chainId,
-          exchangeId: exchange.id,
-          nonce
-        });
+        const { r, s, v, functionName, functionSignature } =
+          await coreSDK.signExecuteMetaTxRedeemVoucher({
+            chainId: config.chainId,
+            exchangeId: exchange.id,
+            nonce
+          });
 
-        txResponse = await metaTxContract.executeMetaTxRedeemVoucher(
+        txResponse = await metaTxContract.executeMetaTransaction(
           account,
-          {
-            exchangeId: exchange.id
-          },
+          functionName,
+          functionSignature,
           nonce,
           r,
           s,

@@ -11,7 +11,9 @@ import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { ACCOUNT_1, ACCOUNT_2, ACCOUNT_3 } from "../../contracts/accounts";
 
-export const MOCK_ERC20_ADDRESS = "0x95401dc811bb5740090279Ba06cfA8fcF6113778";
+export const MOCK_ERC20_ADDRESS =
+  getDefaultConfig({ chainId: 31337 }).contracts.testErc20 ||
+  "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC20_ABI = [
   {
@@ -204,7 +206,9 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       operator: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress
+      clerk: sellerAddress,
+      // TODO: replace with correct uri
+      contractUri: "ipfs://seller-contract"
     });
     await tx.wait();
     await waitForGraphNodeIndexing();

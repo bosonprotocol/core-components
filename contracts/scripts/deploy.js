@@ -23,6 +23,7 @@ const {
 const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
+const { oneMonth } = require("../protocol-contracts/test/utils/constants");
 
 const gasLimit = "20000000";
 
@@ -38,24 +39,35 @@ function getConfig() {
   const maxOffersPerBundle = "100";
   const maxOffersPerBatch = "100";
   const maxTokensPerWithdrawal = "100";
+  const maxFeesPerDisputeResolver = 100;
+  const maxEscalationResponsePeriod = oneMonth;
+  const maxDisputesPerBatch = "100";
+  const maxAllowedSellers = "100";
+  const buyerEscalationDepositPercentage = "100"; // 1%
 
   return [
     {
       tokenAddress: bosonTokenMap[hre.network.name],
       treasuryAddress: ethers.constants.AddressZero,
-      voucherAddress: ethers.constants.AddressZero
+      voucherBeaconAddress: ethers.constants.AddressZero,
+      beaconProxyAddress: ethers.constants.AddressZero
     },
     {
       maxOffersPerGroup,
       maxTwinsPerBundle,
       maxOffersPerBundle,
       maxOffersPerBatch,
-      maxTokensPerWithdrawal
+      maxTokensPerWithdrawal,
+      maxFeesPerDisputeResolver,
+      maxEscalationResponsePeriod,
+      maxDisputesPerBatch,
+      maxAllowedSellers
     },
     {
       percentage: feePercentage,
       flatBoson: protocolFeeFlatBoson
-    }
+    },
+    buyerEscalationDepositPercentage
   ];
 }
 
@@ -170,13 +182,13 @@ async function main() {
     accessController.address,
     protocolDiamond.address
   ];
-  const [impls, proxies, clients] = await deployProtocolClients(
+  const [impls, beacons, proxies] = await deployProtocolClients(
     protocolClientArgs,
     gasLimit
   );
   const [bosonVoucherImpl] = impls;
+  const [bosonClientBeacon] = beacons;
   const [bosonVoucherProxy] = proxies;
-  const [bosonVoucher] = clients;
 
   // Gather the complete args that were used to create the proxies
   const bosonVoucherProxyArgs = [
@@ -188,6 +200,12 @@ async function main() {
   deploymentComplete(
     "BosonVoucher Logic",
     bosonVoucherImpl.address,
+    [],
+    contracts
+  );
+  deploymentComplete(
+    "BosonVoucher Beacon",
+    bosonClientBeacon.address,
     [],
     contracts
   );
@@ -210,7 +228,8 @@ async function main() {
   await accessController.renounceRole(Role.UPGRADER, deployer);
 
   // Add Voucher NFT addresses to protocol config
-  await bosonConfigHandler.setVoucherAddress(bosonVoucher.address);
+  await bosonConfigHandler.setVoucherBeaconAddress(bosonClientBeacon.address);
+  await bosonConfigHandler.setBeaconProxyAddress(bosonVoucherProxy.address);
 
   console.log(
     `✅ ConfigHandlerFacet updated with remaining post-initialization config.`
@@ -218,32 +237,58 @@ async function main() {
 
   // Add roles to contracts and addresses that need it
   await accessController.grantRole(Role.PROTOCOL, protocolDiamond.address);
-  await accessController.grantRole(Role.CLIENT, bosonVoucher.address);
 
   console.log(`✅ Granted roles to appropriate contract and addresses.`);
 
   // Some custom stuff for e2e setup
-  console.log(`\n🌐️Custom stuff...`);
+  if (["localhost", "hardhat"].includes(hre.network.name)) {
+    console.log(`\n🌐️Custom stuff for e2e setup...`);
 
-  const accountHandler = await ethers.getContractAt(
-    "IBosonAccountHandler",
-    protocolDiamond.address
-  );
-  await accountHandler.createDisputeResolver({
-    id: "1",
-    wallet: deployer,
-    active: true
-  });
-  console.log(`✅ Dispute resolver deployed.`);
-
-  // Deploy ERC20-compliant mock token for testing
-  if (hre.network.name === "localhost" || !config[0].tokenAddress) {
+    // Deploy ERC20-compliant mock token for testing
     const [foreign20Token] = await deployMockTokens(gasLimit, ["Foreign20"]);
     deploymentComplete("Foreign20", foreign20Token.address, [], contracts);
-  }
 
-  // Bail now if deploying locally
-  if (hre.network.name === "localhost") {
+    // Create and activate default dispute resolver
+    const accountHandler = await ethers.getContractAt(
+      "IBosonAccountHandler",
+      protocolDiamond.address
+    );
+    const response = await accountHandler.createDisputeResolver(
+      {
+        id: "1",
+        escalationResponsePeriod: oneMonth.toString(),
+        operator: deployer,
+        admin: deployer,
+        clerk: deployer,
+        treasury: deployer,
+        // TODO: use valid uri
+        metadataUri: `ipfs://disputeResolver1`,
+        active: true
+      },
+      [
+        {
+          tokenAddress: ethers.constants.AddressZero,
+          tokenName: "Native",
+          feeAmount: "0"
+        },
+        {
+          tokenAddress: foreign20Token.address,
+          tokenName: "Foreign20",
+          feeAmount: "0"
+        }
+      ],
+      []
+    );
+    const receipt = await response.wait();
+    const event = receipt.events.find(
+      (event) => event.event === "DisputeResolverCreated"
+    );
+    const disputeResolverId = event.args.disputeResolverId;
+    console.log(`✅ Dispute resolver created. ID: ${disputeResolverId}`);
+    await accountHandler.activateDisputeResolver(disputeResolverId);
+    console.log(`✅ Dispute resolver activated`);
+
+    console.log("\n");
     process.exit();
   }
 

@@ -58,17 +58,17 @@ export const RedeemButton = ({
             if (metaTransactionsApiKey && metaTxContract && signerAddress) {
               const nonce = Date.now();
 
-              const { r, s, v } = await coreSdk.signExecuteMetaTxRedeemVoucher({
-                chainId: coreSdkConfig.chainId,
-                exchangeId,
-                nonce
-              });
+              const { r, s, v, functionName, functionSignature } =
+                await coreSdk.signExecuteMetaTxRedeemVoucher({
+                  chainId: coreSdkConfig.chainId,
+                  exchangeId,
+                  nonce
+                });
 
-              txResponse = await metaTxContract.executeMetaTxRedeemVoucher(
+              txResponse = await metaTxContract.executeMetaTransaction(
                 signerAddress,
-                {
-                  exchangeId
-                },
+                functionName,
+                functionSignature,
                 nonce,
                 r,
                 s,

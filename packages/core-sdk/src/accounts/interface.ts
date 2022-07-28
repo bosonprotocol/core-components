@@ -8,7 +8,8 @@ export const bosonAccountHandlerIface = new Interface(
 
 export function encodeCreateAccount(seller: CreateSellerArgs) {
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
-    createSellerArgsToStruct(seller)
+    createSellerArgsToStruct(seller),
+    seller.contractUri
   ]);
 }
 

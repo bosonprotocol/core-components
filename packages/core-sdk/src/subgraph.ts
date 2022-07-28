@@ -408,12 +408,121 @@ export enum Buyer_OrderBy {
   Wallet = "wallet"
 }
 
+export type DisputeResolutionTermsEntity = {
+  __typename?: "DisputeResolutionTermsEntity";
+  buyerEscalationDeposit: Scalars["BigInt"];
+  disputeResolver: DisputeResolver;
+  disputeResolverId: Scalars["BigInt"];
+  escalationResponsePeriod: Scalars["BigInt"];
+  feeAmount: Scalars["BigInt"];
+  id: Scalars["ID"];
+  offer: Offer;
+};
+
+export type DisputeResolutionTermsEntity_Filter = {
+  buyerEscalationDeposit?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_gt?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_gte?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  buyerEscalationDeposit_lt?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_lte?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_not?: InputMaybe<Scalars["BigInt"]>;
+  buyerEscalationDeposit_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolver?: InputMaybe<Scalars["String"]>;
+  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolver_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  escalationResponsePeriod?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_gt?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_gte?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  escalationResponsePeriod_lt?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_lte?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_not?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  feeAmount?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_gt?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_gte?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  feeAmount_lt?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_lte?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_not?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  offer?: InputMaybe<Scalars["String"]>;
+  offer_contains?: InputMaybe<Scalars["String"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_gt?: InputMaybe<Scalars["String"]>;
+  offer_gte?: InputMaybe<Scalars["String"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]>;
+  offer_lte?: InputMaybe<Scalars["String"]>;
+  offer_not?: InputMaybe<Scalars["String"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum DisputeResolutionTermsEntity_OrderBy {
+  BuyerEscalationDeposit = "buyerEscalationDeposit",
+  DisputeResolver = "disputeResolver",
+  DisputeResolverId = "disputeResolverId",
+  EscalationResponsePeriod = "escalationResponsePeriod",
+  FeeAmount = "feeAmount",
+  Id = "id",
+  Offer = "offer"
+}
+
 export type DisputeResolver = {
   __typename?: "DisputeResolver";
   active: Scalars["Boolean"];
+  admin: Scalars["Bytes"];
+  clerk: Scalars["Bytes"];
+  escalationResponsePeriod: Scalars["BigInt"];
   id: Scalars["ID"];
+  metadataUri: Scalars["String"];
   offers: Array<Offer>;
-  wallet: Scalars["Bytes"];
+  operator: Scalars["Bytes"];
+  treasury: Scalars["Bytes"];
 };
 
 export type DisputeResolverOffersArgs = {
@@ -424,11 +533,24 @@ export type DisputeResolverOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
-export type DisputeResolver_Filter = {
-  active?: InputMaybe<Scalars["Boolean"]>;
-  active_in?: InputMaybe<Array<Scalars["Boolean"]>>;
-  active_not?: InputMaybe<Scalars["Boolean"]>;
-  active_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+export type DisputeResolverFee = {
+  __typename?: "DisputeResolverFee";
+  feeAmount: Scalars["BigInt"];
+  id: Scalars["ID"];
+  token: ExchangeToken;
+  tokenAddress: Scalars["Bytes"];
+  tokenName: Scalars["String"];
+};
+
+export type DisputeResolverFee_Filter = {
+  feeAmount?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_gt?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_gte?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  feeAmount_lt?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_lte?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_not?: InputMaybe<Scalars["BigInt"]>;
+  feeAmount_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -437,19 +559,139 @@ export type DisputeResolver_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  wallet?: InputMaybe<Scalars["Bytes"]>;
-  wallet_contains?: InputMaybe<Scalars["Bytes"]>;
-  wallet_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  wallet_not?: InputMaybe<Scalars["Bytes"]>;
-  wallet_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  wallet_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  token?: InputMaybe<Scalars["String"]>;
+  tokenAddress?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenName?: InputMaybe<Scalars["String"]>;
+  tokenName_contains?: InputMaybe<Scalars["String"]>;
+  tokenName_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenName_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenName_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenName_gt?: InputMaybe<Scalars["String"]>;
+  tokenName_gte?: InputMaybe<Scalars["String"]>;
+  tokenName_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenName_lt?: InputMaybe<Scalars["String"]>;
+  tokenName_lte?: InputMaybe<Scalars["String"]>;
+  tokenName_not?: InputMaybe<Scalars["String"]>;
+  tokenName_not_contains?: InputMaybe<Scalars["String"]>;
+  tokenName_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tokenName_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tokenName_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenName_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tokenName_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenName_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tokenName_starts_with?: InputMaybe<Scalars["String"]>;
+  tokenName_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  token_contains?: InputMaybe<Scalars["String"]>;
+  token_contains_nocase?: InputMaybe<Scalars["String"]>;
+  token_ends_with?: InputMaybe<Scalars["String"]>;
+  token_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  token_gt?: InputMaybe<Scalars["String"]>;
+  token_gte?: InputMaybe<Scalars["String"]>;
+  token_in?: InputMaybe<Array<Scalars["String"]>>;
+  token_lt?: InputMaybe<Scalars["String"]>;
+  token_lte?: InputMaybe<Scalars["String"]>;
+  token_not?: InputMaybe<Scalars["String"]>;
+  token_not_contains?: InputMaybe<Scalars["String"]>;
+  token_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  token_not_ends_with?: InputMaybe<Scalars["String"]>;
+  token_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  token_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  token_not_starts_with?: InputMaybe<Scalars["String"]>;
+  token_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  token_starts_with?: InputMaybe<Scalars["String"]>;
+  token_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum DisputeResolverFee_OrderBy {
+  FeeAmount = "feeAmount",
+  Id = "id",
+  Token = "token",
+  TokenAddress = "tokenAddress",
+  TokenName = "tokenName"
+}
+
+export type DisputeResolver_Filter = {
+  active?: InputMaybe<Scalars["Boolean"]>;
+  active_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  active_not?: InputMaybe<Scalars["Boolean"]>;
+  active_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  admin?: InputMaybe<Scalars["Bytes"]>;
+  admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_not?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk?: InputMaybe<Scalars["Bytes"]>;
+  clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_not?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  escalationResponsePeriod?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_gt?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_gte?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  escalationResponsePeriod_lt?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_lte?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_not?: InputMaybe<Scalars["BigInt"]>;
+  escalationResponsePeriod_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  operator?: InputMaybe<Scalars["Bytes"]>;
+  operator_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  operator_not?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  treasury?: InputMaybe<Scalars["Bytes"]>;
+  treasury_contains?: InputMaybe<Scalars["Bytes"]>;
+  treasury_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  treasury_not?: InputMaybe<Scalars["Bytes"]>;
+  treasury_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  treasury_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
 };
 
 export enum DisputeResolver_OrderBy {
   Active = "active",
+  Admin = "admin",
+  Clerk = "clerk",
+  EscalationResponsePeriod = "escalationResponsePeriod",
   Id = "id",
+  MetadataUri = "metadataUri",
   Offers = "offers",
-  Wallet = "wallet"
+  Operator = "operator",
+  Treasury = "treasury"
 }
 
 export type Exchange = {
@@ -1222,6 +1464,7 @@ export type Offer = {
   __typename?: "Offer";
   buyerCancelPenalty: Scalars["BigInt"];
   createdAt: Scalars["BigInt"];
+  disputeResolutionTerms: DisputeResolutionTermsEntity;
   disputeResolver: DisputeResolver;
   disputeResolverId: Scalars["BigInt"];
   exchangeToken: ExchangeToken;
@@ -1279,6 +1522,26 @@ export type Offer_Filter = {
   createdAt_lte?: InputMaybe<Scalars["BigInt"]>;
   createdAt_not?: InputMaybe<Scalars["BigInt"]>;
   createdAt_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolutionTerms?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolutionTerms_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolutionTerms_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolutionTerms_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   disputeResolver?: InputMaybe<Scalars["String"]>;
   disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
   disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -1536,6 +1799,7 @@ export type Offer_Filter = {
 export enum Offer_OrderBy {
   BuyerCancelPenalty = "buyerCancelPenalty",
   CreatedAt = "createdAt",
+  DisputeResolutionTerms = "disputeResolutionTerms",
   DisputeResolver = "disputeResolver",
   DisputeResolverId = "disputeResolverId",
   ExchangeToken = "exchangeToken",
@@ -4314,7 +4578,11 @@ export type Query = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
+  disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
+  disputeResolverFee?: Maybe<DisputeResolverFee>;
+  disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   exchange?: Maybe<Exchange>;
   exchangeToken?: Maybe<ExchangeToken>;
@@ -4413,10 +4681,42 @@ export type QueryBuyersArgs = {
   where?: InputMaybe<Buyer_Filter>;
 };
 
+export type QueryDisputeResolutionTermsEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeResolutionTermsEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeResolutionTermsEntity_Filter>;
+};
+
+export type QueryDisputeResolutionTermsEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type QueryDisputeResolverArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDisputeResolverFeeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDisputeResolverFeesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeResolverFee_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeResolverFee_Filter>;
 };
 
 export type QueryDisputeResolversArgs = {
@@ -4883,7 +5183,11 @@ export type Subscription = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
+  disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
+  disputeResolverFee?: Maybe<DisputeResolverFee>;
+  disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   exchange?: Maybe<Exchange>;
   exchangeToken?: Maybe<ExchangeToken>;
@@ -4982,10 +5286,42 @@ export type SubscriptionBuyersArgs = {
   where?: InputMaybe<Buyer_Filter>;
 };
 
+export type SubscriptionDisputeResolutionTermsEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeResolutionTermsEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeResolutionTermsEntity_Filter>;
+};
+
+export type SubscriptionDisputeResolutionTermsEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type SubscriptionDisputeResolverArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDisputeResolverFeeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDisputeResolverFeesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeResolverFee_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeResolverFee_Filter>;
 };
 
 export type SubscriptionDisputeResolversArgs = {
@@ -8953,11 +9289,11 @@ export const GetBuyerByIdQueryDocument = gql`
 `;
 export const GetBuyersQueryDocument = gql`
   query getBuyersQuery(
-    $BuyersSkip: Int
-    $BuyersFirst: Int
-    $BuyersOrderBy: Buyer_orderBy
-    $BuyersOrderDirection: OrderDirection
-    $BuyersFilter: Buyer_filter
+    $buyersSkip: Int
+    $buyersFirst: Int
+    $buyersOrderBy: Buyer_orderBy
+    $buyersOrderDirection: OrderDirection
+    $buyersFilter: Buyer_filter
     $fundsSkip: Int
     $fundsFirst: Int
     $fundsOrderBy: FundsEntity_orderBy
@@ -8978,11 +9314,11 @@ export const GetBuyersQueryDocument = gql`
     $includeFunds: Boolean = false
   ) {
     buyers(
-      skip: $BuyersSkip
-      first: $BuyersFirst
-      orderBy: $BuyersOrderBy
-      orderDirection: $BuyersOrderDirection
-      where: $BuyersFilter
+      skip: $buyersSkip
+      first: $buyersFirst
+      orderBy: $buyersOrderBy
+      orderDirection: $buyersOrderDirection
+      where: $buyersFilter
     ) {
       ...BuyerFields
     }

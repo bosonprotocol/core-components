@@ -7,7 +7,7 @@ import {
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
-import { BigNumber } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
@@ -24,12 +24,14 @@ export function createOfferArgsToStructs(
 ): [
   Partial<OfferStruct>,
   Partial<OfferDatesStruct>,
-  Partial<OfferDurationsStruct>
+  Partial<OfferDurationsStruct>,
+  BigNumberish
 ] {
   return [
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
-    argsToOfferDurationsStruct(args)
+    argsToOfferDurationsStruct(args),
+    args.disputeResolverId
   ];
 }
 

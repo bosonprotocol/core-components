@@ -2,6 +2,7 @@ import {
   OfferCreated,
   OfferCreatedOfferDatesStruct,
   OfferCreatedOfferDurationsStruct,
+  OfferCreatedDisputeResolutionTermsStruct,
   OfferCreatedOfferStruct,
   OfferVoided
 } from "../generated/BosonOfferHandler/IBosonOfferHandler";
@@ -46,9 +47,13 @@ export function createOfferCreatedEvent(
   resolutionPeriodDuration: i32,
   exchangeToken: string,
   disputeResolverId: i32,
+  disputeEscalationResponsePeriod: i32,
+  disputeFeeAmount: i32,
+  disputeBuyerEscalationDeposit: i32,
   metadataUri: string,
   metadataHash: string,
-  voided: boolean
+  voided: boolean,
+  executedBy: string
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
   offerCreatedEvent.parameters = new Array();
@@ -73,7 +78,6 @@ export function createOfferCreatedEvent(
         buyerCancelPenalty,
         quantityAvailable,
         exchangeToken,
-        disputeResolverId,
         metadataUri,
         metadataHash,
         voided
@@ -101,12 +105,29 @@ export function createOfferCreatedEvent(
       )
     )
   );
+  const disputeResolutionTermsParams = new ethereum.EventParam(
+    "disputeResolutionTerms",
+    ethereum.Value.fromTuple(
+      createDisputeResolutionTermsStruct(
+        disputeResolverId,
+        disputeEscalationResponsePeriod,
+        disputeFeeAmount,
+        disputeBuyerEscalationDeposit
+      )
+    )
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
 
   offerCreatedEvent.parameters.push(offerIdParam);
   offerCreatedEvent.parameters.push(sellerIdParam);
   offerCreatedEvent.parameters.push(offerParam);
   offerCreatedEvent.parameters.push(offerDatesParams);
   offerCreatedEvent.parameters.push(offerDurationsParams);
+  offerCreatedEvent.parameters.push(disputeResolutionTermsParams);
+  offerCreatedEvent.parameters.push(executedByParam);
 
   return offerCreatedEvent;
 }
@@ -464,7 +485,6 @@ export function createOfferStruct(
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
   exchangeToken: string,
-  disputeResolverId: i32,
   metadataUri: string,
   metadataHash: string,
   voided: boolean
@@ -478,7 +498,6 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
   tuple.push(ethereum.Value.fromI32(quantityAvailable));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
-  tuple.push(ethereum.Value.fromI32(disputeResolverId));
   tuple.push(ethereum.Value.fromString(metadataUri));
   tuple.push(ethereum.Value.fromString(metadataHash));
   tuple.push(ethereum.Value.fromBoolean(voided));
@@ -508,6 +527,20 @@ export function createOfferDurationsStruct(
   tuple.push(ethereum.Value.fromI32(fulfillmentPeriodDuration));
   tuple.push(ethereum.Value.fromI32(voucherValidDuration));
   tuple.push(ethereum.Value.fromI32(resolutionPeriodDuration));
+  return tuple;
+}
+
+export function createDisputeResolutionTermsStruct(
+  disputeResolverId: i32,
+  escalationResponsePeriod: i32,
+  feeAmount: i32,
+  buyerEscalationDeposit: i32
+): OfferCreatedDisputeResolutionTermsStruct {
+  const tuple = new OfferCreatedDisputeResolutionTermsStruct();
+  tuple.push(ethereum.Value.fromI32(disputeResolverId));
+  tuple.push(ethereum.Value.fromI32(escalationResponsePeriod));
+  tuple.push(ethereum.Value.fromI32(feeAmount));
+  tuple.push(ethereum.Value.fromI32(buyerEscalationDeposit));
   return tuple;
 }
 

@@ -22,7 +22,6 @@ export type CreateOfferArgs = {
 export type OfferStruct = {
   id: BigNumberish;
   sellerId: BigNumberish;
-  disputeResolverId: BigNumberish;
   price: BigNumberish;
   sellerDeposit: BigNumberish;
   protocolFee: BigNumberish;
@@ -45,4 +44,11 @@ export type OfferDurationsStruct = {
   fulfillmentPeriod: BigNumberish;
   voucherValid: BigNumberish;
   resolutionPeriod: BigNumberish;
+};
+
+export type DisputeResolutionTermsStruct = {
+  disputeResolverId: BigNumberish;
+  escalationResponsePeriod: BigNumberish;
+  feeAmount: BigNumberish;
+  buyerEscalationDeposit: BigNumberish;
 };

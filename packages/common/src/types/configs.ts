@@ -1,5 +1,6 @@
 export type ContractAddresses = {
   protocolDiamond: string;
+  testErc20?: string;
 };
 
 export type ProtocolConfig = {

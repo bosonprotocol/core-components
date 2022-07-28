@@ -6,6 +6,10 @@ import { Offer } from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
 import { saveExchangeToken } from "../entities/token";
+import {
+  getDisputeResolutionTermsId,
+  saveDisputeResolutionTerms
+} from "../entities/dispute-resolution";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -16,6 +20,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     const offerStruct = event.params.offer;
     const offerDatesStruct = event.params.offerDates;
     const offerDurationsStruct = event.params.offerDurations;
+    const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;
@@ -32,8 +37,14 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.fulfillmentPeriodDuration = offerDurationsStruct.fulfillmentPeriod;
     offer.voucherValidDuration = offerDurationsStruct.voucherValid;
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
-    offer.disputeResolverId = offerStruct.disputeResolverId;
+    offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
     offer.sellerId = offerStruct.sellerId;
+    offer.disputeResolver =
+      disputeResolutionTermsStruct.disputeResolverId.toString();
+    offer.disputeResolutionTerms = getDisputeResolutionTermsId(
+      disputeResolutionTermsStruct.disputeResolverId.toString(),
+      offerId.toString()
+    );
     offer.seller = offerStruct.sellerId.toString();
     offer.exchangeToken = offerStruct.exchangeToken.toHexString();
     offer.metadataUri = offerStruct.metadataUri;
@@ -45,6 +56,10 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
 
     saveExchangeToken(offerStruct.exchangeToken);
     saveMetadata(offer, event.block.timestamp);
+    saveDisputeResolutionTerms(
+      disputeResolutionTermsStruct,
+      offerId.toString()
+    );
   }
 }
 

@@ -69,7 +69,13 @@ export function handleDisputeResolverCreatedEvent(
     disputeResolver = new DisputeResolver(disputeResolverId);
   }
 
-  disputeResolver.wallet = disputeResolverFromEvent.wallet;
+  disputeResolver.escalationResponsePeriod =
+    disputeResolverFromEvent.escalationResponsePeriod;
+  disputeResolver.operator = disputeResolverFromEvent.operator;
+  disputeResolver.admin = disputeResolverFromEvent.admin;
+  disputeResolver.clerk = disputeResolverFromEvent.clerk;
+  disputeResolver.treasury = disputeResolverFromEvent.treasury;
+  disputeResolver.metadataUri = disputeResolverFromEvent.metadataUri;
   disputeResolver.active = true;
   disputeResolver.save();
 }

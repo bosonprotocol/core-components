@@ -62,15 +62,17 @@ export function BuyerActions({ offer, reloadOfferData }: Props) {
       if (areMetaTxEnabled) {
         const nonce = Date.now();
 
-        const { r, s, v } = await coreSDK.signExecuteMetaTxCommitToOffer({
-          chainId: config.chainId,
-          offerId: offer.id,
-          nonce
-        });
+        const { r, s, v, functionName, functionSignature } =
+          await coreSDK.signExecuteMetaTxCommitToOffer({
+            chainId: config.chainId,
+            offerId: offer.id,
+            nonce
+          });
 
-        txResponse = await metaTxContract.executeMetaTxCommitToOffer(
+        txResponse = await metaTxContract.executeMetaTransaction(
           account,
-          { buyer: account, offerId: offer.id },
+          functionName,
+          functionSignature,
           nonce,
           r,
           s,

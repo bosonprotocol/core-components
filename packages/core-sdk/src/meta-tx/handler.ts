@@ -2,6 +2,9 @@ import { Web3LibAdapter } from "@bosonprotocol/common";
 import { isHexString, hexZeroPad } from "@ethersproject/bytes";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 
+import { bosonExchangeHandlerIface } from "../exchanges/interface";
+import { bosonFundsHandlerIface } from "../funds/interface";
+
 type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
   nonce: BigNumberish;
@@ -50,6 +53,8 @@ export async function signExecuteMetaTxCommitToOffer(
     offerId: BigNumberish;
   }
 ) {
+  const functionName = "commitToOffer(address,uint256)";
+
   const offerType = [
     { name: "buyer", type: "address" },
     { name: "offerId", type: "uint256" }
@@ -74,19 +79,28 @@ export async function signExecuteMetaTxCommitToOffer(
     nonce: args.nonce.toString(),
     from: buyerAddress,
     contractAddress: args.metaTxHandlerAddress,
-    functionName: "commitToOffer(address,uint256)",
+    functionName,
     offerDetails: {
       buyer: buyerAddress,
       offerId: args.offerId.toString()
     }
   };
 
-  return prepareDataSignatureParameters({
+  const signatureParams = await prepareDataSignatureParameters({
     ...args,
     customTransactionType,
     primaryType: "MetaTxCommitToOffer",
     message
   });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "commitToOffer",
+      [buyerAddress, args.offerId]
+    )
+  };
 }
 
 export async function signExecuteMetaTxCancelVoucher(
@@ -164,6 +178,7 @@ export async function signExecuteMetaTxRaiseDispute(
     }
   };
 
+  // TODO: encode function data when adding dispute resolver module
   return prepareDataSignatureParameters({
     ...args,
     customTransactionType,
@@ -218,6 +233,7 @@ export async function signExecuteMetaTxResolveDispute(
     }
   };
 
+  // TODO: encode function data when adding dispute resolver module
   return prepareDataSignatureParameters({
     ...args,
     customTransactionType,
@@ -233,6 +249,8 @@ export async function signExecuteMetaTxWithdrawFunds(
     tokenAmounts: BigNumberish[];
   }
 ) {
+  const functionName = "withdrawFunds(uint256,bytes32,bytes32,uint8)";
+
   const fundType = [
     { name: "entityId", type: "uint256" },
     { name: "tokenList", type: "address[]" },
@@ -256,7 +274,7 @@ export async function signExecuteMetaTxWithdrawFunds(
     nonce: args.nonce.toString(),
     from: await args.web3Lib.getSignerAddress(),
     contractAddress: args.metaTxHandlerAddress,
-    functionName: "withdrawFunds(uint256,bytes32,bytes32,uint8)",
+    functionName,
     fundDetails: {
       entityId: args.entityId,
       tokenList: args.tokenList,
@@ -264,12 +282,21 @@ export async function signExecuteMetaTxWithdrawFunds(
     }
   };
 
-  return prepareDataSignatureParameters({
+  const signatureParams = await prepareDataSignatureParameters({
     ...args,
     customTransactionType,
     primaryType: "MetaTxFund",
     message
   });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "withdrawFunds",
+      [args.entityId, args.tokenList, args.tokenAmounts]
+    )
+  };
 }
 
 function makeExchangeMetaTxSigner(
@@ -312,12 +339,22 @@ function makeExchangeMetaTxSigner(
       }
     };
 
-    return prepareDataSignatureParameters({
+    const signatureParams = await prepareDataSignatureParameters({
       ...args,
       customTransactionType,
       primaryType: "MetaTxExchange",
       message
     });
+
+    return {
+      ...signatureParams,
+      functionName,
+      functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+        // remove params in brackets from string
+        functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
+        [args.exchangeId]
+      )
+    };
   };
 }
 

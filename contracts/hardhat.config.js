@@ -28,6 +28,7 @@ module.exports = {
   solidity: "0.8.9",
   networks: {
     hardhat: {
+      allowUnlimitedContractSize: true,
       chainId: 31337,
       accounts: ACCOUNTS.map(({ privateKey }) => ({
         privateKey,
@@ -39,15 +40,24 @@ module.exports = {
       }
     },
     localhost: {
+      allowUnlimitedContractSize: true,
       chainId: 31337,
       accounts: ACCOUNTS.map(({ privateKey }) => privateKey)
     },
+    boson: {
+      allowUnlimitedContractSize: true,
+      chainId: 1234,
+      accounts: accountsFromEnv,
+      url: process.env.JSON_RPC_URL_BOSON || ""
+    },
     ropsten: {
+      allowUnlimitedContractSize: true,
       chainId: 3,
       accounts: accountsFromEnv,
       url: process.env.JSON_RPC_URL_ROPSTEN || ""
     },
     kovan: {
+      allowUnlimitedContractSize: true,
       chainId: 42,
       accounts: accountsFromEnv,
       url: process.env.JSON_RPC_URL_KOVAN || ""
