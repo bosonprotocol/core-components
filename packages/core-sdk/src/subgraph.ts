@@ -415,6 +415,7 @@ export type DisputeResolutionTermsEntity = {
   disputeResolverId: Scalars["BigInt"];
   escalationResponsePeriod: Scalars["BigInt"];
   feeAmount: Scalars["BigInt"];
+  /** <DISPUTE_RESOLVER_ID>-terms */
   id: Scalars["ID"];
   offer: Offer;
 };
@@ -518,11 +519,21 @@ export type DisputeResolver = {
   admin: Scalars["Bytes"];
   clerk: Scalars["Bytes"];
   escalationResponsePeriod: Scalars["BigInt"];
+  fees: Array<DisputeResolverFee>;
   id: Scalars["ID"];
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  sellerAllowList: Array<Scalars["BigInt"]>;
   treasury: Scalars["Bytes"];
+};
+
+export type DisputeResolverFeesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeResolverFee_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<DisputeResolverFee_Filter>;
 };
 
 export type DisputeResolverOffersArgs = {
@@ -536,6 +547,7 @@ export type DisputeResolverOffersArgs = {
 export type DisputeResolverFee = {
   __typename?: "DisputeResolverFee";
   feeAmount: Scalars["BigInt"];
+  /** <DISPUTE_RESOLVER_ID>-<TOKEN_ADDRESS>-fee */
   id: Scalars["ID"];
   token: ExchangeToken;
   tokenAddress: Scalars["Bytes"];
@@ -640,6 +652,12 @@ export type DisputeResolver_Filter = {
   escalationResponsePeriod_lte?: InputMaybe<Scalars["BigInt"]>;
   escalationResponsePeriod_not?: InputMaybe<Scalars["BigInt"]>;
   escalationResponsePeriod_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  fees?: InputMaybe<Array<Scalars["String"]>>;
+  fees_contains?: InputMaybe<Array<Scalars["String"]>>;
+  fees_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  fees_not?: InputMaybe<Array<Scalars["String"]>>;
+  fees_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  fees_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -674,6 +692,12 @@ export type DisputeResolver_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerAllowList_contains_nocase?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerAllowList_not?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerAllowList_not_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerAllowList_not_contains_nocase?: InputMaybe<Array<Scalars["BigInt"]>>;
   treasury?: InputMaybe<Scalars["Bytes"]>;
   treasury_contains?: InputMaybe<Scalars["Bytes"]>;
   treasury_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -687,10 +711,12 @@ export enum DisputeResolver_OrderBy {
   Admin = "admin",
   Clerk = "clerk",
   EscalationResponsePeriod = "escalationResponsePeriod",
+  Fees = "fees",
   Id = "id",
   MetadataUri = "metadataUri",
   Offers = "offers",
   Operator = "operator",
+  SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
 }
 
@@ -5796,6 +5822,41 @@ export type GetSellerByIdQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -5919,6 +5980,41 @@ export type GetSellersQueryQuery = {
         decimals: string;
         symbol: string;
         name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
       };
       metadata?:
         | {
@@ -6074,6 +6170,276 @@ export type GetBuyersQueryQuery = {
   }>;
 };
 
+export type GetDisputeResolverByIdQueryQueryVariables = Exact<{
+  disputeResolverId: Scalars["ID"];
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  includeOffers?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetDisputeResolverByIdQueryQuery = {
+  __typename?: "Query";
+  disputeResolver?: {
+    __typename?: "DisputeResolver";
+    id: string;
+    escalationResponsePeriod: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    operator: string;
+    metadataUri: string;
+    active: boolean;
+    sellerAllowList: Array<string>;
+    offers?: Array<{
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      fulfillmentPeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        active: boolean;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
+            type: MetadataType;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
+            type: MetadataType;
+          }
+        | null;
+    }>;
+    fees: Array<{
+      __typename?: "DisputeResolverFee";
+      id: string;
+      tokenAddress: string;
+      tokenName: string;
+      feeAmount: string;
+      token: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+    }>;
+  } | null;
+};
+
+export type GetDisputeResolversQueryQueryVariables = Exact<{
+  disputeResolversSkip?: InputMaybe<Scalars["Int"]>;
+  disputeResolversFirst?: InputMaybe<Scalars["Int"]>;
+  disputeResolversOrderBy?: InputMaybe<DisputeResolver_OrderBy>;
+  disputeResolversOrderDirection?: InputMaybe<OrderDirection>;
+  disputeResolversFilter?: InputMaybe<DisputeResolver_Filter>;
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  includeOffers?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetDisputeResolversQueryQuery = {
+  __typename?: "Query";
+  disputeResolvers: Array<{
+    __typename?: "DisputeResolver";
+    id: string;
+    escalationResponsePeriod: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    operator: string;
+    metadataUri: string;
+    active: boolean;
+    sellerAllowList: Array<string>;
+    offers?: Array<{
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      fulfillmentPeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        active: boolean;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
+            type: MetadataType;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            schemaUrl: string;
+            type: MetadataType;
+          }
+        | null;
+    }>;
+    fees: Array<{
+      __typename?: "DisputeResolverFee";
+      id: string;
+      tokenAddress: string;
+      tokenName: string;
+      feeAmount: string;
+      token: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+    }>;
+  }>;
+};
+
 export type SellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
@@ -6133,6 +6499,41 @@ export type SellerFieldsFragment = {
       decimals: string;
       symbol: string;
       name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
     };
     metadata?:
       | {
@@ -6221,6 +6622,179 @@ export type BaseBuyerFieldsFragment = {
   active: boolean;
 };
 
+export type DisputeResolverFieldsFragment = {
+  __typename?: "DisputeResolver";
+  id: string;
+  escalationResponsePeriod: string;
+  admin: string;
+  clerk: string;
+  treasury: string;
+  operator: string;
+  metadataUri: string;
+  active: boolean;
+  sellerAllowList: Array<string>;
+  offers?: Array<{
+    __typename?: "Offer";
+    id: string;
+    createdAt: string;
+    price: string;
+    sellerDeposit: string;
+    protocolFee: string;
+    buyerCancelPenalty: string;
+    quantityAvailable: string;
+    quantityInitial: string;
+    validFromDate: string;
+    validUntilDate: string;
+    voucherRedeemableFromDate: string;
+    voucherRedeemableUntilDate: string;
+    fulfillmentPeriodDuration: string;
+    voucherValidDuration: string;
+    resolutionPeriodDuration: string;
+    metadataUri: string;
+    metadataHash: string;
+    voidedAt?: string | null;
+    disputeResolverId: string;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    exchangeToken: {
+      __typename?: "ExchangeToken";
+      id: string;
+      address: string;
+      decimals: string;
+      symbol: string;
+      name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
+    };
+    metadata?:
+      | {
+          __typename?: "BaseMetadataEntity";
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
+          type: MetadataType;
+        }
+      | {
+          __typename?: "ProductV1MetadataEntity";
+          name: string;
+          description: string;
+          externalUrl: string;
+          schemaUrl: string;
+          type: MetadataType;
+        }
+      | null;
+  }>;
+  fees: Array<{
+    __typename?: "DisputeResolverFee";
+    id: string;
+    tokenAddress: string;
+    tokenName: string;
+    feeAmount: string;
+    token: {
+      __typename?: "ExchangeToken";
+      id: string;
+      address: string;
+      decimals: string;
+      symbol: string;
+      name: string;
+    };
+  }>;
+};
+
+export type BaseDisputeResolverFieldsFragment = {
+  __typename?: "DisputeResolver";
+  id: string;
+  escalationResponsePeriod: string;
+  admin: string;
+  clerk: string;
+  treasury: string;
+  operator: string;
+  metadataUri: string;
+  active: boolean;
+  sellerAllowList: Array<string>;
+  fees: Array<{
+    __typename?: "DisputeResolverFee";
+    id: string;
+    tokenAddress: string;
+    tokenName: string;
+    feeAmount: string;
+    token: {
+      __typename?: "ExchangeToken";
+      id: string;
+      address: string;
+      decimals: string;
+      symbol: string;
+      name: string;
+    };
+  }>;
+};
+
+export type BaseDisputeResolverFeeFieldsFragment = {
+  __typename?: "DisputeResolverFee";
+  id: string;
+  tokenAddress: string;
+  tokenName: string;
+  feeAmount: string;
+  token: {
+    __typename?: "ExchangeToken";
+    id: string;
+    address: string;
+    decimals: string;
+    symbol: string;
+    name: string;
+  };
+};
+
+export type BaseDisputeResolutionTermsEntityFieldsFragment = {
+  __typename?: "DisputeResolutionTermsEntity";
+  id: string;
+  disputeResolverId: string;
+  escalationResponsePeriod: string;
+  feeAmount: string;
+  buyerEscalationDeposit: string;
+};
+
 export type GetExchangeTokenByIdQueryQueryVariables = Exact<{
   exchangeTokenId: Scalars["ID"];
   exchangeTokensSkip?: InputMaybe<Scalars["Int"]>;
@@ -6288,6 +6862,41 @@ export type GetExchangeTokenByIdQueryQuery = {
         decimals: string;
         symbol: string;
         name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
       };
       metadata?:
         | {
@@ -6384,6 +6993,41 @@ export type GetExchangeTokensQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -6456,6 +7100,41 @@ export type ExchangeTokenFieldsFragment = {
       decimals: string;
       symbol: string;
       name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
     };
     metadata?:
       | {
@@ -6565,6 +7244,41 @@ export type GetExchangeByIdQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -6663,6 +7377,41 @@ export type GetExchangesQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -6745,6 +7494,41 @@ export type ExchangeFieldsFragment = {
       decimals: string;
       symbol: string;
       name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
     };
     metadata?:
       | {
@@ -6921,6 +7705,41 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -7028,6 +7847,41 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -7125,6 +7979,41 @@ export type BaseMetadataEntityFieldsFragment = {
       symbol: string;
       name: string;
     };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
+    };
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
@@ -7220,6 +8109,41 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       decimals: string;
       symbol: string;
       name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
     };
     metadata?:
       | {
@@ -7362,6 +8286,41 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         decimals: string;
         symbol: string;
         name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
       };
       metadata?:
         | {
@@ -7584,6 +8543,41 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         symbol: string;
         name: string;
       };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
       metadata?:
         | {
             __typename?: "BaseMetadataEntity";
@@ -7795,6 +8789,41 @@ export type ProductV1MetadataEntityFieldsFragment = {
       symbol: string;
       name: string;
     };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
+    };
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
@@ -8004,6 +9033,41 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       decimals: string;
       symbol: string;
       name: string;
+    };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
     };
     metadata?:
       | {
@@ -8449,6 +9513,41 @@ export type GetOfferByIdQueryQuery = {
       symbol: string;
       name: string;
     };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
+    };
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
@@ -8538,6 +9637,41 @@ export type GetOffersQueryQuery = {
       symbol: string;
       name: string;
     };
+    disputeResolver: {
+      __typename?: "DisputeResolver";
+      id: string;
+      escalationResponsePeriod: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      operator: string;
+      metadataUri: string;
+      active: boolean;
+      sellerAllowList: Array<string>;
+      fees: Array<{
+        __typename?: "DisputeResolverFee";
+        id: string;
+        tokenAddress: string;
+        tokenName: string;
+        feeAmount: string;
+        token: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+      }>;
+    };
+    disputeResolutionTerms: {
+      __typename?: "DisputeResolutionTermsEntity";
+      id: string;
+      disputeResolverId: string;
+      escalationResponsePeriod: string;
+      feeAmount: string;
+      buyerEscalationDeposit: string;
+    };
     metadata?:
       | {
           __typename?: "BaseMetadataEntity";
@@ -8611,6 +9745,41 @@ export type OfferFieldsFragment = {
     symbol: string;
     name: string;
   };
+  disputeResolver: {
+    __typename?: "DisputeResolver";
+    id: string;
+    escalationResponsePeriod: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    operator: string;
+    metadataUri: string;
+    active: boolean;
+    sellerAllowList: Array<string>;
+    fees: Array<{
+      __typename?: "DisputeResolverFee";
+      id: string;
+      tokenAddress: string;
+      tokenName: string;
+      feeAmount: string;
+      token: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+    }>;
+  };
+  disputeResolutionTerms: {
+    __typename?: "DisputeResolutionTermsEntity";
+    id: string;
+    disputeResolverId: string;
+    escalationResponsePeriod: string;
+    feeAmount: string;
+    buyerEscalationDeposit: string;
+  };
   metadata?:
     | {
         __typename?: "BaseMetadataEntity";
@@ -8669,6 +9838,41 @@ export type BaseOfferFieldsFragment = {
     symbol: string;
     name: string;
   };
+  disputeResolver: {
+    __typename?: "DisputeResolver";
+    id: string;
+    escalationResponsePeriod: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    operator: string;
+    metadataUri: string;
+    active: boolean;
+    sellerAllowList: Array<string>;
+    fees: Array<{
+      __typename?: "DisputeResolverFee";
+      id: string;
+      tokenAddress: string;
+      tokenName: string;
+      feeAmount: string;
+      token: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+    }>;
+  };
+  disputeResolutionTerms: {
+    __typename?: "DisputeResolutionTermsEntity";
+    id: string;
+    disputeResolverId: string;
+    escalationResponsePeriod: string;
+    feeAmount: string;
+    buyerEscalationDeposit: string;
+  };
   metadata?:
     | {
         __typename?: "BaseMetadataEntity";
@@ -8725,6 +9929,44 @@ export const FundsEntityFieldsFragmentDoc = gql`
   ${BaseFundsEntityFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
 `;
+export const BaseDisputeResolverFeeFieldsFragmentDoc = gql`
+  fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
+    id
+    tokenAddress
+    tokenName
+    token {
+      ...BaseExchangeTokenFields
+    }
+    feeAmount
+  }
+  ${BaseExchangeTokenFieldsFragmentDoc}
+`;
+export const BaseDisputeResolverFieldsFragmentDoc = gql`
+  fragment BaseDisputeResolverFields on DisputeResolver {
+    id
+    escalationResponsePeriod
+    admin
+    clerk
+    treasury
+    operator
+    metadataUri
+    active
+    sellerAllowList
+    fees {
+      ...BaseDisputeResolverFeeFields
+    }
+  }
+  ${BaseDisputeResolverFeeFieldsFragmentDoc}
+`;
+export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
+  fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity {
+    id
+    disputeResolverId
+    escalationResponsePeriod
+    feeAmount
+    buyerEscalationDeposit
+  }
+`;
 export const BaseOfferFieldsFragmentDoc = gql`
   fragment BaseOfferFields on Offer {
     id
@@ -8752,6 +9994,12 @@ export const BaseOfferFieldsFragmentDoc = gql`
     exchangeToken {
       ...BaseExchangeTokenFields
     }
+    disputeResolver {
+      ...BaseDisputeResolverFields
+    }
+    disputeResolutionTerms {
+      ...BaseDisputeResolutionTermsEntityFields
+    }
     metadata {
       name
       description
@@ -8762,6 +10010,8 @@ export const BaseOfferFieldsFragmentDoc = gql`
   }
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
+  ${BaseDisputeResolverFieldsFragmentDoc}
+  ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
 `;
 export const BaseExchangeFieldsFragmentDoc = gql`
   fragment BaseExchangeFields on Exchange {
@@ -8846,6 +10096,22 @@ export const BuyerFieldsFragmentDoc = gql`
   ${BaseBuyerFieldsFragmentDoc}
   ${FundsEntityFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
+`;
+export const DisputeResolverFieldsFragmentDoc = gql`
+  fragment DisputeResolverFields on DisputeResolver {
+    ...BaseDisputeResolverFields
+    offers(
+      skip: $offersSkip
+      first: $offersFirst
+      orderBy: $offersOrderBy
+      orderDirection: $offersOrderDirection
+      where: $offersFilter
+    ) @include(if: $includeOffers) {
+      ...BaseOfferFields
+    }
+  }
+  ${BaseDisputeResolverFieldsFragmentDoc}
+  ${BaseOfferFieldsFragmentDoc}
 `;
 export const ExchangeTokenFieldsFragmentDoc = gql`
   fragment ExchangeTokenFields on ExchangeToken {
@@ -9325,6 +10591,48 @@ export const GetBuyersQueryDocument = gql`
   }
   ${BuyerFieldsFragmentDoc}
 `;
+export const GetDisputeResolverByIdQueryDocument = gql`
+  query getDisputeResolverByIdQuery(
+    $disputeResolverId: ID!
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $includeOffers: Boolean = false
+  ) {
+    disputeResolver(id: $disputeResolverId) {
+      ...DisputeResolverFields
+    }
+  }
+  ${DisputeResolverFieldsFragmentDoc}
+`;
+export const GetDisputeResolversQueryDocument = gql`
+  query getDisputeResolversQuery(
+    $disputeResolversSkip: Int
+    $disputeResolversFirst: Int
+    $disputeResolversOrderBy: DisputeResolver_orderBy
+    $disputeResolversOrderDirection: OrderDirection
+    $disputeResolversFilter: DisputeResolver_filter
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $includeOffers: Boolean = false
+  ) {
+    disputeResolvers(
+      skip: $disputeResolversSkip
+      first: $disputeResolversFirst
+      orderBy: $disputeResolversOrderBy
+      orderDirection: $disputeResolversOrderDirection
+      where: $disputeResolversFilter
+    ) {
+      ...DisputeResolverFields
+    }
+  }
+  ${DisputeResolverFieldsFragmentDoc}
+`;
 export const GetExchangeTokenByIdQueryDocument = gql`
   query getExchangeTokenByIdQuery(
     $exchangeTokenId: ID!
@@ -9667,6 +10975,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getBuyersQuery",
+        "query"
+      );
+    },
+    getDisputeResolverByIdQuery(
+      variables: GetDisputeResolverByIdQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetDisputeResolverByIdQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDisputeResolverByIdQueryQuery>(
+            GetDisputeResolverByIdQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getDisputeResolverByIdQuery",
+        "query"
+      );
+    },
+    getDisputeResolversQuery(
+      variables?: GetDisputeResolversQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetDisputeResolversQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDisputeResolversQueryQuery>(
+            GetDisputeResolversQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getDisputeResolversQuery",
         "query"
       );
     },
