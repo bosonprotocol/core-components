@@ -382,11 +382,14 @@ type DisputeResolver @entity {
   treasury: Bytes!
   operator: Bytes!
   metadataUri: String!
+  fees: [DisputeResolverFee!]!
+  sellerAllowList: [BigInt!]!
   active: Boolean!
   offers: [Offer!]! @derivedFrom(field: "disputeResolver")
 }
 
 type DisputeResolutionTermsEntity @entity {
+  "<DISPUTE_RESOLVER_ID>-terms"
   id: ID!
   disputeResolverId: BigInt!
   escalationResponsePeriod: BigInt!
@@ -397,6 +400,7 @@ type DisputeResolutionTermsEntity @entity {
 }
 
 type DisputeResolverFee @entity {
+  "<DISPUTE_RESOLVER_ID>-<TOKEN_ADDRESS>-fee"
   id: ID!
   tokenAddress: Bytes!
   tokenName: String!

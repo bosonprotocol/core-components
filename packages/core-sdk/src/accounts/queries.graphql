@@ -116,6 +116,44 @@ query getBuyersQuery(
   }
 }
 
+query getDisputeResolverByIdQuery(
+  $disputeResolverId: ID!
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $includeOffers: Boolean = false
+) {
+  disputeResolver(id: $disputeResolverId) {
+    ...DisputeResolverFields
+  }
+}
+
+query getDisputeResolversQuery(
+  $disputeResolversSkip: Int
+  $disputeResolversFirst: Int
+  $disputeResolversOrderBy: DisputeResolver_orderBy
+  $disputeResolversOrderDirection: OrderDirection
+  $disputeResolversFilter: DisputeResolver_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $includeOffers: Boolean = false
+) {
+  disputeResolvers(
+    skip: $disputeResolversSkip
+    first: $disputeResolversFirst
+    orderBy: $disputeResolversOrderBy
+    orderDirection: $disputeResolversOrderDirection
+    where: $disputeResolversFilter
+  ) {
+    ...DisputeResolverFields
+  }
+}
+
 fragment SellerFields on Seller {
   ...BaseSellerFields
   funds(
@@ -182,4 +220,50 @@ fragment BaseBuyerFields on Buyer {
   id
   wallet
   active
+}
+
+fragment DisputeResolverFields on DisputeResolver {
+  ...BaseDisputeResolverFields
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) @include(if: $includeOffers) {
+    ...BaseOfferFields
+  }
+}
+
+fragment BaseDisputeResolverFields on DisputeResolver {
+  id
+  escalationResponsePeriod
+  admin
+  clerk
+  treasury
+  operator
+  metadataUri
+  active
+  sellerAllowList
+  fees {
+    ...BaseDisputeResolverFeeFields
+  }
+}
+
+fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
+  id
+  tokenAddress
+  tokenName
+  token {
+    ...BaseExchangeTokenFields
+  }
+  feeAmount
+}
+
+fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity {
+  id
+  disputeResolverId
+  escalationResponsePeriod
+  feeAmount
+  buyerEscalationDeposit
 }

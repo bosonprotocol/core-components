@@ -2,9 +2,20 @@ import {
   SellerCreated,
   SellerUpdated,
   BuyerCreated,
-  DisputeResolverCreated
+  DisputeResolverCreated,
+  DisputeResolverActivated,
+  DisputeResolverUpdated,
+  AllowedSellersAdded,
+  AllowedSellersRemoved,
+  DisputeResolverFeesAdded,
+  DisputeResolverFeesRemoved
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
-import { Seller, Buyer, DisputeResolver } from "../../generated/schema";
+import { Seller, Buyer } from "../../generated/schema";
+
+import {
+  getAndSaveDisputeResolver,
+  getAndSaveDisputeResolverFees
+} from "../entities/dispute-resolution";
 
 export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
@@ -60,22 +71,56 @@ export function handleBuyerCreatedEvent(event: BuyerCreated): void {
 export function handleDisputeResolverCreatedEvent(
   event: DisputeResolverCreated
 ): void {
-  const disputeResolverFromEvent = event.params.disputeResolver;
-  const disputeResolverId = disputeResolverFromEvent.id.toString();
+  const disputeResolverId = event.params.disputeResolver.id;
 
-  let disputeResolver = DisputeResolver.load(disputeResolverId);
+  getAndSaveDisputeResolver(disputeResolverId, event.address);
+  getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+}
 
-  if (!disputeResolver) {
-    disputeResolver = new DisputeResolver(disputeResolverId);
-  }
+export function handleDisputeResolverUpdatedEvent(
+  event: DisputeResolverUpdated
+): void {
+  const disputeResolverId = event.params.disputeResolver.id;
 
-  disputeResolver.escalationResponsePeriod =
-    disputeResolverFromEvent.escalationResponsePeriod;
-  disputeResolver.operator = disputeResolverFromEvent.operator;
-  disputeResolver.admin = disputeResolverFromEvent.admin;
-  disputeResolver.clerk = disputeResolverFromEvent.clerk;
-  disputeResolver.treasury = disputeResolverFromEvent.treasury;
-  disputeResolver.metadataUri = disputeResolverFromEvent.metadataUri;
-  disputeResolver.active = true;
-  disputeResolver.save();
+  getAndSaveDisputeResolver(disputeResolverId, event.address);
+}
+
+export function handleDisputeResolverActivatedEvent(
+  event: DisputeResolverActivated
+): void {
+  const disputeResolverId = event.params.disputeResolver.id;
+
+  getAndSaveDisputeResolver(disputeResolverId, event.address);
+}
+
+export function handleDisputeResolverFeesAddedEvent(
+  event: DisputeResolverFeesAdded
+): void {
+  const disputeResolverId = event.params.disputeResolverId;
+
+  getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+}
+
+export function handleDisputeResolverFeesRemovedEvent(
+  event: DisputeResolverFeesRemoved
+): void {
+  const disputeResolverId = event.params.disputeResolverId;
+
+  getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+}
+
+export function handleAllowedSellersAddedEvent(
+  event: AllowedSellersAdded
+): void {
+  const disputeResolverId = event.params.disputeResolverId;
+
+  getAndSaveDisputeResolver(disputeResolverId, event.address);
+}
+
+export function handleAllowedSellersRemovedEvent(
+  event: AllowedSellersRemoved
+): void {
+  const disputeResolverId = event.params.disputeResolverId;
+
+  getAndSaveDisputeResolver(disputeResolverId, event.address);
 }

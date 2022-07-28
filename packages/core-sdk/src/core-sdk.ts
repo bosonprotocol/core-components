@@ -202,6 +202,40 @@ export class CoreSDK {
   }
 
   /**
+   * Returns seller entity from subgraph.
+   * @param admin - Admin address of seller entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Seller entity from subgraph.
+   */
+  public async getSellerByAdmin(
+    admin: string,
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment> {
+    return accounts.subgraph.getSellerByAdmin(
+      this._subgraphUrl,
+      admin,
+      queryVars
+    );
+  }
+
+  /**
+   * Returns seller entity from subgraph.
+   * @param treasury - Treasury address of seller entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Seller entity from subgraph.
+   */
+  public async getSellerByTreasury(
+    treasury: string,
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment> {
+    return accounts.subgraph.getSellerByTreasury(
+      this._subgraphUrl,
+      treasury,
+      queryVars
+    );
+  }
+
+  /**
    * Returns seller entity from subgraph. Matches `operator`, `clerk`, `admin` or `treasury`.
    * @param address - Address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
@@ -231,7 +265,7 @@ export class CoreSDK {
 
   /**
    * Creates seller account by calling the `AccountHandlerFacet` contract.
-   * @param sellerToCreate - Addresses to set in the seller account.
+   * @param sellerToCreate - Addresses and contract URI to set in the seller account.
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
@@ -295,12 +329,190 @@ export class CoreSDK {
   /**
    * Returns buyer entities from subgraph.
    * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Seller entities from subgraph.
+   * @returns Buyer entities from subgraph.
    */
   public async getBuyers(
     queryVars?: subgraph.GetBuyersQueryQueryVariables
   ): Promise<subgraph.BuyerFieldsFragment[]> {
     return accounts.subgraph.getBuyers(this._subgraphUrl, queryVars);
+  }
+
+  /* ---------------------------- Dispute Resolver ---------------------------- */
+
+  /**
+   * Creates a dispute resolver account by calling the `AccountHandlerFacet` contract.
+   * @param disputeResolverToCreate - Dispute resolver arguments.
+   * @returns Transaction response.
+   */
+  public async createDisputeResolver(
+    disputeResolverToCreate: accounts.CreateDisputeResolverArgs
+  ): Promise<TransactionResponse> {
+    return accounts.handler.createDisputeResolver({
+      disputeResolverToCreate,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Utility method to retrieve the created `exchangeId` from logs after calling `commitToOffer`.
+   * @param logs - Logs to search in.
+   * @returns Created exchange id.
+   */
+  public getDisputeResolverIdFromLogs(logs: Log[]): string | null {
+    return getValueFromLogs({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "disputeResolverId",
+      eventName: "DisputeResolverCreated"
+    });
+  }
+
+  /**
+   * Updates a dispute resolver account by calling the `AccountHandlerFacet` contract.
+   * Note, that the caller must be the specified `admin` address of the dispute resolver account.
+   * @param disputeResolverId - Id of dispute resolver to update.
+   * @param updates - Values to update for the given dispute resolver.
+   * @returns Transaction response.
+   */
+  public async updateDisputeResolver(
+    disputeResolverId: BigNumberish,
+    updates: accounts.DisputeResolverUpdates
+  ): Promise<TransactionResponse> {
+    return accounts.handler.updateDisputeResolver({
+      disputeResolverId,
+      updates,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Activates a dispute resolver account by calling the `AccountHandlerFacet` contract.
+   * Note, that the caller needs to have the ADMIN role.
+   * @param disputeResolverId - Id of dispute resolver to activate.
+   * @returns Transaction response.
+   */
+  public async activateDisputeResolver(
+    disputeResolverId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return accounts.handler.activateDisputeResolver({
+      disputeResolverId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Adds fees to a dispute resolver account by calling the `AccountHandlerFacet`
+   * contract. Note, that the caller must be the specified `admin` address of the dispute
+   * resolver account.
+   * @param disputeResolverId - Id of dispute resolver.
+   * @param fees - Dispute resolution fees. Should only contain token addresses that are
+   * not already specified.
+   * @returns Transaction response.
+   */
+  public async addFeesToDisputeResolver(
+    disputeResolverId: BigNumberish,
+    fees: accounts.DisputeResolutionFee[]
+  ): Promise<TransactionResponse> {
+    return accounts.handler.addFeesToDisputeResolver({
+      disputeResolverId,
+      fees,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Adds sellers to the allow list of a dispute resolver account by calling the
+   * `AccountHandlerFacet` contract. Note, that the caller must be the specified
+   * `admin` address of the dispute resolver account.
+   * @param disputeResolverId - Id of dispute resolver.
+   * @param sellerAllowList - List of seller ids that are allowed to use the dispute resolver.
+   *  Should only contain seller ids that are not part of the current allow list.
+   * @returns Transaction response.
+   */
+  public async addSellersToDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: BigNumberish[]
+  ): Promise<TransactionResponse> {
+    return accounts.handler.addSellersToAllowList({
+      disputeResolverId,
+      sellerAllowList,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Removes fees from a dispute resolver account by calling the `AccountHandlerFacet`
+   * contract. Note, that the caller must be the specified `admin` address of the dispute
+   * resolver account.
+   * @param disputeResolverId - Id of dispute resolver.
+   * @param feeTokenAddresses - Addresses of fee tokens to remove.
+   * @returns Transaction response.
+   */
+  public async removeFeesFromDisputeResolver(
+    disputeResolverId: BigNumberish,
+    feeTokenAddresses: string[]
+  ): Promise<TransactionResponse> {
+    return accounts.handler.removeFeesFromDisputeResolver({
+      disputeResolverId,
+      feeTokenAddresses,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Removes sellers from the allow list of a dispute resolver account by calling the
+   * `AccountHandlerFacet` contract. Note, that the caller must be the specified
+   * `admin` address of the dispute resolver account.
+   * @param disputeResolverId - Id of dispute resolver.
+   * @param sellerAllowList - List of seller ids that should be removed from the allow
+   * list of a dispute resolver.
+   * @returns Transaction response.
+   */
+  public async removeSellersFromDisputeResolverAllowList(
+    disputeResolverId: BigNumberish,
+    sellerAllowList: string[]
+  ): Promise<TransactionResponse> {
+    return accounts.handler.removeSellersFromAllowList({
+      disputeResolverId,
+      sellerAllowList,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Returns dispute resolver entity from subgraph.
+   * @param disputeResolverId - ID of dispute resolver entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute resolver entity from subgraph.
+   */
+  public async getDisputeResolverById(
+    disputeResolverId: BigNumberish,
+    queryVars?: accounts.subgraph.SingleDisputeResolverQueryVariables
+  ): Promise<subgraph.DisputeResolverFieldsFragment> {
+    return accounts.subgraph.getDisputeResolverById(
+      this._subgraphUrl,
+      disputeResolverId,
+      queryVars
+    );
+  }
+
+  /**
+   * Returns dispute resolver entities from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute resolver entities from subgraph.
+   */
+  public async getDisputeResolvers(
+    queryVars?: subgraph.GetDisputeResolversQueryQueryVariables
+  ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
+    return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
   }
 
   /* -------------------------------------------------------------------------- */
@@ -706,6 +918,10 @@ export class CoreSDK {
       subgraphUrl: this._subgraphUrl
     });
   }
+
+  /* -------------------------------------------------------------------------- */
+  /*                           Dispute related methods                          */
+  /* -------------------------------------------------------------------------- */
 
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
