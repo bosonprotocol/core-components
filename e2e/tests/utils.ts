@@ -6,7 +6,11 @@ import {
   BigNumber,
   BigNumberish
 } from "ethers";
-import { CoreSDK, getDefaultConfig } from "../../packages/core-sdk/src";
+import {
+  CoreSDK,
+  getDefaultConfig,
+  accounts
+} from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { ACCOUNT_1, ACCOUNT_2, ACCOUNT_3 } from "../../contracts/accounts";
@@ -117,6 +121,7 @@ export const defaultConfig = getDefaultConfig({
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 export const seedWallet1 = new Wallet(ACCOUNT_1.privateKey, provider);
+export const protocolAdminWallet = seedWallet1;
 export const seedWallet2 = new Wallet(ACCOUNT_2.privateKey, provider);
 export const seedWallet3 = new Wallet(ACCOUNT_3.privateKey, provider);
 
@@ -182,8 +187,8 @@ export async function wait(ms: number) {
   });
 }
 
-async function createFundedWallet(
-  fundingWallet: Wallet,
+export async function createFundedWallet(
+  fundingWallet: Wallet = seedWallet1,
   fundAmountInEth = "10"
 ) {
   const fundedWallet = Wallet.createRandom().connect(provider);
@@ -247,4 +252,38 @@ export async function ensureMintedAndAllowedTokens(
     );
     await Promise.all(allowTxResponses.map((txResponse) => txResponse.wait()));
   }
+}
+
+export async function createDisputeResolver(
+  disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
+  options: Partial<{
+    activate: boolean;
+  }> = {}
+) {
+  const coreSDK = initCoreSDKWithWallet(protocolAdminWallet);
+
+  const receipt = await (
+    await coreSDK.createDisputeResolver(disputeResolverToCreate)
+  ).wait();
+  const disputeResolverId = coreSDK.getDisputeResolverIdFromLogs(receipt.logs);
+
+  if (!disputeResolverId) {
+    throw new Error("Failed to create dispute resolver");
+  }
+
+  if (options.activate && disputeResolverId) {
+    await (await coreSDK.activateDisputeResolver(disputeResolverId)).wait();
+  }
+
+  await waitForGraphNodeIndexing();
+
+  const disputeResolver = await coreSDK.getDisputeResolverById(
+    disputeResolverId
+  );
+
+  return {
+    disputeResolverId,
+    disputeResolver,
+    protocolAdminCoreSDK: coreSDK
+  };
 }

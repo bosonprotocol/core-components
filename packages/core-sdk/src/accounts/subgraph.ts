@@ -2,10 +2,13 @@ import { getSubgraphSdk } from "../utils/graphql";
 import {
   BuyerFieldsFragment,
   GetBuyerByIdQueryQueryVariables,
+  GetBuyersQueryQueryVariables,
   SellerFieldsFragment,
   GetSellersQueryQueryVariables,
-  GetBuyersQueryQueryVariables,
-  GetSellerByIdQueryQueryVariables
+  GetSellerByIdQueryQueryVariables,
+  GetDisputeResolverByIdQueryQueryVariables,
+  GetDisputeResolversQueryQueryVariables,
+  DisputeResolverFieldsFragment
 } from "../subgraph";
 import { BigNumberish } from "@ethersproject/bignumber";
 
@@ -17,6 +20,11 @@ export type SingleSellerQueryVariables = Omit<
 export type SingleBuyerQueryVariables = Omit<
   GetBuyerByIdQueryQueryVariables,
   "buyerId"
+>;
+
+export type SingleDisputeResolverQueryVariables = Omit<
+  GetDisputeResolverByIdQueryQueryVariables,
+  "disputeResolverId"
 >;
 
 export async function getBuyerById(
@@ -136,4 +144,28 @@ export async function getSellerByAddress(
   ]);
 
   return operator || admin || clerk || treasury;
+}
+
+export async function getDisputeResolverById(
+  subgraphUrl: string,
+  disputeResolverId: BigNumberish,
+  queryVars: SingleDisputeResolverQueryVariables = {}
+): Promise<DisputeResolverFieldsFragment> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { disputeResolver } = await sdk.getDisputeResolverByIdQuery({
+    disputeResolverId: disputeResolverId.toString(),
+    ...queryVars
+  });
+  return disputeResolver;
+}
+
+export async function getDisputeResolvers(
+  subgraphUrl: string,
+  queryVars: GetDisputeResolversQueryQueryVariables = {}
+): Promise<DisputeResolverFieldsFragment[]> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { disputeResolvers = [] } = await sdk.getDisputeResolversQuery(
+    queryVars
+  );
+  return disputeResolvers;
 }

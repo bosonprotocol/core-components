@@ -35,6 +35,7 @@ describe("core-sdk", () => {
       expect(createdOffer.seller.operator.toLowerCase()).toBe(
         fundedWallet.address.toLowerCase()
       );
+      expect(createdOffer.disputeResolver.fees.length > 0).toBeTruthy();
     });
 
     describe("deposit funds", () => {

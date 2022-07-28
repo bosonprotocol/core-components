@@ -75,6 +75,12 @@ fragment BaseOfferFields on Offer {
   exchangeToken {
     ...BaseExchangeTokenFields
   }
+  disputeResolver {
+    ...BaseDisputeResolverFields
+  }
+  disputeResolutionTerms {
+    ...BaseDisputeResolutionTermsEntityFields
+  }
   metadata {
     name
     description
