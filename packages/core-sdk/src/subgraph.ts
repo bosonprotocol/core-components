@@ -408,6 +408,22 @@ export enum Buyer_OrderBy {
   Wallet = "wallet"
 }
 
+export type Dispute = {
+  __typename?: "Dispute";
+  buyer: Buyer;
+  buyerPercent: Scalars["BigInt"];
+  complaint: Scalars["String"];
+  disputedDate: Scalars["BigInt"];
+  escalatedDate?: Maybe<Scalars["BigInt"]>;
+  exchange: Exchange;
+  exchangeId: Scalars["BigInt"];
+  finalizedDate?: Maybe<Scalars["BigInt"]>;
+  id: Scalars["ID"];
+  seller: Seller;
+  state: DisputeState;
+  timeout: Scalars["BigInt"];
+};
+
 export type DisputeResolutionTermsEntity = {
   __typename?: "DisputeResolutionTermsEntity";
   buyerEscalationDeposit: Scalars["BigInt"];
@@ -720,6 +736,177 @@ export enum DisputeResolver_OrderBy {
   Treasury = "treasury"
 }
 
+/**
+ * Disputes
+ *
+ */
+export enum DisputeState {
+  Decided = "DECIDED",
+  Escalated = "ESCALATED",
+  Refused = "REFUSED",
+  Resolved = "RESOLVED",
+  Resolving = "RESOLVING",
+  Retracted = "RETRACTED"
+}
+
+export type Dispute_Filter = {
+  buyer?: InputMaybe<Scalars["String"]>;
+  buyerPercent?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_gt?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_gte?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  buyerPercent_lt?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_lte?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_not?: InputMaybe<Scalars["BigInt"]>;
+  buyerPercent_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  buyer_contains?: InputMaybe<Scalars["String"]>;
+  buyer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  buyer_ends_with?: InputMaybe<Scalars["String"]>;
+  buyer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyer_gt?: InputMaybe<Scalars["String"]>;
+  buyer_gte?: InputMaybe<Scalars["String"]>;
+  buyer_in?: InputMaybe<Array<Scalars["String"]>>;
+  buyer_lt?: InputMaybe<Scalars["String"]>;
+  buyer_lte?: InputMaybe<Scalars["String"]>;
+  buyer_not?: InputMaybe<Scalars["String"]>;
+  buyer_not_contains?: InputMaybe<Scalars["String"]>;
+  buyer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  buyer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  buyer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  buyer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  buyer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyer_starts_with?: InputMaybe<Scalars["String"]>;
+  buyer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  complaint?: InputMaybe<Scalars["String"]>;
+  complaint_contains?: InputMaybe<Scalars["String"]>;
+  complaint_contains_nocase?: InputMaybe<Scalars["String"]>;
+  complaint_ends_with?: InputMaybe<Scalars["String"]>;
+  complaint_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  complaint_gt?: InputMaybe<Scalars["String"]>;
+  complaint_gte?: InputMaybe<Scalars["String"]>;
+  complaint_in?: InputMaybe<Array<Scalars["String"]>>;
+  complaint_lt?: InputMaybe<Scalars["String"]>;
+  complaint_lte?: InputMaybe<Scalars["String"]>;
+  complaint_not?: InputMaybe<Scalars["String"]>;
+  complaint_not_contains?: InputMaybe<Scalars["String"]>;
+  complaint_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  complaint_not_ends_with?: InputMaybe<Scalars["String"]>;
+  complaint_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  complaint_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  complaint_not_starts_with?: InputMaybe<Scalars["String"]>;
+  complaint_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  complaint_starts_with?: InputMaybe<Scalars["String"]>;
+  complaint_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputedDate?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputedDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_not?: InputMaybe<Scalars["BigInt"]>;
+  disputedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  escalatedDate?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  escalatedDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_not?: InputMaybe<Scalars["BigInt"]>;
+  escalatedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  exchange?: InputMaybe<Scalars["String"]>;
+  exchangeId?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_gt?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_gte?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  exchangeId_lt?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_lte?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_not?: InputMaybe<Scalars["BigInt"]>;
+  exchangeId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  exchange_contains?: InputMaybe<Scalars["String"]>;
+  exchange_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_ends_with?: InputMaybe<Scalars["String"]>;
+  exchange_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_gt?: InputMaybe<Scalars["String"]>;
+  exchange_gte?: InputMaybe<Scalars["String"]>;
+  exchange_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchange_lt?: InputMaybe<Scalars["String"]>;
+  exchange_lte?: InputMaybe<Scalars["String"]>;
+  exchange_not?: InputMaybe<Scalars["String"]>;
+  exchange_not_contains?: InputMaybe<Scalars["String"]>;
+  exchange_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_not_ends_with?: InputMaybe<Scalars["String"]>;
+  exchange_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchange_not_starts_with?: InputMaybe<Scalars["String"]>;
+  exchange_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_starts_with?: InputMaybe<Scalars["String"]>;
+  exchange_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  finalizedDate?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  finalizedDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_not?: InputMaybe<Scalars["BigInt"]>;
+  finalizedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  seller?: InputMaybe<Scalars["String"]>;
+  seller_contains?: InputMaybe<Scalars["String"]>;
+  seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_gt?: InputMaybe<Scalars["String"]>;
+  seller_gte?: InputMaybe<Scalars["String"]>;
+  seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_lt?: InputMaybe<Scalars["String"]>;
+  seller_lte?: InputMaybe<Scalars["String"]>;
+  seller_not?: InputMaybe<Scalars["String"]>;
+  seller_not_contains?: InputMaybe<Scalars["String"]>;
+  seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  state?: InputMaybe<DisputeState>;
+  state_in?: InputMaybe<Array<DisputeState>>;
+  state_not?: InputMaybe<DisputeState>;
+  state_not_in?: InputMaybe<Array<DisputeState>>;
+  timeout?: InputMaybe<Scalars["BigInt"]>;
+  timeout_gt?: InputMaybe<Scalars["BigInt"]>;
+  timeout_gte?: InputMaybe<Scalars["BigInt"]>;
+  timeout_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timeout_lt?: InputMaybe<Scalars["BigInt"]>;
+  timeout_lte?: InputMaybe<Scalars["BigInt"]>;
+  timeout_not?: InputMaybe<Scalars["BigInt"]>;
+  timeout_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+};
+
+export enum Dispute_OrderBy {
+  Buyer = "buyer",
+  BuyerPercent = "buyerPercent",
+  Complaint = "complaint",
+  DisputedDate = "disputedDate",
+  EscalatedDate = "escalatedDate",
+  Exchange = "exchange",
+  ExchangeId = "exchangeId",
+  FinalizedDate = "finalizedDate",
+  Id = "id",
+  Seller = "seller",
+  State = "state",
+  Timeout = "timeout"
+}
+
 export type Exchange = {
   __typename?: "Exchange";
   buyer: Buyer;
@@ -746,6 +933,7 @@ export enum ExchangeState {
   Cancelled = "CANCELLED",
   Committed = "COMMITTED",
   Completed = "COMPLETED",
+  Disputed = "DISPUTED",
   Redeemed = "REDEEMED",
   Revoked = "REVOKED"
 }
@@ -4604,12 +4792,14 @@ export type Query = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  dispute?: Maybe<Dispute>;
   disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
   disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
   disputeResolverFee?: Maybe<DisputeResolverFee>;
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
+  disputes: Array<Dispute>;
   exchange?: Maybe<Exchange>;
   exchangeToken?: Maybe<ExchangeToken>;
   exchangeTokens: Array<ExchangeToken>;
@@ -4707,6 +4897,12 @@ export type QueryBuyersArgs = {
   where?: InputMaybe<Buyer_Filter>;
 };
 
+export type QueryDisputeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type QueryDisputeResolutionTermsEntitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -4753,6 +4949,16 @@ export type QueryDisputeResolversArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<DisputeResolver_Filter>;
+};
+
+export type QueryDisputesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Dispute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Dispute_Filter>;
 };
 
 export type QueryExchangeArgs = {
@@ -5209,12 +5415,14 @@ export type Subscription = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  dispute?: Maybe<Dispute>;
   disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
   disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
   disputeResolverFee?: Maybe<DisputeResolverFee>;
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
+  disputes: Array<Dispute>;
   exchange?: Maybe<Exchange>;
   exchangeToken?: Maybe<ExchangeToken>;
   exchangeTokens: Array<ExchangeToken>;
@@ -5312,6 +5520,12 @@ export type SubscriptionBuyersArgs = {
   where?: InputMaybe<Buyer_Filter>;
 };
 
+export type SubscriptionDisputeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type SubscriptionDisputeResolutionTermsEntitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -5358,6 +5572,16 @@ export type SubscriptionDisputeResolversArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<DisputeResolver_Filter>;
+};
+
+export type SubscriptionDisputesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Dispute_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Dispute_Filter>;
 };
 
 export type SubscriptionExchangeArgs = {
@@ -6793,6 +7017,188 @@ export type BaseDisputeResolutionTermsEntityFieldsFragment = {
   escalationResponsePeriod: string;
   feeAmount: string;
   buyerEscalationDeposit: string;
+};
+
+export type GetDisputeByIdQueryQueryVariables = Exact<{
+  disputeId: Scalars["ID"];
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  includeOffers?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetDisputeByIdQueryQuery = {
+  __typename?: "Query";
+  dispute?: {
+    __typename?: "Dispute";
+    id: string;
+    exchangeId: string;
+    complaint: string;
+    state: DisputeState;
+    buyerPercent: string;
+    disputedDate: string;
+    escalatedDate?: string | null;
+    finalizedDate?: string | null;
+    timeout: string;
+    exchange: {
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      expired: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+  } | null;
+};
+
+export type GetDisputesQueryQueryVariables = Exact<{
+  disputesSkip?: InputMaybe<Scalars["Int"]>;
+  disputesFirst?: InputMaybe<Scalars["Int"]>;
+  disputesOrderBy?: InputMaybe<Dispute_OrderBy>;
+  disputesOrderDirection?: InputMaybe<OrderDirection>;
+  disputesFilter?: InputMaybe<Dispute_Filter>;
+}>;
+
+export type GetDisputesQueryQuery = {
+  __typename?: "Query";
+  disputes: Array<{
+    __typename?: "Dispute";
+    id: string;
+    exchangeId: string;
+    complaint: string;
+    state: DisputeState;
+    buyerPercent: string;
+    disputedDate: string;
+    escalatedDate?: string | null;
+    finalizedDate?: string | null;
+    timeout: string;
+    exchange: {
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      expired: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      active: boolean;
+    };
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+  }>;
+};
+
+export type DisputeFieldsFragment = {
+  __typename?: "Dispute";
+  id: string;
+  exchangeId: string;
+  complaint: string;
+  state: DisputeState;
+  buyerPercent: string;
+  disputedDate: string;
+  escalatedDate?: string | null;
+  finalizedDate?: string | null;
+  timeout: string;
+  exchange: {
+    __typename?: "Exchange";
+    id: string;
+    disputed: boolean;
+    state: ExchangeState;
+    committedDate: string;
+    finalizedDate?: string | null;
+    validUntilDate: string;
+    redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
+    completedDate?: string | null;
+    expired: boolean;
+  };
+  seller: {
+    __typename?: "Seller";
+    id: string;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    active: boolean;
+  };
+  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
+};
+
+export type BaseDisputeFieldsFragment = {
+  __typename?: "Dispute";
+  id: string;
+  exchangeId: string;
+  complaint: string;
+  state: DisputeState;
+  buyerPercent: string;
+  disputedDate: string;
+  escalatedDate?: string | null;
+  finalizedDate?: string | null;
+  timeout: string;
+  exchange: {
+    __typename?: "Exchange";
+    id: string;
+    disputed: boolean;
+    state: ExchangeState;
+    committedDate: string;
+    finalizedDate?: string | null;
+    validUntilDate: string;
+    redeemedDate?: string | null;
+    revokedDate?: string | null;
+    cancelledDate?: string | null;
+    completedDate?: string | null;
+    expired: boolean;
+  };
+  seller: {
+    __typename?: "Seller";
+    id: string;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    active: boolean;
+  };
+  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
 
 export type GetExchangeTokenByIdQueryQueryVariables = Exact<{
@@ -10113,6 +10519,37 @@ export const DisputeResolverFieldsFragmentDoc = gql`
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
 `;
+export const BaseDisputeFieldsFragmentDoc = gql`
+  fragment BaseDisputeFields on Dispute {
+    id
+    exchangeId
+    complaint
+    state
+    buyerPercent
+    disputedDate
+    escalatedDate
+    finalizedDate
+    timeout
+    exchange {
+      ...BaseExchangeFields
+    }
+    seller {
+      ...BaseSellerFields
+    }
+    buyer {
+      ...BaseBuyerFields
+    }
+  }
+  ${BaseExchangeFieldsFragmentDoc}
+  ${BaseSellerFieldsFragmentDoc}
+  ${BaseBuyerFieldsFragmentDoc}
+`;
+export const DisputeFieldsFragmentDoc = gql`
+  fragment DisputeFields on Dispute {
+    ...BaseDisputeFields
+  }
+  ${BaseDisputeFieldsFragmentDoc}
+`;
 export const ExchangeTokenFieldsFragmentDoc = gql`
   fragment ExchangeTokenFields on ExchangeToken {
     ...BaseExchangeTokenFields
@@ -10633,6 +11070,42 @@ export const GetDisputeResolversQueryDocument = gql`
   }
   ${DisputeResolverFieldsFragmentDoc}
 `;
+export const GetDisputeByIdQueryDocument = gql`
+  query getDisputeByIdQuery(
+    $disputeId: ID!
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $includeOffers: Boolean = false
+  ) {
+    dispute(id: $disputeId) {
+      ...DisputeFields
+    }
+  }
+  ${DisputeFieldsFragmentDoc}
+`;
+export const GetDisputesQueryDocument = gql`
+  query getDisputesQuery(
+    $disputesSkip: Int
+    $disputesFirst: Int
+    $disputesOrderBy: Dispute_orderBy
+    $disputesOrderDirection: OrderDirection
+    $disputesFilter: Dispute_filter
+  ) {
+    disputes(
+      skip: $disputesSkip
+      first: $disputesFirst
+      orderBy: $disputesOrderBy
+      orderDirection: $disputesOrderDirection
+      where: $disputesFilter
+    ) {
+      ...DisputeFields
+    }
+  }
+  ${DisputeFieldsFragmentDoc}
+`;
 export const GetExchangeTokenByIdQueryDocument = gql`
   query getExchangeTokenByIdQuery(
     $exchangeTokenId: ID!
@@ -11005,6 +11478,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getDisputeResolversQuery",
+        "query"
+      );
+    },
+    getDisputeByIdQuery(
+      variables: GetDisputeByIdQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetDisputeByIdQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDisputeByIdQueryQuery>(
+            GetDisputeByIdQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getDisputeByIdQuery",
+        "query"
+      );
+    },
+    getDisputesQuery(
+      variables?: GetDisputesQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetDisputesQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetDisputesQueryQuery>(
+            GetDisputesQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getDisputesQuery",
         "query"
       );
     },
