@@ -6,10 +6,15 @@ import {
   initCoreSDKWithFundedWallet,
   ensureCreatedSeller,
   waitForGraphNodeIndexing,
-  createDisputeResolver
+  createDisputeResolver,
+  seedWallet1,
+  seedWallet2
 } from "./utils";
 
 jest.setTimeout(60_000);
+
+const protocolAdminWallet = seedWallet1; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const sellerWallet = seedWallet2; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 describe("CoreSDK - accounts", () => {
   describe("dispute resolver", () => {
@@ -21,29 +26,26 @@ describe("CoreSDK - accounts", () => {
       tokenName: "Native",
       feeAmount: utils.parseEther("1")
     };
-    let sellerCoreSDK: CoreSDK;
-    let sellerWallet: Wallet;
 
-    beforeAll(async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
-      sellerCoreSDK = coreSDK;
-      sellerWallet = fundedWallet;
-    });
+    beforeAll(async () => {});
 
     test("create", async () => {
       const disputeResolverAddress =
         Wallet.createRandom().address.toLowerCase();
 
-      const { disputeResolver } = await createDisputeResolver({
-        operator: disputeResolverAddress,
-        clerk: disputeResolverAddress,
-        admin: disputeResolverAddress,
-        treasury: disputeResolverAddress,
-        metadataUri,
-        escalationResponsePeriodInMS,
-        fees: [],
-        sellerAllowList: []
-      });
+      const { disputeResolver } = await createDisputeResolver(
+        protocolAdminWallet,
+        {
+          operator: disputeResolverAddress,
+          clerk: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: []
+        }
+      );
 
       expect(disputeResolver.active).toBeFalsy();
       expect(disputeResolver.admin).toBe(disputeResolverAddress);
@@ -63,6 +65,7 @@ describe("CoreSDK - accounts", () => {
         Wallet.createRandom().address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        protocolAdminWallet,
         {
           operator: disputeResolverAddress,
           clerk: disputeResolverAddress,
@@ -82,11 +85,14 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("update", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        protocolAdminWallet
+      );
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          protocolAdminWallet,
           {
             operator: disputeResolverAddress,
             clerk: disputeResolverAddress,
@@ -128,10 +134,13 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("add fees", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        protocolAdminWallet
+      );
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        protocolAdminWallet,
         {
           operator: disputeResolverAddress,
           clerk: disputeResolverAddress,
@@ -172,11 +181,14 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("remove fees", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        protocolAdminWallet
+      );
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          protocolAdminWallet,
           {
             operator: disputeResolverAddress,
             clerk: disputeResolverAddress,
@@ -211,11 +223,12 @@ describe("CoreSDK - accounts", () => {
     test("add sellers", async () => {
       const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
-        initCoreSDKWithFundedWallet()
+        initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        protocolAdminWallet,
         {
           operator: disputeResolverAddress,
           clerk: disputeResolverAddress,
@@ -248,12 +261,13 @@ describe("CoreSDK - accounts", () => {
     test("remove sellers", async () => {
       const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
-        initCoreSDKWithFundedWallet()
+        initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          protocolAdminWallet,
           {
             operator: disputeResolverAddress,
             clerk: disputeResolverAddress,

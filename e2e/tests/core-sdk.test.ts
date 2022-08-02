@@ -14,15 +14,20 @@ import {
   ensureCreatedSeller,
   ensureMintedAndAllowedTokens,
   MOCK_ERC20_ADDRESS,
-  waitForGraphNodeIndexing
+  waitForGraphNodeIndexing,
+  seedWallet3
 } from "./utils";
+
+const seedWallet = seedWallet3; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
     test("create seller + offer", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
 
       const createdOffer = await createSellerAndOffer(
         coreSDK,
@@ -41,7 +46,9 @@ describe("core-sdk", () => {
     describe("deposit funds", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
@@ -59,7 +66,9 @@ describe("core-sdk", () => {
 
       test("ERC20", async () => {
         const sellerFundsDeposit = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
@@ -80,8 +89,8 @@ describe("core-sdk", () => {
     });
 
     test("commit", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -101,8 +110,8 @@ describe("core-sdk", () => {
     });
 
     test("revoke", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -129,8 +138,8 @@ describe("core-sdk", () => {
     });
 
     test("cancel", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -157,8 +166,8 @@ describe("core-sdk", () => {
     });
 
     test("redeem + finalize", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -195,7 +204,9 @@ describe("core-sdk", () => {
     describe("withdraw funds", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
@@ -221,7 +232,9 @@ describe("core-sdk", () => {
 
       test("ETH and ERC20", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const ethFunds = await depositFunds({
