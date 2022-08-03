@@ -1,3 +1,4 @@
+import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
 import {
   DisputeState,
   ExchangeFieldsFragment
@@ -342,6 +343,38 @@ describe("core-sdk", () => {
         await checkDisputeRetracted(exchange.id, buyerCoreSDK);
       });
 
+      test("expired dispute", async () => {
+        // create another offer with very small resolutionPeriod + commit + redeem
+        const seller = await ensureCreatedSeller(sellerWallet);
+
+        const createdOffer = await createOffer(sellerCoreSDK, seller.id, {
+          resolutionPeriodDurationInMS: 1000
+        });
+        await depositFunds({
+          coreSDK: sellerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+        exchange = await commitToOffer({
+          buyerCoreSDK,
+          sellerCoreSDK,
+          offerId: createdOffer.id
+        });
+
+        const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
+        await txResponse.wait();
+        await waitForGraphNodeIndexing();
+
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+
+        // Expire the dispute
+        await expireDispute(exchange.id, sellerCoreSDK);
+
+        await checkDisputeRetracted(exchange.id, buyerCoreSDK);
+      });
+
       test("raise dispute + resolve (from buyer)", async () => {
         // Raise the dispute
         await raiseDispute(exchange.id, complaint, buyerCoreSDK);
@@ -444,11 +477,19 @@ describe("core-sdk", () => {
 
         await checkDisputeRefused(exchange.id, drCoreSDK);
       });
+
+      xtest("raise dispute + escalate + expire", async () => {
+        // This test case would require a specific dispute resolver created with a very small escalationResponsePeriod
+      });
     });
   });
 });
 
-async function createOffer(coreSDK: CoreSDK, sellerId: string) {
+async function createOffer(
+  coreSDK: CoreSDK,
+  sellerId: string,
+  offerParams?: Partial<CreateOfferArgs>
+) {
   const metadataHash = await coreSDK.storeMetadata({
     ...metadata,
     type: "BASE"
@@ -457,7 +498,8 @@ async function createOffer(coreSDK: CoreSDK, sellerId: string) {
 
   const offerArgs = mockCreateOfferArgs({
     metadataHash,
-    metadataUri
+    metadataUri,
+    ...offerParams
   });
 
   // Check the disputeResolver exists and is active
@@ -987,4 +1029,10 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
 
   // dispute buyerPercent is filled
   expect(dispute.buyerPercent).toEqual("0");
+}
+
+async function expireDispute(exchangeId: string, coreSDK: CoreSDK) {
+  const txResponse = await coreSDK.expireDispute(exchangeId);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
 }
