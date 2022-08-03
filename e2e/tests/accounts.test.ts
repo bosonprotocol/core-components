@@ -7,14 +7,14 @@ import {
   ensureCreatedSeller,
   waitForGraphNodeIndexing,
   createDisputeResolver,
-  seedWallet1,
-  seedWallet2
+  deployerWallet,
+  seedWallet3
 } from "./utils";
 
 jest.setTimeout(60_000);
 
-const protocolAdminWallet = seedWallet1; // be sure the seedWallet is not used by another test (to allow concurrent run)
-const sellerWallet = seedWallet2; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const protocolAdminWallet = deployerWallet; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const sellerWallet = seedWallet3; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 describe("CoreSDK - accounts", () => {
   describe("dispute resolver", () => {

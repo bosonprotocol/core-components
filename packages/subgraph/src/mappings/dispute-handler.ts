@@ -87,7 +87,21 @@ export function handleDisputeResolvedEvent(event: DisputeResolved): void {
 export function handleDisputeEscalatedEvent(event: DisputeEscalated): void {
   const exchangeId = event.params.exchangeId;
 
-  finalizeDispute(event.address, exchangeId, "ESCALATED");
+  const disputeHandler = IBosonDisputeHandler.bind(event.address);
+  const getDisputeResult = disputeHandler.getDispute(exchangeId);
+  const disputeFromContract = getDisputeResult.value1;
+  const disputeDurations = getDisputeResult.value2;
+
+  const disputeId = exchangeId.toString();
+
+  const dispute = Dispute.load(disputeId);
+
+  if (dispute) {
+    dispute.state = "ESCALATED";
+    dispute.escalatedDate = disputeDurations.escalated;
+    dispute.timeout = disputeDurations.timeout;
+    dispute.save();
+  }
 }
 
 export function handleDisputeDecidedEvent(event: DisputeDecided): void {
