@@ -136,13 +136,13 @@ export const seedWallet1 = new Wallet(ACCOUNT_1.privateKey, provider);
 export const seedWallet2 = new Wallet(ACCOUNT_2.privateKey, provider);
 // seedWallets used by core-sdk test
 export const seedWallet3 = new Wallet(ACCOUNT_3.privateKey, provider);
-// seedWallets used by meta-tx test
 export const seedWallet4 = new Wallet(ACCOUNT_4.privateKey, provider);
 export const seedWallet5 = new Wallet(ACCOUNT_5.privateKey, provider);
+// seedWallets used by meta-tx test
 export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
-// available seedWallets
 export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
+// available seedWallets
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 

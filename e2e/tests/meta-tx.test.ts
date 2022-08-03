@@ -9,18 +9,18 @@ import {
   MOCK_ERC20_ADDRESS,
   ensureCreatedSeller,
   ensureMintedAndAllowedTokens,
-  seedWallet4,
-  seedWallet5,
   seedWallet6,
+  seedWallet7,
+  seedWallet8,
   defaultConfig,
   waitForGraphNodeIndexing,
   metadata
 } from "./utils";
 
-const relayerWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
-const sellerWallet = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const relayerWallet = seedWallet6; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
-const buyerWallet = seedWallet6; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 // Contract is connected to `relayerWallet` because this wallet pays the gas fees
 const metaTxHandlerContract =

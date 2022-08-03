@@ -1,4 +1,8 @@
-import { utils, constants, BigNumberish } from "ethers";
+import {
+  DisputeState,
+  ExchangeFieldsFragment
+} from "./../../packages/core-sdk/src/subgraph";
+import { utils, constants, BigNumber, BigNumberish, Wallet } from "ethers";
 
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -15,10 +19,18 @@ import {
   ensureMintedAndAllowedTokens,
   MOCK_ERC20_ADDRESS,
   waitForGraphNodeIndexing,
-  seedWallet3
+  seedWallet3,
+  seedWallet4,
+  seedWallet5,
+  defaultConfig,
+  provider,
+  initCoreSDKWithWallet
 } from "./utils";
+import { EthersAdapter } from "../../packages/ethers-sdk/src";
 
 const seedWallet = seedWallet3; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const sellerWallet2 = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const buyerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 jest.setTimeout(60_000);
 
@@ -282,8 +294,120 @@ describe("core-sdk", () => {
         expect(mockErc20FundsAvailable).toEqual("0");
       });
     });
+
+    describe("disputes", () => {
+      let exchange: ExchangeFieldsFragment;
+      const complaint = "The complaint";
+      const sellerWallet = sellerWallet2;
+      const buyerWallet = buyerWallet2;
+      const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
+      const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
+
+      beforeEach(async () => {
+        await waitForGraphNodeIndexing();
+        const seller = await ensureCreatedSeller(sellerWallet);
+
+        // before each case, create offer + commit + redeem
+        const createdOffer = await createOffer(sellerCoreSDK);
+        await depositFunds({
+          coreSDK: sellerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+        exchange = await commitToOffer({
+          buyerCoreSDK,
+          sellerCoreSDK,
+          offerId: createdOffer.id
+        });
+
+        const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
+        await txResponse.wait();
+        await waitForGraphNodeIndexing();
+      });
+
+      test("raise dispute", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+      });
+
+      test("raise dispute + retract", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Retract the dispute
+        await retractDispute(exchange.id, buyerCoreSDK);
+
+        await checkDisputeRetracted(exchange.id, buyerCoreSDK);
+      });
+
+      test("raise dispute + resolve (from buyer)", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Resolve the dispute from buyer
+        const buyerPercent = "4400"; // 44%
+
+        await resolveDispute(
+          exchange.id,
+          buyerPercent,
+          buyerCoreSDK,
+          sellerWallet
+        );
+
+        await checkDisputeResolved(exchange.id, buyerPercent, buyerCoreSDK);
+      });
+
+      test("raise dispute + resolve (from seller)", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Resolve the dispute from seller
+        const buyerPercent = "4321"; // 43.21%
+
+        await resolveDispute(
+          exchange.id,
+          buyerPercent,
+          sellerCoreSDK,
+          buyerWallet
+        );
+
+        await checkDisputeResolved(exchange.id, buyerPercent, sellerCoreSDK);
+      });
+
+      test("raise dispute + escalate + decide", async () => {
+        const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(
+          exchange.id
+        );
+        expect(exchangeAfterRedeem.state).toBe(ExchangeState.Redeemed);
+      });
+    });
   });
 });
+
+async function createOffer(coreSDK: CoreSDK) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const createOfferTxResponse = await coreSDK.createOffer(
+    mockCreateOfferArgs({
+      metadataHash,
+      metadataUri
+    })
+  );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
 
 async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
   const metadataHash = await coreSDK.storeMetadata({
@@ -402,4 +526,258 @@ async function completeExchange(args: {
     args.exchangeId
   );
   return exchangeAfterComplete;
+}
+
+async function signMutualAgreement(args: {
+  signer: Wallet;
+  exchangeId: string;
+  buyerPercent: string;
+}) {
+  // Set the message Type, needed for signature
+  const resolutionType = [
+    { name: "exchangeId", type: "uint256" },
+    { name: "buyerPercent", type: "uint256" }
+  ];
+
+  const customSignatureType = {
+    Resolution: resolutionType
+  };
+
+  const message = {
+    exchangeId: args.exchangeId,
+    buyerPercent: args.buyerPercent
+  };
+
+  const { r, s, v } = await prepareDataSignatureParameters(
+    args.signer, // When buyer is the caller, seller should be the signer.
+    customSignatureType,
+    "Resolution",
+    message,
+    defaultConfig.contracts.protocolDiamond
+  );
+
+  return {
+    r: r,
+    s: s,
+    v: v
+  };
+}
+
+async function prepareDataSignatureParameters(
+  signer: Wallet,
+  customTransactionTypes,
+  primaryType,
+  message,
+  contractAddress
+) {
+  // Initialize data
+  const domainType = [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "verifyingContract", type: "address" },
+    { name: "salt", type: "bytes32" }
+  ];
+
+  const domainData = {
+    name: "BosonProtocolDiamond",
+    version: "V1",
+    verifyingContract: contractAddress,
+    salt: utils.hexZeroPad(
+      BigNumber.from(defaultConfig.chainId).toHexString(),
+      32
+    )
+  };
+
+  // Prepare the types
+  let metaTxTypes = {
+    EIP712Domain: domainType
+  };
+  metaTxTypes = Object.assign({}, metaTxTypes, customTransactionTypes);
+
+  // Prepare the data to sign
+  const dataToSign = JSON.stringify({
+    types: metaTxTypes,
+    domain: domainData,
+    primaryType: primaryType,
+    message: message
+  });
+
+  const web3lib = new EthersAdapter(provider, signer);
+
+  // Sign the data
+  const signature = await web3lib.send("eth_signTypedData_v4", [
+    signer.address,
+    dataToSign
+  ]);
+
+  // Collect the Signature components
+  const { r, s, v } = getSignatureParameters(signature);
+
+  return {
+    r: r,
+    s: s,
+    v: v
+  };
+}
+
+function getSignatureParameters(signature) {
+  if (!utils.isHexString(signature)) {
+    throw new Error(
+      'Given value "'.concat(signature, '" is not a valid hex string.')
+    );
+  }
+
+  signature = signature.substring(2);
+  const r = "0x" + signature.substring(0, 64);
+  const s = "0x" + signature.substring(64, 128);
+  const v = parseInt(signature.substring(128, 130), 16);
+
+  return {
+    r: r,
+    s: s,
+    v: v
+  };
+}
+
+async function raiseDispute(
+  exchangeId: string,
+  complaint: string,
+  buyerCoreSDK: CoreSDK
+) {
+  const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(exchangeId);
+  expect(exchangeAfterRedeem.state).toBe(ExchangeState.Redeemed);
+  expect(exchangeAfterRedeem.disputed).toBeFalsy();
+
+  const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeNull();
+
+  {
+    const txResponse = await buyerCoreSDK.raiseDispute(exchangeId, complaint);
+    await txResponse.wait();
+    await waitForGraphNodeIndexing();
+  }
+  const exchangeAfterDispute = await buyerCoreSDK.getExchangeById(exchangeId);
+  expect(exchangeAfterDispute.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterDispute.completedDate).toBeNull();
+  expect(exchangeAfterDispute.finalizedDate).toBeNull();
+
+  // exchange state is now DISPUTED
+  expect(exchangeAfterDispute.disputed).toBeTruthy();
+}
+
+async function checkDisputeResolving(
+  exchangeId: string,
+  complaint: string,
+  coreSDK: CoreSDK
+) {
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RESOLVING
+  expect(dispute.state).toBe(DisputeState.Resolving);
+
+  // dispute complaint is the one specified
+  expect(dispute.complaint).toEqual(complaint);
+
+  // dispute date is correct
+  expect(dispute.disputedDate).toBeTruthy();
+
+  // dispute exchange is correct
+  expect(dispute.exchange.id).toEqual(exchangeId);
+  expect(dispute.exchangeId.toString()).toEqual(exchangeId);
+
+  // dispute finalizedDate is not set
+  expect(dispute.finalizedDate).toBeNull();
+}
+
+async function retractDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
+  {
+    const txResponse = await buyerCoreSDK.retractDispute(exchangeId);
+    await txResponse.wait();
+    await waitForGraphNodeIndexing();
+  }
+}
+
+async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
+  const exchangeAfterRetract = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterRetract.disputed).toBeTruthy();
+  expect(exchangeAfterRetract.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterRetract.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RETRACTED
+  expect(dispute.state).toBe(DisputeState.Retracted);
+
+  // dispute buyerPercent is 0
+  expect(dispute.buyerPercent).toEqual("0");
+
+  // dispute finalizedDate is correct
+  expect(dispute.finalizedDate).toBeTruthy();
+}
+
+async function resolveDispute(
+  exchangeId: string,
+  buyerPercent: string,
+  resolverSDK: CoreSDK,
+  resolutionSigner: Wallet
+) {
+  {
+    // sign the message from seller
+    const {
+      r: sigR,
+      s: sigS,
+      v: sigV
+    } = await signMutualAgreement({
+      signer: resolutionSigner,
+      exchangeId: exchangeId,
+      buyerPercent: buyerPercent
+    });
+
+    // send the Resolve transaction from buyer
+    const txResponse = await resolverSDK.resolveDispute({
+      exchangeId: exchangeId,
+      buyerPercent,
+      sigR,
+      sigS,
+      sigV
+    });
+    await txResponse.wait();
+    await waitForGraphNodeIndexing();
+  }
+}
+
+async function checkDisputeResolved(
+  exchangeId: string,
+  buyerPercent: string,
+  coreSDK: CoreSDK
+) {
+  const exchangeAfterResolve = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterResolve.disputed).toBeTruthy();
+  expect(exchangeAfterResolve.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterResolve.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RESOLVED
+  expect(dispute.state).toBe(DisputeState.Resolved);
+
+  // dispute buyerPercent is the one specified
+  expect(dispute.buyerPercent).toEqual(buyerPercent);
+
+  // dispute finalizedDate is correct
+  expect(dispute.finalizedDate).toBeTruthy();
 }
