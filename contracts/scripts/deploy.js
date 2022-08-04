@@ -24,6 +24,7 @@ const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
 const { oneMonth } = require("../protocol-contracts/test/utils/constants");
+const AuthTokenType = require("../scripts/domain/AuthTokenType");
 
 const gasLimit = "20000000";
 
@@ -34,6 +35,7 @@ function getConfig() {
 
   const feePercentage = "150"; // 1.5%  = 150
   const protocolFeeFlatBoson = "0";
+  const maxExchangesPerBatch = "100";
   const maxOffersPerGroup = "100";
   const maxTwinsPerBundle = "100";
   const maxOffersPerBundle = "100";
@@ -44,6 +46,7 @@ function getConfig() {
   const maxDisputesPerBatch = "100";
   const maxAllowedSellers = "100";
   const buyerEscalationDepositPercentage = "100"; // 1%
+  const maxTotalOfferFeePercentage = 4000; // 40%
 
   return [
     {
@@ -53,6 +56,7 @@ function getConfig() {
       beaconProxyAddress: ethers.constants.AddressZero
     },
     {
+      maxExchangesPerBatch,
       maxOffersPerGroup,
       maxTwinsPerBundle,
       maxOffersPerBundle,
@@ -61,7 +65,8 @@ function getConfig() {
       maxFeesPerDisputeResolver,
       maxEscalationResponsePeriod,
       maxDisputesPerBatch,
-      maxAllowedSellers
+      maxAllowedSellers,
+      maxTotalOfferFeePercentage
     },
     {
       percentage: feePercentage,
@@ -72,11 +77,42 @@ function getConfig() {
 }
 
 /**
+ * Get the contract addresses for supported NFT Auth token contracts
+ * @returns {lensAddress: string, ensAddress: string}
+ */
+function getAuthTokenContracts() {
+  // Lens protocol NFT contract address
+  const LENS = {
+    mainnet: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
+    hardhat: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
+    test: "0x0000000000000000000000000000000000000000",
+    mumbai: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82"
+  };
+
+  // ENS contract address
+  const ENS = {
+    mainnet: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
+    hardhat: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
+    test: "0x0000000000000000000000000000000000000000",
+    mumbai: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85"
+  };
+
+  return {
+    lensAddress: LENS[hre.network.name],
+    ensAddress: ENS[hre.network.name]
+  };
+}
+
+/**
  * Get a list of no-arg initializer facet names to be cut into the Diamond
  */
 function getNoArgFacetNames() {
   return [
     "AccountHandlerFacet",
+    "SellerHandlerFacet",
+    "BuyerHandlerFacet",
+    "DisputeResolverHandlerFacet",
+    "AgentHandlerFacet",
     "BundleHandlerFacet",
     "DisputeHandlerFacet",
     "ExchangeHandlerFacet",
@@ -105,6 +141,7 @@ async function main() {
 
   // Get the protocol config
   const config = getConfig();
+  const authTokenContracts = getAuthTokenContracts();
 
   // Get the accounts
   const accounts = await ethers.provider.listAccounts();
@@ -231,6 +268,16 @@ async function main() {
   // Add Voucher NFT addresses to protocol config
   await bosonConfigHandler.setVoucherBeaconAddress(bosonClientBeacon.address);
   await bosonConfigHandler.setBeaconProxyAddress(bosonVoucherProxy.address);
+
+  //Add NFT auth token addresses to protocol config
+  await bosonConfigHandler.setAuthTokenContract(
+    AuthTokenType.Lens,
+    authTokenContracts.lensAddress
+  );
+  await bosonConfigHandler.setAuthTokenContract(
+    AuthTokenType.ENS,
+    authTokenContracts.ensAddress
+  );
 
   console.log(
     `✅ ConfigHandlerFacet updated with remaining post-initialization config.`
