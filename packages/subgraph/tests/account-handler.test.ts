@@ -28,6 +28,9 @@ test("handle SellerCreatedEvent", () => {
     sellerAddress,
     sellerAddress,
     sellerAddress,
+    "0x123456789a123456789a123456789a123456789a",
+    0,
+    0,
     sellerAddress
   );
 
@@ -36,6 +39,14 @@ test("handle SellerCreatedEvent", () => {
   assert.fieldEquals("Seller", "1", "id", "1");
   assert.fieldEquals("Seller", "1", "operator", sellerAddress.toLowerCase());
   assert.fieldEquals("Seller", "1", "active", "true");
+  assert.fieldEquals("Seller", "1", "authTokenId", "0");
+  assert.fieldEquals("Seller", "1", "authTokenType", "0");
+  assert.fieldEquals(
+    "Seller",
+    "1",
+    "voucherCloneAddress",
+    "0x123456789a123456789a123456789a123456789a"
+  );
 });
 
 test("handle SellerUpdatedEvent", () => {
@@ -46,12 +57,16 @@ test("handle SellerUpdatedEvent", () => {
     sellerAddress,
     sellerAddress,
     false,
+    123456789,
+    1,
     sellerAddress
   );
 
   handleSellerUpdatedEvent(sellerUpdatedEvent);
 
   assert.fieldEquals("Seller", "1", "active", "false");
+  assert.fieldEquals("Seller", "1", "authTokenId", "123456789");
+  assert.fieldEquals("Seller", "1", "authTokenType", "1");
 });
 
 test("handle BuyerCreatedEvent", () => {

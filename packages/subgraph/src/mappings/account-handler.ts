@@ -19,6 +19,7 @@ import {
 
 export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
+  const authTokenFromEvent = event.params.authToken;
   const sellerId = event.params.sellerId.toString();
 
   let seller = Seller.load(sellerId);
@@ -30,6 +31,9 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
     seller.admin = sellerFromEvent.admin;
     seller.clerk = sellerFromEvent.clerk;
     seller.treasury = sellerFromEvent.treasury;
+    seller.voucherCloneAddress = event.params.voucherCloneAddress;
+    seller.authTokenId = authTokenFromEvent.tokenId;
+    seller.authTokenType = authTokenFromEvent.tokenType;
     seller.active = true;
     seller.save();
   }
@@ -37,6 +41,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
 
 export function handleSellerUpdatedEvent(event: SellerUpdated): void {
   const sellerFromEvent = event.params.seller;
+  const authTokenFromEvent = event.params.authToken;
   const sellerId = event.params.sellerId.toString();
 
   let seller = Seller.load(sellerId);
@@ -49,6 +54,8 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
+  seller.authTokenId = authTokenFromEvent.tokenId;
+  seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = sellerFromEvent.active;
   seller.save();
 }

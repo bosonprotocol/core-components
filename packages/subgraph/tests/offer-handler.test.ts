@@ -27,6 +27,7 @@ const sellerId = 1;
 const price = 1;
 const sellerDeposit = 1;
 const protocolFee = 1;
+const agentFee = 1;
 const buyerCancelPenalty = 1;
 const quantityAvailable = 1;
 const validFromDate = 1651574093;
@@ -40,6 +41,7 @@ const disputeResolverId = 1;
 const disputeEscalationResponsePeriod = 1;
 const disputeFeeAmount = 1;
 const disputeBuyerEscalationDeposit = 1;
+const agentId = 1;
 const executedBy = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 
 const offerCreatedEvent = createOfferCreatedEvent(
@@ -48,6 +50,7 @@ const offerCreatedEvent = createOfferCreatedEvent(
   price,
   sellerDeposit,
   protocolFee,
+  agentFee,
   buyerCancelPenalty,
   quantityAvailable,
   validFromDate,
@@ -65,6 +68,7 @@ const offerCreatedEvent = createOfferCreatedEvent(
   "ipfs://" + metadataHash,
   metadataHash,
   false,
+  agentId,
   executedBy
 );
 

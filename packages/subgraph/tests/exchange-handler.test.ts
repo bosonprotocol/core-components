@@ -1,3 +1,4 @@
+import { Exchange } from "./../generated/schema";
 import {
   beforeEach,
   test,
@@ -7,8 +8,11 @@ import {
 } from "matchstick-as/assembly/index";
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Offer, BaseMetadataEntity } from "../generated/schema";
-import { handleBuyerCommittedEvent } from "../src/mappings/exchange-handler";
-import { createBuyerCommittedEvent } from "./mocks";
+import {
+  handleBuyerCommittedEvent,
+  handleVoucherExtendedEvent
+} from "../src/mappings/exchange-handler";
+import { createBuyerCommittedEvent, createVoucherExtendedEvent } from "./mocks";
 
 beforeEach(() => {
   clearStore();
@@ -42,4 +46,26 @@ test("handle BuyerCommittedEvent", () => {
   );
   assert.fieldEquals("Exchange", "3", "id", "3");
   assert.fieldEquals("Exchange", "3", "state", "COMMITTED");
+});
+
+test("handle VoucherExtendedEvent", () => {
+  const offerId = 1;
+  const exchangeId = 3;
+  const exchange = new Exchange(exchangeId.toString());
+  exchange.validUntilDate = BigInt.fromI32(1234567);
+  exchange.save();
+
+  const validUntil = 2345678;
+
+  const voucherExtendedEvent = createVoucherExtendedEvent(
+    offerId,
+    exchangeId,
+    validUntil,
+    "0x123456789a123456789a123456789a123456789a"
+  );
+
+  handleVoucherExtendedEvent(voucherExtendedEvent);
+
+  assert.fieldEquals("Exchange", "3", "id", exchangeId.toString());
+  assert.fieldEquals("Exchange", "3", "validUntilDate", validUntil.toString());
 });

@@ -74,6 +74,9 @@ test("handle FundsEncumberedEvent", () => {
       sellerAddress,
       sellerAddress,
       sellerAddress,
+      "0x123456789a123456789a123456789a123456789a",
+      0,
+      0,
       sellerAddress
     )
   );
