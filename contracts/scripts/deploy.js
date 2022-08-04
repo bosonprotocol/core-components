@@ -24,7 +24,7 @@ const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
 const { oneMonth } = require("../protocol-contracts/test/utils/constants");
-const AuthTokenType = require("../scripts/domain/AuthTokenType");
+const AuthTokenType = require("../protocol-contracts/scripts/domain/AuthTokenType");
 
 const gasLimit = "20000000";
 
@@ -85,7 +85,8 @@ function getAuthTokenContracts() {
   const LENS = {
     mainnet: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
     hardhat: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-    test: "0x0000000000000000000000000000000000000000",
+    test: "0x0000111122223333444455556666777788889999",
+    localhost: "0x0000111122223333444455556666777788889999",
     mumbai: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82"
   };
 
@@ -93,7 +94,8 @@ function getAuthTokenContracts() {
   const ENS = {
     mainnet: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
     hardhat: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
-    test: "0x0000000000000000000000000000000000000000",
+    test: "0x0000111122223333444455556666777788889999",
+    localhost: "0x0000111122223333444455556666777788889999",
     mumbai: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85"
   };
 
