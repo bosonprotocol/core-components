@@ -26,7 +26,8 @@
     "e2e:services:default": "./e2e/run-e2e-services.sh",
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
-    "export-abis": "ts-node ./scripts/export-abis.ts"
+    "export-abis": "ts-node ./scripts/export-abis.ts",
+    "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "@lerna-lite/cli": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
+    "commander": "^9.4.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-tsdoc": "^0.2.16",
