@@ -1,4 +1,9 @@
-import { utils, constants, BigNumberish } from "ethers";
+import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
+import {
+  DisputeState,
+  ExchangeFieldsFragment
+} from "./../../packages/core-sdk/src/subgraph";
+import { utils, constants, BigNumber, BigNumberish, Wallet } from "ethers";
 
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -14,15 +19,26 @@ import {
   ensureCreatedSeller,
   ensureMintedAndAllowedTokens,
   MOCK_ERC20_ADDRESS,
-  waitForGraphNodeIndexing
+  waitForGraphNodeIndexing,
+  seedWallet4,
+  seedWallet5,
+  seedWallet6,
+  initCoreSDKWithWallet,
+  drWallet
 } from "./utils";
+
+const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const buyerWallet2 = seedWallet6; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
     test("create seller + offer", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
 
       const createdOffer = await createSellerAndOffer(
         coreSDK,
@@ -41,7 +57,9 @@ describe("core-sdk", () => {
     describe("deposit funds", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
@@ -59,7 +77,9 @@ describe("core-sdk", () => {
 
       test("ERC20", async () => {
         const sellerFundsDeposit = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
@@ -80,8 +100,8 @@ describe("core-sdk", () => {
     });
 
     test("commit", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -101,8 +121,8 @@ describe("core-sdk", () => {
     });
 
     test("revoke", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -129,8 +149,8 @@ describe("core-sdk", () => {
     });
 
     test("cancel", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -157,8 +177,8 @@ describe("core-sdk", () => {
     });
 
     test("redeem + finalize", async () => {
-      const { sellerCoreSDK, sellerWallet, buyerCoreSDK } =
-        await initSellerAndBuyerSDKs();
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
         sellerWallet.address
@@ -195,7 +215,9 @@ describe("core-sdk", () => {
     describe("withdraw funds", () => {
       test("ETH", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
@@ -221,7 +243,9 @@ describe("core-sdk", () => {
 
       test("ETH and ERC20", async () => {
         const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet();
+        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+          seedWallet
+        );
         const seller = await ensureCreatedSeller(fundedWallet);
 
         const ethFunds = await depositFunds({
@@ -269,8 +293,233 @@ describe("core-sdk", () => {
         expect(mockErc20FundsAvailable).toEqual("0");
       });
     });
+
+    describe("disputes", () => {
+      let exchange: ExchangeFieldsFragment;
+      const complaint = "The complaint";
+      const sellerWallet = sellerWallet2;
+      const buyerWallet = buyerWallet2;
+      const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
+      const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
+
+      beforeEach(async () => {
+        await waitForGraphNodeIndexing();
+        const seller = await ensureCreatedSeller(sellerWallet);
+
+        // before each case, create offer + commit + redeem
+        const createdOffer = await createOffer(sellerCoreSDK, seller.id);
+        await depositFunds({
+          coreSDK: sellerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+        exchange = await commitToOffer({
+          buyerCoreSDK,
+          sellerCoreSDK,
+          offerId: createdOffer.id
+        });
+
+        const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
+        await txResponse.wait();
+        await waitForGraphNodeIndexing();
+      });
+
+      test("raise dispute", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+      });
+
+      test("raise dispute + retract", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Retract the dispute
+        await retractDispute(exchange.id, buyerCoreSDK);
+
+        await checkDisputeRetracted(exchange.id, buyerCoreSDK);
+      });
+
+      test("expired dispute", async () => {
+        // create another offer with very small resolutionPeriod + commit + redeem
+        const seller = await ensureCreatedSeller(sellerWallet);
+
+        const createdOffer = await createOffer(sellerCoreSDK, seller.id, {
+          resolutionPeriodDurationInMS: 1000
+        });
+        await depositFunds({
+          coreSDK: sellerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+        exchange = await commitToOffer({
+          buyerCoreSDK,
+          sellerCoreSDK,
+          offerId: createdOffer.id
+        });
+
+        const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
+        await txResponse.wait();
+        await waitForGraphNodeIndexing();
+
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+
+        // Expire the dispute
+        await expireDispute(exchange.id, sellerCoreSDK);
+
+        await checkDisputeRetracted(exchange.id, buyerCoreSDK);
+      });
+
+      test("raise dispute + resolve (from buyer)", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Resolve the dispute from buyer
+        const buyerPercent = "4400"; // 44%
+
+        await resolveDispute(
+          exchange.id,
+          buyerPercent,
+          buyerCoreSDK,
+          sellerCoreSDK
+        );
+
+        await checkDisputeResolved(exchange.id, buyerPercent, buyerCoreSDK);
+      });
+
+      test("raise dispute + resolve (from seller)", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Resolve the dispute from seller
+        const buyerPercent = "4321"; // 43.21%
+
+        await resolveDispute(
+          exchange.id,
+          buyerPercent,
+          sellerCoreSDK,
+          buyerCoreSDK
+        );
+
+        await checkDisputeResolved(exchange.id, buyerPercent, sellerCoreSDK);
+      });
+
+      test("raise dispute + extend", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        const disputeTimeout = await getDisputeTimeout(
+          exchange.id,
+          buyerCoreSDK
+        );
+
+        const newTimeout = BigNumber.from(disputeTimeout).add(12).toString();
+
+        // Seller extends the dispute timeout
+        await extendDisputeTimeout(exchange.id, newTimeout, sellerCoreSDK);
+
+        await checkDisputeResolving(exchange.id, complaint, sellerCoreSDK);
+
+        await checkDisputeTimeout(exchange.id, newTimeout, sellerCoreSDK);
+      });
+
+      test("raise dispute + escalate", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        const disputeTimeout = await getDisputeTimeout(
+          exchange.id,
+          buyerCoreSDK
+        );
+
+        // Escalate the dispute
+        await escalateDispute(exchange.id, buyerCoreSDK);
+
+        await checkDisputeEscalated(exchange.id, disputeTimeout, buyerCoreSDK);
+      });
+
+      test("raise dispute + escalate + decide", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Escalate the dispute
+        await escalateDispute(exchange.id, buyerCoreSDK);
+
+        // Decide the dispute from DR
+        const buyerPercent = "4321"; // 43.21%
+
+        // Create the SDK for DR account
+        const drCoreSDK = initCoreSDKWithWallet(drWallet);
+
+        // DR decides the dispute result
+        await decideDispute(exchange.id, buyerPercent, drCoreSDK);
+
+        await checkDisputeDecided(exchange.id, buyerPercent, drCoreSDK);
+      });
+
+      test("raise dispute + escalate + refuse", async () => {
+        // Raise the dispute
+        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+
+        // Escalate the dispute
+        await escalateDispute(exchange.id, buyerCoreSDK);
+
+        // Create the SDK for DR account
+        const drCoreSDK = initCoreSDKWithWallet(drWallet);
+
+        // DR refuses the dispute
+        await refuseDispute(exchange.id, drCoreSDK);
+
+        await checkDisputeRefused(exchange.id, drCoreSDK);
+      });
+
+      xtest("raise dispute + escalate + expire", async () => {
+        // This test case would require a specific dispute resolver created with a very small escalationResponsePeriod
+      });
+    });
   });
 });
+
+async function createOffer(
+  coreSDK: CoreSDK,
+  sellerId: string,
+  offerParams?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  // Check the disputeResolver exists and is active
+  const disputeResolverId = offerArgs.disputeResolverId;
+
+  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
+  expect(dr).toBeTruthy();
+  expect(dr.active).toBe(true);
+  expect(
+    dr.sellerAllowList.length == 0 || dr.sellerAllowList.indexOf(sellerId) >= 0
+  ).toBe(true);
+
+  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
 
 async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
   const metadataHash = await coreSDK.storeMetadata({
@@ -389,4 +638,286 @@ async function completeExchange(args: {
     args.exchangeId
   );
   return exchangeAfterComplete;
+}
+
+async function raiseDispute(
+  exchangeId: string,
+  complaint: string,
+  buyerCoreSDK: CoreSDK
+) {
+  const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(exchangeId);
+  expect(exchangeAfterRedeem.state).toBe(ExchangeState.Redeemed);
+  expect(exchangeAfterRedeem.disputed).toBeFalsy();
+
+  const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeNull();
+
+  const txResponse = await buyerCoreSDK.raiseDispute(exchangeId, complaint);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+  const exchangeAfterDispute = await buyerCoreSDK.getExchangeById(exchangeId);
+  expect(exchangeAfterDispute.state).toBe(ExchangeState.Disputed);
+  expect(exchangeAfterDispute.completedDate).toBeNull();
+  expect(exchangeAfterDispute.finalizedDate).toBeNull();
+
+  // exchange state is now DISPUTED
+  expect(exchangeAfterDispute.disputed).toBeTruthy();
+}
+
+async function checkDisputeResolving(
+  exchangeId: string,
+  complaint: string,
+  coreSDK: CoreSDK
+) {
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RESOLVING
+  expect(dispute.state).toBe(DisputeState.Resolving);
+
+  // dispute complaint is the one specified
+  expect(dispute.complaint).toEqual(complaint);
+
+  // dispute date is correct
+  expect(dispute.disputedDate).toBeTruthy();
+
+  // dispute exchange is correct
+  expect(dispute.exchange.id).toEqual(exchangeId);
+  expect(dispute.exchangeId.toString()).toEqual(exchangeId);
+
+  // dispute finalizedDate is not set
+  expect(dispute.finalizedDate).toBeNull();
+}
+
+async function retractDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
+  const txResponse = await buyerCoreSDK.retractDispute(exchangeId);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+}
+
+async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
+  const exchangeAfterRetract = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterRetract.disputed).toBeTruthy();
+  expect(exchangeAfterRetract.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterRetract.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RETRACTED
+  expect(dispute.state).toBe(DisputeState.Retracted);
+
+  // dispute buyerPercent is 0
+  expect(dispute.buyerPercent).toEqual("0");
+
+  // dispute finalizedDate is correct
+  expect(dispute.finalizedDate).toBeTruthy();
+}
+
+async function resolveDispute(
+  exchangeId: string,
+  buyerPercent: string,
+  resolverSDK: CoreSDK,
+  signerSDK: CoreSDK
+) {
+  {
+    // sign the message from seller
+    const {
+      r: sigR,
+      s: sigS,
+      v: sigV
+    } = await signerSDK.signMutualAgreement({
+      exchangeId: exchangeId,
+      buyerPercent: buyerPercent
+    });
+
+    // send the Resolve transaction from buyer
+    const txResponse = await resolverSDK.resolveDispute({
+      exchangeId: exchangeId,
+      buyerPercent,
+      sigR,
+      sigS,
+      sigV
+    });
+    await txResponse.wait();
+    await waitForGraphNodeIndexing();
+  }
+}
+
+async function checkDisputeResolved(
+  exchangeId: string,
+  buyerPercent: string,
+  coreSDK: CoreSDK
+) {
+  const exchangeAfterResolve = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterResolve.disputed).toBeTruthy();
+  expect(exchangeAfterResolve.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterResolve.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now RESOLVED
+  expect(dispute.state).toBe(DisputeState.Resolved);
+
+  // dispute buyerPercent is the one specified
+  expect(dispute.buyerPercent).toEqual(buyerPercent);
+
+  // dispute finalizedDate is correct
+  expect(dispute.finalizedDate).toBeTruthy();
+}
+
+async function escalateDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
+  const txResponse = await buyerCoreSDK.escalateDispute(exchangeId);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+}
+
+async function checkDisputeEscalated(
+  exchangeId: string,
+  previousTimeout: BigNumberish,
+  coreSDK: CoreSDK
+) {
+  const exchangeAfterEscalate = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterEscalate.disputed).toBeTruthy();
+  expect(exchangeAfterEscalate.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is still null
+  expect(exchangeAfterEscalate.finalizedDate).toBeNull();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now ESCALATED
+  expect(dispute.state).toBe(DisputeState.Escalated);
+
+  // dispute finalizedDate is null
+  expect(dispute.finalizedDate).toBeNull();
+
+  // dispute escalatedDate is now filled
+  expect(dispute.escalatedDate).toBeTruthy();
+
+  // dispute timeout has been increased
+  expect(BigNumber.from(dispute.timeout).gt(previousTimeout)).toBe(true);
+}
+
+async function getDisputeTimeout(exchangeId: string, coreSDK: CoreSDK) {
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  return dispute.timeout;
+}
+
+async function decideDispute(
+  exchangeId: string,
+  buyerPercent: string,
+  drCoreSDK: CoreSDK
+) {
+  const txResponse = await drCoreSDK.decideDispute(exchangeId, buyerPercent);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+}
+
+async function checkDisputeDecided(
+  exchangeId: string,
+  buyerPercent: string,
+  coreSDK: CoreSDK
+) {
+  const exchangeAfterDecide = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterDecide.disputed).toBeTruthy();
+  expect(exchangeAfterDecide.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterDecide.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now DECIDED
+  expect(dispute.state).toBe(DisputeState.Decided);
+
+  // dispute finalizedDate is filled
+  expect(dispute.finalizedDate).toBeTruthy();
+
+  // dispute buyerPercent is filled
+  expect(dispute.buyerPercent).toEqual(buyerPercent);
+}
+
+async function extendDisputeTimeout(
+  exchangeId: string,
+  newTimeout: string,
+  sellerCoreSDK: CoreSDK
+) {
+  const txResponse = await sellerCoreSDK.extendDisputeTimeout(
+    exchangeId,
+    newTimeout
+  );
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+}
+
+async function checkDisputeTimeout(
+  exchangeId: string,
+  expectedTimeout: string,
+  coreSDK: CoreSDK
+) {
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute timeout has been increased
+  expect(BigNumber.from(dispute.timeout).eq(expectedTimeout)).toBe(true);
+}
+
+async function refuseDispute(exchangeId: string, drCoreSDK: CoreSDK) {
+  const txResponse = await drCoreSDK.refuseEscalatedDispute(exchangeId);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
+}
+
+async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
+  const exchangeAfterDecide = await coreSDK.getExchangeById(exchangeId);
+
+  // exchange state is still DISPUTED
+  expect(exchangeAfterDecide.disputed).toBeTruthy();
+  expect(exchangeAfterDecide.state).toBe(ExchangeState.Disputed);
+
+  // exchange finalizedDate is filled
+  expect(exchangeAfterDecide.finalizedDate).toBeTruthy();
+
+  // Retrieve the dispute from the data model
+  const dispute = await coreSDK.getDisputeById(exchangeId);
+  expect(dispute).toBeTruthy();
+
+  // dispute state is now REFUSED
+  expect(dispute.state).toBe(DisputeState.Refused);
+
+  // dispute finalizedDate is filled
+  expect(dispute.finalizedDate).toBeTruthy();
+
+  // dispute buyerPercent is filled
+  expect(dispute.buyerPercent).toEqual("0");
+}
+
+async function expireDispute(exchangeId: string, coreSDK: CoreSDK) {
+  const txResponse = await coreSDK.expireDispute(exchangeId);
+  await txResponse.wait();
+  await waitForGraphNodeIndexing();
 }

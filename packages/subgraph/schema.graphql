@@ -326,6 +326,7 @@ enum ExchangeState {
   CANCELLED
   REDEEMED
   COMPLETED
+  DISPUTED
 }
 
 type Exchange @entity {
@@ -406,6 +407,33 @@ type DisputeResolverFee @entity {
   tokenName: String!
   token: ExchangeToken!
   feeAmount: BigInt!
+}
+
+"""
+Disputes
+"""
+enum DisputeState {
+  RESOLVING
+  RETRACTED
+  RESOLVED
+  ESCALATED
+  DECIDED
+  REFUSED
+}
+
+type Dispute @entity {
+  id: ID!
+  exchangeId: BigInt!
+  exchange: Exchange!
+  complaint: String!
+  state: DisputeState!
+  buyerPercent: BigInt!
+  disputedDate: BigInt!
+  escalatedDate: BigInt
+  finalizedDate: BigInt
+  timeout: BigInt!
+  seller: Seller!
+  buyer: Buyer!
 }
 
 """

@@ -80,7 +80,8 @@ module.exports = {
       "IBosonFundsHandler",
       "IBosonOfferHandler",
       "IBosonOrchestrationHandler",
-      "IBosonMetaTransactionsHandler"
+      "IBosonMetaTransactionsHandler",
+      "IBosonDisputeHandler"
     ]
   }
 };

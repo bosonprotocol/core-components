@@ -13,7 +13,18 @@ import {
 } from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
-import { ACCOUNT_1, ACCOUNT_2, ACCOUNT_3 } from "../../contracts/accounts";
+import {
+  ACCOUNT_1,
+  ACCOUNT_2,
+  ACCOUNT_3,
+  ACCOUNT_4,
+  ACCOUNT_5,
+  ACCOUNT_6,
+  ACCOUNT_7,
+  ACCOUNT_8,
+  ACCOUNT_9,
+  ACCOUNT_10
+} from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig({ chainId: 31337 }).contracts.testErc20 ||
@@ -120,10 +131,20 @@ export const defaultConfig = getDefaultConfig({
 });
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
-export const seedWallet1 = new Wallet(ACCOUNT_1.privateKey, provider);
-export const protocolAdminWallet = seedWallet1;
-export const seedWallet2 = new Wallet(ACCOUNT_2.privateKey, provider);
+export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);
+export const drWallet = new Wallet(ACCOUNT_2.privateKey, provider);
+// seedWallets used by accounts test
 export const seedWallet3 = new Wallet(ACCOUNT_3.privateKey, provider);
+// seedWallets used by core-sdk test
+export const seedWallet4 = new Wallet(ACCOUNT_4.privateKey, provider);
+export const seedWallet5 = new Wallet(ACCOUNT_5.privateKey, provider);
+export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
+// seedWallets used by meta-tx test
+export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
+export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
+export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
+// available seedWallets
+export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -138,19 +159,11 @@ export const graphMetadataStorage = new IpfsMetadataStorage({
   url: defaultConfig.theGraphIpfsUrl
 });
 
-export async function initSellerAndBuyerSDKs(
-  args: Partial<{
-    seedWalletForSeller: Wallet;
-    seedWalletForBuyer: Wallet;
-  }> = {}
-) {
-  const [
-    { coreSDK: sellerCoreSDK, fundedWallet: sellerWallet },
-    { coreSDK: buyerCoreSDK, fundedWallet: buyerWallet }
-  ] = await Promise.all([
-    initCoreSDKWithFundedWallet(args.seedWalletForSeller || seedWallet1),
-    initCoreSDKWithFundedWallet(args.seedWalletForSeller || seedWallet2)
-  ]);
+export async function initSellerAndBuyerSDKs(seedWallet: Wallet) {
+  const { coreSDK: sellerCoreSDK, fundedWallet: sellerWallet } =
+    await initCoreSDKWithFundedWallet(seedWallet);
+  const { coreSDK: buyerCoreSDK, fundedWallet: buyerWallet } =
+    await initCoreSDKWithFundedWallet(seedWallet);
 
   return {
     sellerCoreSDK,
@@ -160,10 +173,8 @@ export async function initSellerAndBuyerSDKs(
   };
 }
 
-export async function initCoreSDKWithFundedWallet(
-  seedWallet: Wallet = seedWallet1
-) {
-  const fundedWallet = await createFundedWallet(seedWallet || seedWallet1);
+export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
+  const fundedWallet = await createFundedWallet(seedWallet);
   const coreSDK = initCoreSDKWithWallet(fundedWallet);
   return { coreSDK, fundedWallet };
 }
@@ -188,7 +199,7 @@ export async function wait(ms: number) {
 }
 
 export async function createFundedWallet(
-  fundingWallet: Wallet = seedWallet1,
+  fundingWallet: Wallet,
   fundAmountInEth = "10"
 ) {
   const fundedWallet = Wallet.createRandom().connect(provider);
@@ -255,12 +266,13 @@ export async function ensureMintedAndAllowedTokens(
 }
 
 export async function createDisputeResolver(
+  wallet: Wallet,
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
   options: Partial<{
     activate: boolean;
   }> = {}
 ) {
-  const coreSDK = initCoreSDKWithWallet(protocolAdminWallet);
+  const coreSDK = initCoreSDKWithWallet(wallet);
 
   const receipt = await (
     await coreSDK.createDisputeResolver(disputeResolverToCreate)

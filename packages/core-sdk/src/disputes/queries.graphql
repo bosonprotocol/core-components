@@ -1,0 +1,56 @@
+query getDisputeByIdQuery(
+  $disputeId: ID!
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $includeOffers: Boolean = false
+) {
+  dispute(id: $disputeId) {
+    ...DisputeFields
+  }
+}
+
+query getDisputesQuery(
+  $disputesSkip: Int
+  $disputesFirst: Int
+  $disputesOrderBy: Dispute_orderBy
+  $disputesOrderDirection: OrderDirection
+  $disputesFilter: Dispute_filter
+) {
+  disputes(
+    skip: $disputesSkip
+    first: $disputesFirst
+    orderBy: $disputesOrderBy
+    orderDirection: $disputesOrderDirection
+    where: $disputesFilter
+  ) {
+    ...DisputeFields
+  }
+}
+
+fragment DisputeFields on Dispute {
+  ...BaseDisputeFields
+}
+
+fragment BaseDisputeFields on Dispute {
+  id
+  exchangeId
+  complaint
+  state
+  buyerPercent
+  disputedDate
+  escalatedDate
+  finalizedDate
+  timeout
+  exchange {
+    ...BaseExchangeFields
+  }
+  seller {
+    ...BaseSellerFields
+  }
+  buyer {
+    ...BaseBuyerFields
+  }
+}

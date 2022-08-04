@@ -109,6 +109,7 @@ async function main() {
   // Get the accounts
   const accounts = await ethers.provider.listAccounts();
   const deployer = accounts[0];
+  const disputeResolver = accounts[1];
   console.log(
     "🔱 Deployer account: ",
     deployer ? deployer : "not found" && process.exit()
@@ -257,10 +258,10 @@ async function main() {
       {
         id: "1",
         escalationResponsePeriod: oneMonth.toString(),
-        operator: deployer,
-        admin: deployer,
-        clerk: deployer,
-        treasury: deployer,
+        operator: disputeResolver,
+        admin: disputeResolver,
+        clerk: disputeResolver,
+        treasury: disputeResolver,
         // TODO: use valid uri
         metadataUri: `ipfs://disputeResolver1`,
         active: true
@@ -284,7 +285,9 @@ async function main() {
       (event) => event.event === "DisputeResolverCreated"
     );
     const disputeResolverId = event.args.disputeResolverId;
-    console.log(`✅ Dispute resolver created. ID: ${disputeResolverId}`);
+    console.log(
+      `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
+    );
     await accountHandler.activateDisputeResolver(disputeResolverId);
     console.log(`✅ Dispute resolver activated`);
 

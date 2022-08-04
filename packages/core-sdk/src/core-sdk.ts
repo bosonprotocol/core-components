@@ -8,8 +8,10 @@ import {
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
+import { BytesLike } from "@ethersproject/bytes";
 
 import * as accounts from "./accounts";
+import * as disputes from "./disputes";
 import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
@@ -28,6 +30,7 @@ export class CoreSDK {
 
   private _subgraphUrl: string;
   private _protocolDiamond: string;
+  private _chainId: number;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -39,12 +42,14 @@ export class CoreSDK {
     protocolDiamond: string;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    chainId?: number;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
     this._protocolDiamond = opts.protocolDiamond;
     this._metadataStorage = opts.metadataStorage;
     this._theGraphStorage = opts.theGraphStorage;
+    this._chainId = opts.chainId;
   }
 
   /**
@@ -80,7 +85,8 @@ export class CoreSDK {
       metadataStorage: args.metadataStorage,
       theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
-      protocolDiamond: defaultConfig.contracts.protocolDiamond
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: args.chainId
     });
   }
 
@@ -922,6 +928,167 @@ export class CoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Dispute related methods                          */
   /* -------------------------------------------------------------------------- */
+
+  public async getDisputeById(
+    disputeId: BigNumberish,
+    queryVars?: disputes.subgraph.SingleDisputeQueryVariables
+  ) {
+    return disputes.subgraph.getDisputeById(
+      this._subgraphUrl,
+      disputeId,
+      queryVars
+    );
+  }
+
+  public async getDisputes(
+    queryVars?: subgraph.GetDisputesQueryQueryVariables
+  ) {
+    return disputes.subgraph.getDisputes(this._subgraphUrl, queryVars);
+  }
+
+  public async raiseDispute(
+    exchangeId: BigNumberish,
+    complaint: string
+  ): Promise<TransactionResponse> {
+    return disputes.handler.raiseDispute({
+      exchangeId,
+      complaint,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async retractDispute(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.retractDispute({
+      exchangeId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async extendDisputeTimeout(
+    exchangeId: BigNumberish,
+    newDisputeTimeout: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.extendDisputeTimeout({
+      exchangeId,
+      newDisputeTimeout,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async expireDispute(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.expireDispute({
+      exchangeId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async expireDisputeBatch(
+    exchangeIds: BigNumberish[]
+  ): Promise<TransactionResponse> {
+    return disputes.handler.expireDisputeBatch({
+      exchangeIds,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async resolveDispute(args: {
+    exchangeId: BigNumberish;
+    buyerPercent: BigNumberish;
+    sigR: BytesLike;
+    sigS: BytesLike;
+    sigV: BigNumberish;
+  }): Promise<TransactionResponse> {
+    return disputes.handler.resolveDispute({
+      ...args,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async escalateDispute(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.escalateDispute({
+      exchangeId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async decideDispute(
+    exchangeId: BigNumberish,
+    buyerPercent: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.decideDispute({
+      exchangeId,
+      buyerPercent,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async refuseEscalatedDispute(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.refuseEscalatedDispute({
+      exchangeId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async expireEscalatedDispute(
+    exchangeId: BigNumberish
+  ): Promise<TransactionResponse> {
+    return disputes.handler.expireEscalatedDispute({
+      exchangeId,
+      contractAddress: this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async signMutualAgreement(args: {
+    exchangeId: string;
+    buyerPercent: string;
+  }) {
+    // Set the message Type, needed for signature
+    const resolutionType = [
+      { name: "exchangeId", type: "uint256" },
+      { name: "buyerPercent", type: "uint256" }
+    ];
+
+    const customSignatureType = {
+      Resolution: resolutionType
+    };
+
+    const message = {
+      exchangeId: args.exchangeId,
+      buyerPercent: args.buyerPercent
+    };
+
+    if (this._chainId === undefined) {
+      this._chainId = await this._web3Lib.getChainId();
+    }
+
+    return metaTx.handler.prepareDataSignatureParameters({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      customTransactionType: customSignatureType,
+      primaryType: "Resolution",
+      message,
+      nonce: "" // not used in this case
+    });
+  }
 
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */

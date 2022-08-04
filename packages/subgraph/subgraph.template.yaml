@@ -150,3 +150,40 @@ dataSources:
         - event: FundsWithdrawn(indexed uint256,indexed address,indexed address,uint256,address)
           handler: handleFundsWithdrawnEvent
       file: ./src/mappings/funds-handler.ts
+  - kind: ethereum/contract
+    name: BosonDisputeHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonDisputeHandler
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Dispute
+        - Exchange
+      abis:
+        - name: IBosonDisputeHandler
+          file: ../common/src/abis/IBosonDisputeHandler.json
+      eventHandlers:
+        - event: DisputeRaised(indexed uint256,indexed uint256,indexed uint256,string,address)
+          handler: handleDisputeRaisedEvent
+        - event: DisputeRetracted(indexed uint256,indexed address)
+          handler: handleDisputeRetractedEvent
+        - event: DisputeTimeoutExtended(indexed uint256,uint256,indexed address)
+          handler: handleDisputeTimeoutExtendedEvent
+        - event: DisputeExpired(indexed uint256,indexed address)
+          handler: handleDisputeExpiredEvent
+        - event: DisputeResolved(indexed uint256,uint256,indexed address)
+          handler: handleDisputeResolvedEvent
+        - event: DisputeEscalated(indexed uint256,indexed uint256,indexed address)
+          handler: handleDisputeEscalatedEvent
+        - event: DisputeDecided(indexed uint256,uint256,indexed address)
+          handler: handleDisputeDecidedEvent
+        - event: EscalatedDisputeRefused(indexed uint256,indexed address)
+          handler: handleEscalatedDisputeRefusedEvent
+        - event: EscalatedDisputeExpired(indexed uint256,indexed address)
+          handler: handleEscalatedDisputeExpiredEvent
+      file: ./src/mappings/dispute-handler.ts
