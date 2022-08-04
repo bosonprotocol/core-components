@@ -49,11 +49,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -168,7 +163,31 @@ const _abi = [
         type: "tuple",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "agentFee",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.OfferFees",
+        name: "offerFees",
+        type: "tuple",
+      },
+      {
         indexed: true,
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
         internalType: "address",
         name: "executedBy",
         type: "address",
@@ -255,11 +274,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -351,6 +365,11 @@ const _abi = [
         name: "_disputeResolverId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
     ],
     name: "createOffer",
     outputs: [],
@@ -379,11 +398,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -475,6 +489,11 @@ const _abi = [
         name: "_disputeResolverIds",
         type: "uint256[]",
       },
+      {
+        internalType: "uint256[]",
+        name: "_agentIds",
+        type: "uint256[]",
+      },
     ],
     name: "createOfferBatch",
     outputs: [],
@@ -515,6 +534,30 @@ const _abi = [
     name: "extendOfferBatch",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
+    name: "getAgentIdByOffer",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -565,11 +608,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -681,6 +719,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.DisputeResolutionTerms",
         name: "disputeResolutionTerms",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "agentFee",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferFees",
+        name: "offerFees",
         type: "tuple",
       },
     ],

@@ -62,6 +62,34 @@ export declare namespace BosonTypes {
     voucher: BosonTypes.VoucherStructOutput;
     state: number;
   };
+
+  export type TwinStruct = {
+    id: BigNumberish;
+    sellerId: BigNumberish;
+    amount: BigNumberish;
+    supplyAvailable: BigNumberish;
+    tokenId: BigNumberish;
+    tokenAddress: string;
+    tokenType: BigNumberish;
+  };
+
+  export type TwinStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    number
+  ] & {
+    id: BigNumber;
+    sellerId: BigNumber;
+    amount: BigNumber;
+    supplyAvailable: BigNumber;
+    tokenId: BigNumber;
+    tokenAddress: string;
+    tokenType: number;
+  };
 }
 
 export interface IBosonExchangeHandlerInterface extends utils.Interface {
@@ -70,7 +98,9 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "cancelVoucher(uint256)": FunctionFragment;
     "commitToOffer(address,uint256)": FunctionFragment;
     "completeExchange(uint256)": FunctionFragment;
+    "completeExchangeBatch(uint256[])": FunctionFragment;
     "expireVoucher(uint256)": FunctionFragment;
+    "extendVoucher(uint256,uint256)": FunctionFragment;
     "getExchange(uint256)": FunctionFragment;
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
@@ -93,8 +123,16 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "completeExchangeBatch",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "expireVoucher",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "extendVoucher",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getExchange",
@@ -138,7 +176,15 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "completeExchangeBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "expireVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "extendVoucher",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -177,8 +223,13 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
     "FundsWithdrawn(uint256,address,address,uint256,address)": EventFragment;
     "ProtocolFeeCollected(uint256,address,uint256,address)": EventFragment;
+    "TwinCreated(uint256,uint256,tuple,address)": EventFragment;
+    "TwinDeleted(uint256,uint256,address)": EventFragment;
+    "TwinTransferFailed(uint256,address,uint256,uint256,uint256,address)": EventFragment;
+    "TwinTransferred(uint256,address,uint256,uint256,uint256,address)": EventFragment;
     "VoucherCanceled(uint256,uint256,address)": EventFragment;
     "VoucherExpired(uint256,uint256,address)": EventFragment;
+    "VoucherExtended(uint256,uint256,uint256,address)": EventFragment;
     "VoucherRedeemed(uint256,uint256,address)": EventFragment;
     "VoucherRevoked(uint256,uint256,address)": EventFragment;
     "VoucherTransferred(uint256,uint256,uint256,address)": EventFragment;
@@ -190,8 +241,13 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProtocolFeeCollected"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TwinCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TwinDeleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TwinTransferFailed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TwinTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherExpired"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VoucherExtended"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherRedeemed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherRevoked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherTransferred"): EventFragment;
@@ -274,6 +330,54 @@ export type ProtocolFeeCollectedEvent = TypedEvent<
 export type ProtocolFeeCollectedEventFilter =
   TypedEventFilter<ProtocolFeeCollectedEvent>;
 
+export type TwinCreatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BosonTypes.TwinStructOutput, string],
+  {
+    twinId: BigNumber;
+    sellerId: BigNumber;
+    twin: BosonTypes.TwinStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type TwinCreatedEventFilter = TypedEventFilter<TwinCreatedEvent>;
+
+export type TwinDeletedEvent = TypedEvent<
+  [BigNumber, BigNumber, string],
+  { twinId: BigNumber; sellerId: BigNumber; executedBy: string }
+>;
+
+export type TwinDeletedEventFilter = TypedEventFilter<TwinDeletedEvent>;
+
+export type TwinTransferFailedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber, BigNumber, string],
+  {
+    twinId: BigNumber;
+    tokenAddress: string;
+    exchangeId: BigNumber;
+    tokenId: BigNumber;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type TwinTransferFailedEventFilter =
+  TypedEventFilter<TwinTransferFailedEvent>;
+
+export type TwinTransferredEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber, BigNumber, string],
+  {
+    twinId: BigNumber;
+    tokenAddress: string;
+    exchangeId: BigNumber;
+    tokenId: BigNumber;
+    amount: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type TwinTransferredEventFilter = TypedEventFilter<TwinTransferredEvent>;
+
 export type VoucherCanceledEvent = TypedEvent<
   [BigNumber, BigNumber, string],
   { offerId: BigNumber; exchangeId: BigNumber; executedBy: string }
@@ -287,6 +391,18 @@ export type VoucherExpiredEvent = TypedEvent<
 >;
 
 export type VoucherExpiredEventFilter = TypedEventFilter<VoucherExpiredEvent>;
+
+export type VoucherExtendedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string],
+  {
+    offerId: BigNumber;
+    exchangeId: BigNumber;
+    validUntil: BigNumber;
+    executedBy: string;
+  }
+>;
+
+export type VoucherExtendedEventFilter = TypedEventFilter<VoucherExtendedEvent>;
 
 export type VoucherRedeemedEvent = TypedEvent<
   [BigNumber, BigNumber, string],
@@ -359,8 +475,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    completeExchangeBatch(
+      _exchangeIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     expireVoucher(
       _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    extendVoucher(
+      _exchangeId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -421,8 +548,19 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  completeExchangeBatch(
+    _exchangeIds: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   expireVoucher(
     _exchangeId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  extendVoucher(
+    _exchangeId: BigNumberish,
+    _validUntilDate: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -481,8 +619,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    completeExchangeBatch(
+      _exchangeIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     expireVoucher(
       _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    extendVoucher(
+      _exchangeId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -610,6 +759,64 @@ export interface IBosonExchangeHandler extends BaseContract {
       executedBy?: string | null
     ): ProtocolFeeCollectedEventFilter;
 
+    "TwinCreated(uint256,uint256,tuple,address)"(
+      twinId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      twin?: null,
+      executedBy?: string | null
+    ): TwinCreatedEventFilter;
+    TwinCreated(
+      twinId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      twin?: null,
+      executedBy?: string | null
+    ): TwinCreatedEventFilter;
+
+    "TwinDeleted(uint256,uint256,address)"(
+      twinId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
+    ): TwinDeletedEventFilter;
+    TwinDeleted(
+      twinId?: BigNumberish | null,
+      sellerId?: BigNumberish | null,
+      executedBy?: string | null
+    ): TwinDeletedEventFilter;
+
+    "TwinTransferFailed(uint256,address,uint256,uint256,uint256,address)"(
+      twinId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      exchangeId?: BigNumberish | null,
+      tokenId?: null,
+      amount?: null,
+      executedBy?: null
+    ): TwinTransferFailedEventFilter;
+    TwinTransferFailed(
+      twinId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      exchangeId?: BigNumberish | null,
+      tokenId?: null,
+      amount?: null,
+      executedBy?: null
+    ): TwinTransferFailedEventFilter;
+
+    "TwinTransferred(uint256,address,uint256,uint256,uint256,address)"(
+      twinId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      exchangeId?: BigNumberish | null,
+      tokenId?: null,
+      amount?: null,
+      executedBy?: null
+    ): TwinTransferredEventFilter;
+    TwinTransferred(
+      twinId?: BigNumberish | null,
+      tokenAddress?: string | null,
+      exchangeId?: BigNumberish | null,
+      tokenId?: null,
+      amount?: null,
+      executedBy?: null
+    ): TwinTransferredEventFilter;
+
     "VoucherCanceled(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
@@ -631,6 +838,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       exchangeId?: BigNumberish | null,
       executedBy?: string | null
     ): VoucherExpiredEventFilter;
+
+    "VoucherExtended(uint256,uint256,uint256,address)"(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      validUntil?: null,
+      executedBy?: string | null
+    ): VoucherExtendedEventFilter;
+    VoucherExtended(
+      offerId?: BigNumberish | null,
+      exchangeId?: BigNumberish | null,
+      validUntil?: null,
+      executedBy?: string | null
+    ): VoucherExtendedEventFilter;
 
     "VoucherRedeemed(uint256,uint256,address)"(
       offerId?: BigNumberish | null,
@@ -685,8 +905,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    completeExchangeBatch(
+      _exchangeIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     expireVoucher(
       _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    extendVoucher(
+      _exchangeId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -741,8 +972,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    completeExchangeBatch(
+      _exchangeIds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     expireVoucher(
       _exchangeId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    extendVoucher(
+      _exchangeId: BigNumberish,
+      _validUntilDate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

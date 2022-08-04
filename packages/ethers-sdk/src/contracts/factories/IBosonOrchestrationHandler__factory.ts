@@ -213,84 +213,6 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "bundleId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "sellerId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "BundleDeleted",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "bundleId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "sellerId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "sellerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256[]",
-            name: "offerIds",
-            type: "uint256[]",
-          },
-          {
-            internalType: "uint256[]",
-            name: "twinIds",
-            type: "uint256[]",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Bundle",
-        name: "bundle",
-        type: "tuple",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "BundleUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
         name: "buyerId",
         type: "uint256",
       },
@@ -875,11 +797,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -994,7 +911,31 @@ const _abi = [
         type: "tuple",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "protocolFee",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "agentFee",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.OfferFees",
+        name: "offerFees",
+        type: "tuple",
+      },
+      {
         indexed: true,
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
         internalType: "address",
         name: "executedBy",
         type: "address",
@@ -1113,6 +1054,24 @@ const _abi = [
         type: "address",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
+        type: "tuple",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
@@ -1167,6 +1126,24 @@ const _abi = [
         indexed: false,
         internalType: "struct BosonTypes.Seller",
         name: "seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
         type: "tuple",
       },
       {
@@ -1273,6 +1250,92 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinTransferFailed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "twinId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "exchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "TwinTransferred",
+    type: "event",
+  },
+  {
     inputs: [
       {
         components: [
@@ -1294,11 +1357,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -1395,6 +1453,11 @@ const _abi = [
         name: "_groupId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
     ],
     name: "createOfferAddToGroup",
     outputs: [],
@@ -1423,11 +1486,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -1560,6 +1618,11 @@ const _abi = [
         internalType: "struct BosonTypes.Twin",
         name: "_twin",
         type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
       },
     ],
     name: "createOfferAndTwinWithBundle",
@@ -1593,11 +1656,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -1722,6 +1780,11 @@ const _abi = [
         name: "_condition",
         type: "tuple",
       },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
     ],
     name: "createOfferWithCondition",
     outputs: [],
@@ -1750,11 +1813,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -1924,6 +1982,11 @@ const _abi = [
         internalType: "struct BosonTypes.Twin",
         name: "_twin",
         type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
       },
     ],
     name: "createOfferWithConditionAndTwinAndBundle",
@@ -1999,11 +2062,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -2089,6 +2147,28 @@ const _abi = [
       {
         internalType: "uint256",
         name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
         type: "uint256",
       },
     ],
@@ -2165,11 +2245,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -2298,6 +2373,28 @@ const _abi = [
         internalType: "struct BosonTypes.Twin",
         name: "_twin",
         type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
       },
     ],
     name: "createSellerAndOfferAndTwinWithBundle",
@@ -2373,11 +2470,6 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "protocolFee",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "buyerCancelPenalty",
             type: "uint256",
           },
@@ -2502,6 +2594,28 @@ const _abi = [
         name: "_condition",
         type: "tuple",
       },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
     ],
     name: "createSellerAndOfferWithCondition",
     outputs: [],
@@ -2572,11 +2686,6 @@ const _abi = [
           {
             internalType: "uint256",
             name: "sellerDeposit",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "protocolFee",
             type: "uint256",
           },
           {
@@ -2746,6 +2855,28 @@ const _abi = [
         internalType: "struct BosonTypes.Twin",
         name: "_twin",
         type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
       },
     ],
     name: "createSellerAndOfferWithConditionAndTwinAndBundle",
