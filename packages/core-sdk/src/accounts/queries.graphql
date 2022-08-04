@@ -191,6 +191,9 @@ fragment BaseSellerFields on Seller {
   admin
   clerk
   treasury
+  authTokenId
+  authTokenType
+  voucherCloneAddress
   active
 }
 
