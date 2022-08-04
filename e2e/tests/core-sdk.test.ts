@@ -23,12 +23,9 @@ import {
   seedWallet4,
   seedWallet5,
   seedWallet6,
-  defaultConfig,
-  provider,
   initCoreSDKWithWallet,
   drWallet
 } from "./utils";
-import { EthersAdapter } from "../../packages/ethers-sdk/src";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -386,7 +383,7 @@ describe("core-sdk", () => {
           exchange.id,
           buyerPercent,
           buyerCoreSDK,
-          sellerWallet
+          sellerCoreSDK
         );
 
         await checkDisputeResolved(exchange.id, buyerPercent, buyerCoreSDK);
@@ -403,7 +400,7 @@ describe("core-sdk", () => {
           exchange.id,
           buyerPercent,
           sellerCoreSDK,
-          buyerWallet
+          buyerCoreSDK
         );
 
         await checkDisputeResolved(exchange.id, buyerPercent, sellerCoreSDK);
@@ -643,117 +640,6 @@ async function completeExchange(args: {
   return exchangeAfterComplete;
 }
 
-async function signMutualAgreement(args: {
-  signer: Wallet;
-  exchangeId: string;
-  buyerPercent: string;
-}) {
-  // Set the message Type, needed for signature
-  const resolutionType = [
-    { name: "exchangeId", type: "uint256" },
-    { name: "buyerPercent", type: "uint256" }
-  ];
-
-  const customSignatureType = {
-    Resolution: resolutionType
-  };
-
-  const message = {
-    exchangeId: args.exchangeId,
-    buyerPercent: args.buyerPercent
-  };
-
-  const { r, s, v } = await prepareDataSignatureParameters(
-    args.signer, // When buyer is the caller, seller should be the signer.
-    customSignatureType,
-    "Resolution",
-    message,
-    defaultConfig.contracts.protocolDiamond
-  );
-
-  return {
-    r: r,
-    s: s,
-    v: v
-  };
-}
-
-async function prepareDataSignatureParameters(
-  signer: Wallet,
-  customTransactionTypes,
-  primaryType,
-  message,
-  contractAddress
-) {
-  // Initialize data
-  const domainType = [
-    { name: "name", type: "string" },
-    { name: "version", type: "string" },
-    { name: "verifyingContract", type: "address" },
-    { name: "salt", type: "bytes32" }
-  ];
-
-  const domainData = {
-    name: "BosonProtocolDiamond",
-    version: "V1",
-    verifyingContract: contractAddress,
-    salt: utils.hexZeroPad(
-      BigNumber.from(defaultConfig.chainId).toHexString(),
-      32
-    )
-  };
-
-  // Prepare the types
-  let metaTxTypes = {
-    EIP712Domain: domainType
-  };
-  metaTxTypes = Object.assign({}, metaTxTypes, customTransactionTypes);
-
-  // Prepare the data to sign
-  const dataToSign = JSON.stringify({
-    types: metaTxTypes,
-    domain: domainData,
-    primaryType: primaryType,
-    message: message
-  });
-
-  const web3lib = new EthersAdapter(provider, signer);
-
-  // Sign the data
-  const signature = await web3lib.send("eth_signTypedData_v4", [
-    signer.address,
-    dataToSign
-  ]);
-
-  // Collect the Signature components
-  const { r, s, v } = getSignatureParameters(signature);
-
-  return {
-    r: r,
-    s: s,
-    v: v
-  };
-}
-
-function getSignatureParameters(signature) {
-  if (!utils.isHexString(signature)) {
-    throw new Error(
-      'Given value "'.concat(signature, '" is not a valid hex string.')
-    );
-  }
-
-  signature = signature.substring(2);
-  const r = "0x" + signature.substring(0, 64);
-  const s = "0x" + signature.substring(64, 128);
-  const v = parseInt(signature.substring(128, 130), 16);
-
-  return {
-    r: r,
-    s: s,
-    v: v
-  };
-}
-
 async function raiseDispute(
   exchangeId: string,
   complaint: string,
@@ -838,7 +724,7 @@ async function resolveDispute(
   exchangeId: string,
   buyerPercent: string,
   resolverSDK: CoreSDK,
-  resolutionSigner: Wallet
+  signerSDK: CoreSDK
 ) {
   {
     // sign the message from seller
@@ -846,8 +732,7 @@ async function resolveDispute(
       r: sigR,
       s: sigS,
       v: sigV
-    } = await signMutualAgreement({
-      signer: resolutionSigner,
+    } = await signerSDK.signMutualAgreement({
       exchangeId: exchangeId,
       buyerPercent: buyerPercent
     });
