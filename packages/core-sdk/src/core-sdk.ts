@@ -30,6 +30,7 @@ export class CoreSDK {
 
   private _subgraphUrl: string;
   private _protocolDiamond: string;
+  private _chainId: number;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -41,12 +42,14 @@ export class CoreSDK {
     protocolDiamond: string;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    chainId?: number;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
     this._protocolDiamond = opts.protocolDiamond;
     this._metadataStorage = opts.metadataStorage;
     this._theGraphStorage = opts.theGraphStorage;
+    this._chainId = opts.chainId;
   }
 
   /**
@@ -82,7 +85,8 @@ export class CoreSDK {
       metadataStorage: args.metadataStorage,
       theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
-      protocolDiamond: defaultConfig.contracts.protocolDiamond
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: args.chainId
     });
   }
 
@@ -1049,6 +1053,40 @@ export class CoreSDK {
       exchangeId,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
+    });
+  }
+
+  public async signMutualAgreement(args: {
+    exchangeId: string;
+    buyerPercent: string;
+  }) {
+    // Set the message Type, needed for signature
+    const resolutionType = [
+      { name: "exchangeId", type: "uint256" },
+      { name: "buyerPercent", type: "uint256" }
+    ];
+
+    const customSignatureType = {
+      Resolution: resolutionType
+    };
+
+    const message = {
+      exchangeId: args.exchangeId,
+      buyerPercent: args.buyerPercent
+    };
+
+    if (this._chainId === undefined) {
+      this._chainId = await this._web3Lib.getChainId();
+    }
+
+    return metaTx.handler.prepareDataSignatureParameters({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      customTransactionType: customSignatureType,
+      primaryType: "Resolution",
+      message,
+      nonce: "" // not used in this case
     });
   }
 

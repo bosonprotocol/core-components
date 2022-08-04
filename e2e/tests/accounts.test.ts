@@ -27,8 +27,6 @@ describe("CoreSDK - accounts", () => {
       feeAmount: utils.parseEther("1")
     };
 
-    beforeAll(async () => {});
-
     test("create", async () => {
       const disputeResolverAddress =
         Wallet.createRandom().address.toLowerCase();
