@@ -7,14 +7,9 @@ export function getMediaId(mediaUrl: string, mediaTag: string): string {
   return `${mediaUrl.toLowerCase()}-${mediaTag.toLowerCase()}`;
 }
 
-export enum MediaType {
-  Image = "IMAGE",
-  VIDEO = "VIDEO"
-}
-
 export function saveProductV1Medias(
   medias: Array<TypedMap<string, JSONValue>>,
-  mediaType: MediaType
+  mediaType: string
 ): string[] {
   const savedMedias: string[] = [];
 

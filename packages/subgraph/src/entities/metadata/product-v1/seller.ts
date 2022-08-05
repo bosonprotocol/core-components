@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap, ByteArray } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
 import {
   ProductV1SellerContactLink,
   ProductV1Seller
@@ -9,7 +9,7 @@ import {
   convertToObjectArray,
   convertToString
 } from "../../../utils/json";
-import { MediaType, saveProductV1Medias } from "./media";
+import { saveProductV1Medias } from "./media";
 
 export function getProductV1SellerId(sellerAccountId: string): string {
   return `${sellerAccountId}-product-v1`;
@@ -33,7 +33,7 @@ export function saveProductV1Seller(
   const externalUrl = convertToString(sellerObj.get("externalUrl"));
   const tokenId = convertToString(sellerObj.get("tokenId"));
   const images = convertToObjectArray(sellerObj.get("images"));
-  const savedImageIds = saveProductV1Medias(images, MediaType.Image);
+  const savedImageIds = saveProductV1Medias(images, "IMAGE");
   const contactLinks = convertToObjectArray(sellerObj.get("contactLinks"));
   const savedContactLinkIds = saveProductV1SellerContactLink(contactLinks);
 
