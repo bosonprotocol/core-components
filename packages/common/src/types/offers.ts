@@ -3,7 +3,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 export type CreateOfferArgs = {
   price: BigNumberish;
   sellerDeposit: BigNumberish;
-  protocolFee: BigNumberish;
+  agentId: BigNumberish;
   buyerCancelPenalty: BigNumberish;
   quantityAvailable: BigNumberish;
   validFromDateInMS: BigNumberish;
@@ -24,7 +24,6 @@ export type OfferStruct = {
   sellerId: BigNumberish;
   price: BigNumberish;
   sellerDeposit: BigNumberish;
-  protocolFee: BigNumberish;
   buyerCancelPenalty: BigNumberish;
   quantityAvailable: BigNumberish;
   exchangeToken: string;

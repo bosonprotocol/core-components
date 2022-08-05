@@ -55,6 +55,8 @@ fragment BaseOfferFields on Offer {
   price
   sellerDeposit
   protocolFee
+  agentFee
+  agentId
   buyerCancelPenalty
   quantityAvailable
   quantityInitial

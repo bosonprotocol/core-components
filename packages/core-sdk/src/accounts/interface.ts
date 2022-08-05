@@ -104,8 +104,8 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
       ...sellerStructArgs
     },
     authTokenStruct: {
-      authTokenId,
-      authTokenType
+      tokenId: authTokenId,
+      tokenType: authTokenType
     }
   };
 }

@@ -10402,6 +10402,8 @@ export type BaseOfferFieldsFragment = {
   price: string;
   sellerDeposit: string;
   protocolFee: string;
+  agentFee: string;
+  agentId: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   quantityInitial: string;
@@ -10575,6 +10577,8 @@ export const BaseOfferFieldsFragmentDoc = gql`
     price
     sellerDeposit
     protocolFee
+    agentFee
+    agentId
     buyerCancelPenalty
     quantityAvailable
     quantityInitial

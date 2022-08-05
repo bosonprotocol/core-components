@@ -17,13 +17,15 @@ export type SellerStruct = {
   clerk: string;
   treasury: string;
   voucherCloneAddress: string;
+  authTokenId: BigNumberish;
+  authTokenType: number;
   active: boolean;
 };
 
 export type AuthTokenStruct = {
-  authTokenId: BigNumberish;
-  authTokenType: number;
-}
+  tokenId: BigNumberish;
+  tokenType: number;
+};
 
 export type DisputeResolverStruct = {
   id: BigNumberish;
