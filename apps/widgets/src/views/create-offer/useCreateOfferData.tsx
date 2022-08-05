@@ -103,7 +103,6 @@ function getCreateOfferArgs() {
     price: urlParams["price"],
     sellerDeposit: urlParams["sellerDeposit"],
     buyerCancelPenalty: urlParams["buyerCancelPenalty"],
-    protocolFee: urlParams["protocolFee"],
     quantityAvailable: urlParams["quantityAvailable"],
     validFromDateInMS: urlParams["validFromDateInMS"],
     validUntilDateInMS: urlParams["validUntilDateInMS"],
@@ -114,6 +113,7 @@ function getCreateOfferArgs() {
     resolutionPeriodDurationInMS: urlParams["resolutionPeriodDurationInMS"],
     disputeResolverId: urlParams["disputeResolverId"],
     exchangeToken: urlParams["exchangeToken"],
+    agentId: urlParams["agentId"],
     metadataUri: urlParams["metadataUri"],
     metadataHash: urlParams["metadataHash"]
   };

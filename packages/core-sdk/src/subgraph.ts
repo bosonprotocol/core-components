@@ -6066,6 +6066,8 @@ export type GetSellerByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6231,6 +6233,8 @@ export type GetSellersQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6484,6 +6488,8 @@ export type GetDisputeResolverByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6624,6 +6630,8 @@ export type GetDisputeResolversQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6762,6 +6770,8 @@ export type SellerFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -6939,6 +6949,8 @@ export type DisputeResolverFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -7328,6 +7340,8 @@ export type GetExchangeTokenByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7461,6 +7475,8 @@ export type GetExchangeTokensQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7572,6 +7588,8 @@ export type ExchangeTokenFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -7721,6 +7739,8 @@ export type GetExchangeByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7860,6 +7880,8 @@ export type GetExchangesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7984,6 +8006,8 @@ export type ExchangeFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -8197,6 +8221,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8345,6 +8371,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8483,6 +8511,8 @@ export type BaseMetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -8620,6 +8650,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -8803,6 +8835,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -9068,6 +9102,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -9323,6 +9359,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -9577,6 +9615,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -10054,6 +10094,8 @@ export type GetOfferByIdQueryQuery = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -10181,6 +10223,8 @@ export type GetOffersQueryQuery = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -10292,6 +10336,8 @@ export type OfferFieldsFragment = {
   price: string;
   sellerDeposit: string;
   protocolFee: string;
+  agentFee: string;
+  agentId: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   quantityInitial: string;

@@ -26,7 +26,7 @@ export function HomeView() {
       disputeResolverId: "1",
       price: "0.0002",
       sellerDeposit: "0.0002",
-      protocolFee: "0.0001",
+      agentId: "0",
       buyerCancelPenalty: "0.0001",
       quantityAvailable: "10",
       exchangeToken: "0x0000000000000000000000000000000000000000",
@@ -57,7 +57,6 @@ export function HomeView() {
           price: parseEther(values.price).toString(),
           sellerDeposit: parseEther(values.sellerDeposit).toString(),
           buyerCancelPenalty: parseEther(values.buyerCancelPenalty).toString(),
-          protocolFee: parseEther(values.protocolFee).toString(),
           metadataHash,
           metadataUri
         },
@@ -150,11 +149,11 @@ export function HomeView() {
             />
           </Form.Group>
           <Form.Group as={Col}>
-            <Form.Label>protocolFee</Form.Label>
+            <Form.Label>agentId</Form.Label>
             <Form.Control
-              value={formik.values.protocolFee}
+              value={formik.values.agentId}
               onChange={formik.handleChange}
-              name="protocolFee"
+              name="agentId"
               type="text"
               placeholder="..."
             />

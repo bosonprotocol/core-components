@@ -25,7 +25,7 @@ interface Props {
   voucherValidDurationInMS?: BigNumberish;
   metadataUri: string;
   metadataHash?: string;
-  protocolFeeInWei: BigNumberish;
+  protocolFeeInWei?: BigNumberish;
   fulfillmentPeriodInMS: BigNumberish;
   resolutionPeriodInMS: BigNumberish;
 }
@@ -104,17 +104,19 @@ export function OfferDetails({
             <Currency>{currencySymbol}</Currency>
           </Money>
         </Entry>
-        <Entry>
-          <Label>Protocol Fee</Label>
-          <Money>
-            <Value
-              title={utils.formatUnits(protocolFeeInWei, currencyDecimals)}
-            >
-              {utils.formatUnits(protocolFeeInWei, currencyDecimals)}
-            </Value>
-            <Currency>{currencySymbol}</Currency>
-          </Money>
-        </Entry>
+        {protocolFeeInWei && (
+          <Entry>
+            <Label>Protocol Fee</Label>
+            <Money>
+              <Value
+                title={utils.formatUnits(protocolFeeInWei, currencyDecimals)}
+              >
+                {utils.formatUnits(protocolFeeInWei, currencyDecimals)}
+              </Value>
+              <Currency>{currencySymbol}</Currency>
+            </Money>
+          </Entry>
+        )}
       </Row>
       <Spacer />
       <Row>

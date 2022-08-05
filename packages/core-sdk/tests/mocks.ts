@@ -74,6 +74,8 @@ export function mockRawOfferFromSubgraph(
     metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     voidedAt: null,
     protocolFee: "1",
+    agentFee: "0",
+    agentId: "0",
     seller: {
       id: "1",
       operator: ZERO_ADDRESS,

@@ -11,7 +11,6 @@ import {
 interface CreateOfferRequest {
   price: string;
   sellerDeposit: string;
-  protocolFee: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   validFromDateInMS: string;

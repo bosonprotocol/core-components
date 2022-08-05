@@ -252,7 +252,6 @@ export default function CreateOffer() {
           }
           metadataUri={createOfferArgs.metadataUri}
           metadataHash={createOfferArgs.metadataHash}
-          protocolFeeInWei={createOfferArgs.protocolFee}
           fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
           resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}
         />
