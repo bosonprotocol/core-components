@@ -15,7 +15,7 @@ import {
   convertToString,
   convertToStringArray
 } from "../../../utils/json";
-import { saveProductV1Medias } from "./media";
+import { MediaType, saveProductV1Medias } from "./media";
 
 export function getProductId(uuid: string, version: string): string {
   return `${uuid}-${version}`;
@@ -121,11 +121,11 @@ export function saveProductV1ProductOrOverrides(
   const visuals_images = convertToObjectArray(
     productOrOverrideObj.get("visuals_images")
   );
-  const savedImageIds = saveProductV1Medias(visuals_images, "IMAGE");
+  const savedImageIds = saveProductV1Medias(visuals_images, MediaType.Image);
   const visuals_videos = convertToObjectArray(
     productOrOverrideObj.get("visuals_videos")
   );
-  const savedVideoIds = saveProductV1Medias(visuals_videos, "VIDEO");
+  const savedVideoIds = saveProductV1Medias(visuals_videos, MediaType.VIDEO);
 
   const packaging_packageQuantity = convertToString(
     productOrOverrideObj.get("packaging_packageQuantity")
