@@ -30,7 +30,7 @@ export function saveProductV1Medias(
       media = new ProductV1Media(mediaId);
       media.url = mediaUrl;
       media.tag = mediaTag;
-      media.type = mediaType;
+      media.type = mediaType as string;
       media.save();
     }
 
