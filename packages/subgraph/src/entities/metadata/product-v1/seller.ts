@@ -33,7 +33,7 @@ export function saveProductV1Seller(
   const externalUrl = convertToString(sellerObj.get("externalUrl"));
   const tokenId = convertToString(sellerObj.get("tokenId"));
   const images = convertToObjectArray(sellerObj.get("images"));
-  const savedImageIds = saveProductV1Medias(images);
+  const savedImageIds = saveProductV1Medias(images, "IMAGE");
   const contactLinks = convertToObjectArray(sellerObj.get("contactLinks"));
   const savedContactLinkIds = saveProductV1SellerContactLink(contactLinks);
 

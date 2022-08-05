@@ -8,7 +8,8 @@ export function getMediaId(mediaUrl: string, mediaTag: string): string {
 }
 
 export function saveProductV1Medias(
-  medias: Array<TypedMap<string, JSONValue>>
+  medias: Array<TypedMap<string, JSONValue>>,
+  mediaType: "IMAGE" | "VIDEO"
 ): string[] {
   const savedMedias: string[] = [];
 
@@ -16,7 +17,6 @@ export function saveProductV1Medias(
     const mediaObject = medias[i];
     const mediaUrl = convertToString(mediaObject.get("url"));
     const mediaTag = convertToString(mediaObject.get("tag"));
-    const mediaType = convertToString(mediaObject.get("type"));
     const mediaId = getMediaId(mediaUrl, mediaTag);
 
     let media = ProductV1Media.load(mediaId);
