@@ -27,19 +27,14 @@ export const createOfferArgsSchema = object({
   sellerDeposit: string()
     .required()
     .test(...positiveIntTestArgs),
-  protocolFee: string()
-    .required()
-    .test(...positiveIntTestArgs),
   buyerCancelPenalty: string()
     .required()
     .test(...positiveIntTestArgs)
     .test(
       "is-less-than-or-equal-price",
-      "${path} + protocolFee has to be less than or equal price",
+      "${path} has to be less than or equal price",
       (value, ctx) =>
-        BigNumber.from(value)
-          .add(BigNumber.from(ctx.parent.protocolFee))
-          .lte(BigNumber.from(ctx.parent.price))
+        BigNumber.from(value).lte(BigNumber.from(ctx.parent.price))
     ),
   quantityAvailable: string()
     .required()
@@ -126,6 +121,7 @@ export const createOfferArgsSchema = object({
       isMetadataUri
     ),
   metadataHash: string().required()
+  // TODO: add agentId
 });
 
 export const createSellerArgsSchema = object({
@@ -140,7 +136,15 @@ export const createSellerArgsSchema = object({
     .test(...addressTestArgs),
   treasury: string()
     .required()
-    .test(...addressTestArgs)
+    .test(...addressTestArgs),
+  contractUri: string()
+    .required()
+    .test(
+      "is-valid-metadata-uri",
+      "${path} has to be a valid uri",
+      isMetadataUri
+    )
+  // TODO: add authTokenId and authTokenType
 });
 
 function isPositiveInt(value: unknown) {

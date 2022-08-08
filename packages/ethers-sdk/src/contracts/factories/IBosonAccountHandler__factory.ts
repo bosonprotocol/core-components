@@ -589,6 +589,24 @@ const _abi = [
         type: "address",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
+        type: "tuple",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
@@ -643,6 +661,24 @@ const _abi = [
         indexed: false,
         internalType: "struct BosonTypes.Seller",
         name: "seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
         type: "tuple",
       },
       {
@@ -935,6 +971,23 @@ const _abi = [
         internalType: "string",
         name: "_contractURI",
         type: "string",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
       },
     ],
     name: "createSeller",
@@ -1280,6 +1333,23 @@ const _abi = [
         name: "seller",
         type: "tuple",
       },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
+        type: "tuple",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -1334,6 +1404,108 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.Seller",
         name: "seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_associatedAuthToken",
+        type: "tuple",
+      },
+    ],
+    name: "getSellerByAuthToken",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "exists",
+        type: "bool",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Seller",
+        name: "seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "authToken",
         type: "tuple",
       },
     ],
@@ -1533,6 +1705,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.Seller",
         name: "_seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
         type: "tuple",
       },
     ],

@@ -1,5 +1,6 @@
 import {
   SellerStruct,
+  AuthTokenStruct,
   abis,
   DisputeResolverStruct,
   utils
@@ -17,9 +18,11 @@ export const bosonAccountHandlerIface = new Interface(
 );
 
 export function encodeCreateAccount(seller: CreateSellerArgs) {
+  const sellerArgs = createSellerArgsToStruct(seller);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
-    createSellerArgsToStruct(seller),
-    seller.contractUri
+    sellerArgs.sellerStruct,
+    seller.contractUri,
+    sellerArgs.authTokenStruct
   ]);
 }
 
@@ -86,16 +89,24 @@ export function encodeUpdateDisputeResolver(
   ]);
 }
 
-export function createSellerArgsToStruct(
-  args: CreateSellerArgs
-): Partial<SellerStruct> {
+export function createSellerArgsToStruct(args: CreateSellerArgs): {
+  sellerStruct: Partial<SellerStruct>;
+  authTokenStruct: AuthTokenStruct;
+} {
+  const { authTokenId, authTokenType, ...sellerStructArgs } = args;
   return {
-    // NOTE: It doesn't matter which values we set for `id` and `active` here
-    // as they will be overridden by the contract. But to conform to the struct
-    // we need to set some arbitrary values.
-    id: "0",
-    active: true,
-    ...args
+    sellerStruct: {
+      // NOTE: It doesn't matter which values we set for `id` and `active` here
+      // as they will be overridden by the contract. But to conform to the struct
+      // we need to set some arbitrary values.
+      id: "0",
+      active: true,
+      ...sellerStructArgs
+    },
+    authTokenStruct: {
+      tokenId: authTokenId,
+      tokenType: authTokenType
+    }
   };
 }
 

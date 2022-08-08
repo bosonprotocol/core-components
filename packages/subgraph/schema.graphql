@@ -288,6 +288,8 @@ type Offer @entity {
   price: BigInt!
   sellerDeposit: BigInt!
   protocolFee: BigInt!
+  agentFee: BigInt!
+  agentId: BigInt!
   buyerCancelPenalty: BigInt!
   quantityInitial: BigInt!
   quantityAvailable: BigInt!
@@ -365,6 +367,9 @@ type Seller implements Account @entity {
   treasury: Bytes!
   active: Boolean!
   funds: [FundsEntity!]! @derivedFrom(field: "account")
+  voucherCloneAddress: Bytes!
+  authTokenId: BigInt!
+  authTokenType: Int!
 }
 
 type Buyer implements Account @entity {

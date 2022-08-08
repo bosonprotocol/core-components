@@ -25,13 +25,15 @@ export function createOfferArgsToStructs(
   Partial<OfferStruct>,
   Partial<OfferDatesStruct>,
   Partial<OfferDurationsStruct>,
+  BigNumberish,
   BigNumberish
 ] {
   return [
     argsToOfferStruct(args),
     argsToOfferDatesStruct(args),
     argsToOfferDurationsStruct(args),
-    args.disputeResolverId
+    args.disputeResolverId,
+    args.agentId
   ];
 }
 

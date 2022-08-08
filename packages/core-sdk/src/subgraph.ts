@@ -1676,6 +1676,8 @@ export enum MetadataType {
  */
 export type Offer = {
   __typename?: "Offer";
+  agentFee: Scalars["BigInt"];
+  agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
   createdAt: Scalars["BigInt"];
   disputeResolutionTerms: DisputeResolutionTermsEntity;
@@ -1720,6 +1722,22 @@ export type OfferExchangesArgs = {
 };
 
 export type Offer_Filter = {
+  agentFee?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_gt?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_gte?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  agentFee_lt?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_lte?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_not?: InputMaybe<Scalars["BigInt"]>;
+  agentFee_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  agentId?: InputMaybe<Scalars["BigInt"]>;
+  agentId_gt?: InputMaybe<Scalars["BigInt"]>;
+  agentId_gte?: InputMaybe<Scalars["BigInt"]>;
+  agentId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  agentId_lt?: InputMaybe<Scalars["BigInt"]>;
+  agentId_lte?: InputMaybe<Scalars["BigInt"]>;
+  agentId_not?: InputMaybe<Scalars["BigInt"]>;
+  agentId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   buyerCancelPenalty?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_gt?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2011,6 +2029,8 @@ export type Offer_Filter = {
 };
 
 export enum Offer_OrderBy {
+  AgentFee = "agentFee",
+  AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
   CreatedAt = "createdAt",
   DisputeResolutionTerms = "disputeResolutionTerms",
@@ -5311,6 +5331,8 @@ export type Seller = Account & {
   __typename?: "Seller";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
+  authTokenId: Scalars["BigInt"];
+  authTokenType: Scalars["Int"];
   clerk: Scalars["Bytes"];
   exchanges: Array<Exchange>;
   funds: Array<FundsEntity>;
@@ -5319,6 +5341,7 @@ export type Seller = Account & {
   operator: Scalars["Bytes"];
   sellerId: Scalars["BigInt"];
   treasury: Scalars["Bytes"];
+  voucherCloneAddress: Scalars["Bytes"];
 };
 
 export type SellerExchangesArgs = {
@@ -5356,6 +5379,22 @@ export type Seller_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  authTokenId?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenType?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  authTokenType_lt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_lte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -5390,11 +5429,19 @@ export type Seller_Filter = {
   treasury_not?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_contains?: InputMaybe<Scalars["Bytes"]>;
   treasury_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  voucherCloneAddress?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  voucherCloneAddress_not?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  voucherCloneAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
 };
 
 export enum Seller_OrderBy {
   Active = "active",
   Admin = "admin",
+  AuthTokenId = "authTokenId",
+  AuthTokenType = "authTokenType",
   Clerk = "clerk",
   Exchanges = "exchanges",
   Funds = "funds",
@@ -5402,7 +5449,8 @@ export enum Seller_OrderBy {
   Offers = "offers",
   Operator = "operator",
   SellerId = "sellerId",
-  Treasury = "treasury"
+  Treasury = "treasury",
+  VoucherCloneAddress = "voucherCloneAddress"
 }
 
 export type Subscription = {
@@ -5993,6 +6041,9 @@ export type GetSellerByIdQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -6015,6 +6066,8 @@ export type GetSellerByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6036,6 +6089,9 @@ export type GetSellerByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -6152,6 +6208,9 @@ export type GetSellersQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -6174,6 +6233,8 @@ export type GetSellersQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6195,6 +6256,9 @@ export type GetSellersQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -6424,6 +6488,8 @@ export type GetDisputeResolverByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6445,6 +6511,9 @@ export type GetDisputeResolverByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -6561,6 +6630,8 @@ export type GetDisputeResolversQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -6582,6 +6653,9 @@ export type GetDisputeResolversQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -6671,6 +6745,9 @@ export type SellerFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
+  authTokenId: string;
+  authTokenType: number;
+  voucherCloneAddress: string;
   active: boolean;
   funds?: Array<{
     __typename?: "FundsEntity";
@@ -6693,6 +6770,8 @@ export type SellerFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -6714,6 +6793,9 @@ export type SellerFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -6801,6 +6883,9 @@ export type BaseSellerFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
+  authTokenId: string;
+  authTokenType: number;
+  voucherCloneAddress: string;
   active: boolean;
 };
 
@@ -6864,6 +6949,8 @@ export type DisputeResolverFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -6885,6 +6972,9 @@ export type DisputeResolverFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -7063,6 +7153,9 @@ export type GetDisputeByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     buyer: {
@@ -7116,6 +7209,9 @@ export type GetDisputesQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     buyer: {
@@ -7159,6 +7255,9 @@ export type DisputeFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
@@ -7196,6 +7295,9 @@ export type BaseDisputeFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
@@ -7238,6 +7340,8 @@ export type GetExchangeTokenByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7259,6 +7363,9 @@ export type GetExchangeTokenByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -7368,6 +7475,8 @@ export type GetExchangeTokensQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7389,6 +7498,9 @@ export type GetExchangeTokensQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -7476,6 +7588,8 @@ export type ExchangeTokenFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -7497,6 +7611,9 @@ export type ExchangeTokenFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -7610,6 +7727,9 @@ export type GetExchangeByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     offer: {
@@ -7619,6 +7739,8 @@ export type GetExchangeByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7640,6 +7762,9 @@ export type GetExchangeByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -7743,6 +7868,9 @@ export type GetExchangesQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     offer: {
@@ -7752,6 +7880,8 @@ export type GetExchangesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -7773,6 +7903,9 @@ export type GetExchangesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -7861,6 +7994,9 @@ export type ExchangeFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   offer: {
@@ -7870,6 +8006,8 @@ export type ExchangeFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -7891,6 +8029,9 @@ export type ExchangeFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8080,6 +8221,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8101,6 +8244,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -8172,6 +8318,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8222,6 +8371,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8243,6 +8394,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -8314,6 +8468,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8354,6 +8511,8 @@ export type BaseMetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -8375,6 +8534,9 @@ export type BaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8446,6 +8608,9 @@ export type BaseMetadataEntityFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -8485,6 +8650,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -8506,6 +8673,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8577,6 +8747,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -8662,6 +8835,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8683,6 +8858,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -8754,6 +8932,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -8874,6 +9055,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
     };
@@ -8918,6 +9102,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       price: string;
       sellerDeposit: string;
       protocolFee: string;
+      agentFee: string;
+      agentId: string;
       buyerCancelPenalty: string;
       quantityAvailable: string;
       quantityInitial: string;
@@ -8939,6 +9125,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
       exchangeToken: {
@@ -9010,6 +9199,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -9130,6 +9322,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
         active: boolean;
       };
     };
@@ -9164,6 +9359,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -9185,6 +9382,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -9256,6 +9456,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -9376,6 +9579,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
   };
@@ -9409,6 +9615,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -9430,6 +9638,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -9501,6 +9712,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -9621,6 +9835,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
   };
@@ -9776,6 +9993,9 @@ export type BaseProductV1SellerFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
 };
@@ -9874,6 +10094,8 @@ export type GetOfferByIdQueryQuery = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -9909,6 +10131,9 @@ export type GetOfferByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -9998,6 +10223,8 @@ export type GetOffersQueryQuery = {
     price: string;
     sellerDeposit: string;
     protocolFee: string;
+    agentFee: string;
+    agentId: string;
     buyerCancelPenalty: string;
     quantityAvailable: string;
     quantityInitial: string;
@@ -10033,6 +10260,9 @@ export type GetOffersQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
       active: boolean;
     };
     exchangeToken: {
@@ -10106,6 +10336,8 @@ export type OfferFieldsFragment = {
   price: string;
   sellerDeposit: string;
   protocolFee: string;
+  agentFee: string;
+  agentId: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   quantityInitial: string;
@@ -10141,6 +10373,9 @@ export type OfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -10213,6 +10448,8 @@ export type BaseOfferFieldsFragment = {
   price: string;
   sellerDeposit: string;
   protocolFee: string;
+  agentFee: string;
+  agentId: string;
   buyerCancelPenalty: string;
   quantityAvailable: string;
   quantityInitial: string;
@@ -10234,6 +10471,9 @@ export type BaseOfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
     active: boolean;
   };
   exchangeToken: {
@@ -10306,6 +10546,9 @@ export const BaseSellerFieldsFragmentDoc = gql`
     admin
     clerk
     treasury
+    authTokenId
+    authTokenType
+    voucherCloneAddress
     active
   }
 `;
@@ -10380,6 +10623,8 @@ export const BaseOfferFieldsFragmentDoc = gql`
     price
     sellerDeposit
     protocolFee
+    agentFee
+    agentId
     buyerCancelPenalty
     quantityAvailable
     quantityInitial

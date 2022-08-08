@@ -1,3 +1,4 @@
+import { VoucherExtended } from './../../generated/BosonExchangeHandler/IBosonExchangeHandler';
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
   BuyerCommitted,
@@ -50,6 +51,17 @@ export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
   if (exchange) {
     exchange.state = "REVOKED";
     exchange.revokedDate = event.block.timestamp;
+    exchange.save();
+  }
+}
+
+export function handleVoucherExtendedEvent(event: VoucherExtended): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.validUntilDate = event.params.validUntil;
     exchange.save();
   }
 }

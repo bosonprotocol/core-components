@@ -6,6 +6,8 @@ export type CreateSellerArgs = {
   clerk: string;
   treasury: string;
   contractUri: string;
+  authTokenId: BigNumberish;
+  authTokenType: number;
 };
 
 export type SellerStruct = {
@@ -14,7 +16,15 @@ export type SellerStruct = {
   admin: string;
   clerk: string;
   treasury: string;
+  voucherCloneAddress: string;
+  authTokenId: BigNumberish;
+  authTokenType: number;
   active: boolean;
+};
+
+export type AuthTokenStruct = {
+  tokenId: BigNumberish;
+  tokenType: number;
 };
 
 export type DisputeResolverStruct = {

@@ -224,7 +224,9 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       admin: sellerAddress,
       clerk: sellerAddress,
       // TODO: replace with correct uri
-      contractUri: "ipfs://seller-contract"
+      contractUri: "ipfs://seller-contract",
+      authTokenId: "0",
+      authTokenType: 0
     });
     await tx.wait();
     await waitForGraphNodeIndexing();

@@ -23,7 +23,6 @@ export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
     id: "1",
     voided: false,
     price: parseEther("1"),
-    protocolFee: parseEther("1"),
     sellerDeposit: parseEther("1"),
     buyerCancelPenalty: parseEther("1"),
     quantityAvailable: 10,
@@ -64,7 +63,7 @@ export function mockCreateOfferArgs(
   return {
     price: parseEther("0.03"),
     sellerDeposit: parseEther("0.01"),
-    protocolFee: parseEther("0.001"),
+    agentId: "0",
     buyerCancelPenalty: parseEther("0.01"),
     quantityAvailable: 10,
     validFromDateInMS: Date.now() + 1000,

@@ -22,7 +22,6 @@ describe("#encodeCreateOffer()", () => {
       sellerId,
       price,
       sellerDeposit,
-      protocolFee,
       buyerCancelPenalty,
       quantityAvailable,
       exchangeToken,
@@ -39,13 +38,13 @@ describe("#encodeCreateOffer()", () => {
     const [fulfillmentPeriod, voucherValid, resolutionPeriod] =
       decodedCalldata[2].toString().split(","); // OfferDurations struct
     const disputeResolverId = decodedCalldata[3].toString();
+    const agentId = decodedCalldata[4].toString();
 
     expect(id).toBeTruthy();
     expect(sellerId).toBeTruthy();
     expect(voided).toBeTruthy();
     expect(price).toBe(mockedCreateOfferArgs.price.toString());
     expect(sellerDeposit).toBe(mockedCreateOfferArgs.sellerDeposit.toString());
-    expect(protocolFee).toBe(mockedCreateOfferArgs.protocolFee.toString());
     expect(buyerCancelPenalty).toBe(
       mockedCreateOfferArgs.buyerCancelPenalty.toString()
     );
@@ -55,6 +54,7 @@ describe("#encodeCreateOffer()", () => {
     expect(disputeResolverId).toBe(
       mockedCreateOfferArgs.disputeResolverId.toString()
     );
+    expect(agentId).toBe(mockedCreateOfferArgs.agentId.toString());
     expect(validFrom).toBe(
       utils.timestamp
         .msToSec(mockedCreateOfferArgs.validFromDateInMS)

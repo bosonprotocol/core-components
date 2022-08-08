@@ -99,6 +99,8 @@ export default function CreateOffer() {
               admin: operatorAddress,
               treasury: operatorAddress,
               clerk: operatorAddress,
+              authTokenId: "0",
+              authTokenType: 0,
               // TODO: Allow to set from url params
               contractUri: "ipfs://seller-contract-uri"
             },
@@ -250,7 +252,6 @@ export default function CreateOffer() {
           }
           metadataUri={createOfferArgs.metadataUri}
           metadataHash={createOfferArgs.metadataHash}
-          protocolFeeInWei={createOfferArgs.protocolFee}
           fulfillmentPeriodInMS={createOfferArgs.fulfillmentPeriodDurationInMS}
           resolutionPeriodInMS={createOfferArgs.resolutionPeriodDurationInMS}
         />

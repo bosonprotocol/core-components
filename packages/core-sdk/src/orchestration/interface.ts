@@ -14,12 +14,19 @@ export function encodeCreateSellerAndOffer(
   seller: CreateSellerArgs,
   offer: CreateOfferArgs
 ) {
+  const sellerArgs = createSellerArgsToStruct(seller);
+  const offerArgs = createOfferArgsToStructs(offer);
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndOffer",
     [
-      createSellerArgsToStruct(seller),
+      sellerArgs.sellerStruct,
       seller.contractUri,
-      ...createOfferArgsToStructs(offer)
+      offerArgs[0], // offer
+      offerArgs[1], // offerDates
+      offerArgs[2], // offerDurations
+      offerArgs[3], // disputeResolverId
+      sellerArgs.authTokenStruct,
+      offerArgs[4] // agentId
     ]
   );
 }

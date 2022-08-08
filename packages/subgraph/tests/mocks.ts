@@ -1,3 +1,6 @@
+import { VoucherExtended } from './../generated/BosonExchangeHandler/IBosonExchangeHandler';
+import { SellerCreatedAuthTokenStruct } from './../generated/BosonAccountHandler/IBosonAccountHandler';
+import { OfferCreatedOfferFeesStruct } from './../generated/BosonOfferHandler/IBosonOfferHandler';
 import {
   OfferCreated,
   OfferCreatedOfferDatesStruct,
@@ -36,6 +39,7 @@ export function createOfferCreatedEvent(
   price: i32,
   sellerDeposit: i32,
   protocolFee: i32,
+  agentFee: i32,
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
   validFromDate: i32,
@@ -53,6 +57,7 @@ export function createOfferCreatedEvent(
   metadataUri: string,
   metadataHash: string,
   voided: boolean,
+  agentId: i32,
   executedBy: string
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
@@ -74,7 +79,6 @@ export function createOfferCreatedEvent(
         sellerId,
         price,
         sellerDeposit,
-        protocolFee,
         buyerCancelPenalty,
         quantityAvailable,
         exchangeToken,
@@ -105,6 +109,10 @@ export function createOfferCreatedEvent(
       )
     )
   );
+  const offerFeesParams = new ethereum.EventParam(
+    "offerFees",
+    ethereum.Value.fromTuple(createOfferFeesStruct(protocolFee, agentFee))
+  );
   const disputeResolutionTermsParams = new ethereum.EventParam(
     "disputeResolutionTerms",
     ethereum.Value.fromTuple(
@@ -115,6 +123,10 @@ export function createOfferCreatedEvent(
         disputeBuyerEscalationDeposit
       )
     )
+  );
+  const agentIdParam = new ethereum.EventParam(
+    "agentId",
+    ethereum.Value.fromI32(agentId)
   );
   const executedByParam = new ethereum.EventParam(
     "executedBy",
@@ -127,6 +139,8 @@ export function createOfferCreatedEvent(
   offerCreatedEvent.parameters.push(offerDatesParams);
   offerCreatedEvent.parameters.push(offerDurationsParams);
   offerCreatedEvent.parameters.push(disputeResolutionTermsParams);
+  offerCreatedEvent.parameters.push(offerFeesParams);
+  offerCreatedEvent.parameters.push(agentIdParam);
   offerCreatedEvent.parameters.push(executedByParam);
 
   return offerCreatedEvent;
@@ -233,12 +247,49 @@ export function createBuyerCommittedEvent(
   return buyerCommittedEvent;
 }
 
+export function createVoucherExtendedEvent(
+  offerId: i32,
+  exchangeId: i32,
+  validUntil: i32,
+  executedBy: string
+): VoucherExtended {
+  const voucherExtendedEvent = changetype<VoucherExtended>(newMockEvent());
+  voucherExtendedEvent.parameters = new Array();
+  
+  const offerIdParam = new ethereum.EventParam(
+    "offerId",
+    ethereum.Value.fromI32(offerId)
+  );
+  const exchangeIdParam = new ethereum.EventParam(
+    "exchangeId",
+    ethereum.Value.fromI32(exchangeId)
+  );
+  const validUntilParam = new ethereum.EventParam(
+    "validUntil",
+    ethereum.Value.fromI32(validUntil)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  voucherExtendedEvent.parameters.push(offerIdParam);
+  voucherExtendedEvent.parameters.push(exchangeIdParam);
+  voucherExtendedEvent.parameters.push(validUntilParam);
+  voucherExtendedEvent.parameters.push(executedByParam);
+
+  return voucherExtendedEvent;
+}
+
 export function createSellerCreatedEvent(
   sellerId: i32,
   operator: string,
   admin: string,
   clerk: string,
   treasury: string,
+  voucherCloneAddress: string,
+  authTokenId: i32,
+  authTokenType: i8,
   executedBy: string
 ): SellerCreated {
   const sellerCreatedEvent = changetype<SellerCreated>(newMockEvent());
@@ -254,6 +305,14 @@ export function createSellerCreatedEvent(
       createSellerStruct(sellerId, operator, admin, clerk, treasury, false)
     )
   );
+  const voucherCloneAddressParam = new ethereum.EventParam(
+    "voucherCloneAddress",
+    ethereum.Value.fromAddress(Address.fromString(voucherCloneAddress))
+  );
+  const authTokenParam = new ethereum.EventParam(
+    "authToken",
+    ethereum.Value.fromTuple(createAuthToken(authTokenId, authTokenType))
+  );
   const executedByParam = new ethereum.EventParam(
     "executedBy",
     ethereum.Value.fromAddress(Address.fromString(executedBy))
@@ -261,6 +320,8 @@ export function createSellerCreatedEvent(
 
   sellerCreatedEvent.parameters.push(sellerIdParam);
   sellerCreatedEvent.parameters.push(sellerParam);
+  sellerCreatedEvent.parameters.push(voucherCloneAddressParam);
+  sellerCreatedEvent.parameters.push(authTokenParam);
   sellerCreatedEvent.parameters.push(executedByParam);
 
   return sellerCreatedEvent;
@@ -273,6 +334,8 @@ export function createSellerUpdatedEvent(
   clerk: string,
   treasury: string,
   active: boolean,
+  authTokenId: i32,
+  authTokenType: i8,
   executedBy: string
 ): SellerUpdated {
   const sellerUpdatedEvent = changetype<SellerUpdated>(newMockEvent());
@@ -288,6 +351,10 @@ export function createSellerUpdatedEvent(
       createSellerStruct(sellerId, operator, admin, clerk, treasury, active)
     )
   );
+  const authTokenParam = new ethereum.EventParam(
+    "authToken",
+    ethereum.Value.fromTuple(createAuthToken(authTokenId, authTokenType))
+  );
   const executedByParam = new ethereum.EventParam(
     "executedBy",
     ethereum.Value.fromAddress(Address.fromString(executedBy))
@@ -295,6 +362,7 @@ export function createSellerUpdatedEvent(
 
   sellerUpdatedEvent.parameters.push(sellerIdParam);
   sellerUpdatedEvent.parameters.push(sellerParam);
+  sellerUpdatedEvent.parameters.push(authTokenParam);
   sellerUpdatedEvent.parameters.push(executedByParam);
 
   return sellerUpdatedEvent;
@@ -481,7 +549,6 @@ export function createOfferStruct(
   sellerId: i32,
   price: i32,
   sellerDeposit: i32,
-  protocolFee: i32,
   buyerCancelPenalty: i32,
   quantityAvailable: i32,
   exchangeToken: string,
@@ -494,7 +561,6 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromI32(sellerId));
   tuple.push(ethereum.Value.fromI32(price));
   tuple.push(ethereum.Value.fromI32(sellerDeposit));
-  tuple.push(ethereum.Value.fromI32(protocolFee));
   tuple.push(ethereum.Value.fromI32(buyerCancelPenalty));
   tuple.push(ethereum.Value.fromI32(quantityAvailable));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(exchangeToken)));
@@ -530,6 +596,16 @@ export function createOfferDurationsStruct(
   return tuple;
 }
 
+export function createOfferFeesStruct(
+  protocolFee: i32,
+  agentFee: i32
+): OfferCreatedOfferFeesStruct {
+  const tuple = new OfferCreatedOfferFeesStruct();
+  tuple.push(ethereum.Value.fromI32(protocolFee));
+  tuple.push(ethereum.Value.fromI32(agentFee));
+  return tuple;
+}
+
 export function createDisputeResolutionTermsStruct(
   disputeResolverId: i32,
   escalationResponsePeriod: i32,
@@ -559,6 +635,16 @@ export function createSellerStruct(
   tuple.push(ethereum.Value.fromAddress(Address.fromString(clerk)));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(treasury)));
   tuple.push(ethereum.Value.fromBoolean(active));
+  return tuple;
+}
+
+export function createAuthToken(
+  authTokenId: i32,
+  authTokenType: i8
+): SellerCreatedAuthTokenStruct {
+  const tuple = new SellerCreatedAuthTokenStruct();
+  tuple.push(ethereum.Value.fromI32(authTokenId));
+  tuple.push(ethereum.Value.fromI32(authTokenType)); // not sure about fromI32 here...
   return tuple;
 }
 

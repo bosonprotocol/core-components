@@ -20,13 +20,16 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     const offerStruct = event.params.offer;
     const offerDatesStruct = event.params.offerDates;
     const offerDurationsStruct = event.params.offerDurations;
+    const offerFeesStruct = event.params.offerFees;
     const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;
     offer.price = offerStruct.price;
     offer.sellerDeposit = offerStruct.sellerDeposit;
-    offer.protocolFee = offerStruct.protocolFee;
+    offer.protocolFee = offerFeesStruct.protocolFee;
+    offer.agentFee = offerFeesStruct.agentFee;
+    offer.agentId = event.params.agentId;
     offer.buyerCancelPenalty = offerStruct.buyerCancelPenalty;
     offer.quantityInitial = offerStruct.quantityAvailable;
     offer.quantityAvailable = offerStruct.quantityAvailable;
