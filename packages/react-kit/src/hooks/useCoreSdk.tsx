@@ -31,6 +31,10 @@ export type CoreSdkConfig = {
    */
   ipfsMetadataStorageUrl?: string;
   /**
+   * Optional override for IPFS metadata storage headers.
+   */
+  ipfsMetadataStorageHeaders?: Headers | Record<string, string>;
+  /**
    * Optional override for Thr Graph IPFS storage to use.
    */
   theGraphIpfsUrl?: string;
@@ -70,7 +74,8 @@ function initCoreSdk(config: CoreSdkConfig) {
       config.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl
     ),
     metadataStorage: new IpfsMetadataStorage({
-      url: config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl
+      url: config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl,
+      headers: config.ipfsMetadataStorageHeaders
     })
   });
 }
