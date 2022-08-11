@@ -1,14 +1,21 @@
+import { MSEC_PER_DAY } from "./../../../common/src/utils/timestamp";
+import { metadata } from "./../../../../e2e/tests/utils";
 import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { AddressZero } from "@ethersproject/constants";
 import { CreateOfferArgs } from "./../../../common/src/types/offers";
-import { renderContractualAgreement } from "../../src/offers";
+import {
+  renderContractualAgreement,
+  renderContractualAgreementForOffer
+} from "../../src/offers";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import {
   ITokenInfo,
   ITokenInfoManager
 } from "../../src/utils/tokenInfoManager";
 import { utils } from "@bosonprotocol/common";
+import { mockRawOfferFromSubgraph } from "../mocks";
+import { subgraph } from "../../src";
 
 const basicTemplate = "Hello World!";
 
@@ -543,10 +550,124 @@ describe("renderContractualAgreement", () => {
       ).rejects.toThrowError(/^Cannot read properties of undefined/);
     });
   });
-
-  // TODO: inject an offerId
-
-  // TODO: check invalid offerId
-
-  // TODO: check nonexisting offer
 });
+
+function buildProductV1Metadata(template: string) {
+  return {
+    name: "Name",
+    description: "Description",
+    externalUrl: "externalUrl",
+    schemaUrl: "schemaUrl",
+    type: subgraph.MetadataType.ProductV1,
+    exchangePolicy: {
+      template
+    }
+  };
+}
+
+describe("renderContractualAgreementForOffer", () => {
+  test("render basicTemplate", async () => {
+    const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
+      metadata: buildProductV1Metadata(basicTemplate)
+    });
+    const render = await renderContractualAgreementForOffer(
+      mockedRawOfferFromSubgraph
+    );
+    expect(render).toEqual(basicTemplate);
+  });
+
+  describe("render richTemplate", () => {
+    beforeEach(async () => {});
+
+    test("offer price", async () => {
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
+        price: "100" + "0".repeat(18),
+        metadata: buildProductV1Metadata(
+          "{{priceValue}} {{exchangeTokenSymbol}}"
+        )
+      });
+      const render = await renderContractualAgreementForOffer(
+        mockedRawOfferFromSubgraph
+      );
+      expect(render).toEqual("100.0 ETH");
+    });
+
+    test("offer redemptionPeriodFromTo", async () => {
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
+        voucherRedeemableFromDate: "1660237512000",
+        metadata: buildProductV1Metadata(
+          "{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}"
+        )
+      });
+      const render = await renderContractualAgreementForOffer(
+        mockedRawOfferFromSubgraph
+      );
+      expect(render).toEqual("2022-08-11T17:05:12.000Z");
+    });
+
+    test("offer resolutionPeriod", async () => {
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
+        resolutionPeriodDuration: (30 * MSEC_PER_DAY).toString(),
+        metadata: buildProductV1Metadata(
+          "{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}"
+        )
+      });
+      const render = await renderContractualAgreementForOffer(
+        mockedRawOfferFromSubgraph
+      );
+      expect(render).toEqual("30");
+    });
+  });
+
+  describe("Rendering error cases", () => {
+    test("BASE Type Metadata is not supported", async () => {
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph();
+      expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
+        subgraph.MetadataType.Base
+      );
+      await expect(
+        renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
+      ).rejects.toThrowError(
+        /^Invalid Offer Metadata: Type is not supported: 'BASE'/
+      );
+    });
+
+    test("exchangePolicy is not defined", async () => {
+      const metadata = buildProductV1Metadata(basicTemplate);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (metadata as any).exchangePolicy = undefined;
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({ metadata });
+
+      expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
+        subgraph.MetadataType.ProductV1
+      );
+      await expect(
+        renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
+      ).rejects.toThrowError(
+        /^Invalid Offer Metadata: exchangePolicy is not defined/
+      );
+    });
+
+    test("exchangePolicy.template is not defined", async () => {
+      const metadata = buildProductV1Metadata(basicTemplate);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (metadata as any).exchangePolicy.template = undefined;
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({ metadata });
+
+      expect(mockedRawOfferFromSubgraph.metadata?.type).toEqual(
+        subgraph.MetadataType.ProductV1
+      );
+      await expect(
+        renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
+      ).rejects.toThrowError(
+        /^Invalid Offer Metadata: exchangePolicy.template is not defined/
+      );
+    });
+  });
+});
+
+// TODO: inject an offerId
+
+// TODO: check invalid offerId
+
+// TODO: check nonexisting offer

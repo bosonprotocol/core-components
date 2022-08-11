@@ -1,9 +1,11 @@
-import { ITokenInfoManager } from "./../utils/tokenInfoManager";
+import { AnyMetadata } from "@bosonprotocol/core-sdk";
+import { ITokenInfo, ITokenInfoManager } from "./../utils/tokenInfoManager";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { offers } from "..";
+import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "ethers/lib/utils";
+import { productV1 } from "@bosonprotocol/metadata";
 
 export type TemplateRenderingData = offers.CreateOfferArgs & {
   priceValue: string; // Convert in decimals value
@@ -67,13 +69,34 @@ function checkOfferDataIsValid(
   return missingProperties.length === 0;
 }
 
+function convertExistingOfferData(
+  offerDataSubGraph: subgraph.OfferFieldsFragment
+): { offerData: offers.CreateOfferArgs; tokenInfo: ITokenInfo } {
+  return {
+    offerData: {
+      ...offerDataSubGraph,
+      validFromDateInMS: offerDataSubGraph.validFromDate,
+      validUntilDateInMS: offerDataSubGraph.validUntilDate,
+      voucherRedeemableFromDateInMS:
+        offerDataSubGraph.voucherRedeemableFromDate,
+      voucherRedeemableUntilDateInMS:
+        offerDataSubGraph.voucherRedeemableUntilDate,
+      fulfillmentPeriodDurationInMS:
+        offerDataSubGraph.fulfillmentPeriodDuration,
+      resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
+      exchangeToken: offerDataSubGraph.exchangeToken.address
+    },
+    tokenInfo: {
+      ...offerDataSubGraph.exchangeToken,
+      decimals: parseInt(offerDataSubGraph.exchangeToken.decimals)
+    }
+  };
+}
+
 export async function prepareRenderingData(
   offerData: offers.CreateOfferArgs,
-  tokenInfoManager: ITokenInfoManager
+  tokenInfo: ITokenInfo
 ): Promise<TemplateRenderingData> {
-  const tokenInfo = await tokenInfoManager.getExchangeTokenInfo(
-    offerData.exchangeToken
-  );
   return {
     ...offerData,
     priceValue: formatUnits(offerData.price, tokenInfo.decimals),
@@ -112,19 +135,40 @@ export async function renderContractualAgreement(
 ): Promise<string> {
   // Check the passed offerData is matching the required type
   checkOfferDataIsValid(offerData, true);
-  const preparedData = await prepareRenderingData(offerData, tokenInfoManager);
+  const tokenInfo = await tokenInfoManager.getExchangeTokenInfo(
+    offerData.exchangeToken
+  );
+  const preparedData = await prepareRenderingData(offerData, tokenInfo);
   return Mustache.render(template, preparedData);
 }
 
-// TODO: inject an offerId
-
 export async function renderContractualAgreementForOffer(
-  offerId: BigNumberish,
-  tokenInfoManager: ITokenInfoManager
+  existingOfferData: subgraph.OfferFieldsFragment
 ) {
-  // TODO: get the template for the offerId
-  const template = "";
-  // TODO: get the data for the offerId
-  const offerData = undefined;
-  return renderContractualAgreement(template, offerData, tokenInfoManager);
+  if (existingOfferData.metadata.type !== subgraph.MetadataType.ProductV1) {
+    throw new Error(
+      `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`
+    );
+  }
+  if (
+    !(existingOfferData.metadata as productV1.ProductV1Metadata).exchangePolicy
+  ) {
+    throw new Error(`Invalid Offer Metadata: exchangePolicy is not defined`);
+  }
+  if (
+    !(existingOfferData.metadata as productV1.ProductV1Metadata).exchangePolicy
+      .template
+  ) {
+    throw new Error(
+      `Invalid Offer Metadata: exchangePolicy.template is not defined`
+    );
+  }
+  const template = (existingOfferData.metadata as productV1.ProductV1Metadata)
+    .exchangePolicy.template;
+  const convertedOfferArgs = convertExistingOfferData(existingOfferData);
+  const preparedData = await prepareRenderingData(
+    convertedOfferArgs.offerData,
+    convertedOfferArgs.tokenInfo
+  );
+  return Mustache.render(template, preparedData);
 }
