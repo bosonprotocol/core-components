@@ -4,7 +4,10 @@ import { AddressZero } from "@ethersproject/constants";
 import { CreateOfferArgs } from "./../../../common/src/types/offers";
 import { renderContractualAgreement } from "../../src/offers";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
-import { ITokenInfo } from "../../src/utils/tokenInfoManager";
+import {
+  ITokenInfo,
+  ITokenInfoManager
+} from "../../src/utils/tokenInfoManager";
 import { utils } from "@bosonprotocol/common";
 
 const basicTemplate = "Hello World!";
@@ -14,7 +17,7 @@ const templates = {
   sellerDeposit: `**Seller Deposit (Revocation Penalty)** {{sellerDepositValue}} {{exchangeTokenSymbol}}. Means funds deposited by the Seller and locked in the smart contracts. If a dispute happens, those funds can be used to penalize the Seller based on the Dispute Resolver decision.`,
   agentId: `Agent {{agentId}}: An optional third party that takes a fee in successful exchanges (ending in Completed or Retracted states). E.g. a marketplace.`,
   agentFee: `**Agent Fee**`,
-  buyerCancelPenalty: `**Seller Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to {{buyerCancelPenaltyValue}} {{exchangeTokenSymbol}}.`,
+  buyerCancelPenalty: `**Buyer Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to {{buyerCancelPenaltyValue}} {{exchangeTokenSymbol}}.`,
   validFromTo: `**Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from  ***{{#toISOString}}{{validFromDateInMS}}{{/toISOString}}*** to ***{{#toISOString}}{{validUntilDateInMS}}{{/toISOString}}***.`,
   redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}*** to ***{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}***.`,
   redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}*** days`,
@@ -32,7 +35,7 @@ const getTemplateResults = (args: { [key: string]: string }) => {
     sellerDeposit: `**Seller Deposit (Revocation Penalty)** ${args.sellerDepositValue} ${args.exchangeTokenSymbol}. Means funds deposited by the Seller and locked in the smart contracts. If a dispute happens, those funds can be used to penalize the Seller based on the Dispute Resolver decision.`,
     agentId: `Agent ${args.agentId}: An optional third party that takes a fee in successful exchanges (ending in Completed or Retracted states). E.g. a marketplace.`,
     agentFee: `TBD`,
-    buyerCancelPenalty: `**Seller Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to ${args.buyerCancelPenaltyValue} ${args.exchangeTokenSymbol}.`,
+    buyerCancelPenalty: `**Buyer Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to ${args.buyerCancelPenaltyValue} ${args.exchangeTokenSymbol}.`,
     validFromTo: `**Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from  ***${args.validFromDateInMS}*** to ***${args.validUntilDateInMS}***.`,
     redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***${args.voucherRedeemableFromDateInMS}*** to ***${args.voucherRedeemableUntilDateInMS}***.`,
     redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***${args.voucherValidDurationInMS}*** days`,
@@ -78,6 +81,61 @@ const mockTokenInfoManager = {
   }
 };
 
+async function mockPrepareRenderingData(
+  offerData: CreateOfferArgs,
+  tokenInfoManager: ITokenInfoManager
+): Promise<{ [key: string]: string }> {
+  const tokenInfo = await tokenInfoManager.getExchangeTokenInfo(
+    offerData.exchangeToken
+  );
+
+  return {
+    priceValue: formatUnits(offerData.price, tokenInfo.decimals),
+    sellerDepositValue: formatUnits(
+      offerData.sellerDeposit,
+      tokenInfo.decimals
+    ).toString(),
+    buyerCancelPenaltyValue: formatUnits(
+      offerData.buyerCancelPenalty,
+      tokenInfo.decimals
+    ).toString(),
+    agentFeeValue: "TBD",
+    exchangeTokenSymbol: tokenInfo.symbol,
+    sellerContactMethod: "TBD",
+    disputeResolverContactMethod: "TBD",
+    agentId: offerData.agentId.toString(),
+    disputeResolverId: offerData.disputeResolverId.toString(),
+    voucherValidDurationInMS: offerData.voucherValidDurationInMS
+      ? BigNumber.from(offerData.voucherValidDurationInMS?.toString() as string)
+          .div(utils.timestamp.MSEC_PER_DAY)
+          .toString()
+      : "0",
+    fulfillmentPeriodDurationInMS: BigNumber.from(
+      offerData.fulfillmentPeriodDurationInMS.toString()
+    )
+      .div(utils.timestamp.MSEC_PER_DAY)
+      .toString(),
+    metadataUri: offerData.metadataUri,
+    voucherRedeemableFromDateInMS: new Date(
+      BigNumber.from(offerData.voucherRedeemableFromDateInMS).toNumber()
+    ).toISOString(),
+    voucherRedeemableUntilDateInMS: new Date(
+      BigNumber.from(offerData.voucherRedeemableUntilDateInMS).toNumber()
+    ).toISOString(),
+    resolutionPeriodDurationInMS: BigNumber.from(
+      offerData.resolutionPeriodDurationInMS
+    )
+      .div(utils.timestamp.MSEC_PER_DAY)
+      .toString(),
+    validFromDateInMS: new Date(
+      BigNumber.from(offerData.validFromDateInMS).toNumber()
+    ).toISOString(),
+    validUntilDateInMS: new Date(
+      BigNumber.from(offerData.validUntilDateInMS).toNumber()
+    ).toISOString()
+  };
+}
+
 describe("renderContractualAgreement", () => {
   test("render basicTemplate", async () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs();
@@ -89,74 +147,17 @@ describe("renderContractualAgreement", () => {
     expect(render).toEqual(basicTemplate);
   });
 
-  // TODO: test offer validity from/to
-  // TODO: test offer redemption from/to
-  // TODO: test offer redemption duration
-  // TODO: test offer in Native Token (ETH)
-  // TODO: test offer in ERC20 Token
-
   describe("render richTemplate", () => {
     let expected: unknown;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
-      const tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
-        mockedCreateOfferArgs.exchangeToken
+      expected = getTemplateResults(
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
       );
-      expected = getTemplateResults({
-        priceValue: formatUnits(
-          mockedCreateOfferArgs.price,
-          tokenInfo.decimals
-        ),
-        sellerDepositValue: formatUnits(
-          mockedCreateOfferArgs.sellerDeposit,
-          tokenInfo.decimals
-        ).toString(),
-        buyerCancelPenaltyValue: formatUnits(
-          mockedCreateOfferArgs.buyerCancelPenalty,
-          tokenInfo.decimals
-        ).toString(),
-        agentFeeValue: "TBD",
-        exchangeTokenSymbol: tokenInfo.symbol,
-        sellerContactMethod: "TBD",
-        disputeResolverContactMethod: "TBD",
-        agentId: mockedCreateOfferArgs.agentId.toString(),
-        disputeResolverId: mockedCreateOfferArgs.disputeResolverId.toString(),
-        voucherValidDurationInMS: mockedCreateOfferArgs.voucherValidDurationInMS
-          ? BigNumber.from(
-              mockedCreateOfferArgs.voucherValidDurationInMS?.toString() as string
-            )
-              .div(utils.timestamp.MSEC_PER_DAY)
-              .toString()
-          : "0",
-        fulfillmentPeriodDurationInMS: BigNumber.from(
-          mockedCreateOfferArgs.fulfillmentPeriodDurationInMS.toString()
-        )
-          .div(utils.timestamp.MSEC_PER_DAY)
-          .toString(),
-        metadataUri: mockedCreateOfferArgs.metadataUri,
-        voucherRedeemableFromDateInMS: new Date(
-          BigNumber.from(
-            mockedCreateOfferArgs.voucherRedeemableFromDateInMS
-          ).toNumber()
-        ).toISOString(),
-        voucherRedeemableUntilDateInMS: new Date(
-          BigNumber.from(
-            mockedCreateOfferArgs.voucherRedeemableUntilDateInMS
-          ).toNumber()
-        ).toISOString(),
-        resolutionPeriodDurationInMS: BigNumber.from(
-          mockedCreateOfferArgs.resolutionPeriodDurationInMS
-        )
-          .div(utils.timestamp.MSEC_PER_DAY)
-          .toString(),
-        validFromDateInMS: new Date(
-          BigNumber.from(mockedCreateOfferArgs.validFromDateInMS).toNumber()
-        ).toISOString(),
-        validUntilDateInMS: new Date(
-          BigNumber.from(mockedCreateOfferArgs.validUntilDateInMS).toNumber()
-        ).toISOString()
-      });
     });
 
     test("offer price", async () => {
@@ -167,9 +168,6 @@ describe("renderContractualAgreement", () => {
       );
       expect(render).toEqual((expected as any).price);
     });
-
-    // TODO: test with offer in BOSON
-    // TODO: test with offer in USDC
 
     test("offer Seller Deposit", async () => {
       const render = await renderContractualAgreement(
@@ -286,6 +284,113 @@ describe("renderContractualAgreement", () => {
         mockTokenInfoManager
       );
       expect(render).toEqual((expected as any).disputeResolverContactMethod);
+    });
+  });
+
+  describe("render richTemplate - offers with BOSON token", () => {
+    let expected: unknown;
+    let mockedCreateOfferArgs: CreateOfferArgs;
+    beforeEach(async () => {
+      mockedCreateOfferArgs = mockCreateOfferArgs({
+        exchangeToken: TOKENS.BOSON.address
+      });
+      expected = getTemplateResults(
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      );
+    });
+
+    test("offer price", async () => {
+      const render = await renderContractualAgreement(
+        templates.price,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).price);
+    });
+
+    test("offer Seller Deposit", async () => {
+      const render = await renderContractualAgreement(
+        templates.sellerDeposit,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).sellerDeposit);
+    });
+
+    xtest("offer AgentFee", async () => {
+      const render = await renderContractualAgreement(
+        templates.agentFee,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).agentFee);
+    });
+
+    test("offer buyerCancelPenalty", async () => {
+      const render = await renderContractualAgreement(
+        templates.buyerCancelPenalty,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).buyerCancelPenalty);
+    });
+  });
+
+  describe("render richTemplate - offers with USDC token", () => {
+    let expected: unknown;
+    let mockedCreateOfferArgs: CreateOfferArgs;
+    beforeEach(async () => {
+      mockedCreateOfferArgs = mockCreateOfferArgs({
+        exchangeToken: TOKENS.USDC.address,
+        price: 1000000, // adjust price because USDC decimals is 6, not 18
+        sellerDeposit: 100000, // adjust value because USDC decimals is 6, not 18
+        buyerCancelPenalty: 200000 // adjust value because USDC decimals is 6, not 18
+      });
+      expected = getTemplateResults(
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      );
+    });
+
+    test("offer price", async () => {
+      const render = await renderContractualAgreement(
+        templates.price,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).price);
+    });
+
+    test("offer Seller Deposit", async () => {
+      const render = await renderContractualAgreement(
+        templates.sellerDeposit,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).sellerDeposit);
+    });
+
+    xtest("offer AgentFee", async () => {
+      const render = await renderContractualAgreement(
+        templates.agentFee,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).agentFee);
+    });
+
+    test("offer buyerCancelPenalty", async () => {
+      const render = await renderContractualAgreement(
+        templates.buyerCancelPenalty,
+        mockedCreateOfferArgs,
+        mockTokenInfoManager
+      );
+      expect(render).toEqual((expected as any).buyerCancelPenalty);
     });
   });
 

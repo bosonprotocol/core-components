@@ -54,7 +54,7 @@ export async function prepareRenderingData(
   };
 }
 
-// TODO: inject a template + all offer details
+// inject a template + all offer details
 export async function renderContractualAgreement(
   template: string,
   offerData: offers.CreateOfferArgs,
@@ -64,7 +64,7 @@ export async function renderContractualAgreement(
   return Mustache.render(template, preparedData);
 }
 
-// TODO inject an offerId
+// TODO: inject an offerId
 
 export async function renderContractualAgreementForOffer(
   offerId: BigNumberish,
