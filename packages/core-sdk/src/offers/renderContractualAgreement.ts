@@ -17,6 +17,56 @@ export type TemplateRenderingData = offers.CreateOfferArgs & {
   msecToDay: () => void;
 };
 
+export class InvalidOfferDataError extends Error {
+  constructor(public missingProperties: string[]) {
+    super(
+      `InvalidOfferData - missing properties: [${missingProperties.join(",")}]`
+    );
+  }
+}
+
+function checkOfferDataIsValid(
+  offerData: unknown,
+  throwIFInvalid = false
+): boolean {
+  if (offerData === undefined || offerData === null) {
+    throw new Error("InvalidOfferData - undefined");
+  }
+  if (typeof offerData !== "object") {
+    throw new Error("InvalidOfferData - expecting an object");
+  }
+  const schema: Record<
+    keyof Omit<offers.CreateOfferArgs, "voucherValidDurationInMS">,
+    string
+  > = {
+    price: "BigNumberish",
+    sellerDeposit: "BigNumberish",
+    agentId: "BigNumberish",
+    buyerCancelPenalty: "BigNumberish",
+    quantityAvailable: "BigNumberish",
+    validFromDateInMS: "BigNumberish",
+    validUntilDateInMS: "BigNumberish",
+    voucherRedeemableFromDateInMS: "BigNumberish",
+    voucherRedeemableUntilDateInMS: "BigNumberish",
+    fulfillmentPeriodDurationInMS: "BigNumberish",
+    resolutionPeriodDurationInMS: "BigNumberish",
+    exchangeToken: "string",
+    disputeResolverId: "BigNumberish",
+    metadataUri: "string",
+    metadataHash: "string"
+  };
+  const missingProperties = Object.keys(schema)
+    .filter((key) => offerData[key] === undefined)
+    .map((key) => key as keyof offers.CreateOfferArgs)
+    .map((key) => `${key}: '${schema[key]}'`);
+
+  if (throwIFInvalid && missingProperties.length > 0) {
+    throw new InvalidOfferDataError(missingProperties);
+  }
+
+  return missingProperties.length === 0;
+}
+
 export async function prepareRenderingData(
   offerData: offers.CreateOfferArgs,
   tokenInfoManager: ITokenInfoManager
@@ -60,6 +110,8 @@ export async function renderContractualAgreement(
   offerData: offers.CreateOfferArgs,
   tokenInfoManager: ITokenInfoManager
 ): Promise<string> {
+  // Check the passed offerData is matching the required type
+  checkOfferDataIsValid(offerData, true);
   const preparedData = await prepareRenderingData(offerData, tokenInfoManager);
   return Mustache.render(template, preparedData);
 }

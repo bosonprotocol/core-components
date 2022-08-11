@@ -394,9 +394,155 @@ describe("renderContractualAgreement", () => {
     });
   });
 
-  // TODO: check invalid template
+  describe("Rendering error cases - invalid templates", () => {
+    let mockedCreateOfferArgs: CreateOfferArgs;
+    beforeEach(async () => {
+      mockedCreateOfferArgs = mockCreateOfferArgs();
+    });
+    test("invalid template - undefined", async () => {
+      const template = undefined;
+      await expect(
+        renderContractualAgreement(
+          template as unknown as string,
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(
+        /^Invalid template! Template should be a "string" but "undefined" was given/
+      );
+    });
+    test("invalid template - number", async () => {
+      const template = 123456789;
+      await expect(
+        renderContractualAgreement(
+          template as unknown as string,
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(
+        /^Invalid template! Template should be a "string" but "number" was given/
+      );
+    });
+    test("invalid template - object", async () => {
+      const template = { key: "value" };
+      await expect(
+        renderContractualAgreement(
+          template as unknown as string,
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(
+        /^Invalid template! Template should be a "string" but "object" was given/
+      );
+    });
+    test("invalid template - unclosed tag", async () => {
+      const template = `{{placeholder}`;
+      await expect(
+        renderContractualAgreement(
+          template as unknown as string,
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
+    });
+    test("invalid template - unclosed tag (again)", async () => {
+      const template = `another {{{placeholder}}`;
+      await expect(
+        renderContractualAgreement(
+          template as unknown as string,
+          mockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
+    });
+  });
 
-  // TODO: check undefined offer details
+  describe("Rendering error cases - other cases", () => {
+    const template = "Hello World";
+    let mockedCreateOfferArgs: CreateOfferArgs;
+    beforeEach(async () => {
+      mockedCreateOfferArgs = mockCreateOfferArgs();
+    });
+    test("invalid offer data - undefined", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          undefined as unknown as CreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(/^InvalidOfferData - undefined/);
+    });
+    test("invalid offer data - number", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          123456789 as unknown as CreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
+    });
+    test("invalid offer data - string", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          "mockedCreateOfferArgs" as unknown as CreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
+    });
+    test("invalid offer data - object", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          { key: "mockedCreateOfferArgs" } as unknown as CreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(
+        /^InvalidOfferData - missing properties: \[(.*)\]/
+      );
+    });
+    test.each([
+      "price",
+      "sellerDeposit",
+      "agentId",
+      "buyerCancelPenalty",
+      "quantityAvailable",
+      "validFromDateInMS",
+      "validUntilDateInMS",
+      "voucherRedeemableFromDateInMS",
+      "voucherRedeemableUntilDateInMS",
+      "fulfillmentPeriodDurationInMS",
+      "resolutionPeriodDurationInMS",
+      "exchangeToken",
+      "disputeResolverId",
+      "metadataUri",
+      "metadataHash"
+    ])("invalid offer data - missing property %s", async (key: string) => {
+      const incompleteMockedCreateOfferArgs = Object.assign(
+        {},
+        mockedCreateOfferArgs
+      );
+      delete incompleteMockedCreateOfferArgs[key];
+      await expect(
+        renderContractualAgreement(
+          template,
+          incompleteMockedCreateOfferArgs,
+          mockTokenInfoManager
+        )
+      ).rejects.toThrowError(
+        new RegExp(`^InvalidOfferData - missing properties: \\[${key}: (.*)\\]`)
+      );
+    });
+    test("invalid tokenInfoManager - undefined", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          undefined as unknown as ITokenInfoManager
+        )
+      ).rejects.toThrowError(/^Cannot read properties of undefined/);
+    });
+  });
 
   // TODO: inject an offerId
 
