@@ -57,7 +57,6 @@ export function saveProductV1Metadata(
   if (
     savedProductId === null ||
     savedProductV1SellerId === null ||
-    savedShippingId === null ||
     savedExchangePolicyId === null
   ) {
     return metadataId;

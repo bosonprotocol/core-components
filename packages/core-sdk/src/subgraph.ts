@@ -2361,7 +2361,7 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   quantityAvailable: Scalars["BigInt"];
   schemaUrl: Scalars["String"];
   seller: Seller;
-  shipping: ProductV1ShippingOption;
+  shipping?: Maybe<ProductV1ShippingOption>;
   /** MetadataType.PRODUCT_V1 */
   type: MetadataType;
   /**

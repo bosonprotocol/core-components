@@ -101,7 +101,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   product: ProductV1Product!
   variations: [ProductV1Variation!]
   productV1Seller: ProductV1Seller!
-  shipping: ProductV1ShippingOption!
+  shipping: ProductV1ShippingOption
   exchangePolicy: ProductV1ExchangePolicy!
   productOverrides: ProductV1ProductOverrides
 }
