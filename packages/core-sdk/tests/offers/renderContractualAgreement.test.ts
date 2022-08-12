@@ -577,8 +577,6 @@ describe("renderContractualAgreementForOffer", () => {
   });
 
   describe("render richTemplate", () => {
-    beforeEach(async () => {});
-
     test("offer price", async () => {
       const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
         price: "100" + "0".repeat(18),
