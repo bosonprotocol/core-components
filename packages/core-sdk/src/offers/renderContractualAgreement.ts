@@ -1,6 +1,5 @@
-import { AnyMetadata } from "@bosonprotocol/core-sdk";
 import { ITokenInfo, ITokenInfoManager } from "./../utils/tokenInfoManager";
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber } from "@ethersproject/bignumber";
 import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
@@ -144,7 +143,13 @@ export async function renderContractualAgreement(
 
 export async function renderContractualAgreementForOffer(
   existingOfferData: subgraph.OfferFieldsFragment
-) {
+): Promise<string> {
+  if (!existingOfferData) {
+    throw new Error(`offerData is undefined`);
+  }
+  if (!existingOfferData.metadata) {
+    throw new Error(`Offer Metadata is undefined`);
+  }
   if (existingOfferData.metadata.type !== subgraph.MetadataType.ProductV1) {
     throw new Error(
       `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`

@@ -1,5 +1,4 @@
 import { MSEC_PER_DAY } from "./../../../common/src/utils/timestamp";
-import { metadata } from "./../../../../e2e/tests/utils";
 import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { AddressZero } from "@ethersproject/constants";
@@ -14,7 +13,7 @@ import {
   ITokenInfoManager
 } from "../../src/utils/tokenInfoManager";
 import { utils } from "@bosonprotocol/common";
-import { mockRawOfferFromSubgraph } from "../mocks";
+import { mockRawOfferFromSubgraph, buildProductV1Metadata } from "../mocks";
 import { subgraph } from "../../src";
 
 const basicTemplate = "Hello World!";
@@ -552,19 +551,6 @@ describe("renderContractualAgreement", () => {
   });
 });
 
-function buildProductV1Metadata(template: string) {
-  return {
-    name: "Name",
-    description: "Description",
-    externalUrl: "externalUrl",
-    schemaUrl: "schemaUrl",
-    type: subgraph.MetadataType.ProductV1,
-    exchangePolicy: {
-      template
-    }
-  };
-}
-
 describe("renderContractualAgreementForOffer", () => {
   test("render basicTemplate", async () => {
     const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
@@ -661,11 +647,13 @@ describe("renderContractualAgreementForOffer", () => {
         /^Invalid Offer Metadata: exchangePolicy.template is not defined/
       );
     });
+
+    test("metadata is not defined", async () => {
+      const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph();
+      mockedRawOfferFromSubgraph.metadata = null;
+      await expect(
+        renderContractualAgreementForOffer(mockedRawOfferFromSubgraph)
+      ).rejects.toThrowError(/^Offer Metadata is undefined/);
+    });
   });
 });
-
-// TODO: inject an offerId
-
-// TODO: check invalid offerId
-
-// TODO: check nonexisting offer

@@ -7,6 +7,7 @@ import {
   ExchangeState
 } from "../src/subgraph";
 import nock from "nock";
+import { subgraph } from "../src";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
 export const DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -172,3 +173,17 @@ export function mockRawExchangeFromSubgraph(
     ...restOverrides
   };
 }
+
+export function buildProductV1Metadata(template: string) {
+  return {
+    name: "Name",
+    description: "Description",
+    externalUrl: "externalUrl",
+    schemaUrl: "schemaUrl",
+    type: subgraph.MetadataType.ProductV1,
+    exchangePolicy: {
+      template
+    }
+  };
+}
+

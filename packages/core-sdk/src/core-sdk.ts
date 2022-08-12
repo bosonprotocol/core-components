@@ -23,6 +23,7 @@ import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 
 import { getValueFromLogs } from "./utils/logs";
+import { renderContractualAgreementForOffer } from "./offers";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -1150,5 +1151,15 @@ export class CoreSDK {
       metaTxHandlerAddress: this._protocolDiamond,
       ...args
     });
+  }
+
+  public async renderContractualAgreementForOffer(
+    offerId: BigNumberish
+  ): Promise<string> {
+    const offerData = await offers.subgraph.getOfferById(
+      this._subgraphUrl,
+      offerId
+    );
+    return renderContractualAgreementForOffer(offerData);
   }
 }
