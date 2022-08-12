@@ -23,7 +23,6 @@ import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 
 import { getValueFromLogs } from "./utils/logs";
-import { renderContractualAgreementForOffer } from "./offers";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -1160,6 +1159,14 @@ export class CoreSDK {
       this._subgraphUrl,
       offerId
     );
-    return renderContractualAgreementForOffer(offerData);
+    return offers.renderContractualAgreementForOffer(offerData);
+  }
+
+  public async renderContractualAgreement(
+    template: string,
+    offerData: offers.CreateOfferArgs
+  ): Promise<string> {
+    const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
+    return offers.renderContractualAgreement(template, offerData, tokenInfo);
   }
 }

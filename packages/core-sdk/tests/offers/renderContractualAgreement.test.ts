@@ -8,10 +8,7 @@ import {
   renderContractualAgreementForOffer
 } from "../../src/offers";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
-import {
-  ITokenInfo,
-  ITokenInfoManager
-} from "../../src/utils/tokenInfoManager";
+import { ITokenInfo } from "../../src/utils/tokenInfoManager";
 import { utils } from "@bosonprotocol/common";
 import { mockRawOfferFromSubgraph, buildProductV1Metadata } from "../mocks";
 import { subgraph } from "../../src";
@@ -89,12 +86,8 @@ const mockTokenInfoManager = {
 
 async function mockPrepareRenderingData(
   offerData: CreateOfferArgs,
-  tokenInfoManager: ITokenInfoManager
+  tokenInfo: ITokenInfo
 ): Promise<{ [key: string]: string }> {
-  const tokenInfo = await tokenInfoManager.getExchangeTokenInfo(
-    offerData.exchangeToken
-  );
-
   return {
     priceValue: formatUnits(offerData.price, tokenInfo.decimals),
     sellerDepositValue: formatUnits(
@@ -145,24 +138,28 @@ async function mockPrepareRenderingData(
 describe("renderContractualAgreement", () => {
   test("render basicTemplate", async () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs();
+    const tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+      mockedCreateOfferArgs.exchangeToken
+    );
     const render = await renderContractualAgreement(
       basicTemplate,
       mockedCreateOfferArgs,
-      mockTokenInfoManager
+      tokenInfo
     );
     expect(render).toEqual(basicTemplate);
   });
 
   describe("render richTemplate", () => {
     let expected: unknown;
+    let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+        mockedCreateOfferArgs.exchangeToken
+      );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(
-          mockedCreateOfferArgs,
-          mockTokenInfoManager
-        )
+        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
       );
     });
 
@@ -170,7 +167,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).price);
     });
@@ -179,7 +176,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
     });
@@ -188,7 +185,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.agentId,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).agentId);
     });
@@ -197,7 +194,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).agentFee);
     });
@@ -206,7 +203,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
     });
@@ -215,7 +212,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.validFromTo,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).validFromTo);
     });
@@ -224,7 +221,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.redemptionPeriodFromTo,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).redemptionPeriodFromTo);
     });
@@ -233,7 +230,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.redemptionPeriodDuration,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).redemptionPeriodDuration);
     });
@@ -242,7 +239,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.resolutionPeriod,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).resolutionPeriod);
     });
@@ -251,7 +248,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.fulfillmentPeriod,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).fulfillmentPeriod);
     });
@@ -260,7 +257,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverId,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).disputeResolverId);
     });
@@ -269,7 +266,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.metadataUri,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).metadataUri);
     });
@@ -278,7 +275,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerContactMethod,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).sellerContactMethod);
     });
@@ -287,7 +284,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverContactMethod,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).disputeResolverContactMethod);
     });
@@ -295,16 +292,17 @@ describe("renderContractualAgreement", () => {
 
   describe("render richTemplate - offers with BOSON token", () => {
     let expected: unknown;
+    let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs({
         exchangeToken: TOKENS.BOSON.address
       });
+      tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+        mockedCreateOfferArgs.exchangeToken
+      );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(
-          mockedCreateOfferArgs,
-          mockTokenInfoManager
-        )
+        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
       );
     });
 
@@ -312,7 +310,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).price);
     });
@@ -321,7 +319,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
     });
@@ -330,7 +328,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).agentFee);
     });
@@ -339,7 +337,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
     });
@@ -347,6 +345,7 @@ describe("renderContractualAgreement", () => {
 
   describe("render richTemplate - offers with USDC token", () => {
     let expected: unknown;
+    let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs({
@@ -355,11 +354,11 @@ describe("renderContractualAgreement", () => {
         sellerDeposit: 100000, // adjust value because USDC decimals is 6, not 18
         buyerCancelPenalty: 200000 // adjust value because USDC decimals is 6, not 18
       });
+      tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+        mockedCreateOfferArgs.exchangeToken
+      );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(
-          mockedCreateOfferArgs,
-          mockTokenInfoManager
-        )
+        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
       );
     });
 
@@ -367,7 +366,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).price);
     });
@@ -376,7 +375,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
     });
@@ -385,7 +384,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).agentFee);
     });
@@ -394,16 +393,20 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
-        mockTokenInfoManager
+        tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
     });
   });
 
   describe("Rendering error cases - invalid templates", () => {
+    let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+        mockedCreateOfferArgs.exchangeToken
+      );
     });
     test("invalid template - undefined", async () => {
       const template = undefined;
@@ -411,7 +414,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(
         /^Invalid template! Template should be a "string" but "undefined" was given/
@@ -423,7 +426,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(
         /^Invalid template! Template should be a "string" but "number" was given/
@@ -435,7 +438,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(
         /^Invalid template! Template should be a "string" but "object" was given/
@@ -447,7 +450,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
     });
@@ -457,7 +460,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
     });
@@ -465,16 +468,20 @@ describe("renderContractualAgreement", () => {
 
   describe("Rendering error cases - other cases", () => {
     const template = "Hello World";
+    let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
+        mockedCreateOfferArgs.exchangeToken
+      );
     });
     test("invalid offer data - undefined", async () => {
       await expect(
         renderContractualAgreement(
           template,
           undefined as unknown as CreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - undefined/);
     });
@@ -483,7 +490,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           123456789 as unknown as CreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
     });
@@ -492,7 +499,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           "mockedCreateOfferArgs" as unknown as CreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
     });
@@ -501,7 +508,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           { key: "mockedCreateOfferArgs" } as unknown as CreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(
         /^InvalidOfferData - missing properties: \[(.*)\]/
@@ -533,18 +540,18 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           incompleteMockedCreateOfferArgs,
-          mockTokenInfoManager
+          tokenInfo
         )
       ).rejects.toThrowError(
         new RegExp(`^InvalidOfferData - missing properties: \\[${key}: (.*)\\]`)
       );
     });
-    test("invalid tokenInfoManager - undefined", async () => {
+    test("invalid tokenInfo - undefined", async () => {
       await expect(
         renderContractualAgreement(
           template,
           mockedCreateOfferArgs,
-          undefined as unknown as ITokenInfoManager
+          undefined as unknown as ITokenInfo
         )
       ).rejects.toThrowError(/^Cannot read properties of undefined/);
     });

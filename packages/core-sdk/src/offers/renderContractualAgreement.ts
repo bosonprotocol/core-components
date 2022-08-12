@@ -1,4 +1,4 @@
-import { ITokenInfo, ITokenInfoManager } from "./../utils/tokenInfoManager";
+import { ITokenInfo } from "./../utils/tokenInfoManager";
 import { BigNumber } from "@ethersproject/bignumber";
 import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
@@ -130,13 +130,10 @@ export async function prepareRenderingData(
 export async function renderContractualAgreement(
   template: string,
   offerData: offers.CreateOfferArgs,
-  tokenInfoManager: ITokenInfoManager
+  tokenInfo: ITokenInfo
 ): Promise<string> {
   // Check the passed offerData is matching the required type
   checkOfferDataIsValid(offerData, true);
-  const tokenInfo = await tokenInfoManager.getExchangeTokenInfo(
-    offerData.exchangeToken
-  );
   const preparedData = await prepareRenderingData(offerData, tokenInfo);
   return Mustache.render(template, preparedData);
 }
@@ -171,9 +168,9 @@ export async function renderContractualAgreementForOffer(
   const template = (existingOfferData.metadata as productV1.ProductV1Metadata)
     .exchangePolicy.template;
   const convertedOfferArgs = convertExistingOfferData(existingOfferData);
-  const preparedData = await prepareRenderingData(
+  return renderContractualAgreement(
+    template,
     convertedOfferArgs.offerData,
     convertedOfferArgs.tokenInfo
   );
-  return Mustache.render(template, preparedData);
 }
