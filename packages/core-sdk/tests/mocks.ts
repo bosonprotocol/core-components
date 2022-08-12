@@ -186,4 +186,3 @@ export function buildProductV1Metadata(template: string) {
     }
   };
 }
-
