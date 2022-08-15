@@ -9061,6 +9061,14 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
       };
     };
+    exchangePolicy: {
+      __typename?: "ProductV1ExchangePolicy";
+      id: string;
+      uuid: string;
+      version: number;
+      label?: string | null;
+      template: string;
+    };
   } | null;
 };
 
@@ -9328,6 +9336,14 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
       };
     };
+    exchangePolicy: {
+      __typename?: "ProductV1ExchangePolicy";
+      id: string;
+      uuid: string;
+      version: number;
+      label?: string | null;
+      template: string;
+    };
   }>;
 };
 
@@ -9585,6 +9601,14 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
     };
   };
+  exchangePolicy: {
+    __typename?: "ProductV1ExchangePolicy";
+    id: string;
+    uuid: string;
+    version: number;
+    label?: string | null;
+    template: string;
+  };
 };
 
 export type BaseProductV1MetadataEntityFieldsFragment = {
@@ -9840,6 +9864,14 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
     };
+  };
+  exchangePolicy: {
+    __typename?: "ProductV1ExchangePolicy";
+    id: string;
+    uuid: string;
+    version: number;
+    label?: string | null;
+    template: string;
   };
 };
 
@@ -11017,6 +11049,15 @@ export const BaseProductV1SellerFieldsFragmentDoc = gql`
   ${BaseProductV1SellerContactLinkFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
 `;
+export const BaseProductV1ExchangePolicyFieldsFragmentDoc = gql`
+  fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
+    id
+    uuid
+    version
+    label
+    template
+  }
+`;
 export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
     id
@@ -11055,6 +11096,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     productV1Seller {
       ...BaseProductV1SellerFields
     }
+    exchangePolicy {
+      ...BaseProductV1ExchangePolicyFields
+    }
   }
   ${BaseOfferFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
@@ -11062,6 +11106,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   ${BaseProductV1ProductFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
+  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
 `;
 export const ProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment ProductV1MetadataEntityFields on ProductV1MetadataEntity {
@@ -11087,15 +11132,6 @@ export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
     redemptionPoint
   }
   ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
-`;
-export const BaseProductV1ExchangePolicyFieldsFragmentDoc = gql`
-  fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
-    id
-    uuid
-    version
-    label
-    template
-  }
 `;
 export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
   fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {

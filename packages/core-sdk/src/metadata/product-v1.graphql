@@ -107,6 +107,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   productV1Seller {
     ...BaseProductV1SellerFields
   }
+  exchangePolicy {
+    ...BaseProductV1ExchangePolicyFields
+  }
 }
 
 fragment BaseProductV1ProductFields on ProductV1Product {

@@ -60,9 +60,14 @@ describe("#renderContractualAgreementForOffer()", () => {
       price: "100" + "0".repeat(18),
       metadata: buildProductV1Metadata("{{priceValue}} {{exchangeTokenSymbol}}")
     });
-    interceptSubgraph().reply(200, {
+    interceptSubgraph("getOfferByIdQuery").reply(200, {
       data: {
         offer: mockedRawOfferFromSubgraph
+      }
+    });
+    interceptSubgraph("getProductV1MetadataEntityByIdQuery").reply(200, {
+      data: {
+        productV1MetadataEntity: mockedRawOfferFromSubgraph.metadata
       }
     });
     const defaultConfig = getDefaultConfig({ envName: "testing" });

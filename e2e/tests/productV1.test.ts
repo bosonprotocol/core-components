@@ -4,7 +4,7 @@ import { CreateOfferArgs } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
-import { CoreSDK } from "../../packages/core-sdk/src";
+import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
@@ -67,16 +67,17 @@ async function createOffer(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  let offer: subgraph.OfferFieldsFragment | null = null;
+  for (let i = 0; i < 3 && !offer; i++) {
+    await waitForGraphNodeIndexing();
+    offer = await coreSDK.getOfferById(createdOfferId as string);
+  }
 
   return offer;
 }
 
 describe("ProductV1 e2e tests", () => {
-  // NOTE: this test is deactivated because failing (metadata is NULL in the Offer from SubGraph)
-  // TODO: fix the issue with null metadata in the Subgraph
-  xtest("Create an offer, then render the contractual agreement template", async () => {
+  test("Create an offer, then render the contractual agreement template", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
 
@@ -84,22 +85,15 @@ describe("ProductV1 e2e tests", () => {
     const metadata = mockProductV1Metadata(template);
     const offerArgs = await createOfferArgs(coreSDK, metadata);
     offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
-      .add(5000)
+      .add(10000) // to avoid offerDaa validation error
       .toNumber();
     offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
       offerArgs.voucherRedeemableFromDateInMS
     )
-      .add(5000)
+      .add(10000) // to avoid offerDaa validation error
       .toNumber();
     const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
-    console.log(
-      "Offer",
-      offer.id,
-      "created",
-      "metadataHash",
-      offer.metadataHash
-    );
     const render = await coreSDK.renderContractualAgreementForOffer(offer.id);
     expect(render).toEqual("Hello World!!");
   });
