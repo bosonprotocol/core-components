@@ -58,7 +58,6 @@ function checkOfferDataIsValid(
   };
   const missingProperties = Object.keys(schema)
     .filter((key) => offerData[key] === undefined)
-    .map((key) => key as keyof offers.CreateOfferArgs)
     .map((key) => `${key}: '${schema[key]}'`);
 
   if (throwIFInvalid && missingProperties.length > 0) {
