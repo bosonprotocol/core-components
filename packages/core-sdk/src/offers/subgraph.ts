@@ -3,10 +3,8 @@ import { getSubgraphSdk } from "../utils/graphql";
 import {
   OfferFieldsFragment,
   GetOfferByIdQueryQueryVariables,
-  GetOffersQueryQueryVariables,
-  MetadataType
+  GetOffersQueryQueryVariables
 } from "../subgraph";
-import { getProductV1MetadataEntityByOfferId } from "../metadata/subgraph";
 
 export type SingleOfferQueryVariables = Omit<
   GetOfferByIdQueryQueryVariables,
@@ -23,14 +21,6 @@ export async function getOfferById(
     offerId: offerId.toString(),
     ...queryVars
   });
-  if (offer?.metadata?.type === MetadataType.ProductV1) {
-    const offerMetadata = await getProductV1MetadataEntityByOfferId(
-      subgraphUrl,
-      offerId
-    );
-    offer.metadata = offerMetadata;
-  }
-
   return offer;
 }
 
