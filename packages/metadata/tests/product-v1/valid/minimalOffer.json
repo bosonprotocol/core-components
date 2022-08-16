@@ -29,7 +29,15 @@
       }
     ]
   },
-  "seller": {},
+  "seller": {
+    "defaultVersion": 1,
+    "contactLinks": [
+      {
+        "url": "support@bosonportal.io",
+        "tag": "email"
+      }
+    ]
+  },
   "exchangePolicy": {
     "uuid": "1e82f742-5639-427f-87b2-b91a7e51e40a",
     "version": 1,

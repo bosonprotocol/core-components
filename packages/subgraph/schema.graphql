@@ -202,7 +202,7 @@ type ProductV1Variation @entity {
 
 type ProductV1Seller @entity {
   id: ID!
-  defaultVersion: Int
+  defaultVersion: Int!
   name: String
   description: String
   externalUrl: String

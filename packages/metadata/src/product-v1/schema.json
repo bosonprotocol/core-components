@@ -119,10 +119,10 @@
             },
             "required": ["url", "tag"]
           },
-          "minItems": 0
+          "minItems": 1
         }
       },
-      "required": []
+      "required": ["defaultVersion", "contactLinks"]
     },
     "shipping": {
       "type": "object",
