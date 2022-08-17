@@ -43,10 +43,15 @@ const productMissingArguments = [
     data: { attributes: undefined },
     error: /attributes is a required field/
   },
-  { arg: "product", data: { product: undefined } },
+  {
+    arg: "product",
+    data: { product: undefined },
+    error: undefined // don't check the error message
+  },
   {
     arg: "exchangePolicy",
-    data: { exchangePolicy: undefined }
+    data: { exchangePolicy: undefined },
+    error: undefined // don't check the error message
   },
   {
     arg: "exchangePolicy.uuid",
@@ -126,6 +131,26 @@ const productMissingArguments = [
     error: /seller.images\[0\].url is a required field/
   },
   {
+    arg: "seller",
+    data: { seller: undefined },
+    error: undefined // don't check the error message
+  },
+  {
+    arg: "seller.defaultVersion",
+    data: { seller: { defaultVersion: undefined } },
+    error: /seller.defaultVersion is a required field/
+  },
+  {
+    arg: "seller.contactLinks",
+    data: { seller: { contactLinks: undefined } },
+    error: /seller.contactLinks is a required field/
+  },
+  // {
+  //   arg: "seller.contactLinks empty array",
+  //   data: { seller: { defaultVersion: 1, contactLinks: [] } },
+  //   error: undefined // don't check the error message
+  // }, // it should fail because minItems is set to 1 (does not work as expected...)
+  {
     arg: "seller.contactLinks[x].url",
     data: { seller: { contactLinks: [{ tag: "aTag" }] } },
     error: /seller.contactLinks\[0\].url is a required field/
@@ -159,12 +184,14 @@ const productMissingArguments = [
   //         value: "PHYSICAL"
   //       }
   //     ]
-  //   }
+  //   },
+  //   error: undefined // don't check the error message
   // } // it should fail because minItems is set to 2 (does not work as expected...)
 
   // {
   //   arg: "product.visuals.images",
-  //   data: { product: { visuals: { images: [] } } }
+  //   data: { product: { visuals: { images: [] } } },
+  //   error: undefined // don't check the error message
   // } // it should fail because minItems is set to 1 (does not work as expected...)
 
   // {
