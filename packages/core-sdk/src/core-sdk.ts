@@ -1,3 +1,4 @@
+import { ITokenInfo, TokenInfoManager } from "./utils/tokenInfoManager";
 import {
   Web3LibAdapter,
   TransactionResponse,
@@ -31,6 +32,7 @@ export class CoreSDK {
   private _subgraphUrl: string;
   private _protocolDiamond: string;
   private _chainId: number;
+  private _tokenInfoManager: TokenInfoManager;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -647,22 +649,21 @@ export class CoreSDK {
    * @param exchangeToken - Address exchange token.
    * @returns Decimals, name and symbol.
    */
-  public async getExchangeTokenInfo(exchangeToken: string): Promise<{
-    name: string;
-    decimals: number;
-    symbol: string;
-  }> {
-    const args = {
-      web3Lib: this._web3Lib,
-      contractAddress: exchangeToken
-    };
-    const [decimals, name, symbol] = await Promise.all([
-      erc20.handler.getDecimals(args),
-      erc20.handler.getName(args),
-      erc20.handler.getSymbol(args)
-    ]);
+  public async getExchangeTokenInfo(
+    exchangeToken: string
+  ): Promise<ITokenInfo> {
+    if (this._chainId === undefined) {
+      this._chainId = await this._web3Lib.getChainId();
+    }
 
-    return { decimals, name, symbol };
+    if (this._tokenInfoManager === undefined) {
+      this._tokenInfoManager = new TokenInfoManager(
+        this._chainId,
+        this._web3Lib
+      );
+    }
+
+    return this._tokenInfoManager.getExchangeTokenInfo(exchangeToken);
   }
 
   /**
@@ -1149,5 +1150,23 @@ export class CoreSDK {
       metaTxHandlerAddress: this._protocolDiamond,
       ...args
     });
+  }
+
+  public async renderContractualAgreementForOffer(
+    offerId: BigNumberish
+  ): Promise<string> {
+    const offerData = await offers.subgraph.getOfferById(
+      this._subgraphUrl,
+      offerId
+    );
+    return offers.renderContractualAgreementForOffer(offerData);
+  }
+
+  public async renderContractualAgreement(
+    template: string,
+    offerData: offers.CreateOfferArgs
+  ): Promise<string> {
+    const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
+    return offers.renderContractualAgreement(template, offerData, tokenInfo);
   }
 }

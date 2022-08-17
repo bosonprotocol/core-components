@@ -21,7 +21,6 @@ export async function getOfferById(
     offerId: offerId.toString(),
     ...queryVars
   });
-
   return offer;
 }
 

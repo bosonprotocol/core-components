@@ -6148,11 +6148,165 @@ export type GetSellerByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -6315,11 +6469,165 @@ export type GetSellersQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -6570,11 +6878,165 @@ export type GetDisputeResolverByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -6712,11 +7174,165 @@ export type GetDisputeResolversQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -6852,11 +7468,161 @@ export type SellerFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   }>;
@@ -7031,11 +7797,161 @@ export type DisputeResolverFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   }>;
@@ -7422,11 +8338,165 @@ export type GetExchangeTokenByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -7557,11 +8627,165 @@ export type GetExchangeTokensQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     }>;
@@ -7670,11 +8894,161 @@ export type ExchangeTokenFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   }>;
@@ -7821,11 +9195,165 @@ export type GetExchangeByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -7962,11 +9490,165 @@ export type GetExchangesQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -8088,11 +9770,161 @@ export type ExchangeFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   };
@@ -8303,11 +10135,165 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -8453,11 +10439,165 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -8593,11 +10733,161 @@ export type BaseMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   };
@@ -8732,11 +11022,161 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   };
@@ -8917,11 +11357,165 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -9060,6 +11654,14 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         voucherCloneAddress: string;
         active: boolean;
       };
+    };
+    exchangePolicy: {
+      __typename?: "ProductV1ExchangePolicy";
+      id: string;
+      uuid: string;
+      version: number;
+      label?: string | null;
+      template: string;
     };
   } | null;
 };
@@ -9184,11 +11786,165 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           }
         | {
             __typename?: "ProductV1MetadataEntity";
+            image: string;
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
             name: string;
             description: string;
             externalUrl: string;
             schemaUrl: string;
             type: MetadataType;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion?: number | null;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
           }
         | null;
     };
@@ -9328,6 +12084,14 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
       };
     };
+    exchangePolicy: {
+      __typename?: "ProductV1ExchangePolicy";
+      id: string;
+      uuid: string;
+      version: number;
+      label?: string | null;
+      template: string;
+    };
   }>;
 };
 
@@ -9441,11 +12205,161 @@ export type ProductV1MetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   };
@@ -9584,6 +12498,14 @@ export type ProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
     };
+  };
+  exchangePolicy: {
+    __typename?: "ProductV1ExchangePolicy";
+    id: string;
+    uuid: string;
+    version: number;
+    label?: string | null;
+    template: string;
   };
 };
 
@@ -9697,11 +12619,161 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   };
@@ -9840,6 +12912,14 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       voucherCloneAddress: string;
       active: boolean;
     };
+  };
+  exchangePolicy: {
+    __typename?: "ProductV1ExchangePolicy";
+    id: string;
+    uuid: string;
+    version: number;
+    label?: string | null;
+    template: string;
   };
 };
 
@@ -10190,11 +13270,161 @@ export type GetOfferByIdQueryQuery = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   } | null;
@@ -10319,11 +13549,161 @@ export type GetOffersQueryQuery = {
         }
       | {
           __typename?: "ProductV1MetadataEntity";
+          image: string;
+          createdAt: string;
+          voided: boolean;
+          validFromDate: string;
+          validUntilDate: string;
+          quantityAvailable: string;
+          uuid: string;
           name: string;
           description: string;
           externalUrl: string;
           schemaUrl: string;
           type: MetadataType;
+          attributes?: Array<{
+            __typename?: "MetadataAttribute";
+            traitType: string;
+            value: string;
+            displayType: string;
+          }> | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            details_category?: string | null;
+            details_subCategory?: string | null;
+            details_subCategory2?: string | null;
+            details_offerCategory: string;
+            offerCategory: ProductV1OfferCategory;
+            details_tags?: Array<string> | null;
+            details_sections?: Array<string> | null;
+            details_personalisation?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            category?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            subCategory2?: {
+              __typename?: "ProductV1Category";
+              id: string;
+              name: string;
+            } | null;
+            tags?: Array<{
+              __typename?: "ProductV1Tag";
+              id: string;
+              name: string;
+            }> | null;
+            sections?: Array<{
+              __typename?: "ProductV1Section";
+              id: string;
+              name: string;
+            }> | null;
+            personalisation?: Array<{
+              __typename?: "ProductV1Personalisation";
+              id: string;
+              name: string;
+            }> | null;
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+          };
+          variations?: Array<{
+            __typename?: "ProductV1Variation";
+            id: string;
+            type: string;
+            option: string;
+          }> | null;
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            id: string;
+            defaultVersion?: number | null;
+            name?: string | null;
+            description?: string | null;
+            externalUrl?: string | null;
+            tokenId?: string | null;
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "ProductV1SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            seller: {
+              __typename?: "Seller";
+              id: string;
+              operator: string;
+              admin: string;
+              clerk: string;
+              treasury: string;
+              authTokenId: string;
+              authTokenType: number;
+              voucherCloneAddress: string;
+              active: boolean;
+            };
+          };
+          exchangePolicy: {
+            __typename?: "ProductV1ExchangePolicy";
+            id: string;
+            uuid: string;
+            version: number;
+            label?: string | null;
+            template: string;
+          };
+          shipping?: {
+            __typename?: "ProductV1ShippingOption";
+            id: string;
+            defaultVersion?: number | null;
+            countryOfOrigin?: string | null;
+            redemptionPoint?: string | null;
+            supportedJurisdictions?: Array<{
+              __typename?: "ProductV1ShippingJurisdiction";
+              id: string;
+              label: string;
+              deliveryTime: string;
+            }> | null;
+          } | null;
         }
       | null;
   }>;
@@ -10432,11 +13812,161 @@ export type OfferFieldsFragment = {
       }
     | {
         __typename?: "ProductV1MetadataEntity";
+        image: string;
+        createdAt: string;
+        voided: boolean;
+        validFromDate: string;
+        validUntilDate: string;
+        quantityAvailable: string;
+        uuid: string;
         name: string;
         description: string;
         externalUrl: string;
         schemaUrl: string;
         type: MetadataType;
+        attributes?: Array<{
+          __typename?: "MetadataAttribute";
+          traitType: string;
+          value: string;
+          displayType: string;
+        }> | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          details_category?: string | null;
+          details_subCategory?: string | null;
+          details_subCategory2?: string | null;
+          details_offerCategory: string;
+          offerCategory: ProductV1OfferCategory;
+          details_tags?: Array<string> | null;
+          details_sections?: Array<string> | null;
+          details_personalisation?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          category?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          subCategory?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          subCategory2?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          tags?: Array<{
+            __typename?: "ProductV1Tag";
+            id: string;
+            name: string;
+          }> | null;
+          sections?: Array<{
+            __typename?: "ProductV1Section";
+            id: string;
+            name: string;
+          }> | null;
+          personalisation?: Array<{
+            __typename?: "ProductV1Personalisation";
+            id: string;
+            name: string;
+          }> | null;
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }> | null;
+        };
+        variations?: Array<{
+          __typename?: "ProductV1Variation";
+          id: string;
+          type: string;
+          option: string;
+        }> | null;
+        productV1Seller: {
+          __typename?: "ProductV1Seller";
+          id: string;
+          defaultVersion?: number | null;
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          tokenId?: string | null;
+          images?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "ProductV1SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+          };
+        };
+        exchangePolicy: {
+          __typename?: "ProductV1ExchangePolicy";
+          id: string;
+          uuid: string;
+          version: number;
+          label?: string | null;
+          template: string;
+        };
+        shipping?: {
+          __typename?: "ProductV1ShippingOption";
+          id: string;
+          defaultVersion?: number | null;
+          countryOfOrigin?: string | null;
+          redemptionPoint?: string | null;
+          supportedJurisdictions?: Array<{
+            __typename?: "ProductV1ShippingJurisdiction";
+            id: string;
+            label: string;
+            deliveryTime: string;
+          }> | null;
+        } | null;
       }
     | null;
 };
@@ -10530,11 +14060,161 @@ export type BaseOfferFieldsFragment = {
       }
     | {
         __typename?: "ProductV1MetadataEntity";
+        image: string;
+        createdAt: string;
+        voided: boolean;
+        validFromDate: string;
+        validUntilDate: string;
+        quantityAvailable: string;
+        uuid: string;
         name: string;
         description: string;
         externalUrl: string;
         schemaUrl: string;
         type: MetadataType;
+        attributes?: Array<{
+          __typename?: "MetadataAttribute";
+          traitType: string;
+          value: string;
+          displayType: string;
+        }> | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          details_category?: string | null;
+          details_subCategory?: string | null;
+          details_subCategory2?: string | null;
+          details_offerCategory: string;
+          offerCategory: ProductV1OfferCategory;
+          details_tags?: Array<string> | null;
+          details_sections?: Array<string> | null;
+          details_personalisation?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          category?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          subCategory?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          subCategory2?: {
+            __typename?: "ProductV1Category";
+            id: string;
+            name: string;
+          } | null;
+          tags?: Array<{
+            __typename?: "ProductV1Tag";
+            id: string;
+            name: string;
+          }> | null;
+          sections?: Array<{
+            __typename?: "ProductV1Section";
+            id: string;
+            name: string;
+          }> | null;
+          personalisation?: Array<{
+            __typename?: "ProductV1Personalisation";
+            id: string;
+            name: string;
+          }> | null;
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }> | null;
+        };
+        variations?: Array<{
+          __typename?: "ProductV1Variation";
+          id: string;
+          type: string;
+          option: string;
+        }> | null;
+        productV1Seller: {
+          __typename?: "ProductV1Seller";
+          id: string;
+          defaultVersion?: number | null;
+          name?: string | null;
+          description?: string | null;
+          externalUrl?: string | null;
+          tokenId?: string | null;
+          images?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "ProductV1SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+          };
+        };
+        exchangePolicy: {
+          __typename?: "ProductV1ExchangePolicy";
+          id: string;
+          uuid: string;
+          version: number;
+          label?: string | null;
+          template: string;
+        };
+        shipping?: {
+          __typename?: "ProductV1ShippingOption";
+          id: string;
+          defaultVersion?: number | null;
+          countryOfOrigin?: string | null;
+          redemptionPoint?: string | null;
+          supportedJurisdictions?: Array<{
+            __typename?: "ProductV1ShippingJurisdiction";
+            id: string;
+            label: string;
+            deliveryTime: string;
+          }> | null;
+        } | null;
       }
     | null;
 };
@@ -10616,6 +14296,173 @@ export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
     buyerEscalationDeposit
   }
 `;
+export const BaseProductV1BrandFieldsFragmentDoc = gql`
+  fragment BaseProductV1BrandFields on ProductV1Brand {
+    id
+    name
+  }
+`;
+export const BaseProductV1CategoryFieldsFragmentDoc = gql`
+  fragment BaseProductV1CategoryFields on ProductV1Category {
+    id
+    name
+  }
+`;
+export const BaseProductV1TagFieldsFragmentDoc = gql`
+  fragment BaseProductV1TagFields on ProductV1Tag {
+    id
+    name
+  }
+`;
+export const BaseProductV1SectionFieldsFragmentDoc = gql`
+  fragment BaseProductV1SectionFields on ProductV1Section {
+    id
+    name
+  }
+`;
+export const BaseProductV1PersonalisationFieldsFragmentDoc = gql`
+  fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {
+    id
+    name
+  }
+`;
+export const BaseProductV1MediaFieldsFragmentDoc = gql`
+  fragment BaseProductV1MediaFields on ProductV1Media {
+    id
+    url
+    tag
+    type
+  }
+`;
+export const BaseProductV1ProductFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductFields on ProductV1Product {
+    id
+    uuid
+    version
+    title
+    description
+    identification_sKU
+    identification_productId
+    identification_productIdType
+    productionInformation_brandName
+    brand {
+      ...BaseProductV1BrandFields
+    }
+    productionInformation_manufacturer
+    productionInformation_manufacturerPartNumber
+    productionInformation_modelNumber
+    productionInformation_materials
+    details_category
+    category {
+      ...BaseProductV1CategoryFields
+    }
+    details_subCategory
+    subCategory {
+      ...BaseProductV1CategoryFields
+    }
+    details_subCategory2
+    subCategory2 {
+      ...BaseProductV1CategoryFields
+    }
+    details_offerCategory
+    offerCategory
+    details_tags
+    tags {
+      ...BaseProductV1TagFields
+    }
+    details_sections
+    sections {
+      ...BaseProductV1SectionFields
+    }
+    details_personalisation
+    personalisation {
+      ...BaseProductV1PersonalisationFields
+    }
+    visuals_images {
+      ...BaseProductV1MediaFields
+    }
+    visuals_videos {
+      ...BaseProductV1MediaFields
+    }
+    packaging_packageQuantity
+    packaging_dimensions_length
+    packaging_dimensions_width
+    packaging_dimensions_height
+    packaging_dimensions_unit
+    packaging_weight_value
+    packaging_weight_unit
+  }
+  ${BaseProductV1BrandFieldsFragmentDoc}
+  ${BaseProductV1CategoryFieldsFragmentDoc}
+  ${BaseProductV1TagFieldsFragmentDoc}
+  ${BaseProductV1SectionFieldsFragmentDoc}
+  ${BaseProductV1PersonalisationFieldsFragmentDoc}
+  ${BaseProductV1MediaFieldsFragmentDoc}
+`;
+export const BaseProductV1VariationFieldsFragmentDoc = gql`
+  fragment BaseProductV1VariationFields on ProductV1Variation {
+    id
+    type
+    option
+  }
+`;
+export const BaseProductV1SellerContactLinkFieldsFragmentDoc = gql`
+  fragment BaseProductV1SellerContactLinkFields on ProductV1SellerContactLink {
+    id
+    url
+    tag
+  }
+`;
+export const BaseProductV1SellerFieldsFragmentDoc = gql`
+  fragment BaseProductV1SellerFields on ProductV1Seller {
+    id
+    defaultVersion
+    name
+    description
+    externalUrl
+    tokenId
+    images {
+      ...BaseProductV1MediaFields
+    }
+    contactLinks {
+      ...BaseProductV1SellerContactLinkFields
+    }
+    seller {
+      ...BaseSellerFields
+    }
+  }
+  ${BaseProductV1MediaFieldsFragmentDoc}
+  ${BaseProductV1SellerContactLinkFieldsFragmentDoc}
+  ${BaseSellerFieldsFragmentDoc}
+`;
+export const BaseProductV1ExchangePolicyFieldsFragmentDoc = gql`
+  fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
+    id
+    uuid
+    version
+    label
+    template
+  }
+`;
+export const BaseProductV1ShippingJurisdictionFieldsFragmentDoc = gql`
+  fragment BaseProductV1ShippingJurisdictionFields on ProductV1ShippingJurisdiction {
+    id
+    label
+    deliveryTime
+  }
+`;
+export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
+  fragment BaseProductV1ShippingOptionFields on ProductV1ShippingOption {
+    id
+    defaultVersion
+    countryOfOrigin
+    supportedJurisdictions {
+      ...BaseProductV1ShippingJurisdictionFields
+    }
+    redemptionPoint
+  }
+  ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
+`;
 export const BaseOfferFieldsFragmentDoc = gql`
   fragment BaseOfferFields on Offer {
     id
@@ -10657,12 +14504,46 @@ export const BaseOfferFieldsFragmentDoc = gql`
       externalUrl
       schemaUrl
       type
+      ... on ProductV1MetadataEntity {
+        image
+        attributes {
+          traitType
+          value
+          displayType
+        }
+        createdAt
+        voided
+        validFromDate
+        validUntilDate
+        quantityAvailable
+        uuid
+        product {
+          ...BaseProductV1ProductFields
+        }
+        variations {
+          ...BaseProductV1VariationFields
+        }
+        productV1Seller {
+          ...BaseProductV1SellerFields
+        }
+        exchangePolicy {
+          ...BaseProductV1ExchangePolicyFields
+        }
+        shipping {
+          ...BaseProductV1ShippingOptionFields
+        }
+      }
     }
   }
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+  ${BaseProductV1SellerFieldsFragmentDoc}
+  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
+  ${BaseProductV1ShippingOptionFieldsFragmentDoc}
 `;
 export const BaseExchangeFieldsFragmentDoc = gql`
   fragment BaseExchangeFields on Exchange {
@@ -10878,145 +14759,6 @@ export const BaseMetadataEntityFieldsFragmentDoc = gql`
   }
   ${BaseBaseMetadataEntityFieldsFragmentDoc}
 `;
-export const BaseProductV1BrandFieldsFragmentDoc = gql`
-  fragment BaseProductV1BrandFields on ProductV1Brand {
-    id
-    name
-  }
-`;
-export const BaseProductV1CategoryFieldsFragmentDoc = gql`
-  fragment BaseProductV1CategoryFields on ProductV1Category {
-    id
-    name
-  }
-`;
-export const BaseProductV1TagFieldsFragmentDoc = gql`
-  fragment BaseProductV1TagFields on ProductV1Tag {
-    id
-    name
-  }
-`;
-export const BaseProductV1SectionFieldsFragmentDoc = gql`
-  fragment BaseProductV1SectionFields on ProductV1Section {
-    id
-    name
-  }
-`;
-export const BaseProductV1PersonalisationFieldsFragmentDoc = gql`
-  fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {
-    id
-    name
-  }
-`;
-export const BaseProductV1MediaFieldsFragmentDoc = gql`
-  fragment BaseProductV1MediaFields on ProductV1Media {
-    id
-    url
-    tag
-    type
-  }
-`;
-export const BaseProductV1ProductFieldsFragmentDoc = gql`
-  fragment BaseProductV1ProductFields on ProductV1Product {
-    id
-    uuid
-    version
-    title
-    description
-    identification_sKU
-    identification_productId
-    identification_productIdType
-    productionInformation_brandName
-    brand {
-      ...BaseProductV1BrandFields
-    }
-    productionInformation_manufacturer
-    productionInformation_manufacturerPartNumber
-    productionInformation_modelNumber
-    productionInformation_materials
-    details_category
-    category {
-      ...BaseProductV1CategoryFields
-    }
-    details_subCategory
-    subCategory {
-      ...BaseProductV1CategoryFields
-    }
-    details_subCategory2
-    subCategory2 {
-      ...BaseProductV1CategoryFields
-    }
-    details_offerCategory
-    offerCategory
-    details_tags
-    tags {
-      ...BaseProductV1TagFields
-    }
-    details_sections
-    sections {
-      ...BaseProductV1SectionFields
-    }
-    details_personalisation
-    personalisation {
-      ...BaseProductV1PersonalisationFields
-    }
-    visuals_images {
-      ...BaseProductV1MediaFields
-    }
-    visuals_videos {
-      ...BaseProductV1MediaFields
-    }
-    packaging_packageQuantity
-    packaging_dimensions_length
-    packaging_dimensions_width
-    packaging_dimensions_height
-    packaging_dimensions_unit
-    packaging_weight_value
-    packaging_weight_unit
-  }
-  ${BaseProductV1BrandFieldsFragmentDoc}
-  ${BaseProductV1CategoryFieldsFragmentDoc}
-  ${BaseProductV1TagFieldsFragmentDoc}
-  ${BaseProductV1SectionFieldsFragmentDoc}
-  ${BaseProductV1PersonalisationFieldsFragmentDoc}
-  ${BaseProductV1MediaFieldsFragmentDoc}
-`;
-export const BaseProductV1VariationFieldsFragmentDoc = gql`
-  fragment BaseProductV1VariationFields on ProductV1Variation {
-    id
-    type
-    option
-  }
-`;
-export const BaseProductV1SellerContactLinkFieldsFragmentDoc = gql`
-  fragment BaseProductV1SellerContactLinkFields on ProductV1SellerContactLink {
-    id
-    url
-    tag
-  }
-`;
-export const BaseProductV1SellerFieldsFragmentDoc = gql`
-  fragment BaseProductV1SellerFields on ProductV1Seller {
-    id
-    defaultVersion
-    name
-    description
-    externalUrl
-    tokenId
-    images {
-      ...BaseProductV1MediaFields
-    }
-    contactLinks {
-      ...BaseProductV1SellerContactLinkFields
-    }
-    seller {
-      ...BaseSellerFields
-    }
-  }
-  ${BaseProductV1MediaFieldsFragmentDoc}
-  ${BaseProductV1SellerContactLinkFieldsFragmentDoc}
-  ${BaseSellerFieldsFragmentDoc}
-`;
 export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
     id
@@ -11055,6 +14797,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     productV1Seller {
       ...BaseProductV1SellerFields
     }
+    exchangePolicy {
+      ...BaseProductV1ExchangePolicyFields
+    }
   }
   ${BaseOfferFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
@@ -11062,40 +14807,13 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   ${BaseProductV1ProductFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
+  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
 `;
 export const ProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment ProductV1MetadataEntityFields on ProductV1MetadataEntity {
     ...BaseProductV1MetadataEntityFields
   }
   ${BaseProductV1MetadataEntityFieldsFragmentDoc}
-`;
-export const BaseProductV1ShippingJurisdictionFieldsFragmentDoc = gql`
-  fragment BaseProductV1ShippingJurisdictionFields on ProductV1ShippingJurisdiction {
-    id
-    label
-    deliveryTime
-  }
-`;
-export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
-  fragment BaseProductV1ShippingOptionFields on ProductV1ShippingOption {
-    id
-    defaultVersion
-    countryOfOrigin
-    supportedJurisdictions {
-      ...BaseProductV1ShippingJurisdictionFields
-    }
-    redemptionPoint
-  }
-  ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
-`;
-export const BaseProductV1ExchangePolicyFieldsFragmentDoc = gql`
-  fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
-    id
-    uuid
-    version
-    label
-    template
-  }
 `;
 export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
   fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {

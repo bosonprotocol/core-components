@@ -1,3 +1,4 @@
+import { MSEC_PER_DAY } from "../src/utils/timestamp";
 import { parseEther } from "@ethersproject/units";
 import { AddressZero } from "@ethersproject/constants";
 import {
@@ -67,12 +68,12 @@ export function mockCreateOfferArgs(
     buyerCancelPenalty: parseEther("0.01"),
     quantityAvailable: 10,
     validFromDateInMS: Date.now() + 1000,
-    validUntilDateInMS: Date.now() + 60 * 60 * 1000,
+    validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY,
     voucherRedeemableFromDateInMS: Date.now() + 1000,
-    voucherRedeemableUntilDateInMS: Date.now() + 60 * 60 * 1000,
-    fulfillmentPeriodDurationInMS: 60 * 60 * 1000,
-    voucherValidDurationInMS: 0,
-    resolutionPeriodDurationInMS: 60 * 60 * 1000,
+    voucherRedeemableUntilDateInMS: Date.now() + 30 * MSEC_PER_DAY,
+    fulfillmentPeriodDurationInMS: 40 * MSEC_PER_DAY,
+    voucherValidDurationInMS: 30 * MSEC_PER_DAY,
+    resolutionPeriodDurationInMS: 50 * MSEC_PER_DAY,
     exchangeToken: AddressZero,
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
