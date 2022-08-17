@@ -543,7 +543,7 @@ describe("renderContractualAgreement", () => {
           tokenInfo
         )
       ).rejects.toThrowError(
-        new RegExp(`^InvalidOfferData - missing properties: \\[${key}: (.*)\\]`)
+        new RegExp(`^InvalidOfferData - missing properties: \\[${key}\\]`)
       );
     });
     test("invalid tokenInfo - undefined", async () => {

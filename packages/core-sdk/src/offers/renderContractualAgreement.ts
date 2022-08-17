@@ -1,5 +1,6 @@
+import * as yup from "yup";
 import { ITokenInfo } from "./../utils/tokenInfoManager";
-import { BigNumber } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
@@ -26,9 +27,45 @@ export class InvalidOfferDataError extends Error {
   }
 }
 
+export const baseOfferDataSchema: yup.SchemaOf<BaseOfferData> = yup.object({
+  price: yup.mixed().required(),
+  sellerDeposit: yup.mixed().required(),
+  agentId: yup.mixed().required(),
+  buyerCancelPenalty: yup.mixed().required(),
+  quantityAvailable: yup.mixed().required(),
+  validFromDateInMS: yup.mixed().required(),
+  validUntilDateInMS: yup.mixed().required(),
+  voucherRedeemableFromDateInMS: yup.mixed().required(),
+  voucherRedeemableUntilDateInMS: yup.mixed().required(),
+  fulfillmentPeriodDurationInMS: yup.mixed().required(),
+  resolutionPeriodDurationInMS: yup.mixed().required(),
+  exchangeToken: yup.string().required(),
+  disputeResolverId: yup.mixed().required(),
+  metadataUri: yup.string().required(),
+  metadataHash: yup.string().required()
+});
+
+export type BaseOfferData = {
+  price: BigNumberish;
+  sellerDeposit: BigNumberish;
+  agentId: BigNumberish;
+  buyerCancelPenalty: BigNumberish;
+  quantityAvailable: BigNumberish;
+  validFromDateInMS: BigNumberish;
+  validUntilDateInMS: BigNumberish;
+  voucherRedeemableFromDateInMS: BigNumberish;
+  voucherRedeemableUntilDateInMS: BigNumberish;
+  fulfillmentPeriodDurationInMS: BigNumberish;
+  resolutionPeriodDurationInMS: BigNumberish;
+  exchangeToken: string;
+  disputeResolverId: BigNumberish;
+  metadataUri: string;
+  metadataHash: string;
+};
+
 function checkOfferDataIsValid(
   offerData: unknown,
-  throwIFInvalid = false
+  throwIfInvalid = false
 ): boolean {
   if (offerData === undefined || offerData === null) {
     throw new Error("InvalidOfferData - undefined");
@@ -36,35 +73,26 @@ function checkOfferDataIsValid(
   if (typeof offerData !== "object") {
     throw new Error("InvalidOfferData - expecting an object");
   }
-  const schema: Record<
-    keyof Omit<offers.CreateOfferArgs, "voucherValidDurationInMS">,
-    string
-  > = {
-    price: "BigNumberish",
-    sellerDeposit: "BigNumberish",
-    agentId: "BigNumberish",
-    buyerCancelPenalty: "BigNumberish",
-    quantityAvailable: "BigNumberish",
-    validFromDateInMS: "BigNumberish",
-    validUntilDateInMS: "BigNumberish",
-    voucherRedeemableFromDateInMS: "BigNumberish",
-    voucherRedeemableUntilDateInMS: "BigNumberish",
-    fulfillmentPeriodDurationInMS: "BigNumberish",
-    resolutionPeriodDurationInMS: "BigNumberish",
-    exchangeToken: "string",
-    disputeResolverId: "BigNumberish",
-    metadataUri: "string",
-    metadataHash: "string"
-  };
-  const missingProperties = Object.keys(schema)
-    .filter((key) => offerData[key] === undefined)
-    .map((key) => `${key}: '${schema[key]}'`);
-
-  if (throwIFInvalid && missingProperties.length > 0) {
-    throw new InvalidOfferDataError(missingProperties);
+  try {
+    baseOfferDataSchema.validateSync(offerData, { abortEarly: false });
+  } catch (e) {
+    const missingProperties = [];
+    const getMissingProp = (error) => {
+      return error.match(/(.*) is a required field/)[1] || error;
+    };
+    if (throwIfInvalid) {
+      if (e.errors) {
+        e.errors.forEach((error: string) => {
+          missingProperties.push(getMissingProp(error));
+        });
+      } else {
+        missingProperties.push(getMissingProp(e));
+      }
+      throw new InvalidOfferDataError(missingProperties);
+    }
+    return false;
   }
-
-  return missingProperties.length === 0;
+  return true;
 }
 
 function convertExistingOfferData(
