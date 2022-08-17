@@ -89,5 +89,34 @@ fragment BaseOfferFields on Offer {
     externalUrl
     schemaUrl
     type
+    ... on ProductV1MetadataEntity {
+      image
+      attributes {
+        traitType
+        value
+        displayType
+      }
+      createdAt
+      voided
+      validFromDate
+      validUntilDate
+      quantityAvailable
+      uuid
+      product {
+        ...BaseProductV1ProductFields
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+      productV1Seller {
+        ...BaseProductV1SellerFields
+      }
+      exchangePolicy {
+        ...BaseProductV1ExchangePolicyFields
+      }
+      shipping {
+        ...BaseProductV1ShippingOptionFields
+      }
+    }
   }
 }

@@ -143,7 +143,7 @@ export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
 export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
-// available seedWallets
+// seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 
 export const mockErc20Contract = new Contract(

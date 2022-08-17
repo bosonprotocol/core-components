@@ -7,14 +7,19 @@ import {
   ExchangeState
 } from "../src/subgraph";
 import nock from "nock";
+import { subgraph } from "../src";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
 export const DAY_IN_MS = 24 * 60 * 60 * 1000;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export function interceptSubgraph() {
+export function interceptSubgraph(operationName?: string) {
   return nock(SUBGRAPH_URL).post("", (body) => {
-    return body.query && body.variables;
+    return (
+      body.query &&
+      body.variables &&
+      (!operationName || operationName === body.operationName)
+    );
   });
 }
 
@@ -170,5 +175,18 @@ export function mockRawExchangeFromSubgraph(
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),
     ...restOverrides
+  };
+}
+
+export function buildProductV1Metadata(template: string) {
+  return {
+    name: "Name",
+    description: "Description",
+    externalUrl: "externalUrl",
+    schemaUrl: "schemaUrl",
+    type: subgraph.MetadataType.ProductV1,
+    exchangePolicy: {
+      template
+    }
   };
 }
