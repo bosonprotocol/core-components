@@ -4,7 +4,7 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits } from "@ethersproject/units";
 import { productV1 } from "@bosonprotocol/metadata";
 
 export type TemplateRenderingData = offers.CreateOfferArgs & {
