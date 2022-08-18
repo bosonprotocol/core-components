@@ -12,7 +12,7 @@ export interface ITokenInfoManager {
   getExchangeTokenInfo: (tokenAddress: string) => Promise<ITokenInfo>;
 }
 
-const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
+export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
   1: {
     // Ethereum Mainnet
     name: "Ether",
