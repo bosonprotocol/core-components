@@ -51,7 +51,7 @@ type Variation = {
 };
 
 type SellerMetadata = {
-  defaultVersion?: number;
+  defaultVersion: number;
   name?: string;
   description?: string;
   externalUrl?: string;
@@ -60,7 +60,7 @@ type SellerMetadata = {
     url: string;
     tag?: string;
   }[];
-  contactLinks?: {
+  contactLinks: {
     url: string;
     tag: string;
   }[];
