@@ -4,8 +4,8 @@
     "noImplicitAny": false,
     "rootDir": "src",
     "module": "esnext",
-    "outDir": "dist",
+    "outDir": "dist/esm",
     "target": "esnext"
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["src"]
 }
