@@ -59,8 +59,8 @@ async function main() {
 
 main()
   .then(() => {
-  console.log("success");
-  process.exit(0);
+    console.log("success");
+    process.exit(0);
   })
   .catch((e) => {
     console.error(e);
