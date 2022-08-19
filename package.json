@@ -27,7 +27,8 @@
     "e2e:services:win32": "cmd /c .\\e2e\\run-e2e-services.cmd",
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
     "export-abis": "ts-node ./scripts/export-abis.ts",
-    "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts"
+    "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts",
+    "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts"
   },
   "repository": {
     "type": "git",
