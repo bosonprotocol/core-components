@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/widgets-sdk",
-  "version": "1.9.0-alpha.6",
+  "version": "1.9.0-alpha.7",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
