@@ -28,7 +28,9 @@ export class IpfsMetadataStorage
   }
 
   public async getMetadata(metadataUriOrHash: string): Promise<AnyMetadata> {
-    const metadata = await this.get<ERC721Metadata>(metadataUriOrHash);
+    const metadata = (await this.get<ERC721Metadata>(
+      metadataUriOrHash
+    )) as ERC721Metadata;
     validateMetadata(metadata);
 
     return metadata;

@@ -25,7 +25,7 @@ export class BaseIpfsStorage {
     return cid;
   }
 
-  public async get<T>(uriOrHash: string): Promise<T> {
+  public async get<T>(uriOrHash: string, asJson = true): Promise<T | string> {
     let cid: CID = null;
     try {
       cid = CID.parse(
@@ -38,25 +38,30 @@ export class BaseIpfsStorage {
     }
 
     const value = await (cid
-      ? this.getByCID<T>(cid.toString())
-      : this.getByURL<T>(uriOrHash));
+      ? this.getByCID<T>(cid.toString(), asJson)
+      : this.getByURL<T>(uriOrHash, asJson));
     return value;
   }
 
-  public async getByCID<T>(cid: string): Promise<T> {
+  public async getByCID<T>(cid: string, asJson = true): Promise<T | string> {
     const chunks = [];
     for await (const chunk of this.ipfsClient.cat(cid)) {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    const parsed = JSON.parse(toString(data));
-    return parsed;
+    const dataStr = toString(data);
+    if (!asJson) {
+      return dataStr;
+    }
+    return JSON.parse(dataStr);
   }
 
-  public async getByURL<T>(url: string): Promise<T> {
+  public async getByURL<T>(url: string, asJson = true): Promise<T | string> {
     const response = await fetch(url);
 
-    const parsed = await response.json();
-    return parsed;
+    if (!asJson) {
+      return response.text();
+    }
+    return response.json();
   }
 }
