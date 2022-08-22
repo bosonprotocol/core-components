@@ -10,7 +10,9 @@ import nock from "nock";
 import { subgraph } from "../src";
 
 export const SUBGRAPH_URL = "https://subgraph.com/subgraphs";
-export const DAY_IN_MS = 24 * 60 * 60 * 1000;
+export const DAY_IN_MIN = 24 * 60;
+export const DAY_IN_SEC = DAY_IN_MIN * 60;
+export const DAY_IN_MS = DAY_IN_SEC * 1000;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export function interceptSubgraph(operationName?: string) {

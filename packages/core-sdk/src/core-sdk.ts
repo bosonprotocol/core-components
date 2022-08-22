@@ -575,6 +575,31 @@ export class CoreSDK {
   }
 
   /**
+   * Utility method to retrieve the created `sellerId` from logs after calling `createSeller`
+   * or `createOfferAndSeller`.
+   * @param logs - Logs to search in.
+   * @returns Created offer id.
+   */
+   public getCreatedSellerIdFromLogs(logs: Log[]): string | null {
+    const sellerId = getValueFromLogs({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "sellerId",
+      eventName: "SellerCreated"
+    });
+
+    return (
+      sellerId ||
+      getValueFromLogs({
+        iface: orchestration.iface.bosonOrchestrationHandlerIface,
+        logs,
+        eventArgsKey: "sellerId",
+        eventName: "SellerCreated"
+      })
+    );
+  }
+
+  /**
    * Voids an existing offer by calling the `OfferHandlerFacet` contract.
    * This transaction only succeeds if the connected signer is the `operator`.
    * @param offerId - ID of offer to void.

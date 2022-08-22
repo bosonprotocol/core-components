@@ -1,3 +1,5 @@
+import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
+import { CreateSellerArgs } from "./../../packages/common/src/types/accounts";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
 import {
   DisputeState,
@@ -35,7 +37,7 @@ jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
-    test("create seller + offer", async () => {
+    test("create seller and offer", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet
       );
@@ -52,6 +54,34 @@ describe("core-sdk", () => {
         fundedWallet.address.toLowerCase()
       );
       expect(createdOffer.disputeResolver.fees.length > 0).toBeTruthy();
+      expect(BigNumber.from(createdOffer.voucherValidDuration).eq(0)).toBe(
+        true
+      ); // By default, the validity period is created with dateFrom - dateTo
+    });
+
+    test("create seller, then create offer", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      // Create an offer with validity duration instead of period
+      const createdOffer = await createOffer(coreSDK, seller.id, {
+        voucherRedeemableUntilDateInMS: 0,
+        voucherValidDurationInMS: 30 * DAY_IN_MS
+      });
+      expect(createdOffer).toBeTruthy();
+      const voucherValidDuration = 30 * DAY_IN_SEC;
+      expect(
+        BigNumber.from(createdOffer.voucherValidDuration).eq(
+          voucherValidDuration
+        )
+      ).toBe(true);
+      expect(
+        BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
+      ).toBe(true);
     });
 
     describe("deposit funds", () => {
@@ -519,6 +549,33 @@ async function createOffer(
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
+}
+
+async function createSeller(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  sellerParams?: Partial<CreateSellerArgs>
+) {
+  const contractUri = "ipfs://0123456789abcdef";
+  const createSellerTxResponse = await coreSDK.createSeller({
+    operator: sellerAddress,
+    admin: sellerAddress,
+    clerk: sellerAddress,
+    treasury: sellerAddress,
+    contractUri,
+    authTokenId: "0",
+    authTokenType: 0,
+    ...sellerParams
+  });
+  const createSellerTxReceipt = await createSellerTxResponse.wait();
+  const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
+    createSellerTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const seller = await coreSDK.getSellerById(createdSellerId as string);
+
+  return seller;
 }
 
 async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
