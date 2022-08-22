@@ -44,7 +44,7 @@
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
     "mustache": "^4.2.0",
-    "yup": "^1.0.0-beta.4"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
