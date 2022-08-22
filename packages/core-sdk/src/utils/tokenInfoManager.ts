@@ -1,6 +1,6 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
 import { AddressZero } from "@ethersproject/constants";
-import { erc20 } from "..";
+import { getDecimals, getName, getSymbol } from "../erc20/handler";
 
 export interface ITokenInfo {
   name: string;
@@ -82,9 +82,9 @@ export class TokenInfoManager implements ITokenInfoManager {
         contractAddress: tokenAddress
       };
       const [decimals, name, symbol] = await Promise.all([
-        erc20.handler.getDecimals(args),
-        erc20.handler.getName(args),
-        erc20.handler.getSymbol(args)
+        getDecimals(args),
+        getName(args),
+        getSymbol(args)
       ]);
       this._tokenInfos.set(tokenAddress.toLowerCase(), {
         decimals,
