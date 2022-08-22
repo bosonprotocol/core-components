@@ -54,7 +54,8 @@ export function argsToOfferDatesStruct(
   const {
     validFromDateInMS,
     validUntilDateInMS,
-    voucherRedeemableFromDateInMS
+    voucherRedeemableFromDateInMS,
+    voucherRedeemableUntilDateInMS
   } = args;
 
   return {
@@ -63,10 +64,9 @@ export function argsToOfferDatesStruct(
     voucherRedeemableFrom: utils.timestamp.msToSec(
       voucherRedeemableFromDateInMS
     ),
-    voucherRedeemableUntil:
-      // NOTE: Field `voucherRedeemableUntil` not yet fully supported in protocol.
-      // Therefore converting to `voucherValid` field.
-      "0"
+    voucherRedeemableUntil: utils.timestamp.msToSec(
+      voucherRedeemableUntilDateInMS
+    )
   };
 }
 
@@ -75,22 +75,13 @@ export function argsToOfferDurationsStruct(
 ): Partial<OfferDurationsStruct> {
   const {
     fulfillmentPeriodDurationInMS,
-    voucherRedeemableUntilDateInMS,
-    voucherRedeemableFromDateInMS,
     voucherValidDurationInMS = 0,
     resolutionPeriodDurationInMS
   } = args;
 
   return {
     fulfillmentPeriod: utils.timestamp.msToSec(fulfillmentPeriodDurationInMS),
-    voucherValid: utils.timestamp.msToSec(
-      voucherValidDurationInMS ||
-        // NOTE: Field `voucherRedeemableUntil` not yet fully supported in protocol.
-        // Therefore converting to `voucherValid` field.
-        BigNumber.from(voucherRedeemableUntilDateInMS).sub(
-          BigNumber.from(voucherRedeemableFromDateInMS)
-        )
-    ),
+    voucherValid: utils.timestamp.msToSec(voucherValidDurationInMS),
     resolutionPeriod: utils.timestamp.msToSec(resolutionPeriodDurationInMS)
   };
 }
