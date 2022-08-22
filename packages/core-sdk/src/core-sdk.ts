@@ -580,7 +580,7 @@ export class CoreSDK {
    * @param logs - Logs to search in.
    * @returns Created offer id.
    */
-   public getCreatedSellerIdFromLogs(logs: Log[]): string | null {
+  public getCreatedSellerIdFromLogs(logs: Log[]): string | null {
     const sellerId = getValueFromLogs({
       iface: accounts.iface.bosonAccountHandlerIface,
       logs,
