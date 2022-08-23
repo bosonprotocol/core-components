@@ -12,8 +12,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     widgetsUrl: "https://widgets-test.on.fleek.co",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/25a707871f4117d29cd5536ef337841509bea2c8
-      protocolDiamond: "0x156207E1ca9746e5a387930c8695d84bc8dAD69F",
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/b128b0cc9e6e0a72e6b377573c5ccfa88643e6a5
+      protocolDiamond: "0x559272B7186B3cFe55CE813FB36F52c0E8ad9778",
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     }
   },
