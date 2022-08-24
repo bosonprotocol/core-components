@@ -12,7 +12,7 @@ import {
 import {
   BuyerCommitted,
   BuyerCommittedExchangeStruct,
-  BuyerCommittedExchangeVoucherStruct
+  BuyerCommittedVoucherStruct
 } from "../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import {
   SellerCreated,
@@ -207,7 +207,7 @@ export function createBuyerCommittedEvent(
   const buyerCommittedEvent = changetype<BuyerCommitted>(newMockEvent());
   buyerCommittedEvent.parameters = new Array();
 
-  const voucherStruct = new BuyerCommittedExchangeVoucherStruct();
+  const voucherStruct = new BuyerCommittedVoucherStruct();
   voucherStruct.push(ethereum.Value.fromI32(0));
   voucherStruct.push(ethereum.Value.fromI32(0));
   voucherStruct.push(ethereum.Value.fromI32(0));
@@ -218,8 +218,6 @@ export function createBuyerCommittedEvent(
   exchangeStruct.push(ethereum.Value.fromI32(offerId));
   exchangeStruct.push(ethereum.Value.fromI32(buyerId));
   exchangeStruct.push(ethereum.Value.fromI32(0));
-  exchangeStruct.push(ethereum.Value.fromTuple(voucherStruct));
-  exchangeStruct.push(ethereum.Value.fromBoolean(false));
   exchangeStruct.push(ethereum.Value.fromI32(0)); // COMMITTED
 
   const offerIdParam = new ethereum.EventParam(
@@ -238,11 +236,21 @@ export function createBuyerCommittedEvent(
     "exchange",
     ethereum.Value.fromTuple(exchangeStruct)
   );
+  const voucherParam = new ethereum.EventParam(
+    "voucher",
+    ethereum.Value.fromTuple(voucherStruct)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.zero())
+  );
 
   buyerCommittedEvent.parameters.push(offerIdParam);
   buyerCommittedEvent.parameters.push(buyerIdParam);
   buyerCommittedEvent.parameters.push(exchangeIdParam);
   buyerCommittedEvent.parameters.push(exchangeParam);
+  buyerCommittedEvent.parameters.push(voucherParam);
+  buyerCommittedEvent.parameters.push(executedByParam);
 
   return buyerCommittedEvent;
 }
