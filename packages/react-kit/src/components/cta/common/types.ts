@@ -1,6 +1,6 @@
 import { providers } from "ethers";
 import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
-import { ButtonSize } from "../../buttons/Button";
+import { ButtonProps, ButtonSize } from "../../buttons/Button";
 
 export type CtaButtonProps<T> = CoreSdkConfig & {
   /**
@@ -38,5 +38,6 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
   onError?: (error: Error) => void;
   children?: React.ReactNode;
   size?: ButtonSize;
+  variant?: ButtonProps["variant"];
   className?: string;
 };
