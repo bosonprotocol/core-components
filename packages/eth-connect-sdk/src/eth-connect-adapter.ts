@@ -37,13 +37,13 @@ export class EthConnectAdapter implements Web3LibAdapter {
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
     const txHash = await this._requestManager.eth_sendTransaction({
-      from: "0x",
+      from: transactionRequest.from || "0x",
       to: transactionRequest.to || "0x",
-      gas: transactionRequest?.gasLimit.toString(),
-      gasPrice: transactionRequest?.gasPrice.toString(),
-      value: transactionRequest?.value.toString(),
       data: transactionRequest.data || "0x",
-      nonce: transactionRequest?.nonce.toString()
+      gas: transactionRequest.gasLimit?.toString(),
+      gasPrice: transactionRequest.gasPrice?.toString(),
+      value: transactionRequest.value?.toString(),
+      nonce: transactionRequest.nonce?.toString()
     });
 
     return {
