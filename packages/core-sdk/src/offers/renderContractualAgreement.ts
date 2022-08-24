@@ -1,13 +1,15 @@
 import * as yup from "yup";
 import { ITokenInfo } from "./../utils/tokenInfoManager";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "@ethersproject/units";
 import { productV1 } from "@bosonprotocol/metadata";
 
-export type TemplateRenderingData = offers.CreateOfferArgs & {
+import { CreateOfferArgs } from "./types";
+import { OfferFieldsFragment, MetadataType } from "../subgraph";
+
+export type TemplateRenderingData = CreateOfferArgs & {
   priceValue: string; // Convert in decimals value
   sellerDepositValue: string; // Convert in decimals value
   buyerCancelPenaltyValue: string; // Convert in decimals value
@@ -95,9 +97,10 @@ function checkOfferDataIsValid(
   return true;
 }
 
-function convertExistingOfferData(
-  offerDataSubGraph: subgraph.OfferFieldsFragment
-): { offerData: offers.CreateOfferArgs; tokenInfo: ITokenInfo } {
+function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
+  offerData: CreateOfferArgs;
+  tokenInfo: ITokenInfo;
+} {
   return {
     offerData: {
       ...offerDataSubGraph,
@@ -120,7 +123,7 @@ function convertExistingOfferData(
 }
 
 export async function prepareRenderingData(
-  offerData: offers.CreateOfferArgs,
+  offerData: CreateOfferArgs,
   tokenInfo: ITokenInfo
 ): Promise<TemplateRenderingData> {
   return {
@@ -156,7 +159,7 @@ export async function prepareRenderingData(
 // inject a template + all offer details
 export async function renderContractualAgreement(
   template: string,
-  offerData: offers.CreateOfferArgs,
+  offerData: CreateOfferArgs,
   tokenInfo: ITokenInfo
 ): Promise<string> {
   // Check the passed offerData is matching the required type
@@ -166,7 +169,7 @@ export async function renderContractualAgreement(
 }
 
 export async function renderContractualAgreementForOffer(
-  existingOfferData: subgraph.OfferFieldsFragment
+  existingOfferData: OfferFieldsFragment
 ): Promise<string> {
   if (!existingOfferData) {
     throw new Error(`offerData is undefined`);
@@ -174,7 +177,7 @@ export async function renderContractualAgreementForOffer(
   if (!existingOfferData.metadata) {
     throw new Error(`Offer Metadata is undefined`);
   }
-  if (existingOfferData.metadata.type !== subgraph.MetadataType.ProductV1) {
+  if (existingOfferData.metadata.type !== MetadataType.ProductV1) {
     throw new Error(
       `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`
     );

@@ -72,7 +72,7 @@ export function mockCreateOfferArgs(
     voucherRedeemableFromDateInMS: Date.now() + 1000,
     voucherRedeemableUntilDateInMS: Date.now() + 30 * MSEC_PER_DAY,
     fulfillmentPeriodDurationInMS: 40 * MSEC_PER_DAY,
-    voucherValidDurationInMS: 30 * MSEC_PER_DAY,
+    voucherValidDurationInMS: 0,
     resolutionPeriodDurationInMS: 50 * MSEC_PER_DAY,
     exchangeToken: AddressZero,
     disputeResolverId: "1",
