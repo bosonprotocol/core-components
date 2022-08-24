@@ -412,7 +412,6 @@ export type Dispute = {
   __typename?: "Dispute";
   buyer: Buyer;
   buyerPercent: Scalars["BigInt"];
-  complaint: Scalars["String"];
   disputedDate: Scalars["BigInt"];
   escalatedDate?: Maybe<Scalars["BigInt"]>;
   exchange: Exchange;
@@ -778,26 +777,6 @@ export type Dispute_Filter = {
   buyer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   buyer_starts_with?: InputMaybe<Scalars["String"]>;
   buyer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint?: InputMaybe<Scalars["String"]>;
-  complaint_contains?: InputMaybe<Scalars["String"]>;
-  complaint_contains_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_ends_with?: InputMaybe<Scalars["String"]>;
-  complaint_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_gt?: InputMaybe<Scalars["String"]>;
-  complaint_gte?: InputMaybe<Scalars["String"]>;
-  complaint_in?: InputMaybe<Array<Scalars["String"]>>;
-  complaint_lt?: InputMaybe<Scalars["String"]>;
-  complaint_lte?: InputMaybe<Scalars["String"]>;
-  complaint_not?: InputMaybe<Scalars["String"]>;
-  complaint_not_contains?: InputMaybe<Scalars["String"]>;
-  complaint_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_not_ends_with?: InputMaybe<Scalars["String"]>;
-  complaint_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  complaint_not_starts_with?: InputMaybe<Scalars["String"]>;
-  complaint_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_starts_with?: InputMaybe<Scalars["String"]>;
-  complaint_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   disputedDate?: InputMaybe<Scalars["BigInt"]>;
   disputedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   disputedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -895,7 +874,6 @@ export type Dispute_Filter = {
 export enum Dispute_OrderBy {
   Buyer = "buyer",
   BuyerPercent = "buyerPercent",
-  Complaint = "complaint",
   DisputedDate = "disputedDate",
   EscalatedDate = "escalatedDate",
   Exchange = "exchange",
@@ -4303,7 +4281,7 @@ export enum ProductV1Section_OrderBy {
 export type ProductV1Seller = {
   __typename?: "ProductV1Seller";
   contactLinks?: Maybe<Array<ProductV1SellerContactLink>>;
-  defaultVersion?: Maybe<Scalars["Int"]>;
+  defaultVersion: Scalars["Int"];
   description?: Maybe<Scalars["String"]>;
   externalUrl?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
@@ -6255,7 +6233,7 @@ export type GetSellerByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -6576,7 +6554,7 @@ export type GetSellersQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -6985,7 +6963,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -7281,7 +7259,7 @@ export type GetDisputeResolversQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -7571,7 +7549,7 @@ export type SellerFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -7900,7 +7878,7 @@ export type DisputeResolverFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -8041,7 +8019,6 @@ export type GetDisputeByIdQueryQuery = {
     __typename?: "Dispute";
     id: string;
     exchangeId: string;
-    complaint: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -8097,7 +8074,6 @@ export type GetDisputesQueryQuery = {
     __typename?: "Dispute";
     id: string;
     exchangeId: string;
-    complaint: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -8143,7 +8119,6 @@ export type DisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
   exchangeId: string;
-  complaint: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -8183,7 +8158,6 @@ export type BaseDisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
   exchangeId: string;
-  complaint: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -8445,7 +8419,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -8734,7 +8708,7 @@ export type GetExchangeTokensQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -8997,7 +8971,7 @@ export type ExchangeTokenFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -9302,7 +9276,7 @@ export type GetExchangeByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -9597,7 +9571,7 @@ export type GetExchangesQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -9873,7 +9847,7 @@ export type ExchangeFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -10242,7 +10216,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -10546,7 +10520,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -10836,7 +10810,7 @@ export type BaseMetadataEntityFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -11125,7 +11099,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -11464,7 +11438,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -11624,7 +11598,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     productV1Seller: {
       __typename?: "ProductV1Seller";
       id: string;
-      defaultVersion?: number | null;
+      defaultVersion: number;
       name?: string | null;
       description?: string | null;
       externalUrl?: string | null;
@@ -11893,7 +11867,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             productV1Seller: {
               __typename?: "ProductV1Seller";
               id: string;
-              defaultVersion?: number | null;
+              defaultVersion: number;
               name?: string | null;
               description?: string | null;
               externalUrl?: string | null;
@@ -12053,7 +12027,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     productV1Seller: {
       __typename?: "ProductV1Seller";
       id: string;
-      defaultVersion?: number | null;
+      defaultVersion: number;
       name?: string | null;
       description?: string | null;
       externalUrl?: string | null;
@@ -12308,7 +12282,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -12468,7 +12442,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
   productV1Seller: {
     __typename?: "ProductV1Seller";
     id: string;
-    defaultVersion?: number | null;
+    defaultVersion: number;
     name?: string | null;
     description?: string | null;
     externalUrl?: string | null;
@@ -12722,7 +12696,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -12882,7 +12856,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   productV1Seller: {
     __typename?: "ProductV1Seller";
     id: string;
-    defaultVersion?: number | null;
+    defaultVersion: number;
     name?: string | null;
     description?: string | null;
     externalUrl?: string | null;
@@ -13048,7 +13022,7 @@ export type BaseProductV1VariationFieldsFragment = {
 export type BaseProductV1SellerFieldsFragment = {
   __typename?: "ProductV1Seller";
   id: string;
-  defaultVersion?: number | null;
+  defaultVersion: number;
   name?: string | null;
   description?: string | null;
   externalUrl?: string | null;
@@ -13373,7 +13347,7 @@ export type GetOfferByIdQueryQuery = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -13652,7 +13626,7 @@ export type GetOffersQueryQuery = {
           productV1Seller: {
             __typename?: "ProductV1Seller";
             id: string;
-            defaultVersion?: number | null;
+            defaultVersion: number;
             name?: string | null;
             description?: string | null;
             externalUrl?: string | null;
@@ -13915,7 +13889,7 @@ export type OfferFieldsFragment = {
         productV1Seller: {
           __typename?: "ProductV1Seller";
           id: string;
-          defaultVersion?: number | null;
+          defaultVersion: number;
           name?: string | null;
           description?: string | null;
           externalUrl?: string | null;
@@ -14163,7 +14137,7 @@ export type BaseOfferFieldsFragment = {
         productV1Seller: {
           __typename?: "ProductV1Seller";
           id: string;
-          defaultVersion?: number | null;
+          defaultVersion: number;
           name?: string | null;
           description?: string | null;
           externalUrl?: string | null;
@@ -14649,7 +14623,6 @@ export const BaseDisputeFieldsFragmentDoc = gql`
   fragment BaseDisputeFields on Dispute {
     id
     exchangeId
-    complaint
     state
     buyerPercent
     disputedDate

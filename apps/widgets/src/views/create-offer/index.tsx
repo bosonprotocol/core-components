@@ -102,7 +102,8 @@ export default function CreateOffer() {
               authTokenId: "0",
               authTokenType: 0,
               // TODO: Allow to set from url params
-              contractUri: "ipfs://seller-contract-uri"
+              contractUri: "ipfs://seller-contract-uri",
+              royaltyPercentage: "0"
             },
             createOfferArgs
           );

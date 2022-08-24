@@ -1,6 +1,7 @@
 import {
   SellerStruct,
   AuthTokenStruct,
+  VoucherInitValuesStruct,
   abis,
   DisputeResolverStruct,
   utils
@@ -21,8 +22,8 @@ export function encodeCreateAccount(seller: CreateSellerArgs) {
   const sellerArgs = createSellerArgsToStruct(seller);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
     sellerArgs.sellerStruct,
-    seller.contractUri,
-    sellerArgs.authTokenStruct
+    sellerArgs.authTokenStruct,
+    sellerArgs.voucherInitValues
   ]);
 }
 
@@ -92,8 +93,15 @@ export function encodeUpdateDisputeResolver(
 export function createSellerArgsToStruct(args: CreateSellerArgs): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
+  voucherInitValues: VoucherInitValuesStruct;
 } {
-  const { authTokenId, authTokenType, ...sellerStructArgs } = args;
+  const {
+    authTokenId,
+    authTokenType,
+    contractUri,
+    royaltyPercentage,
+    ...sellerStructArgs
+  } = args;
   return {
     sellerStruct: {
       // NOTE: It doesn't matter which values we set for `id` and `active` here
@@ -106,6 +114,10 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     authTokenStruct: {
       tokenId: authTokenId,
       tokenType: authTokenType
+    },
+    voucherInitValues: {
+      contractURI: contractUri,
+      royaltyPercentage
     }
   };
 }
