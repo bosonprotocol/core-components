@@ -48,6 +48,7 @@ export async function commitToOffer(
   }
 
   return args.web3Lib.sendTransaction({
+    from: args.buyer,
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"

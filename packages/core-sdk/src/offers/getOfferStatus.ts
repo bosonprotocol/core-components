@@ -1,4 +1,4 @@
-import { subgraph } from "..";
+import { OfferFieldsFragment } from "../subgraph";
 
 export enum OfferState {
   VOIDED = "VOIDED",
@@ -7,7 +7,7 @@ export enum OfferState {
   VALID = "VALID"
 }
 
-export function getOfferStatus(offer: subgraph.OfferFieldsFragment) {
+export function getOfferStatus(offer: OfferFieldsFragment) {
   const toTimeStamp = (numberString: string) => Number(numberString) * 1000;
   const timeNow = Date.now();
 

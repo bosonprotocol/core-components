@@ -8,6 +8,8 @@ export * from "./types";
 export * from "./getOfferStatus";
 export * from "./renderContractualAgreement";
 
-export const validation = {
+export const validation: {
+  createOfferArgsSchema: typeof utils.validation.createOfferArgsSchema;
+} = {
   createOfferArgsSchema: utils.validation.createOfferArgsSchema
 };
