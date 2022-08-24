@@ -27,6 +27,7 @@ export const VoidButton = ({
   onPendingTransaction,
   waitBlocks = 1,
   size = ButtonSize.Large,
+  variant = "secondary",
   children,
   ...coreSdkConfig
 }: Props) => {
@@ -35,7 +36,7 @@ export const VoidButton = ({
 
   return (
     <Button
-      variant="primary"
+      variant={variant}
       disabled={disabled}
       size={size}
       onClick={async () => {
