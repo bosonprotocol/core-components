@@ -19,14 +19,26 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "staging",
+    chainId: 3,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/ropsten",
+    jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
+    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+    widgetsUrl: "https://widgets-staging.on.fleek.co",
+    contracts: {
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/753ac3aa9cbea4f42236130808984121c65e76dc
+      protocolDiamond: "0xDdAE2985Ca872B3E2974e296acF8931C0965801b"
+    }
+  },
+  {
+    envName: "staging_next",
     chainId: 80001,
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/d49be9f0f6de1c0b757b6fc0bbd0565b8c206286
-      protocolDiamond: "0x951892e0d2534f479eC0C15C62e46F17a8bD6a59"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/TBD
+      protocolDiamond: "TBD"
     }
   },
   {
