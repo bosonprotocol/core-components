@@ -54,33 +54,6 @@ const _abi = [
             type: "uint256",
           },
           {
-            components: [
-              {
-                internalType: "uint256",
-                name: "committedDate",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "validUntilDate",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "redeemedDate",
-                type: "uint256",
-              },
-              {
-                internalType: "bool",
-                name: "expired",
-                type: "bool",
-              },
-            ],
-            internalType: "struct BosonTypes.Voucher",
-            name: "voucher",
-            type: "tuple",
-          },
-          {
             internalType: "enum BosonTypes.ExchangeState",
             name: "state",
             type: "uint8",
@@ -89,6 +62,34 @@ const _abi = [
         indexed: false,
         internalType: "struct BosonTypes.Exchange",
         name: "exchange",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "committedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "expired",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Voucher",
+        name: "voucher",
         type: "tuple",
       },
       {
@@ -735,33 +736,6 @@ const _abi = [
             type: "uint256",
           },
           {
-            components: [
-              {
-                internalType: "uint256",
-                name: "committedDate",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "validUntilDate",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "redeemedDate",
-                type: "uint256",
-              },
-              {
-                internalType: "bool",
-                name: "expired",
-                type: "bool",
-              },
-            ],
-            internalType: "struct BosonTypes.Voucher",
-            name: "voucher",
-            type: "tuple",
-          },
-          {
             internalType: "enum BosonTypes.ExchangeState",
             name: "state",
             type: "uint8",
@@ -769,6 +743,33 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.Exchange",
         name: "exchange",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "committedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntilDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "expired",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Voucher",
+        name: "voucher",
         type: "tuple",
       },
     ],
@@ -807,6 +808,198 @@ const _abi = [
         internalType: "uint256",
         name: "nextExchangeId",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_exchangeId",
+        type: "uint256",
+      },
+    ],
+    name: "getReceipt",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "exchangeId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "offerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "protocolFee",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "agentFee",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct BosonTypes.OfferFees",
+            name: "offerFees",
+            type: "tuple",
+          },
+          {
+            internalType: "uint256",
+            name: "agentId",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizedDate",
+            type: "uint256",
+          },
+          {
+            components: [
+              {
+                internalType: "enum BosonTypes.EvaluationMethod",
+                name: "method",
+                type: "uint8",
+              },
+              {
+                internalType: "enum BosonTypes.TokenType",
+                name: "tokenType",
+                type: "uint8",
+              },
+              {
+                internalType: "address",
+                name: "tokenAddress",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "tokenId",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "threshold",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "maxCommits",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct BosonTypes.Condition",
+            name: "condition",
+            type: "tuple",
+          },
+          {
+            internalType: "uint256",
+            name: "committedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "redeemedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "voucherExpired",
+            type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "disputeResolverId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "disputedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalatedDate",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.DisputeState",
+            name: "disputeState",
+            type: "uint8",
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "twinId",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "tokenId",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                internalType: "address",
+                name: "tokenAddress",
+                type: "address",
+              },
+              {
+                internalType: "enum BosonTypes.TokenType",
+                name: "tokenType",
+                type: "uint8",
+              },
+            ],
+            internalType: "struct BosonTypes.TwinReceipt[]",
+            name: "twinReceipts",
+            type: "tuple[]",
+          },
+        ],
+        internalType: "struct BosonTypes.Receipt",
+        name: "receipt",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
