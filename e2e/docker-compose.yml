@@ -2,7 +2,7 @@ version: "3"
 services:
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:25ea648255481178eb4d0821f973a6489b743a97
+    image: hardhat-node:25ea648255481178eb4d0821f973a6489b743a9x
     ports:
       - "8545:8545"
 

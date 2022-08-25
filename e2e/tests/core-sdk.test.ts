@@ -393,7 +393,7 @@ describe("core-sdk", () => {
         // Raise the dispute
         await raiseDispute(exchange.id, buyerCoreSDK);
 
-        await checkDisputeResolving(exchange.id, complbuyerCoreSDK);
+        await checkDisputeResolving(exchange.id, buyerCoreSDK);
 
         // Expire the dispute
         await expireDispute(exchange.id, sellerCoreSDK);
