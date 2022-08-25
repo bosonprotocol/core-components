@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.10.0...@bosonprotocol/subgraph@1.10.1) (2022-08-25)
+
+### Bug Fixes
+
+* change subgraph URL on staging ([#208](https://github.com/bosonprotocol/core-components/issues/208)) ([964890d](https://github.com/bosonprotocol/core-components/commit/964890d63445f8f050f9a142d8aaf5e52a5c6c8c))
+
 # [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.9.0...@bosonprotocol/subgraph@1.10.0) (2022-08-25)
 
 ### Bug Fixes
