@@ -791,9 +791,9 @@ async function resolveDispute(
       r: sigR,
       s: sigS,
       v: sigV
-    } = await signerSDK.signMutualAgreement({
-      exchangeId: exchangeId,
-      buyerPercent: buyerPercent
+    } = await signerSDK.signDisputeResolutionProposal({
+      exchangeId,
+      buyerPercent
     });
 
     // send the Resolve transaction from buyer

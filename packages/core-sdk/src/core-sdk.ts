@@ -1082,37 +1082,19 @@ export class CoreSDK {
     });
   }
 
-  public async signMutualAgreement(args: {
-    exchangeId: string;
-    buyerPercent: string;
+  public async signDisputeResolutionProposal(args: {
+    exchangeId: BigNumberish;
+    buyerPercent: BigNumberish;
   }) {
-    // Set the message Type, needed for signature
-    const resolutionType = [
-      { name: "exchangeId", type: "uint256" },
-      { name: "buyerPercent", type: "uint256" }
-    ];
-
-    const customSignatureType = {
-      Resolution: resolutionType
-    };
-
-    const message = {
-      exchangeId: args.exchangeId,
-      buyerPercent: args.buyerPercent
-    };
-
     if (this._chainId === undefined) {
       this._chainId = await this._web3Lib.getChainId();
     }
 
-    return metaTx.handler.prepareDataSignatureParameters({
+    return disputes.handler.signResolutionProposal({
+      ...args,
       web3Lib: this._web3Lib,
-      metaTxHandlerAddress: this._protocolDiamond,
-      chainId: this._chainId,
-      customTransactionType: customSignatureType,
-      primaryType: "Resolution",
-      message,
-      nonce: "" // not used in this case
+      contractAddress: this._protocolDiamond,
+      chainId: this._chainId
     });
   }
 
