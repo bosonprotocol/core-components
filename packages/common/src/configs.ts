@@ -21,7 +21,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "staging_old",
     chainId: 3,
     subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/bosonprotocol/ropsten",
+      "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",

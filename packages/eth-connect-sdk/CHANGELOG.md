@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.3...@bosonprotocol/eth-connect-sdk@1.2.4) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+## [1.2.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.2...@bosonprotocol/eth-connect-sdk@1.2.3) (2022-08-25)
+
+### Bug Fixes
+
+* esm builds ([#196](https://github.com/bosonprotocol/core-components/issues/196)) ([32cf63a](https://github.com/bosonprotocol/core-components/commit/32cf63a11008b65d2c2c2156add5b2f1636e1544))
+* rollup bundle compatibility ([#202](https://github.com/bosonprotocol/core-components/issues/202)) ([9da246b](https://github.com/bosonprotocol/core-components/commit/9da246b68be635026d493756e0a9b6dece80cf38))
+
 ## [1.2.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.1...@bosonprotocol/eth-connect-sdk@1.2.2) (2022-07-12)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk

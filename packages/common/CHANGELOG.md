@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.0...@bosonprotocol/common@1.9.1) (2022-08-25)
+
+### Bug Fixes
+
+* change subgraph URL on staging ([#208](https://github.com/bosonprotocol/core-components/issues/208)) ([964890d](https://github.com/bosonprotocol/core-components/commit/964890d63445f8f050f9a142d8aaf5e52a5c6c8c))
+
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.8.1...@bosonprotocol/common@1.9.0) (2022-08-25)
+
+### Bug Fixes
+
+* fill voucherRedeemableUntil OR voucherValid with correct values … ([#203](https://github.com/bosonprotocol/core-components/issues/203)) ([9a2bdd2](https://github.com/bosonprotocol/core-components/commit/9a2bdd26ef8de06f32a6fd99727809656bd29aee))
+
+### Features
+
+* bp292 - contractual agreement - implement rendering method ([#191](https://github.com/bosonprotocol/core-components/issues/191)) ([822fe1f](https://github.com/bosonprotocol/core-components/commit/822fe1f4ffba12e07456986e01bf3f474f780cef))
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* dispute resolver support in subgraph and core-sdk ([#185](https://github.com/bosonprotocol/core-components/issues/185)) ([0a12bba](https://github.com/bosonprotocol/core-components/commit/0a12bba6c46a1907df8417da6057aecd099283d9))
+* subgraph and core-sdk DisputeHandlerFacet ([#186](https://github.com/bosonprotocol/core-components/issues/186)) ([ac58f3d](https://github.com/bosonprotocol/core-components/commit/ac58f3d3beb83d5526b99d410ea2ff6c02db58fa))
+
 ## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.8.0...@bosonprotocol/common@1.8.1) (2022-07-12)
 
 **Note:** Version bump only for package @bosonprotocol/common

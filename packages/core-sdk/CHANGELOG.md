@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.12.0...@bosonprotocol/core-sdk@1.12.1) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.11.0...@bosonprotocol/core-sdk@1.12.0) (2022-08-25)
+
+### Bug Fixes
+
+* esm builds ([#196](https://github.com/bosonprotocol/core-components/issues/196)) ([32cf63a](https://github.com/bosonprotocol/core-components/commit/32cf63a11008b65d2c2c2156add5b2f1636e1544))
+* fill voucherRedeemableUntil OR voucherValid with correct values … ([#203](https://github.com/bosonprotocol/core-components/issues/203)) ([9a2bdd2](https://github.com/bosonprotocol/core-components/commit/9a2bdd26ef8de06f32a6fd99727809656bd29aee))
+* fix typo on core sdk ([#182](https://github.com/bosonprotocol/core-components/issues/182)) ([a2b7ee7](https://github.com/bosonprotocol/core-components/commit/a2b7ee7e124716e6d3a50a1faabc8170df9b5cba))
+* rollup bundle compatibility ([#202](https://github.com/bosonprotocol/core-components/issues/202)) ([9da246b](https://github.com/bosonprotocol/core-components/commit/9da246b68be635026d493756e0a9b6dece80cf38))
+* **subgraph:** make shipping field optional ([#192](https://github.com/bosonprotocol/core-components/issues/192)) ([1c1af5d](https://github.com/bosonprotocol/core-components/commit/1c1af5d9246a7738fe9054fbd8d4f1b681d643c3))
+
+### Features
+
+* bp292 - contractual agreement - implement rendering method ([#191](https://github.com/bosonprotocol/core-components/issues/191)) ([822fe1f](https://github.com/bosonprotocol/core-components/commit/822fe1f4ffba12e07456986e01bf3f474f780cef))
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* dispute resolver support in subgraph and core-sdk ([#185](https://github.com/bosonprotocol/core-components/issues/185)) ([0a12bba](https://github.com/bosonprotocol/core-components/commit/0a12bba6c46a1907df8417da6057aecd099283d9))
+* sign dispute resolution proposal ([#207](https://github.com/bosonprotocol/core-components/issues/207)) ([707a7b2](https://github.com/bosonprotocol/core-components/commit/707a7b25a28efef2401d332bb6d2ee80f825fb15))
+* subgraph and core-sdk DisputeHandlerFacet ([#186](https://github.com/bosonprotocol/core-components/issues/186)) ([ac58f3d](https://github.com/bosonprotocol/core-components/commit/ac58f3d3beb83d5526b99d410ea2ff6c02db58fa))
+
 # [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.10.0...@bosonprotocol/core-sdk@1.11.0) (2022-07-26)
 
 ### Features
