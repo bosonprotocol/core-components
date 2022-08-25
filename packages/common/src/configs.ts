@@ -18,7 +18,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     }
   },
   {
-    envName: "staging",
+    envName: "staging_old",
     chainId: 3,
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/ropsten",
@@ -31,15 +31,17 @@ export const defaultConfigs: ProtocolConfig[] = [
     }
   },
   {
-    envName: "staging_next",
+    envName: "staging",
     chainId: 80001,
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai",
-    jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
+    subgraphUrl:
+      "https://thegraph.com/hosted-service/subgraph/levalleux-ludo/bosonmumbai",
+    jsonRpcUrl:
+      "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/TBD
-      protocolDiamond: "TBD"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/dcce13d861b3bee561dc9e06a0e885cb708f7a83
+      protocolDiamond: "0xA2D2D25530900d3BB7855050a164aB80Fed54a89"
     }
   },
   {

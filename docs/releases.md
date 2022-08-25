@@ -56,7 +56,7 @@ Every merge into the `main` branch will trigger a deployment of the subgraph whi
 
 If a stable release of the packages are triggered through the GitHub UI, then a deployment of the subgraph connected to the `staging` environment is also initiated. For details have a look at [`.github/workflows/deploy-staging-subgraph.yaml`](../.github/workflows/deploy-staging-subgraph.yaml.). Access this subgraph via:
 
-- https://api.thegraph.com/subgraphs/name/bosonprotocol/ropsten
+- https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai
 
 ### Production widgets
 
