@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.5.1...@bosonprotocol/ipfs-storage@1.6.0) (2022-08-25)
+
+### Features
+
+* allow IPFS get to return string (not only JSON) ([#201](https://github.com/bosonprotocol/core-components/issues/201)) ([0902c61](https://github.com/bosonprotocol/core-components/commit/0902c61265e30f465ad2adac50244c983da8ca27))
+
 ## [1.5.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.5.0...@bosonprotocol/ipfs-storage@1.5.1) (2022-07-12)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage
