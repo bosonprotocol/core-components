@@ -37,7 +37,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+    theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
+    ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/dcce13d861b3bee561dc9e06a0e885cb708f7a83
