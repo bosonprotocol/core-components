@@ -5,8 +5,9 @@ Official subgraph of the Boson Protocol.
 | Env          | Network   | Endpoint                                                                                     |
 | ------------ | --------- | -------------------------------------------------------------------------------------------- |
 | `testing`    | `private` | `https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents` |
-| `staging`    | `mumbai`  | `https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai`                               |
+| `staging`    | `ropsten`  | `https://api.thegraph.com/subgraphs/name/bosonprotocol/ropsten`                               |
 | `production` | `polygon` | `TBD`                                                                                        |
+<!-- | `staging`    | `mumbai`  | `https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai`                               | -->
 
 ## Local development
 
