@@ -9,7 +9,7 @@ export enum ButtonSize {
   Large = "large"
 }
 
-interface ButtonProps {
+export interface ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   loading?: boolean;

@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.10.0-alpha.14",
+  "version": "1.10.0-alpha.16",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
     "@graphprotocol/graph-ts": "^0.27.0"
@@ -26,7 +26,7 @@
     "create:testing": "graph create --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "remove:testing": "graph remove --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
     "deploy:testing": "npm run manifest:testing && npm run create:testing && graph deploy --node http://graph.geth.svc.cluster.local:8020 --ipfs http://ipfs.geth.svc.cluster.local:5001 boson/corecomponents -l 0.0.1",
-    "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai",
+    "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/ropsten",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
     "test": "npm run manifest:local && graph test"
   }
