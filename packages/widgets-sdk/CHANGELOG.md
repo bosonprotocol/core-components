@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.8.0...@bosonprotocol/widgets-sdk@1.9.0) (2022-08-25)
+
+### Features
+
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets-sdk@1.7.0...@bosonprotocol/widgets-sdk@1.8.0) (2022-07-05)
 
 ### Features

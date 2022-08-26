@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.3...@bosonprotocol/react-kit@0.3.4) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+## [0.3.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.2...@bosonprotocol/react-kit@0.3.3) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+## [0.3.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.1...@bosonprotocol/react-kit@0.3.2) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+## [0.3.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.0...@bosonprotocol/react-kit@0.3.1) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+# [0.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.2.0...@bosonprotocol/react-kit@0.3.0) (2022-08-25)
+
+### Bug Fixes
+
+* add cta button variant option ([#205](https://github.com/bosonprotocol/core-components/issues/205)) ([fc75c0a](https://github.com/bosonprotocol/core-components/commit/fc75c0af5a363a0bd9888b6af9e9e78a1dacbcb1))
+* fix typo on core sdk ([#182](https://github.com/bosonprotocol/core-components/issues/182)) ([a2b7ee7](https://github.com/bosonprotocol/core-components/commit/a2b7ee7e124716e6d3a50a1faabc8170df9b5cba))
+
+### Features
+
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* **react-kit:** allow custom ipfs http client headers ([#190](https://github.com/bosonprotocol/core-components/issues/190)) ([dca2555](https://github.com/bosonprotocol/core-components/commit/dca2555a64237a729b078a6b670a88450a5b733b))
+
 # [0.2.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.1.0...@bosonprotocol/react-kit@0.2.0) (2022-07-26)
 
 ### Bug Fixes

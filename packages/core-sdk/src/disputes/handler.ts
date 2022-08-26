@@ -1,6 +1,7 @@
 import { Web3LibAdapter, TransactionResponse } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
+
 import {
   encodeRaiseDispute,
   encodeDecideDispute,
@@ -13,6 +14,7 @@ import {
   encodeResolveDispute,
   encodeRetractDispute
 } from "./interface";
+import { prepareDataSignatureParameters } from "../utils/signature";
 
 export async function raiseDispute(args: {
   exchangeId: BigNumberish;
@@ -128,5 +130,34 @@ export async function expireEscalatedDispute(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeExpireEscalatedDispute(args.exchangeId)
+  });
+}
+
+export async function signResolutionProposal(args: {
+  exchangeId: BigNumberish;
+  buyerPercent: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+}) {
+  const customSignatureType = {
+    Resolution: [
+      { name: "exchangeId", type: "uint256" },
+      { name: "buyerPercent", type: "uint256" }
+    ]
+  };
+
+  const message = {
+    exchangeId: args.exchangeId,
+    buyerPercent: args.buyerPercent
+  };
+
+  return prepareDataSignatureParameters({
+    message,
+    customSignatureType,
+    web3Lib: args.web3Lib,
+    verifyingContractAddress: args.contractAddress,
+    chainId: args.chainId,
+    primaryType: "Resolution"
   });
 }

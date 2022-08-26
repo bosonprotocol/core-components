@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.10.1...@bosonprotocol/subgraph@1.10.2) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.10.0...@bosonprotocol/subgraph@1.10.1) (2022-08-25)
+
+### Bug Fixes
+
+* change subgraph URL on staging ([#208](https://github.com/bosonprotocol/core-components/issues/208)) ([964890d](https://github.com/bosonprotocol/core-components/commit/964890d63445f8f050f9a142d8aaf5e52a5c6c8c))
+
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.9.0...@bosonprotocol/subgraph@1.10.0) (2022-08-25)
+
+### Bug Fixes
+
+* **subgraph:** explicitly pass media type ([#189](https://github.com/bosonprotocol/core-components/issues/189)) ([20c4a7f](https://github.com/bosonprotocol/core-components/commit/20c4a7f85631f013bc2dbbf1bf58b4d4aa35feaf))
+* **subgraph:** make shipping field optional ([#192](https://github.com/bosonprotocol/core-components/issues/192)) ([1c1af5d](https://github.com/bosonprotocol/core-components/commit/1c1af5d9246a7738fe9054fbd8d4f1b681d643c3))
+* upgrade contactLinks definition ([#195](https://github.com/bosonprotocol/core-components/issues/195)) ([e093c5b](https://github.com/bosonprotocol/core-components/commit/e093c5bc5fe12c5f451e7cad7ea56cf1cb14e6d4))
+
+### Features
+
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* dispute resolver support in subgraph and core-sdk ([#185](https://github.com/bosonprotocol/core-components/issues/185)) ([0a12bba](https://github.com/bosonprotocol/core-components/commit/0a12bba6c46a1907df8417da6057aecd099283d9))
+* subgraph and core-sdk DisputeHandlerFacet ([#186](https://github.com/bosonprotocol/core-components/issues/186)) ([ac58f3d](https://github.com/bosonprotocol/core-components/commit/ac58f3d3beb83d5526b99d410ea2ff6c02db58fa))
+
 # [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.8.0...@bosonprotocol/subgraph@1.9.0) (2022-07-26)
 
 ### Features
