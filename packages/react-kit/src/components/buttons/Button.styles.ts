@@ -77,7 +77,6 @@ export const ButtonStyle = styled.button.attrs(
       }
     `}
 
-      // CSS VARIANTS STYLES
   ${({ variant, disabled }) =>
     variant === "primary" &&
     !disabled &&

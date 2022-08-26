@@ -10,9 +10,7 @@ export default {
 
 const BASE_ARGS = {
   children: "Button Text",
-  onClick: () => {
-    console.log("buy");
-  },
+  onClick: () => {},
   size: "medium"
 };
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
