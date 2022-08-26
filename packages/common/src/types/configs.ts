@@ -6,7 +6,7 @@ export type ContractAddresses = {
 export type ProtocolConfig = {
   envName: string;
   chainId: number;
-  nativeCoin: {
+  nativeCoin?: {
     symbol: string;
     name: string;
     decimals: string;
