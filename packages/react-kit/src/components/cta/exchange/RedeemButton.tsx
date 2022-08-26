@@ -30,6 +30,7 @@ export const RedeemButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
+  variant = "primary",
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -44,7 +45,7 @@ export const RedeemButton = ({
 
   return (
     <Button
-      variant="primary"
+      variant={variant}
       size={size}
       disabled={disabled}
       onClick={async () => {

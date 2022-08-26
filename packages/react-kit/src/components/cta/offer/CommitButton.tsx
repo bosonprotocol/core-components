@@ -30,6 +30,7 @@ export const CommitButton = ({
   onError,
   waitBlocks = 1,
   size = ButtonSize.Large,
+  variant = "primary",
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -44,7 +45,7 @@ export const CommitButton = ({
 
   return (
     <Button
-      variant="primary"
+      variant={variant}
       size={size}
       disabled={disabled}
       onClick={async () => {
