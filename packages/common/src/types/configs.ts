@@ -10,7 +10,7 @@ export type ProtocolConfig = {
     symbol: string;
     name: string;
     decimals: string;
-  }
+  };
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;
