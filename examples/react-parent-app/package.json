@@ -1,9 +1,9 @@
 {
   "name": "@bosonprotocol/react-parent-app",
-  "version": "1.2.5-alpha.0",
+  "version": "1.2.5-alpha.1",
   "private": true,
   "dependencies": {
-    "@bosonprotocol/core-sdk": "^1.12.5-alpha.0",
+    "@bosonprotocol/core-sdk": "^1.12.5-alpha.1",
     "@bosonprotocol/ipfs-storage": "^1.6.0",
     "@bosonprotocol/widgets-sdk": "^1.9.0",
     "@ethersproject/address": "^5.6.0",
