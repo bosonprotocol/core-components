@@ -25,11 +25,10 @@ describe("#fromTheGraphIpfsUrl()", () => {
       url: DEFAULT_THE_GRAPH_IPFS_URL
     };
 
-    mockedIpfsHttpClient.create.mockReturnValueOnce(
-      create(ipfsConfig)
-    );
+    mockedIpfsHttpClient.create.mockReturnValueOnce(create(ipfsConfig));
 
-    const theGraphIpfsStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl(ipfsConfig);
+    const theGraphIpfsStorage =
+      IpfsMetadataStorage.fromTheGraphIpfsUrl(ipfsConfig);
     const endpointConfig = theGraphIpfsStorage.ipfsClient.getEndpointConfig();
 
     expect(endpointConfig.host).toEqual("api.thegraph.com");
