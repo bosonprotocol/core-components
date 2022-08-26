@@ -49,6 +49,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+    theGraphIpfsUrl: "https://ipfs.infura.io:5001",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
