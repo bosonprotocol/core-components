@@ -70,9 +70,10 @@ function initCoreSdk(config: CoreSdkConfig) {
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
-    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl(
-      config.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl
-    ),
+    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl({
+      url: config.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl,
+      headers: config.ipfsMetadataStorageHeaders
+    }),
     metadataStorage: new IpfsMetadataStorage({
       url: config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl,
       headers: config.ipfsMetadataStorageHeaders

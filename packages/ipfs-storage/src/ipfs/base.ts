@@ -11,9 +11,10 @@ export class BaseIpfsStorage {
     this.ipfsClient = create(opts);
   }
 
-  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
+  static fromTheGraphIpfsUrl(opts: Options) {
     return new BaseIpfsStorage({
-      url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
+      ...opts,
+      url: opts.url || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }
 

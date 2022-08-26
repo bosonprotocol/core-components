@@ -50,9 +50,9 @@ async function main() {
   const extendedOfferData = extractOfferDataExtended(offerDataRaw, tokenInfo);
   console.log("extendedOfferData", extendedOfferData);
 
-  const ipfsMetadataStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl(
-    defaultConfig.ipfsMetadataUrl
-  );
+  const ipfsMetadataStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl({
+    url: defaultConfig.ipfsMetadataUrl
+  });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);
 }

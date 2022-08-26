@@ -21,13 +21,14 @@ const IPFS_URL = "https://ipfs.api.com:5001";
 
 describe("#fromTheGraphIpfsUrl()", () => {
   it("create instance from default The Graph IPFS url", () => {
-    mockedIpfsHttpClient.create.mockReturnValueOnce(
-      create({
-        url: DEFAULT_THE_GRAPH_IPFS_URL
-      })
-    );
+    const ipfsConfig = {
+      url: DEFAULT_THE_GRAPH_IPFS_URL
+    };
 
-    const theGraphIpfsStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl();
+    mockedIpfsHttpClient.create.mockReturnValueOnce(create(ipfsConfig));
+
+    const theGraphIpfsStorage =
+      IpfsMetadataStorage.fromTheGraphIpfsUrl(ipfsConfig);
     const endpointConfig = theGraphIpfsStorage.ipfsClient.getEndpointConfig();
 
     expect(endpointConfig.host).toEqual("api.thegraph.com");

@@ -13,9 +13,10 @@ export class IpfsMetadataStorage
     super(opts);
   }
 
-  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
+  static fromTheGraphIpfsUrl(opts: Options) {
     return new IpfsMetadataStorage({
-      url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
+      ...opts,
+      url: opts.url || DEFAULT_THE_GRAPH_IPFS_URL
     });
   }
 
