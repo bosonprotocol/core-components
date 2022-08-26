@@ -1,9 +1,19 @@
 import { ProtocolConfig } from "./types";
 
+const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
+  [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [3, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
+  [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
+  [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
+]);
+
 export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "testing",
     chainId: 1234,
+    nativeCoin: chainIdToInfo.get(1234),
     subgraphUrl:
       "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
     jsonRpcUrl:
@@ -20,6 +30,7 @@ export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "staging_old",
     chainId: 3,
+    nativeCoin: chainIdToInfo.get(3),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
@@ -33,6 +44,7 @@ export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "staging",
     chainId: 80001,
+    nativeCoin: chainIdToInfo.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
     jsonRpcUrl:
@@ -47,6 +59,7 @@ export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "production",
     chainId: 1,
+    nativeCoin: chainIdToInfo.get(1),
     subgraphUrl: "",
     jsonRpcUrl: "",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
@@ -58,6 +71,7 @@ export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "local",
     chainId: 31337,
+    nativeCoin: chainIdToInfo.get(31337),
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
@@ -93,6 +107,12 @@ export function getDefaultConfig(filter: {
       `Could not find default config for filter ${JSON.stringify(
         envName ? { envName } : { chainId }
       )}`
+    );
+  }
+
+  if (!defaultConfig.nativeCoin) {
+    throw new Error(
+      `Native coin has not been set for this chainId=${defaultConfig.chainId}`
     );
   }
 

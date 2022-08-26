@@ -6,6 +6,11 @@ export type ContractAddresses = {
 export type ProtocolConfig = {
   envName: string;
   chainId: number;
+  nativeCoin: {
+    symbol: string;
+    name: string;
+    decimals: string;
+  }
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;
