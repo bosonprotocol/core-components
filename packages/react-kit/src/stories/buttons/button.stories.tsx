@@ -10,6 +10,7 @@ export default {
 
 const BASE_ARGS = {
   children: "Button Text",
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClick: () => {},
   size: "medium"
 };
