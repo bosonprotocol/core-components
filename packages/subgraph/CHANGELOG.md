@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.10.2...@bosonprotocol/subgraph@1.11.0) (2022-08-26)
+
+### Features
+
+* update nativeCoin properties in subgraph & add nativeCoin info in the defaultConfig ([#214](https://github.com/bosonprotocol/core-components/issues/214)) ([a0a7891](https://github.com/bosonprotocol/core-components/commit/a0a78914c7622d0877ed413a6640a80d967ca317))
+
 ## [1.10.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.10.1...@bosonprotocol/subgraph@1.10.2) (2022-08-25)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

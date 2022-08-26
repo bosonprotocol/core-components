@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.6.0...@bosonprotocol/ipfs-storage@1.7.0) (2022-08-26)
+
+### Features
+
+* add ipfs gateway headers ([#216](https://github.com/bosonprotocol/core-components/issues/216)) ([45f9ebf](https://github.com/bosonprotocol/core-components/commit/45f9ebf97e6e26d9d9cbc082cdb5b0bdbda88352))
+
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.5.1...@bosonprotocol/ipfs-storage@1.6.0) (2022-08-25)
 
 ### Features

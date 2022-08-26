@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.4...@bosonprotocol/react-kit@0.4.0) (2022-08-26)
+
+### Features
+
+* add ipfs gateway headers ([#216](https://github.com/bosonprotocol/core-components/issues/216)) ([45f9ebf](https://github.com/bosonprotocol/core-components/commit/45f9ebf97e6e26d9d9cbc082cdb5b0bdbda88352))
+* cta variant styles consistency ([#215](https://github.com/bosonprotocol/core-components/issues/215)) ([44eaf7c](https://github.com/bosonprotocol/core-components/commit/44eaf7c78d5c4e703102a9af12ecdcc917b32403))
+
 ## [0.3.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.3.3...@bosonprotocol/react-kit@0.3.4) (2022-08-25)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

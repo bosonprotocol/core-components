@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.12.4...@bosonprotocol/widgets@1.13.0) (2022-08-26)
+
+### Features
+
+* add ipfs gateway headers ([#216](https://github.com/bosonprotocol/core-components/issues/216)) ([45f9ebf](https://github.com/bosonprotocol/core-components/commit/45f9ebf97e6e26d9d9cbc082cdb5b0bdbda88352))
+
 ## [1.12.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/widgets@1.12.3...@bosonprotocol/widgets@1.12.4) (2022-08-25)
 
 **Note:** Version bump only for package @bosonprotocol/widgets

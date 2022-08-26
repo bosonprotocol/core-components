@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-parent-app@1.2.4...@bosonprotocol/react-parent-app@1.2.5) (2022-08-26)
+
+**Note:** Version bump only for package @bosonprotocol/react-parent-app
+
 ## [1.2.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-parent-app@1.2.3...@bosonprotocol/react-parent-app@1.2.4) (2022-08-25)
 
 **Note:** Version bump only for package @bosonprotocol/react-parent-app

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.4...@bosonprotocol/common@1.10.0) (2022-08-26)
+
+### Bug Fixes
+
+* staging config ipfs metadata url ([#213](https://github.com/bosonprotocol/core-components/issues/213)) ([cebd580](https://github.com/bosonprotocol/core-components/commit/cebd5808a3754b6ef92896d970da6814c45fdae2))
+
+### Features
+
+* update nativeCoin properties in subgraph & add nativeCoin info in the defaultConfig ([#214](https://github.com/bosonprotocol/core-components/issues/214)) ([a0a7891](https://github.com/bosonprotocol/core-components/commit/a0a78914c7622d0877ed413a6640a80d967ca317))
+
 ## [1.9.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.3...@bosonprotocol/common@1.9.4) (2022-08-25)
 
 **Note:** Version bump only for package @bosonprotocol/common
