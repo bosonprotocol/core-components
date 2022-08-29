@@ -83,7 +83,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.primary};
       background-color: ${({ theme }) => theme?.colors?.light.primary};
-      border-width: 0;
+      border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.black};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.black};
@@ -126,7 +126,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.secondary};
       background-color: ${({ theme }) => theme?.colors?.light.secondary};
-      border-width: 0;
+      border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.white};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.white};
@@ -169,7 +169,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-width: 0;
+      border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.darkGrey};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.darkGrey};
@@ -189,7 +189,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-width: 0;
+      border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.secondary};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.secondary};
@@ -209,7 +209,7 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-width: 0;
+      border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.orange};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.orange};
