@@ -70,6 +70,10 @@ function initCoreSdk(config: CoreSdkConfig) {
   const connectedProvider = config.web3Provider || defaultProvider;
   const metadataStorageUrl =
     config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl;
+  const theGraphStorageUrl =
+    config.theGraphIpfsUrl ||
+    defaultConfig.theGraphIpfsUrl ||
+    metadataStorageUrl;
 
   return new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
@@ -77,12 +81,12 @@ function initCoreSdk(config: CoreSdkConfig) {
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
     theGraphStorage: new IpfsMetadataStorage({
-      url:
-        config.theGraphIpfsUrl ||
-        defaultConfig.theGraphIpfsUrl ||
-        metadataStorageUrl,
+      url: theGraphStorageUrl,
       headers:
-        config.theGraphIpfsStorageHeaders || config.ipfsMetadataStorageHeaders
+        config.theGraphIpfsStorageHeaders ||
+        theGraphStorageUrl === metadataStorageUrl
+          ? config.ipfsMetadataStorageHeaders
+          : undefined
     }),
     metadataStorage: new IpfsMetadataStorage({
       url: metadataStorageUrl,
