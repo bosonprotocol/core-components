@@ -1,5 +1,4 @@
 import { IpfsMetadataStorage } from "../src/";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "../src/constants";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -18,22 +17,6 @@ const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, true);
 const { create } = jest.requireActual("ipfs-http-client");
 
 const IPFS_URL = "https://ipfs.api.com:5001";
-
-describe("#fromTheGraphIpfsUrl()", () => {
-  it("create instance from default The Graph IPFS url", () => {
-    const ipfsConfig = {
-      url: DEFAULT_THE_GRAPH_IPFS_URL
-    };
-
-    mockedIpfsHttpClient.create.mockReturnValueOnce(create(ipfsConfig));
-
-    const theGraphIpfsStorage =
-      IpfsMetadataStorage.fromTheGraphIpfsUrl(ipfsConfig);
-    const endpointConfig = theGraphIpfsStorage.ipfsClient.getEndpointConfig();
-
-    expect(endpointConfig.host).toEqual("api.thegraph.com");
-  });
-});
 
 describe("#storeMetadata()", () => {
   it("throw if invalid metadata", async () => {

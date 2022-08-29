@@ -35,9 +35,13 @@ export type CoreSdkConfig = {
    */
   ipfsMetadataStorageHeaders?: Headers | Record<string, string>;
   /**
-   * Optional override for Thr Graph IPFS storage to use.
+   * Optional override for The Graph IPFS storage to use.
    */
   theGraphIpfsUrl?: string;
+  /**
+   * Optional override for The Graph IPFS  storage headers.
+   */
+  theGraphIpfsStorageHeaders?: Headers | Record<string, string>;
 };
 
 /**
@@ -64,18 +68,24 @@ function initCoreSdk(config: CoreSdkConfig) {
     config.jsonRpcUrl || defaultConfig.jsonRpcUrl
   );
   const connectedProvider = config.web3Provider || defaultProvider;
+  const metadataStorageUrl =
+    config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl;
 
   return new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
-    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl({
-      url: config.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl,
-      headers: config.ipfsMetadataStorageHeaders
+    theGraphStorage: new IpfsMetadataStorage({
+      url:
+        config.theGraphIpfsUrl ||
+        defaultConfig.theGraphIpfsUrl ||
+        metadataStorageUrl,
+      headers:
+        config.theGraphIpfsStorageHeaders || config.ipfsMetadataStorageHeaders
     }),
     metadataStorage: new IpfsMetadataStorage({
-      url: config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl,
+      url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders
     })
   });
