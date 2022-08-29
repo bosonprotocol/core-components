@@ -2,20 +2,12 @@ import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
     this.ipfsClient = create(opts);
-  }
-
-  static fromTheGraphIpfsUrl(opts: Options) {
-    return new BaseIpfsStorage({
-      ...opts,
-      url: opts.url || DEFAULT_THE_GRAPH_IPFS_URL
-    });
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {

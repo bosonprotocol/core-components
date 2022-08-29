@@ -34,6 +34,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
+    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
@@ -49,7 +50,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-    theGraphIpfsUrl: "https://ipfs.infura.io:5001",
+    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {

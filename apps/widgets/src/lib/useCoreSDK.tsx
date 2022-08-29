@@ -33,8 +33,8 @@ function initCoreSDK(provider: providers.JsonRpcProvider, config: Config) {
     web3Lib: new EthersAdapter(provider),
     protocolDiamond: config.protocolDiamond,
     subgraphUrl: config.subgraphUrl,
-    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl({
-      url: config.theGraphIpfsUrl
+    theGraphStorage: new IpfsMetadataStorage({
+      url: config.theGraphIpfsUrl || config.ipfsMetadataUrl
     }),
     metadataStorage: new IpfsMetadataStorage({
       url: config.ipfsMetadataUrl
