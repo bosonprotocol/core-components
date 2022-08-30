@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.12.0...@bosonprotocol/subgraph@1.13.0) (2022-08-30)
+
+### Features
+
+* add subgraph handling for voucher transfers ([#222](https://github.com/bosonprotocol/core-components/issues/222)) ([bee6cf7](https://github.com/bosonprotocol/core-components/commit/bee6cf77eabbef9d844d758b35fce5309ce9c7b8))
+
 # [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.11.0...@bosonprotocol/subgraph@1.12.0) (2022-08-30)
 
 ### Bug Fixes
