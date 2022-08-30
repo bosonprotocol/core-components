@@ -92,7 +92,8 @@ export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
 }
 
 export function handleVoucherTransferEvent(event: VoucherTransferred): void {
-  const { newBuyerId, exchangeId } = event.params;
+  const exchangeId = event.params.exchangeId;
+  const newBuyerId = event.params.newBuyerId;
 
   const exchange = Exchange.load(exchangeId.toString());
 
