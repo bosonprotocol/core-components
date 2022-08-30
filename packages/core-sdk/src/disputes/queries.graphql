@@ -43,6 +43,10 @@ fragment BaseDisputeFields on Dispute {
   disputedDate
   escalatedDate
   finalizedDate
+  retractedDate
+  resolvedDate
+  decidedDate
+  refusedDate
   timeout
   exchange {
     ...BaseExchangeFields

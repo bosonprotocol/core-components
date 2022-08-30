@@ -1,10 +1,10 @@
-import { VoucherExtended } from './../../generated/BosonExchangeHandler/IBosonExchangeHandler';
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
   BuyerCommitted,
   VoucherCanceled,
   VoucherRevoked,
   VoucherRedeemed,
+  VoucherExtended,
   ExchangeCompleted
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { Exchange, Offer } from "../../generated/schema";
