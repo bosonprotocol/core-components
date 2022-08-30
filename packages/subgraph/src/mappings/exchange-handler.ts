@@ -5,6 +5,7 @@ import {
   VoucherRevoked,
   VoucherRedeemed,
   VoucherExtended,
+  VoucherTransferred,
   ExchangeCompleted
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { Exchange, Offer } from "../../generated/schema";
@@ -86,6 +87,19 @@ export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
   if (exchange) {
     exchange.state = "REDEEMED";
     exchange.redeemedDate = event.block.timestamp;
+    exchange.save();
+  }
+}
+
+export function handleVoucherTransferEvent(event: VoucherTransferred): void {
+  const exchangeId = event.params.exchangeId;
+  const newBuyerId = event.params.newBuyerId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.buyer = newBuyerId.toString();
+    // TODO: create transactionLog with all transfers & protocol actions
     exchange.save();
   }
 }
