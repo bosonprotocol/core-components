@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.12.6...@bosonprotocol/core-sdk@1.13.0) (2022-08-30)
+
+### Features
+
+* add explicit dispute dates ([#221](https://github.com/bosonprotocol/core-components/issues/221)) ([c239b0e](https://github.com/bosonprotocol/core-components/commit/c239b0e25293e597ef415dc08497be161c6487e7))
+
 ## [1.12.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.12.5...@bosonprotocol/core-sdk@1.12.6) (2022-08-26)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.7.0...@bosonprotocol/ipfs-storage@1.7.1) (2022-08-30)
+
+### Bug Fixes
+
+* the graph ipfs storage url on staging ([#218](https://github.com/bosonprotocol/core-components/issues/218)) ([d6db3e3](https://github.com/bosonprotocol/core-components/commit/d6db3e3d89a1f20849d3f03807c3bd9a70c839e8))
+
 # [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.6.0...@bosonprotocol/ipfs-storage@1.7.0) (2022-08-26)
 
 ### Features

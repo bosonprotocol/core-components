@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.4.1...@bosonprotocol/react-kit@0.4.2) (2022-08-30)
+
+### Bug Fixes
+
+* default the graph storage url ([#219](https://github.com/bosonprotocol/core-components/issues/219)) ([7ecdb97](https://github.com/bosonprotocol/core-components/commit/7ecdb97fb77a4d4cda7eba217cb748a1c832a004))
+* the graph ipfs storage url on staging ([#218](https://github.com/bosonprotocol/core-components/issues/218)) ([d6db3e3](https://github.com/bosonprotocol/core-components/commit/d6db3e3d89a1f20849d3f03807c3bd9a70c839e8))
+
 ## [0.4.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.4.0...@bosonprotocol/react-kit@0.4.1) (2022-08-26)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
