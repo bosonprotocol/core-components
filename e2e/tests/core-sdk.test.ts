@@ -719,7 +719,7 @@ async function raiseDispute(
   expect(exchangeAfterDispute.completedDate).toBeNull();
   expect(exchangeAfterDispute.finalizedDate).toBeNull();
 
-  // exchange state is now DISPUTED
+  expect(exchangeAfterDispute.disputedDate).toBeTruthy();
   expect(exchangeAfterDispute.disputed).toBeTruthy();
 }
 
@@ -777,6 +777,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
 
   // dispute finalizedDate is correct
   expect(dispute.finalizedDate).toBeTruthy();
+  expect(dispute.retractedDate).toBeTruthy();
 }
 
 async function resolveDispute(
@@ -835,6 +836,7 @@ async function checkDisputeResolved(
 
   // dispute finalizedDate is correct
   expect(dispute.finalizedDate).toBeTruthy();
+  expect(dispute.resolvedDate).toBeTruthy();
 }
 
 async function escalateDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
@@ -914,6 +916,7 @@ async function checkDisputeDecided(
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();
+  expect(dispute.decidedDate).toBeTruthy();
 
   // dispute buyerPercent is filled
   expect(dispute.buyerPercent).toEqual(buyerPercent);
@@ -970,6 +973,7 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
 
   // dispute finalizedDate is filled
   expect(dispute.finalizedDate).toBeTruthy();
+  expect(dispute.refusedDate).toBeTruthy();
 
   // dispute buyerPercent is filled
   expect(dispute.buyerPercent).toEqual("0");
