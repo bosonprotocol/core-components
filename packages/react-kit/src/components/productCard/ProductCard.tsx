@@ -35,9 +35,15 @@ export const ProductCard = ({
       </ProductCardTop>
       <ProductCardBottom>
         <ProductCarData>
-          {
-            // TODO: Roberto - Add the product info
-          }
+          <ProductCreator>
+            <ProductCreatorAvatar />
+            <ProductCreatorName>MekaVerse</ProductCreatorName>
+          </ProductCreator>
+          <ProductTitle>{productTitle}</ProductTitle>
+          <ProductType>
+            <ProductTypeSymbol />
+            <span>Phygital</span>
+          </ProductType>
           {/* MekaVerse
           FEWO SHOE EPIC
           <ProductType/> */}
@@ -50,6 +56,50 @@ export const ProductCard = ({
     </ProductCardWrapper>
   );
 };
+
+const ProductCreator = styled.div``;
+const ProductCreatorAvatar = styled.img``;
+const ProductCreatorName = styled.div``;
+const ProductTitle = styled.div`
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 150%;
+
+  color: ${({ theme }) => theme?.colors?.light.black};
+`;
+const ProductType = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px 16px 4px 8px;
+  gap: 4px;
+  width: 91px;
+  height: 26px;
+  background: #f1f3f9;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  span {
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 150%;
+
+    color: #556072;
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+`;
+
+const ProductTypeSymbol = styled.div`
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  top: 12.5%;
+  bottom: 12.5%;
+  border: 1.5px solid #556072;
+`;
 
 const ProductCardPriceWrapper = styled.div`
   grid-area: 1 / 3 / 2 / 4;
@@ -64,7 +114,6 @@ const ProductCardPrice = styled.div`
 
 const ProductCarData = styled.div`
   grid-area: 1 / 1 / 2 / 3;
-  background-color: red;
 `;
 
 const ProductCardBottom = styled.div`

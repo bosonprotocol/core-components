@@ -1,20 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import {
-  Bitcoin,
-  Ether,
-  Solana,
-  Polygon,
-  Tether,
-  USD,
-  Euro,
-  GBP
-} from "../../icons/coins";
+import { Bitcoin, Ether, Solana, Polygon, Tether } from "../../icons/coins";
+
 import { Currencies } from "../../types/Currencies";
 
 interface CurrencyDisplayProps {
-  value: number;
+  value?: number;
   currency: Currencies;
   height?: number;
 }
@@ -29,7 +21,9 @@ export const CurrencyDisplay = ({
       style={{ height: `${height}px`, width: "100%" }}
     >
       <CurrencyLogo currency={currency} size={height} />
-      <CurrencyDisplayValue height={height}>{value}</CurrencyDisplayValue>
+      {value && (
+        <CurrencyDisplayValue height={height}>{value}</CurrencyDisplayValue>
+      )}
     </CurrencyDisplayValueWrapper>
   );
 };
@@ -38,7 +32,6 @@ const CurrencyDisplayValueWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
 `;
 
 const CurrencyDisplayValue = styled.span.attrs((props: { height: number }) => ({
@@ -65,15 +58,6 @@ const CurrencyLogo = ({
   size?: number;
 }) => {
   switch (currency) {
-    case Currencies.USD:
-      return <USD size={size} />;
-
-    case Currencies.EUR:
-      return <Euro size={size} />;
-
-    case Currencies.GBP:
-      return <GBP size={size} />;
-
     case Currencies.ETH:
       return <Ether size={size} />;
 
