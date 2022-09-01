@@ -29,7 +29,7 @@ npm ci
 Build the sdks of this monorepo by running in the root
 
 ```bash
-npm run build:sdks
+npm run build
 ```
 
 Start the storybook

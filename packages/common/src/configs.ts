@@ -20,7 +20,6 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://geth.bsn-development-potassium.bosonportal.io/ac012be65837ebc3134e/rpc",
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
-    widgetsUrl: "https://widgets-test.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/25a707871f4117d29cd5536ef337841509bea2c8
       protocolDiamond: "0x156207E1ca9746e5a387930c8695d84bc8dAD69F",
@@ -36,7 +35,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/753ac3aa9cbea4f42236130808984121c65e76dc
       protocolDiamond: "0xDdAE2985Ca872B3E2974e296acF8931C0965801b"
@@ -52,7 +50,6 @@ export const defaultConfigs: ProtocolConfig[] = [
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    widgetsUrl: "https://widgets-staging.on.fleek.co",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/dcce13d861b3bee561dc9e06a0e885cb708f7a83
       protocolDiamond: "0xA2D2D25530900d3BB7855050a164aB80Fed54a89"
@@ -65,7 +62,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     subgraphUrl: "",
     jsonRpcUrl: "",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    widgetsUrl: "", // TODO: replace with prod
     contracts: {
       protocolDiamond: ""
     }
@@ -78,7 +74,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
-    widgetsUrl: "http://127.0.0.1:3000",
     contracts: {
       protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
       testErc20: "0x4c5859f0F772848b2D91F1D83E2Fe57935348029"
