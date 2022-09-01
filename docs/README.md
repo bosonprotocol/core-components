@@ -14,7 +14,6 @@
 - [`@bosonprotocol/eth-connect-sdk`](/packages/eth-connect-sdk//README.md)
 - [`@bosonprotocol/ethers-sdk`](/packages/ethers-sdk/README.md)
 - [`@bosonprotocol/ipfs-storage`](/packages/ipfs-storage/README.md)
-- [`@bosonprotocol/widgets-sdk`](/packages/widgets-sdk/README.md)
 
 ## Contributor docs
 

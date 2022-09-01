@@ -24,7 +24,6 @@ jobs:
             ethers-sdk
             ipfs-storage
             subgraph
-            widgets
             deps
             metadata
             react-kit
