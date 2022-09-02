@@ -3,8 +3,13 @@ import styled, { css } from "styled-components";
 
 import { Bitcoin, Ether, Solana, Polygon, Tether } from "../../icons/coins";
 
-import { Currencies } from "../../types/Currencies";
-
+export enum Currencies {
+  ETH = "ETH",
+  BTC = "BTC",
+  POLYGON = "MATIC",
+  SOLANA = "SOL",
+  TETHER = "USDT"
+}
 interface CurrencyDisplayProps {
   value?: number;
   currency: Currencies;
