@@ -621,6 +621,28 @@ export class CoreSDK {
   }
 
   /**
+   * Voids a batch of existing offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `operator` of all
+   * provided offers.
+   * @param offerIds - IDs of offers to void.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async voidOfferBatch(
+    offerIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.voidOfferBatch({
+      offerIds,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Returns offer from subgraph.
    * @param offerId - ID of offer.
    * @param queryVars - Optional query variables to skip, order or filter.
