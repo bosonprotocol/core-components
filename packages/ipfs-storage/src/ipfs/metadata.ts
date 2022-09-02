@@ -3,7 +3,6 @@ import { validateMetadata } from "../validation";
 import { convertToERC721Metadata, ERC721Metadata, sortObjKeys } from "../utils";
 import { BaseIpfsStorage } from "./base";
 import { Options } from "ipfs-http-client";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
 export class IpfsMetadataStorage
   extends BaseIpfsStorage
@@ -11,12 +10,6 @@ export class IpfsMetadataStorage
 {
   constructor(opts: Options) {
     super(opts);
-  }
-
-  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
-    return new IpfsMetadataStorage({
-      url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
-    });
   }
 
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {

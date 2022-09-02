@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.3.0...@bosonprotocol/metadata@1.3.1) (2022-08-25)
+
+### Bug Fixes
+
+* upgrade contactLinks definition ([#195](https://github.com/bosonprotocol/core-components/issues/195)) ([e093c5b](https://github.com/bosonprotocol/core-components/commit/e093c5bc5fe12c5f451e7cad7ea56cf1cb14e6d4))
+
 # [1.3.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.2.1...@bosonprotocol/metadata@1.3.0) (2022-07-12)
 
 ### Features

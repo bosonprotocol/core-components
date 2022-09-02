@@ -8,14 +8,32 @@ export default {
   component: Button
 } as ComponentMeta<typeof Button>;
 
+const BASE_ARGS = {
+  children: "Button Text",
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onClick: () => {},
+  size: "medium"
+};
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof Button> = (args) => (
+  <Button {...BASE_ARGS} {...args} />
+);
 
 export const Primary: ComponentStory<typeof Button> = Template.bind({});
 
+export const OutlinePrimary: ComponentStory<typeof Button> = Template.bind({});
+
 export const Secondary: ComponentStory<typeof Button> = Template.bind({});
 
+export const OutlineSecondary: ComponentStory<typeof Button> = Template.bind(
+  {}
+);
+
 export const Ghost: ComponentStory<typeof Button> = Template.bind({});
+
+export const GhostSecondary: ComponentStory<typeof Button> = Template.bind({});
+
+export const GhostOrange: ComponentStory<typeof Button> = Template.bind({});
 
 export const Disabled: ComponentStory<typeof Button> = Template.bind({});
 
@@ -23,56 +41,55 @@ export const Loading: ComponentStory<typeof Button> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  children: "Button Text",
-  onClick: () => {
-    console.log("buy");
-  },
   disabled: false,
   loading: false,
-  size: "medium",
   variant: "primary"
 };
 
-Secondary.args = {
-  onClick: () => {
-    console.log("buy");
-  },
+OutlinePrimary.args = {
   disabled: false,
   loading: false,
-  size: "medium",
-  variant: "secondary",
-  children: "Button Text"
+  variant: "primaryOutline"
+};
+
+Secondary.args = {
+  disabled: false,
+  loading: false,
+  variant: "secondary"
+};
+
+OutlineSecondary.args = {
+  disabled: false,
+  loading: false,
+  variant: "secondaryOutline"
+};
+
+GhostSecondary.args = {
+  disabled: false,
+  loading: false,
+  variant: "ghostSecondary"
+};
+
+GhostOrange.args = {
+  disabled: false,
+  loading: false,
+  variant: "ghostOrange"
 };
 
 Ghost.args = {
-  onClick: () => {
-    console.log("buy");
-  },
   disabled: false,
   loading: false,
-  size: "medium",
-  variant: "ghost",
-  children: "Button Text"
+  variant: "ghost"
 };
 
 Disabled.args = {
-  onClick: () => {
-    console.log("buy");
-  },
   disabled: true,
   loading: false,
-  size: "medium",
-  variant: "primary",
-  children: "Button Text"
+  variant: "primary"
 };
 
 Loading.args = {
-  onClick: () => {
-    console.log("buy");
-  },
   disabled: false,
   loading: true,
-  size: "medium",
-  variant: "primary",
-  children: "Button Text"
+  variant: "primary"
 };

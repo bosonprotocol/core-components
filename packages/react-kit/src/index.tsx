@@ -10,5 +10,6 @@ export * from "./components/cta/offer/CommitButton";
 export * from "./components/cta/offer/VoidButton";
 export * from "./components/buttons/Button";
 export * from "./components/searchBar/SearchBar";
+export * from "./components/currencyDisplay/CurrencyDisplay";
 
 export * as hooks from "./hooks";

@@ -5,15 +5,13 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*",
-    "apps/*"
+    "examples/*"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel --no-cache",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "build": "turbo run build",
-    "build:sdks": "turbo run build --filter=!@bosonprotocol/widgets --filter=!@bosonprotocol/example-parent-app",
     "test": "turbo run test",
     "clean": "turbo run clean",
     "codegen": "turbo run codegen",

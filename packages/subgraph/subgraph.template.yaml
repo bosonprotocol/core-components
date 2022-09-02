@@ -116,6 +116,8 @@ dataSources:
           handler: handleVoucherCanceledEvent
         - event: VoucherRedeemed(indexed uint256,indexed uint256,indexed address)
           handler: handleVoucherRedeemedEvent
+        - event: VoucherTransferred(indexed uint256,indexed uint256,indexed uint256,address)
+          handler: handleVoucherTransferredEvent
         - event: ExchangeCompleted(indexed uint256,indexed uint256,indexed uint256,address)
           handler: handleExchangeCompletedEvent
       file: ./src/mappings/exchange-handler.ts

@@ -1,9 +1,8 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
-import { isHexString, hexZeroPad } from "@ethersproject/bytes";
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish } from "@ethersproject/bignumber";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
-import { bosonFundsHandlerIface } from "../funds/interface";
+import { prepareDataSignatureParameters } from "../utils/signature";
 
 type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -26,7 +25,7 @@ export async function signExecuteMetaTx(
     { name: "functionSignature", type: "bytes" }
   ];
 
-  const customTransactionType = {
+  const customSignatureType = {
     MetaTransaction: metaTransactionType
   };
 
@@ -42,7 +41,8 @@ export async function signExecuteMetaTx(
 
   return prepareDataSignatureParameters({
     ...args,
-    customTransactionType,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
     primaryType: "MetaTransaction",
     message
   });
@@ -68,7 +68,7 @@ export async function signExecuteMetaTxCommitToOffer(
     { name: "offerDetails", type: "MetaTxOfferDetails" }
   ];
 
-  const customTransactionType = {
+  const customSignatureType = {
     MetaTxCommitToOffer: metaTransactionType,
     MetaTxOfferDetails: offerType
   };
@@ -88,7 +88,8 @@ export async function signExecuteMetaTxCommitToOffer(
 
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
-    customTransactionType,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
     primaryType: "MetaTxCommitToOffer",
     message
   });
@@ -158,7 +159,7 @@ export async function signExecuteMetaTxRaiseDispute(
     { name: "disputeDetails", type: "MetaTxDisputeDetails" }
   ];
 
-  const customTransactionType = {
+  const customSignatureType = {
     MetaTxDispute: metaTransactionType,
     MetaTxDisputeDetails: disputeType
   };
@@ -176,7 +177,8 @@ export async function signExecuteMetaTxRaiseDispute(
   // TODO: encode function data when adding dispute resolver module
   return prepareDataSignatureParameters({
     ...args,
-    customTransactionType,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
     primaryType: "MetaTxDispute",
     message
   });
@@ -209,7 +211,7 @@ export async function signExecuteMetaTxResolveDispute(
     { name: "disputeResolutionDetails", type: "MetaTxDisputeResolutionDetails" }
   ];
 
-  const customTransactionType = {
+  const customSignatureType = {
     MetaTxDisputeResolution: metaTransactionType,
     MetaTxDisputeResolutionDetails: disputeResolutionType
   };
@@ -231,7 +233,8 @@ export async function signExecuteMetaTxResolveDispute(
   // TODO: encode function data when adding dispute resolver module
   return prepareDataSignatureParameters({
     ...args,
-    customTransactionType,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
     primaryType: "MetaTxDisputeResolution",
     message
   });
@@ -260,7 +263,7 @@ export async function signExecuteMetaTxWithdrawFunds(
     { name: "fundDetails", type: "MetaTxFundDetails" }
   ];
 
-  const customTransactionType = {
+  const customSignatureType = {
     MetaTxFund: metaTransactionType,
     MetaTxFundDetails: fundType
   };
@@ -279,7 +282,8 @@ export async function signExecuteMetaTxWithdrawFunds(
 
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
-    customTransactionType,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
     primaryType: "MetaTxFund",
     message
   });
@@ -317,7 +321,7 @@ function makeExchangeMetaTxSigner(
       { name: "exchangeDetails", type: "MetaTxExchangeDetails" }
     ];
 
-    const customTransactionType = {
+    const customSignatureType = {
       MetaTxExchange: metaTransactionType,
       MetaTxExchangeDetails: exchangeType
     };
@@ -336,7 +340,8 @@ function makeExchangeMetaTxSigner(
 
     const signatureParams = await prepareDataSignatureParameters({
       ...args,
-      customTransactionType,
+      verifyingContractAddress: args.metaTxHandlerAddress,
+      customSignatureType,
       primaryType: "MetaTxExchange",
       message
     });
@@ -350,64 +355,5 @@ function makeExchangeMetaTxSigner(
         [args.exchangeId]
       )
     };
-  };
-}
-
-export async function prepareDataSignatureParameters(
-  args: BaseMetaTxArgs & {
-    customTransactionType?: Record<string, unknown>;
-    primaryType: string;
-    message: Record<string, unknown>;
-  }
-) {
-  const domainType = [
-    { name: "name", type: "string" },
-    { name: "version", type: "string" },
-    { name: "verifyingContract", type: "address" },
-    { name: "salt", type: "bytes32" }
-  ];
-
-  const domainData = {
-    name: "BosonProtocolDiamond",
-    version: "V1",
-    verifyingContract: args.metaTxHandlerAddress,
-    salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32)
-  };
-
-  const metaTxTypes = {
-    EIP712Domain: domainType,
-    ...args.customTransactionType
-  };
-
-  const dataToSign = JSON.stringify({
-    types: metaTxTypes,
-    domain: domainData,
-    primaryType: args.primaryType,
-    message: args.message
-  });
-
-  const signer = await args.web3Lib.getSignerAddress();
-  const signature = await args.web3Lib.send("eth_signTypedData_v4", [
-    signer,
-    dataToSign
-  ]);
-
-  return getSignatureParameters(signature);
-}
-
-export function getSignatureParameters(signature: string) {
-  if (!isHexString(signature)) {
-    throw new Error(`Value "${signature}" is not a valid hex string`);
-  }
-
-  signature = signature.substring(2);
-  const r = "0x" + signature.substring(0, 64);
-  const s = "0x" + signature.substring(64, 128);
-  const v = parseInt(signature.substring(128, 130), 16);
-
-  return {
-    r,
-    s,
-    v
   };
 }

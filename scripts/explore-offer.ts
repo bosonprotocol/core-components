@@ -5,10 +5,7 @@ import { providers, Contract } from "ethers";
 import { program } from "commander";
 import { abis } from "@bosonprotocol/common";
 import { getDefaultConfig } from "../packages/common/src";
-import {
-  extractOfferData,
-  extractOfferDataExtended
-} from "../utils/helpers/offer";
+import { extractOfferData, extractOfferDataExtended } from "./utils/offer";
 import {
   ITokenInfo,
   NATIVE_TOKENS
@@ -50,9 +47,9 @@ async function main() {
   const extendedOfferData = extractOfferDataExtended(offerDataRaw, tokenInfo);
   console.log("extendedOfferData", extendedOfferData);
 
-  const ipfsMetadataStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl(
-    defaultConfig.ipfsMetadataUrl
-  );
+  const ipfsMetadataStorage = new IpfsMetadataStorage({
+    url: defaultConfig.theGraphIpfsUrl
+  });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);
 }

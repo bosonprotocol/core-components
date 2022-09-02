@@ -16,10 +16,14 @@ export interface ButtonProps {
   size?: ButtonSize;
   variant?:
     | "primary"
+    | "primaryOutline"
     | "secondary"
+    | "secondaryOutline"
+    | "ghost"
+    | "ghostSecondary"
+    | "ghostOrange"
     | "tertiary"
     | "danger"
-    | "ghost"
     | "warning";
   className?: string;
   children?: React.ReactNode;
@@ -41,7 +45,11 @@ export const Button = ({
       size={size}
       {...props}
     >
-      {props.loading ? <Loading /> : <span id="buttonText">{children}</span>}
+      {props.loading ? (
+        <Loading data-loading />
+      ) : (
+        <span id="buttonText">{children}</span>
+      )}
     </ButtonStyle>
   );
 };

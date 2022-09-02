@@ -27,6 +27,7 @@ export const RevokeButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
+  variant = "secondary",
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -34,7 +35,7 @@ export const RevokeButton = ({
 
   return (
     <Button
-      variant="secondary"
+      variant={variant}
       size={size}
       disabled={disabled}
       onClick={async () => {

@@ -44,6 +44,7 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
 
   if (exchange) {
     exchange.state = "DISPUTED";
+    exchange.disputedDate = event.block.timestamp;
     exchange.disputed = true;
     exchange.save();
   }
@@ -142,6 +143,17 @@ function finalizeDispute(
     dispute.state = targetState;
     dispute.finalizedDate = disputeDurations.finalized;
     dispute.buyerPercent = disputeFromContract.buyerPercent;
+
+    if (targetState === "RETRACTED") {
+      dispute.retractedDate = disputeDurations.finalized;
+    } else if (targetState === "RESOLVED") {
+      dispute.resolvedDate = disputeDurations.finalized;
+    } else if (targetState === "DECIDED") {
+      dispute.decidedDate = disputeDurations.finalized;
+    } else if (targetState === "REFUSED") {
+      dispute.refusedDate = disputeDurations.finalized;
+    }
+
     dispute.save();
   }
 

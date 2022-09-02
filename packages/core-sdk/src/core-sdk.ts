@@ -621,6 +621,28 @@ export class CoreSDK {
   }
 
   /**
+   * Voids a batch of existing offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `operator` of all
+   * provided offers.
+   * @param offerIds - IDs of offers to void.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async voidOfferBatch(
+    offerIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.voidOfferBatch({
+      offerIds,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Returns offer from subgraph.
    * @param offerId - ID of offer.
    * @param queryVars - Optional query variables to skip, order or filter.
@@ -1080,37 +1102,19 @@ export class CoreSDK {
     });
   }
 
-  public async signMutualAgreement(args: {
-    exchangeId: string;
-    buyerPercent: string;
+  public async signDisputeResolutionProposal(args: {
+    exchangeId: BigNumberish;
+    buyerPercent: BigNumberish;
   }) {
-    // Set the message Type, needed for signature
-    const resolutionType = [
-      { name: "exchangeId", type: "uint256" },
-      { name: "buyerPercent", type: "uint256" }
-    ];
-
-    const customSignatureType = {
-      Resolution: resolutionType
-    };
-
-    const message = {
-      exchangeId: args.exchangeId,
-      buyerPercent: args.buyerPercent
-    };
-
     if (this._chainId === undefined) {
       this._chainId = await this._web3Lib.getChainId();
     }
 
-    return metaTx.handler.prepareDataSignatureParameters({
+    return disputes.handler.signResolutionProposal({
+      ...args,
       web3Lib: this._web3Lib,
-      metaTxHandlerAddress: this._protocolDiamond,
-      chainId: this._chainId,
-      customTransactionType: customSignatureType,
-      primaryType: "Resolution",
-      message,
-      nonce: "" // not used in this case
+      contractAddress: this._protocolDiamond,
+      chainId: this._chainId
     });
   }
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.7.0...@bosonprotocol/ipfs-storage@1.7.1) (2022-08-30)
+
+### Bug Fixes
+
+* the graph ipfs storage url on staging ([#218](https://github.com/bosonprotocol/core-components/issues/218)) ([d6db3e3](https://github.com/bosonprotocol/core-components/commit/d6db3e3d89a1f20849d3f03807c3bd9a70c839e8))
+
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.6.0...@bosonprotocol/ipfs-storage@1.7.0) (2022-08-26)
+
+### Features
+
+* add ipfs gateway headers ([#216](https://github.com/bosonprotocol/core-components/issues/216)) ([45f9ebf](https://github.com/bosonprotocol/core-components/commit/45f9ebf97e6e26d9d9cbc082cdb5b0bdbda88352))
+
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.5.1...@bosonprotocol/ipfs-storage@1.6.0) (2022-08-25)
+
+### Features
+
+* allow IPFS get to return string (not only JSON) ([#201](https://github.com/bosonprotocol/core-components/issues/201)) ([0902c61](https://github.com/bosonprotocol/core-components/commit/0902c61265e30f465ad2adac50244c983da8ca27))
+
 ## [1.5.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.5.0...@bosonprotocol/ipfs-storage@1.5.1) (2022-07-12)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

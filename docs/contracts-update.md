@@ -158,16 +158,9 @@ npm run e2e:test
 
 ### 9. Adapt UI components
 
-After making sure that the non-ui SDKs are working, we need to adapt all UI related apps, examples and SDKs.
+After making sure that the non-ui SDKs are working, we need to adapt all UI related SDKs.
 
-First, try to build the SDKs by running:
-
-```bash
-# from root of monorepo
-npm run build:sdks
-```
-
-Now, to see possible errors, run
+To see possible errors, run
 
 ```bash
 # from root of monorepo

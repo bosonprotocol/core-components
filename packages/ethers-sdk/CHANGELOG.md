@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.6...@bosonprotocol/ethers-sdk@1.6.7) (2022-08-30)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.5...@bosonprotocol/ethers-sdk@1.6.6) (2022-08-26)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.4...@bosonprotocol/ethers-sdk@1.6.5) (2022-08-26)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.3...@bosonprotocol/ethers-sdk@1.6.4) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.2...@bosonprotocol/ethers-sdk@1.6.3) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.1...@bosonprotocol/ethers-sdk@1.6.2) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.0...@bosonprotocol/ethers-sdk@1.6.1) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.5.0...@bosonprotocol/ethers-sdk@1.6.0) (2022-08-25)
+
+### Features
+
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* subgraph and core-sdk DisputeHandlerFacet ([#186](https://github.com/bosonprotocol/core-components/issues/186)) ([ac58f3d](https://github.com/bosonprotocol/core-components/commit/ac58f3d3beb83d5526b99d410ea2ff6c02db58fa))
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.4.1...@bosonprotocol/ethers-sdk@1.5.0) (2022-07-12)
 
 ### Features

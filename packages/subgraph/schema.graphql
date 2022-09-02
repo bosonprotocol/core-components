@@ -345,6 +345,7 @@ type Exchange @entity {
   revokedDate: BigInt
   completedDate: BigInt
   cancelledDate: BigInt
+  disputedDate: BigInt
   expired: Boolean!
 }
 
@@ -435,6 +436,10 @@ type Dispute @entity {
   disputedDate: BigInt!
   escalatedDate: BigInt
   finalizedDate: BigInt
+  retractedDate: BigInt
+  resolvedDate: BigInt
+  decidedDate: BigInt
+  refusedDate: BigInt
   timeout: BigInt!
   seller: Seller!
   buyer: Buyer!
