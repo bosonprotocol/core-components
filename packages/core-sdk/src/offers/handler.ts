@@ -6,9 +6,10 @@ import {
   utils
 } from "@bosonprotocol/common";
 import { bosonOfferHandlerIface, encodeCreateOffer } from "./interface";
-import { getOfferById } from "./subgraph";
+import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
 import { CreateOfferArgs } from "./types";
+import { OfferFieldsFragment } from "../subgraph";
 
 export async function createOffer(args: {
   offerToCreate: CreateOfferArgs;
@@ -39,25 +40,73 @@ export async function voidOffer(args: {
   offerId: BigNumberish;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
-  const offer = await getOfferById(args.subgraphUrl, args.offerId);
-
-  if (!offer) {
-    throw new Error(`Offer with id "${args.offerId}" does not exist`);
-  }
-
-  if (offer.voidedAt) {
-    throw new Error(`Offer with id "${args.offerId}" is already voided`);
-  }
-
+  const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
   const signerAddress = await args.web3Lib.getSignerAddress();
-  if (offer.seller.operator.toLowerCase() !== signerAddress.toLowerCase()) {
-    throw new Error(
-      `Signer with address "${signerAddress}" is not the operator "${offer.seller.operator}"`
-    );
-  }
+
+  checkIfOfferVoidable(args.offerId, signerAddress, offerFromSubgraph);
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: bosonOfferHandlerIface.encodeFunctionData("voidOffer", [args.offerId])
   });
+}
+
+export async function voidOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  const offersFromSubgraph = await getOffers(args.subgraphUrl, {
+    offersFilter: {
+      id_in: args.offerIds.map(String)
+    }
+  });
+  const signerAddress = await args.web3Lib.getSignerAddress();
+
+  const invalidOfferIdErrors = [];
+  for (const offerId of args.offerIds) {
+    const offerFromSubgraph = offersFromSubgraph.find(
+      (offer) => offer.id === offerId.toString()
+    );
+    try {
+      checkIfOfferVoidable(offerId, signerAddress, offerFromSubgraph);
+    } catch (error) {
+      invalidOfferIdErrors.push(error);
+    }
+  }
+
+  if (invalidOfferIdErrors.length) {
+    throw new Error(`Some offers can not be voided. ${invalidOfferIdErrors}`);
+  }
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: bosonOfferHandlerIface.encodeFunctionData("voidOfferBatch", [
+      args.offerIds
+    ])
+  });
+}
+
+function checkIfOfferVoidable(
+  offerId: BigNumberish,
+  signerAddress: string,
+  offerFromSubgraph?: OfferFieldsFragment
+) {
+  if (!offerFromSubgraph) {
+    throw new Error(`Offer with id "${offerId}" does not exist`);
+  }
+
+  if (offerFromSubgraph.voidedAt) {
+    throw new Error(`Offer with id "${offerId}" is already voided`);
+  }
+
+  if (
+    offerFromSubgraph.seller.operator.toLowerCase() !==
+    signerAddress.toLowerCase()
+  ) {
+    throw new Error(
+      `Signer with address "${signerAddress}" is not the operator "${offerFromSubgraph.seller.operator}" of offer with id "${offerId}"`
+    );
+  }
 }
