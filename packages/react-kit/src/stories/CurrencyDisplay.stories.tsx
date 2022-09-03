@@ -1,8 +1,10 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { CurrencyDisplay } from "../components/currencyDisplay/CurrencyDisplay";
-import { Currencies } from "../types/Currencies";
+import {
+  Currencies,
+  CurrencyDisplay
+} from "../components/currencyDisplay/CurrencyDisplay";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
