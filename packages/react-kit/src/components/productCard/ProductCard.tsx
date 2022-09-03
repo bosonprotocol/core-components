@@ -5,27 +5,42 @@ import {
   Currencies
 } from "../currencyDisplay/CurrencyDisplay";
 
+export enum ProductType {
+  phygital = "Phygital",
+  physical = "Physical",
+  digital = "Digital"
+}
+
 interface ProductCardProps {
   productId: string;
   productTitle: string;
-  sellerName: string;
   productImage: string;
   productPrice: number;
   currency: Currencies;
-  additionalText: string;
+  productType: ProductType;
+  seller: {
+    name: string;
+    avatar: string;
+  };
+  onCardClick?: (productId: string) => void;
 }
 
 export const ProductCard = ({
   productId,
   productTitle,
-  sellerName,
   productImage,
   productPrice,
   currency,
-  additionalText
+  productType,
+  seller,
+  onCardClick
 }: ProductCardProps) => {
   return (
-    <ProductCardWrapper>
+    <ProductCardWrapper
+      onClick={() => {
+        onCardClick?.(productId);
+      }}
+    >
       <ProductCardTop>
         <img
           alt={productTitle}
@@ -37,17 +52,15 @@ export const ProductCard = ({
       <ProductCardBottom>
         <ProductCarData>
           <ProductCreator>
-            <ProductCreatorAvatar />
-            <ProductCreatorName>MekaVerse</ProductCreatorName>
+            <ProductCreatorAvatar>
+              <img src={seller.avatar} alt="seller_avatar" />
+            </ProductCreatorAvatar>
+            <ProductCreatorName>{seller.name}</ProductCreatorName>
           </ProductCreator>
           <ProductTitle>{productTitle}</ProductTitle>
-          <ProductType>
-            <ProductTypeSymbol />
-            <span>Phygital</span>
-          </ProductType>
-          {/* MekaVerse
-          FEWO SHOE EPIC
-          <ProductType/> */}
+          <ProductTypeWrapper>
+            <span>{productType}</span>
+          </ProductTypeWrapper>
         </ProductCarData>
         <ProductCardPriceWrapper>
           <ProductCardPrice>Price</ProductCardPrice>
@@ -58,48 +71,64 @@ export const ProductCard = ({
   );
 };
 
-const ProductCreator = styled.div``;
-const ProductCreatorAvatar = styled.img``;
-const ProductCreatorName = styled.div``;
+const ProductCreator = styled.div`
+  display: flex;
+`;
+
+const ProductCreatorAvatar = styled.div`
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  padding-right: 0.5rem;
+  img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const ProductCreatorName = styled.div`
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 150%;
+  color: ${({ theme }) => theme?.colors?.light.secondary};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  justify-self: flex-end;
+`;
+
 const ProductTitle = styled.div`
   font-weight: 600;
   font-size: 1.25rem;
   line-height: 150%;
-
   color: ${({ theme }) => theme?.colors?.light.black};
 `;
-const ProductType = styled.div`
+
+const ProductTypeWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 4px 16px 4px 8px;
-  gap: 4px;
+  padding: 0.25rem 1rem 0.25rem 0.5rem;
+  gap: 0.25rem;
   width: 91px;
   height: 26px;
   background: #f1f3f9;
   flex: none;
   order: 1;
   flex-grow: 0;
+  justify-content: center;
   span {
     font-weight: 600;
     font-size: 0.75rem;
     line-height: 150%;
-
-    color: #556072;
-
+    color: ${({ theme }) => theme?.colors?.light.darkGrey};
     flex: none;
     order: 1;
     flex-grow: 0;
   }
-`;
-
-const ProductTypeSymbol = styled.div`
-  position: absolute;
-  left: 12.5%;
-  right: 12.5%;
-  top: 12.5%;
-  bottom: 12.5%;
-  border: 1.5px solid #556072;
 `;
 
 const ProductCardPriceWrapper = styled.div`
@@ -107,9 +136,9 @@ const ProductCardPriceWrapper = styled.div`
 `;
 
 const ProductCardPrice = styled.div`
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 150%;
-  text-align: right;
+  text-align: center;
   color: ${({ theme }) => theme?.colors?.light.darkGrey};
 `;
 
@@ -118,10 +147,9 @@ const ProductCarData = styled.div`
 `;
 
 const ProductCardBottom = styled.div`
-  margin: 16px 25px;
-  height: 118px;
-  width: calc(100% - 25px);
-
+  margin: 1rem 1.563rem;
+  height: 7.375rem;
+  width: calc(100% - 1.563rem);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
@@ -134,16 +162,13 @@ const ProductCardWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
   padding: 0px;
   isolation: isolate;
-
-  width: 323px;
-  max-height: 500px;
-
+  width: 20.188rem;
+  max-height: 31.25rem;
   border: 1px solid rgba(85, 96, 114, 0.15);
-
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
+  cursor: pointer;
 `;
 
 const ProductCardTop = styled.div`
@@ -154,7 +179,6 @@ const ProductCardTop = styled.div`
   overflow: hidden;
   width: inherit;
   height: 382px;
-
   flex: none;
   order: 0;
   flex-grow: 1;
