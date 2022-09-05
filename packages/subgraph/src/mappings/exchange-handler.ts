@@ -31,14 +31,14 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     saveMetadata(offer, offer.createdAt);
 
     exchange.seller = offer.seller;
-    exchange.validUntilDate = exchangeFromEvent.voucher.validUntilDate;
+    exchange.validUntilDate = event.params.voucher.validUntilDate;
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();
   exchange.offer = exchangeFromEvent.offerId.toString();
   exchange.disputed = false;
   exchange.state = "COMMITTED";
-  exchange.committedDate = event.block.timestamp;
+  exchange.committedDate = event.params.voucher.committedDate;
   exchange.expired = false;
 
   exchange.save();

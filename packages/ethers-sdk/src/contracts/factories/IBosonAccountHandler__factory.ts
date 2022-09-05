@@ -968,11 +968,6 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "string",
-        name: "_contractURI",
-        type: "string",
-      },
-      {
         components: [
           {
             internalType: "uint256",
@@ -987,6 +982,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.AuthToken",
         name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint96",
+            name: "royaltyPercentage",
+            type: "uint96",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
         type: "tuple",
       },
     ],

@@ -412,7 +412,6 @@ export type Dispute = {
   __typename?: "Dispute";
   buyer: Buyer;
   buyerPercent: Scalars["BigInt"];
-  complaint: Scalars["String"];
   decidedDate?: Maybe<Scalars["BigInt"]>;
   disputedDate: Scalars["BigInt"];
   escalatedDate?: Maybe<Scalars["BigInt"]>;
@@ -782,26 +781,6 @@ export type Dispute_Filter = {
   buyer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   buyer_starts_with?: InputMaybe<Scalars["String"]>;
   buyer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint?: InputMaybe<Scalars["String"]>;
-  complaint_contains?: InputMaybe<Scalars["String"]>;
-  complaint_contains_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_ends_with?: InputMaybe<Scalars["String"]>;
-  complaint_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_gt?: InputMaybe<Scalars["String"]>;
-  complaint_gte?: InputMaybe<Scalars["String"]>;
-  complaint_in?: InputMaybe<Array<Scalars["String"]>>;
-  complaint_lt?: InputMaybe<Scalars["String"]>;
-  complaint_lte?: InputMaybe<Scalars["String"]>;
-  complaint_not?: InputMaybe<Scalars["String"]>;
-  complaint_not_contains?: InputMaybe<Scalars["String"]>;
-  complaint_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_not_ends_with?: InputMaybe<Scalars["String"]>;
-  complaint_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  complaint_not_starts_with?: InputMaybe<Scalars["String"]>;
-  complaint_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  complaint_starts_with?: InputMaybe<Scalars["String"]>;
-  complaint_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   decidedDate?: InputMaybe<Scalars["BigInt"]>;
   decidedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   decidedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -931,7 +910,6 @@ export type Dispute_Filter = {
 export enum Dispute_OrderBy {
   Buyer = "buyer",
   BuyerPercent = "buyerPercent",
-  Complaint = "complaint",
   DecidedDate = "decidedDate",
   DisputedDate = "disputedDate",
   EscalatedDate = "escalatedDate",
@@ -8097,7 +8075,6 @@ export type GetDisputeByIdQueryQuery = {
     __typename?: "Dispute";
     id: string;
     exchangeId: string;
-    complaint: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -8158,7 +8135,6 @@ export type GetDisputesQueryQuery = {
     __typename?: "Dispute";
     id: string;
     exchangeId: string;
-    complaint: string;
     state: DisputeState;
     buyerPercent: string;
     disputedDate: string;
@@ -8209,7 +8185,6 @@ export type DisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
   exchangeId: string;
-  complaint: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -8254,7 +8229,6 @@ export type BaseDisputeFieldsFragment = {
   __typename?: "Dispute";
   id: string;
   exchangeId: string;
-  complaint: string;
   state: DisputeState;
   buyerPercent: string;
   disputedDate: string;
@@ -14733,7 +14707,6 @@ export const BaseDisputeFieldsFragmentDoc = gql`
   fragment BaseDisputeFields on Dispute {
     id
     exchangeId
-    complaint
     state
     buyerPercent
     disputedDate

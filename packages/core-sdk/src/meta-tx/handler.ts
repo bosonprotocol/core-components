@@ -147,13 +147,9 @@ export async function signExecuteMetaTxEscalateDispute(
 export async function signExecuteMetaTxRaiseDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
-    complaint: string;
   }
 ) {
-  const disputeType = [
-    { name: "exchangeId", type: "uint256" },
-    { name: "complaint", type: "string" }
-  ];
+  const disputeType = [{ name: "exchangeId", type: "uint256" }];
 
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
@@ -172,10 +168,9 @@ export async function signExecuteMetaTxRaiseDispute(
     nonce: args.nonce.toString(),
     from: await args.web3Lib.getSignerAddress(),
     contractAddress: args.metaTxHandlerAddress,
-    functionName: "raiseDispute(uint256,string)",
+    functionName: "raiseDispute(uint256)",
     disputeDetails: {
-      exchangeId: args.exchangeId.toString(),
-      complaint: args.complaint
+      exchangeId: args.exchangeId.toString()
     }
   };
 

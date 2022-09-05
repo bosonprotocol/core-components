@@ -20,12 +20,12 @@ export function encodeCreateSellerAndOffer(
     "createSellerAndOffer",
     [
       sellerArgs.sellerStruct,
-      seller.contractUri,
       offerArgs[0], // offer
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
       sellerArgs.authTokenStruct,
+      sellerArgs.voucherInitValues,
       offerArgs[4] // agentId
     ]
   );

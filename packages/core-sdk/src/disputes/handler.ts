@@ -18,7 +18,6 @@ import { prepareDataSignatureParameters } from "../utils/signature";
 
 export async function raiseDispute(args: {
   exchangeId: BigNumberish;
-  complaint: string;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {

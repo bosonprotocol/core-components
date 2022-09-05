@@ -106,7 +106,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,(uint256,uint256,uint256,bool),uint8),address)
+        - event: BuyerCommitted(indexed uint256,indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint8),(uint256,uint256,uint256,bool),address)
           handler: handleBuyerCommittedEvent
         - event: VoucherExtended(indexed uint256,indexed uint256,uint256,indexed address)
           handler: handleVoucherExtendedEvent
@@ -172,7 +172,7 @@ dataSources:
         - name: IBosonDisputeHandler
           file: ../common/src/abis/IBosonDisputeHandler.json
       eventHandlers:
-        - event: DisputeRaised(indexed uint256,indexed uint256,indexed uint256,string,address)
+        - event: DisputeRaised(indexed uint256,indexed uint256,indexed uint256,address)
           handler: handleDisputeRaisedEvent
         - event: DisputeRetracted(indexed uint256,indexed address)
           handler: handleDisputeRetractedEvent

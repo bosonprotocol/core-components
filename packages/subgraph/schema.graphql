@@ -431,7 +431,6 @@ type Dispute @entity {
   id: ID!
   exchangeId: BigInt!
   exchange: Exchange!
-  complaint: String!
   state: DisputeState!
   buyerPercent: BigInt!
   disputedDate: BigInt!

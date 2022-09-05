@@ -995,12 +995,10 @@ export class CoreSDK {
   }
 
   public async raiseDispute(
-    exchangeId: BigNumberish,
-    complaint: string
+    exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
     return disputes.handler.raiseDispute({
       exchangeId,
-      complaint,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
     });
