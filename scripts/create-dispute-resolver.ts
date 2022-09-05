@@ -23,7 +23,8 @@ program
   )
   .option(
     "-f, --fees <...FEES>",
-    "Comma-separated list of dispute resolution fee tuples with the format: <TOKEN_ADDRESS>/<TOKEN_NAME>/<FEE_AMOUNT>"
+    "Comma-separated list of dispute resolution fee tuples with the format: <TOKEN_ADDRESS>/<TOKEN_NAME>/<FEE_AMOUNT>",
+    "0x0000000000000000000000000000000000000000/ETH/0"
   )
   .option(
     "-s, --sellers <...SELLERS>",
