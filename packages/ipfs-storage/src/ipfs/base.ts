@@ -42,10 +42,10 @@ export class BaseIpfsStorage {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    const dataStr = toString(data);
     if (!asJson) {
-      return dataStr;
+      return data as unknown as T;
     }
+    const dataStr = toString(data);
     return JSON.parse(dataStr);
   }
 
