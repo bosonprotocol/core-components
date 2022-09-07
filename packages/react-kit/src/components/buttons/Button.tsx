@@ -10,7 +10,7 @@ export enum ButtonSize {
 }
 
 export interface ButtonProps {
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   loading?: boolean;
   size?: ButtonSize;
