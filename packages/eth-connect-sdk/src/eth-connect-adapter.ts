@@ -5,6 +5,10 @@ import {
   TransactionRequest
 } from "@bosonprotocol/common";
 
+/**
+ * `Web3LibAdapter` implementation targeting `eth-connect` in a Decentraland
+ * environment.
+ */
 export class EthConnectAdapter implements Web3LibAdapter {
   private _requestManager: RequestManager;
 

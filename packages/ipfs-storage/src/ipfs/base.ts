@@ -3,6 +3,9 @@ import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 
+/**
+ * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
+ */
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
