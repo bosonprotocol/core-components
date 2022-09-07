@@ -81,6 +81,13 @@ export const defaultConfigs: ProtocolConfig[] = [
   }
 ];
 
+/**
+ * Returns default config values based on provided `envName` or `chainId` that can be
+ * used to instantiate a `CoreSDK` instance. The argument `envName` has a higher
+ * specificity than `chainId`.
+ * @param filter - Filter for default config.
+ * @returns Default config.
+ */
 export function getDefaultConfig(filter: {
   envName?: string;
   chainId?: number;

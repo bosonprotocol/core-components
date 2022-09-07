@@ -114,7 +114,7 @@ export class CoreSDK {
    * Returns supported offer metadata from passed in `MetadataStorage` instance.
    * @param metadataHashOrUri - Metadata hash or uri that can be handled by the
    * storage instance.
-   * @returns Metadata hash / identifier.
+   * @returns Offer metadata.
    */
   public async getMetadata(metadataHashOrUri: string): Promise<AnyMetadata> {
     if (!this._metadataStorage) {
