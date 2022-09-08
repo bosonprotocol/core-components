@@ -11,5 +11,6 @@ export * from "./components/cta/offer/VoidButton";
 export * from "./components/buttons/Button";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/currencyDisplay/CurrencyDisplay";
+export * from "./components/exchangeCard/ExchangeCard";
 
 export * as hooks from "./hooks";
