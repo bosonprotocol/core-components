@@ -51,13 +51,9 @@ export function encodeExtendDisputeTimeout(args: {
   ]);
 }
 
-export function encodeRaiseDispute(args: {
-  exchangeId: BigNumberish;
-  complaint: string;
-}) {
+export function encodeRaiseDispute(args: { exchangeId: BigNumberish }) {
   return bosonDisputeHandlerIface.encodeFunctionData("raiseDispute", [
-    args.exchangeId,
-    args.complaint
+    args.exchangeId
   ]);
 }
 

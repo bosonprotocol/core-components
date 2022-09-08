@@ -225,6 +225,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       clerk: sellerAddress,
       // TODO: replace with correct uri
       contractUri: "ipfs://seller-contract",
+      royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0
     });

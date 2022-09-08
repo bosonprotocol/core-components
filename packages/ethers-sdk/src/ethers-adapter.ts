@@ -22,6 +22,9 @@ export type Provider =
   | providers.WebSocketProvider
   | providers.IpcProvider;
 
+/**
+ * `Web3LibAdapter` implementation targeting `ethers`.
+ */
 export class EthersAdapter implements Web3LibAdapter {
   private _signer: Signer;
   private _provider: Provider;

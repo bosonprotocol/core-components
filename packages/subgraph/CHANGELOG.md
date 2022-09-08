@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.1...@bosonprotocol/subgraph@1.13.2) (2022-08-31)
+
+### Bug Fixes
+
+* voucher transferred handler ([#224](https://github.com/bosonprotocol/core-components/issues/224)) ([7c6c361](https://github.com/bosonprotocol/core-components/commit/7c6c361505116f4d2c1e6a35069b6a39c7daedd5))
+
+## [1.13.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.0...@bosonprotocol/subgraph@1.13.1) (2022-08-31)
+
+### Bug Fixes
+
+* add voucher transferred handler to manifest ([#223](https://github.com/bosonprotocol/core-components/issues/223)) ([9aa796c](https://github.com/bosonprotocol/core-components/commit/9aa796c1a19588cf621e7fb368e409d1ba640211))
+
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.12.0...@bosonprotocol/subgraph@1.13.0) (2022-08-30)
+
+### Features
+
+* add subgraph handling for voucher transfers ([#222](https://github.com/bosonprotocol/core-components/issues/222)) ([bee6cf7](https://github.com/bosonprotocol/core-components/commit/bee6cf77eabbef9d844d758b35fce5309ce9c7b8))
+
 # [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.11.0...@bosonprotocol/subgraph@1.12.0) (2022-08-30)
 
 ### Bug Fixes

@@ -326,7 +326,6 @@ describe("core-sdk", () => {
 
     describe("disputes", () => {
       let exchange: ExchangeFieldsFragment;
-      const complaint = "The complaint";
       const sellerWallet = sellerWallet2;
       const buyerWallet = buyerWallet2;
       const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -355,14 +354,14 @@ describe("core-sdk", () => {
 
       test("raise dispute", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
-        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+        await checkDisputeResolving(exchange.id, buyerCoreSDK);
       });
 
       test("raise dispute + retract", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         // Retract the dispute
         await retractDispute(exchange.id, buyerCoreSDK);
@@ -392,9 +391,9 @@ describe("core-sdk", () => {
         await waitForGraphNodeIndexing();
 
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
-        await checkDisputeResolving(exchange.id, complaint, buyerCoreSDK);
+        await checkDisputeResolving(exchange.id, buyerCoreSDK);
 
         // Expire the dispute
         await expireDispute(exchange.id, sellerCoreSDK);
@@ -404,7 +403,7 @@ describe("core-sdk", () => {
 
       test("raise dispute + resolve (from buyer)", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         // Resolve the dispute from buyer
         const buyerPercent = "4400"; // 44%
@@ -421,7 +420,7 @@ describe("core-sdk", () => {
 
       test("raise dispute + resolve (from seller)", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         // Resolve the dispute from seller
         const buyerPercent = "4321"; // 43.21%
@@ -438,7 +437,7 @@ describe("core-sdk", () => {
 
       test("raise dispute + extend", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         const disputeTimeout = await getDisputeTimeout(
           exchange.id,
@@ -450,14 +449,14 @@ describe("core-sdk", () => {
         // Seller extends the dispute timeout
         await extendDisputeTimeout(exchange.id, newTimeout, sellerCoreSDK);
 
-        await checkDisputeResolving(exchange.id, complaint, sellerCoreSDK);
+        await checkDisputeResolving(exchange.id, sellerCoreSDK);
 
         await checkDisputeTimeout(exchange.id, newTimeout, sellerCoreSDK);
       });
 
       test("raise dispute + escalate", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         const disputeTimeout = await getDisputeTimeout(
           exchange.id,
@@ -472,7 +471,7 @@ describe("core-sdk", () => {
 
       test("raise dispute + escalate + decide", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         // Escalate the dispute
         await escalateDispute(exchange.id, buyerCoreSDK);
@@ -491,7 +490,7 @@ describe("core-sdk", () => {
 
       test("raise dispute + escalate + refuse", async () => {
         // Raise the dispute
-        await raiseDispute(exchange.id, complaint, buyerCoreSDK);
+        await raiseDispute(exchange.id, buyerCoreSDK);
 
         // Escalate the dispute
         await escalateDispute(exchange.id, buyerCoreSDK);
@@ -563,6 +562,7 @@ async function createSeller(
     clerk: sellerAddress,
     treasury: sellerAddress,
     contractUri,
+    royaltyPercentage: "0",
     authTokenId: "0",
     authTokenType: 0,
     ...sellerParams
@@ -592,6 +592,7 @@ async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
       clerk: sellerAddress,
       treasury: sellerAddress,
       contractUri: metadataUri,
+      royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0
     },
@@ -701,7 +702,6 @@ async function completeExchange(args: {
 
 async function raiseDispute(
   exchangeId: string,
-  complaint: string,
   buyerCoreSDK: CoreSDK
 ) {
   const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(exchangeId);
@@ -711,7 +711,7 @@ async function raiseDispute(
   const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
   expect(dispute).toBeNull();
 
-  const txResponse = await buyerCoreSDK.raiseDispute(exchangeId, complaint);
+  const txResponse = await buyerCoreSDK.raiseDispute(exchangeId);
   await txResponse.wait();
   await waitForGraphNodeIndexing();
   const exchangeAfterDispute = await buyerCoreSDK.getExchangeById(exchangeId);
@@ -725,7 +725,6 @@ async function raiseDispute(
 
 async function checkDisputeResolving(
   exchangeId: string,
-  complaint: string,
   coreSDK: CoreSDK
 ) {
   // Retrieve the dispute from the data model
@@ -734,9 +733,6 @@ async function checkDisputeResolving(
 
   // dispute state is now RESOLVING
   expect(dispute.state).toBe(DisputeState.Resolving);
-
-  // dispute complaint is the one specified
-  expect(dispute.complaint).toEqual(complaint);
 
   // dispute date is correct
   expect(dispute.disputedDate).toBeTruthy();

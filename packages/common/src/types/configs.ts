@@ -20,7 +20,6 @@ export type ProtocolConfig = {
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;
   ipfsMetadataUrl: string;
-  widgetsUrl: string;
   contracts: ContractAddresses;
   metaTx?: MetaTxConfig;
 };

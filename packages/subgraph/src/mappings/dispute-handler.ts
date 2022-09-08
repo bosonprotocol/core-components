@@ -16,7 +16,6 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
   const exchangeId = event.params.exchangeId;
   const buyerId = event.params.buyerId;
   const sellerId = event.params.sellerId;
-  const complaint = event.params.complaint;
 
   const disputeHandler = IBosonDisputeHandler.bind(event.address);
   const getDisputeResult = disputeHandler.getDispute(exchangeId);
@@ -33,7 +32,6 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
 
   dispute.exchangeId = exchangeId;
   dispute.exchange = exchangeId.toString();
-  dispute.complaint = complaint;
   dispute.state = "RESOLVING";
   dispute.buyerPercent = disputeStruct.buyerPercent;
   dispute.disputedDate = disputeDurations.disputed;
@@ -48,6 +46,7 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
     exchange.state = "DISPUTED";
     exchange.disputedDate = event.block.timestamp;
     exchange.disputed = true;
+    exchange.dispute = disputeId;
     exchange.save();
   }
 }

@@ -3,6 +3,9 @@ import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
 
+/**
+ * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
+ */
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
@@ -42,10 +45,10 @@ export class BaseIpfsStorage {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    const dataStr = toString(data);
     if (!asJson) {
-      return dataStr;
+      return data as unknown as T;
     }
+    const dataStr = toString(data);
     return JSON.parse(dataStr);
   }
 

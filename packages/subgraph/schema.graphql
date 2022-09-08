@@ -347,6 +347,7 @@ type Exchange @entity {
   cancelledDate: BigInt
   disputedDate: BigInt
   expired: Boolean!
+  dispute: Dispute
 }
 
 """
@@ -431,7 +432,6 @@ type Dispute @entity {
   id: ID!
   exchangeId: BigInt!
   exchange: Exchange!
-  complaint: String!
   state: DisputeState!
   buyerPercent: BigInt!
   disputedDate: BigInt!

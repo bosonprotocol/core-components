@@ -5,15 +5,13 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*",
-    "apps/*"
+    "examples/*"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel --no-cache",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "build": "turbo run build",
-    "build:sdks": "turbo run build --filter=!@bosonprotocol/widgets --filter=!@bosonprotocol/example-parent-app",
     "test": "turbo run test",
     "clean": "turbo run clean",
     "codegen": "turbo run codegen",
@@ -28,7 +26,9 @@
     "subgraph:deploy:local": "cd ./packages/subgraph && npm run deploy:local",
     "export-abis": "ts-node ./scripts/export-abis.ts",
     "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts",
-    "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts"
+    "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
+    "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
+    "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv"
   },
   "repository": {
     "type": "git",

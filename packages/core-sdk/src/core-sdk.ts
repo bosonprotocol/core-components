@@ -121,7 +121,7 @@ export class CoreSDK {
    * Returns supported offer metadata from passed in `MetadataStorage` instance.
    * @param metadataHashOrUri - Metadata hash or uri that can be handled by the
    * storage instance.
-   * @returns Metadata hash / identifier.
+   * @returns Offer metadata.
    */
   public async getMetadata(metadataHashOrUri: string): Promise<AnyMetadata> {
     if (!this._metadataStorage) {
@@ -628,6 +628,28 @@ export class CoreSDK {
   }
 
   /**
+   * Voids a batch of existing offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `operator` of all
+   * provided offers.
+   * @param offerIds - IDs of offers to void.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async voidOfferBatch(
+    offerIds: BigNumberish[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.voidOfferBatch({
+      offerIds,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Returns offer from subgraph.
    * @param offerId - ID of offer.
    * @param queryVars - Optional query variables to skip, order or filter.
@@ -649,6 +671,35 @@ export class CoreSDK {
     queryVars?: subgraph.GetOffersQueryQueryVariables
   ): Promise<subgraph.OfferFieldsFragment[]> {
     return offers.subgraph.getOffers(this._subgraphUrl, queryVars);
+  }
+
+  /**
+   * Renders contractual agreement for given offer.
+   * @param offerId - Id of offer to render agreement for.
+   * @returns Contractual agreement as string.
+   */
+  public async renderContractualAgreementForOffer(
+    offerId: BigNumberish
+  ): Promise<string> {
+    const offerData = await offers.subgraph.getOfferById(
+      this._subgraphUrl,
+      offerId
+    );
+    return offers.renderContractualAgreementForOffer(offerData);
+  }
+
+  /**
+   * Renders contractual agreement for given offer.
+   * @param template - Mustache syntax based template.
+   * @param offerData - Offer data.
+   * @returns Contractual agreement as string.
+   */
+  public async renderContractualAgreement(
+    template: string,
+    offerData: offers.CreateOfferArgs
+  ): Promise<string> {
+    const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
+    return offers.renderContractualAgreement(template, offerData, tokenInfo);
   }
 
   /* -------------------------------------------------------------------------- */
@@ -962,6 +1013,12 @@ export class CoreSDK {
   /*                           Dispute related methods                          */
   /* -------------------------------------------------------------------------- */
 
+  /**
+   * Returns dispute entity from subgraph.
+   * @param disputeId - ID of dispute entity.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute entity from subgraph.
+   */
   public async getDisputeById(
     disputeId: BigNumberish,
     queryVars?: disputes.subgraph.SingleDisputeQueryVariables
@@ -973,24 +1030,37 @@ export class CoreSDK {
     );
   }
 
+  /**
+   * Returns dispute entities from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Dispute entities from subgraph.
+   */
   public async getDisputes(
     queryVars?: subgraph.GetDisputesQueryQueryVariables
   ) {
     return disputes.subgraph.getDisputes(this._subgraphUrl, queryVars);
   }
 
+  /**
+   * Raises a dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of exchange to dispute.
+   * @returns Transaction response.
+   */
   public async raiseDispute(
-    exchangeId: BigNumberish,
-    complaint: string
+    exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
     return disputes.handler.raiseDispute({
       exchangeId,
-      complaint,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
     });
   }
 
+  /**
+   * Retracts a dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @returns Transaction response.
+   */
   public async retractDispute(
     exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
@@ -1001,6 +1071,12 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Extends the dispute timeout by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @param newDisputeTimeout - New dispute timeout in seconds.
+   * @returns Transaction response.
+   */
   public async extendDisputeTimeout(
     exchangeId: BigNumberish,
     newDisputeTimeout: BigNumberish
@@ -1013,6 +1089,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Expires a dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @returns Transaction response.
+   */
   public async expireDispute(
     exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
@@ -1023,6 +1104,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Expires many disputes by calling the `DisputeHandlerContract`.
+   * @param exchangeIds - IDs of disputed exchanges.
+   * @returns Transaction response.
+   */
   public async expireDisputeBatch(
     exchangeIds: BigNumberish[]
   ): Promise<TransactionResponse> {
@@ -1033,6 +1119,19 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Resolves dispute by calling the `DisputeHandlerContract`. If caller is `buyer` then
+   * signature of `seller` is required as an argument. If caller if `seller` then vice-versa.
+   * The signature can be retrieved by calling the method
+   * `CoreSDK.signDisputeResolutionProposal`.
+   * @param args - Dispute resolve arguments:
+   * - `args.exchangeId` - ID of disputed exchange.
+   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * - `args.sigR` - r signature value of counterparty.
+   * - `args.sigS` - s signature value of counterparty.
+   * - `args.sigV` - v signature value of counterparty.
+   * @returns Transaction response.
+   */
   public async resolveDispute(args: {
     exchangeId: BigNumberish;
     buyerPercent: BigNumberish;
@@ -1047,6 +1146,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Escalates dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @returns Transaction response.
+   */
   public async escalateDispute(
     exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
@@ -1057,6 +1161,12 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Decides dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @param buyerPercent - Percentage of deposit buyer gets.
+   * @returns Transaction response.
+   */
   public async decideDispute(
     exchangeId: BigNumberish,
     buyerPercent: BigNumberish
@@ -1069,6 +1179,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Refuses escalated dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @returns Transaction response.
+   */
   public async refuseEscalatedDispute(
     exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
@@ -1079,6 +1194,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Expires escalated dispute by calling the `DisputeHandlerContract`.
+   * @param exchangeId - ID of disputed exchange.
+   * @returns Transaction response.
+   */
   public async expireEscalatedDispute(
     exchangeId: BigNumberish
   ): Promise<TransactionResponse> {
@@ -1089,6 +1209,13 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Signs dispute resolution message.
+   * @param args - Dispute resolve arguments:
+   * - `args.exchangeId` - ID of disputed exchange.
+   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * @returns Signature.
+   */
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
     buyerPercent: BigNumberish;
@@ -1166,23 +1293,6 @@ export class CoreSDK {
     });
   }
 
-  public async renderContractualAgreementForOffer(
-    offerId: BigNumberish
-  ): Promise<string> {
-    const offerData = await offers.subgraph.getOfferById(
-      this._subgraphUrl,
-      offerId
-    );
-    return offers.renderContractualAgreementForOffer(offerData);
-  }
-
-  public async renderContractualAgreement(
-    template: string,
-    offerData: offers.CreateOfferArgs
-  ): Promise<string> {
-    const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
-    return offers.renderContractualAgreement(template, offerData, tokenInfo);
-  }
 
   public async relayMetaTransaction(
     metaTransactionsApiKey: string,

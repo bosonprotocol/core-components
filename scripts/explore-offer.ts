@@ -5,10 +5,7 @@ import { providers, Contract } from "ethers";
 import { program } from "commander";
 import { abis } from "@bosonprotocol/common";
 import { getDefaultConfig } from "../packages/common/src";
-import {
-  extractOfferData,
-  extractOfferDataExtended
-} from "../utils/helpers/offer";
+import { extractOfferData, extractOfferDataExtended } from "./utils/offer";
 import {
   ITokenInfo,
   NATIVE_TOKENS

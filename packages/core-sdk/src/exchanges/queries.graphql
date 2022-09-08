@@ -33,6 +33,9 @@ fragment ExchangeFields on Exchange {
   offer {
     ...BaseOfferFields
   }
+  dispute {
+    ...BaseDisputeFields
+  }
 }
 
 fragment BaseExchangeFields on Exchange {

@@ -1,3 +1,4 @@
+process.env.CONFIRMATIONS = 1; // required for deployProtocolConfigFacet()
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const hre = require("hardhat");
 const ethers = hre.ethers;
@@ -47,13 +48,15 @@ function getConfig() {
   const maxAllowedSellers = "100";
   const buyerEscalationDepositPercentage = "100"; // 1%
   const maxTotalOfferFeePercentage = 4000; // 40%
+  const maxRoyaltyPecentage = 1000; //10%
+  const maxResolutionPeriod = oneMonth;
 
   return [
     {
-      tokenAddress: bosonTokenMap[hre.network.name],
-      treasuryAddress: ethers.constants.AddressZero,
-      voucherBeaconAddress: ethers.constants.AddressZero,
-      beaconProxyAddress: ethers.constants.AddressZero
+      token: bosonTokenMap[hre.network.name],
+      treasury: ethers.constants.AddressZero,
+      voucherBeacon: ethers.constants.AddressZero,
+      beaconProxy: ethers.constants.AddressZero
     },
     {
       maxExchangesPerBatch,
@@ -66,7 +69,9 @@ function getConfig() {
       maxEscalationResponsePeriod,
       maxDisputesPerBatch,
       maxAllowedSellers,
-      maxTotalOfferFeePercentage
+      maxTotalOfferFeePercentage,
+      maxRoyaltyPecentage,
+      maxResolutionPeriod
     },
     {
       percentage: feePercentage,
@@ -123,7 +128,8 @@ function getNoArgFacetNames() {
     "MetaTransactionsHandlerFacet",
     "OfferHandlerFacet",
     "OrchestrationHandlerFacet",
-    "TwinHandlerFacet"
+    "TwinHandlerFacet",
+    "PauseHandlerFacet"
   ];
 }
 
@@ -155,11 +161,11 @@ async function main() {
   );
   console.log(divider);
 
-  if (hre.network.name === "localhost" || !config[0].tokenAddress) {
+  if (hre.network.name === "localhost" || !config[0].token) {
     console.log(`\n💎 Deploying mock tokens...`);
     const [mockBosonToken] = await deployMockTokens(gasLimit);
     deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
-    config[0].tokenAddress = mockBosonToken.address;
+    config[0].token = mockBosonToken.address;
   }
 
   console.log(
@@ -167,7 +173,7 @@ async function main() {
   );
 
   // Deploy the Diamond
-  const [protocolDiamond, dlf, dcf, accessController, diamondArgs] =
+  const [protocolDiamond, dlf, dcf, erc165f, accessController, diamondArgs] =
     await deployProtocolDiamond(gasLimit);
   deploymentComplete(
     "AccessController",
@@ -177,6 +183,7 @@ async function main() {
   );
   deploymentComplete("DiamondLoupeFacet", dlf.address, [], contracts);
   deploymentComplete("DiamondCutFacet", dcf.address, [], contracts);
+  deploymentComplete("ERC165Facet", erc165f.address, [], contracts);
   deploymentComplete(
     "ProtocolDiamond",
     protocolDiamond.address,
