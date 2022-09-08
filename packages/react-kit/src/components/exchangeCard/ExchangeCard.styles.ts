@@ -12,7 +12,6 @@ export const ExchangeCreatorAvatar = styled.div`
   flex: none;
   order: 0;
   flex-grow: 0;
-  padding-right: 0.5rem;
   img {
     border-radius: 50%;
     width: 100%;
@@ -21,6 +20,7 @@ export const ExchangeCreatorAvatar = styled.div`
 `;
 
 export const ExchangeCreatorName = styled.div`
+  margin-left: 0.5rem;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
@@ -143,6 +143,7 @@ export const ExchangeStatus = styled.div<{
   position: absolute;
   top: 16px;
   right: 16px;
+  z-index: 10;
   letter-spacing: 0.5px;
   line-height: 16px;
   font-weight: 600;
@@ -181,4 +182,12 @@ export const CommittedBottomText = styled.p`
   padding: 0 1.5rem 1.5rem 1.5rem;
   letter-spacing: 0.5px;
   color: ${theme.colors.light.darkGrey};
+`;
+
+export const ExchangeImageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  [data-image-wrapper] {
+    position: static;
+  }
 `;

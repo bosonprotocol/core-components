@@ -4,6 +4,7 @@ import {
   CurrencyDisplay,
   Currencies
 } from "../currencyDisplay/CurrencyDisplay";
+import { IBaseImage, Image } from "../image/Image";
 
 import {
   CommittedButtonWrapper,
@@ -20,7 +21,8 @@ import {
   ExchangeTitle,
   RedeemButtonWrapper,
   ExchangeStatus,
-  ExchangeButtonWrapper
+  ExchangeButtonWrapper,
+  ExchangeImageWrapper
 } from "./ExchangeCard.styles";
 
 export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
@@ -28,12 +30,12 @@ export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
 interface Base {
   id: string;
   title: string;
-  image: string;
   price: number;
   currency: Currencies;
   avatar: string;
   avatarName: string;
   onCardClick?: (id: string | number) => void;
+  imageProps: IBaseImage;
 }
 
 interface RedeemCard extends Base {
@@ -68,7 +70,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const {
     id,
     title,
-    image,
+    imageProps,
     price,
     currency,
     avatar,
@@ -160,7 +162,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       }}
     >
       <ExchangeCardTop $status={status}>
-        <img alt={title} src={image} decoding="async" />
+        <ExchangeImageWrapper>
+          <Image {...imageProps} />
+        </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
       <ExchangeCardBottom>
