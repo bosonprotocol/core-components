@@ -103,7 +103,7 @@ export const ExchangeCardTop = styled.div<{
       case "COMMITTED":
         return "18.5rem";
       default:
-        return;
+        return "auto";
     }
   }};
   flex: none;
@@ -160,7 +160,7 @@ export const ExchangeStatus = styled.div<{
       case "COMMITTED":
         return theme.colors.light.secondary;
       default:
-        return;
+        return theme.colors.light.white;
     }
   }};
   color: ${({ $status }) => {
@@ -168,7 +168,7 @@ export const ExchangeStatus = styled.div<{
       case "COMMITTED":
         return theme.colors.light.white;
       default:
-        return;
+        return theme.colors.light.black;
     }
   }};
 `;

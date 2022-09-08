@@ -160,7 +160,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
       }}
     >
       <ExchangeCardTop $status={status}>
-        <img alt={title} src={image} decoding="async" data-nimg="fill" />
+        <img alt={title} src={image} decoding="async" />
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
       <ExchangeCardBottom>
