@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.2...@bosonprotocol/subgraph@1.14.0) (2022-09-08)
+
+### Features
+
+* **subgraph:** add dispute field to exchange entity ([#236](https://github.com/bosonprotocol/core-components/issues/236)) ([3f6cd3e](https://github.com/bosonprotocol/core-components/commit/3f6cd3e3db8f54afb01d93dd426f526aff2f20df))
+* update contracts to pre-release v2.0.0-rc.1 ([#204](https://github.com/bosonprotocol/core-components/issues/204)) ([f74d664](https://github.com/bosonprotocol/core-components/commit/f74d6644ed3687d5eed6b503e3564581485a05b6))
+
 ## [1.13.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.1...@bosonprotocol/subgraph@1.13.2) (2022-08-31)
 
 ### Bug Fixes

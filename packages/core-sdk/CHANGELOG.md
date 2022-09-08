@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.13.0...@bosonprotocol/core-sdk@1.14.0) (2022-09-08)
+
+### Features
+
+* **core-sdk:** support `voidOfferBatch` ([#227](https://github.com/bosonprotocol/core-components/issues/227)) ([136f844](https://github.com/bosonprotocol/core-components/commit/136f84489e6c4a8479d587ead233a6d119427171))
+* **subgraph:** add dispute field to exchange entity ([#236](https://github.com/bosonprotocol/core-components/issues/236)) ([3f6cd3e](https://github.com/bosonprotocol/core-components/commit/3f6cd3e3db8f54afb01d93dd426f526aff2f20df))
+* update contracts to pre-release v2.0.0-rc.1 ([#204](https://github.com/bosonprotocol/core-components/issues/204)) ([f74d664](https://github.com/bosonprotocol/core-components/commit/f74d6644ed3687d5eed6b503e3564581485a05b6))
+
 # [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.12.6...@bosonprotocol/core-sdk@1.13.0) (2022-08-30)
 
 ### Features

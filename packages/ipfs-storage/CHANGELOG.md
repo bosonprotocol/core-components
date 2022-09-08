@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.7.1...@bosonprotocol/ipfs-storage@1.7.2) (2022-09-08)
+
+### Bug Fixes
+
+* return image data from IPFS without string conversion ([#233](https://github.com/bosonprotocol/core-components/issues/233)) ([13ac009](https://github.com/bosonprotocol/core-components/commit/13ac009111c066cfbdd4af4b90453e98b0635f80))
+
 ## [1.7.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.7.0...@bosonprotocol/ipfs-storage@1.7.1) (2022-08-30)
 
 ### Bug Fixes
