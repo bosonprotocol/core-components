@@ -1293,7 +1293,18 @@ export class CoreSDK {
     });
   }
 
-
+  /**
+   * Relay a meta transaction
+   * @param metaTransactionsApiKey - the API key of the relayer (Biconomy standard).
+   * @param userAddress - the sender of the transaction.
+   * @param functionName - the function name that we want to execute.
+   * @param functionSignature - the function signature.
+   * @param nonce - the nonce value of the transaction.
+   * @param sigR - r part of the signer's signature.
+   * @param sigS - s part of the signer's signature.
+   * @param sigV - v part of the signer's signature.
+   * @returns Transaction response.
+   */
   public async relayMetaTransaction(
     metaTransactionsApiKey: string,
     userAddress: string,

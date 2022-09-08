@@ -49,7 +49,6 @@ export type CoreSdkConfig = {
     relayerUrl: string;
     apiId: string;
   };
-
 };
 
 /**
