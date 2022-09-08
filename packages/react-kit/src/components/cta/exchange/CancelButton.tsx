@@ -9,7 +9,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = {
+export type ICancelButton = {
   /**
    * ID of voucher/exchange to cancel.
    */
@@ -32,7 +32,7 @@ export const CancelButton = ({
   size = ButtonSize.Large,
   variant = "secondary",
   ...coreSdkConfig
-}: Props) => {
+}: ICancelButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

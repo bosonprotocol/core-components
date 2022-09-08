@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { Button } from "../buttons/Button";
+import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
+import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
   Currencies
@@ -40,7 +42,9 @@ interface Base {
 
 interface RedeemCard extends Base {
   status: Extract<ExchangeCardStatus, "REDEEMED">;
-  redeemConfig: {
+  disputeButtonConfig?: unknown; // TODO: disputeButton has not been implemented yet
+  redeemConfig?: {
+    // TODO: need to be replaced by disputeButtonConfig
     onDisputeClick: () => unknown;
     isDisputeLoading?: boolean;
     isDisputeDisabled?: boolean;
@@ -53,15 +57,9 @@ interface CancelledCard extends Base {
 
 interface CommittedCard extends Base {
   status: Extract<ExchangeCardStatus, "COMMITTED">;
-  committedConfig: {
-    onRedeemClick: () => unknown;
-    isRedeemLoading?: boolean;
-    isRedeemDisabled?: boolean;
-    onCancelClick: () => unknown;
-    isCancelLoading?: boolean;
-    isCancelDisabled?: boolean;
-    bottomText?: JSX.Element | string;
-  };
+  redeemButtonConfig: IRedeemButton;
+  cancelButtonConfig: ICancelButton;
+  bottomText?: string;
 }
 
 type ExchangeCardProps = CommittedCard | RedeemCard | CancelledCard;
@@ -107,42 +105,12 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         );
       }
       case "COMMITTED": {
-        const {
-          committedConfig: {
-            onRedeemClick,
-            isRedeemLoading,
-            isRedeemDisabled,
-            onCancelClick,
-            isCancelLoading,
-            isCancelDisabled,
-            bottomText
-          } = {}
-        } = props;
+        const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
         return (
           <ExchangeButtonWrapper>
             <CommittedButtonWrapper>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRedeemClick?.();
-                }}
-                variant="primary"
-                disabled={!!isRedeemLoading}
-                loading={!!isRedeemDisabled}
-              >
-                Redeem
-              </Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onCancelClick?.();
-                }}
-                variant="ghostOrange"
-                disabled={!!isCancelLoading}
-                loading={!!isCancelDisabled}
-              >
-                Cancel
-              </Button>
+              <RedeemButton {...redeemButtonConfig} />
+              <CancelButton {...cancelButtonConfig} />
             </CommittedButtonWrapper>
             <CommittedBottomText>{bottomText}</CommittedBottomText>
           </ExchangeButtonWrapper>

@@ -82,13 +82,51 @@ Committed.args = {
     console.log("id", id);
   },
   status: "COMMITTED",
-  committedConfig: {
-    onRedeemClick: () => console.log("COMMITTED - onRedeemClick"),
-    isRedeemLoading: false,
-    isRedeemDisabled: false,
-    onCancelClick: () => console.log("COMMITTED - onCancelClick"),
-    isCancelLoading: false,
-    isCancelDisabled: false,
-    bottomText: "Redeemable until 30 days after commit"
+  bottomText: "Redeemable until 30 days after commit",
+  redeemButtonConfig: {
+    chainId: 1234,
+    exchangeId: "92",
+    disabled: false,
+    web3Provider: undefined,
+    metaTransactionsApiKey: undefined,
+    onPendingSignature: () => {
+      console.log("----------ON PENDING SIGNATURE-------------");
+    },
+    onPendingTransaction: (txHash: string) => {
+      console.log("----------ON PENDING TRANSACTION-------------");
+      console.log("txHash", txHash);
+    },
+    onSuccess: (receipt, payload) => {
+      console.log("----------ON SUCCESS-------------");
+      console.log("receipt", receipt);
+      console.log("payload", payload);
+    },
+    onError: (error) => {
+      console.log("----------ON ERROR-------------");
+      console.log("error", error);
+    }
+  },
+  cancelButtonConfig: {
+    chainId: 1234,
+    variant: "ghostOrange",
+    exchangeId: "28",
+    web3Provider: undefined,
+    metaTransactionsApiKey: undefined,
+    onPendingSignature: () => {
+      console.log("----------ON PENDING SIGNATURE-------------");
+    },
+    onPendingTransaction: (txHash: string) => {
+      console.log("----------ON PENDING TRANSACTION-------------");
+      console.log("txHash", txHash);
+    },
+    onSuccess: (receipt, payload) => {
+      console.log("----------ON SUCCESS-------------");
+      console.log("receipt", receipt);
+      console.log("payload", payload);
+    },
+    onError: (error) => {
+      console.log("----------ON ERROR-------------");
+      console.log("error", error);
+    }
   }
 };
