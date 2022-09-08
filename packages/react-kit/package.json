@@ -9,7 +9,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@biconomy/mexa": "^2.0.32",
+    "@biconomy/mexa": "^2.0.38",
     "@bosonprotocol/core-sdk": "^1.13.0",
     "@bosonprotocol/ethers-sdk": "^1.6.7",
     "@bosonprotocol/ipfs-storage": "^1.7.1",

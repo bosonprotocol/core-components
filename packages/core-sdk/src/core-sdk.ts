@@ -5,11 +5,13 @@ import {
   getDefaultConfig,
   MetadataStorage,
   AnyMetadata,
-  Log
+  Log,
+  MetaTxConfig
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
+import { ContractTransaction } from "ethers";
 
 import * as accounts from "./accounts";
 import * as disputes from "./disputes";
@@ -34,6 +36,8 @@ export class CoreSDK {
   private _chainId: number;
   private _tokenInfoManager: TokenInfoManager;
 
+  private _metaTxConfig: MetaTxConfig;
+
   /**
    * Creates an instance of `CoreSDK`
    * @param args - Constructor args
@@ -45,6 +49,7 @@ export class CoreSDK {
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
     chainId?: number;
+    metaTx?: MetaTxConfig;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -52,6 +57,7 @@ export class CoreSDK {
     this._metadataStorage = opts.metadataStorage;
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
+    this._metaTxConfig = opts.metaTx;
   }
 
   /**
@@ -88,7 +94,8 @@ export class CoreSDK {
       theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond,
-      chainId: args.chainId
+      chainId: args.chainId,
+      metaTx: defaultConfig.metaTx
     });
   }
 
@@ -1175,5 +1182,39 @@ export class CoreSDK {
   ): Promise<string> {
     const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
     return offers.renderContractualAgreement(template, offerData, tokenInfo);
+  }
+
+  public async relayMetaTransaction(
+    metaTransactionsApiKey: string,
+    userAddress: string,
+    functionName: string,
+    functionSignature: BytesLike,
+    nonce: BigNumberish,
+    sigR: BytesLike,
+    sigS: BytesLike,
+    sigV: BigNumberish
+  ): Promise<ContractTransaction> {
+    if (this._chainId === undefined) {
+      this._chainId = await this._web3Lib.getChainId();
+    }
+
+    if (
+      !this._metaTxConfig ||
+      !this._metaTxConfig.relayerUrl ||
+      this._metaTxConfig.relayerUrl === ""
+    ) {
+      throw new Error("CoreSDK not configured to relay meta transactions");
+    }
+
+    return metaTx.handler.relayMetaTransaction(
+      {
+        contractAddress: this._protocolDiamond,
+        metaTransactionsApiKey,
+        metaTransactionsApiId: this._metaTxConfig.apiId,
+        metaTransactionsRelayerUrl: this._metaTxConfig.relayerUrl,
+        chainId: this._chainId
+      },
+      { userAddress, functionName, functionSignature, nonce, sigR, sigS, sigV }
+    );
   }
 }

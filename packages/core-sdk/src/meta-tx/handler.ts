@@ -1,5 +1,8 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BytesLike } from "@ethersproject/bytes";
+import { ContractTransaction } from "ethers";
+import fetch from "cross-fetch";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
@@ -360,5 +363,87 @@ function makeExchangeMetaTxSigner(
         [args.exchangeId]
       )
     };
+  };
+}
+
+export async function relayMetaTransaction(
+  config: {
+    chainId: number;
+    contractAddress: string;
+    metaTransactionsRelayerUrl: string;
+    metaTransactionsApiKey: string;
+    metaTransactionsApiId: string;
+  },
+  params: {
+    userAddress: string;
+    functionName: string;
+    functionSignature: BytesLike;
+    nonce: BigNumberish;
+    sigR: BytesLike;
+    sigS: BytesLike;
+    sigV: BigNumberish;
+  }
+): Promise<ContractTransaction> {
+  const body = {
+    to: config.contractAddress,
+    apiId: config.metaTransactionsApiId,
+    params: [
+      params.userAddress,
+      params.functionName,
+      params.functionSignature,
+      params.nonce,
+      params.sigR,
+      params.sigS,
+      params.sigV
+    ],
+    from: params.userAddress
+  };
+  const responsePromise = fetch(config.metaTransactionsRelayerUrl, {
+    method: "POST",
+    headers: {
+      "x-api-key": config.metaTransactionsApiKey,
+      "content-type": "application/json;charset=UTF-8"
+    },
+    body: JSON.stringify(body)
+  });
+  return {
+    wait: async () => {
+      const response = await responsePromise;
+      const responseJSON = await response.json();
+      console.log("meta tx relay response", response, responseJSON);
+      if (!response.ok) {
+        throw new Error(
+          `Failure to relay the metaTransaction: ${JSON.stringify(
+            responseJSON || response
+          )}`
+        );
+      }
+      return {
+        to: config.contractAddress,
+        from: params.userAddress,
+        contractAddress: config.contractAddress,
+        transactionIndex: 0,
+        gasUsed: BigNumber.from(0),
+        logsBloom: "",
+        blockHash: "string",
+        transactionHash: responseJSON.txHash,
+        logs: [],
+        blockNumber: 0,
+        confirmations: 0,
+        cumulativeGasUsed: BigNumber.from(0),
+        effectiveGasPrice: BigNumber.from(0),
+        byzantium: true,
+        type: 0,
+        events: []
+      };
+    },
+    hash: "",
+    confirmations: 1,
+    from: params.userAddress,
+    nonce: 0,
+    gasLimit: BigNumber.from(0),
+    data: "",
+    value: BigNumber.from(0),
+    chainId: config.chainId
   };
 }

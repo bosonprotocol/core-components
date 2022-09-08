@@ -3,6 +3,11 @@ export type ContractAddresses = {
   testErc20?: string;
 };
 
+export type MetaTxConfig = {
+  relayerUrl: string;
+  apiId: string;
+};
+
 export type ProtocolConfig = {
   envName: string;
   chainId: number;
@@ -17,4 +22,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   widgetsUrl: string;
   contracts: ContractAddresses;
+  metaTx?: MetaTxConfig;
 };

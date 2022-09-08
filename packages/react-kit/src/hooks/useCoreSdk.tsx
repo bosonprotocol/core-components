@@ -42,6 +42,14 @@ export type CoreSdkConfig = {
    * Optional override for The Graph IPFS  storage headers.
    */
   theGraphIpfsStorageHeaders?: Headers | Record<string, string>;
+  /**
+   * Optional override for the MetaTx configuration
+   */
+  metaTx?: {
+    relayerUrl: string;
+    apiId: string;
+  };
+
 };
 
 /**
@@ -74,6 +82,7 @@ function initCoreSdk(config: CoreSdkConfig) {
     config.theGraphIpfsUrl ||
     defaultConfig.theGraphIpfsUrl ||
     metadataStorageUrl;
+  const metaTx = config.metaTx || defaultConfig.metaTx;
 
   return new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
@@ -91,6 +100,7 @@ function initCoreSdk(config: CoreSdkConfig) {
     metadataStorage: new IpfsMetadataStorage({
       url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders
-    })
+    }),
+    metaTx
   });
 }

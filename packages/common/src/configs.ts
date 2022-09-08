@@ -25,6 +25,10 @@ export const defaultConfigs: ProtocolConfig[] = [
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/25a707871f4117d29cd5536ef337841509bea2c8
       protocolDiamond: "0x156207E1ca9746e5a387930c8695d84bc8dAD69F",
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
+    },
+    metaTx: {
+      relayerUrl: "",
+      apiId: ""
     }
   },
   {
@@ -40,6 +44,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/753ac3aa9cbea4f42236130808984121c65e76dc
       protocolDiamond: "0xDdAE2985Ca872B3E2974e296acF8931C0965801b"
+    },
+    metaTx: {
+      relayerUrl: "TBD",
+      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     }
   },
   {
@@ -56,6 +64,11 @@ export const defaultConfigs: ProtocolConfig[] = [
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/dcce13d861b3bee561dc9e06a0e885cb708f7a83
       protocolDiamond: "0xA2D2D25530900d3BB7855050a164aB80Fed54a89"
+    },
+    metaTx: {
+      relayerUrl: "https://api.biconomy.io/api/v2/meta-tx/native",
+      // apiId created in Biconomy dashboard, related to the method executeMetaTransaction of the diamondContract
+      apiId: "f997eb66-6196-4a6d-8279-e5de80938045"
     }
   },
   {
@@ -68,6 +81,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     widgetsUrl: "", // TODO: replace with prod
     contracts: {
       protocolDiamond: ""
+    },
+    metaTx: {
+      relayerUrl: "",
+      apiId: ""
     }
   },
   {
@@ -82,6 +99,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     contracts: {
       protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
       testErc20: "0x4c5859f0F772848b2D91F1D83E2Fe57935348029"
+    },
+    metaTx: {
+      relayerUrl: "http://127.0.0.1:8888",
+      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     }
   }
 ];

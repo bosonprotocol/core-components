@@ -4,7 +4,6 @@ import { BigNumberish, providers } from "ethers";
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
@@ -37,11 +36,6 @@ export const RedeemButton = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
-  const metaTxContract = useMetaTxHandlerContract({
-    chainId: coreSdkConfig.chainId,
-    metaTransactionsApiKey,
-    web3Provider: coreSdkConfig.web3Provider
-  });
 
   return (
     <Button
@@ -56,7 +50,7 @@ export const RedeemButton = ({
 
             let txResponse;
 
-            if (metaTransactionsApiKey && metaTxContract && signerAddress) {
+            if (metaTransactionsApiKey && signerAddress) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
@@ -66,7 +60,8 @@ export const RedeemButton = ({
                   nonce
                 });
 
-              txResponse = await metaTxContract.executeMetaTransaction(
+              txResponse = await coreSdk.relayMetaTransaction(
+                metaTransactionsApiKey,
                 signerAddress,
                 functionName,
                 functionSignature,
