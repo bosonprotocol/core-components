@@ -46,6 +46,7 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
     exchange.state = "DISPUTED";
     exchange.disputedDate = event.block.timestamp;
     exchange.disputed = true;
+    exchange.dispute = disputeId;
     exchange.save();
   }
 }

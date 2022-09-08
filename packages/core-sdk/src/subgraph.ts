@@ -931,6 +931,7 @@ export type Exchange = {
   cancelledDate?: Maybe<Scalars["BigInt"]>;
   committedDate: Scalars["BigInt"];
   completedDate?: Maybe<Scalars["BigInt"]>;
+  dispute?: Maybe<Dispute>;
   disputed: Scalars["Boolean"];
   disputedDate?: Maybe<Scalars["BigInt"]>;
   expired: Scalars["Boolean"];
@@ -1116,6 +1117,26 @@ export type Exchange_Filter = {
   completedDate_lte?: InputMaybe<Scalars["BigInt"]>;
   completedDate_not?: InputMaybe<Scalars["BigInt"]>;
   completedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  dispute?: InputMaybe<Scalars["String"]>;
+  dispute_contains?: InputMaybe<Scalars["String"]>;
+  dispute_contains_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_ends_with?: InputMaybe<Scalars["String"]>;
+  dispute_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_gt?: InputMaybe<Scalars["String"]>;
+  dispute_gte?: InputMaybe<Scalars["String"]>;
+  dispute_in?: InputMaybe<Array<Scalars["String"]>>;
+  dispute_lt?: InputMaybe<Scalars["String"]>;
+  dispute_lte?: InputMaybe<Scalars["String"]>;
+  dispute_not?: InputMaybe<Scalars["String"]>;
+  dispute_not_contains?: InputMaybe<Scalars["String"]>;
+  dispute_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_not_ends_with?: InputMaybe<Scalars["String"]>;
+  dispute_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  dispute_not_starts_with?: InputMaybe<Scalars["String"]>;
+  dispute_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_starts_with?: InputMaybe<Scalars["String"]>;
+  dispute_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   disputed?: InputMaybe<Scalars["Boolean"]>;
   disputedDate?: InputMaybe<Scalars["BigInt"]>;
   disputedDate_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -1223,6 +1244,7 @@ export enum Exchange_OrderBy {
   CancelledDate = "cancelledDate",
   CommittedDate = "committedDate",
   CompletedDate = "completedDate",
+  Dispute = "dispute",
   Disputed = "disputed",
   DisputedDate = "disputedDate",
   Expired = "expired",
@@ -9408,6 +9430,54 @@ export type GetExchangeByIdQueryQuery = {
           }
         | null;
     };
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+      exchange: {
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+    } | null;
   } | null;
 };
 
@@ -9704,6 +9774,54 @@ export type GetExchangesQueryQuery = {
           }
         | null;
     };
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+      exchange: {
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+    } | null;
   }>;
 };
 
@@ -9981,6 +10099,54 @@ export type ExchangeFieldsFragment = {
         }
       | null;
   };
+  dispute?: {
+    __typename?: "Dispute";
+    id: string;
+    exchangeId: string;
+    state: DisputeState;
+    buyerPercent: string;
+    disputedDate: string;
+    escalatedDate?: string | null;
+    finalizedDate?: string | null;
+    retractedDate?: string | null;
+    resolvedDate?: string | null;
+    decidedDate?: string | null;
+    refusedDate?: string | null;
+    timeout: string;
+    exchange: {
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      disputedDate?: string | null;
+      expired: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+  } | null;
 };
 
 export type BaseExchangeFieldsFragment = {
@@ -14775,11 +14941,15 @@ export const ExchangeFieldsFragmentDoc = gql`
     offer {
       ...BaseOfferFields
     }
+    dispute {
+      ...BaseDisputeFields
+    }
   }
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseBuyerFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
+  ${BaseDisputeFieldsFragmentDoc}
 `;
 export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
   fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
