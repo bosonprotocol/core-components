@@ -1,14 +1,15 @@
+import { getDefaultConfig } from "@bosonprotocol/common";
 import { config as dotenvConfig } from "dotenv";
 import fs from "fs";
-import { resolve } from 'path';
-import { parse } from 'ts-command-line-args';
+import { resolve } from "path";
+import { parse } from "ts-command-line-args";
 
 // if ./.env file exists, read it
-const envFile = resolve(__dirname, './../.env');
+const envFile = resolve(__dirname, "./../.env");
 if (fs.existsSync(envFile)) {
   const res = dotenvConfig({
     debug: false,
-    path: envFile,
+    path: envFile
   });
   if (process.env.NODE_ENV === "development" && res.error) {
     throw res.error;
@@ -18,7 +19,9 @@ if (fs.existsSync(envFile)) {
 function validParseInt(label: string, value: string) {
   if (value === undefined) return undefined;
   const parsed = +value;
-  if (isNaN(parsed)) { throw new Error(`Invalid numeric value ${label}: '${value}'`) }
+  if (isNaN(parsed)) {
+    throw new Error(`Invalid numeric value ${label}: '${value}'`);
+  }
   return parsed;
 }
 
@@ -38,26 +41,31 @@ const args = parse<ICLArguments>(
       alias: "c",
       type: Number,
       optional: true
-    },
+    }
   },
   {
-    partial: true,
+    partial: true
   }
 );
 
 export type Config = {
   PORT: number;
   CHAIN_ID: number;
-}
+  RPC_NODE: string;
+};
 
 let config: Config;
 
 export function getConfig(): Config {
   if (!config) {
-    config = { 
+    const chainId =
+      args.chainId || validParseInt("CHAIN_ID", process.env.CHAIN_ID) || 1234;
+    const defaultConfig = getDefaultConfig({ chainId });
+    config = {
       PORT: args.port || validParseInt("PORT", process.env.PORT) || 8888,
-      CHAIN_ID: args.chainId || validParseInt("CHAIN_ID", process.env.CHAIN_ID) || 1234
+      CHAIN_ID: chainId,
+      RPC_NODE: defaultConfig.jsonRpcUrl
     };
-  } 
+  }
   return config;
 }
