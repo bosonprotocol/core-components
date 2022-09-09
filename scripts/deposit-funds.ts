@@ -5,7 +5,7 @@ import { InvalidArgumentError, program } from "commander";
 import { CoreSDK, getDefaultConfig } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
-function validAddress(value, previous) {
+function validAddress(value) {
   if (!isAddress(value)) {
     throw new InvalidArgumentError("Not an address.");
   }
@@ -75,8 +75,8 @@ async function main() {
 
 main()
   .then(() => {
-  console.log("success");
-  process.exit(0);
+    console.log("success");
+    process.exit(0);
   })
   .catch((e) => {
     console.error(e);
