@@ -66,7 +66,7 @@ Redeemed.args = {
       console.log("----------ON ERROR-------------");
       console.log("error", error);
     }
-  },
+  }
 };
 
 Cancelled.args = {
