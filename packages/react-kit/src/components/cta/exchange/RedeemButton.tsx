@@ -48,7 +48,8 @@ export const RedeemButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async () => {
+      onClick={async (e) => {
+        e.stopPropagation();
         if (!isLoading) {
           try {
             setIsLoading(true);

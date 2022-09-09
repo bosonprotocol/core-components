@@ -13,6 +13,7 @@ import {
   CommittedBottomText,
   ExchangeCarData,
   ExchangeCardBottom,
+  ExchangeCardBottomContent,
   ExchangeCardPrice,
   ExchangeCardPriceWrapper,
   ExchangeCardTop,
@@ -129,28 +130,30 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         onCardClick?.(id);
       }}
     >
-      <ExchangeCardTop $status={status}>
+      <ExchangeCardTop>
         <ExchangeImageWrapper>
           <Image {...imageProps} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
       <ExchangeCardBottom>
-        <ExchangeCarData>
-          <ExchangeCreator>
-            <ExchangeCreatorAvatar>
-              <img src={avatar} alt="avatar" />
-            </ExchangeCreatorAvatar>
-            <ExchangeCreatorName>{avatarName}</ExchangeCreatorName>
-          </ExchangeCreator>
-          <ExchangeTitle>{title}</ExchangeTitle>
-        </ExchangeCarData>
-        <ExchangeCardPriceWrapper>
-          <ExchangeCardPrice>Price</ExchangeCardPrice>
-          <CurrencyDisplay value={price} currency={currency} />
-        </ExchangeCardPriceWrapper>
+        <ExchangeCardBottomContent>
+          <ExchangeCarData>
+            <ExchangeCreator>
+              <ExchangeCreatorAvatar>
+                <img src={avatar} alt="avatar" />
+              </ExchangeCreatorAvatar>
+              <ExchangeCreatorName>{avatarName}</ExchangeCreatorName>
+            </ExchangeCreator>
+            <ExchangeTitle>{title}</ExchangeTitle>
+          </ExchangeCarData>
+          <ExchangeCardPriceWrapper>
+            <ExchangeCardPrice>Price</ExchangeCardPrice>
+            <CurrencyDisplay value={price} currency={currency} />
+          </ExchangeCardPriceWrapper>
+        </ExchangeCardBottomContent>
+        {exchangeCardBottom}
       </ExchangeCardBottom>
-      {exchangeCardBottom}
     </ExchangeCardWrapper>
   );
 };

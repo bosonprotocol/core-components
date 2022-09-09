@@ -1,8 +1,9 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentStory, ComponentMeta, Story } from "@storybook/react";
 
 import { ExchangeCard } from "../components/exchangeCard/ExchangeCard";
 import { Currencies } from "../components/currencyDisplay/CurrencyDisplay";
+import { ButtonSize } from "../components/buttons/Button";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -18,6 +19,12 @@ const Template: ComponentStory<typeof ExchangeCard> = (args) => (
 export const Redeemed: ComponentStory<typeof ExchangeCard> = Template.bind({});
 export const Cancelled: ComponentStory<typeof ExchangeCard> = Template.bind({});
 export const Committed: ComponentStory<typeof ExchangeCard> = Template.bind({});
+
+const wrapper = (Story: Story) => (
+  <div style={{ width: "20.188rem" }}>
+    <Story />
+  </div>
+);
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redeemed.args = {
@@ -78,7 +85,7 @@ Committed.args = {
   price: 1.25,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
   status: "COMMITTED",
@@ -89,6 +96,7 @@ Committed.args = {
     disabled: false,
     web3Provider: undefined,
     metaTransactionsApiKey: undefined,
+    size: ButtonSize.Medium,
     onPendingSignature: () => {
       console.log("----------ON PENDING SIGNATURE-------------");
     },
@@ -108,6 +116,7 @@ Committed.args = {
   },
   cancelButtonConfig: {
     chainId: 1234,
+    size: ButtonSize.Medium,
     variant: "ghostOrange",
     exchangeId: "28",
     web3Provider: undefined,
@@ -130,3 +139,7 @@ Committed.args = {
     }
   }
 };
+
+Redeemed.decorators = [(Story) => wrapper(Story)];
+Cancelled.decorators = [(Story) => wrapper(Story)];
+Committed.decorators = [(Story) => wrapper(Story)];

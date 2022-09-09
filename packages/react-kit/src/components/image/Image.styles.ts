@@ -18,15 +18,6 @@ export const ImageWrapper = styled.div`
     transition: all 300ms ease-in-out;
     pointer-events: none;
   }
-
-  [data-testid="statuses"] {
-    position: absolute;
-    z-index: 5;
-    top: 1rem;
-    right: -1rem;
-    margin: 0 auto;
-    justify-content: flex-end;
-  }
 `;
 
 export const ImageContainer = styled.img`
