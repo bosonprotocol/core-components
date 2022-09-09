@@ -42,12 +42,31 @@ Redeemed.args = {
     console.log("----------ON CLICK-------------");
     console.log("id", id);
   },
-  redeemConfig: {
-    onDisputeClick: () => console.log("REDEEMED - onDisputeClick"),
-    isDisputeLoading: false,
-    isDisputeDisabled: false
+  status: "REDEEMED",
+  disputeButtonConfig: {
+    chainId: 1234,
+    exchangeId: "92",
+    disabled: false,
+    web3Provider: undefined,
+    metaTransactionsApiKey: undefined,
+    size: ButtonSize.Medium,
+    onPendingSignature: () => {
+      console.log("----------ON PENDING SIGNATURE-------------");
+    },
+    onPendingTransaction: (txHash: string) => {
+      console.log("----------ON PENDING TRANSACTION-------------");
+      console.log("txHash", txHash);
+    },
+    onSuccess: (receipt, payload) => {
+      console.log("----------ON SUCCESS-------------");
+      console.log("receipt", receipt);
+      console.log("payload", payload);
+    },
+    onError: (error) => {
+      console.log("----------ON ERROR-------------");
+      console.log("error", error);
+    }
   },
-  status: "REDEEMED"
 };
 
 Cancelled.args = {

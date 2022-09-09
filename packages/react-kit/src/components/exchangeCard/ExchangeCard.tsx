@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { Button } from "../buttons/Button";
 import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
+import { DisputeButton, IDisputeButton } from "../cta/exchange/DisputeButton";
 import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
@@ -43,13 +43,7 @@ interface Base {
 
 interface RedeemCard extends Base {
   status: Extract<ExchangeCardStatus, "REDEEMED">;
-  disputeButtonConfig?: unknown; // TODO: disputeButton has not been implemented yet
-  redeemConfig?: {
-    // TODO: need to be replaced by disputeButtonConfig
-    onDisputeClick: () => unknown;
-    isDisputeLoading?: boolean;
-    isDisputeDisabled?: boolean;
-  };
+  disputeButtonConfig: IDisputeButton;
 }
 
 interface CancelledCard extends Base {
@@ -80,27 +74,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const exchangeCardBottom = useMemo(() => {
     switch (status) {
       case "REDEEMED": {
-        const {
-          redeemConfig: {
-            onDisputeClick,
-            isDisputeLoading,
-            isDisputeDisabled
-          } = {}
-        } = props;
+        const { disputeButtonConfig } = props;
         return (
           <ExchangeButtonWrapper>
             <RedeemButtonWrapper>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDisputeClick?.();
-                }}
-                variant="ghostOrange"
-                disabled={!!isDisputeDisabled}
-                loading={!!isDisputeLoading}
-              >
-                Dispute
-              </Button>
+              <DisputeButton {...disputeButtonConfig} />
             </RedeemButtonWrapper>
           </ExchangeButtonWrapper>
         );
