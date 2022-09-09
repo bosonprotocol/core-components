@@ -31,7 +31,7 @@ function validBigNumber(value, previous) {
   return parsedValue;
 }
 
-function validPrivateKey(value, previous) {
+function validPrivateKey(value) {
   if (!/^(0x)?[a-fA-F0-9]{64}$/.test(value)) {
     throw new InvalidArgumentError("Cannot be cast as a private key.");
   }
