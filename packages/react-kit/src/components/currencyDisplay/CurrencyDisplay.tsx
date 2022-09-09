@@ -55,7 +55,7 @@ const CurrencyDisplayValue = styled.span.attrs((props: { height: number }) => ({
   padding-left: 1rem;
 `;
 
-const CurrencyLogo = ({
+export const CurrencyLogo = ({
   currency,
   size = 25
 }: {
