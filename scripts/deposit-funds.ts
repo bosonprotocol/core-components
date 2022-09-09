@@ -21,7 +21,7 @@ function validInt(value, previous) {
   return parsedValue;
 }
 
-function validBigNumber(value, previous) {
+function validBigNumber(value) {
   let parsedValue;
   try {
     parsedValue = BigNumber.from(value);
