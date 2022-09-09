@@ -12,7 +12,7 @@ function validAddress(value, previous) {
   return value;
 }
 
-function validInt(value, previous) {
+function validInt(value) {
   // parseInt takes a string and a radix
   const parsedValue = parseInt(value, 10);
   if (isNaN(parsedValue)) {
