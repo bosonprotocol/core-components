@@ -1,11 +1,11 @@
-import { ethers } from "ethers";
 import { logger } from "../utils/logger";
+import { getProvider } from "../utils/web3";
 
 export async function checkWeb3(params: {
   chainId: number;
   rpcNode: string;
 }): Promise<boolean> {
-  const provider = await new ethers.providers.JsonRpcProvider(params.rpcNode);
+  const provider = await getProvider(params.rpcNode);
   const network = await provider.getNetwork();
   if (network.chainId !== params.chainId) {
     throw {

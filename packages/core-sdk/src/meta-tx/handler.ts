@@ -397,7 +397,8 @@ export async function relayMetaTransaction(
     method: "POST",
     headers: {
       "x-api-key": config.metaTransactionsApiKey,
-      "content-type": "application/json;charset=UTF-8"
+      "content-type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*"
     },
     body: JSON.stringify(body)
   });

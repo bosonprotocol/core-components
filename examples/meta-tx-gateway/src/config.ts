@@ -1,3 +1,4 @@
+import { Wallet } from "ethers";
 import { getDefaultConfig } from "@bosonprotocol/common";
 import { config as dotenvConfig } from "dotenv";
 import fs from "fs";
@@ -28,6 +29,7 @@ function validParseInt(label: string, value: string) {
 interface ICLArguments {
   port: number;
   chainId: number;
+  privateKey: string;
 }
 
 const args = parse<ICLArguments>(
@@ -41,6 +43,11 @@ const args = parse<ICLArguments>(
       alias: "c",
       type: Number,
       optional: true
+    },
+    privateKey: {
+      alias: "k",
+      type: String,
+      optional: true
     }
   },
   {
@@ -52,6 +59,9 @@ export type Config = {
   PORT: number;
   CHAIN_ID: number;
   RPC_NODE: string;
+  PROTOCOL: string;
+  PRIVATE_KEY: string;
+  ACCOUNT: string;
 };
 
 let config: Config;
@@ -61,10 +71,25 @@ export function getConfig(): Config {
     const chainId =
       args.chainId || validParseInt("CHAIN_ID", process.env.CHAIN_ID) || 1234;
     const defaultConfig = getDefaultConfig({ chainId });
+    const privateKey = args.privateKey || process.env.PRIVATE_KEY;
+    if (!privateKey) {
+      throw new Error(
+        "A Private Key must be specified, either in .env file, or as a command line argument"
+      );
+    }
+    let wallet;
+    try {
+      wallet = new Wallet(privateKey);
+    } catch (e) {
+      throw new Error("Invalid Private Key. Unable to create the wallet");
+    }
     config = {
       PORT: args.port || validParseInt("PORT", process.env.PORT) || 8888,
       CHAIN_ID: chainId,
-      RPC_NODE: defaultConfig.jsonRpcUrl
+      RPC_NODE: defaultConfig.jsonRpcUrl,
+      PROTOCOL: defaultConfig.contracts.protocolDiamond,
+      PRIVATE_KEY: wallet.privateKey,
+      ACCOUNT: wallet.address
     };
   }
   return config;

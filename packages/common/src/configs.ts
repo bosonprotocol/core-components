@@ -26,8 +26,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     },
     metaTx: {
-      relayerUrl: "",
-      apiId: ""
+      relayerUrl: "http://localhost:8888/api/v1/meta-tx/native", //TODO: needs to be changed when meta-tx-gateway is hosted
+      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     }
   },
   {
@@ -96,7 +96,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
     },
     metaTx: {
-      relayerUrl: "http://127.0.0.1:8888",
+      relayerUrl: "http://127.0.0.1:8888/api/v1/meta-tx/native",
       apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     }
   }
