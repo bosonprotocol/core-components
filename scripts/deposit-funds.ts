@@ -47,7 +47,6 @@ program
   .parse(process.argv);
 
 async function main() {
-  // const opts = program.opts();
   const { key: privateKey, chainId, sellerId, value, token } = program.opts();
   const defaultConfig = getDefaultConfig({ chainId });
   const wallet = new Wallet(privateKey);
