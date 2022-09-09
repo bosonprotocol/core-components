@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
+import { Button, ButtonProps } from "../buttons/Button";
 import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
-import { DisputeButton, IDisputeButton } from "../cta/exchange/DisputeButton";
 import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
@@ -43,7 +43,7 @@ interface Base {
 
 interface RedeemCard extends Base {
   status: Extract<ExchangeCardStatus, "REDEEMED">;
-  disputeButtonConfig: IDisputeButton;
+  disputeButtonConfig: ButtonProps;
 }
 
 interface CancelledCard extends Base {
@@ -78,7 +78,16 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         return (
           <ExchangeButtonWrapper>
             <RedeemButtonWrapper>
-              <DisputeButton {...disputeButtonConfig} />
+              <Button
+                variant="ghostOrange"
+                {...disputeButtonConfig}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  disputeButtonConfig?.onClick?.(e);
+                }}
+              >
+                Dispute
+              </Button>
             </RedeemButtonWrapper>
           </ExchangeButtonWrapper>
         );

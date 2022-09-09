@@ -4,7 +4,6 @@ export * from "@bosonprotocol/ipfs-storage";
 
 export * from "./components/Loading";
 export * from "./components/cta/exchange/CancelButton";
-export * from "./components/cta/exchange/DisputeButton";
 export * from "./components/cta/exchange/RevokeButton";
 export * from "./components/cta/exchange/RedeemButton";
 export * from "./components/cta/offer/CommitButton";

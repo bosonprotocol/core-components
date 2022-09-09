@@ -39,33 +39,12 @@ Redeemed.args = {
   price: 0.1,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
   status: "REDEEMED",
   disputeButtonConfig: {
-    chainId: 1234,
-    exchangeId: "92",
-    disabled: false,
-    web3Provider: undefined,
-    metaTransactionsApiKey: undefined,
-    size: ButtonSize.Medium,
-    onPendingSignature: () => {
-      console.log("----------ON PENDING SIGNATURE-------------");
-    },
-    onPendingTransaction: (txHash: string) => {
-      console.log("----------ON PENDING TRANSACTION-------------");
-      console.log("txHash", txHash);
-    },
-    onSuccess: (receipt, payload) => {
-      console.log("----------ON SUCCESS-------------");
-      console.log("receipt", receipt);
-      console.log("payload", payload);
-    },
-    onError: (error) => {
-      console.log("----------ON ERROR-------------");
-      console.log("error", error);
-    }
+    onClick: () => console.log("----------ON CLICK-------------")
   }
 };
 
@@ -86,7 +65,7 @@ Cancelled.args = {
   price: 20.5,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
   status: "CANCELLED"
