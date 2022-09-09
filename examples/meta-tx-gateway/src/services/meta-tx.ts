@@ -1,5 +1,5 @@
 import { logger } from "./../utils/logger";
-import { TransactionResponse } from "@ethersproject/abstract-provider";
+import { ContractTransaction } from "ethers";
 import { abis } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { ethers } from "ethers";
@@ -17,6 +17,15 @@ export async function postMetaTx(body: PostMetaTxBody) {
   const config = getConfig();
   const signer = await getSigner(config.RPC_NODE, config.PRIVATE_KEY);
   const protocolAddress = config.PROTOCOL;
+  if (body.to.toLowerCase() !== protocolAddress.toLowerCase()) {
+    logger.error(
+      `Targeted contract ${body.to} is not the one expected (${protocolAddress})`
+    );
+    throw {
+      code: "12345", // TODO: get the codes
+      message: `Targeted contract ${body.to} is not the one expected (${protocolAddress})`
+    };
+  }
   const bosonMetaTransactionsHandler = new ethers.Contract(
     protocolAddress,
     new Interface(abis.IBosonMetaTransactionsHandlerABI),
@@ -28,13 +37,14 @@ export async function postMetaTx(body: PostMetaTxBody) {
     )}`
   );
   try {
-    const tx: TransactionResponse =
+    const tx: ContractTransaction =
       await bosonMetaTransactionsHandler.executeMetaTransaction(...body.params);
     const txReceipt = await tx.wait();
     return {
       txHash: txReceipt.transactionHash,
       to: txReceipt.to,
-      from: txReceipt.from
+      from: txReceipt.from,
+      events: txReceipt.events.map((event) => JSON.stringify(event)) // events does not exist in Biconomy return (only added for tests)
     };
   } catch (e) {
     logger.error(`Transaction failed ${JSON.stringify(e)}`);

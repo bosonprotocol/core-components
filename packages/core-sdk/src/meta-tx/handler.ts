@@ -406,7 +406,6 @@ export async function relayMetaTransaction(
     wait: async () => {
       const response = await responsePromise;
       const responseJSON = await response.json();
-      console.log("meta tx relay response", response, responseJSON);
       if (!response.ok) {
         throw new Error(
           `Failure to relay the metaTransaction: ${JSON.stringify(
@@ -430,7 +429,7 @@ export async function relayMetaTransaction(
         effectiveGasPrice: BigNumber.from(0),
         byzantium: true,
         type: 0,
-        events: []
+        events: responseJSON.events.map((event) => JSON.parse(event))
       };
     },
     hash: "",

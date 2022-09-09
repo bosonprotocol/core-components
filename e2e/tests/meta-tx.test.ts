@@ -1,7 +1,6 @@
 import { Wallet, BigNumber } from "ethers";
 
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
-import { contracts } from "../../packages/ethers-sdk/src";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 
 import {
@@ -11,7 +10,6 @@ import {
   ensureMintedAndAllowedTokens,
   seedWallet7,
   seedWallet8,
-  seedWallet9,
   defaultConfig,
   waitForGraphNodeIndexing,
   metadata
@@ -20,14 +18,6 @@ import {
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
-const relayerWallet = seedWallet9; // be sure the seedWallet is not used by another test (to allow concurrent run)
-
-// Contract is connected to `relayerWallet` because this wallet pays the gas fees
-const metaTxHandlerContract =
-  contracts.IBosonMetaTransactionsHandler__factory.connect(
-    defaultConfig.contracts.protocolDiamond,
-    relayerWallet
-  );
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
 const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
@@ -58,7 +48,8 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
+      const metaTx = await buyerCoreSDK.relayMetaTransaction(
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         buyerWallet.address,
         functionName,
         functionSignature,
@@ -95,7 +86,8 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
+      const metaTx = await buyerCoreSDK.relayMetaTransaction(
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         buyerWallet.address,
         functionName,
         functionSignature,
@@ -132,7 +124,8 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await metaTxHandlerContract.executeMetaTransaction(
+      const metaTx = await buyerCoreSDK.relayMetaTransaction(
+        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
         buyerWallet.address,
         functionName,
         functionSignature,

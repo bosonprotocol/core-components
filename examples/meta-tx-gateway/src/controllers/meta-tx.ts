@@ -25,10 +25,10 @@ export async function postMetaTx(
       );
     }
 
-    const txHash = await metaTxService.postMetaTx({
+    const response = await metaTxService.postMetaTx({
       ...req.body
     });
-    return res.send({ txHash, to: req.body.to, from: req.body.from });
+    return res.send(response);
   } catch (error) {
     next(error);
   }
