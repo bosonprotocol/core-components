@@ -1247,6 +1247,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Encodes and signs a meta transaction for `commitToOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
   public async signExecuteMetaTxCommitToOffer(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
@@ -1260,6 +1265,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Encodes and signs a meta transaction for `cancelVoucher` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
   public async signExecuteMetaTxCancelVoucher(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxCancelVoucher>[0],
@@ -1273,6 +1283,11 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Encodes and signs a meta transaction for `redeemVoucher` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
   public async signExecuteMetaTxRedeemVoucher(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxRedeemVoucher>[0],
@@ -1280,6 +1295,96 @@ export class CoreSDK {
     >
   ) {
     return metaTx.handler.signExecuteMetaTxRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `retractDispute` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signExecuteMetaTxRetractDispute(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxRetractDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxRetractDispute({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `escalateDispute` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signExecuteMetaTxEscalateDispute(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxEscalateDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxEscalateDispute({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `raiseDispute` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signExecuteMetaTxRaiseDispute(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxRaiseDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxRaiseDispute({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `resolveDispute` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signExecuteMetaTxResolveDispute(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxResolveDispute>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxResolveDispute({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `withdrawFunds` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signExecuteMetaTxWithdrawFunds(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signExecuteMetaTxWithdrawFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signExecuteMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       ...args
