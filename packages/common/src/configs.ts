@@ -26,8 +26,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     },
     metaTx: {
-      relayerUrl: "http://localhost:8888/api/v1/meta-tx/native", //TODO: needs to be changed when meta-tx-gateway is hosted
-      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      relayerUrl: "http://localhost:8888/api/v1/meta-tx/native" //TODO: needs to be changed when meta-tx-gateway is hosted
     }
   },
   {
@@ -44,8 +43,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       protocolDiamond: "0xDdAE2985Ca872B3E2974e296acF8931C0965801b"
     },
     metaTx: {
-      relayerUrl: "TBD",
-      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      relayerUrl: "TBD"
     }
   },
   {
@@ -63,9 +61,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io/api/v2/meta-tx/native",
-      // apiId created in Biconomy dashboard, related to the method executeMetaTransaction of the diamondContract
-      apiId: "f997eb66-6196-4a6d-8279-e5de80938045"
+      relayerUrl: "https://api.biconomy.io/api/v2/meta-tx/native"
     }
   },
   {
@@ -79,8 +75,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       protocolDiamond: ""
     },
     metaTx: {
-      relayerUrl: "",
-      apiId: ""
+      relayerUrl: ""
     }
   },
   {
@@ -96,8 +91,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
     },
     metaTx: {
-      relayerUrl: "http://127.0.0.1:8888/api/v1/meta-tx/native",
-      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      relayerUrl: "http://127.0.0.1:8888/api/v1/meta-tx/native"
     }
   }
 ];

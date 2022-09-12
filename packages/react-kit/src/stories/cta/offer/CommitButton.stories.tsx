@@ -28,6 +28,7 @@ Simple.args = {
   chainId: 1234,
   offerId: "28",
   metaTransactionsApiKey: undefined,
+  metaTransactionsApiId: "dummyApiId",
   web3Provider: undefined,
   extraInfo: "",
   disabled: false,

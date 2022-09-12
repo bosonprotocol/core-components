@@ -50,7 +50,10 @@ describe("meta-tx", () => {
 
       // `Relayer` executes meta tx on behalf of `Buyer`
       const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        {
+          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
         buyerWallet.address,
         functionName,
         functionSignature,
@@ -89,7 +92,10 @@ describe("meta-tx", () => {
 
       // `Relayer` executes meta tx on behalf of `Buyer`
       const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        {
+          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
         buyerWallet.address,
         functionName,
         functionSignature,
@@ -127,7 +133,10 @@ describe("meta-tx", () => {
 
       // `Relayer` executes meta tx on behalf of `Buyer`
       const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        {
+          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
         buyerWallet.address,
         functionName,
         functionSignature,

@@ -20,6 +20,7 @@ export type ICancelButton = {
 export const CancelButton = ({
   exchangeId,
   metaTransactionsApiKey,
+  metaTransactionsApiId = "dummyApiId",
   disabled = false,
   extraInfo,
   onSuccess,
@@ -62,7 +63,10 @@ export const CancelButton = ({
                 });
 
               txResponse = await coreSdk.relayMetaTransaction(
-                metaTransactionsApiKey,
+                {
+                  apiKey: metaTransactionsApiKey,
+                  apiId: metaTransactionsApiId
+                },
                 signerAddress,
                 functionName,
                 functionSignature,

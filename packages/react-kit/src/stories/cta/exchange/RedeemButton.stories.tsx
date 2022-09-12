@@ -31,6 +31,7 @@ Simple.args = {
   disabled: false,
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,
+  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },

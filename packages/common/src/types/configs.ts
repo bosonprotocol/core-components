@@ -5,7 +5,6 @@ export type ContractAddresses = {
 
 export type MetaTxConfig = {
   relayerUrl: string;
-  apiId: string;
 };
 
 export type ProtocolConfig = {

@@ -1400,7 +1400,7 @@ export class CoreSDK {
 
   /**
    * Relay a meta transaction
-   * @param metaTransactionsApiKey - the API key of the relayer (Biconomy standard).
+   * @param metaTransactionsConfig - the API key and Api Id of the relayer (Biconomy standard).
    * @param userAddress - the sender of the transaction.
    * @param functionName - the function name that we want to execute.
    * @param functionSignature - the function signature.
@@ -1411,7 +1411,7 @@ export class CoreSDK {
    * @returns Transaction response.
    */
   public async relayMetaTransaction(
-    metaTransactionsApiKey: string,
+    metaTransactionsConfig: { apiKey: string; apiId: string },
     userAddress: string,
     functionName: string,
     functionSignature: BytesLike,
@@ -1435,8 +1435,8 @@ export class CoreSDK {
     return metaTx.handler.relayMetaTransaction(
       {
         contractAddress: this._protocolDiamond,
-        metaTransactionsApiKey,
-        metaTransactionsApiId: this._metaTxConfig.apiId,
+        metaTransactionsApiKey: metaTransactionsConfig.apiKey,
+        metaTransactionsApiId: metaTransactionsConfig.apiId,
         metaTransactionsRelayerUrl: this._metaTxConfig.relayerUrl,
         chainId: this._chainId
       },
