@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
 import { Button, ButtonProps } from "../buttons/Button";
-import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
-import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
   Currencies
@@ -39,6 +37,7 @@ interface Base {
   avatarName: string;
   onCardClick?: (id: string | number) => void;
   imageProps: IBaseImage;
+  isCTAVisible?: boolean;
 }
 
 interface RedeemCard extends Base {
@@ -52,8 +51,8 @@ interface CancelledCard extends Base {
 
 interface CommittedCard extends Base {
   status: Extract<ExchangeCardStatus, "COMMITTED">;
-  redeemButtonConfig: IRedeemButton;
-  cancelButtonConfig: ICancelButton;
+  redeemButtonConfig: ButtonProps;
+  cancelButtonConfig: ButtonProps;
   bottomText?: string;
 }
 
@@ -69,46 +68,66 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     avatar,
     avatarName,
     onCardClick,
-    status
+    status,
+    isCTAVisible = true
   } = props;
   const exchangeCardBottom = useMemo(() => {
-    switch (status) {
-      case "REDEEMED": {
-        const { disputeButtonConfig } = props;
-        return (
-          <ExchangeButtonWrapper>
-            <RedeemButtonWrapper>
-              <Button
-                variant="ghostOrange"
-                {...disputeButtonConfig}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  disputeButtonConfig?.onClick?.(e);
-                }}
-              >
-                Dispute
-              </Button>
-            </RedeemButtonWrapper>
-          </ExchangeButtonWrapper>
-        );
+    if (isCTAVisible) {
+      switch (status) {
+        case "REDEEMED": {
+          const { disputeButtonConfig } = props;
+          return (
+            <ExchangeButtonWrapper>
+              <RedeemButtonWrapper>
+                <Button
+                  variant="ghostOrange"
+                  {...disputeButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    disputeButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Dispute
+                </Button>
+              </RedeemButtonWrapper>
+            </ExchangeButtonWrapper>
+          );
+        }
+        case "COMMITTED": {
+          const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
+          return (
+            <ExchangeButtonWrapper>
+              <CommittedButtonWrapper>
+                <Button
+                  variant="primary"
+                  {...redeemButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    redeemButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Redeem
+                </Button>
+                <Button
+                  variant="ghostOrange"
+                  {...cancelButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    cancelButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </CommittedButtonWrapper>
+              <CommittedBottomText>{bottomText}</CommittedBottomText>
+            </ExchangeButtonWrapper>
+          );
+        }
+        default:
+          return null;
       }
-      case "COMMITTED": {
-        const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
-        return (
-          <ExchangeButtonWrapper>
-            <CommittedButtonWrapper>
-              <RedeemButton {...redeemButtonConfig} />
-              <CancelButton {...cancelButtonConfig} />
-            </CommittedButtonWrapper>
-            <CommittedBottomText>{bottomText}</CommittedBottomText>
-          </ExchangeButtonWrapper>
-        );
-      }
-
-      default:
-        return null;
     }
-  }, [props, status]);
+  }, [isCTAVisible, props, status]);
 
   return (
     <ExchangeCardWrapper
@@ -139,7 +158,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <CurrencyDisplay value={price} currency={currency} />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
-        {exchangeCardBottom}
+        {isCTAVisible && exchangeCardBottom}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );
