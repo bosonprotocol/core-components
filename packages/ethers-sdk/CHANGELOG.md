@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.7...@bosonprotocol/ethers-sdk@1.7.0) (2022-09-08)
+
+### Features
+
+* update contracts to pre-release v2.0.0-rc.1 ([#204](https://github.com/bosonprotocol/core-components/issues/204)) ([f74d664](https://github.com/bosonprotocol/core-components/commit/f74d6644ed3687d5eed6b503e3564581485a05b6))
+
 ## [1.6.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.6.6...@bosonprotocol/ethers-sdk@1.6.7) (2022-08-30)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

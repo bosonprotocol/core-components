@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.4.2...@bosonprotocol/react-kit@0.5.0) (2022-09-08)
+
+### Features
+
+* build product card ([#230](https://github.com/bosonprotocol/core-components/issues/230)) ([9f64d9c](https://github.com/bosonprotocol/core-components/commit/9f64d9c3f45a0c7621a7b1f5df66d13b34fdca05))
+* currency display component ([#225](https://github.com/bosonprotocol/core-components/issues/225)) ([d012ba0](https://github.com/bosonprotocol/core-components/commit/d012ba055f059b978dae769d1df7d24e7f464f44))
+* deprecate widgets, widgets-sdk and parent-app ([#226](https://github.com/bosonprotocol/core-components/issues/226)) ([a7fb47c](https://github.com/bosonprotocol/core-components/commit/a7fb47cbbc8c46ae738dd29e010f40db7f9b0abe))
+* exchange card component add ([#235](https://github.com/bosonprotocol/core-components/issues/235)) ([67bd4f5](https://github.com/bosonprotocol/core-components/commit/67bd4f59d72cae8d972e4c2e4ccc4c6bf8b1b4d4))
+
 ## [0.4.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.4.1...@bosonprotocol/react-kit@0.4.2) (2022-08-30)
 
 ### Bug Fixes

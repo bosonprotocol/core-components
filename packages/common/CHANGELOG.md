@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.2...@bosonprotocol/common@1.11.0) (2022-09-08)
+
+### Features
+
+* deprecate widgets, widgets-sdk and parent-app ([#226](https://github.com/bosonprotocol/core-components/issues/226)) ([a7fb47c](https://github.com/bosonprotocol/core-components/commit/a7fb47cbbc8c46ae738dd29e010f40db7f9b0abe))
+* update contracts to pre-release v2.0.0-rc.1 ([#204](https://github.com/bosonprotocol/core-components/issues/204)) ([f74d664](https://github.com/bosonprotocol/core-components/commit/f74d6644ed3687d5eed6b503e3564581485a05b6))
+
 ## [1.10.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.1...@bosonprotocol/common@1.10.2) (2022-08-30)
 
 ### Bug Fixes

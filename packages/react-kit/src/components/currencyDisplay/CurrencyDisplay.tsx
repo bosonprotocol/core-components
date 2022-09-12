@@ -11,7 +11,7 @@ export enum Currencies {
   TETHER = "USDT"
 }
 interface CurrencyDisplayProps {
-  value?: number;
+  value?: number | string;
   currency: Currencies;
   height?: number;
 }
@@ -55,7 +55,7 @@ const CurrencyDisplayValue = styled.span.attrs((props: { height: number }) => ({
   padding-left: 1rem;
 `;
 
-const CurrencyLogo = ({
+export const CurrencyLogo = ({
   currency,
   size = 25
 }: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentStory, ComponentMeta, Story } from "@storybook/react";
 
 import { ExchangeCard } from "../components/exchangeCard/ExchangeCard";
 import { Currencies } from "../components/currencyDisplay/CurrencyDisplay";
@@ -19,6 +19,12 @@ export const Redeemed: ComponentStory<typeof ExchangeCard> = Template.bind({});
 export const Cancelled: ComponentStory<typeof ExchangeCard> = Template.bind({});
 export const Committed: ComponentStory<typeof ExchangeCard> = Template.bind({});
 
+const wrapper = (Story: Story) => (
+  <div style={{ width: "20.188rem" }}>
+    <Story />
+  </div>
+);
+
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redeemed.args = {
   id: "4852",
@@ -26,20 +32,20 @@ Redeemed.args = {
   avatarName: "Abi",
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-  image:
-    "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+  imageProps: {
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+  },
   price: 0.1,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
-  redeemConfig: {
-    onDisputeClick: () => console.log("REDEEMED - onDisputeClick"),
-    isDisputeLoading: false,
-    isDisputeDisabled: false
-  },
-  status: "REDEEMED"
+  status: "REDEEMED",
+  isCTAVisible: true,
+  disputeButtonConfig: {
+    onClick: () => console.log("on dispute click")
+  }
 };
 
 Cancelled.args = {
@@ -48,15 +54,22 @@ Cancelled.args = {
   avatarName: "Abi",
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-  image:
-    "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+  imageProps: {
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    preloadConfig: {
+      status: "success",
+      errorIcon: <></>,
+      errorImageText: ""
+    }
+  },
   price: 20.5,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
-  status: "CANCELLED"
+  status: "CANCELLED",
+  isCTAVisible: false
 };
 
 Committed.args = {
@@ -65,22 +78,26 @@ Committed.args = {
   avatarName: "Abi",
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-  image:
-    "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+  imageProps: {
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+  },
   price: 1.25,
   currency: Currencies.ETH,
   onCardClick: (id) => {
-    console.log("----------ON CLICK-------------");
+    console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
   status: "COMMITTED",
-  committedConfig: {
-    onRedeemClick: () => console.log("COMMITTED - onRedeemClick"),
-    isRedeemLoading: false,
-    isRedeemDisabled: false,
-    onCancelClick: () => console.log("COMMITTED - onCancelClick"),
-    isCancelLoading: false,
-    isCancelDisabled: false,
-    bottomText: "Redeemable until 30 days after commit"
+  isCTAVisible: true,
+  bottomText: "Redeemable until 30 days after commit",
+  redeemButtonConfig: {
+    onClick: () => console.log("on redeem click")
+  },
+  cancelButtonConfig: {
+    onClick: () => console.log("on cancel click")
   }
 };
+
+Redeemed.decorators = [(Story) => wrapper(Story)];
+Cancelled.decorators = [(Story) => wrapper(Story)];
+Committed.decorators = [(Story) => wrapper(Story)];
