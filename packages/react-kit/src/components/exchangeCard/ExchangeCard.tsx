@@ -37,7 +37,7 @@ interface Base {
   avatarName: string;
   onCardClick?: (id: string | number) => void;
   imageProps: IBaseImage;
-  isCTAVisible: boolean;
+  isCTAVisible?: boolean;
 }
 
 interface RedeemCard extends Base {
@@ -69,7 +69,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     avatarName,
     onCardClick,
     status,
-    isCTAVisible = false
+    isCTAVisible = true
   } = props;
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
