@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
 import { Button, ButtonProps } from "../buttons/Button";
-import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
-import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
   Currencies
@@ -52,8 +50,8 @@ interface CancelledCard extends Base {
 
 interface CommittedCard extends Base {
   status: Extract<ExchangeCardStatus, "COMMITTED">;
-  redeemButtonConfig: IRedeemButton;
-  cancelButtonConfig: ICancelButton;
+  redeemButtonConfig: ButtonProps;
+  cancelButtonConfig: ButtonProps;
   bottomText?: string;
 }
 
@@ -97,8 +95,26 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         return (
           <ExchangeButtonWrapper>
             <CommittedButtonWrapper>
-              <RedeemButton {...redeemButtonConfig} />
-              <CancelButton {...cancelButtonConfig} />
+              <Button
+                variant="primary"
+                {...redeemButtonConfig}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  redeemButtonConfig?.onClick?.(e);
+                }}
+              >
+                Redeem
+              </Button>
+              <Button
+                variant="ghostOrange"
+                {...cancelButtonConfig}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  redeemButtonConfig?.onClick?.(e);
+                }}
+              >
+                Cancel
+              </Button>
             </CommittedButtonWrapper>
             <CommittedBottomText>{bottomText}</CommittedBottomText>
           </ExchangeButtonWrapper>

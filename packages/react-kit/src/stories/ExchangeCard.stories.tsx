@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta, Story } from "@storybook/react";
 
 import { ExchangeCard } from "../components/exchangeCard/ExchangeCard";
 import { Currencies } from "../components/currencyDisplay/CurrencyDisplay";
-import { ButtonSize } from "../components/buttons/Button";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -44,7 +43,7 @@ Redeemed.args = {
   },
   status: "REDEEMED",
   disputeButtonConfig: {
-    onClick: () => console.log("----------ON CLICK-------------")
+    onClick: () => console.log("on dispute click")
   }
 };
 
@@ -89,52 +88,10 @@ Committed.args = {
   status: "COMMITTED",
   bottomText: "Redeemable until 30 days after commit",
   redeemButtonConfig: {
-    chainId: 1234,
-    exchangeId: "92",
-    disabled: false,
-    web3Provider: undefined,
-    metaTransactionsApiKey: undefined,
-    size: ButtonSize.Medium,
-    onPendingSignature: () => {
-      console.log("----------ON PENDING SIGNATURE-------------");
-    },
-    onPendingTransaction: (txHash: string) => {
-      console.log("----------ON PENDING TRANSACTION-------------");
-      console.log("txHash", txHash);
-    },
-    onSuccess: (receipt, payload) => {
-      console.log("----------ON SUCCESS-------------");
-      console.log("receipt", receipt);
-      console.log("payload", payload);
-    },
-    onError: (error) => {
-      console.log("----------ON ERROR-------------");
-      console.log("error", error);
-    }
+    onClick: () => console.log("on redeem click")
   },
   cancelButtonConfig: {
-    chainId: 1234,
-    size: ButtonSize.Medium,
-    variant: "ghostOrange",
-    exchangeId: "28",
-    web3Provider: undefined,
-    metaTransactionsApiKey: undefined,
-    onPendingSignature: () => {
-      console.log("----------ON PENDING SIGNATURE-------------");
-    },
-    onPendingTransaction: (txHash: string) => {
-      console.log("----------ON PENDING TRANSACTION-------------");
-      console.log("txHash", txHash);
-    },
-    onSuccess: (receipt, payload) => {
-      console.log("----------ON SUCCESS-------------");
-      console.log("receipt", receipt);
-      console.log("payload", payload);
-    },
-    onError: (error) => {
-      console.log("----------ON ERROR-------------");
-      console.log("error", error);
-    }
+    onClick: () => console.log("on cancel click")
   }
 };
 
