@@ -18,6 +18,7 @@ import {
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
+// seedWallet9 is used to relay meta-transactions
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
 const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
@@ -37,7 +38,7 @@ describe("meta-tx", () => {
 
   describe("#signExecuteMetaTxCommitToOffer()", () => {
     test("non-native exchange token offer", async () => {
-      const nonce = Date.now();
+      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -75,7 +76,8 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
 
-      const nonce = Date.now();
+      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
+
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -113,7 +115,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
 
-      const nonce = Date.now();
+      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
