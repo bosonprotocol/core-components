@@ -5,7 +5,7 @@ RUN apt-get -y install git
 
 WORKDIR /opt/core-components
 
-COPY --chown=node:node ./**.json .
+COPY --chown=node:node ./**.json ./
 COPY --chown=node:node ./examples/meta-tx-gateway ./examples/meta-tx-gateway
 COPY --chown=node:node ./packages/common ./packages/common
 COPY --chown=node:node ./packages/metadata ./packages/metadata
