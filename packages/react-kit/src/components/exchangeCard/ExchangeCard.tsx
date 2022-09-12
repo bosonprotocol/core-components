@@ -37,6 +37,7 @@ interface Base {
   avatarName: string;
   onCardClick?: (id: string | number) => void;
   imageProps: IBaseImage;
+  isCTAVisible: boolean;
 }
 
 interface RedeemCard extends Base {
@@ -67,64 +68,66 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     avatar,
     avatarName,
     onCardClick,
-    status
+    status,
+    isCTAVisible = false
   } = props;
   const exchangeCardBottom = useMemo(() => {
-    switch (status) {
-      case "REDEEMED": {
-        const { disputeButtonConfig } = props;
-        return (
-          <ExchangeButtonWrapper>
-            <RedeemButtonWrapper>
-              <Button
-                variant="ghostOrange"
-                {...disputeButtonConfig}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  disputeButtonConfig?.onClick?.(e);
-                }}
-              >
-                Dispute
-              </Button>
-            </RedeemButtonWrapper>
-          </ExchangeButtonWrapper>
-        );
+    if (isCTAVisible) {
+      switch (status) {
+        case "REDEEMED": {
+          const { disputeButtonConfig } = props;
+          return (
+            <ExchangeButtonWrapper>
+              <RedeemButtonWrapper>
+                <Button
+                  variant="ghostOrange"
+                  {...disputeButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    disputeButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Dispute
+                </Button>
+              </RedeemButtonWrapper>
+            </ExchangeButtonWrapper>
+          );
+        }
+        case "COMMITTED": {
+          const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
+          return (
+            <ExchangeButtonWrapper>
+              <CommittedButtonWrapper>
+                <Button
+                  variant="primary"
+                  {...redeemButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    redeemButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Redeem
+                </Button>
+                <Button
+                  variant="ghostOrange"
+                  {...cancelButtonConfig}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    cancelButtonConfig?.onClick?.(e);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </CommittedButtonWrapper>
+              <CommittedBottomText>{bottomText}</CommittedBottomText>
+            </ExchangeButtonWrapper>
+          );
+        }
+        default:
+          return null;
       }
-      case "COMMITTED": {
-        const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
-        return (
-          <ExchangeButtonWrapper>
-            <CommittedButtonWrapper>
-              <Button
-                variant="primary"
-                {...redeemButtonConfig}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  redeemButtonConfig?.onClick?.(e);
-                }}
-              >
-                Redeem
-              </Button>
-              <Button
-                variant="ghostOrange"
-                {...cancelButtonConfig}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  cancelButtonConfig?.onClick?.(e);
-                }}
-              >
-                Cancel
-              </Button>
-            </CommittedButtonWrapper>
-            <CommittedBottomText>{bottomText}</CommittedBottomText>
-          </ExchangeButtonWrapper>
-        );
-      }
-
-      default:
-        return null;
     }
-  }, [props, status]);
+  }, [isCTAVisible, props, status]);
 
   return (
     <ExchangeCardWrapper
@@ -155,7 +158,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <CurrencyDisplay value={price} currency={currency} />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
-        {exchangeCardBottom}
+        {isCTAVisible && exchangeCardBottom}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );

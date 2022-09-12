@@ -42,6 +42,7 @@ Redeemed.args = {
     console.log("id", id);
   },
   status: "REDEEMED",
+  isCTAVisible: true,
   disputeButtonConfig: {
     onClick: () => console.log("on dispute click")
   }
@@ -67,7 +68,8 @@ Cancelled.args = {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
-  status: "CANCELLED"
+  status: "CANCELLED",
+  isCTAVisible: false
 };
 
 Committed.args = {
@@ -86,6 +88,7 @@ Committed.args = {
     console.log("id", id);
   },
   status: "COMMITTED",
+  isCTAVisible: true,
   bottomText: "Redeemable until 30 days after commit",
   redeemButtonConfig: {
     onClick: () => console.log("on redeem click")
