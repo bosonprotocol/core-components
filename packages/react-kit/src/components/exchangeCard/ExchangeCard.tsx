@@ -110,7 +110,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 {...cancelButtonConfig}
                 onClick={(e) => {
                   e.stopPropagation();
-                  redeemButtonConfig?.onClick?.(e);
+                  cancelButtonConfig?.onClick?.(e);
                 }}
               >
                 Cancel
