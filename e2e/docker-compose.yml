@@ -1,5 +1,22 @@
+# TODO: add container for the meta-tx-gateway, run with following params: -c 31337 -k 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
 version: "3"
 services:
+  meta-tx-gateway:
+    build:
+      context: ../.
+      dockerfile: ./examples/meta-tx-gateway/Dockerfile
+    image: meta-tx-gateway:20220912142900
+    ports:
+      - "8888:8888"
+    environment:
+      - CHAIN_ID=31337
+      - PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+      - RPC_NODE=http://host.docker.internal:8545
+    depends_on:
+      - hardhat-node
+    command: ["sh", "-c", "sleep 3 && npm run start"]
+
   hardhat-node:
     build: ../contracts
     image: hardhat-node:a24305388c8a2b86cb59667e184677ab8862ebf2

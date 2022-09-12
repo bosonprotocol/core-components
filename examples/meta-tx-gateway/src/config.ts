@@ -30,6 +30,7 @@ interface ICLArguments {
   port: number;
   chainId: number;
   privateKey: string;
+  rpcNode: string;
 }
 
 const args = parse<ICLArguments>(
@@ -46,6 +47,10 @@ const args = parse<ICLArguments>(
     },
     privateKey: {
       alias: "k",
+      type: String,
+      optional: true
+    },
+    rpcNode: {
       type: String,
       optional: true
     }
@@ -86,7 +91,7 @@ export function getConfig(): Config {
     config = {
       PORT: args.port || validParseInt("PORT", process.env.PORT) || 8888,
       CHAIN_ID: chainId,
-      RPC_NODE: defaultConfig.jsonRpcUrl,
+      RPC_NODE: args.rpcNode || process.env.RPC_NODE || defaultConfig.jsonRpcUrl,
       PROTOCOL: defaultConfig.contracts.protocolDiamond,
       PRIVATE_KEY: wallet.privateKey,
       ACCOUNT: wallet.address
