@@ -11,7 +11,7 @@ export enum Currencies {
   TETHER = "USDT"
 }
 interface CurrencyDisplayProps {
-  value?: number;
+  value?: number | string;
   currency: Currencies;
   height?: number;
 }

@@ -9,7 +9,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = {
+export type IRedeemButton = {
   /**
    * ID of voucher/exchange to redeem.
    */
@@ -32,7 +32,7 @@ export const RedeemButton = ({
   size = ButtonSize.Large,
   variant = "primary",
   ...coreSdkConfig
-}: Props) => {
+}: IRedeemButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -48,7 +48,8 @@ export const RedeemButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async () => {
+      onClick={async (e) => {
+        e.stopPropagation();
         if (!isLoading) {
           try {
             setIsLoading(true);

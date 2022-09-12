@@ -1,15 +1,19 @@
 import React, { useMemo } from "react";
-import { Button } from "../buttons/Button";
+import { Button, ButtonProps } from "../buttons/Button";
+import { CancelButton, ICancelButton } from "../cta/exchange/CancelButton";
+import { IRedeemButton, RedeemButton } from "../cta/exchange/RedeemButton";
 import {
   CurrencyDisplay,
   Currencies
 } from "../currencyDisplay/CurrencyDisplay";
+import { IBaseImage, Image } from "../image/Image";
 
 import {
   CommittedButtonWrapper,
   CommittedBottomText,
   ExchangeCarData,
   ExchangeCardBottom,
+  ExchangeCardBottomContent,
   ExchangeCardPrice,
   ExchangeCardPriceWrapper,
   ExchangeCardTop,
@@ -20,7 +24,8 @@ import {
   ExchangeTitle,
   RedeemButtonWrapper,
   ExchangeStatus,
-  ExchangeButtonWrapper
+  ExchangeButtonWrapper,
+  ExchangeImageWrapper
 } from "./ExchangeCard.styles";
 
 export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
@@ -28,21 +33,17 @@ export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
 interface Base {
   id: string;
   title: string;
-  image: string;
   price: number;
   currency: Currencies;
   avatar: string;
   avatarName: string;
   onCardClick?: (id: string | number) => void;
+  imageProps: IBaseImage;
 }
 
 interface RedeemCard extends Base {
   status: Extract<ExchangeCardStatus, "REDEEMED">;
-  redeemConfig: {
-    onDisputeClick: () => unknown;
-    isDisputeLoading?: boolean;
-    isDisputeDisabled?: boolean;
-  };
+  disputeButtonConfig: ButtonProps;
 }
 
 interface CancelledCard extends Base {
@@ -51,15 +52,9 @@ interface CancelledCard extends Base {
 
 interface CommittedCard extends Base {
   status: Extract<ExchangeCardStatus, "COMMITTED">;
-  committedConfig: {
-    onRedeemClick: () => unknown;
-    isRedeemLoading?: boolean;
-    isRedeemDisabled?: boolean;
-    onCancelClick: () => unknown;
-    isCancelLoading?: boolean;
-    isCancelDisabled?: boolean;
-    bottomText?: JSX.Element | string;
-  };
+  redeemButtonConfig: IRedeemButton;
+  cancelButtonConfig: ICancelButton;
+  bottomText?: string;
 }
 
 type ExchangeCardProps = CommittedCard | RedeemCard | CancelledCard;
@@ -68,7 +63,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const {
     id,
     title,
-    image,
+    imageProps,
     price,
     currency,
     avatar,
@@ -79,24 +74,17 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const exchangeCardBottom = useMemo(() => {
     switch (status) {
       case "REDEEMED": {
-        const {
-          redeemConfig: {
-            onDisputeClick,
-            isDisputeLoading,
-            isDisputeDisabled
-          } = {}
-        } = props;
+        const { disputeButtonConfig } = props;
         return (
           <ExchangeButtonWrapper>
             <RedeemButtonWrapper>
               <Button
+                variant="ghostOrange"
+                {...disputeButtonConfig}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDisputeClick?.();
+                  disputeButtonConfig?.onClick?.(e);
                 }}
-                variant="ghostOrange"
-                disabled={!!isDisputeDisabled}
-                loading={!!isDisputeLoading}
               >
                 Dispute
               </Button>
@@ -105,42 +93,12 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         );
       }
       case "COMMITTED": {
-        const {
-          committedConfig: {
-            onRedeemClick,
-            isRedeemLoading,
-            isRedeemDisabled,
-            onCancelClick,
-            isCancelLoading,
-            isCancelDisabled,
-            bottomText
-          } = {}
-        } = props;
+        const { redeemButtonConfig, cancelButtonConfig, bottomText } = props;
         return (
           <ExchangeButtonWrapper>
             <CommittedButtonWrapper>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRedeemClick?.();
-                }}
-                variant="primary"
-                disabled={!!isRedeemLoading}
-                loading={!!isRedeemDisabled}
-              >
-                Redeem
-              </Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onCancelClick?.();
-                }}
-                variant="ghostOrange"
-                disabled={!!isCancelLoading}
-                loading={!!isCancelDisabled}
-              >
-                Cancel
-              </Button>
+              <RedeemButton {...redeemButtonConfig} />
+              <CancelButton {...cancelButtonConfig} />
             </CommittedButtonWrapper>
             <CommittedBottomText>{bottomText}</CommittedBottomText>
           </ExchangeButtonWrapper>
@@ -159,26 +117,30 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         onCardClick?.(id);
       }}
     >
-      <ExchangeCardTop $status={status}>
-        <img alt={title} src={image} decoding="async" />
+      <ExchangeCardTop>
+        <ExchangeImageWrapper>
+          <Image {...imageProps} />
+        </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
       <ExchangeCardBottom>
-        <ExchangeCarData>
-          <ExchangeCreator>
-            <ExchangeCreatorAvatar>
-              <img src={avatar} alt="avatar" />
-            </ExchangeCreatorAvatar>
-            <ExchangeCreatorName>{avatarName}</ExchangeCreatorName>
-          </ExchangeCreator>
-          <ExchangeTitle>{title}</ExchangeTitle>
-        </ExchangeCarData>
-        <ExchangeCardPriceWrapper>
-          <ExchangeCardPrice>Price</ExchangeCardPrice>
-          <CurrencyDisplay value={price} currency={currency} />
-        </ExchangeCardPriceWrapper>
+        <ExchangeCardBottomContent>
+          <ExchangeCarData>
+            <ExchangeCreator>
+              <ExchangeCreatorAvatar>
+                <img src={avatar} alt="avatar" />
+              </ExchangeCreatorAvatar>
+              <ExchangeCreatorName>{avatarName}</ExchangeCreatorName>
+            </ExchangeCreator>
+            <ExchangeTitle>{title}</ExchangeTitle>
+          </ExchangeCarData>
+          <ExchangeCardPriceWrapper>
+            <ExchangeCardPrice>Price</ExchangeCardPrice>
+            <CurrencyDisplay value={price} currency={currency} />
+          </ExchangeCardPriceWrapper>
+        </ExchangeCardBottomContent>
+        {exchangeCardBottom}
       </ExchangeCardBottom>
-      {exchangeCardBottom}
     </ExchangeCardWrapper>
   );
 };

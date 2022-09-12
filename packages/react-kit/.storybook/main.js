@@ -23,7 +23,15 @@ module.exports = {
       },
     },
   },
+
   webpackFinal: async (config) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...config.resolve.fallback,
+        stream: false,
+      }
+    };
     config.plugins.push(
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],

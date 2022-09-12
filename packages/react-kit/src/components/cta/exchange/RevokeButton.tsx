@@ -7,7 +7,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = {
+type IRevokeButton = {
   /**
    * ID of voucher/exchange to revoke.
    */
@@ -29,7 +29,7 @@ export const RevokeButton = ({
   size = ButtonSize.Large,
   variant = "secondary",
   ...coreSdkConfig
-}: Props) => {
+}: IRevokeButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -38,7 +38,8 @@ export const RevokeButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async () => {
+      onClick={async (e) => {
+        e.stopPropagation();
         if (!isLoading) {
           try {
             setIsLoading(true);
