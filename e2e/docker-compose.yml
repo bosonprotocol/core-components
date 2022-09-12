@@ -13,7 +13,7 @@ services:
       - RPC_NODE=http://host.docker.internal:8545
     depends_on:
       - hardhat-node
-    command: ["sh", "-c", "sleep 3 && npm run start"]
+    command: ["sh", "-c", "sleep 10 && npm run start"]
 
   hardhat-node:
     build: ../contracts
