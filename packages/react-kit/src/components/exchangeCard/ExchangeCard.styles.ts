@@ -121,14 +121,14 @@ export const RedeemButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0;
   box-sizing: border-box;
 `;
 export const CommittedButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  padding: 1.25rem 1.5rem 0.75rem 1.5rem;
   box-sizing: border-box;
 `;
 
