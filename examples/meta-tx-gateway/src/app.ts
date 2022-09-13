@@ -49,6 +49,10 @@ export function startApp(): Server {
     logger.info(`ChainId: ${config.CHAIN_ID}`);
     logger.info(`RpcNode: ${config.RPC_NODE}`);
     logger.info(`Account: ${config.ACCOUNT}`);
-    logger.info(`Account Balance: ${(await wallet.getBalance()).toString()}`);
+    try {
+      logger.info(`Account Balance: ${(await wallet.getBalance()).toString()}`);
+    } catch (e) {
+      logger.error(e.toString());
+    }
   });
 }
