@@ -3,19 +3,21 @@ import {
   CurrencyDisplay,
   Currencies
 } from "../currencyDisplay/CurrencyDisplay";
-
+import { IBaseImage, Image } from "../image/Image";
 import {
-  ProductCarData,
+  ProductCardImageWrapper,
+  BottomText,
   ProductCardBottom,
+  ProductCardBottomContent,
+  ProductCardCreator,
+  ProductCardCreatorAvatar,
+  ProductCardCreatorName,
+  ProductCardData,
   ProductCardPrice,
   ProductCardPriceWrapper,
+  ProductCardTitle,
   ProductCardTop,
-  ProductCardWrapper,
-  ProductCreator,
-  ProductCreatorAvatar,
-  ProductCreatorName,
-  ProductTitle,
-  ProductTypeWrapper
+  ProductCardWrapper
 } from "./ProductCard.styles";
 
 export enum ProductType {
@@ -23,62 +25,61 @@ export enum ProductType {
   physical = "Physical",
   digital = "Digital"
 }
-
-interface ProductCardProps {
+interface IProductCard {
   productId: string;
-  productTitle: string;
-  productImage: string;
-  productPrice: number;
+  title: string;
+  price: number;
   currency: Currencies;
-  productType: ProductType;
-  seller: {
-    name: string;
-    avatar: string;
-  };
-  onCardClick?: (productId: string) => void;
+  avatar: string;
+  avatarName: string;
+  onCardClick?: (id: string | number) => void;
+  imageProps: IBaseImage;
+  productType?: ProductType;
+  bottomText?: string;
 }
 
-export const ProductCard = ({
-  productId,
-  productTitle,
-  productImage,
-  productPrice,
-  currency,
-  productType,
-  seller,
-  onCardClick
-}: ProductCardProps) => {
+export const ProductCard = (props: IProductCard) => {
+  const {
+    productId,
+    title,
+    imageProps,
+    price,
+    currency,
+    avatar,
+    avatarName,
+    onCardClick,
+    bottomText
+  } = props;
+
   return (
     <ProductCardWrapper
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault();
         onCardClick?.(productId);
       }}
     >
       <ProductCardTop>
-        <img
-          alt={productTitle}
-          src={productImage}
-          decoding="async"
-          data-nimg="fill"
-        />
+        <ProductCardImageWrapper>
+          <Image {...imageProps} />
+        </ProductCardImageWrapper>
       </ProductCardTop>
       <ProductCardBottom>
-        <ProductCarData>
-          <ProductCreator>
-            <ProductCreatorAvatar>
-              <img src={seller.avatar} alt="seller_avatar" />
-            </ProductCreatorAvatar>
-            <ProductCreatorName>{seller.name}</ProductCreatorName>
-          </ProductCreator>
-          <ProductTitle>{productTitle}</ProductTitle>
-          <ProductTypeWrapper>
-            <span>{productType}</span>
-          </ProductTypeWrapper>
-        </ProductCarData>
-        <ProductCardPriceWrapper>
-          <ProductCardPrice>Price</ProductCardPrice>
-          <CurrencyDisplay value={productPrice} currency={currency} />
-        </ProductCardPriceWrapper>
+        <ProductCardBottomContent>
+          <ProductCardData>
+            <ProductCardCreator>
+              <ProductCardCreatorAvatar>
+                <img src={avatar} alt="avatar" />
+              </ProductCardCreatorAvatar>
+              <ProductCardCreatorName>{avatarName}</ProductCardCreatorName>
+            </ProductCardCreator>
+            <ProductCardTitle>{title}</ProductCardTitle>
+          </ProductCardData>
+          <ProductCardPriceWrapper>
+            <ProductCardPrice>Price</ProductCardPrice>
+            <CurrencyDisplay value={price} currency={currency} />
+          </ProductCardPriceWrapper>
+        </ProductCardBottomContent>
+        {bottomText && <BottomText>{bottomText}</BottomText>}
       </ProductCardBottom>
     </ProductCardWrapper>
   );
