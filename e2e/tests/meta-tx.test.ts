@@ -38,7 +38,7 @@ describe("meta-tx", () => {
 
   describe("#signExecuteMetaTxCommitToOffer()", () => {
     test("non-native exchange token offer", async () => {
-      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
+      const nonce = Date.now();
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -79,7 +79,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
 
-      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
+      const nonce = Date.now();
 
 
       // `Buyer` signs meta tx
@@ -121,7 +121,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
 
-      const nonce = Date.now() + Math.floor(Math.random() * 10000000);
+      const nonce = Date.now();
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
