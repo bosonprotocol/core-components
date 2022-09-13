@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.5.0...@bosonprotocol/react-kit@0.6.0) (2022-09-13)
+
+### Features
+
+* cta removed from exchange card ([#247](https://github.com/bosonprotocol/core-components/issues/247)) ([2f2e614](https://github.com/bosonprotocol/core-components/commit/2f2e614fcaab07b8d7544b4a4cea9ec54afaac67))
+* dispute cta, exchange, image, stream fix ([#237](https://github.com/bosonprotocol/core-components/issues/237)) ([a9ba585](https://github.com/bosonprotocol/core-components/commit/a9ba585958a92eea6e18768436a6770ef12f06d6))
+* export currency logo ([#245](https://github.com/bosonprotocol/core-components/issues/245)) ([0103077](https://github.com/bosonprotocol/core-components/commit/0103077dddee626db47f81df2438f3503a301017))
+
 # [0.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.4.2...@bosonprotocol/react-kit@0.5.0) (2022-09-08)
 
 ### Features
