@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/react-kit",
-  "version": "0.6.0",
+  "version": "0.7.0-alpha.0",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
