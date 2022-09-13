@@ -13,6 +13,8 @@ services:
       - RPC_NODE=http://host.docker.internal:8545
     depends_on:
       - hardhat-node
+    extra_hosts:
+      - host.docker.internal:host-gateway
     command: ["sh", "-c", "sleep 10 && npm run start"]
 
   hardhat-node:
