@@ -38,7 +38,6 @@ Redeemed.args = {
   price: 0.1,
   currency: Currencies.ETH,
   isHoverDisabled: true,
-  dataTestId: "123",
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
