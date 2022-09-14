@@ -21,7 +21,7 @@ const envNameToConfig: Record<
   },
   testing: {
     network: "mainnet",
-    startBlock: 0
+    startBlock: 624531 // testing node, block num when protocol is deployed
   },
   staging: {
     network: "mumbai",
