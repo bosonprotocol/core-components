@@ -37,7 +37,6 @@ ProductCardPrimary.args = {
   price: 1.23,
   currency: Currencies.ETH,
   productType: ProductType.physical,
-  isHoverDisabled: true,
   onCardClick: (productId) => {
     console.log("----------ON CLICK-------------");
     console.log("productId", productId);
