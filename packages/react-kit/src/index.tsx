@@ -12,6 +12,7 @@ export * from "./components/buttons/Button";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/currencyDisplay/CurrencyDisplay";
 export * from "./components/exchangeCard/ExchangeCard";
+export * from "./components/productCard/ProductCard";
 export * from "./components/image/Image";
 
 export * as hooks from "./hooks";
