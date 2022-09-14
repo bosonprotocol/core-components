@@ -21,8 +21,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/b128b0cc9e6e0a72e6b377573c5ccfa88643e6a5
-      protocolDiamond: "0x559272B7186B3cFe55CE813FB36F52c0E8ad9778",
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/a24305388c8a2b86cb59667e184677ab8862ebf2
+      protocolDiamond: "0x942d419C2fF3b84C0965180290Bf643De5Bc3E70",
       testErc20: "0x6aB7d764df1ac4Caa649d3f546e07E2fe44BF667"
     }
   },
