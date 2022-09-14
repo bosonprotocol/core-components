@@ -77,6 +77,7 @@ export const ProductCardBottomContent = styled.div`
 `;
 
 export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
@@ -91,8 +92,8 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   cursor: pointer;
   background: ${theme.colors.light.white};
   [data-image-wrapper] {
-    padding-top: 130%;
-    transition: all 300ms ease-in-out;
+    position: static;
+    padding-top: 0;
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
@@ -103,7 +104,9 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
         8px 8px 8px rgba(0, 0, 0, 0.05), 16px 16px 16px rgba(0, 0, 0, 0.05);
 
       [data-image-wrapper] {
-        transform: translate(0, 0) scale(1.05);
+        img {
+          transform: translate(-50%, -50%) scale(1.05);
+        }
       }
     }
   `
@@ -115,6 +118,7 @@ export const ProductCardTop = styled.div`
   width: 100%;
   z-index: 0;
   margin-bottom: auto;
+  flex-grow: 1;
 `;
 
 export const BottomText = styled.p`
