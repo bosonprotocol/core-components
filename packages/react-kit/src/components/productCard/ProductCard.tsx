@@ -33,9 +33,12 @@ interface IProductCard {
   avatar: string;
   avatarName: string;
   onCardClick?: (id: string | number) => void;
+  onAvatarNameClick?: () => void;
   imageProps: IBaseImage;
   productType?: ProductType;
   bottomText?: string;
+  dataTestId?: string;
+  isHoverDisabled?: boolean;
 }
 
 export const ProductCard = (props: IProductCard) => {
@@ -47,12 +50,17 @@ export const ProductCard = (props: IProductCard) => {
     currency,
     avatar,
     avatarName,
+    onAvatarNameClick,
     onCardClick,
-    bottomText
+    bottomText,
+    dataTestId = "offer",
+    isHoverDisabled = false
   } = props;
 
   return (
     <ProductCardWrapper
+      $isHoverDisabled={isHoverDisabled}
+      data-testid={dataTestId}
       onClick={(e) => {
         e.preventDefault();
         onCardClick?.(productId);
@@ -66,7 +74,12 @@ export const ProductCard = (props: IProductCard) => {
       <ProductCardBottom>
         <ProductCardBottomContent>
           <ProductCardData>
-            <ProductCardCreator>
+            <ProductCardCreator
+              onClick={(e) => {
+                e.stopPropagation();
+                onAvatarNameClick?.();
+              }}
+            >
               <ProductCardCreatorAvatar>
                 <img src={avatar} alt="avatar" />
               </ProductCardCreatorAvatar>

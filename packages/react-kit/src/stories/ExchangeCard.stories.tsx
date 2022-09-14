@@ -37,9 +37,14 @@ Redeemed.args = {
   },
   price: 0.1,
   currency: Currencies.ETH,
+  isHoverDisabled: true,
+  dataTestId: "123",
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   status: "REDEEMED",
   isCTAVisible: true,
@@ -68,6 +73,9 @@ Cancelled.args = {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
   },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
+  },
   status: "CANCELLED",
   isCTAVisible: false
 };
@@ -86,6 +94,9 @@ Committed.args = {
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   status: "COMMITTED",
   isCTAVisible: true,

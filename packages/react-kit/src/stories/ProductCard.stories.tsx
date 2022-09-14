@@ -37,9 +37,13 @@ ProductCardPrimary.args = {
   price: 1.23,
   currency: Currencies.ETH,
   productType: ProductType.physical,
+  isHoverDisabled: true,
   onCardClick: (productId) => {
     console.log("----------ON CLICK-------------");
     console.log("productId", productId);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   imageProps: {
     src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
