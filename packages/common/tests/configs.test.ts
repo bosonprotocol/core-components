@@ -4,7 +4,7 @@ import { getDefaultConfig } from "../src/configs";
 describe("#getDefaultConfig()", () => {
   test("throw if filter not set", () => {
     expect(() => {
-      getDefaultConfig({});
+      getDefaultConfig({} as { envName: string; });
     }).toThrow();
   });
 
@@ -12,14 +12,6 @@ describe("#getDefaultConfig()", () => {
     expect(() => {
       getDefaultConfig({
         envName: "unknown"
-      });
-    }).toThrow();
-  });
-
-  test("throw if unknown chain id", () => {
-    expect(() => {
-      getDefaultConfig({
-        chainId: 99999999999999
       });
     }).toThrow();
   });
@@ -33,12 +25,4 @@ describe("#getDefaultConfig()", () => {
     expect(isAddress(contracts.protocolDiamond)).toBeTruthy();
   });
 
-  test("return default config of chain id", () => {
-    const { chainId, contracts, subgraphUrl } = getDefaultConfig({
-      chainId: 1234
-    });
-    expect(typeof chainId === "number").toBeTruthy();
-    expect(typeof subgraphUrl === "string").toBeTruthy();
-    expect(isAddress(contracts.protocolDiamond)).toBeTruthy();
-  });
 });

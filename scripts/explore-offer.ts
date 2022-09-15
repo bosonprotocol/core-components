@@ -14,16 +14,16 @@ import {
 program
   .description("Explore an on-chain Offer.")
   .argument("<OFFER_ID>", "Id of the Offer")
-  .option("-c, --chain <CHAIN_ID>", "Target chain id", "1234")
+  .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .parse(process.argv);
 
 async function main() {
   const [offerId] = program.args;
 
   const opts = program.opts();
-  const chainId = Number(opts.chain || "1234");
-  const defaultConfig = getDefaultConfig({ chainId });
-
+  const envName = opts.env || "testing";
+  const defaultConfig = getDefaultConfig({ envName });
+  const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 
   console.log(`Explore Offer with Id ${offerId}`);

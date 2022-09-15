@@ -87,29 +87,20 @@ export const defaultConfigs: ProtocolConfig[] = [
  * @param filter - Filter for default config.
  * @returns Default config.
  */
-export function getDefaultConfig(filter: {
-  envName?: string;
-  chainId?: number;
-}): ProtocolConfig {
-  const { envName, chainId } = filter;
+export function getDefaultConfig(filter: { envName: string }): ProtocolConfig {
+  const { envName } = filter;
 
-  if (!envName && !chainId) {
-    throw new Error(`filter.envName or filter.chainId has to be set`);
+  if (!envName) {
+    throw new Error(`filter.envName has to be set`);
   }
 
   const [defaultConfig] = defaultConfigs.filter((config) => {
-    if (envName) {
-      return config.envName === envName;
-    }
-
-    return config.chainId === chainId;
+    return config.envName === envName;
   });
 
   if (!defaultConfig) {
     throw new Error(
-      `Could not find default config for filter ${JSON.stringify(
-        envName ? { envName } : { chainId }
-      )}`
+      `Could not find default config for filter ${JSON.stringify({ envName })}`
     );
   }
 

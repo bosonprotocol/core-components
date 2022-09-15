@@ -38,7 +38,7 @@ export const RedeemButton = ({
 
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
   const metaTxContract = useMetaTxHandlerContract({
-    chainId: coreSdkConfig.chainId,
+    envName: coreSdkConfig.envName,
     metaTransactionsApiKey,
     web3Provider: coreSdkConfig.web3Provider
   });
@@ -62,7 +62,6 @@ export const RedeemButton = ({
 
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxRedeemVoucher({
-                  chainId: coreSdkConfig.chainId,
                   exchangeId,
                   nonce
                 });

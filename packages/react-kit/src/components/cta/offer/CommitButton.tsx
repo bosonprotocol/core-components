@@ -36,7 +36,7 @@ export const CommitButton = ({
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
   const metaTxContract = useMetaTxHandlerContract({
-    chainId: coreSdkConfig.chainId,
+    envName: coreSdkConfig.envName,
     metaTransactionsApiKey,
     web3Provider: coreSdkConfig.web3Provider
   });
@@ -60,7 +60,6 @@ export const CommitButton = ({
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxCommitToOffer({
-                  chainId: coreSdkConfig.chainId,
                   offerId,
                   nonce
                 });

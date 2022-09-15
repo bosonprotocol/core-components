@@ -5,7 +5,7 @@ import { Biconomy } from "@biconomy/mexa";
 import { getDefaultConfig } from "@bosonprotocol/core-sdk";
 
 export type BiconomyConfig = {
-  chainId: number;
+  envName: string;
   metaTransactionsApiKey?: string;
   jsonRpcUrl?: string;
 };
@@ -17,7 +17,7 @@ export type BiconomyConfig = {
  * @returns Initialized `Biconomy` instance.
  */
 export function useBiconomy(config: BiconomyConfig) {
-  const defaultConfig = getDefaultConfig({ chainId: config.chainId });
+  const defaultConfig = getDefaultConfig({ envName: config.envName });
   const [biconomyState, setBiconomyState] = useState<
     | { status: "idle" }
     | { status: "initializing" }

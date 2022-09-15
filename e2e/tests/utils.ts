@@ -27,7 +27,7 @@ import {
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
-  getDefaultConfig({ chainId: 31337 }).contracts.testErc20 ||
+  getDefaultConfig({ envName: "local" }).contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC20_ABI = [

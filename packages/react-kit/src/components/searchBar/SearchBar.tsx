@@ -6,9 +6,9 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 
 interface SearchBarProps {
   /**
-   * Target chain.
+   * Target environment.
    */
-  chainId: number;
+  envName: string;
   placeholder?: string;
   disabled?: boolean;
   /**
@@ -28,13 +28,13 @@ interface SearchBarProps {
 export const SearchBar = ({
   placeholder = "Search...",
   disabled = false,
-  chainId,
+  envName,
   onSuccess,
   onError
 }: SearchBarProps) => {
   const [value, setValue] = useState("");
 
-  const coreSdk = useCoreSdk({ chainId });
+  const coreSdk = useCoreSdk({ envName });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

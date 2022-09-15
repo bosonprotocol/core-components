@@ -11,9 +11,9 @@ program
     "<DR_ADMIN_ADDRESS>",
     "Admin address of dispute resolver. Same address will be used for clerk, treasury and operator if no overrides set."
   )
-  .option("-c, --chain <CHAIN_ID>", "Target chain id", "1234")
+  .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .option(
-    "-e, --escalation-period <PERIOD_IN_MS>",
+    "-esc, --escalation-period <PERIOD_IN_MS>",
     "Escalation response period in milliseconds."
   )
   .option(
@@ -53,8 +53,9 @@ async function main() {
   const operator = opts.operator || disputeResolverAdminAddress;
   const clerk = opts.clerk || disputeResolverAdminAddress;
   const treasury = opts.treasury || disputeResolverAdminAddress;
-  const chainId = Number(opts.chain || "1234");
-  const defaultConfig = getDefaultConfig({ chainId });
+  const envName = opts.env || "testing";
+  const defaultConfig = getDefaultConfig({ envName });
+  const chainId = defaultConfig.chainId;
   const metadataUri = opts.metadata;
   const fees = opts.fees
     ? (opts.fees as string)
@@ -74,10 +75,12 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       protocolAdminWallet
     ),
-    chainId
+    envName
   });
 
-  console.log(`Creating dispute resolver on chain ${chainId}...`);
+  console.log(
+    `Creating dispute resolver on env ${envName} on chain ${chainId}...`
+  );
   const txResponse1 = await coreSDK.createDisputeResolver({
     escalationResponsePeriodInMS,
     admin: disputeResolverAdminAddress,
