@@ -3,8 +3,10 @@ export type ContractAddresses = {
   testErc20?: string;
 };
 
+export type EnvironmentType = "local" | "testing" | "staging" | "production";
+
 export type ProtocolConfig = {
-  envName: string;
+  envName: EnvironmentType;
   chainId: number;
   nativeCoin?: {
     symbol: string;

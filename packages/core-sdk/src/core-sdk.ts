@@ -10,6 +10,7 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 import * as accounts from "./accounts";
 import * as disputes from "./disputes";
@@ -44,7 +45,7 @@ export class CoreSDK {
     protocolDiamond: string;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
-    chainId?: number;
+    chainId: number;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -72,15 +73,11 @@ export class CoreSDK {
    */
   static fromDefaultConfig(args: {
     web3Lib: Web3LibAdapter;
-    envName?: string;
-    chainId?: number;
+    envName: EnvironmentType;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
   }) {
-    const defaultConfig = getDefaultConfig({
-      envName: args.envName,
-      chainId: args.chainId
-    });
+    const defaultConfig = getDefaultConfig(args.envName);
 
     return new CoreSDK({
       web3Lib: args.web3Lib,
@@ -88,7 +85,7 @@ export class CoreSDK {
       theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond,
-      chainId: args.chainId
+      chainId: defaultConfig.chainId
     });
   }
 
@@ -728,10 +725,6 @@ export class CoreSDK {
   public async getExchangeTokenInfo(
     exchangeToken: string
   ): Promise<ITokenInfo> {
-    if (this._chainId === undefined) {
-      this._chainId = await this._web3Lib.getChainId();
-    }
-
     if (this._tokenInfoManager === undefined) {
       this._tokenInfoManager = new TokenInfoManager(
         this._chainId,
@@ -1213,10 +1206,6 @@ export class CoreSDK {
     exchangeId: BigNumberish;
     buyerPercent: BigNumberish;
   }) {
-    if (this._chainId === undefined) {
-      this._chainId = await this._web3Lib.getChainId();
-    }
-
     return disputes.handler.signResolutionProposal({
       ...args,
       web3Lib: this._web3Lib,
@@ -1237,12 +1226,13 @@ export class CoreSDK {
   public async signExecuteMetaTx(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTx>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1255,12 +1245,13 @@ export class CoreSDK {
   public async signExecuteMetaTxCommitToOffer(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1273,12 +1264,13 @@ export class CoreSDK {
   public async signExecuteMetaTxCancelVoucher(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxCancelVoucher>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxCancelVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1291,12 +1283,13 @@ export class CoreSDK {
   public async signExecuteMetaTxRedeemVoucher(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxRedeemVoucher>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxRedeemVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1309,12 +1302,13 @@ export class CoreSDK {
   public async signExecuteMetaTxRetractDispute(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxRetractDispute>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxRetractDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1327,12 +1321,13 @@ export class CoreSDK {
   public async signExecuteMetaTxEscalateDispute(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxEscalateDispute>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxEscalateDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1345,12 +1340,13 @@ export class CoreSDK {
   public async signExecuteMetaTxRaiseDispute(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxRaiseDispute>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxRaiseDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1363,12 +1359,13 @@ export class CoreSDK {
   public async signExecuteMetaTxResolveDispute(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxResolveDispute>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxResolveDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1381,12 +1378,13 @@ export class CoreSDK {
   public async signExecuteMetaTxWithdrawFunds(
     args: Omit<
       Parameters<typeof metaTx.handler.signExecuteMetaTxWithdrawFunds>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signExecuteMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }

@@ -10,13 +10,16 @@ on:
 jobs:
   deploy:
     if: github.ref_name == 'main'
-    runs-on: core-components
+    runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+          cache: "npm"
       - run: npm ci
+      - name: Authenticate The Graph CLI
+        run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_TESTING }}
       - name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:testing
+        run: cd ./packages/subgraph && npm run deploy:testing -- -l 0.0.1

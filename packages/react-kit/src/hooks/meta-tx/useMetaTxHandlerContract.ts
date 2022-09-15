@@ -17,7 +17,7 @@ type MetaTxHandlerConfig = BiconomyConfig & {
  * @returns Biconomy-connected contract instance.
  */
 export function useMetaTxHandlerContract(config: MetaTxHandlerConfig) {
-  const defaultConfig = getDefaultConfig({ chainId: config.chainId });
+  const defaultConfig = getDefaultConfig(config.envName);
   const [metaTxHandlerContract, setMetaTxHandlerContract] = useState<
     contracts.IBosonMetaTransactionsHandler | undefined
   >();

@@ -53,8 +53,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signExecuteMetaTxCommitToOffer({
           offerId: offer.id,
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
@@ -90,8 +89,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signExecuteMetaTxRedeemVoucher({
           exchangeId: Number(exchangeId),
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
@@ -127,8 +125,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signExecuteMetaTxCancelVoucher({
           exchangeId: exchangeId as string,
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`

@@ -24,7 +24,7 @@ export const Simple: ComponentStory<typeof RevokeButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof RevokeButton> = Template.bind({});
 
 Simple.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "28",
   web3Provider: undefined,
   disabled: false,
@@ -47,7 +47,7 @@ Simple.args = {
 };
 
 WithStep.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "28",
   web3Provider: undefined,
   extraInfo: "Step 2",

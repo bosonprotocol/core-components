@@ -1,3 +1,4 @@
+import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { isAddress } from "@ethersproject/address";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet, providers } from "ethers";
@@ -10,14 +11,6 @@ function validAddress(value) {
     throw new InvalidArgumentError("Not an address.");
   }
   return value;
-}
-
-function validInt(value) {
-  const parsedValue = parseInt(value, 10);
-  if (isNaN(parsedValue)) {
-    throw new InvalidArgumentError("Not a number.");
-  }
-  return parsedValue;
 }
 
 function validBigNumber(value) {
@@ -40,27 +33,35 @@ function validPrivateKey(value) {
 program
   .description("Deposit funds.")
   .requiredOption("-k, --key <privateKey>", "Private Key.", validPrivateKey)
-  .requiredOption("-c , --chainId <chainId>", "Chain ID.", validInt)
+  .requiredOption("-e , --env <envName>", "Environment.")
   .requiredOption("-s, --sellerId <sellerId>", "Seller ID.", validBigNumber)
   .requiredOption("-v, --value <value>", "Value.", validBigNumber)
   .option("-t, --token <token>", "Token Address.", validAddress)
   .parse(process.argv);
 
 async function main() {
-  const { key: privateKey, chainId, sellerId, value, token } = program.opts();
-  const defaultConfig = getDefaultConfig({ chainId });
+  const {
+    key: privateKey,
+    env: envName,
+    sellerId,
+    value,
+    token
+  } = program.opts();
+  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const chainId = defaultConfig.chainId;
   const wallet = new Wallet(privateKey);
   const coreSDK = CoreSDK.fromDefaultConfig({
     web3Lib: new EthersAdapter(
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       wallet
     ),
-    chainId
+    envName
   });
   console.log(`*********************`);
   console.log(`   Deposit Funds`);
   console.log(`*********************`);
   console.log(`Operator: ${wallet.address}`);
+  console.log(`Environment: ${envName}`);
   console.log(`ChainId: ${chainId}`);
   console.log(`SellerId: ${sellerId.toString()}`);
   console.log(`Value: ${value.toString()}`);
