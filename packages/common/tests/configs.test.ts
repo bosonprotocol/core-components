@@ -4,7 +4,7 @@ import { getDefaultConfig } from "../src/configs";
 describe("#getDefaultConfig()", () => {
   test("throw if filter not set", () => {
     expect(() => {
-      getDefaultConfig({} as { envName: string; });
+      getDefaultConfig({} as { envName: string });
     }).toThrow();
   });
 
@@ -24,5 +24,4 @@ describe("#getDefaultConfig()", () => {
     expect(typeof subgraphUrl === "string").toBeTruthy();
     expect(isAddress(contracts.protocolDiamond)).toBeTruthy();
   });
-
 });
