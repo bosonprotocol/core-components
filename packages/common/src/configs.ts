@@ -15,11 +15,11 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
     subgraphUrl:
-      "https://graph.bsn-development-potassium.bosonportal.io/subgraphs/name/boson/corecomponents",
+      "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosontesting",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-    theGraphIpfsUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
-    ipfsMetadataUrl: "https://ipfs.bsn-development-potassium.bosonportal.io",
+    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8fc9ee1affbcef914d1c29525b5addd362998ded
       protocolDiamond: "0xC95834A64c2De9AaCA8960465886EF265c26fa5A"

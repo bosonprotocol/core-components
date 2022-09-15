@@ -23,9 +23,7 @@
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
-    "create:testing": "graph create --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
-    "remove:testing": "graph remove --node http://graph.geth.svc.cluster.local:8020 boson/corecomponents",
-    "deploy:testing": "npm run manifest:testing && npm run create:testing && graph deploy --node http://graph.geth.svc.cluster.local:8020 --ipfs http://ipfs.geth.svc.cluster.local:5001 boson/corecomponents -l 0.0.1",
+    "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ levalleux-ludo/bosontesting",
     "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ levalleux-ludo/bosonmumbai",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
     "test": "npm run manifest:local && graph test"
