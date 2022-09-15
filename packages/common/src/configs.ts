@@ -75,7 +75,7 @@ export const defaultConfigs: ProtocolConfig[] = [
  */
 export function getDefaultConfig(envName: EnvironmentType): ProtocolConfig {
   if (!envName) {
-    throw new Error(`filter.envName has to be set`);
+    throw new Error(`envName has to be set`);
   }
 
   const [defaultConfig] = defaultConfigs.filter((config) => {
@@ -83,9 +83,7 @@ export function getDefaultConfig(envName: EnvironmentType): ProtocolConfig {
   });
 
   if (!defaultConfig) {
-    throw new Error(
-      `Could not find default config for filter ${JSON.stringify({ envName })}`
-    );
+    throw new Error(`Could not find default config for envName ${envName}`);
   }
 
   if (!defaultConfig.nativeCoin) {
