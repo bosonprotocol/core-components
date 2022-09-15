@@ -1,4 +1,4 @@
-import { ProtocolConfig } from "./types";
+import { EnvironmentType, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
@@ -23,20 +23,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8fc9ee1affbcef914d1c29525b5addd362998ded
       protocolDiamond: "0xC95834A64c2De9AaCA8960465886EF265c26fa5A"
-    }
-  },
-  {
-    envName: "staging_old",
-    chainId: 3,
-    nativeCoin: chainIdToInfo.get(3),
-    subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/dohaki/bosonccropsten",
-    jsonRpcUrl: "https://ropsten.infura.io/v3/e8c25128908848db8cb65f595dc0a88f",
-    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/753ac3aa9cbea4f42236130808984121c65e76dc
-      protocolDiamond: "0xDdAE2985Ca872B3E2974e296acF8931C0965801b"
     }
   },
   {
@@ -87,9 +73,7 @@ export const defaultConfigs: ProtocolConfig[] = [
  * @param filter - Filter for default config.
  * @returns Default config.
  */
-export function getDefaultConfig(filter: { envName: string }): ProtocolConfig {
-  const { envName } = filter;
-
+export function getDefaultConfig(envName: EnvironmentType): ProtocolConfig {
   if (!envName) {
     throw new Error(`filter.envName has to be set`);
   }

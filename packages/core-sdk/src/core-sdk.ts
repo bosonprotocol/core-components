@@ -10,6 +10,7 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 import * as accounts from "./accounts";
 import * as disputes from "./disputes";
@@ -72,13 +73,11 @@ export class CoreSDK {
    */
   static fromDefaultConfig(args: {
     web3Lib: Web3LibAdapter;
-    envName: string;
+    envName: EnvironmentType;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
   }) {
-    const defaultConfig = getDefaultConfig({
-      envName: args.envName
-    });
+    const defaultConfig = getDefaultConfig(args.envName);
 
     return new CoreSDK({
       web3Lib: args.web3Lib,

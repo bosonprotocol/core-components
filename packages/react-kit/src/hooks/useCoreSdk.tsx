@@ -3,12 +3,13 @@ import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { providers } from "ethers";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 export type CoreSdkConfig = {
   /**
    * Target Environment
    */
-  envName: string;
+  envName: EnvironmentType;
   /**
    * Ethers provider that will be passed to `CoreSDK`. Defaults to `JsonRpcProvider`
    * connected via default URL of respective chain ID.
@@ -63,7 +64,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
 }
 
 function initCoreSdk(config: CoreSdkConfig) {
-  const defaultConfig = getDefaultConfig({ envName: config.envName });
+  const defaultConfig = getDefaultConfig(config.envName);
   const defaultProvider = new providers.JsonRpcProvider(
     config.jsonRpcUrl || defaultConfig.jsonRpcUrl
   );

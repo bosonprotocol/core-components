@@ -1,4 +1,4 @@
-import { Web3LibAdapter } from "@bosonprotocol/common";
+import { Web3LibAdapter, EnvironmentType } from "@bosonprotocol/common";
 import { getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { CoreSDK } from "../src/core-sdk";
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
@@ -22,7 +22,7 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter(),
-        envName: "unknown"
+        envName: "unknown" as EnvironmentType
       })
     ).toThrow();
   });
@@ -31,7 +31,7 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter()
-      } as unknown as { envName: string; web3Lib: Web3LibAdapter })
+      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter })
     ).toThrow();
   });
 });
@@ -54,7 +54,7 @@ describe("#renderContractualAgreementForOffer()", () => {
         productV1MetadataEntity: mockedRawOfferFromSubgraph.metadata
       }
     });
-    const defaultConfig = getDefaultConfig({ envName: "testing" });
+    const defaultConfig = getDefaultConfig("testing");
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
@@ -79,7 +79,7 @@ describe("#renderContractualAgreementForOffer()", () => {
         offer: null
       }
     });
-    const defaultConfig = getDefaultConfig({ envName: "testing" });
+    const defaultConfig = getDefaultConfig("testing");
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,

@@ -3,12 +3,13 @@ import { MagnifyingGlass } from "../../icons/MagnifyingGlass";
 import { useCoreSdk } from "../../hooks/useCoreSdk";
 import { InputField, InputWrapper } from "./SearchBar.styles";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 interface SearchBarProps {
   /**
    * Target environment.
    */
-  envName: string;
+  envName: EnvironmentType;
   placeholder?: string;
   disabled?: boolean;
   /**

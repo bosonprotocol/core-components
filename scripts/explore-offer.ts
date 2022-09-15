@@ -1,3 +1,4 @@
+import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { IpfsMetadataStorage } from "./../packages/ipfs-storage/src/ipfs/metadata";
 import { AddressZero } from "@ethersproject/constants";
 import { erc20Iface } from "./../packages/core-sdk/src/erc20/interface";
@@ -22,7 +23,7 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const defaultConfig = getDefaultConfig({ envName });
+  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
   const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 

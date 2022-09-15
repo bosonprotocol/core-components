@@ -31,9 +31,7 @@ We provide default configurations for multiple environments that can be used for
 ```js
 import { getDefaultConfig } from "@bosonprotocol/common";
 
-const defaultConfigOnRopsten = getDefaultConfig({
-  envName: "staging"
-});
+const defaultConfigOnRopsten = getDefaultConfig("staging");
 // {
 //   ...otherConfigParameters,
 //   subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/ccropsten",

@@ -1,3 +1,4 @@
+import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { Wallet, providers } from "ethers";
 import { program } from "commander";
 import { getDefaultConfig } from "../packages/common/src";
@@ -53,8 +54,8 @@ async function main() {
   const operator = opts.operator || disputeResolverAdminAddress;
   const clerk = opts.clerk || disputeResolverAdminAddress;
   const treasury = opts.treasury || disputeResolverAdminAddress;
-  const envName = opts.env || "testing";
-  const defaultConfig = getDefaultConfig({ envName });
+  const envName = (opts.env as EnvironmentType) || "testing";
+  const defaultConfig = getDefaultConfig(envName);
   const chainId = defaultConfig.chainId;
   const metadataUri = opts.metadata;
   const fees = opts.fees

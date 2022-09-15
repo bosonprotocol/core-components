@@ -1,3 +1,4 @@
+import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { isAddress } from "@ethersproject/address";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet, providers } from "ethers";
@@ -46,7 +47,7 @@ async function main() {
     value,
     token
   } = program.opts();
-  const defaultConfig = getDefaultConfig({ envName });
+  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
   const chainId = defaultConfig.chainId;
   const wallet = new Wallet(privateKey);
   const coreSDK = CoreSDK.fromDefaultConfig({
