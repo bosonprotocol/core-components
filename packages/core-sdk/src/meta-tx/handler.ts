@@ -6,6 +6,7 @@ import fetch from "cross-fetch";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
+import { Biconomy } from "./biconomy";
 
 type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -379,7 +380,11 @@ export async function relayMetaTransaction(
     sigV: BigNumberish;
   }
 ): Promise<ContractTransaction> {
-  const body = {
+  const biconomy = new Biconomy(
+    config.metaTransactionsRelayerUrl,
+    config.metaTransactionsApiKey
+  );
+  const response = await biconomy.relayTransaction({
     to: config.contractAddress,
     apiId: config.metaTransactionsApiId,
     params: [
@@ -392,27 +397,13 @@ export async function relayMetaTransaction(
       params.sigV
     ],
     from: params.userAddress
-  };
-  const responsePromise = fetch(config.metaTransactionsRelayerUrl, {
-    method: "POST",
-    headers: {
-      "x-api-key": config.metaTransactionsApiKey,
-      "content-type": "application/json;charset=UTF-8",
-      "Access-Control-Allow-Origin": "*"
-    },
-    body: JSON.stringify(body)
   });
   return {
     wait: async () => {
-      const response = await responsePromise;
-      const responseJSON = await response.json();
-      if (!response.ok) {
-        throw new Error(
-          `Failure to relay the metaTransaction: ${JSON.stringify(
-            responseJSON || response
-          )}`
-        );
-      }
+      const responseRetry = await biconomy.getRetriedHashes({
+        networkId: config.chainId,
+        transactionHash: response.txHash
+      });
       return {
         to: config.contractAddress,
         from: params.userAddress,
@@ -421,19 +412,21 @@ export async function relayMetaTransaction(
         gasUsed: BigNumber.from(0),
         logsBloom: "",
         blockHash: "string",
-        transactionHash: responseJSON.txHash,
+        transactionHash: responseRetry.data.newHash,
         logs: [],
         blockNumber: 0,
         confirmations: 0,
         cumulativeGasUsed: BigNumber.from(0),
-        effectiveGasPrice: BigNumber.from(0),
+        effectiveGasPrice: BigNumber.from(responseRetry.data.newGasPrice),
         byzantium: true,
         type: 0,
-        events: responseJSON.events.map((event) => JSON.parse(event))
+        events: responseRetry.events?.map((event) =>
+          JSON.parse(event as string)
+        )
       };
     },
-    hash: "",
-    confirmations: 1,
+    hash: response.txHash,
+    confirmations: 0,
     from: params.userAddress,
     nonce: 0,
     gasLimit: BigNumber.from(0),

@@ -61,7 +61,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io/api/v2/meta-tx/native"
+      relayerUrl: "https://api.biconomy.io"
     }
   },
   {
