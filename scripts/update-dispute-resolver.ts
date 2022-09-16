@@ -74,6 +74,9 @@ async function main() {
   }
   console.log(`DisputeResolverId: ${drs[0].id}`);
   console.log(`DisputeResolver Current Fees: ${JSON.stringify(drs[0].fees)}`);
+  console.log(
+    `DisputeResolver Current Sellers: ${JSON.stringify(drs[0].sellerAllowList)}`
+  );
 
   if (addFees.length > 0) {
     await addFeesFn(coreSDK, drs[0].id, addFees);
@@ -82,6 +85,15 @@ async function main() {
   if (rmFees.length > 0) {
     await rmFeesFn(coreSDK, drs[0].id, rmFees);
   }
+
+  if (addSellers.length > 0) {
+    await addSellersFn(coreSDK, drs[0].id, addSellers);
+  }
+
+  if (rmSellers.length > 0) {
+    await rmSellersFn(coreSDK, drs[0].id, rmSellers);
+  }
+
 }
 
 main()
@@ -115,6 +127,36 @@ async function rmFeesFn(
   const txResponse = await coreSDK.removeFeesFromDisputeResolver(
     disputeResolverId,
     rmFees
+  );
+  console.log(`Tx hash: ${txResponse.hash}`);
+  await txResponse.wait();
+  console.log(`Dispute resolver with id ${disputeResolverId} updated.`);
+}
+
+async function addSellersFn(
+  coreSDK: CoreSDK,
+  disputeResolverId: string,
+  sellers: string[]
+) {
+  console.log(`Add Sellers: ${sellers}`);
+  const txResponse = await coreSDK.addSellersToDisputeResolverAllowList(
+    disputeResolverId,
+    sellers
+  );
+  console.log(`Tx hash: ${txResponse.hash}`);
+  await txResponse.wait();
+  console.log(`Dispute resolver with id ${disputeResolverId} updated.`);
+}
+
+async function rmSellersFn(
+  coreSDK: CoreSDK,
+  disputeResolverId: string,
+  sellers: string[]
+) {
+  console.log(`Remove Sellers: ${sellers}`);
+  const txResponse = await coreSDK.removeSellersFromDisputeResolverAllowList(
+    disputeResolverId,
+    sellers
   );
   console.log(`Tx hash: ${txResponse.hash}`);
   await txResponse.wait();
