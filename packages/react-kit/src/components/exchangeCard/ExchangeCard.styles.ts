@@ -60,9 +60,10 @@ export const ExchangeCarData = styled.div`
   flex-direction: column;
 `;
 
-export const ExchangeCardBottom = styled.div`
+export const ExchangeCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
   width: 100%;
-  position: absolute;
+  position: ${({ $isNotImageLoaded }) =>
+    $isNotImageLoaded ? "static" : "absolute"};
   left: 0;
   right: 0;
   bottom: 0;
@@ -114,7 +115,9 @@ export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
       : ""}
 `;
 
-export const ExchangeCardTop = styled.div`
+export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
+  position: ${({ $isNotImageLoaded }) =>
+    $isNotImageLoaded ? "relative" : "static"};
   overflow: hidden;
   width: 100%;
   z-index: 0;

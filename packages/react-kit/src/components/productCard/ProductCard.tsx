@@ -39,6 +39,7 @@ interface IProductCard {
   bottomText?: string;
   dataTestId?: string;
   isHoverDisabled?: boolean;
+  dataCard?: boolean;
 }
 
 export const ProductCard = (props: IProductCard) => {
@@ -54,11 +55,17 @@ export const ProductCard = (props: IProductCard) => {
     onCardClick,
     bottomText,
     dataTestId = "offer",
-    isHoverDisabled = false
+    isHoverDisabled = false,
+    dataCard = "product-card"
   } = props;
+
+  const isNotImageLoaded = ["idle", "loading", "error"].includes(
+    imageProps?.preloadConfig?.status ?? ""
+  );
 
   return (
     <ProductCardWrapper
+      data-card={dataCard}
       $isHoverDisabled={isHoverDisabled}
       data-testid={dataTestId}
       onClick={(e) => {
@@ -66,12 +73,12 @@ export const ProductCard = (props: IProductCard) => {
         onCardClick?.(productId);
       }}
     >
-      <ProductCardTop>
+      <ProductCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ProductCardImageWrapper>
           <Image {...imageProps} />
         </ProductCardImageWrapper>
       </ProductCardTop>
-      <ProductCardBottom>
+      <ProductCardBottom $isNotImageLoaded={isNotImageLoaded}>
         <ProductCardBottomContent>
           <ProductCardData>
             <ProductCardCreator
