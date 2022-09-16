@@ -55,7 +55,7 @@ Simple.args = {
 
 WithBiconomy.args = {
   ...Simple.args,
-  chainId: 80001,
+  envName: "staging",
   metaTransactionsApiKey: "vYoPWofBr.e4f3e2f9-69e5-4076-8ce1-3b8e0916e02c",
   metaTransactionsApiId: "3b8898fa-1e48-4bb2-8afa-aabc84b86ec0"
 };

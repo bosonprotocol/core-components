@@ -65,7 +65,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
   useEffect(() => {
     const newCoreSdk = initCoreSdk(config);
     setCoreSdk(newCoreSdk);
-  }, [config.web3Provider]);
+  }, [config.web3Provider, config.envName]);
 
   return coreSdk;
 }
