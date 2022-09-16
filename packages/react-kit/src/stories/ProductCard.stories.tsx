@@ -47,7 +47,18 @@ ProductCardPrimary.args = {
   imageProps: {
     src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
     preloadConfig: {
-      status: "success"
+      status: "error",
+      errorIcon: (
+        <h1
+          style={{
+            margin: 0,
+            fontSize: "3rem"
+          }}
+        >
+          🤷🏻
+        </h1>
+      ),
+      errorImageText: "Unable to ..."
     }
   },
   bottomText: "Redeemable until 30 days after commit"
