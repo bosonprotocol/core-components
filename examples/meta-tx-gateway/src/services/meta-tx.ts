@@ -54,3 +54,20 @@ export async function postMetaTx(body: PostMetaTxBody) {
     };
   }
 }
+
+export async function getResubmitted(transactionHash: string) {
+  return {
+    code: "200",
+    message: "Use this new hash to serve to your users",
+    data: {
+      oldHash: transactionHash,
+      newHash: transactionHash,
+      oldGasPrice: "100000000000",
+      newGasPrice: 100000000000,
+      timestamp: 1628876034979,
+      retryCount: 0,
+      relayerAddress: "0xa2fbe95f1049404a71ae60d719597e596eb07c23",
+      newStatus: "CONFIRMED"
+    }
+  };
+}

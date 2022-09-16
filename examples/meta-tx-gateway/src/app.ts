@@ -32,7 +32,7 @@ export function startApp(): Server {
 
   app.use(express.json());
 
-  app.use("/api/v1", rootRouter);
+  app.use("/", rootRouter);
 
   app.use((req, res, next) => {
     const error = new ApiError(404, "Route not found");

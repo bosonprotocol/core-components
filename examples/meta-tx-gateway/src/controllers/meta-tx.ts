@@ -33,3 +33,22 @@ export async function postMetaTx(
     next(error);
   }
 }
+
+export async function getResubmitted(
+  req: Request<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const response = await metaTxService.getResubmitted(
+      req.query.transactionHash as string
+    );
+    return res.send(response);
+  } catch (error) {
+    next(error);
+  }
+}

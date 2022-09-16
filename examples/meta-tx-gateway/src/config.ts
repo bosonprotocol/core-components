@@ -41,7 +41,7 @@ const args = parse<ICLArguments>(
       optional: true
     },
     envName: {
-      alias: "env",
+      alias: "e",
       type: String,
       optional: true
     },

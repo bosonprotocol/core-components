@@ -62,11 +62,8 @@ describe("meta-tx", () => {
         v
       );
       const metaTxReceipt = await metaTx.wait();
-      const metaTxEvent = metaTxReceipt.events?.find(
-        (event) => event.event === "MetaTransactionExecuted"
-      );
-
-      expect(metaTxEvent).toBeTruthy();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
 
@@ -103,11 +100,8 @@ describe("meta-tx", () => {
         v
       );
       const metaTxReceipt = await metaTx.wait();
-      const metaTxEvent = metaTxReceipt.events?.find(
-        (event) => event.event === "MetaTransactionExecuted"
-      );
-
-      expect(metaTxEvent).toBeTruthy();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
 
@@ -143,11 +137,8 @@ describe("meta-tx", () => {
         v
       );
       const metaTxReceipt = await metaTx.wait();
-      const metaTxEvent = metaTxReceipt.events?.find(
-        (event) => event.event === "MetaTransactionExecuted"
-      );
-
-      expect(metaTxEvent).toBeTruthy();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
 });

@@ -73,7 +73,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
     },
     metaTx: {
-      relayerUrl: "http://localhost:8888/api/v1/meta-tx/native"
+      relayerUrl: "http://localhost:8888"
     }
   }
 ];
