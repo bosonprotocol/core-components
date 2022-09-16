@@ -21,7 +21,9 @@ const Template: ComponentStory<typeof RedeemButton> = (args) => {
 };
 
 export const Simple: ComponentStory<typeof RedeemButton> = Template.bind({});
-export const WithBiconomy: ComponentStory<typeof RedeemButton> = Template.bind({});
+export const WithBiconomy: ComponentStory<typeof RedeemButton> = Template.bind(
+  {}
+);
 export const WithExtraInfo: ComponentStory<typeof RedeemButton> = Template.bind(
   {}
 );
