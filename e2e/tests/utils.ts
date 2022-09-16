@@ -27,7 +27,7 @@ import {
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
-  getDefaultConfig({ chainId: 31337 }).contracts.testErc20 ||
+  getDefaultConfig("local").contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC20_ABI = [
@@ -126,9 +126,7 @@ export const metadata = {
 };
 export const sellerFundsDepositInEth = "5";
 
-export const defaultConfig = getDefaultConfig({
-  envName: "local"
-});
+export const defaultConfig = getDefaultConfig("local");
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);

@@ -1,3 +1,4 @@
+import { EnvironmentType } from "./../../common/src/types/configs";
 import fs from "fs";
 import handlebars from "handlebars";
 import { providers } from "ethers";
@@ -6,7 +7,7 @@ import { getDefaultConfig } from "../../common/src/configs";
 const generatedManifestsDir = __dirname + "/../generated/manifests";
 
 const envName = process.argv[2];
-const { contracts, chainId } = getDefaultConfig({ envName });
+const { contracts, chainId } = getDefaultConfig(envName as EnvironmentType);
 
 const envNameToConfig: Record<
   string,
@@ -20,8 +21,8 @@ const envNameToConfig: Record<
     startBlock: 0
   },
   testing: {
-    network: "mainnet",
-    startBlock: 0
+    network: "mumbai",
+    startBlock: 28101225 // mumbai, block num when protocol is deployed
   },
   staging: {
     network: "mumbai",

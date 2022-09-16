@@ -3,9 +3,10 @@ import { providers } from "ethers";
 // @ts-expect-error: v1 mexa sdk doesn't support typescript
 import { Biconomy } from "@biconomy/mexa";
 import { getDefaultConfig } from "@bosonprotocol/core-sdk";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 export type BiconomyConfig = {
-  chainId: number;
+  envName: EnvironmentType;
   metaTransactionsApiKey?: string;
   jsonRpcUrl?: string;
 };
@@ -17,7 +18,7 @@ export type BiconomyConfig = {
  * @returns Initialized `Biconomy` instance.
  */
 export function useBiconomy(config: BiconomyConfig) {
-  const defaultConfig = getDefaultConfig({ chainId: config.chainId });
+  const defaultConfig = getDefaultConfig(config.envName);
   const [biconomyState, setBiconomyState] = useState<
     | { status: "idle" }
     | { status: "initializing" }

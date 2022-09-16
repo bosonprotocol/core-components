@@ -25,7 +25,7 @@ export const Simple: ComponentStory<typeof CommitButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof CommitButton> = Template.bind({});
 
 Simple.args = {
-  chainId: 1234,
+  envName: "testing",
   offerId: "28",
   metaTransactionsApiKey: undefined,
   metaTransactionsApiId: "dummyApiId",
@@ -51,7 +51,7 @@ Simple.args = {
 };
 
 WithStep.args = {
-  chainId: 1234,
+  envName: "testing",
   offerId: "52",
   metaTransactionsApiKey: undefined,
   web3Provider: undefined,

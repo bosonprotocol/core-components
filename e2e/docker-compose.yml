@@ -8,7 +8,7 @@ services:
     ports:
       - "8888:8888"
     environment:
-      - CHAIN_ID=31337
+      - ENV_NAME=local
       - PRIVATE_KEY=0x316b234f5fea007dcc40404188b588fb90cb9bb1e33fc163e212eab2f8565293 # ACCOUNT_9 from ./contracts/accounts.js
       - RPC_NODE=http://host.docker.internal:8545
     depends_on:

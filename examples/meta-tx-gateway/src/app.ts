@@ -46,6 +46,7 @@ export function startApp(): Server {
   return app.listen(config.PORT, async () => {
     const wallet = await getSigner(config.RPC_NODE, config.PRIVATE_KEY);
     logger.info(`Meta-tx-gateway started on port ${config.PORT}.`);
+    logger.info(`EnvName: ${config.ENV_NAME}`);
     logger.info(`ChainId: ${config.CHAIN_ID}`);
     logger.info(`RpcNode: ${config.RPC_NODE}`);
     logger.info(`Account: ${config.ACCOUNT}`);

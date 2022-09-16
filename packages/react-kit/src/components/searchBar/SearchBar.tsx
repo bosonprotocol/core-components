@@ -3,12 +3,13 @@ import { MagnifyingGlass } from "../../icons/MagnifyingGlass";
 import { useCoreSdk } from "../../hooks/useCoreSdk";
 import { InputField, InputWrapper } from "./SearchBar.styles";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 interface SearchBarProps {
   /**
-   * Target chain.
+   * Target environment.
    */
-  chainId: number;
+  envName: EnvironmentType;
   placeholder?: string;
   disabled?: boolean;
   /**
@@ -28,13 +29,13 @@ interface SearchBarProps {
 export const SearchBar = ({
   placeholder = "Search...",
   disabled = false,
-  chainId,
+  envName,
   onSuccess,
   onError
 }: SearchBarProps) => {
   const [value, setValue] = useState("");
 
-  const coreSdk = useCoreSdk({ chainId });
+  const coreSdk = useCoreSdk({ envName });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();

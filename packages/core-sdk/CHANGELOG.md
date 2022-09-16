@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.14.0...@bosonprotocol/core-sdk@1.15.0) (2022-09-13)
+
+### Bug Fixes
+
+* change expired state ([#248](https://github.com/bosonprotocol/core-components/issues/248)) ([6164cf2](https://github.com/bosonprotocol/core-components/commit/6164cf289cb2bb99606baa19159f5fea56d22c83))
+
+### Features
+
+* meta-tx dispute handlers ([#242](https://github.com/bosonprotocol/core-components/issues/242)) ([10dad7e](https://github.com/bosonprotocol/core-components/commit/10dad7e6900d28b70318deec2c417fb1ca8a7a94))
+
 # [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.13.0...@bosonprotocol/core-sdk@1.14.0) (2022-09-08)
 
 ### Features

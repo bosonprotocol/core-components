@@ -26,7 +26,7 @@ export const WithExtraInfo: ComponentStory<typeof CancelButton> = Template.bind(
 );
 
 Simple.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "28",
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,
@@ -50,7 +50,7 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "28",
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,

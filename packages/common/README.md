@@ -26,14 +26,12 @@ const { ProtocolDiamondABI } = abis;
 
 ### Default configs
 
-We provide default configurations for multiple chains that can be used for easier interaction on different environments.
+We provide default configurations for multiple environments that can be used for easier interaction.
 
 ```js
 import { getDefaultConfig } from "@bosonprotocol/common";
 
-const defaultConfigOnRopsten = getDefaultConfig({
-  chainId: 3
-});
+const defaultConfigOnRopsten = getDefaultConfig("staging");
 // {
 //   ...otherConfigParameters,
 //   subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/ccropsten",

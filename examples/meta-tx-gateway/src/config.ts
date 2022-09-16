@@ -1,5 +1,5 @@
 import { Wallet } from "ethers";
-import { getDefaultConfig } from "@bosonprotocol/common";
+import { getDefaultConfig, EnvironmentType } from "@bosonprotocol/common";
 import { config as dotenvConfig } from "dotenv";
 import fs from "fs";
 import { resolve } from "path";
@@ -28,7 +28,7 @@ function validParseInt(label: string, value: string) {
 
 interface ICLArguments {
   port: number;
-  chainId: number;
+  envName: string;
   privateKey: string;
   rpcNode: string;
 }
@@ -40,9 +40,9 @@ const args = parse<ICLArguments>(
       type: Number,
       optional: true
     },
-    chainId: {
-      alias: "c",
-      type: Number,
+    envName: {
+      alias: "env",
+      type: String,
       optional: true
     },
     privateKey: {
@@ -63,6 +63,7 @@ const args = parse<ICLArguments>(
 export type Config = {
   PORT: number;
   CHAIN_ID: number;
+  ENV_NAME: string;
   RPC_NODE: string;
   PROTOCOL: string;
   PRIVATE_KEY: string;
@@ -73,9 +74,8 @@ let config: Config;
 
 export function getConfig(): Config {
   if (!config) {
-    const chainId =
-      args.chainId || validParseInt("CHAIN_ID", process.env.CHAIN_ID) || 1234;
-    const defaultConfig = getDefaultConfig({ chainId });
+    const envName = args.envName || process.env.ENV_NAME || "local";
+    const defaultConfig = getDefaultConfig(envName as EnvironmentType);
     const privateKey = args.privateKey || process.env.PRIVATE_KEY;
     if (!privateKey) {
       throw new Error(
@@ -90,7 +90,8 @@ export function getConfig(): Config {
     }
     config = {
       PORT: args.port || validParseInt("PORT", process.env.PORT) || 8888,
-      CHAIN_ID: chainId,
+      CHAIN_ID: defaultConfig.chainId,
+      ENV_NAME: envName,
       RPC_NODE:
         args.rpcNode || process.env.RPC_NODE || defaultConfig.jsonRpcUrl,
       PROTOCOL: defaultConfig.contracts.protocolDiamond,

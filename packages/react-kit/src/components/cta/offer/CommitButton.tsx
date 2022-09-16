@@ -55,7 +55,6 @@ export const CommitButton = ({
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxCommitToOffer({
-                  chainId: coreSdkConfig.chainId,
                   offerId,
                   nonce
                 });

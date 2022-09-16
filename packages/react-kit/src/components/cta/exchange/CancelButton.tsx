@@ -57,7 +57,6 @@ export const CancelButton = ({
 
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxCancelVoucher({
-                  chainId: coreSdkConfig.chainId,
                   exchangeId,
                   nonce
                 });

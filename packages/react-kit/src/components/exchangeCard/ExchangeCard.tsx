@@ -36,8 +36,12 @@ interface Base {
   avatar: string;
   avatarName: string;
   onCardClick?: (id: string | number) => void;
+  onAvatarNameClick?: () => void;
   imageProps: IBaseImage;
   isCTAVisible?: boolean;
+  dataTestId?: string;
+  isHoverDisabled?: boolean;
+  dataCard?: boolean;
 }
 
 interface RedeemCard extends Base {
@@ -69,7 +73,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     avatarName,
     onCardClick,
     status,
-    isCTAVisible = true
+    isCTAVisible = true,
+    onAvatarNameClick,
+    dataTestId = "offer",
+    isHoverDisabled = false,
+    dataCard = "exchange-card"
   } = props;
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
@@ -129,23 +137,35 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     }
   }, [isCTAVisible, props, status]);
 
+  const isNotImageLoaded = ["idle", "loading", "error"].includes(
+    imageProps?.preloadConfig?.status ?? ""
+  );
+
   return (
     <ExchangeCardWrapper
+      data-card={dataCard}
+      $isHoverDisabled={isHoverDisabled}
+      data-testid={dataTestId}
       onClick={(e) => {
         e.preventDefault();
         onCardClick?.(id);
       }}
     >
-      <ExchangeCardTop>
+      <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
           <Image {...imageProps} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
-      <ExchangeCardBottom>
+      <ExchangeCardBottom $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeCardBottomContent>
           <ExchangeCarData>
-            <ExchangeCreator>
+            <ExchangeCreator
+              onClick={(e) => {
+                e.stopPropagation();
+                onAvatarNameClick?.();
+              }}
+            >
               <ExchangeCreatorAvatar>
                 <img src={avatar} alt="avatar" />
               </ExchangeCreatorAvatar>

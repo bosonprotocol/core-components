@@ -54,3 +54,11 @@ export const ImagePlaceholder = styled.div`
     text-align: center;
   }
 `;
+
+export const ImageErrorText = styled.div`
+  ${buttonText}
+  font-size: inherit;
+  line-height: 1;
+  color: ${theme.colors.light.white};
+  text-align: center;
+`;

@@ -9,6 +9,10 @@ export * as funds from "./funds";
 export * as metaTx from "./meta-tx";
 export * as subgraph from "./subgraph";
 
-export { defaultConfigs, getDefaultConfig } from "@bosonprotocol/common";
+export {
+  defaultConfigs,
+  getDefaultConfig,
+  EnvironmentType
+} from "@bosonprotocol/common";
 
 export { MetadataType, AnyMetadata } from "@bosonprotocol/metadata";

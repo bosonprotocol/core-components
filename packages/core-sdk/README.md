@@ -30,10 +30,15 @@ We currently support the following
 
 > The following assumes the usage of the `core-sdk` with `ethers` and `IPFS` as the metadata storage.
 
-- [Initialize sdk](#initialize)
-- [Metadata](#metadata)
-- [Offers](#offers)
-- [Exchange token](#exchange-token)
+- [`@bosonprotocol/core-sdk`](#bosonprotocolcore-sdk)
+  - [Install](#install)
+  - [Usage](#usage)
+    - [Initialize](#initialize)
+      - [Explicit](#explicit)
+      - [Default configuration](#default-configuration)
+    - [Metadata](#metadata)
+    - [Offers](#offers)
+    - [Exchange token](#exchange-token)
 
 ### Initialize
 
@@ -79,10 +84,10 @@ import { ethers } from "ethers";
 // injected web3 provider
 const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
 
-// initialize via default config of chainId = 3
+// initialize via default config of "testing" environment
 const coreSDK = CoreSDK.fromDefaultConfig({
   web3Lib: new EthersAdapter(web3Provider),
-  chainId: 3
+  envName: "testing"
   // ...other args
 });
 ```

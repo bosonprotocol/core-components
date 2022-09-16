@@ -33,13 +33,22 @@ Redeemed.args = {
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
   imageProps: {
-    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    preloadConfig: {
+      status: "loading",
+      errorIcon: <></>,
+      errorImageText: "TEST"
+    }
   },
   price: 0.1,
   currency: Currencies.ETH,
+  isHoverDisabled: true,
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   status: "REDEEMED",
   isCTAVisible: true,
@@ -57,7 +66,7 @@ Cancelled.args = {
   imageProps: {
     src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
     preloadConfig: {
-      status: "success",
+      status: "loading",
       errorIcon: <></>,
       errorImageText: ""
     }
@@ -67,6 +76,9 @@ Cancelled.args = {
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   status: "CANCELLED",
   isCTAVisible: false
@@ -79,13 +91,21 @@ Committed.args = {
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
   imageProps: {
-    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    preloadConfig: {
+      status: "success",
+      errorIcon: <></>,
+      errorImageText: ""
+    }
   },
   price: 1.25,
   currency: Currencies.ETH,
   onCardClick: (id) => {
     console.log("----------ON CARD CLICK-------------");
     console.log("id", id);
+  },
+  onAvatarNameClick: () => {
+    console.log("----------ON AVATAR NAME CLICK-------------");
   },
   status: "COMMITTED",
   isCTAVisible: true,

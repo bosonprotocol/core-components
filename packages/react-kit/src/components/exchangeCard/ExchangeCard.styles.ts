@@ -60,9 +60,10 @@ export const ExchangeCarData = styled.div`
   flex-direction: column;
 `;
 
-export const ExchangeCardBottom = styled.div`
+export const ExchangeCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
   width: 100%;
-  position: absolute;
+  position: ${({ $isNotImageLoaded }) =>
+    $isNotImageLoaded ? "static" : "absolute"};
   left: 0;
   right: 0;
   bottom: 0;
@@ -77,7 +78,8 @@ export const ExchangeCardBottomContent = styled.div`
   align-items: flex-start;
 `;
 
-export const ExchangeCardWrapper = styled.div`
+export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
@@ -92,24 +94,35 @@ export const ExchangeCardWrapper = styled.div`
   cursor: pointer;
   background: ${theme.colors.light.white};
   [data-image-wrapper] {
-    padding-top: 130%;
+    position: static;
+    padding-top: 0;
+  }
+  ${({ $isHoverDisabled }) =>
+    !$isHoverDisabled
+      ? `
     transition: all 300ms ease-in-out;
-  }
-  &:hover {
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05),
-      8px 8px 8px rgba(0, 0, 0, 0.05), 16px 16px 16px rgba(0, 0, 0, 0.05);
+    &:hover {
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05),
+        8px 8px 8px rgba(0, 0, 0, 0.05), 16px 16px 16px rgba(0, 0, 0, 0.05);
 
-    [data-image-wrapper] {
-      transform: translate(0, 0) scale(1.05);
+      [data-image-wrapper] {
+        img {
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+      }
     }
-  }
+  `
+      : ""}
 `;
 
-export const ExchangeCardTop = styled.div`
+export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
+  position: ${({ $isNotImageLoaded }) =>
+    $isNotImageLoaded ? "relative" : "static"};
   overflow: hidden;
   width: 100%;
   z-index: 0;
   margin-bottom: auto;
+  flex-grow: 1;
 `;
 export const ExchangeButtonWrapper = styled.div`
   width: 100%;
@@ -121,14 +134,14 @@ export const RedeemButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0;
   box-sizing: border-box;
 `;
 export const CommittedButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  padding: 1.25rem 1.5rem 0.75rem 1.5rem;
   box-sizing: border-box;
 `;
 

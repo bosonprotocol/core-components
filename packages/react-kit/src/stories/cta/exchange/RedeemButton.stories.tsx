@@ -27,7 +27,7 @@ export const WithExtraInfo: ComponentStory<typeof RedeemButton> = Template.bind(
 );
 
 Simple.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "92",
   disabled: false,
   web3Provider: undefined,
@@ -59,7 +59,7 @@ WithBiconomy.args = {
 };
 
 WithExtraInfo.args = {
-  chainId: 1234,
+  envName: "testing",
   exchangeId: "28",
   disabled: false,
   web3Provider: undefined,
