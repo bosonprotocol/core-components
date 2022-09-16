@@ -1,7 +1,7 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
-import { ContractTransaction } from "ethers";
+import { ContractTransaction } from "@ethersproject/contracts";
 import fetch from "cross-fetch";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
