@@ -1,7 +1,12 @@
 import React from "react";
 import { Loading } from "../Loading";
 
-import { ImageContainer, ImagePlaceholder, ImageWrapper } from "./Image.styles";
+import {
+  ImageContainer,
+  ImageErrorText,
+  ImagePlaceholder,
+  ImageWrapper
+} from "./Image.styles";
 
 export interface IBaseImage extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
@@ -33,7 +38,7 @@ export const Image: React.FC<IBaseImage> = ({
         <ImagePlaceholder data-image-placeholder>
           {preloadConfig?.errorIcon ?? null}
           {preloadConfig?.errorImageText && (
-            <span>{preloadConfig.errorImageText}</span>
+            <ImageErrorText>{preloadConfig.errorImageText}</ImageErrorText>
           )}
         </ImagePlaceholder>
       </ImageWrapper>
