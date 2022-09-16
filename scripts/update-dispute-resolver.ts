@@ -93,7 +93,6 @@ async function main() {
   if (rmSellers.length > 0) {
     await rmSellersFn(coreSDK, drs[0].id, rmSellers);
   }
-
 }
 
 main()
