@@ -5,14 +5,11 @@ export const Ether = ({ size }: { size: number }) => {
     <svg
       width={size}
       height={size}
+      viewBox="0 0 784.37 1277.39"
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
       shape-rendering="geometricPrecision"
-      text-rendering="geometricPrecision"
-      image-rendering="optimizeQuality"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      viewBox="0 0 784.37 1277.39"
+      clipRule="evenodd"
     >
       <g fill-rule="nonzero">
         <path

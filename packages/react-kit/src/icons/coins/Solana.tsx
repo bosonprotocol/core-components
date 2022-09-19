@@ -3,11 +3,13 @@ import React from "react";
 export const Solana = ({ size }: { size: number }) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 397.7 311.7"
-      xmlSpace="preserve"
       width={size}
       height={size}
+      viewBox="0 0 397.7 311.7"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlSpace="preserve"
+      shape-rendering="geometricPrecision"
+      clipRule="evenodd"
     >
       <linearGradient
         id="a"
