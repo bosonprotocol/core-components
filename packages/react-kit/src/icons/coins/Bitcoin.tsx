@@ -6,13 +6,10 @@ export const Bitcoin = ({ size }: { size: number }) => {
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
       shape-rendering="geometricPrecision"
-      text-rendering="geometricPrecision"
-      image-rendering="optimizeQuality"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      viewBox="0 0 4091.27 4091.73"
+      clipRule="evenodd"
       width={size}
       height={size}
+      viewBox="0 0 4091.27 4091.73"
     >
       <g fill-rule="nonzero">
         <path
