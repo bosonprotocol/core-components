@@ -41,7 +41,7 @@ interface Base {
   isCTAVisible?: boolean;
   dataTestId?: string;
   isHoverDisabled?: boolean;
-  dataCard?: boolean;
+  dataCard?: string;
 }
 
 interface RedeemCard extends Base {

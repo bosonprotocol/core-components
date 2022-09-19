@@ -39,7 +39,7 @@ interface IProductCard {
   bottomText?: string;
   dataTestId?: string;
   isHoverDisabled?: boolean;
-  dataCard?: boolean;
+  dataCard?: string;
 }
 
 export const ProductCard = (props: IProductCard) => {
