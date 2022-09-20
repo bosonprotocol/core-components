@@ -66,7 +66,7 @@ export async function completeExchange(
     args.web3Lib.getSignerAddress()
   ]);
 
-  assertCompletableExchange(exchange, signerAddress);
+  assertCompletableExchange(args.exchangeId, exchange, signerAddress);
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -89,7 +89,7 @@ export async function completeExchangeBatch(
   ]);
 
   for (const exchange of exchanges) {
-    assertCompletableExchange(exchange, signerAddress);
+    assertCompletableExchange(exchange.id, exchange, signerAddress);
   }
 
   return args.web3Lib.sendTransaction({
@@ -244,28 +244,15 @@ function assertSignerIsBuyerOrOperator(
   return { isSignerBuyer, isSignerOperator };
 }
 
-async function assertCompletableExchange(
+function assertCompletableExchange(
+  exchangeId: BigNumberish,
   exchange: ExchangeFieldsFragment | null,
   signer: string
 ) {
-  assertExchange(exchange?.id, exchange);
+  assertExchange(exchangeId, exchange);
 
   const { isSignerOperator } = assertSignerIsBuyerOrOperator(signer, exchange);
 
-  if (isSignerOperator) {
-    const elapsedSinceRedeemMS =
-      Date.now() - Number(exchange.redeemedDate || "0") * 1000;
-    const didFulfillmentPeriodElapse =
-      elapsedSinceRedeemMS >
-      Number(exchange.offer.fulfillmentPeriodDuration) * 1000;
-    if (!didFulfillmentPeriodElapse) {
-      throw new Error(
-        `Fulfillment period of ${
-          Number(exchange.offer.fulfillmentPeriodDuration) * 1000
-        } ms did not elapsed since redeem.`
-      );
-    }
-  }
   if (isSignerOperator) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
