@@ -5,7 +5,7 @@ import {
   DisputeState,
   ExchangeFieldsFragment
 } from "./../../packages/core-sdk/src/subgraph";
-import { utils, constants, BigNumber, BigNumberish, Wallet } from "ethers";
+import { utils, constants, BigNumber, BigNumberish } from "ethers";
 
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -130,7 +130,7 @@ describe("core-sdk", () => {
     });
 
     test("commit", async () => {
-      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
@@ -151,7 +151,7 @@ describe("core-sdk", () => {
     });
 
     test("revoke", async () => {
-      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
@@ -179,7 +179,7 @@ describe("core-sdk", () => {
     });
 
     test("cancel", async () => {
-      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
@@ -207,7 +207,7 @@ describe("core-sdk", () => {
     });
 
     test("redeem + finalize", async () => {
-      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
         sellerCoreSDK,
@@ -240,6 +240,45 @@ describe("core-sdk", () => {
 
       expect(exchangeAfterComplete.state).toBe(ExchangeState.Completed);
       expect(exchangeAfterComplete.completedDate).toBeTruthy();
+    });
+
+    test.only("redeem + finalize batch", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+      const exchange1 = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+      const exchange2 = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+
+      const txResponse1 = await buyerCoreSDK.redeemVoucher(exchange1.id);
+      await txResponse1.wait();
+      const txResponse2 = await buyerCoreSDK.redeemVoucher(exchange2.id);
+      await txResponse2.wait();
+
+      const exchangesAfterComplete = await completeExchangeBatch({
+        coreSDK: buyerCoreSDK,
+        exchangeIds: [exchange1.id, exchange2.id]
+      });
+      await waitForGraphNodeIndexing();
+
+      expect(exchangesAfterComplete[0].state).toBe(ExchangeState.Completed);
+      expect(exchangesAfterComplete[0].completedDate).toBeTruthy();
+      expect(exchangesAfterComplete[1].state).toBe(ExchangeState.Completed);
+      expect(exchangesAfterComplete[1].completedDate).toBeTruthy();
     });
 
     describe("withdraw funds", () => {
@@ -700,10 +739,24 @@ async function completeExchange(args: {
   return exchangeAfterComplete;
 }
 
-async function raiseDispute(
-  exchangeId: string,
-  buyerCoreSDK: CoreSDK
-) {
+async function completeExchangeBatch(args: {
+  coreSDK: CoreSDK;
+  exchangeIds: BigNumberish[];
+}) {
+  const completeExchangeTxResponse = await args.coreSDK.completeExchangeBatch(
+    args.exchangeIds
+  );
+  await completeExchangeTxResponse.wait();
+  await waitForGraphNodeIndexing();
+  const exchangesAfterComplete = await args.coreSDK.getExchanges({
+    exchangesFilter: {
+      id_in: args.exchangeIds.map((id) => id.toString())
+    }
+  });
+  return exchangesAfterComplete;
+}
+
+async function raiseDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   const exchangeAfterRedeem = await buyerCoreSDK.getExchangeById(exchangeId);
   expect(exchangeAfterRedeem.state).toBe(ExchangeState.Redeemed);
   expect(exchangeAfterRedeem.disputed).toBeFalsy();
@@ -723,10 +776,7 @@ async function raiseDispute(
   expect(exchangeAfterDispute.disputed).toBeTruthy();
 }
 
-async function checkDisputeResolving(
-  exchangeId: string,
-  coreSDK: CoreSDK
-) {
+async function checkDisputeResolving(exchangeId: string, coreSDK: CoreSDK) {
   // Retrieve the dispute from the data model
   const dispute = await coreSDK.getDisputeById(exchangeId);
   expect(dispute).toBeTruthy();
