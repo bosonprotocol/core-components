@@ -242,7 +242,7 @@ describe("core-sdk", () => {
       expect(exchangeAfterComplete.completedDate).toBeTruthy();
     });
 
-    test.only("redeem + finalize batch", async () => {
+    test("redeem + finalize batch", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
