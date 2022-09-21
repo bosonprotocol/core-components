@@ -78,7 +78,9 @@ export const ExchangeCardBottomContent = styled.div`
   align-items: flex-start;
 `;
 
-export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+export const ExchangeCardWrapper = styled.div<{
+  $isHoverDisabled: boolean;
+}>`
   overflow: hidden;
   position: relative;
   display: flex;
@@ -110,9 +112,19 @@ export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
           transform: translate(-50%, -50%) scale(1.05);
         }
       }
+      [data-cta-wrapper] {
+        transition: all 0.4s ease-in-out;
+        max-height: 100rem;
+      }
     }
   `
-      : ""}
+      : `
+      &:hover {
+      [data-cta-wrapper] {
+        transition: all 0.4s ease-in-out;
+        max-height: 100rem;
+      }
+    `}
 `;
 
 export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
@@ -195,4 +207,9 @@ export const CommittedBottomText = styled.p`
 export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+export const ExchangeCTAWrapper = styled.div`
+  transition: all 0.4s ease-out;
+  max-height: 0;
 `;

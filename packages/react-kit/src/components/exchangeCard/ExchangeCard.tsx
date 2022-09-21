@@ -23,7 +23,8 @@ import {
   RedeemButtonWrapper,
   ExchangeStatus,
   ExchangeButtonWrapper,
-  ExchangeImageWrapper
+  ExchangeImageWrapper,
+  ExchangeCTAWrapper
 } from "./ExchangeCard.styles";
 
 export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
@@ -178,7 +179,11 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <CurrencyDisplay value={price} currency={currency} />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
-        {isCTAVisible && exchangeCardBottom}
+        {isCTAVisible && (
+          <ExchangeCTAWrapper data-cta-wrapper>
+            {exchangeCardBottom}
+          </ExchangeCTAWrapper>
+        )}
       </ExchangeCardBottom>
     </ExchangeCardWrapper>
   );
