@@ -182,7 +182,11 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
     envName: "local",
     web3Lib: new EthersAdapter(provider, wallet),
     metadataStorage: ipfsMetadataStorage,
-    theGraphStorage: graphMetadataStorage
+    theGraphStorage: graphMetadataStorage,
+    metaTx: {
+      apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    }
   });
 }
 
