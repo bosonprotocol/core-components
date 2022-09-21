@@ -8,7 +8,7 @@ export const Boson = ({ size }: { size: number }) => {
       viewBox="-2 -50 330 330"
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
-      shape-rendering="geometricPrecision"
+      shapeRendering="geometricPrecision"
       clipRule="evenodd"
     >
       <path
