@@ -1,8 +1,7 @@
-import { Web3LibAdapter } from "@bosonprotocol/common";
+import { MetaTxConfig, Web3LibAdapter } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { ContractTransaction } from "@ethersproject/contracts";
-import fetch from "cross-fetch";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
@@ -362,76 +361,81 @@ function makeExchangeMetaTxSigner(
   };
 }
 
-export async function relayMetaTransaction(
-  config: {
-    chainId: number;
-    contractAddress: string;
-    metaTransactionsRelayerUrl: string;
-    metaTransactionsApiKey: string;
-    metaTransactionsApiId: string;
-  },
-  params: {
-    userAddress: string;
-    functionName: string;
-    functionSignature: BytesLike;
-    nonce: BigNumberish;
-    sigR: BytesLike;
-    sigS: BytesLike;
-    sigV: BigNumberish;
-  }
-): Promise<ContractTransaction> {
+export async function relayMetaTransaction(args: {
+  web3LibAdapter: Web3LibAdapter;
+  chainId: number;
+  contractAddress: string;
+  metaTx: {
+    config: MetaTxConfig;
+    params: {
+      userAddress: string;
+      functionName: string;
+      functionSignature: BytesLike;
+      nonce: BigNumberish;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    };
+  };
+}): Promise<ContractTransaction> {
+  const { chainId, contractAddress, metaTx } = args;
+
   const biconomy = new Biconomy(
-    config.metaTransactionsRelayerUrl,
-    config.metaTransactionsApiKey
+    metaTx.config.relayerUrl,
+    metaTx.config.apiKey,
+    metaTx.config.apiId
   );
-  const response = await biconomy.relayTransaction({
-    to: config.contractAddress,
-    apiId: config.metaTransactionsApiId,
+
+  const relayTxResponse = await biconomy.relayTransaction({
+    to: contractAddress,
     params: [
-      params.userAddress,
-      params.functionName,
-      params.functionSignature,
-      params.nonce,
-      params.sigR,
-      params.sigS,
-      params.sigV
+      metaTx.params.userAddress,
+      metaTx.params.functionName,
+      metaTx.params.functionSignature,
+      metaTx.params.nonce,
+      metaTx.params.sigR,
+      metaTx.params.sigS,
+      metaTx.params.sigV
     ],
-    from: params.userAddress
+    from: metaTx.params.userAddress
   });
+
   return {
     wait: async () => {
-      const responseRetry = await biconomy.getRetriedHashes({
-        networkId: config.chainId,
-        transactionHash: response.txHash
+      const waitResponse = await biconomy.wait({
+        networkId: chainId,
+        transactionHash: relayTxResponse.txHash
       });
+
+      // TODO: add `getTransaction(hash)` to `Web3LibAdapter` and respective implementations
+      // in ethers and eth-connect flavors. This way we can populate the correct transaction
+      // data below.
       return {
-        to: config.contractAddress,
-        from: params.userAddress,
-        contractAddress: config.contractAddress,
+        to: contractAddress,
+        from: metaTx.params.userAddress,
+        contractAddress: contractAddress,
         transactionIndex: 0,
         gasUsed: BigNumber.from(0),
         logsBloom: "",
         blockHash: "string",
-        transactionHash: responseRetry.data.newHash,
+        transactionHash: waitResponse.data.newHash,
         logs: [],
         blockNumber: 0,
         confirmations: 0,
         cumulativeGasUsed: BigNumber.from(0),
-        effectiveGasPrice: BigNumber.from(responseRetry.data.newGasPrice),
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
         byzantium: true,
         type: 0,
-        events: responseRetry.events?.map((event) =>
-          JSON.parse(event as string)
-        )
+        events: waitResponse.events?.map((event) => JSON.parse(event as string))
       };
     },
-    hash: response.txHash,
+    hash: relayTxResponse.txHash,
     confirmations: 0,
-    from: params.userAddress,
+    from: metaTx.params.userAddress,
     nonce: 0,
     gasLimit: BigNumber.from(0),
     data: "",
     value: BigNumber.from(0),
-    chainId: config.chainId
+    chainId: chainId
   };
 }

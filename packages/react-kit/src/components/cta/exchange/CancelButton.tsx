@@ -61,19 +61,14 @@ export const CancelButton = ({
                   nonce
                 });
 
-              txResponse = await coreSdk.relayMetaTransaction(
-                {
-                  apiKey: metaTransactionsApiKey,
-                  apiId: metaTransactionsApiId
-                },
-                signerAddress,
+              txResponse = await coreSdk.relayMetaTransaction({
                 functionName,
                 functionSignature,
-                nonce,
-                r,
-                s,
-                v
-              );
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
             } else {
               txResponse = await coreSdk.cancelVoucher(exchangeId);
             }

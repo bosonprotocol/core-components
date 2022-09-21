@@ -1,5 +1,7 @@
 import fetch from "cross-fetch";
 
+import { ApiError } from "../utils/errors";
+
 export type RelayTransactionResponse = {
   txHash: string;
   log: string;
@@ -9,9 +11,14 @@ export type RelayTransactionResponse = {
 
 export type RelayTransactionArgs = {
   to: string;
-  apiId: string;
   params: unknown[];
   from: string;
+};
+
+export type RelayOverrides = {
+  relayerUrl: string;
+  apiKey: string;
+  apiId: string;
 };
 
 export type GetRetriedHashesResponse = {
@@ -36,66 +43,87 @@ export type GetRetriedHashesArgs = {
 };
 
 export class Biconomy {
-  public constructor(private _relayerUrl: string, private _apiKey: string) {}
+  public constructor(
+    private _relayerUrl: string,
+    private _apiKey: string,
+    private _apiId: string
+  ) {}
 
   public async relayTransaction(
-    args: RelayTransactionArgs
+    args: RelayTransactionArgs,
+    overrides: Partial<RelayOverrides> = {}
   ): Promise<RelayTransactionResponse> {
-    const url = `${this._relayerUrl}/api/v2/meta-tx/native`;
+    const url = `${
+      overrides.relayerUrl || this._relayerUrl
+    }/api/v2/meta-tx/native`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "x-api-key": this._apiKey,
+        "x-api-key": overrides.apiKey || this._apiKey,
         "content-type": "application/json;charset=UTF-8",
         "Access-Control-Allow-Origin": "*"
       },
-      body: JSON.stringify(args)
+      body: JSON.stringify({
+        ...args,
+        apiId: overrides.apiId || this._apiId
+      })
     });
-    const responseJSON = await response.json();
+
     if (!response.ok) {
-      throw new Error(
-        `Failure to relay the metaTransaction: ${JSON.stringify(
-          responseJSON || response
-        )}`
+      throw new ApiError(
+        response.status,
+        `Failed to relay tx: ${response.statusText}`
       );
     }
-    return {
-      ...responseJSON
-    };
+
+    return response.json() as Promise<RelayTransactionResponse>;
   }
 
-  public async getRetriedHashes(
-    args: GetRetriedHashesArgs
+  public async getResubmitted(
+    args: GetRetriedHashesArgs,
+    overrides: Partial<RelayOverrides> = {}
+  ): Promise<GetRetriedHashesResponse> {
+    const url = `${
+      overrides.relayerUrl || this._relayerUrl
+    }/api/v1/meta-tx/resubmitted?networkId=${args.networkId}&transactionHash=${
+      args.transactionHash
+    }`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Failed to get resubmitted tx: ${response.statusText}`
+      );
+    }
+
+    return response.json() as Promise<GetRetriedHashesResponse>;
+  }
+
+  public async wait(
+    args: GetRetriedHashesArgs,
+    overrides: Partial<RelayOverrides> = {}
   ): Promise<GetRetriedHashesResponse> {
     let pending = true;
-    let responseJSON;
+    let resubmittedResponse: GetRetriedHashesResponse;
+
     while (pending) {
-      const url = `${this._relayerUrl}/api/v1/meta-tx/resubmitted?networkId=${args.networkId}&transactionHash=${args.transactionHash}`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "*"
-        }
-      });
-      responseJSON = await response.json();
-      if (!response.ok || response.status !== 200) {
-        throw new Error(
-          `Failure to relay the metaTransaction: ${JSON.stringify(
-            responseJSON || response
-          )}`
-        );
-      }
-      // TODO: check responseJSON.data.newStatus. While == "PENDING" keep waiting
-      pending = responseJSON.data.newStatus === "PENDING";
+      resubmittedResponse = await this.getResubmitted(args, overrides);
+
+      pending = resubmittedResponse.data.newStatus === "PENDING";
       if (pending) {
         await new Promise((resolve) => {
           setTimeout(resolve, 1000);
         });
       }
     }
-    return {
-      ...responseJSON
-    };
+
+    return resubmittedResponse;
   }
 }

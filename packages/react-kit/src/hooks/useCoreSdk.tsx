@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
+import {
+  CoreSDK,
+  getDefaultConfig,
+  EnvironmentType,
+  MetaTxConfig
+} from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
 import { providers } from "ethers";
-import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 export type CoreSdkConfig = {
   /**
@@ -46,10 +50,7 @@ export type CoreSdkConfig = {
   /**
    * Optional override for the MetaTx configuration
    */
-  metaTx?: {
-    relayerUrl: string;
-    apiId: string;
-  };
+  metaTx?: Partial<MetaTxConfig>;
 };
 
 /**

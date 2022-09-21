@@ -7,6 +7,8 @@ export type EnvironmentType = "local" | "testing" | "staging" | "production";
 
 export type MetaTxConfig = {
   relayerUrl: string;
+  apiKey: string;
+  apiId: string;
 };
 
 export type ProtocolConfig = {
@@ -22,5 +24,5 @@ export type ProtocolConfig = {
   jsonRpcUrl: string;
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
-  metaTx?: MetaTxConfig;
+  metaTx?: Partial<MetaTxConfig>;
 };
