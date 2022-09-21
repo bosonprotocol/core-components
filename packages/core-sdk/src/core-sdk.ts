@@ -100,6 +100,19 @@ export class CoreSDK {
     });
   }
 
+  public get metaTxConfig() {
+    return this._metaTxConfig;
+  }
+
+  public get isMetaTxConfigSet() {
+    return (
+      !!this._metaTxConfig &&
+      !!this._metaTxConfig.apiId &&
+      !!this._metaTxConfig.apiKey &&
+      !!this._metaTxConfig.relayerUrl
+    );
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                          Metadata related methods                          */
   /* -------------------------------------------------------------------------- */
@@ -1428,7 +1441,7 @@ export class CoreSDK {
     const metaTxApiId =
       this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
 
-    if (!metaTxRelayerUrl || !metaTxApiKey || !metaTxApiId) {
+    if (!this.isMetaTxConfigSet) {
       throw new Error(
         "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
       );

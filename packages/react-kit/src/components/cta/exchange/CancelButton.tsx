@@ -19,8 +19,6 @@ export type ICancelButton = {
 
 export const CancelButton = ({
   exchangeId,
-  metaTransactionsApiKey,
-  metaTransactionsApiId = "dummyApiId",
   disabled = false,
   extraInfo,
   onSuccess,
@@ -52,7 +50,7 @@ export const CancelButton = ({
 
             let txResponse;
 
-            if (metaTransactionsApiKey && signerAddress) {
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
