@@ -10,7 +10,6 @@ import {
   ensureMintedAndAllowedTokens,
   seedWallet7,
   seedWallet8,
-  defaultConfig,
   waitForGraphNodeIndexing,
   metadata
 } from "./utils";
@@ -48,19 +47,14 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        {
-          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        },
-        buyerWallet.address,
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,
-        r,
-        s,
-        v
-      );
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
@@ -77,7 +71,6 @@ describe("meta-tx", () => {
 
       const nonce = Date.now();
 
-
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signExecuteMetaTxRedeemVoucher({
@@ -86,19 +79,14 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        {
-          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        },
-        buyerWallet.address,
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,
-        r,
-        s,
-        v
-      );
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
@@ -123,19 +111,14 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of `Buyer`
-      const metaTx = await buyerCoreSDK.relayMetaTransaction(
-        {
-          apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        },
-        buyerWallet.address,
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,
-        r,
-        s,
-        v
-      );
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);

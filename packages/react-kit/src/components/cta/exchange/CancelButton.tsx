@@ -19,8 +19,6 @@ export type ICancelButton = {
 
 export const CancelButton = ({
   exchangeId,
-  metaTransactionsApiKey,
-  metaTransactionsApiId = "dummyApiId",
   disabled = false,
   extraInfo,
   onSuccess,
@@ -52,7 +50,7 @@ export const CancelButton = ({
 
             let txResponse;
 
-            if (metaTransactionsApiKey && signerAddress) {
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
@@ -61,19 +59,14 @@ export const CancelButton = ({
                   nonce
                 });
 
-              txResponse = await coreSdk.relayMetaTransaction(
-                {
-                  apiKey: metaTransactionsApiKey,
-                  apiId: metaTransactionsApiId
-                },
-                signerAddress,
+              txResponse = await coreSdk.relayMetaTransaction({
                 functionName,
                 functionSignature,
-                nonce,
-                r,
-                s,
-                v
-              );
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
             } else {
               txResponse = await coreSdk.cancelVoucher(exchangeId);
             }

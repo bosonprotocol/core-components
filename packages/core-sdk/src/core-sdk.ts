@@ -37,7 +37,7 @@ export class CoreSDK {
   private _chainId: number;
   private _tokenInfoManager: TokenInfoManager;
 
-  private _metaTxConfig: MetaTxConfig;
+  private _metaTxConfig?: Partial<MetaTxConfig>;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -50,7 +50,7 @@ export class CoreSDK {
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
     chainId: number;
-    metaTx?: MetaTxConfig;
+    metaTx?: Partial<MetaTxConfig>;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -82,6 +82,7 @@ export class CoreSDK {
     envName: EnvironmentType;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    metaTx?: Partial<MetaTxConfig>;
   }) {
     const defaultConfig = getDefaultConfig(args.envName);
 
@@ -92,8 +93,24 @@ export class CoreSDK {
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond,
       chainId: defaultConfig.chainId,
-      metaTx: defaultConfig.metaTx
+      metaTx: {
+        ...defaultConfig.metaTx,
+        ...args.metaTx
+      }
     });
+  }
+
+  public get metaTxConfig() {
+    return this._metaTxConfig;
+  }
+
+  public get isMetaTxConfigSet() {
+    return (
+      !!this._metaTxConfig &&
+      !!this._metaTxConfig.apiId &&
+      !!this._metaTxConfig.apiKey &&
+      !!this._metaTxConfig.relayerUrl
+    );
   }
 
   /* -------------------------------------------------------------------------- */
@@ -1397,48 +1414,60 @@ export class CoreSDK {
   }
 
   /**
-   * Relay a meta transaction
-   * @param metaTransactionsConfig - the API key and Api Id of the relayer (Biconomy standard).
-   * @param userAddress - the sender of the transaction.
-   * @param functionName - the function name that we want to execute.
-   * @param functionSignature - the function signature.
-   * @param nonce - the nonce value of the transaction.
-   * @param sigR - r part of the signer's signature.
-   * @param sigS - s part of the signer's signature.
-   * @param sigV - v part of the signer's signature.
+   * Relay a meta transaction,
+   * @param metaTxParams - Required params for meta transaction.
+   * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
   public async relayMetaTransaction(
-    metaTransactionsConfig: { apiKey: string; apiId: string },
-    userAddress: string,
-    functionName: string,
-    functionSignature: BytesLike,
-    nonce: BigNumberish,
-    sigR: BytesLike,
-    sigS: BytesLike,
-    sigV: BigNumberish
+    metaTxParams: {
+      functionName: string;
+      functionSignature: BytesLike;
+      nonce: BigNumberish;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    },
+    overrides: Partial<{
+      userAddress: string;
+      contractAddress: string;
+      metaTxConfig: Partial<MetaTxConfig>;
+    }> = {}
   ): Promise<ContractTransaction> {
-    if (this._chainId === undefined) {
-      this._chainId = await this._web3Lib.getChainId();
+    const metaTxRelayerUrl =
+      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
+    const metaTxApiKey =
+      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
+    const metaTxApiId =
+      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
+
+    if (!this.isMetaTxConfigSet) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
     }
 
-    if (
-      !this._metaTxConfig ||
-      !this._metaTxConfig.relayerUrl ||
-      this._metaTxConfig.relayerUrl === ""
-    ) {
-      throw new Error("CoreSDK not configured to relay meta transactions");
-    }
-
-    return metaTx.handler.relayMetaTransaction(
-      {
-        contractAddress: this._protocolDiamond,
-        metaTransactionsApiKey: metaTransactionsConfig.apiKey,
-        metaTransactionsApiId: metaTransactionsConfig.apiId,
-        metaTransactionsRelayerUrl: this._metaTxConfig.relayerUrl,
-        chainId: this._chainId
-      },
-      { userAddress, functionName, functionSignature, nonce, sigR, sigS, sigV }
-    );
+    return metaTx.handler.relayMetaTransaction({
+      web3LibAdapter: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        params: {
+          userAddress:
+            overrides.userAddress || (await this._web3Lib.getSignerAddress()),
+          functionName: metaTxParams.functionName,
+          functionSignature: metaTxParams.functionSignature,
+          nonce: metaTxParams.nonce,
+          sigR: metaTxParams.sigR,
+          sigS: metaTxParams.sigS,
+          sigV: metaTxParams.sigV
+        }
+      }
+    });
   }
 }

@@ -19,8 +19,6 @@ type Props = {
 
 export const CommitButton = ({
   offerId,
-  metaTransactionsApiKey,
-  metaTransactionsApiId = "dummyApiId",
   disabled = false,
   extraInfo = "",
   children,
@@ -51,26 +49,21 @@ export const CommitButton = ({
 
             let txResponse;
 
-            if (metaTransactionsApiKey && signerAddress) {
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxCommitToOffer({
                   offerId,
                   nonce
                 });
-              txResponse = await coreSdk.relayMetaTransaction(
-                {
-                  apiKey: metaTransactionsApiKey,
-                  apiId: metaTransactionsApiId
-                },
-                signerAddress,
+              txResponse = await coreSdk.relayMetaTransaction({
                 functionName,
                 functionSignature,
-                nonce,
-                r,
-                s,
-                v
-              );
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
             } else {
               txResponse = await coreSdk.commitToOffer(offerId);
             }

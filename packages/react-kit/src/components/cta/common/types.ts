@@ -3,15 +3,6 @@ import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { ButtonProps, ButtonSize } from "../../buttons/Button";
 
 export type CtaButtonProps<T> = CoreSdkConfig & {
-  /**
-   * Optional Biconomy meta transactions API key. If set, then meta transactions will be
-   * enabled.
-   */
-  metaTransactionsApiKey?: string;
-  /**
-   * Optional Biconomy meta transactions API id.
-   */
-  metaTransactionsApiId?: string;
   disabled?: boolean;
   /**
    * Optional number of block confirmations to wait for after transaction is sent.

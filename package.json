@@ -5,7 +5,7 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "e2e/meta-tx-gateway"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel --no-cache",
