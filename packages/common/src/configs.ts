@@ -2,11 +2,22 @@ import { EnvironmentType, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [3, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
+]);
+
+const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
+  [
+    1234,
+    (txHash = "") =>
+      `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`
+  ],
+  [80001, (txHash = "") => `https://mumbai.polygonscan.com/tx/${txHash}`],
+  [137, (txHash = "") => `https://polygonscan.com/tx/${txHash}`],
+  [1, (txHash = "") => `https://etherscan.io/tx/${txHash}`],
+  [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
 export const defaultConfigs: ProtocolConfig[] = [
@@ -14,6 +25,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "testing",
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
+    getTxExplorerUrl: chainIdToGraphTx.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosontesting",
     jsonRpcUrl:
@@ -32,6 +44,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "staging",
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
+    getTxExplorerUrl: chainIdToGraphTx.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
     jsonRpcUrl:
@@ -50,6 +63,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "production",
     chainId: 1,
     nativeCoin: chainIdToInfo.get(1),
+    getTxExplorerUrl: chainIdToGraphTx.get(1),
     subgraphUrl: "",
     jsonRpcUrl: "",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
@@ -64,6 +78,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     envName: "local",
     chainId: 31337,
     nativeCoin: chainIdToInfo.get(31337),
+    getTxExplorerUrl: chainIdToGraphTx.get(31337),
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
