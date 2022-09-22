@@ -1004,6 +1004,23 @@ export class CoreSDK {
   }
 
   /**
+   * Completes a batch of existing vouchers by calling the `ExchangeHandlerContract`.
+   * Callable by buyer or seller operator.
+   * @param exchangeIds - IDs of exchange to complete.
+   * @returns Transaction response.
+   */
+  public async completeExchangeBatch(
+    exchangeIds: BigNumberish[]
+  ): Promise<TransactionResponse> {
+    return exchanges.handler.completeExchangeBatch({
+      web3Lib: this._web3Lib,
+      contractAddress: this._protocolDiamond,
+      exchangeIds,
+      subgraphUrl: this._subgraphUrl
+    });
+  }
+
+  /**
    * Expires an existing voucher by calling the `ExchangeHandlerContract`.
    * @param exchangeId - ID of exchange to expire.
    * @returns Transaction response.

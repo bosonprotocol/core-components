@@ -19,6 +19,12 @@ export function encodeCompleteExchange(exchangeId: BigNumberish) {
   ]);
 }
 
+export function encodeCompleteExchangeBatch(exchangeIds: BigNumberish[]) {
+  return bosonExchangeHandlerIface.encodeFunctionData("completeExchangeBatch", [
+    exchangeIds
+  ]);
+}
+
 export function encodeRevokeVoucher(exchangeId: BigNumberish) {
   return bosonExchangeHandlerIface.encodeFunctionData("revokeVoucher", [
     exchangeId
