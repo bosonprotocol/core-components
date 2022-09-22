@@ -124,8 +124,8 @@ export const ButtonStyle = styled.button.attrs(
     variant === "secondary" &&
     !disabled &&
     css`
-      background: ${({ theme }) => theme?.colors?.light.secondary};
-      background-color: ${({ theme }) => theme?.colors?.light.secondary};
+      background: ${({ theme }) => theme?.colors?.light.orange};
+      background-color: ${({ theme }) => theme?.colors?.light.orange};
       border-color: transparent;
       color: ${({ theme }) => theme?.colors?.light.white};
       svg {
@@ -147,10 +147,10 @@ export const ButtonStyle = styled.button.attrs(
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
-      color: ${({ theme }) => theme?.colors?.light.secondary};
+      border: 2px solid ${({ theme }) => theme?.colors?.light.orange};
+      color: ${({ theme }) => theme?.colors?.light.orange};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.secondary};
+        stroke: ${({ theme }) => theme?.colors?.light.orange};
       }
       :hover {
         background: ${({ theme }) => theme?.colors?.light.lightGrey};
