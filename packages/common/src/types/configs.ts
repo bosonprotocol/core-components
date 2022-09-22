@@ -14,12 +14,14 @@ export type MetaTxConfig = {
 export type ProtocolConfig = {
   envName: EnvironmentType;
   chainId: number;
-  nativeCoin?: {
-    symbol: string;
-    name: string;
-    decimals: string;
-  };
-  getTxExplorerUrl: (txHash?: string) => string;
+  nativeCoin:
+    | undefined
+    | {
+        symbol: string;
+        name: string;
+        decimals: string;
+      };
+  getTxExplorerUrl: undefined | ((txHash?: string) => string);
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;
