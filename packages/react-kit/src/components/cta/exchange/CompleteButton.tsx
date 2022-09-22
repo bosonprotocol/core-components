@@ -18,7 +18,6 @@ type Props = {
 
 export const CompleteButton = ({
   exchangeId,
-  metaTransactionsApiKey,
   disabled = false,
   extraInfo,
   onSuccess,

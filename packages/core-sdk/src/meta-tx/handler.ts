@@ -1,8 +1,11 @@
-import { Web3LibAdapter } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { MetaTxConfig, Web3LibAdapter } from "@bosonprotocol/common";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BytesLike } from "@ethersproject/bytes";
+import { ContractTransaction } from "@ethersproject/contracts";
 
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
+import { Biconomy } from "./biconomy";
 
 type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -355,5 +358,84 @@ function makeExchangeMetaTxSigner(
         [args.exchangeId]
       )
     };
+  };
+}
+
+export async function relayMetaTransaction(args: {
+  web3LibAdapter: Web3LibAdapter;
+  chainId: number;
+  contractAddress: string;
+  metaTx: {
+    config: MetaTxConfig;
+    params: {
+      userAddress: string;
+      functionName: string;
+      functionSignature: BytesLike;
+      nonce: BigNumberish;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    };
+  };
+}): Promise<ContractTransaction> {
+  const { chainId, contractAddress, metaTx } = args;
+
+  const biconomy = new Biconomy(
+    metaTx.config.relayerUrl,
+    metaTx.config.apiKey,
+    metaTx.config.apiId
+  );
+
+  const relayTxResponse = await biconomy.relayTransaction({
+    to: contractAddress,
+    params: [
+      metaTx.params.userAddress,
+      metaTx.params.functionName,
+      metaTx.params.functionSignature,
+      metaTx.params.nonce,
+      metaTx.params.sigR,
+      metaTx.params.sigS,
+      metaTx.params.sigV
+    ],
+    from: metaTx.params.userAddress
+  });
+
+  return {
+    wait: async () => {
+      const waitResponse = await biconomy.wait({
+        networkId: chainId,
+        transactionHash: relayTxResponse.txHash
+      });
+
+      // TODO: add `getTransaction(hash)` to `Web3LibAdapter` and respective implementations
+      // in ethers and eth-connect flavors. This way we can populate the correct transaction
+      // data below.
+      return {
+        to: contractAddress,
+        from: metaTx.params.userAddress,
+        contractAddress: contractAddress,
+        transactionIndex: 0,
+        gasUsed: BigNumber.from(0),
+        logsBloom: "",
+        blockHash: "string",
+        transactionHash: waitResponse.data.newHash,
+        logs: [],
+        blockNumber: 0,
+        confirmations: 0,
+        cumulativeGasUsed: BigNumber.from(0),
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
+        byzantium: true,
+        type: 0,
+        events: waitResponse.events?.map((event) => JSON.parse(event as string))
+      };
+    },
+    hash: relayTxResponse.txHash,
+    confirmations: 0,
+    from: metaTx.params.userAddress,
+    nonce: 0,
+    gasLimit: BigNumber.from(0),
+    data: "",
+    value: BigNumber.from(0),
+    chainId: chainId
   };
 }

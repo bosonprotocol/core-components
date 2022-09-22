@@ -1,5 +1,22 @@
 version: "3"
 services:
+  meta-tx-gateway:
+    build:
+      context: ../.
+      dockerfile: ./e2e/meta-tx-gateway/Dockerfile
+    image: meta-tx-gateway:20220916172400
+    ports:
+      - "8888:8888"
+    environment:
+      - ENV_NAME=local
+      - PRIVATE_KEY=0x316b234f5fea007dcc40404188b588fb90cb9bb1e33fc163e212eab2f8565293 # ACCOUNT_9 from ./contracts/accounts.js
+      - RPC_NODE=http://host.docker.internal:8545
+    depends_on:
+      - hardhat-node
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command: ["sh", "-c", "sleep 3 && npm run start"]
+
   hardhat-node:
     build: ../contracts
     image: hardhat-node:a24305388c8a2b86cb59667e184677ab8862ebf2

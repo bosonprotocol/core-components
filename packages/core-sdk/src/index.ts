@@ -12,7 +12,8 @@ export * as subgraph from "./subgraph";
 export {
   defaultConfigs,
   getDefaultConfig,
-  EnvironmentType
+  EnvironmentType,
+  MetaTxConfig
 } from "@bosonprotocol/common";
 
 export { MetadataType, AnyMetadata } from "@bosonprotocol/metadata";

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
-import { useMetaTxHandlerContract } from "../../../hooks/meta-tx/useMetaTxHandlerContract";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
@@ -20,7 +19,6 @@ type Props = {
 
 export const CommitButton = ({
   offerId,
-  metaTransactionsApiKey,
   disabled = false,
   extraInfo = "",
   children,
@@ -35,11 +33,6 @@ export const CommitButton = ({
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
-  const metaTxContract = useMetaTxHandlerContract({
-    envName: coreSdkConfig.envName,
-    metaTransactionsApiKey,
-    web3Provider: coreSdkConfig.web3Provider
-  });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -56,22 +49,21 @@ export const CommitButton = ({
 
             let txResponse;
 
-            if (metaTransactionsApiKey && metaTxContract && signerAddress) {
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signExecuteMetaTxCommitToOffer({
                   offerId,
                   nonce
                 });
-              txResponse = await metaTxContract.executeMetaTransaction(
-                signerAddress,
+              txResponse = await coreSdk.relayMetaTransaction({
                 functionName,
                 functionSignature,
-                nonce,
-                r,
-                s,
-                v
-              );
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
             } else {
               txResponse = await coreSdk.commitToOffer(offerId);
             }

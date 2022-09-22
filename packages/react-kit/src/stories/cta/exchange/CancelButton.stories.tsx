@@ -30,6 +30,7 @@ Simple.args = {
   exchangeId: "28",
   web3Provider: undefined,
   metaTransactionsApiKey: undefined,
+  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },

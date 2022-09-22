@@ -5,12 +5,14 @@ import {
   getDefaultConfig,
   MetadataStorage,
   AnyMetadata,
-  Log
+  Log,
+  MetaTxConfig
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
+import { ContractTransaction } from "ethers";
 
 import * as accounts from "./accounts";
 import * as disputes from "./disputes";
@@ -35,6 +37,8 @@ export class CoreSDK {
   private _chainId: number;
   private _tokenInfoManager: TokenInfoManager;
 
+  private _metaTxConfig?: Partial<MetaTxConfig>;
+
   /**
    * Creates an instance of `CoreSDK`
    * @param args - Constructor args
@@ -46,6 +50,7 @@ export class CoreSDK {
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
     chainId: number;
+    metaTx?: Partial<MetaTxConfig>;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -53,6 +58,7 @@ export class CoreSDK {
     this._metadataStorage = opts.metadataStorage;
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
+    this._metaTxConfig = opts.metaTx;
   }
 
   /**
@@ -76,6 +82,7 @@ export class CoreSDK {
     envName: EnvironmentType;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
+    metaTx?: Partial<MetaTxConfig>;
   }) {
     const defaultConfig = getDefaultConfig(args.envName);
 
@@ -85,8 +92,25 @@ export class CoreSDK {
       theGraphStorage: args.theGraphStorage,
       subgraphUrl: defaultConfig.subgraphUrl,
       protocolDiamond: defaultConfig.contracts.protocolDiamond,
-      chainId: defaultConfig.chainId
+      chainId: defaultConfig.chainId,
+      metaTx: {
+        ...defaultConfig.metaTx,
+        ...args.metaTx
+      }
     });
+  }
+
+  public get metaTxConfig() {
+    return this._metaTxConfig;
+  }
+
+  public get isMetaTxConfigSet() {
+    return (
+      !!this._metaTxConfig &&
+      !!this._metaTxConfig.apiId &&
+      !!this._metaTxConfig.apiKey &&
+      !!this._metaTxConfig.relayerUrl
+    );
   }
 
   /* -------------------------------------------------------------------------- */
@@ -1403,6 +1427,64 @@ export class CoreSDK {
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
+    });
+  }
+
+  /**
+   * Relay a meta transaction,
+   * @param metaTxParams - Required params for meta transaction.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async relayMetaTransaction(
+    metaTxParams: {
+      functionName: string;
+      functionSignature: BytesLike;
+      nonce: BigNumberish;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    },
+    overrides: Partial<{
+      userAddress: string;
+      contractAddress: string;
+      metaTxConfig: Partial<MetaTxConfig>;
+    }> = {}
+  ): Promise<ContractTransaction> {
+    const metaTxRelayerUrl =
+      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
+    const metaTxApiKey =
+      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
+    const metaTxApiId =
+      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
+
+    if (!this.isMetaTxConfigSet) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
+    }
+
+    return metaTx.handler.relayMetaTransaction({
+      web3LibAdapter: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        params: {
+          userAddress:
+            overrides.userAddress || (await this._web3Lib.getSignerAddress()),
+          functionName: metaTxParams.functionName,
+          functionSignature: metaTxParams.functionSignature,
+          nonce: metaTxParams.nonce,
+          sigR: metaTxParams.sigR,
+          sigS: metaTxParams.sigS,
+          sigV: metaTxParams.sigV
+        }
+      }
     });
   }
 }

@@ -18,7 +18,6 @@ type Props = {
 
 export const BatchCompleteButton = ({
   exchangeIds,
-  metaTransactionsApiKey,
   disabled = false,
   extraInfo,
   onSuccess,

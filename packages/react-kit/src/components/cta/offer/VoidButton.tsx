@@ -18,7 +18,6 @@ type Props = {
 
 export const VoidButton = ({
   offerId,
-  metaTransactionsApiKey,
   disabled = false,
   extraInfo,
   onSuccess,
