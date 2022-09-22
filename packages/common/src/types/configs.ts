@@ -19,6 +19,7 @@ export type ProtocolConfig = {
     name: string;
     decimals: string;
   };
+  getTxExplorerUrl: (txHash?: string) => string;
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;
