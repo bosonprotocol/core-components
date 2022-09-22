@@ -1,19 +1,20 @@
 # Core Components Docs
 
-- [How tos & guides](#how-tos--guides)
+- [Guides](#guides)
 - [API Docs](#api-docs)
 - [Contributor docs](#contributor-docs)
 
-## How tos & guides
+## Guides
 
-> TODO
+- [Use with `ethers` and `IPFS`](./guides/use-with-ethers-ipfs.md)
+- [Use with `react`](./guides/use-with-react.md)
 
-## API docs
+<!-- ## API docs
 
 - [`@bosonprotocol/core-sdk`](/packages/core-sdk/README.md)
 - [`@bosonprotocol/eth-connect-sdk`](/packages/eth-connect-sdk//README.md)
 - [`@bosonprotocol/ethers-sdk`](/packages/ethers-sdk/README.md)
-- [`@bosonprotocol/ipfs-storage`](/packages/ipfs-storage/README.md)
+- [`@bosonprotocol/ipfs-storage`](/packages/ipfs-storage/README.md) -->
 
 ## Contributor docs
 
