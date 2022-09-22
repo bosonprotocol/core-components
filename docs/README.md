@@ -1,12 +1,13 @@
 # Core Components Docs
 
-- [How tos & guides](#how-tos--guides)
+- [Guides](#guides)
 - [API Docs](#api-docs)
 - [Contributor docs](#contributor-docs)
 
-## How tos & guides
+## Guides
 
-> TODO
+- [Use with `ethers` and `IPFS`](./guides/use-with-ethers-ipfs.md)
+- [Use with `react`](./guides/use-with-react.md)
 
 ## API docs
 
