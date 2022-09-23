@@ -20,6 +20,7 @@ type Props = {
 export const CommitButton = ({
   offerId,
   disabled = false,
+  showLoading = false,
   extraInfo = "",
   children,
   onPendingSignature,
@@ -87,11 +88,16 @@ export const CommitButton = ({
     >
       <ButtonTextWrapper>
         {children || "Commit"}
-        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
-        {extraInfo && isLoading && (
-          <LoadingWrapper>
-            <Loading />
-          </LoadingWrapper>
+        {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
+          <ExtraInfo>{extraInfo}</ExtraInfo>
+        ) : (
+          <>
+            {isLoading && showLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
+          </>
         )}
       </ButtonTextWrapper>
     </Button>

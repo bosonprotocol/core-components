@@ -3,6 +3,7 @@ import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { ButtonProps, ButtonSize } from "../../buttons/Button";
 
 export type CtaButtonProps<T> = CoreSdkConfig & {
+  showLoading?: boolean;
   disabled?: boolean;
   /**
    * Optional number of block confirmations to wait for after transaction is sent.

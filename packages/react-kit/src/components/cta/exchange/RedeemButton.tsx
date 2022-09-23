@@ -20,6 +20,7 @@ export type IRedeemButton = {
 export const RedeemButton = ({
   exchangeId,
   disabled = false,
+  showLoading = false,
   extraInfo,
   onSuccess,
   onError,
@@ -87,11 +88,16 @@ export const RedeemButton = ({
     >
       <ButtonTextWrapper>
         {children || "Redeem"}
-        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
-        {extraInfo && isLoading && (
-          <LoadingWrapper>
-            <Loading />
-          </LoadingWrapper>
+        {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
+          <ExtraInfo>{extraInfo}</ExtraInfo>
+        ) : (
+          <>
+            {isLoading && showLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
+          </>
         )}
       </ButtonTextWrapper>
     </Button>

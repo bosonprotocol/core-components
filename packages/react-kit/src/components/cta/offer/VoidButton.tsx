@@ -19,6 +19,7 @@ type Props = {
 export const VoidButton = ({
   offerId,
   disabled = false,
+  showLoading = false,
   extraInfo,
   onSuccess,
   onError,
@@ -59,11 +60,16 @@ export const VoidButton = ({
     >
       <ButtonTextWrapper>
         {children || "Void"}
-        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
-        {extraInfo && isLoading && (
-          <LoadingWrapper>
-            <Loading />
-          </LoadingWrapper>
+        {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
+          <ExtraInfo>{extraInfo}</ExtraInfo>
+        ) : (
+          <>
+            {isLoading && showLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
+          </>
         )}
       </ButtonTextWrapper>
     </Button>
