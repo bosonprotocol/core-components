@@ -71,6 +71,8 @@ fragment BaseOfferFields on Offer {
   metadataHash
   voidedAt
   disputeResolverId
+  numberOfCommits
+  numberOfRedemptions
   seller {
     ...BaseSellerFields
   }

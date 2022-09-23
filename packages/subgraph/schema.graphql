@@ -29,6 +29,8 @@ interface MetadataInterface {
   validFromDate: BigInt!
   validUntilDate: BigInt!
   quantityAvailable: BigInt!
+  numberOfCommits: BigInt!
+  numberOfRedemptions: BigInt!
 }
 
 type MetadataAttribute @entity {
@@ -65,6 +67,8 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   validFromDate: BigInt!
   validUntilDate: BigInt!
   quantityAvailable: BigInt!
+  numberOfCommits: BigInt!
+  numberOfRedemptions: BigInt!
 }
 
 type ProductV1MetadataEntity implements MetadataInterface @entity {
@@ -94,6 +98,8 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   validFromDate: BigInt!
   validUntilDate: BigInt!
   quantityAvailable: BigInt!
+  numberOfCommits: BigInt!
+  numberOfRedemptions: BigInt!
   """
   PRODUCT_V1 specific fields
   """
@@ -317,6 +323,10 @@ type Offer @entity {
   metadata: MetadataInterface
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
+
+  "Stats"
+  numberOfCommits: BigInt!
+  numberOfRedemptions: BigInt!
 }
 
 """

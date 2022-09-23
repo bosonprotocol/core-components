@@ -60,4 +60,6 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   validFromDate
   validUntilDate
   quantityAvailable
+  numberOfCommits
+  numberOfRedemptions
 }

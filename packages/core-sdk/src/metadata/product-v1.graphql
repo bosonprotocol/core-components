@@ -96,7 +96,8 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   validFromDate
   validUntilDate
   quantityAvailable
-
+  numberOfCommits
+  numberOfRedemptions
   uuid
   product {
     ...BaseProductV1ProductFields

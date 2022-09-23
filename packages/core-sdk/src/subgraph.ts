@@ -79,6 +79,8 @@ export type BaseMetadataEntity = MetadataInterface & {
   id: Scalars["ID"];
   image: Scalars["String"];
   name: Scalars["String"];
+  numberOfCommits: Scalars["BigInt"];
+  numberOfRedemptions: Scalars["BigInt"];
   /**
    * References to entities
    *
@@ -225,6 +227,22 @@ export type BaseMetadataEntity_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  numberOfCommits?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   offer?: InputMaybe<Scalars["String"]>;
   offer_contains?: InputMaybe<Scalars["String"]>;
   offer_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -328,6 +346,8 @@ export enum BaseMetadataEntity_OrderBy {
   Id = "id",
   Image = "image",
   Name = "name",
+  NumberOfCommits = "numberOfCommits",
+  NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
@@ -1457,6 +1477,8 @@ export type MetadataInterface = {
   id: Scalars["ID"];
   image: Scalars["String"];
   name: Scalars["String"];
+  numberOfCommits: Scalars["BigInt"];
+  numberOfRedemptions: Scalars["BigInt"];
   /**
    * References to entities
    *
@@ -1602,6 +1624,22 @@ export type MetadataInterface_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  numberOfCommits?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   offer?: InputMaybe<Scalars["String"]>;
   offer_contains?: InputMaybe<Scalars["String"]>;
   offer_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -1705,6 +1743,8 @@ export enum MetadataInterface_OrderBy {
   Id = "id",
   Image = "image",
   Name = "name",
+  NumberOfCommits = "numberOfCommits",
+  NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
@@ -1741,6 +1781,9 @@ export type Offer = {
   metadata?: Maybe<MetadataInterface>;
   metadataHash: Scalars["String"];
   metadataUri: Scalars["String"];
+  /** Stats */
+  numberOfCommits: Scalars["BigInt"];
+  numberOfRedemptions: Scalars["BigInt"];
   price: Scalars["BigInt"];
   protocolFee: Scalars["BigInt"];
   quantityAvailable: Scalars["BigInt"];
@@ -1948,6 +1991,22 @@ export type Offer_Filter = {
   metadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadata_starts_with?: InputMaybe<Scalars["String"]>;
   metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  numberOfCommits?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   price?: InputMaybe<Scalars["BigInt"]>;
   price_gt?: InputMaybe<Scalars["BigInt"]>;
   price_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2093,6 +2152,8 @@ export enum Offer_OrderBy {
   Metadata = "metadata",
   MetadataHash = "metadataHash",
   MetadataUri = "metadataUri",
+  NumberOfCommits = "numberOfCommits",
+  NumberOfRedemptions = "numberOfRedemptions",
   Price = "price",
   ProtocolFee = "protocolFee",
   QuantityAvailable = "quantityAvailable",
@@ -2400,6 +2461,8 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   id: Scalars["ID"];
   image: Scalars["String"];
   name: Scalars["String"];
+  numberOfCommits: Scalars["BigInt"];
+  numberOfRedemptions: Scalars["BigInt"];
   /**
    * References to entities
    *
@@ -2584,6 +2647,22 @@ export type ProductV1MetadataEntity_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  numberOfCommits?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_gte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  numberOfRedemptions_lt?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_lte?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not?: InputMaybe<Scalars["BigInt"]>;
+  numberOfRedemptions_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   offer?: InputMaybe<Scalars["String"]>;
   offer_contains?: InputMaybe<Scalars["String"]>;
   offer_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2794,6 +2873,8 @@ export enum ProductV1MetadataEntity_OrderBy {
   Id = "id",
   Image = "image",
   Name = "name",
+  NumberOfCommits = "numberOfCommits",
+  NumberOfRedemptions = "numberOfRedemptions",
   Offer = "offer",
   Product = "product",
   ProductOverrides = "productOverrides",
@@ -6132,6 +6213,8 @@ export type GetSellerByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -6454,6 +6537,8 @@ export type GetSellersQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -6866,6 +6951,8 @@ export type GetDisputeResolverByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -7162,6 +7249,8 @@ export type GetDisputeResolversQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -7456,6 +7545,8 @@ export type SellerFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -7787,6 +7878,8 @@ export type DisputeResolverFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -8344,6 +8437,8 @@ export type GetExchangeTokenByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8633,6 +8728,8 @@ export type GetExchangeTokensQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8900,6 +8997,8 @@ export type ExchangeTokenFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -9202,6 +9301,8 @@ export type GetExchangeByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -9546,6 +9647,8 @@ export type GetExchangesQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -9875,6 +9978,8 @@ export type ExchangeFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -10260,6 +10365,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     validFromDate: string;
     validUntilDate: string;
     quantityAvailable: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -10289,6 +10396,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -10564,6 +10673,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     validFromDate: string;
     validUntilDate: string;
     quantityAvailable: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -10593,6 +10704,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -10858,6 +10971,8 @@ export type BaseMetadataEntityFieldsFragment = {
   validFromDate: string;
   validUntilDate: string;
   quantityAvailable: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -10887,6 +11002,8 @@ export type BaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -11147,6 +11264,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   validFromDate: string;
   validUntilDate: string;
   quantityAvailable: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -11176,6 +11295,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -11481,6 +11602,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     validFromDate: string;
     validUntilDate: string;
     quantityAvailable: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     uuid: string;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
@@ -11511,6 +11634,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -11910,6 +12035,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     validFromDate: string;
     validUntilDate: string;
     quantityAvailable: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     uuid: string;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
@@ -11940,6 +12067,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       metadataHash: string;
       voidedAt?: string | null;
       disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -12329,6 +12458,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
   validFromDate: string;
   validUntilDate: string;
   quantityAvailable: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   uuid: string;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
@@ -12359,6 +12490,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -12743,6 +12876,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   validFromDate: string;
   validUntilDate: string;
   quantityAvailable: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   uuid: string;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
@@ -12773,6 +12908,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -13410,6 +13547,8 @@ export type GetOfferByIdQueryQuery = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     exchanges?: Array<{
       __typename?: "Exchange";
       id: string;
@@ -13690,6 +13829,8 @@ export type GetOffersQueryQuery = {
     metadataHash: string;
     voidedAt?: string | null;
     disputeResolverId: string;
+    numberOfCommits: string;
+    numberOfRedemptions: string;
     exchanges?: Array<{
       __typename?: "Exchange";
       id: string;
@@ -13954,6 +14095,8 @@ export type OfferFieldsFragment = {
   metadataHash: string;
   voidedAt?: string | null;
   disputeResolverId: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   exchanges?: Array<{
     __typename?: "Exchange";
     id: string;
@@ -14217,6 +14360,8 @@ export type BaseOfferFieldsFragment = {
   metadataHash: string;
   voidedAt?: string | null;
   disputeResolverId: string;
+  numberOfCommits: string;
+  numberOfRedemptions: string;
   seller: {
     __typename?: "Seller";
     id: string;
@@ -14709,6 +14854,8 @@ export const BaseOfferFieldsFragmentDoc = gql`
     metadataHash
     voidedAt
     disputeResolverId
+    numberOfCommits
+    numberOfRedemptions
     seller {
       ...BaseSellerFields
     }
@@ -14979,6 +15126,8 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     validFromDate
     validUntilDate
     quantityAvailable
+    numberOfCommits
+    numberOfRedemptions
   }
   ${BaseOfferFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
@@ -15018,6 +15167,8 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     validFromDate
     validUntilDate
     quantityAvailable
+    numberOfCommits
+    numberOfRedemptions
     uuid
     product {
       ...BaseProductV1ProductFields
