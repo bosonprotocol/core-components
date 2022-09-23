@@ -86,6 +86,8 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.validFromDate = offer.validFromDate;
   productV1MetadataEntity.validUntilDate = offer.validUntilDate;
   productV1MetadataEntity.quantityAvailable = offer.quantityAvailable;
+  productV1MetadataEntity.numberOfCommits = offer.numberOfCommits;
+  productV1MetadataEntity.numberOfRedemptions = offer.numberOfRedemptions;
 
   productV1MetadataEntity.product = savedProductId;
   productV1MetadataEntity.variations = savedVariationIds;

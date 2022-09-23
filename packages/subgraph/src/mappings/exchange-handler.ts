@@ -26,12 +26,12 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
 
   if (offer) {
     offer.quantityAvailable = offer.quantityAvailable.minus(BigInt.fromI32(1));
+    offer.numberOfCommits = offer.numberOfCommits.plus(BigInt.fromI32(1));
     offer.save();
 
     saveMetadata(offer, offer.createdAt);
 
     exchange.seller = offer.seller;
-    exchange.validUntilDate = event.params.voucher.validUntilDate;
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();
@@ -39,6 +39,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   exchange.disputed = false;
   exchange.state = "COMMITTED";
   exchange.committedDate = event.params.voucher.committedDate;
+  exchange.validUntilDate = event.params.voucher.validUntilDate;
   exchange.expired = false;
 
   exchange.save();
@@ -85,6 +86,15 @@ export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
   const exchange = Exchange.load(exchangeId.toString());
 
   if (exchange) {
+    const offer = Offer.load(exchange.offer);
+
+    if (offer) {
+      offer.numberOfRedemptions = offer.numberOfCommits.plus(BigInt.fromI32(1));
+      offer.save();
+
+      saveMetadata(offer, offer.createdAt);
+    }
+
     exchange.state = "REDEEMED";
     exchange.redeemedDate = event.block.timestamp;
     exchange.save();

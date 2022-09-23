@@ -83,6 +83,8 @@ export function mockRawOfferFromSubgraph(
     protocolFee: "1",
     agentFee: "0",
     agentId: "0",
+    numberOfCommits: "0",
+    numberOfRedemptions: "0",
     seller: {
       id: "1",
       operator: ZERO_ADDRESS,
