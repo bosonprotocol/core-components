@@ -19,6 +19,7 @@ type Props = {
 export const BatchCompleteButton = ({
   exchangeIds,
   disabled = false,
+  showLoading = false,
   extraInfo,
   onSuccess,
   onError,
@@ -61,11 +62,16 @@ export const BatchCompleteButton = ({
     >
       <ButtonTextWrapper>
         {children || "Batch Complete"}
-        {extraInfo && !isLoading && <ExtraInfo>{extraInfo}</ExtraInfo>}
-        {extraInfo && isLoading && (
-          <LoadingWrapper>
-            <Loading />
-          </LoadingWrapper>
+        {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
+          <ExtraInfo>{extraInfo}</ExtraInfo>
+        ) : (
+          <>
+            {isLoading && showLoading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
+          </>
         )}
       </ButtonTextWrapper>
     </Button>
