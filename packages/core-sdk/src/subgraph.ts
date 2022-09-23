@@ -6374,6 +6374,21 @@ export type GetSellerByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
   } | null;
 };
@@ -6696,6 +6711,21 @@ export type GetSellersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
   }>;
 };
@@ -6751,6 +6781,21 @@ export type GetBuyerByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
   } | null;
 };
@@ -6816,6 +6861,21 @@ export type GetBuyersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
   }>;
 };
@@ -7694,6 +7754,21 @@ export type SellerFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+    } | null;
   }>;
 };
 
@@ -7743,6 +7818,21 @@ export type BuyerFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+    } | null;
   }>;
 };
 
@@ -8121,6 +8211,21 @@ export type GetDisputeByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -8181,6 +8286,21 @@ export type GetDisputesQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -8231,6 +8351,21 @@ export type DisputeFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -8261,34 +8396,6 @@ export type BaseDisputeFieldsFragment = {
   decidedDate?: string | null;
   refusedDate?: string | null;
   timeout: string;
-  exchange: {
-    __typename?: "Exchange";
-    id: string;
-    disputed: boolean;
-    state: ExchangeState;
-    committedDate: string;
-    finalizedDate?: string | null;
-    validUntilDate: string;
-    redeemedDate?: string | null;
-    revokedDate?: string | null;
-    cancelledDate?: string | null;
-    completedDate?: string | null;
-    disputedDate?: string | null;
-    expired: boolean;
-  };
-  seller: {
-    __typename?: "Seller";
-    id: string;
-    operator: string;
-    admin: string;
-    clerk: string;
-    treasury: string;
-    authTokenId: string;
-    authTokenType: number;
-    voucherCloneAddress: string;
-    active: boolean;
-  };
-  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
 
 export type GetExchangeTokenByIdQueryQueryVariables = Exact<{
@@ -9444,39 +9551,6 @@ export type GetExchangeByIdQueryQuery = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
-      exchange: {
-        __typename?: "Exchange";
-        id: string;
-        disputed: boolean;
-        state: ExchangeState;
-        committedDate: string;
-        finalizedDate?: string | null;
-        validUntilDate: string;
-        redeemedDate?: string | null;
-        revokedDate?: string | null;
-        cancelledDate?: string | null;
-        completedDate?: string | null;
-        disputedDate?: string | null;
-        expired: boolean;
-      };
-      seller: {
-        __typename?: "Seller";
-        id: string;
-        operator: string;
-        admin: string;
-        clerk: string;
-        treasury: string;
-        authTokenId: string;
-        authTokenType: number;
-        voucherCloneAddress: string;
-        active: boolean;
-      };
-      buyer: {
-        __typename?: "Buyer";
-        id: string;
-        wallet: string;
-        active: boolean;
-      };
     } | null;
   } | null;
 };
@@ -9788,39 +9862,6 @@ export type GetExchangesQueryQuery = {
       decidedDate?: string | null;
       refusedDate?: string | null;
       timeout: string;
-      exchange: {
-        __typename?: "Exchange";
-        id: string;
-        disputed: boolean;
-        state: ExchangeState;
-        committedDate: string;
-        finalizedDate?: string | null;
-        validUntilDate: string;
-        redeemedDate?: string | null;
-        revokedDate?: string | null;
-        cancelledDate?: string | null;
-        completedDate?: string | null;
-        disputedDate?: string | null;
-        expired: boolean;
-      };
-      seller: {
-        __typename?: "Seller";
-        id: string;
-        operator: string;
-        admin: string;
-        clerk: string;
-        treasury: string;
-        authTokenId: string;
-        authTokenType: number;
-        voucherCloneAddress: string;
-        active: boolean;
-      };
-      buyer: {
-        __typename?: "Buyer";
-        id: string;
-        wallet: string;
-        active: boolean;
-      };
     } | null;
   }>;
 };
@@ -10113,39 +10154,6 @@ export type ExchangeFieldsFragment = {
     decidedDate?: string | null;
     refusedDate?: string | null;
     timeout: string;
-    exchange: {
-      __typename?: "Exchange";
-      id: string;
-      disputed: boolean;
-      state: ExchangeState;
-      committedDate: string;
-      finalizedDate?: string | null;
-      validUntilDate: string;
-      redeemedDate?: string | null;
-      revokedDate?: string | null;
-      cancelledDate?: string | null;
-      completedDate?: string | null;
-      disputedDate?: string | null;
-      expired: boolean;
-    };
-    seller: {
-      __typename?: "Seller";
-      id: string;
-      operator: string;
-      admin: string;
-      clerk: string;
-      treasury: string;
-      authTokenId: string;
-      authTokenType: number;
-      voucherCloneAddress: string;
-      active: boolean;
-    };
-    buyer: {
-      __typename?: "Buyer";
-      id: string;
-      wallet: string;
-      active: boolean;
-    };
   } | null;
 };
 
@@ -10163,6 +10171,21 @@ export type BaseExchangeFieldsFragment = {
   completedDate?: string | null;
   disputedDate?: string | null;
   expired: boolean;
+  dispute?: {
+    __typename?: "Dispute";
+    id: string;
+    exchangeId: string;
+    state: DisputeState;
+    buyerPercent: string;
+    disputedDate: string;
+    escalatedDate?: string | null;
+    finalizedDate?: string | null;
+    retractedDate?: string | null;
+    resolvedDate?: string | null;
+    decidedDate?: string | null;
+    refusedDate?: string | null;
+    timeout: string;
+  } | null;
 };
 
 export type GetFundsByIdQueryVariables = Exact<{
@@ -13424,6 +13447,21 @@ export type GetOfferByIdQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
     seller: {
       __typename?: "Seller";
@@ -13704,6 +13742,21 @@ export type GetOffersQueryQuery = {
       completedDate?: string | null;
       disputedDate?: string | null;
       expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
     }>;
     seller: {
       __typename?: "Seller";
@@ -13968,6 +14021,21 @@ export type OfferFieldsFragment = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
+    dispute?: {
+      __typename?: "Dispute";
+      id: string;
+      exchangeId: string;
+      state: DisputeState;
+      buyerPercent: string;
+      disputedDate: string;
+      escalatedDate?: string | null;
+      finalizedDate?: string | null;
+      retractedDate?: string | null;
+      resolvedDate?: string | null;
+      decidedDate?: string | null;
+      refusedDate?: string | null;
+      timeout: string;
+    } | null;
   }>;
   seller: {
     __typename?: "Seller";
@@ -14768,6 +14836,22 @@ export const BaseOfferFieldsFragmentDoc = gql`
   ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
   ${BaseProductV1ShippingOptionFieldsFragmentDoc}
 `;
+export const BaseDisputeFieldsFragmentDoc = gql`
+  fragment BaseDisputeFields on Dispute {
+    id
+    exchangeId
+    state
+    buyerPercent
+    disputedDate
+    escalatedDate
+    finalizedDate
+    retractedDate
+    resolvedDate
+    decidedDate
+    refusedDate
+    timeout
+  }
+`;
 export const BaseExchangeFieldsFragmentDoc = gql`
   fragment BaseExchangeFields on Exchange {
     id
@@ -14782,7 +14866,11 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     completedDate
     disputedDate
     expired
+    dispute {
+      ...BaseDisputeFields
+    }
   }
+  ${BaseDisputeFieldsFragmentDoc}
 `;
 export const SellerFieldsFragmentDoc = gql`
   fragment SellerFields on Seller {
@@ -14869,20 +14957,9 @@ export const DisputeResolverFieldsFragmentDoc = gql`
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
 `;
-export const BaseDisputeFieldsFragmentDoc = gql`
-  fragment BaseDisputeFields on Dispute {
-    id
-    exchangeId
-    state
-    buyerPercent
-    disputedDate
-    escalatedDate
-    finalizedDate
-    retractedDate
-    resolvedDate
-    decidedDate
-    refusedDate
-    timeout
+export const DisputeFieldsFragmentDoc = gql`
+  fragment DisputeFields on Dispute {
+    ...BaseDisputeFields
     exchange {
       ...BaseExchangeFields
     }
@@ -14893,15 +14970,10 @@ export const BaseDisputeFieldsFragmentDoc = gql`
       ...BaseBuyerFields
     }
   }
+  ${BaseDisputeFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseBuyerFieldsFragmentDoc}
-`;
-export const DisputeFieldsFragmentDoc = gql`
-  fragment DisputeFields on Dispute {
-    ...BaseDisputeFields
-  }
-  ${BaseDisputeFieldsFragmentDoc}
 `;
 export const ExchangeTokenFieldsFragmentDoc = gql`
   fragment ExchangeTokenFields on ExchangeToken {
@@ -14941,15 +15013,11 @@ export const ExchangeFieldsFragmentDoc = gql`
     offer {
       ...BaseOfferFields
     }
-    dispute {
-      ...BaseDisputeFields
-    }
   }
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseBuyerFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
-  ${BaseDisputeFieldsFragmentDoc}
 `;
 export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
   fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
