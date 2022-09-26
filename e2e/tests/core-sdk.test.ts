@@ -129,6 +129,27 @@ describe("core-sdk", () => {
       });
     });
 
+    test("void offer", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
+
+      const createdOffer = await createSellerAndOffer(
+        coreSDK,
+        fundedWallet.address
+      );
+
+      expect(createdOffer).toBeTruthy();
+      expect(createdOffer.voided).toBe(false);
+
+      const txResponse = await coreSDK.voidOffer(createdOffer.id);
+      await txResponse.wait();
+      await waitForGraphNodeIndexing();
+
+      const offer = await coreSDK.getOfferById(createdOffer.id);
+      expect(offer.voided).toBe(true);
+    });
+
     test("commit", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
