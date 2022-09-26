@@ -80,6 +80,7 @@ export function mockRawOfferFromSubgraph(
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     voidedAt: null,
+    voided: false,
     protocolFee: "1",
     agentFee: "0",
     agentId: "0",

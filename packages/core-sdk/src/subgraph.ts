@@ -6211,6 +6211,7 @@ export type GetSellerByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -6550,6 +6551,7 @@ export type GetSellersQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -7009,6 +7011,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -7307,6 +7310,7 @@ export type GetDisputeResolversQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -7603,6 +7607,7 @@ export type SellerFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -7966,6 +7971,7 @@ export type DisputeResolverFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -8542,6 +8548,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -8833,6 +8840,7 @@ export type GetExchangeTokensQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -9102,6 +9110,7 @@ export type ExchangeTokenFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -9406,6 +9415,7 @@ export type GetExchangeByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -9719,6 +9729,7 @@ export type GetExchangesQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -10017,6 +10028,7 @@ export type ExchangeFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -10417,6 +10429,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -10725,6 +10738,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -11023,6 +11037,7 @@ export type BaseMetadataEntityFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -11316,6 +11331,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -11655,6 +11671,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -12088,6 +12105,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       resolutionPeriodDuration: string;
       metadataUri: string;
       metadataHash: string;
+      voided: boolean;
       voidedAt?: string | null;
       disputeResolverId: string;
       numberOfCommits: string;
@@ -12511,6 +12529,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -12929,6 +12948,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -13568,6 +13588,7 @@ export type GetOfferByIdQueryQuery = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -13865,6 +13886,7 @@ export type GetOffersQueryQuery = {
     resolutionPeriodDuration: string;
     metadataUri: string;
     metadataHash: string;
+    voided: boolean;
     voidedAt?: string | null;
     disputeResolverId: string;
     numberOfCommits: string;
@@ -14146,6 +14168,7 @@ export type OfferFieldsFragment = {
   resolutionPeriodDuration: string;
   metadataUri: string;
   metadataHash: string;
+  voided: boolean;
   voidedAt?: string | null;
   disputeResolverId: string;
   numberOfCommits: string;
@@ -14426,6 +14449,7 @@ export type BaseOfferFieldsFragment = {
   resolutionPeriodDuration: string;
   metadataUri: string;
   metadataHash: string;
+  voided: boolean;
   voidedAt?: string | null;
   disputeResolverId: string;
   numberOfCommits: string;
@@ -14920,6 +14944,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
     resolutionPeriodDuration
     metadataUri
     metadataHash
+    voided
     voidedAt
     disputeResolverId
     numberOfCommits
