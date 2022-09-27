@@ -24,12 +24,6 @@ query getExchangesQuery(
 
 fragment ExchangeFields on Exchange {
   ...BaseExchangeFields
-  buyer {
-    ...BaseBuyerFields
-  }
-  seller {
-    ...BaseSellerFields
-  }
   offer {
     ...BaseOfferFields
   }
@@ -50,5 +44,11 @@ fragment BaseExchangeFields on Exchange {
   expired
   dispute {
     ...BaseDisputeFields
+  }
+  buyer {
+    ...BaseBuyerFields
+  }
+  seller {
+    ...BaseSellerFields
   }
 }
