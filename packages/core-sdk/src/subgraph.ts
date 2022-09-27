@@ -6473,6 +6473,24 @@ export type GetSellerByIdQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
   } | null;
 };
@@ -6813,6 +6831,24 @@ export type GetSellersQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
   }>;
 };
@@ -6883,6 +6919,24 @@ export type GetBuyerByIdQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
   } | null;
 };
@@ -6963,6 +7017,24 @@ export type GetBuyersQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
   }>;
 };
@@ -7865,6 +7937,24 @@ export type SellerFieldsFragment = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   }>;
 };
 
@@ -7929,6 +8019,24 @@ export type BuyerFieldsFragment = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   }>;
 };
 
@@ -8325,6 +8433,24 @@ export type GetDisputeByIdQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     };
     seller: {
       __typename?: "Seller";
@@ -8400,6 +8526,24 @@ export type GetDisputesQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     };
     seller: {
       __typename?: "Seller";
@@ -8465,6 +8609,24 @@ export type DisputeFieldsFragment = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   };
   seller: {
     __typename?: "Seller";
@@ -9376,24 +9538,6 @@ export type GetExchangeByIdQueryQuery = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
-    buyer: {
-      __typename?: "Buyer";
-      id: string;
-      wallet: string;
-      active: boolean;
-    };
-    seller: {
-      __typename?: "Seller";
-      id: string;
-      operator: string;
-      admin: string;
-      clerk: string;
-      treasury: string;
-      authTokenId: string;
-      authTokenType: number;
-      voucherCloneAddress: string;
-      active: boolean;
-    };
     offer: {
       __typename?: "Offer";
       id: string;
@@ -9663,6 +9807,24 @@ export type GetExchangeByIdQueryQuery = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   } | null;
 };
 
@@ -9690,24 +9852,6 @@ export type GetExchangesQueryQuery = {
     completedDate?: string | null;
     disputedDate?: string | null;
     expired: boolean;
-    buyer: {
-      __typename?: "Buyer";
-      id: string;
-      wallet: string;
-      active: boolean;
-    };
-    seller: {
-      __typename?: "Seller";
-      id: string;
-      operator: string;
-      admin: string;
-      clerk: string;
-      treasury: string;
-      authTokenId: string;
-      authTokenType: number;
-      voucherCloneAddress: string;
-      active: boolean;
-    };
     offer: {
       __typename?: "Offer";
       id: string;
@@ -9977,6 +10121,24 @@ export type GetExchangesQueryQuery = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   }>;
 };
 
@@ -9994,19 +10156,6 @@ export type ExchangeFieldsFragment = {
   completedDate?: string | null;
   disputedDate?: string | null;
   expired: boolean;
-  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
-  seller: {
-    __typename?: "Seller";
-    id: string;
-    operator: string;
-    admin: string;
-    clerk: string;
-    treasury: string;
-    authTokenId: string;
-    authTokenType: number;
-    voucherCloneAddress: string;
-    active: boolean;
-  };
   offer: {
     __typename?: "Offer";
     id: string;
@@ -10272,6 +10421,19 @@ export type ExchangeFieldsFragment = {
     refusedDate?: string | null;
     timeout: string;
   } | null;
+  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
+  seller: {
+    __typename?: "Seller";
+    id: string;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
+    active: boolean;
+  };
 };
 
 export type BaseExchangeFieldsFragment = {
@@ -10303,6 +10465,19 @@ export type BaseExchangeFieldsFragment = {
     refusedDate?: string | null;
     timeout: string;
   } | null;
+  buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
+  seller: {
+    __typename?: "Seller";
+    id: string;
+    operator: string;
+    admin: string;
+    clerk: string;
+    treasury: string;
+    authTokenId: string;
+    authTokenType: number;
+    voucherCloneAddress: string;
+    active: boolean;
+  };
 };
 
 export type GetFundsByIdQueryVariables = Exact<{
@@ -13622,6 +13797,24 @@ export type GetOfferByIdQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
     seller: {
       __typename?: "Seller";
@@ -13920,6 +14113,24 @@ export type GetOffersQueryQuery = {
         refusedDate?: string | null;
         timeout: string;
       } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+      };
     }>;
     seller: {
       __typename?: "Seller";
@@ -14202,6 +14413,24 @@ export type OfferFieldsFragment = {
       refusedDate?: string | null;
       timeout: string;
     } | null;
+    buyer: {
+      __typename?: "Buyer";
+      id: string;
+      wallet: string;
+      active: boolean;
+    };
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+    };
   }>;
   seller: {
     __typename?: "Seller";
@@ -15024,6 +15253,13 @@ export const BaseDisputeFieldsFragmentDoc = gql`
     timeout
   }
 `;
+export const BaseBuyerFieldsFragmentDoc = gql`
+  fragment BaseBuyerFields on Buyer {
+    id
+    wallet
+    active
+  }
+`;
 export const BaseExchangeFieldsFragmentDoc = gql`
   fragment BaseExchangeFields on Exchange {
     id
@@ -15041,8 +15277,16 @@ export const BaseExchangeFieldsFragmentDoc = gql`
     dispute {
       ...BaseDisputeFields
     }
+    buyer {
+      ...BaseBuyerFields
+    }
+    seller {
+      ...BaseSellerFields
+    }
   }
   ${BaseDisputeFieldsFragmentDoc}
+  ${BaseBuyerFieldsFragmentDoc}
+  ${BaseSellerFieldsFragmentDoc}
 `;
 export const SellerFieldsFragmentDoc = gql`
   fragment SellerFields on Seller {
@@ -15079,13 +15323,6 @@ export const SellerFieldsFragmentDoc = gql`
   ${FundsEntityFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
-`;
-export const BaseBuyerFieldsFragmentDoc = gql`
-  fragment BaseBuyerFields on Buyer {
-    id
-    wallet
-    active
-  }
 `;
 export const BuyerFieldsFragmentDoc = gql`
   fragment BuyerFields on Buyer {
@@ -15176,19 +15413,11 @@ export const ExchangeTokenFieldsFragmentDoc = gql`
 export const ExchangeFieldsFragmentDoc = gql`
   fragment ExchangeFields on Exchange {
     ...BaseExchangeFields
-    buyer {
-      ...BaseBuyerFields
-    }
-    seller {
-      ...BaseSellerFields
-    }
     offer {
       ...BaseOfferFields
     }
   }
   ${BaseExchangeFieldsFragmentDoc}
-  ${BaseBuyerFieldsFragmentDoc}
-  ${BaseSellerFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
 `;
 export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
