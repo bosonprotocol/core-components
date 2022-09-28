@@ -26,10 +26,12 @@ const templates = {
   redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}*** days`,
   resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}*** days after the dispute being raised.`,
   fulfillmentPeriod: `**Fulfillment Period** means the time period during which the Seller must fulfill the Offer, which is up to ***{{#msecToDay}}{{fulfillmentPeriodDurationInMS}}{{/msecToDay}}*** days after the NFT Voucher is redeemed.`,
+  disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***{{#msecToDay}}{{disputePeriodDurationInMS}}{{/msecToDay}}*** days after the Buyer commits to an Offer.`,
   disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is {{disputeResolverId}}`,
   metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[{{{metadataUri}}}]({{{metadataUri}}})***.`,
   sellerContactMethod: `**Seller Contact Method** means ***{{sellerContactMethod}}***.`,
-  disputeResolverContactMethod: `**Dispute Resolution Contact Method** means ***{{disputeResolverContactMethod}}***.`
+  disputeResolverContactMethod: `**Dispute Resolution Contact Method** means ***{{disputeResolverContactMethod}}***.`,
+  escalationDeposit: `**Escalation Deposit** means the funds a Buyer puts down to escalate the Dispute, which becomes part of the Deposit Pool. The Escalation Deposit is set as {{escalationDepositValue}} {{exchangeTokenSymbol}}.`
 };
 
 const getTemplateResults = (args: { [key: string]: string }) => {
@@ -44,10 +46,12 @@ const getTemplateResults = (args: { [key: string]: string }) => {
     redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***${args.voucherValidDurationInMS}*** days`,
     resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***${args.resolutionPeriodDurationInMS}*** days after the dispute being raised.`,
     fulfillmentPeriod: `**Fulfillment Period** means the time period during which the Seller must fulfill the Offer, which is up to ***${args.fulfillmentPeriodDurationInMS}*** days after the NFT Voucher is redeemed.`,
+    disputePeriod: `TBD`,
     disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is ${args.disputeResolverId}`,
     metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[${args.metadataUri}](${args.metadataUri})***.`,
     sellerContactMethod: `TBD`,
-    disputeResolverContactMethod: `TBD`
+    disputeResolverContactMethod: `TBD`,
+    escalationDeposit: `TBD`
   };
 };
 
@@ -102,6 +106,8 @@ async function mockPrepareRenderingData(
     exchangeTokenSymbol: tokenInfo.symbol,
     sellerContactMethod: "TBD",
     disputeResolverContactMethod: "TBD",
+    disputePeriod: "TBD",
+    escalationDeposit: "TBD",
     agentId: offerData.agentId.toString(),
     disputeResolverId: offerData.disputeResolverId.toString(),
     voucherValidDurationInMS: offerData.voucherValidDurationInMS
@@ -190,7 +196,7 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).agentId);
     });
 
-    xtest("offer AgentFee", async () => {
+    test("offer AgentFee", async () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,
@@ -253,6 +259,15 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).fulfillmentPeriod);
     });
 
+    test("offer disputePeriod", async () => {
+      const render = await renderContractualAgreement(
+        templates.disputePeriod,
+        mockedCreateOfferArgs,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).disputePeriod);
+    });
+
     test("offer disputeResolverId", async () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverId,
@@ -271,7 +286,7 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).metadataUri);
     });
 
-    xtest("offer sellerContactMethod", async () => {
+    test("offer sellerContactMethod", async () => {
       const render = await renderContractualAgreement(
         templates.sellerContactMethod,
         mockedCreateOfferArgs,
@@ -280,13 +295,22 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).sellerContactMethod);
     });
 
-    xtest("offer disputeResolverContactMethod", async () => {
+    test("offer disputeResolverContactMethod", async () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverContactMethod,
         mockedCreateOfferArgs,
         tokenInfo
       );
       expect(render).toEqual((expected as any).disputeResolverContactMethod);
+    });
+
+    test("offer escalationDeposit", async () => {
+      const render = await renderContractualAgreement(
+        templates.escalationDeposit,
+        mockedCreateOfferArgs,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).escalationDeposit);
     });
   });
 
@@ -324,7 +348,7 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).sellerDeposit);
     });
 
-    xtest("offer AgentFee", async () => {
+    test("offer AgentFee", async () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,
@@ -380,7 +404,7 @@ describe("renderContractualAgreement", () => {
       expect(render).toEqual((expected as any).sellerDeposit);
     });
 
-    xtest("offer AgentFee", async () => {
+    test("offer AgentFee", async () => {
       const render = await renderContractualAgreement(
         templates.agentFee,
         mockedCreateOfferArgs,

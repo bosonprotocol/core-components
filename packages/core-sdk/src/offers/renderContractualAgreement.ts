@@ -17,6 +17,8 @@ export type TemplateRenderingData = CreateOfferArgs & {
   exchangeTokenSymbol: string;
   sellerContactMethod: string;
   disputeResolverContactMethod: string;
+  disputePeriodDurationInMS: string;
+  escalationDeposit: string;
   toISOString: () => void;
   msecToDay: () => void;
 };
@@ -141,6 +143,8 @@ export async function prepareRenderingData(
     ),
     sellerContactMethod: "TBD", // TODO: what is the sellerContactMethod?
     disputeResolverContactMethod: "TBD", // TODO: what is the disputeResolverContactMethod?
+    disputePeriodDurationInMS: "TBD", // TODO: add disputePeriodDurationInMS
+    escalationDeposit: "TBD", // TODO: add escalationDeposit
     toISOString: function () {
       return function (num, render) {
         return new Date(parseInt(render(num))).toISOString();
@@ -148,9 +152,13 @@ export async function prepareRenderingData(
     },
     msecToDay: function () {
       return function (num, render) {
-        return BigNumber.from(render(num))
-          .div(utils.timestamp.MSEC_PER_DAY)
-          .toString();
+        try {
+          return BigNumber.from(render(num))
+            .div(utils.timestamp.MSEC_PER_DAY)
+            .toString();
+        } catch {
+          return `[[${num} - invalid BigNumber]]`;
+        }
       };
     }
   };
