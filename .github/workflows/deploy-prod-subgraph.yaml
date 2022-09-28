@@ -26,4 +26,4 @@ jobs:
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN }}
       - name: Deploy subgraph
-        run: cd ./packages/subgraph && npm run deploy:production -- -l ${{ env.SUBGRAPH_VERSION }}
+        run: cd ./packages/subgraph && npm run deploy:production
