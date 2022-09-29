@@ -11,6 +11,7 @@ import {
 import { Exchange, Offer } from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
+import { saveExchangeEventLogs } from "../entities/event-log";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -32,6 +33,7 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
     saveMetadata(offer, offer.createdAt);
 
     exchange.seller = offer.seller;
+    exchange.disputeResolver = offer.disputeResolver;
   }
 
   exchange.buyer = exchangeFromEvent.buyerId.toString();
@@ -43,6 +45,15 @@ export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   exchange.expired = false;
 
   exchange.save();
+
+  saveExchangeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "BUYER_COMMITTED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId
+  );
 }
 
 export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
@@ -54,6 +65,15 @@ export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
     exchange.state = "REVOKED";
     exchange.revokedDate = event.block.timestamp;
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_REVOKED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }
 
@@ -65,6 +85,15 @@ export function handleVoucherExtendedEvent(event: VoucherExtended): void {
   if (exchange) {
     exchange.validUntilDate = event.params.validUntil;
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_EXTENDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }
 
@@ -77,6 +106,15 @@ export function handleVoucherCanceledEvent(event: VoucherCanceled): void {
     exchange.state = "CANCELLED";
     exchange.cancelledDate = event.block.timestamp;
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_CANCELED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }
 
@@ -98,6 +136,15 @@ export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
     exchange.state = "REDEEMED";
     exchange.redeemedDate = event.block.timestamp;
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_REDEEMED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }
 
@@ -108,9 +155,26 @@ export function handleVoucherTransferredEvent(event: VoucherTransferred): void {
   const exchange = Exchange.load(exchangeId.toString());
 
   if (exchange) {
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_TRANSFERRED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
+
     exchange.buyer = newBuyerId.toString();
-    // TODO: create transactionLog with all transfers & protocol actions
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_TRANSFERRED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }
 
@@ -123,5 +187,14 @@ export function handleExchangeCompletedEvent(event: ExchangeCompleted): void {
     exchange.state = "COMPLETED";
     exchange.completedDate = event.block.timestamp;
     exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "EXCHANGE_COMPLETED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
   }
 }

@@ -1,6 +1,6 @@
-import { VoucherExtended } from './../generated/BosonExchangeHandler/IBosonExchangeHandler';
-import { SellerCreatedAuthTokenStruct } from './../generated/BosonAccountHandler/IBosonAccountHandler';
-import { OfferCreatedOfferFeesStruct } from './../generated/BosonOfferHandler/IBosonOfferHandler';
+import { VoucherExtended } from "./../generated/BosonExchangeHandler/IBosonExchangeHandler";
+import { SellerCreatedAuthTokenStruct } from "./../generated/BosonAccountHandler/IBosonAccountHandler";
+import { OfferCreatedOfferFeesStruct } from "./../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
   OfferCreated,
   OfferCreatedOfferDatesStruct,
@@ -263,7 +263,7 @@ export function createVoucherExtendedEvent(
 ): VoucherExtended {
   const voucherExtendedEvent = changetype<VoucherExtended>(newMockEvent());
   voucherExtendedEvent.parameters = new Array();
-  
+
   const offerIdParam = new ethereum.EventParam(
     "offerId",
     ethereum.Value.fromI32(offerId)

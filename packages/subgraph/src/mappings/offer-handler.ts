@@ -11,6 +11,7 @@ import {
   getDisputeResolutionTermsId,
   saveDisputeResolutionTerms
 } from "../entities/dispute-resolution";
+import { saveOfferEventLog } from "../entities/event-log";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -66,6 +67,15 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
       disputeResolutionTermsStruct,
       offerId.toString()
     );
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_CREATED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offerStruct.sellerId.toString(),
+      offerId.toString()
+    );
   }
 }
 
@@ -81,5 +91,14 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
     offer.save();
 
     saveMetadata(offer, offer.createdAt);
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_VOIDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offer.sellerId.toString(),
+      offerId.toString()
+    );
   }
 }
