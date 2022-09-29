@@ -12,6 +12,8 @@ import {
 } from "../../generated/BosonDisputeHandler/IBosonDisputeHandler";
 import { Dispute, Exchange } from "../../generated/schema";
 
+import { saveDisputeEventLogs } from "../entities/event-log";
+
 export function handleDisputeRaisedEvent(event: DisputeRaised): void {
   const exchangeId = event.params.exchangeId;
   const buyerId = event.params.buyerId;
@@ -30,6 +32,18 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
     dispute = new Dispute(disputeId);
   }
 
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "DISPUTED";
+    exchange.disputedDate = event.block.timestamp;
+    exchange.disputed = true;
+    exchange.dispute = disputeId;
+    exchange.save();
+
+    dispute.disputeResolver = exchange.disputeResolver;
+  }
+
   dispute.exchangeId = exchangeId;
   dispute.exchange = exchangeId.toString();
   dispute.state = "RESOLVING";
@@ -40,21 +54,29 @@ export function handleDisputeRaisedEvent(event: DisputeRaised): void {
   dispute.buyer = buyerId.toString();
   dispute.save();
 
-  const exchange = Exchange.load(exchangeId.toString());
-
-  if (exchange) {
-    exchange.state = "DISPUTED";
-    exchange.disputedDate = event.block.timestamp;
-    exchange.disputed = true;
-    exchange.dispute = disputeId;
-    exchange.save();
-  }
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RAISED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeId
+  );
 }
 
 export function handleDisputeRetractedEvent(event: DisputeRetracted): void {
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "RETRACTED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RETRACTED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleDisputeTimeoutExtendedEvent(
@@ -70,18 +92,45 @@ export function handleDisputeTimeoutExtendedEvent(
     dispute.timeout = newDisputeTimeout;
     dispute.save();
   }
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_TIMEOUT_EXTENDED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleDisputeExpiredEvent(event: DisputeExpired): void {
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "RETRACTED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_EXPIRED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleDisputeResolvedEvent(event: DisputeResolved): void {
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "RESOLVED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleDisputeEscalatedEvent(event: DisputeEscalated): void {
@@ -89,7 +138,6 @@ export function handleDisputeEscalatedEvent(event: DisputeEscalated): void {
 
   const disputeHandler = IBosonDisputeHandler.bind(event.address);
   const getDisputeResult = disputeHandler.getDispute(exchangeId);
-  const disputeFromContract = getDisputeResult.value1;
   const disputeDurations = getDisputeResult.value2;
 
   const disputeId = exchangeId.toString();
@@ -102,12 +150,30 @@ export function handleDisputeEscalatedEvent(event: DisputeEscalated): void {
     dispute.timeout = disputeDurations.timeout;
     dispute.save();
   }
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_ESCALATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleDisputeDecidedEvent(event: DisputeDecided): void {
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "DECIDED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_DECIDED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleEscalatedDisputeRefusedEvent(
@@ -116,6 +182,15 @@ export function handleEscalatedDisputeRefusedEvent(
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "REFUSED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "ESCALATED_DISPUTE_REFUSED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 export function handleEscalatedDisputeExpiredEvent(
@@ -124,6 +199,15 @@ export function handleEscalatedDisputeExpiredEvent(
   const exchangeId = event.params.exchangeId;
 
   finalizeDispute(event.address, exchangeId, "REFUSED");
+
+  saveDisputeEventLogs(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "ESCALATED_DISPUTE_EXPIRED",
+    event.block.timestamp,
+    event.params.executedBy,
+    exchangeId.toString()
+  );
 }
 
 function finalizeDispute(

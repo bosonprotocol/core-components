@@ -16,6 +16,7 @@ import {
   getAndSaveDisputeResolver,
   getAndSaveDisputeResolverFees
 } from "../entities/dispute-resolution";
+import { saveAccountEventLog } from "../entities/event-log";
 
 export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
@@ -26,17 +27,27 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
 
   if (!seller) {
     seller = new Seller(sellerId);
-    seller.sellerId = event.params.sellerId;
-    seller.operator = sellerFromEvent.operator;
-    seller.admin = sellerFromEvent.admin;
-    seller.clerk = sellerFromEvent.clerk;
-    seller.treasury = sellerFromEvent.treasury;
-    seller.voucherCloneAddress = event.params.voucherCloneAddress;
-    seller.authTokenId = authTokenFromEvent.tokenId;
-    seller.authTokenType = authTokenFromEvent.tokenType;
-    seller.active = true;
-    seller.save();
   }
+
+  seller.sellerId = event.params.sellerId;
+  seller.operator = sellerFromEvent.operator;
+  seller.admin = sellerFromEvent.admin;
+  seller.clerk = sellerFromEvent.clerk;
+  seller.treasury = sellerFromEvent.treasury;
+  seller.voucherCloneAddress = event.params.voucherCloneAddress;
+  seller.authTokenId = authTokenFromEvent.tokenId;
+  seller.authTokenType = authTokenFromEvent.tokenType;
+  seller.active = true;
+  seller.save();
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_CREATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    sellerId
+  );
 }
 
 export function handleSellerUpdatedEvent(event: SellerUpdated): void {
@@ -58,6 +69,15 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = sellerFromEvent.active;
   seller.save();
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_UPDATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    sellerId
+  );
 }
 
 export function handleBuyerCreatedEvent(event: BuyerCreated): void {
@@ -73,6 +93,15 @@ export function handleBuyerCreatedEvent(event: BuyerCreated): void {
   buyer.wallet = buyerFromEvent.wallet;
   buyer.active = true;
   buyer.save();
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "BUYER_CREATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    buyerId
+  );
 }
 
 export function handleDisputeResolverCreatedEvent(
@@ -82,6 +111,15 @@ export function handleDisputeResolverCreatedEvent(
 
   getAndSaveDisputeResolver(disputeResolverId, event.address);
   getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_CREATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleDisputeResolverUpdatedEvent(
@@ -90,6 +128,15 @@ export function handleDisputeResolverUpdatedEvent(
   const disputeResolverId = event.params.disputeResolver.id;
 
   getAndSaveDisputeResolver(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_UPDATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleDisputeResolverActivatedEvent(
@@ -98,6 +145,15 @@ export function handleDisputeResolverActivatedEvent(
   const disputeResolverId = event.params.disputeResolver.id;
 
   getAndSaveDisputeResolver(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_ACTIVATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleDisputeResolverFeesAddedEvent(
@@ -106,6 +162,15 @@ export function handleDisputeResolverFeesAddedEvent(
   const disputeResolverId = event.params.disputeResolverId;
 
   getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_FEES_ADDED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleDisputeResolverFeesRemovedEvent(
@@ -114,6 +179,15 @@ export function handleDisputeResolverFeesRemovedEvent(
   const disputeResolverId = event.params.disputeResolverId;
 
   getAndSaveDisputeResolverFees(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_FEES_REMOVED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleAllowedSellersAddedEvent(
@@ -122,6 +196,15 @@ export function handleAllowedSellersAddedEvent(
   const disputeResolverId = event.params.disputeResolverId;
 
   getAndSaveDisputeResolver(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "ALLOWED_SELLERS_ADDED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
 
 export function handleAllowedSellersRemovedEvent(
@@ -130,4 +213,13 @@ export function handleAllowedSellersRemovedEvent(
   const disputeResolverId = event.params.disputeResolverId;
 
   getAndSaveDisputeResolver(disputeResolverId, event.address);
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "ALLOWED_SELLERS_REMOVED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
+  );
 }
