@@ -7,26 +7,47 @@ import { formatUnits } from "@ethersproject/units";
 import { productV1 } from "@bosonprotocol/metadata";
 
 import { CreateOfferArgs } from "./types";
-import { OfferFieldsFragment, MetadataType } from "../subgraph";
+import {
+  OfferFieldsFragment,
+  MetadataType,
+  ProductV1MetadataEntity
+} from "../subgraph";
 
-export type TemplateRenderingData = CreateOfferArgs & {
-  priceValue: string; // Convert in decimals value
-  sellerDepositValue: string; // Convert in decimals value
-  buyerCancelPenaltyValue: string; // Convert in decimals value
-  agentFeeValue: string; // Convert in decimals value
-  exchangeTokenSymbol: string;
+export type AdditionalOfferMetadata = {
   sellerContactMethod: string;
   disputeResolverContactMethod: string;
-  disputePeriodDurationInMS: string;
-  escalationDeposit: string;
-  toISOString: () => void;
-  msecToDay: () => void;
+  escalationDeposit: BigNumberish;
+  escalationResponsePeriodInSec: BigNumberish;
+  sellerTradingName: string;
+  returnPeriodInDays: number;
 };
+
+export type TemplateRenderingData = CreateOfferArgs &
+  AdditionalOfferMetadata & {
+    priceValue: string; // Convert in decimals value
+    sellerDepositValue: string; // Convert in decimals value
+    buyerCancelPenaltyValue: string; // Convert in decimals value
+    escalationDepositValue: string; // Convert in decimals value
+    exchangeTokenSymbol: string;
+    toISOString: () => void;
+    msecToDay: () => void;
+    secToDay: () => void;
+  };
 
 export class InvalidOfferDataError extends Error {
   constructor(public missingProperties: string[]) {
     super(
       `InvalidOfferData - missing properties: [${missingProperties.join(",")}]`
+    );
+  }
+}
+
+export class InvalidOfferMetadataError extends Error {
+  constructor(public missingProperties: string[]) {
+    super(
+      `InvalidOfferMetadata - missing properties: [${missingProperties.join(
+        ","
+      )}]`
     );
   }
 }
@@ -67,6 +88,16 @@ export type BaseOfferData = {
   metadataHash: string;
 };
 
+export const baseOfferMetadataSchema: yup.SchemaOf<AdditionalOfferMetadata> =
+  yup.object({
+    sellerContactMethod: yup.string().required(),
+    disputeResolverContactMethod: yup.string().required(),
+    escalationDeposit: yup.mixed().required(),
+    escalationResponsePeriodInSec: yup.mixed().required(),
+    sellerTradingName: yup.string().required(),
+    returnPeriodInDays: yup.number().required()
+  });
+
 function checkOfferDataIsValid(
   offerData: unknown,
   throwIfInvalid = false
@@ -99,8 +130,41 @@ function checkOfferDataIsValid(
   return true;
 }
 
+function checkOfferMetadataIsValid(
+  offerMetadata: unknown,
+  throwIfInvalid = false
+): boolean {
+  if (offerMetadata === undefined || offerMetadata === null) {
+    throw new Error("InvalidOfferMetadata - undefined");
+  }
+  if (typeof offerMetadata !== "object") {
+    throw new Error("InvalidOfferMetadata - expecting an object");
+  }
+  try {
+    baseOfferMetadataSchema.validateSync(offerMetadata, { abortEarly: false });
+  } catch (e) {
+    const missingProperties = [];
+    const getMissingProp = (error) => {
+      return error.match(/(.*) is a required field/)[1] || error;
+    };
+    if (throwIfInvalid) {
+      if (e.errors) {
+        e.errors.forEach((error: string) => {
+          missingProperties.push(getMissingProp(error));
+        });
+      } else {
+        missingProperties.push(getMissingProp(e));
+      }
+      throw new InvalidOfferMetadataError(missingProperties);
+    }
+    return false;
+  }
+  return true;
+}
+
 function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
   offerData: CreateOfferArgs;
+  offerMetadata: AdditionalOfferMetadata;
   tokenInfo: ITokenInfo;
 } {
   return {
@@ -117,6 +181,17 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
       resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
       exchangeToken: offerDataSubGraph.exchangeToken.address
     },
+    offerMetadata: {
+      sellerContactMethod: "TBD", // to be added to product? metadata
+      disputeResolverContactMethod: "TBD", // to be added to product? metadata
+      escalationDeposit:
+        offerDataSubGraph.disputeResolutionTerms.buyerEscalationDeposit,
+      escalationResponsePeriodInSec:
+        offerDataSubGraph.disputeResolutionTerms.escalationResponsePeriod,
+      sellerTradingName: (offerDataSubGraph.metadata as ProductV1MetadataEntity)
+        ?.productV1Seller?.name,
+      returnPeriodInDays: 0 // to be added to product? metadata
+    },
     tokenInfo: {
       ...offerDataSubGraph.exchangeToken,
       decimals: parseInt(offerDataSubGraph.exchangeToken.decimals)
@@ -126,28 +201,33 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
 
 export async function prepareRenderingData(
   offerData: CreateOfferArgs,
+  offerMetadata: AdditionalOfferMetadata,
   tokenInfo: ITokenInfo
 ): Promise<TemplateRenderingData> {
   return {
     ...offerData,
+    ...offerMetadata,
     priceValue: formatUnits(offerData.price, tokenInfo.decimals),
     exchangeTokenSymbol: tokenInfo.symbol,
     sellerDepositValue: formatUnits(
       offerData.sellerDeposit,
       tokenInfo.decimals
     ),
-    agentFeeValue: "0", // TODO: get the agentFee of the specified offerData.agentId
     buyerCancelPenaltyValue: formatUnits(
       offerData.buyerCancelPenalty,
       tokenInfo.decimals
     ),
-    sellerContactMethod: "TBD", // TODO: what is the sellerContactMethod?
-    disputeResolverContactMethod: "TBD", // TODO: what is the disputeResolverContactMethod?
-    disputePeriodDurationInMS: "TBD", // TODO: add disputePeriodDurationInMS
-    escalationDeposit: "TBD", // TODO: add escalationDeposit
+    escalationDepositValue: formatUnits(
+      offerMetadata.escalationDeposit,
+      tokenInfo.decimals
+    ),
     toISOString: function () {
       return function (num, render) {
-        return new Date(parseInt(render(num))).toISOString();
+        try {
+          return new Date(parseInt(render(num))).toISOString();
+        } catch {
+          return `[[${num} - invalid Date]]`;
+        }
       };
     },
     msecToDay: function () {
@@ -155,6 +235,17 @@ export async function prepareRenderingData(
         try {
           return BigNumber.from(render(num))
             .div(utils.timestamp.MSEC_PER_DAY)
+            .toString();
+        } catch {
+          return `[[${num} - invalid BigNumber]]`;
+        }
+      };
+    },
+    secToDay: function () {
+      return function (num, render) {
+        try {
+          return BigNumber.from(render(num))
+            .div(utils.timestamp.SEC_PER_DAY)
             .toString();
         } catch {
           return `[[${num} - invalid BigNumber]]`;
@@ -168,11 +259,17 @@ export async function prepareRenderingData(
 export async function renderContractualAgreement(
   template: string,
   offerData: CreateOfferArgs,
+  offerMetadata: AdditionalOfferMetadata,
   tokenInfo: ITokenInfo
 ): Promise<string> {
   // Check the passed offerData is matching the required type
   checkOfferDataIsValid(offerData, true);
-  const preparedData = await prepareRenderingData(offerData, tokenInfo);
+  checkOfferMetadataIsValid(offerMetadata, true);
+  const preparedData = await prepareRenderingData(
+    offerData,
+    offerMetadata,
+    tokenInfo
+  );
   return Mustache.render(template, preparedData);
 }
 
@@ -209,6 +306,7 @@ export async function renderContractualAgreementForOffer(
   return renderContractualAgreement(
     template,
     convertedOfferArgs.offerData,
+    convertedOfferArgs.offerMetadata,
     convertedOfferArgs.tokenInfo
   );
 }

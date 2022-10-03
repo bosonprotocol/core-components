@@ -192,6 +192,9 @@ export function buildProductV1Metadata(template: string) {
     type: subgraph.MetadataType.ProductV1,
     exchangePolicy: {
       template
+    },
+    productV1Seller: {
+      name: " Best Brand Ever"
     }
   };
 }

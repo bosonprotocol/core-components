@@ -165,6 +165,11 @@ const productMissingArguments = [
     data: { seller: { contactLinks: undefined } },
     error: /seller.contactLinks is a required field/
   },
+  {
+    arg: "seller.name",
+    data: { seller: { name: undefined } },
+    error: /seller.name is a required field/
+  },
   // {
   //   arg: "seller.contactLinks empty array",
   //   data: { seller: { defaultVersion: 1, contactLinks: [] } },

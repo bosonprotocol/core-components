@@ -52,7 +52,7 @@ type Variation = {
 
 type SellerMetadata = {
   defaultVersion: number;
-  name?: string;
+  name: string;
   description?: string;
   externalUrl?: string;
   tokenId?: string;

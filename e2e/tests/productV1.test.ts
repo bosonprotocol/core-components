@@ -1,7 +1,11 @@
+import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
 import { MetadataType } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+import {
+  mockAdditionalOfferMetadata,
+  mockCreateOfferArgs
+} from "@bosonprotocol/common/tests/mocks";
 import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
@@ -33,7 +37,10 @@ async function createOfferArgs(
   coreSDK: CoreSDK,
   metadata: ProductV1Metadata,
   offerParams?: Partial<CreateOfferArgs>
-): Promise<CreateOfferArgs> {
+): Promise<{
+  offerArgs: CreateOfferArgs;
+  offerMetadata: AdditionalOfferMetadata;
+}> {
   const metadataHash = await coreSDK.storeMetadata(metadata);
   const metadataUri = "ipfs://" + metadataHash;
 
@@ -43,7 +50,9 @@ async function createOfferArgs(
     ...offerParams
   });
 
-  return offerArgs;
+  const offerMetadata = mockAdditionalOfferMetadata();
+
+  return { offerArgs, offerMetadata };
 }
 
 async function createOffer(
@@ -83,7 +92,7 @@ describe("ProductV1 e2e tests", () => {
 
     const template = "Hello World!!";
     const metadata = mockProductV1Metadata(template);
-    const offerArgs = await createOfferArgs(coreSDK, metadata);
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
     offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
       .add(10000) // to avoid offerDaa validation error
       .toNumber();
@@ -94,7 +103,9 @@ describe("ProductV1 e2e tests", () => {
       .toNumber();
     const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
-    const render = await coreSDK.renderContractualAgreementForOffer(offer.id);
+    const render = await coreSDK.renderContractualAgreementForOffer(
+      (offer as subgraph.OfferFieldsFragment).id
+    );
     expect(render).toEqual("Hello World!!");
   });
 
@@ -103,11 +114,15 @@ describe("ProductV1 e2e tests", () => {
 
     const template = "Hello World!!";
     const metadata = mockProductV1Metadata(template);
-    const offerArgs = await createOfferArgs(coreSDK, metadata);
+    const { offerArgs, offerMetadata } = await createOfferArgs(
+      coreSDK,
+      metadata
+    );
 
     const render = await coreSDK.renderContractualAgreement(
       template,
-      offerArgs
+      offerArgs,
+      offerMetadata
     );
     expect(render).toEqual("Hello World!!");
   });

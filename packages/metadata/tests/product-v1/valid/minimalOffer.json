@@ -30,6 +30,7 @@
     ]
   },
   "seller": {
+    "name": "Best Brand Ever",
     "defaultVersion": 1,
     "contactLinks": [
       {
