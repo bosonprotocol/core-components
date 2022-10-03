@@ -191,10 +191,15 @@ export function buildProductV1Metadata(template: string) {
     schemaUrl: "schemaUrl",
     type: subgraph.MetadataType.ProductV1,
     exchangePolicy: {
-      template
+      template,
+      sellerContactMethod: "Chat App in the dApp",
+      disputeResolverContactMethod: "email to: disputes@redeemeum.com"
     },
     productV1Seller: {
       name: "Best Brand Ever"
+    },
+    shipping: {
+      returnPeriodInDays: 15
     }
   };
 }
