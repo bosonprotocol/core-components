@@ -241,6 +241,7 @@ fragment BaseProductV1ShippingOptionFields on ProductV1ShippingOption {
     ...BaseProductV1ShippingJurisdictionFields
   }
   redemptionPoint
+  returnPeriodInDays
 }
 
 fragment BaseProductV1ShippingJurisdictionFields on ProductV1ShippingJurisdiction {
@@ -255,6 +256,8 @@ fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
   version
   label
   template
+  sellerContactMethod
+  disputeResolverContactMethod
 }
 
 fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {

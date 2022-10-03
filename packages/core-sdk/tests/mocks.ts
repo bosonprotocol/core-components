@@ -194,7 +194,7 @@ export function buildProductV1Metadata(template: string) {
       template
     },
     productV1Seller: {
-      name: " Best Brand Ever"
+      name: "Best Brand Ever"
     }
   };
 }

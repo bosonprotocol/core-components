@@ -2273,14 +2273,44 @@ export enum ProductV1Category_OrderBy {
 
 export type ProductV1ExchangePolicy = {
   __typename?: "ProductV1ExchangePolicy";
+  disputeResolverContactMethod: Scalars["String"];
   id: Scalars["ID"];
   label?: Maybe<Scalars["String"]>;
+  sellerContactMethod: Scalars["String"];
   template: Scalars["String"];
   uuid: Scalars["String"];
   version: Scalars["Int"];
 };
 
 export type ProductV1ExchangePolicy_Filter = {
+  disputeResolverContactMethod?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolverContactMethod_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_not?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_not_contains_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  disputeResolverContactMethod_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_not_ends_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  disputeResolverContactMethod_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolverContactMethod_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_not_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
+  disputeResolverContactMethod_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolverContactMethod_starts_with_nocase?: InputMaybe<
+    Scalars["String"]
+  >;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -2309,6 +2339,26 @@ export type ProductV1ExchangePolicy_Filter = {
   label_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   label_starts_with?: InputMaybe<Scalars["String"]>;
   label_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_contains?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_contains_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_ends_with?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_gt?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_gte?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_in?: InputMaybe<Array<Scalars["String"]>>;
+  sellerContactMethod_lt?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_lte?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_contains?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_ends_with?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  sellerContactMethod_not_starts_with?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_starts_with?: InputMaybe<Scalars["String"]>;
+  sellerContactMethod_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   template?: InputMaybe<Scalars["String"]>;
   template_contains?: InputMaybe<Scalars["String"]>;
   template_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2360,8 +2410,10 @@ export type ProductV1ExchangePolicy_Filter = {
 };
 
 export enum ProductV1ExchangePolicy_OrderBy {
+  DisputeResolverContactMethod = "disputeResolverContactMethod",
   Id = "id",
   Label = "label",
+  SellerContactMethod = "sellerContactMethod",
   Template = "template",
   Uuid = "uuid",
   Version = "version"
@@ -4741,6 +4793,7 @@ export type ProductV1ShippingOption = {
   defaultVersion?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
   redemptionPoint?: Maybe<Scalars["String"]>;
+  returnPeriodInDays: Scalars["Int"];
   supportedJurisdictions?: Maybe<Array<ProductV1ShippingJurisdiction>>;
 };
 
@@ -4809,6 +4862,14 @@ export type ProductV1ShippingOption_Filter = {
   redemptionPoint_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   redemptionPoint_starts_with?: InputMaybe<Scalars["String"]>;
   redemptionPoint_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  returnPeriodInDays?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_gt?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_gte?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_in?: InputMaybe<Array<Scalars["Int"]>>;
+  returnPeriodInDays_lt?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_lte?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_not?: InputMaybe<Scalars["Int"]>;
+  returnPeriodInDays_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   supportedJurisdictions?: InputMaybe<Array<Scalars["String"]>>;
   supportedJurisdictions_contains?: InputMaybe<Array<Scalars["String"]>>;
   supportedJurisdictions_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
@@ -4824,6 +4885,7 @@ export enum ProductV1ShippingOption_OrderBy {
   DefaultVersion = "defaultVersion",
   Id = "id",
   RedemptionPoint = "redemptionPoint",
+  ReturnPeriodInDays = "returnPeriodInDays",
   SupportedJurisdictions = "supportedJurisdictions"
 }
 
@@ -6427,6 +6489,8 @@ export type GetSellerByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -6434,6 +6498,7 @@ export type GetSellerByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -6785,6 +6850,8 @@ export type GetSellersQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -6792,6 +6859,7 @@ export type GetSellersQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -7299,6 +7367,8 @@ export type GetDisputeResolverByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -7306,6 +7376,7 @@ export type GetDisputeResolverByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -7598,6 +7669,8 @@ export type GetDisputeResolversQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -7605,6 +7678,7 @@ export type GetDisputeResolversQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -7891,6 +7965,8 @@ export type SellerFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -7898,6 +7974,7 @@ export type SellerFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -8291,6 +8368,8 @@ export type DisputeResolverFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -8298,6 +8377,7 @@ export type DisputeResolverFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -8926,6 +9006,8 @@ export type GetExchangeTokenByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -8933,6 +9015,7 @@ export type GetExchangeTokenByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -9218,6 +9301,8 @@ export type GetExchangeTokensQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -9225,6 +9310,7 @@ export type GetExchangeTokensQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -9484,6 +9570,8 @@ export type ExchangeTokenFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -9491,6 +9579,7 @@ export type ExchangeTokenFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -9775,6 +9864,8 @@ export type GetExchangeByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -9782,6 +9873,7 @@ export type GetExchangeByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -10089,6 +10181,8 @@ export type GetExchangesQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -10096,6 +10190,7 @@ export type GetExchangesQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -10389,6 +10484,8 @@ export type ExchangeFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -10396,6 +10493,7 @@ export type ExchangeFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -10820,6 +10918,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -10827,6 +10927,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -11129,6 +11230,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -11136,6 +11239,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -11424,6 +11528,8 @@ export type BaseMetadataEntityFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -11431,6 +11537,7 @@ export type BaseMetadataEntityFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -11718,6 +11825,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -11725,6 +11834,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -12062,6 +12172,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -12069,6 +12181,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -12222,6 +12335,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       version: number;
       label?: string | null;
       template: string;
+      sellerContactMethod: string;
+      disputeResolverContactMethod: string;
     };
   } | null;
 };
@@ -12496,6 +12611,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               version: number;
               label?: string | null;
               template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
             };
             shipping?: {
               __typename?: "ProductV1ShippingOption";
@@ -12503,6 +12620,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               defaultVersion?: number | null;
               countryOfOrigin?: string | null;
               redemptionPoint?: string | null;
+              returnPeriodInDays: number;
               supportedJurisdictions?: Array<{
                 __typename?: "ProductV1ShippingJurisdiction";
                 id: string;
@@ -12656,6 +12774,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       version: number;
       label?: string | null;
       template: string;
+      sellerContactMethod: string;
+      disputeResolverContactMethod: string;
     };
   }>;
 };
@@ -12916,6 +13036,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -12923,6 +13045,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -13076,6 +13199,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
     version: number;
     label?: string | null;
     template: string;
+    sellerContactMethod: string;
+    disputeResolverContactMethod: string;
   };
 };
 
@@ -13335,6 +13460,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -13342,6 +13469,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -13495,6 +13623,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     version: number;
     label?: string | null;
     template: string;
+    sellerContactMethod: string;
+    disputeResolverContactMethod: string;
   };
 };
 
@@ -13668,6 +13798,7 @@ export type BaseProductV1ShippingOptionFieldsFragment = {
   defaultVersion?: number | null;
   countryOfOrigin?: string | null;
   redemptionPoint?: string | null;
+  returnPeriodInDays: number;
   supportedJurisdictions?: Array<{
     __typename?: "ProductV1ShippingJurisdiction";
     id: string;
@@ -13690,6 +13821,8 @@ export type BaseProductV1ExchangePolicyFieldsFragment = {
   version: number;
   label?: string | null;
   template: string;
+  sellerContactMethod: string;
+  disputeResolverContactMethod: string;
 };
 
 export type BaseProductV1ProductOverridesFieldsFragment = {
@@ -14023,6 +14156,8 @@ export type GetOfferByIdQueryQuery = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -14030,6 +14165,7 @@ export type GetOfferByIdQueryQuery = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -14339,6 +14475,8 @@ export type GetOffersQueryQuery = {
             version: number;
             label?: string | null;
             template: string;
+            sellerContactMethod: string;
+            disputeResolverContactMethod: string;
           };
           shipping?: {
             __typename?: "ProductV1ShippingOption";
@@ -14346,6 +14484,7 @@ export type GetOffersQueryQuery = {
             defaultVersion?: number | null;
             countryOfOrigin?: string | null;
             redemptionPoint?: string | null;
+            returnPeriodInDays: number;
             supportedJurisdictions?: Array<{
               __typename?: "ProductV1ShippingJurisdiction";
               id: string;
@@ -14639,6 +14778,8 @@ export type OfferFieldsFragment = {
           version: number;
           label?: string | null;
           template: string;
+          sellerContactMethod: string;
+          disputeResolverContactMethod: string;
         };
         shipping?: {
           __typename?: "ProductV1ShippingOption";
@@ -14646,6 +14787,7 @@ export type OfferFieldsFragment = {
           defaultVersion?: number | null;
           countryOfOrigin?: string | null;
           redemptionPoint?: string | null;
+          returnPeriodInDays: number;
           supportedJurisdictions?: Array<{
             __typename?: "ProductV1ShippingJurisdiction";
             id: string;
@@ -14890,6 +15032,8 @@ export type BaseOfferFieldsFragment = {
           version: number;
           label?: string | null;
           template: string;
+          sellerContactMethod: string;
+          disputeResolverContactMethod: string;
         };
         shipping?: {
           __typename?: "ProductV1ShippingOption";
@@ -14897,6 +15041,7 @@ export type BaseOfferFieldsFragment = {
           defaultVersion?: number | null;
           countryOfOrigin?: string | null;
           redemptionPoint?: string | null;
+          returnPeriodInDays: number;
           supportedJurisdictions?: Array<{
             __typename?: "ProductV1ShippingJurisdiction";
             id: string;
@@ -15131,6 +15276,8 @@ export const BaseProductV1ExchangePolicyFieldsFragmentDoc = gql`
     version
     label
     template
+    sellerContactMethod
+    disputeResolverContactMethod
   }
 `;
 export const BaseProductV1ShippingJurisdictionFieldsFragmentDoc = gql`
@@ -15149,6 +15296,7 @@ export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
       ...BaseProductV1ShippingJurisdictionFields
     }
     redemptionPoint
+    returnPeriodInDays
   }
   ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
 `;

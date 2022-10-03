@@ -182,15 +182,21 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
       exchangeToken: offerDataSubGraph.exchangeToken.address
     },
     offerMetadata: {
-      sellerContactMethod: "TBD", // to be added to product? metadata
-      disputeResolverContactMethod: "TBD", // to be added to product? metadata
+      sellerContactMethod: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.exchangePolicy.sellerContactMethod,
+      disputeResolverContactMethod: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.exchangePolicy.disputeResolverContactMethod,
       escalationDeposit:
         offerDataSubGraph.disputeResolutionTerms.buyerEscalationDeposit,
       escalationResponsePeriodInSec:
         offerDataSubGraph.disputeResolutionTerms.escalationResponsePeriod,
       sellerTradingName: (offerDataSubGraph.metadata as ProductV1MetadataEntity)
         ?.productV1Seller?.name,
-      returnPeriodInDays: 0 // to be added to product? metadata
+      returnPeriodInDays: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.shipping.returnPeriodInDays
     },
     tokenInfo: {
       ...offerDataSubGraph.exchangeToken,

@@ -1,5 +1,6 @@
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
+import { parseEther } from "@ethersproject/units";
 import { MetadataType } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
 import {
@@ -17,6 +18,7 @@ import {
   waitForGraphNodeIndexing
 } from "./utils";
 import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
+import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 
 jest.setTimeout(120_000);
 
@@ -50,7 +52,15 @@ async function createOfferArgs(
     ...offerParams
   });
 
-  const offerMetadata = mockAdditionalOfferMetadata();
+  const offerMetadata = {
+    sellerContactMethod: metadata.exchangePolicy.sellerContactMethod,
+    disputeResolverContactMethod:
+      metadata.exchangePolicy.disputeResolverContactMethod,
+    escalationDeposit: parseEther("0.01"),
+    escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
+    sellerTradingName: metadata.seller.name,
+    returnPeriodInDays: parseInt(metadata.shipping.returnPeriod)
+  };
 
   return { offerArgs, offerMetadata };
 }
@@ -90,7 +100,8 @@ describe("ProductV1 e2e tests", () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
 
-    const template = "Hello World!!";
+    const template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
     const { offerArgs } = await createOfferArgs(coreSDK, metadata);
     offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
@@ -106,13 +117,16 @@ describe("ProductV1 e2e tests", () => {
     const render = await coreSDK.renderContractualAgreementForOffer(
       (offer as subgraph.OfferFieldsFragment).id
     );
-    expect(render).toEqual("Hello World!!");
+    expect(render).toEqual(
+      `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
+    );
   });
 
   test("Prepare an offer, then render the contractual agreement template from createOfferArgs", async () => {
     const coreSDK = initCoreSDKWithWallet(seedWallet);
 
-    const template = "Hello World!!";
+    const template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
     const { offerArgs, offerMetadata } = await createOfferArgs(
       coreSDK,
@@ -124,7 +138,9 @@ describe("ProductV1 e2e tests", () => {
       offerArgs,
       offerMetadata
     );
-    expect(render).toEqual("Hello World!!");
+    expect(render).toEqual(
+      `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
+    );
   });
 });
 
