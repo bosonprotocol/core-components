@@ -44,8 +44,6 @@ test("handle FundsDepositedEvent", () => {
   assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "100");
   assert.fieldEquals("FundsEntity", fundsId, "tokenAddress", tokenAddress);
   assert.fieldEquals("FundsEntity", fundsId, "accountId", sellerId.toString());
-
-  clearStore();
 });
 
 test("handle FundsReleasedEvent", () => {

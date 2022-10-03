@@ -349,6 +349,7 @@ type Exchange @entity {
   offer: Offer!
   buyer: Buyer!
   seller: Seller!
+  disputeResolver: DisputeResolver!
   disputed: Boolean!
   state: ExchangeState!
   committedDate: BigInt!
@@ -369,6 +370,7 @@ Accounts
 interface Account {
   id: ID!
   funds: [FundsEntity!]! @derivedFrom(field: "account")
+  logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
 type Seller implements Account @entity {
@@ -385,6 +387,7 @@ type Seller implements Account @entity {
   voucherCloneAddress: Bytes!
   authTokenId: BigInt!
   authTokenType: Int!
+  logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
 type Buyer implements Account @entity {
@@ -393,9 +396,10 @@ type Buyer implements Account @entity {
   wallet: Bytes!
   active: Boolean!
   funds: [FundsEntity!]! @derivedFrom(field: "account")
+  logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
-type DisputeResolver @entity {
+type DisputeResolver implements Account @entity {
   id: ID!
   escalationResponsePeriod: BigInt!
   admin: Bytes!
@@ -407,6 +411,8 @@ type DisputeResolver @entity {
   sellerAllowList: [BigInt!]!
   active: Boolean!
   offers: [Offer!]! @derivedFrom(field: "disputeResolver")
+  funds: [FundsEntity!]! @derivedFrom(field: "account")
+  logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
 type DisputeResolutionTermsEntity @entity {
@@ -457,6 +463,7 @@ type Dispute @entity {
   timeout: BigInt!
   seller: Seller!
   buyer: Buyer!
+  disputeResolver: DisputeResolver!
 }
 
 """
@@ -482,4 +489,109 @@ type ExchangeToken @entity {
   name: String!
   offers: [Offer!]! @derivedFrom(field: "exchangeToken")
   funds: [FundsEntity!]! @derivedFrom(field: "token")
+}
+
+"""
+Events
+"""
+enum EventType {
+  "AccountHandler events"
+  SELLER_CREATED
+  SELLER_UPDATED
+  BUYER_CREATED
+  DISPUTE_RESOLVER_CREATED
+  DISPUTE_RESOLVER_UPDATED
+  DISPUTE_RESOLVER_ACTIVATED
+  DISPUTE_RESOLVER_FEES_ADDED
+  DISPUTE_RESOLVER_FEES_REMOVED
+  ALLOWED_SELLERS_ADDED
+  ALLOWED_SELLERS_REMOVED
+  "OfferHandler events"
+  OFFER_CREATED
+  OFFER_VOIDED
+  "ExchangeHandler events"
+  BUYER_COMMITTED
+  VOUCHER_EXTENDED
+  VOUCHER_REVOKED
+  VOUCHER_CANCELED
+  VOUCHER_REDEEMED
+  VOUCHER_TRANSFERRED
+  EXCHANGE_COMPLETED
+  "FundsHandler events"
+  FUNDS_DEPOSITED
+  FUNDS_RELEASED
+  FUNDS_ENCUMBERED
+  FUNDS_WITHDRAWN
+  "DisputeHandler events"
+  DISPUTE_RAISED
+  DISPUTE_RETRACTED
+  DISPUTE_TIMEOUT_EXTENDED
+  DISPUTE_EXPIRED
+  DISPUTE_RESOLVED
+  DISPUTE_ESCALATED
+  DISPUTE_DECIDED
+  ESCALATED_DISPUTE_REFUSED
+  ESCALATED_DISPUTE_EXPIRED
+}
+
+interface EventLog {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+}
+
+type AccountEventLog implements EventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+}
+
+type OfferEventLog implements EventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+
+  offer: Offer!
+}
+
+type ExchangeEventLog implements EventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+
+  exchange: Exchange!
+}
+
+type FundsEventLog implements EventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+
+  funds: FundsEntity!
+}
+
+type DisputeEventLog implements EventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  account: Account!
+
+  dispute: Dispute!
 }

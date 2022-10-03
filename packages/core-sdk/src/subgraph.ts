@@ -31,6 +31,7 @@ export type Scalars = {
 export type Account = {
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
+  logs: Array<EventLog>;
 };
 
 /**
@@ -45,6 +46,106 @@ export type AccountFundsArgs = {
   where?: InputMaybe<FundsEntity_Filter>;
 };
 
+/**
+ * Accounts
+ *
+ */
+export type AccountLogsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<EventLog_Filter>;
+};
+
+export type AccountEventLog = EventLog & {
+  __typename?: "AccountEventLog";
+  account: Account;
+  executedBy: Scalars["Bytes"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type AccountEventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum AccountEventLog_OrderBy {
+  Account = "account",
+  ExecutedBy = "executedBy",
+  Hash = "hash",
+  Id = "id",
+  Timestamp = "timestamp",
+  Type = "type"
+}
+
 export type Account_Filter = {
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
@@ -58,7 +159,8 @@ export type Account_Filter = {
 
 export enum Account_OrderBy {
   Funds = "funds",
-  Id = "id"
+  Id = "id",
+  Logs = "logs"
 }
 
 export type BaseMetadataEntity = MetadataInterface & {
@@ -380,6 +482,7 @@ export type Buyer = Account & {
   exchanges: Array<Exchange>;
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
+  logs: Array<EventLog>;
   wallet: Scalars["Bytes"];
 };
 
@@ -397,6 +500,14 @@ export type BuyerFundsArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<FundsEntity_Filter>;
+};
+
+export type BuyerLogsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<EventLog_Filter>;
 };
 
 export type Buyer_Filter = {
@@ -425,6 +536,7 @@ export enum Buyer_OrderBy {
   Exchanges = "exchanges",
   Funds = "funds",
   Id = "id",
+  Logs = "logs",
   Wallet = "wallet"
 }
 
@@ -433,6 +545,7 @@ export type Dispute = {
   buyer: Buyer;
   buyerPercent: Scalars["BigInt"];
   decidedDate?: Maybe<Scalars["BigInt"]>;
+  disputeResolver: DisputeResolver;
   disputedDate: Scalars["BigInt"];
   escalatedDate?: Maybe<Scalars["BigInt"]>;
   exchange: Exchange;
@@ -446,6 +559,116 @@ export type Dispute = {
   state: DisputeState;
   timeout: Scalars["BigInt"];
 };
+
+export type DisputeEventLog = EventLog & {
+  __typename?: "DisputeEventLog";
+  account: Account;
+  dispute: Dispute;
+  executedBy: Scalars["Bytes"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type DisputeEventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute?: InputMaybe<Scalars["String"]>;
+  dispute_contains?: InputMaybe<Scalars["String"]>;
+  dispute_contains_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_ends_with?: InputMaybe<Scalars["String"]>;
+  dispute_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_gt?: InputMaybe<Scalars["String"]>;
+  dispute_gte?: InputMaybe<Scalars["String"]>;
+  dispute_in?: InputMaybe<Array<Scalars["String"]>>;
+  dispute_lt?: InputMaybe<Scalars["String"]>;
+  dispute_lte?: InputMaybe<Scalars["String"]>;
+  dispute_not?: InputMaybe<Scalars["String"]>;
+  dispute_not_contains?: InputMaybe<Scalars["String"]>;
+  dispute_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_not_ends_with?: InputMaybe<Scalars["String"]>;
+  dispute_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  dispute_not_starts_with?: InputMaybe<Scalars["String"]>;
+  dispute_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  dispute_starts_with?: InputMaybe<Scalars["String"]>;
+  dispute_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum DisputeEventLog_OrderBy {
+  Account = "account",
+  Dispute = "dispute",
+  ExecutedBy = "executedBy",
+  Hash = "hash",
+  Id = "id",
+  Timestamp = "timestamp",
+  Type = "type"
+}
 
 export type DisputeResolutionTermsEntity = {
   __typename?: "DisputeResolutionTermsEntity";
@@ -552,14 +775,16 @@ export enum DisputeResolutionTermsEntity_OrderBy {
   Offer = "offer"
 }
 
-export type DisputeResolver = {
+export type DisputeResolver = Account & {
   __typename?: "DisputeResolver";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
   clerk: Scalars["Bytes"];
   escalationResponsePeriod: Scalars["BigInt"];
   fees: Array<DisputeResolverFee>;
+  funds: Array<FundsEntity>;
   id: Scalars["ID"];
+  logs: Array<EventLog>;
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
@@ -573,6 +798,22 @@ export type DisputeResolverFeesArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<DisputeResolverFee_Filter>;
+};
+
+export type DisputeResolverFundsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<FundsEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<FundsEntity_Filter>;
+};
+
+export type DisputeResolverLogsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<EventLog_Filter>;
 };
 
 export type DisputeResolverOffersArgs = {
@@ -751,7 +992,9 @@ export enum DisputeResolver_OrderBy {
   Clerk = "clerk",
   EscalationResponsePeriod = "escalationResponsePeriod",
   Fees = "fees",
+  Funds = "funds",
   Id = "id",
+  Logs = "logs",
   MetadataUri = "metadataUri",
   Offers = "offers",
   Operator = "operator",
@@ -809,6 +1052,26 @@ export type Dispute_Filter = {
   decidedDate_lte?: InputMaybe<Scalars["BigInt"]>;
   decidedDate_not?: InputMaybe<Scalars["BigInt"]>;
   decidedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolver?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   disputedDate?: InputMaybe<Scalars["BigInt"]>;
   disputedDate_gt?: InputMaybe<Scalars["BigInt"]>;
   disputedDate_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -931,6 +1194,7 @@ export enum Dispute_OrderBy {
   Buyer = "buyer",
   BuyerPercent = "buyerPercent",
   DecidedDate = "decidedDate",
+  DisputeResolver = "disputeResolver",
   DisputedDate = "disputedDate",
   EscalatedDate = "escalatedDate",
   Exchange = "exchange",
@@ -945,6 +1209,137 @@ export enum Dispute_OrderBy {
   Timeout = "timeout"
 }
 
+export type EventLog = {
+  account: Account;
+  executedBy: Scalars["Bytes"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type EventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum EventLog_OrderBy {
+  Account = "account",
+  ExecutedBy = "executedBy",
+  Hash = "hash",
+  Id = "id",
+  Timestamp = "timestamp",
+  Type = "type"
+}
+
+/**
+ * Events
+ *
+ */
+export enum EventType {
+  AllowedSellersAdded = "ALLOWED_SELLERS_ADDED",
+  AllowedSellersRemoved = "ALLOWED_SELLERS_REMOVED",
+  /** ExchangeHandler events */
+  BuyerCommitted = "BUYER_COMMITTED",
+  BuyerCreated = "BUYER_CREATED",
+  DisputeDecided = "DISPUTE_DECIDED",
+  DisputeEscalated = "DISPUTE_ESCALATED",
+  DisputeExpired = "DISPUTE_EXPIRED",
+  /** DisputeHandler events */
+  DisputeRaised = "DISPUTE_RAISED",
+  DisputeResolved = "DISPUTE_RESOLVED",
+  DisputeResolverActivated = "DISPUTE_RESOLVER_ACTIVATED",
+  DisputeResolverCreated = "DISPUTE_RESOLVER_CREATED",
+  DisputeResolverFeesAdded = "DISPUTE_RESOLVER_FEES_ADDED",
+  DisputeResolverFeesRemoved = "DISPUTE_RESOLVER_FEES_REMOVED",
+  DisputeResolverUpdated = "DISPUTE_RESOLVER_UPDATED",
+  DisputeRetracted = "DISPUTE_RETRACTED",
+  DisputeTimeoutExtended = "DISPUTE_TIMEOUT_EXTENDED",
+  EscalatedDisputeExpired = "ESCALATED_DISPUTE_EXPIRED",
+  EscalatedDisputeRefused = "ESCALATED_DISPUTE_REFUSED",
+  ExchangeCompleted = "EXCHANGE_COMPLETED",
+  /** FundsHandler events */
+  FundsDeposited = "FUNDS_DEPOSITED",
+  FundsEncumbered = "FUNDS_ENCUMBERED",
+  FundsReleased = "FUNDS_RELEASED",
+  FundsWithdrawn = "FUNDS_WITHDRAWN",
+  /** OfferHandler events */
+  OfferCreated = "OFFER_CREATED",
+  OfferVoided = "OFFER_VOIDED",
+  /** AccountHandler events */
+  SellerCreated = "SELLER_CREATED",
+  SellerUpdated = "SELLER_UPDATED",
+  VoucherCanceled = "VOUCHER_CANCELED",
+  VoucherExtended = "VOUCHER_EXTENDED",
+  VoucherRedeemed = "VOUCHER_REDEEMED",
+  VoucherRevoked = "VOUCHER_REVOKED",
+  VoucherTransferred = "VOUCHER_TRANSFERRED"
+}
+
 export type Exchange = {
   __typename?: "Exchange";
   buyer: Buyer;
@@ -952,6 +1347,7 @@ export type Exchange = {
   committedDate: Scalars["BigInt"];
   completedDate?: Maybe<Scalars["BigInt"]>;
   dispute?: Maybe<Dispute>;
+  disputeResolver: DisputeResolver;
   disputed: Scalars["Boolean"];
   disputedDate?: Maybe<Scalars["BigInt"]>;
   expired: Scalars["Boolean"];
@@ -964,6 +1360,116 @@ export type Exchange = {
   state: ExchangeState;
   validUntilDate: Scalars["BigInt"];
 };
+
+export type ExchangeEventLog = EventLog & {
+  __typename?: "ExchangeEventLog";
+  account: Account;
+  exchange: Exchange;
+  executedBy: Scalars["Bytes"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type ExchangeEventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange?: InputMaybe<Scalars["String"]>;
+  exchange_contains?: InputMaybe<Scalars["String"]>;
+  exchange_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_ends_with?: InputMaybe<Scalars["String"]>;
+  exchange_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_gt?: InputMaybe<Scalars["String"]>;
+  exchange_gte?: InputMaybe<Scalars["String"]>;
+  exchange_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchange_lt?: InputMaybe<Scalars["String"]>;
+  exchange_lte?: InputMaybe<Scalars["String"]>;
+  exchange_not?: InputMaybe<Scalars["String"]>;
+  exchange_not_contains?: InputMaybe<Scalars["String"]>;
+  exchange_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_not_ends_with?: InputMaybe<Scalars["String"]>;
+  exchange_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  exchange_not_starts_with?: InputMaybe<Scalars["String"]>;
+  exchange_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  exchange_starts_with?: InputMaybe<Scalars["String"]>;
+  exchange_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum ExchangeEventLog_OrderBy {
+  Account = "account",
+  Exchange = "exchange",
+  ExecutedBy = "executedBy",
+  Hash = "hash",
+  Id = "id",
+  Timestamp = "timestamp",
+  Type = "type"
+}
 
 /**
  * Exchange and Voucher
@@ -1138,6 +1644,26 @@ export type Exchange_Filter = {
   completedDate_not?: InputMaybe<Scalars["BigInt"]>;
   completedDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   dispute?: InputMaybe<Scalars["String"]>;
+  disputeResolver?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   dispute_contains?: InputMaybe<Scalars["String"]>;
   dispute_contains_nocase?: InputMaybe<Scalars["String"]>;
   dispute_ends_with?: InputMaybe<Scalars["String"]>;
@@ -1265,6 +1791,7 @@ export enum Exchange_OrderBy {
   CommittedDate = "committedDate",
   CompletedDate = "completedDate",
   Dispute = "dispute",
+  DisputeResolver = "disputeResolver",
   Disputed = "disputed",
   DisputedDate = "disputedDate",
   Expired = "expired",
@@ -1372,6 +1899,116 @@ export enum FundsEntity_OrderBy {
   Id = "id",
   Token = "token",
   TokenAddress = "tokenAddress"
+}
+
+export type FundsEventLog = EventLog & {
+  __typename?: "FundsEventLog";
+  account: Account;
+  executedBy: Scalars["Bytes"];
+  funds: FundsEntity;
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type FundsEventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  funds?: InputMaybe<Scalars["String"]>;
+  funds_contains?: InputMaybe<Scalars["String"]>;
+  funds_contains_nocase?: InputMaybe<Scalars["String"]>;
+  funds_ends_with?: InputMaybe<Scalars["String"]>;
+  funds_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  funds_gt?: InputMaybe<Scalars["String"]>;
+  funds_gte?: InputMaybe<Scalars["String"]>;
+  funds_in?: InputMaybe<Array<Scalars["String"]>>;
+  funds_lt?: InputMaybe<Scalars["String"]>;
+  funds_lte?: InputMaybe<Scalars["String"]>;
+  funds_not?: InputMaybe<Scalars["String"]>;
+  funds_not_contains?: InputMaybe<Scalars["String"]>;
+  funds_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  funds_not_ends_with?: InputMaybe<Scalars["String"]>;
+  funds_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  funds_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  funds_not_starts_with?: InputMaybe<Scalars["String"]>;
+  funds_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  funds_starts_with?: InputMaybe<Scalars["String"]>;
+  funds_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum FundsEventLog_OrderBy {
+  Account = "account",
+  ExecutedBy = "executedBy",
+  Funds = "funds",
+  Hash = "hash",
+  Id = "id",
+  Timestamp = "timestamp",
+  Type = "type"
 }
 
 export type MetadataAttribute = {
@@ -1813,6 +2450,116 @@ export type OfferExchangesArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<Exchange_Filter>;
 };
+
+export type OfferEventLog = EventLog & {
+  __typename?: "OfferEventLog";
+  account: Account;
+  executedBy: Scalars["Bytes"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  offer: Offer;
+  timestamp: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type OfferEventLog_Filter = {
+  account?: InputMaybe<Scalars["String"]>;
+  account_contains?: InputMaybe<Scalars["String"]>;
+  account_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_ends_with?: InputMaybe<Scalars["String"]>;
+  account_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_gt?: InputMaybe<Scalars["String"]>;
+  account_gte?: InputMaybe<Scalars["String"]>;
+  account_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_lt?: InputMaybe<Scalars["String"]>;
+  account_lte?: InputMaybe<Scalars["String"]>;
+  account_not?: InputMaybe<Scalars["String"]>;
+  account_not_contains?: InputMaybe<Scalars["String"]>;
+  account_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with?: InputMaybe<Scalars["String"]>;
+  account_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  account_not_starts_with?: InputMaybe<Scalars["String"]>;
+  account_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  account_starts_with?: InputMaybe<Scalars["String"]>;
+  account_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  executedBy?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  executedBy_not?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  executedBy_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  offer?: InputMaybe<Scalars["String"]>;
+  offer_contains?: InputMaybe<Scalars["String"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_gt?: InputMaybe<Scalars["String"]>;
+  offer_gte?: InputMaybe<Scalars["String"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]>;
+  offer_lte?: InputMaybe<Scalars["String"]>;
+  offer_not?: InputMaybe<Scalars["String"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum OfferEventLog_OrderBy {
+  Account = "account",
+  ExecutedBy = "executedBy",
+  Hash = "hash",
+  Id = "id",
+  Offer = "offer",
+  Timestamp = "timestamp",
+  Type = "type"
+}
 
 export type Offer_Filter = {
   agentFee?: InputMaybe<Scalars["BigInt"]>;
@@ -5000,12 +5747,16 @@ export type Query = {
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
   account?: Maybe<Account>;
+  accountEventLog?: Maybe<AccountEventLog>;
+  accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
   dispute?: Maybe<Dispute>;
+  disputeEventLog?: Maybe<DisputeEventLog>;
+  disputeEventLogs: Array<DisputeEventLog>;
   disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
   disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
@@ -5013,17 +5764,25 @@ export type Query = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  eventLog?: Maybe<EventLog>;
+  eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
+  exchangeEventLog?: Maybe<ExchangeEventLog>;
+  exchangeEventLogs: Array<ExchangeEventLog>;
   exchangeToken?: Maybe<ExchangeToken>;
   exchangeTokens: Array<ExchangeToken>;
   exchanges: Array<Exchange>;
   fundsEntities: Array<FundsEntity>;
   fundsEntity?: Maybe<FundsEntity>;
+  fundsEventLog?: Maybe<FundsEventLog>;
+  fundsEventLogs: Array<FundsEventLog>;
   metadataAttribute?: Maybe<MetadataAttribute>;
   metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
   offer?: Maybe<Offer>;
+  offerEventLog?: Maybe<OfferEventLog>;
+  offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
@@ -5066,6 +5825,22 @@ export type QueryAccountArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryAccountEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryAccountEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AccountEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AccountEventLog_Filter>;
 };
 
 export type QueryAccountsArgs = {
@@ -5114,6 +5889,22 @@ export type QueryDisputeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDisputeEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryDisputeEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeEventLog_Filter>;
 };
 
 export type QueryDisputeResolutionTermsEntitiesArgs = {
@@ -5174,10 +5965,42 @@ export type QueryDisputesArgs = {
   where?: InputMaybe<Dispute_Filter>;
 };
 
+export type QueryEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<EventLog_Filter>;
+};
+
 export type QueryExchangeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryExchangeEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryExchangeEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ExchangeEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ExchangeEventLog_Filter>;
 };
 
 export type QueryExchangeTokenArgs = {
@@ -5222,6 +6045,22 @@ export type QueryFundsEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type QueryFundsEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryFundsEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<FundsEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<FundsEventLog_Filter>;
+};
+
 export type QueryMetadataAttributeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -5258,6 +6097,22 @@ export type QueryOfferArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryOfferEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryOfferEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<OfferEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<OfferEventLog_Filter>;
 };
 
 export type QueryOffersArgs = {
@@ -5530,6 +6385,7 @@ export type Seller = Account & {
   exchanges: Array<Exchange>;
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
+  logs: Array<EventLog>;
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
   sellerId: Scalars["BigInt"];
@@ -5551,6 +6407,14 @@ export type SellerFundsArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<FundsEntity_Filter>;
+};
+
+export type SellerLogsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<EventLog_Filter>;
 };
 
 export type SellerOffersArgs = {
@@ -5639,6 +6503,7 @@ export enum Seller_OrderBy {
   Exchanges = "exchanges",
   Funds = "funds",
   Id = "id",
+  Logs = "logs",
   Offers = "offers",
   Operator = "operator",
   SellerId = "sellerId",
@@ -5651,12 +6516,16 @@ export type Subscription = {
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
   account?: Maybe<Account>;
+  accountEventLog?: Maybe<AccountEventLog>;
+  accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
   dispute?: Maybe<Dispute>;
+  disputeEventLog?: Maybe<DisputeEventLog>;
+  disputeEventLogs: Array<DisputeEventLog>;
   disputeResolutionTermsEntities: Array<DisputeResolutionTermsEntity>;
   disputeResolutionTermsEntity?: Maybe<DisputeResolutionTermsEntity>;
   disputeResolver?: Maybe<DisputeResolver>;
@@ -5664,17 +6533,25 @@ export type Subscription = {
   disputeResolverFees: Array<DisputeResolverFee>;
   disputeResolvers: Array<DisputeResolver>;
   disputes: Array<Dispute>;
+  eventLog?: Maybe<EventLog>;
+  eventLogs: Array<EventLog>;
   exchange?: Maybe<Exchange>;
+  exchangeEventLog?: Maybe<ExchangeEventLog>;
+  exchangeEventLogs: Array<ExchangeEventLog>;
   exchangeToken?: Maybe<ExchangeToken>;
   exchangeTokens: Array<ExchangeToken>;
   exchanges: Array<Exchange>;
   fundsEntities: Array<FundsEntity>;
   fundsEntity?: Maybe<FundsEntity>;
+  fundsEventLog?: Maybe<FundsEventLog>;
+  fundsEventLogs: Array<FundsEventLog>;
   metadataAttribute?: Maybe<MetadataAttribute>;
   metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
   offer?: Maybe<Offer>;
+  offerEventLog?: Maybe<OfferEventLog>;
+  offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
@@ -5717,6 +6594,22 @@ export type SubscriptionAccountArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionAccountEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionAccountEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AccountEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AccountEventLog_Filter>;
 };
 
 export type SubscriptionAccountsArgs = {
@@ -5765,6 +6658,22 @@ export type SubscriptionDisputeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDisputeEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionDisputeEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<DisputeEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<DisputeEventLog_Filter>;
 };
 
 export type SubscriptionDisputeResolutionTermsEntitiesArgs = {
@@ -5825,10 +6734,42 @@ export type SubscriptionDisputesArgs = {
   where?: InputMaybe<Dispute_Filter>;
 };
 
+export type SubscriptionEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<EventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<EventLog_Filter>;
+};
+
 export type SubscriptionExchangeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionExchangeEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionExchangeEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ExchangeEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ExchangeEventLog_Filter>;
 };
 
 export type SubscriptionExchangeTokenArgs = {
@@ -5873,6 +6814,22 @@ export type SubscriptionFundsEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type SubscriptionFundsEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionFundsEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<FundsEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<FundsEventLog_Filter>;
+};
+
 export type SubscriptionMetadataAttributeArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -5909,6 +6866,22 @@ export type SubscriptionOfferArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionOfferEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionOfferEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<OfferEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<OfferEventLog_Filter>;
 };
 
 export type SubscriptionOffersArgs = {
@@ -6220,9 +7193,15 @@ export type GetSellerByIdQueryQueryVariables = Exact<{
   exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
   exchangesOrderDirection?: InputMaybe<OrderDirection>;
   exchangesFilter?: InputMaybe<Exchange_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeExchanges?: InputMaybe<Scalars["Boolean"]>;
   includeOffers?: InputMaybe<Scalars["Boolean"]>;
   includeFunds?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetSellerByIdQueryQuery = {
@@ -6557,6 +7536,72 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
       };
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
   } | null;
 };
 
@@ -6581,9 +7626,15 @@ export type GetSellersQueryQueryVariables = Exact<{
   exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
   exchangesOrderDirection?: InputMaybe<OrderDirection>;
   exchangesFilter?: InputMaybe<Exchange_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeExchanges?: InputMaybe<Scalars["Boolean"]>;
   includeOffers?: InputMaybe<Scalars["Boolean"]>;
   includeFunds?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetSellersQueryQuery = {
@@ -6918,6 +7969,72 @@ export type GetSellersQueryQuery = {
         active: boolean;
       };
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
   }>;
 };
 
@@ -6933,8 +8050,14 @@ export type GetBuyerByIdQueryQueryVariables = Exact<{
   exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
   exchangesOrderDirection?: InputMaybe<OrderDirection>;
   exchangesFilter?: InputMaybe<Exchange_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeExchanges?: InputMaybe<Scalars["Boolean"]>;
   includeFunds?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetBuyerByIdQueryQuery = {
@@ -7006,6 +8129,72 @@ export type GetBuyerByIdQueryQuery = {
         active: boolean;
       };
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
   } | null;
 };
 
@@ -7030,9 +8219,15 @@ export type GetBuyersQueryQueryVariables = Exact<{
   exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
   exchangesOrderDirection?: InputMaybe<OrderDirection>;
   exchangesFilter?: InputMaybe<Exchange_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeExchanges?: InputMaybe<Scalars["Boolean"]>;
   includeOffers?: InputMaybe<Scalars["Boolean"]>;
   includeFunds?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetBuyersQueryQuery = {
@@ -7104,6 +8299,72 @@ export type GetBuyersQueryQuery = {
         active: boolean;
       };
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
   }>;
 };
 
@@ -7114,7 +8375,13 @@ export type GetDisputeResolverByIdQueryQueryVariables = Exact<{
   offersOrderBy?: InputMaybe<Offer_OrderBy>;
   offersOrderDirection?: InputMaybe<OrderDirection>;
   offersFilter?: InputMaybe<Offer_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeOffers?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetDisputeResolverByIdQueryQuery = {
@@ -7387,6 +8654,72 @@ export type GetDisputeResolverByIdQueryQuery = {
           }
         | null;
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
@@ -7416,7 +8749,13 @@ export type GetDisputeResolversQueryQueryVariables = Exact<{
   offersOrderBy?: InputMaybe<Offer_OrderBy>;
   offersOrderDirection?: InputMaybe<OrderDirection>;
   offersFilter?: InputMaybe<Offer_Filter>;
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
   includeOffers?: InputMaybe<Scalars["Boolean"]>;
+  includeLogs?: InputMaybe<Scalars["Boolean"]>;
 }>;
 
 export type GetDisputeResolversQueryQuery = {
@@ -7689,6 +9028,72 @@ export type GetDisputeResolversQueryQuery = {
           }
         | null;
     }>;
+    logs?: Array<
+      | {
+          __typename?: "AccountEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "DisputeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          dispute: { __typename?: "Dispute"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "ExchangeEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          exchange: { __typename?: "Exchange"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "FundsEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          funds: { __typename?: "FundsEntity"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+      | {
+          __typename?: "OfferEventLog";
+          id: string;
+          hash: string;
+          type: EventType;
+          timestamp: string;
+          executedBy: string;
+          offer: { __typename?: "Offer"; id: string };
+          account:
+            | { __typename?: "Buyer"; id: string }
+            | { __typename?: "DisputeResolver"; id: string }
+            | { __typename?: "Seller"; id: string };
+        }
+    >;
     fees: Array<{
       __typename?: "DisputeResolverFee";
       id: string;
@@ -8033,6 +9438,72 @@ export type SellerFieldsFragment = {
       active: boolean;
     };
   }>;
+  logs?: Array<
+    | {
+        __typename?: "AccountEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "DisputeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        dispute: { __typename?: "Dispute"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "ExchangeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        exchange: { __typename?: "Exchange"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "FundsEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        funds: { __typename?: "FundsEntity"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "OfferEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        offer: { __typename?: "Offer"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+  >;
 };
 
 export type BaseSellerFieldsFragment = {
@@ -8115,6 +9586,72 @@ export type BuyerFieldsFragment = {
       active: boolean;
     };
   }>;
+  logs?: Array<
+    | {
+        __typename?: "AccountEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "DisputeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        dispute: { __typename?: "Dispute"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "ExchangeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        exchange: { __typename?: "Exchange"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "FundsEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        funds: { __typename?: "FundsEntity"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "OfferEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        offer: { __typename?: "Offer"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+  >;
 };
 
 export type BaseBuyerFieldsFragment = {
@@ -8388,6 +9925,72 @@ export type DisputeResolverFieldsFragment = {
         }
       | null;
   }>;
+  logs?: Array<
+    | {
+        __typename?: "AccountEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "DisputeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        dispute: { __typename?: "Dispute"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "ExchangeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        exchange: { __typename?: "Exchange"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "FundsEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        funds: { __typename?: "FundsEntity"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "OfferEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        offer: { __typename?: "Offer"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+  >;
   fees: Array<{
     __typename?: "DisputeResolverFee";
     id: string;
@@ -9606,6 +11209,160 @@ export type BaseExchangeTokenFieldsFragment = {
   symbol: string;
   name: string;
 };
+
+export type GetEventLogsQueryQueryVariables = Exact<{
+  logsSkip?: InputMaybe<Scalars["Int"]>;
+  logsFirst?: InputMaybe<Scalars["Int"]>;
+  logsOrderBy?: InputMaybe<EventLog_OrderBy>;
+  logsOrderDirection?: InputMaybe<OrderDirection>;
+  logsFilter?: InputMaybe<EventLog_Filter>;
+}>;
+
+export type GetEventLogsQueryQuery = {
+  __typename?: "Query";
+  eventLogs: Array<
+    | {
+        __typename?: "AccountEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "DisputeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        dispute: { __typename?: "Dispute"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "ExchangeEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        exchange: { __typename?: "Exchange"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "FundsEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        funds: { __typename?: "FundsEntity"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+    | {
+        __typename?: "OfferEventLog";
+        id: string;
+        hash: string;
+        type: EventType;
+        timestamp: string;
+        executedBy: string;
+        offer: { __typename?: "Offer"; id: string };
+        account:
+          | { __typename?: "Buyer"; id: string }
+          | { __typename?: "DisputeResolver"; id: string }
+          | { __typename?: "Seller"; id: string };
+      }
+  >;
+};
+
+type BaseEventLogFields_AccountEventLog_Fragment = {
+  __typename?: "AccountEventLog";
+  id: string;
+  hash: string;
+  type: EventType;
+  timestamp: string;
+  executedBy: string;
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
+};
+
+type BaseEventLogFields_DisputeEventLog_Fragment = {
+  __typename?: "DisputeEventLog";
+  id: string;
+  hash: string;
+  type: EventType;
+  timestamp: string;
+  executedBy: string;
+  dispute: { __typename?: "Dispute"; id: string };
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
+};
+
+type BaseEventLogFields_ExchangeEventLog_Fragment = {
+  __typename?: "ExchangeEventLog";
+  id: string;
+  hash: string;
+  type: EventType;
+  timestamp: string;
+  executedBy: string;
+  exchange: { __typename?: "Exchange"; id: string };
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
+};
+
+type BaseEventLogFields_FundsEventLog_Fragment = {
+  __typename?: "FundsEventLog";
+  id: string;
+  hash: string;
+  type: EventType;
+  timestamp: string;
+  executedBy: string;
+  funds: { __typename?: "FundsEntity"; id: string };
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
+};
+
+type BaseEventLogFields_OfferEventLog_Fragment = {
+  __typename?: "OfferEventLog";
+  id: string;
+  hash: string;
+  type: EventType;
+  timestamp: string;
+  executedBy: string;
+  offer: { __typename?: "Offer"; id: string };
+  account:
+    | { __typename?: "Buyer"; id: string }
+    | { __typename?: "DisputeResolver"; id: string }
+    | { __typename?: "Seller"; id: string };
+};
+
+export type BaseEventLogFieldsFragment =
+  | BaseEventLogFields_AccountEventLog_Fragment
+  | BaseEventLogFields_DisputeEventLog_Fragment
+  | BaseEventLogFields_ExchangeEventLog_Fragment
+  | BaseEventLogFields_FundsEventLog_Fragment
+  | BaseEventLogFields_OfferEventLog_Fragment;
 
 export type GetExchangeByIdQueryQueryVariables = Exact<{
   exchangeId: Scalars["ID"];
@@ -15436,6 +17193,38 @@ export const BaseExchangeFieldsFragmentDoc = gql`
   ${BaseBuyerFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
 `;
+export const BaseEventLogFieldsFragmentDoc = gql`
+  fragment BaseEventLogFields on EventLog {
+    id
+    hash
+    type
+    timestamp
+    executedBy
+    account {
+      id
+    }
+    ... on OfferEventLog {
+      offer {
+        id
+      }
+    }
+    ... on ExchangeEventLog {
+      exchange {
+        id
+      }
+    }
+    ... on FundsEventLog {
+      funds {
+        id
+      }
+    }
+    ... on DisputeEventLog {
+      dispute {
+        id
+      }
+    }
+  }
+`;
 export const SellerFieldsFragmentDoc = gql`
   fragment SellerFields on Seller {
     ...BaseSellerFields
@@ -15466,11 +17255,21 @@ export const SellerFieldsFragmentDoc = gql`
     ) @include(if: $includeExchanges) {
       ...BaseExchangeFields
     }
+    logs(
+      skip: $logsSkip
+      first: $logsFirst
+      orderBy: $logsOrderBy
+      orderDirection: $logsOrderDirection
+      where: $logsFilter
+    ) @include(if: $includeLogs) {
+      ...BaseEventLogFields
+    }
   }
   ${BaseSellerFieldsFragmentDoc}
   ${FundsEntityFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
+  ${BaseEventLogFieldsFragmentDoc}
 `;
 export const BuyerFieldsFragmentDoc = gql`
   fragment BuyerFields on Buyer {
@@ -15493,10 +17292,20 @@ export const BuyerFieldsFragmentDoc = gql`
     ) @include(if: $includeExchanges) {
       ...BaseExchangeFields
     }
+    logs(
+      skip: $logsSkip
+      first: $logsFirst
+      orderBy: $logsOrderBy
+      orderDirection: $logsOrderDirection
+      where: $logsFilter
+    ) @include(if: $includeLogs) {
+      ...BaseEventLogFields
+    }
   }
   ${BaseBuyerFieldsFragmentDoc}
   ${FundsEntityFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
+  ${BaseEventLogFieldsFragmentDoc}
 `;
 export const DisputeResolverFieldsFragmentDoc = gql`
   fragment DisputeResolverFields on DisputeResolver {
@@ -15510,9 +17319,19 @@ export const DisputeResolverFieldsFragmentDoc = gql`
     ) @include(if: $includeOffers) {
       ...BaseOfferFields
     }
+    logs(
+      skip: $logsSkip
+      first: $logsFirst
+      orderBy: $logsOrderBy
+      orderDirection: $logsOrderDirection
+      where: $logsFilter
+    ) @include(if: $includeLogs) {
+      ...BaseEventLogFields
+    }
   }
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
+  ${BaseEventLogFieldsFragmentDoc}
 `;
 export const DisputeFieldsFragmentDoc = gql`
   fragment DisputeFields on Dispute {
@@ -15735,9 +17554,15 @@ export const GetSellerByIdQueryDocument = gql`
     $exchangesOrderBy: Exchange_orderBy
     $exchangesOrderDirection: OrderDirection
     $exchangesFilter: Exchange_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeExchanges: Boolean = false
     $includeOffers: Boolean = false
     $includeFunds: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     seller(id: $sellerId) {
       ...SellerFields
@@ -15767,9 +17592,15 @@ export const GetSellersQueryDocument = gql`
     $exchangesOrderBy: Exchange_orderBy
     $exchangesOrderDirection: OrderDirection
     $exchangesFilter: Exchange_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeExchanges: Boolean = false
     $includeOffers: Boolean = false
     $includeFunds: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     sellers(
       skip: $sellersSkip
@@ -15796,8 +17627,14 @@ export const GetBuyerByIdQueryDocument = gql`
     $exchangesOrderBy: Exchange_orderBy
     $exchangesOrderDirection: OrderDirection
     $exchangesFilter: Exchange_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeExchanges: Boolean = false
     $includeFunds: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     buyer(id: $buyerId) {
       ...BuyerFields
@@ -15827,9 +17664,15 @@ export const GetBuyersQueryDocument = gql`
     $exchangesOrderBy: Exchange_orderBy
     $exchangesOrderDirection: OrderDirection
     $exchangesFilter: Exchange_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeExchanges: Boolean = false
     $includeOffers: Boolean = false
     $includeFunds: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     buyers(
       skip: $buyersSkip
@@ -15851,7 +17694,13 @@ export const GetDisputeResolverByIdQueryDocument = gql`
     $offersOrderBy: Offer_orderBy
     $offersOrderDirection: OrderDirection
     $offersFilter: Offer_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeOffers: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     disputeResolver(id: $disputeResolverId) {
       ...DisputeResolverFields
@@ -15871,7 +17720,13 @@ export const GetDisputeResolversQueryDocument = gql`
     $offersOrderBy: Offer_orderBy
     $offersOrderDirection: OrderDirection
     $offersFilter: Offer_filter
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
     $includeOffers: Boolean = false
+    $includeLogs: Boolean = false
   ) {
     disputeResolvers(
       skip: $disputeResolversSkip
@@ -15979,6 +17834,26 @@ export const GetExchangeTokensQueryDocument = gql`
     }
   }
   ${ExchangeTokenFieldsFragmentDoc}
+`;
+export const GetEventLogsQueryDocument = gql`
+  query getEventLogsQuery(
+    $logsSkip: Int
+    $logsFirst: Int
+    $logsOrderBy: EventLog_orderBy
+    $logsOrderDirection: OrderDirection
+    $logsFilter: EventLog_filter
+  ) {
+    eventLogs(
+      skip: $logsSkip
+      first: $logsFirst
+      orderBy: $logsOrderBy
+      orderDirection: $logsOrderDirection
+      where: $logsFilter
+    ) {
+      ...BaseEventLogFields
+    }
+  }
+  ${BaseEventLogFieldsFragmentDoc}
 `;
 export const GetExchangeByIdQueryDocument = gql`
   query getExchangeByIdQuery($exchangeId: ID!) {
@@ -16353,6 +18228,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getExchangeTokensQuery",
+        "query"
+      );
+    },
+    getEventLogsQuery(
+      variables?: GetEventLogsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetEventLogsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetEventLogsQueryQuery>(
+            GetEventLogsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getEventLogsQuery",
         "query"
       );
     },

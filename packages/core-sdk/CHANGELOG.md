@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.15.0...@bosonprotocol/core-sdk@1.16.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* add base buyer and seller fields to base exchange fragment ([#277](https://github.com/bosonprotocol/core-components/issues/277)) ([37f6e8c](https://github.com/bosonprotocol/core-components/commit/37f6e8c484558b2f2f48e63290b93b2ee6eb3557))
+* try fixing the isolatedModules issue when building the dApp ([#257](https://github.com/bosonprotocol/core-components/issues/257)) ([295a6d7](https://github.com/bosonprotocol/core-components/commit/295a6d709ef2948072cf9162022a0d94cf25af3a))
+
+
+### Features
+
+* add `EventLog` entity ([#280](https://github.com/bosonprotocol/core-components/issues/280)) ([73c128e](https://github.com/bosonprotocol/core-components/commit/73c128e61e5928101e081014cb5a79e477355d36))
+* add a method to relay meta transactions through native API ([#239](https://github.com/bosonprotocol/core-components/issues/239)) ([51e370e](https://github.com/bosonprotocol/core-components/commit/51e370eaaa2466cf5c8f06116e705f6e01843d12)), closes [#268](https://github.com/bosonprotocol/core-components/issues/268)
+* add num of commits / redemptions ([#273](https://github.com/bosonprotocol/core-components/issues/273)) ([96345d0](https://github.com/bosonprotocol/core-components/commit/96345d03adfbdf5c27a2216446733f8dc16d8791))
+* add voided field to the subgraph queries ([#276](https://github.com/bosonprotocol/core-components/issues/276)) ([171a9c7](https://github.com/bosonprotocol/core-components/commit/171a9c7092ae245849fb1f0eecff32eadfded2ce))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+* nest dispute in base exchange fields ([#274](https://github.com/bosonprotocol/core-components/issues/274)) ([8b811a8](https://github.com/bosonprotocol/core-components/commit/8b811a8022df72d386953becb64f4a9acd8ba221))
+* support complete exchange batch ([#264](https://github.com/bosonprotocol/core-components/issues/264)) ([f70eafb](https://github.com/bosonprotocol/core-components/commit/f70eafb47a979a67336776600bf265c9994cfe4e))
+
+
+
+
+
 # [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.14.0...@bosonprotocol/core-sdk@1.15.0) (2022-09-13)
 
 ### Bug Fixes

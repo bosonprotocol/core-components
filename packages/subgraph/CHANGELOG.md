@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.14.0...@bosonprotocol/subgraph@1.15.0) (2022-10-03)
+
+
+### Features
+
+* add `EventLog` entity ([#280](https://github.com/bosonprotocol/core-components/issues/280)) ([73c128e](https://github.com/bosonprotocol/core-components/commit/73c128e61e5928101e081014cb5a79e477355d36))
+* add num of commits / redemptions ([#273](https://github.com/bosonprotocol/core-components/issues/273)) ([96345d0](https://github.com/bosonprotocol/core-components/commit/96345d03adfbdf5c27a2216446733f8dc16d8791))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+* update readme with testing subgraph details ([#263](https://github.com/bosonprotocol/core-components/issues/263)) ([a03065b](https://github.com/bosonprotocol/core-components/commit/a03065b492b532ee998feefcf6275de10e8484f1))
+
+
+
+
+
 # [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.2...@bosonprotocol/subgraph@1.14.0) (2022-09-08)
 
 ### Features

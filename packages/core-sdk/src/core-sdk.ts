@@ -24,6 +24,7 @@ import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
 import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
+import * as eventLogs from "./event-logs";
 
 import { getValueFromLogs } from "./utils/logs";
 
@@ -1492,5 +1493,20 @@ export class CoreSDK {
         }
       }
     });
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 Event logs                                 */
+  /* -------------------------------------------------------------------------- */
+
+  /**
+   * Returns event logs from subgraph.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Event log entities from subgraph.
+   */
+  public async getEventLogs(
+    queryVars?: subgraph.GetEventLogsQueryQueryVariables
+  ) {
+    return eventLogs.subgraph.getEventLogs(this._subgraphUrl, queryVars);
   }
 }
