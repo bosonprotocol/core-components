@@ -711,7 +711,7 @@ export class CoreSDK {
   public async renderContractualAgreement(
     template: string,
     offerData: offers.CreateOfferArgs,
-    offerMetadata: offers.AdditionalOfferMetadata,
+    offerMetadata: offers.AdditionalOfferMetadata
   ): Promise<string> {
     const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
     return offers.renderContractualAgreement(
