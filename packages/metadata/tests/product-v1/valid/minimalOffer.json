@@ -38,9 +38,14 @@
       }
     ]
   },
+  "shipping": {
+    "returnPeriod": "14"
+  },
   "exchangePolicy": {
     "uuid": "1e82f742-5639-427f-87b2-b91a7e51e40a",
     "version": 1,
-    "template": "https://github.com/dr-harper/example-rmd-templates/blob/master/inst/rmarkdown/templates/01-minimal/template.yaml"
+    "template": "https://github.com/dr-harper/example-rmd-templates/blob/master/inst/rmarkdown/templates/01-minimal/template.yaml",
+    "sellerContactMethod": "DAPP_CHAT",
+    "disputeResolverContactMethod": "EMAIL"
   }
 }
