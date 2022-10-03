@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.11.0...@bosonprotocol/common@1.12.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* try fixing the isolatedModules issue when building the dApp ([#257](https://github.com/bosonprotocol/core-components/issues/257)) ([295a6d7](https://github.com/bosonprotocol/core-components/commit/295a6d709ef2948072cf9162022a0d94cf25af3a))
+
+
+### Features
+
+* add a method to relay meta transactions through native API ([#239](https://github.com/bosonprotocol/core-components/issues/239)) ([51e370e](https://github.com/bosonprotocol/core-components/commit/51e370eaaa2466cf5c8f06116e705f6e01843d12)), closes [#268](https://github.com/bosonprotocol/core-components/issues/268)
+* add explorer url getter to retrieve any tx details ([#271](https://github.com/bosonprotocol/core-components/issues/271)) ([6990f5b](https://github.com/bosonprotocol/core-components/commit/6990f5b65c7ed6e248eef6aea2330818b2572024))
+* ensure fee when create dr ([#231](https://github.com/bosonprotocol/core-components/issues/231)) ([6531271](https://github.com/bosonprotocol/core-components/commit/6531271419fd977e89174f0627dfe139a875ff4a))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+
+
+
+
+
 # [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.2...@bosonprotocol/common@1.11.0) (2022-09-08)
 
 ### Features

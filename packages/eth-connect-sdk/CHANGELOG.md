@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.12](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.11...@bosonprotocol/eth-connect-sdk@1.2.12) (2022-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
 ## [1.2.11](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.2.10...@bosonprotocol/eth-connect-sdk@1.2.11) (2022-09-08)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk

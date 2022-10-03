@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.6.0...@bosonprotocol/react-kit@0.7.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* card loader position ([#256](https://github.com/bosonprotocol/core-components/issues/256)) ([48099a5](https://github.com/bosonprotocol/core-components/commit/48099a577f3ec2b2fe47835777e37d9a4fbdb9e4))
+* fix hook useIpfsMetadataStorage ([#259](https://github.com/bosonprotocol/core-components/issues/259)) ([63e7939](https://github.com/bosonprotocol/core-components/commit/63e79391d7934e5620a2fbfd32360e43171df73f))
+* wrong dataCard type fix ([#260](https://github.com/bosonprotocol/core-components/issues/260)) ([896c03c](https://github.com/bosonprotocol/core-components/commit/896c03c0d857d9d436988d9e7c93fd7fa8c1f837))
+
+
+### Features
+
+* add a method to relay meta transactions through native API ([#239](https://github.com/bosonprotocol/core-components/issues/239)) ([51e370e](https://github.com/bosonprotocol/core-components/commit/51e370eaaa2466cf5c8f06116e705f6e01843d12)), closes [#268](https://github.com/bosonprotocol/core-components/issues/268)
+* add showLoading prop to all CTAs ([#275](https://github.com/bosonprotocol/core-components/issues/275)) ([c1006f8](https://github.com/bosonprotocol/core-components/commit/c1006f882bb0866720dd0b87d35726b6613ff76f))
+* batch complete cta button add ([#266](https://github.com/bosonprotocol/core-components/issues/266)) ([396b50d](https://github.com/bosonprotocol/core-components/commit/396b50d2dcea7b46e58c37ee6ce9ca424d34d418))
+* complete exchange button add ([#265](https://github.com/bosonprotocol/core-components/issues/265)) ([336b5d5](https://github.com/bosonprotocol/core-components/commit/336b5d51736bf4d3f2d71a5701553acca573cadf))
+* exchange card cta section hover animation add ([#269](https://github.com/bosonprotocol/core-components/issues/269)) ([de9ac50](https://github.com/bosonprotocol/core-components/commit/de9ac509d9e2e8d64c9bd3eb20147bbb775154c4))
+* fixed card image responsive ([#252](https://github.com/bosonprotocol/core-components/issues/252)) ([4a7f3e1](https://github.com/bosonprotocol/core-components/commit/4a7f3e16b440790dd9ade7a48582cfcd8d247b77))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+* missing product card export add ([#250](https://github.com/bosonprotocol/core-components/issues/250)) ([0d034bf](https://github.com/bosonprotocol/core-components/commit/0d034bf9466c9794ac42fa6f60a432994bdd10d4))
+* new card props ([#251](https://github.com/bosonprotocol/core-components/issues/251)) ([e4e3f21](https://github.com/bosonprotocol/core-components/commit/e4e3f215a7915298aa64fb8ea4695601361771bd))
+* new tokens images ([#262](https://github.com/bosonprotocol/core-components/issues/262)) ([f3b9c93](https://github.com/bosonprotocol/core-components/commit/f3b9c93efda14eb30a4426376e325aeffee8165a))
+* productCard update ([#249](https://github.com/bosonprotocol/core-components/issues/249)) ([ad4a8e7](https://github.com/bosonprotocol/core-components/commit/ad4a8e75b5ee29c5046d0491b00374f3068dc7b1))
+* update svgs ([#267](https://github.com/bosonprotocol/core-components/issues/267)) ([a75a5d3](https://github.com/bosonprotocol/core-components/commit/a75a5d316f3bef5cda9d546d3fa4fc5566771723))
+
+
+
+
+
 # [0.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.5.0...@bosonprotocol/react-kit@0.6.0) (2022-09-13)
 
 ### Features
