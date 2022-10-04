@@ -11,6 +11,11 @@ export type CreateSellerArgs = {
   authTokenType: number;
 };
 
+export type UpdateSellerArgs = { id: BigNumberish } & Omit<
+  CreateSellerArgs,
+  "contractUri" | "royaltyPercentage"
+>;
+
 export type SellerStruct = {
   id: BigNumberish;
   operator: string;

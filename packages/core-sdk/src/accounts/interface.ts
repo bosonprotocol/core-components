@@ -4,7 +4,8 @@ import {
   VoucherInitValuesStruct,
   abis,
   DisputeResolverStruct,
-  utils
+  utils,
+  UpdateSellerArgs
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { BigNumberish } from "@ethersproject/bignumber";
@@ -18,12 +19,20 @@ export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
 );
 
-export function encodeCreateAccount(seller: CreateSellerArgs) {
+export function encodeCreateSeller(seller: CreateSellerArgs) {
   const sellerArgs = createSellerArgsToStruct(seller);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
     sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct,
     sellerArgs.voucherInitValues
+  ]);
+}
+
+export function encodeUpdateSeller(seller: UpdateSellerArgs) {
+  const sellerArgs = updateSellerArgsToStruct(seller);
+  return bosonAccountHandlerIface.encodeFunctionData("updateSeller", [
+    sellerArgs.sellerStruct,
+    sellerArgs.authTokenStruct
   ]);
 }
 
@@ -103,14 +112,7 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     ...sellerStructArgs
   } = args;
   return {
-    sellerStruct: {
-      // NOTE: It doesn't matter which values we set for `id` and `active` here
-      // as they will be overridden by the contract. But to conform to the struct
-      // we need to set some arbitrary values.
-      id: "0",
-      active: true,
-      ...sellerStructArgs
-    },
+    sellerStruct: argsToSellerStruct(sellerStructArgs),
     authTokenStruct: {
       tokenId: authTokenId,
       tokenType: authTokenType
@@ -119,6 +121,33 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
       contractURI: contractUri,
       royaltyPercentage
     }
+  };
+}
+
+export function updateSellerArgsToStruct(args: UpdateSellerArgs) {
+  const { authTokenId, authTokenType, ...sellerStructArgs } = args;
+  return {
+    sellerStruct: argsToSellerStruct(sellerStructArgs),
+    authTokenStruct: {
+      tokenId: authTokenId,
+      tokenType: authTokenType
+    }
+  };
+}
+
+function argsToSellerStruct(args: {
+  operator: string;
+  admin: string;
+  clerk: string;
+  treasury: string;
+}): Partial<SellerStruct> {
+  return {
+    // NOTE: It doesn't matter which values we set for `id` and `active` here
+    // as they will be overridden by the contract. But to conform to the struct
+    // we need to set some arbitrary values.
+    id: "0",
+    active: true,
+    ...args
   };
 }
 
