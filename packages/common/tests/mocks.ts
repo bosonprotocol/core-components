@@ -1,4 +1,5 @@
-import { MSEC_PER_DAY } from "../src/utils/timestamp";
+import { AdditionalOfferMetadata } from "./../../core-sdk/src/offers/renderContractualAgreement";
+import { MSEC_PER_DAY, SEC_PER_DAY } from "../src/utils/timestamp";
 import { parseEther } from "@ethersproject/units";
 import { AddressZero } from "@ethersproject/constants";
 import {
@@ -78,6 +79,20 @@ export function mockCreateOfferArgs(
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
+    ...overrides
+  };
+}
+
+export function mockAdditionalOfferMetadata(
+  overrides?: Partial<AdditionalOfferMetadata>
+): AdditionalOfferMetadata {
+  return {
+    sellerContactMethod: "Chat App in the dApp",
+    disputeResolverContactMethod: "email to: disputes@redeemeum.com",
+    escalationDeposit: parseEther("0.01"),
+    escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
+    sellerTradingName: "Best Brand Ever",
+    returnPeriodInDays: 15,
     ...overrides
   };
 }

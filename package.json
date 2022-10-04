@@ -28,6 +28,7 @@
     "dr:create": "ts-node -P tsconfig.base.json ./scripts/create-dispute-resolver.ts",
     "dr:update": "ts-node -P tsconfig.base.json ./scripts/update-dispute-resolver.ts",
     "deposit-funds": "ts-node -P tsconfig.base.json ./scripts/deposit-funds.ts",
+    "ipfs-upload": "ts-node -P tsconfig.base.json ./scripts/upload-to-ipfs.ts",
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv"

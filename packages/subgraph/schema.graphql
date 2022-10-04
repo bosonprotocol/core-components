@@ -233,6 +233,7 @@ type ProductV1ShippingOption @entity {
   countryOfOrigin: String
   supportedJurisdictions: [ProductV1ShippingJurisdiction!]
   redemptionPoint: String
+  returnPeriodInDays: Int!
 }
 
 type ProductV1ShippingJurisdiction @entity {
@@ -247,6 +248,8 @@ type ProductV1ExchangePolicy @entity {
   version: Int!
   label: String
   template: String!
+  sellerContactMethod: String!
+  disputeResolverContactMethod: String!
 }
 
 type ProductV1ProductOverrides @entity {

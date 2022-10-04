@@ -4,10 +4,14 @@ import { formatUnits } from "ethers/lib/utils";
 import { AddressZero } from "@ethersproject/constants";
 import { CreateOfferArgs } from "./../../../common/src/types/offers";
 import {
+  AdditionalOfferMetadata,
   renderContractualAgreement,
   renderContractualAgreementForOffer
 } from "../../src/offers";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+import {
+  mockAdditionalOfferMetadata,
+  mockCreateOfferArgs
+} from "@bosonprotocol/common/tests/mocks";
 import { ITokenInfo } from "../../src/utils/tokenInfoManager";
 import { utils } from "@bosonprotocol/common";
 import { mockRawOfferFromSubgraph, buildProductV1Metadata } from "../mocks";
@@ -19,17 +23,20 @@ const templates = {
   price: `**Item** means the thing being sold or a set of things being sold together in a single Offer for the price of {{priceValue}} {{exchangeTokenSymbol}}.`,
   sellerDeposit: `**Seller Deposit (Revocation Penalty)** {{sellerDepositValue}} {{exchangeTokenSymbol}}. Means funds deposited by the Seller and locked in the smart contracts. If a dispute happens, those funds can be used to penalize the Seller based on the Dispute Resolver decision.`,
   agentId: `Agent {{agentId}}: An optional third party that takes a fee in successful exchanges (ending in Completed or Retracted states). E.g. a marketplace.`,
-  agentFee: `**Agent Fee**`,
   buyerCancelPenalty: `**Buyer Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to {{buyerCancelPenaltyValue}} {{exchangeTokenSymbol}}.`,
   validFromTo: `**Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from  ***{{#toISOString}}{{validFromDateInMS}}{{/toISOString}}*** to ***{{#toISOString}}{{validUntilDateInMS}}{{/toISOString}}***.`,
   redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}*** to ***{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}***.`,
   redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}*** days`,
   resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}*** days after the dispute being raised.`,
-  fulfillmentPeriod: `**Fulfillment Period** means the time period during which the Seller must fulfill the Offer, which is up to ***{{#msecToDay}}{{fulfillmentPeriodDurationInMS}}{{/msecToDay}}*** days after the NFT Voucher is redeemed.`,
+  disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***{{#msecToDay}}{{fulfillmentPeriodDurationInMS}}{{/msecToDay}}*** days after the Buyer commits to an Offer.`,
   disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is {{disputeResolverId}}`,
   metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[{{{metadataUri}}}]({{{metadataUri}}})***.`,
   sellerContactMethod: `**Seller Contact Method** means ***{{sellerContactMethod}}***.`,
-  disputeResolverContactMethod: `**Dispute Resolution Contact Method** means ***{{disputeResolverContactMethod}}***.`
+  disputeResolverContactMethod: `**Dispute Resolution Contact Method** means ***{{disputeResolverContactMethod}}***.`,
+  escalationDeposit: `**Escalation Deposit** means the funds a Buyer puts down to escalate the Dispute, which becomes part of the Deposit Pool. The Escalation Deposit is set as {{escalationDepositValue}} {{exchangeTokenSymbol}}.`,
+  seller: `**Seller** means a person who offers to sell an Item through a rNFT. The Seller is ***{{sellerTradingName}}***.`,
+  returnPeriod: `**Return Period** means the period the Buyer must contact the Seller for a return, which is within ***{{returnPeriodInDays}}*** days of delivery of the Item (a minimum of 14 days starting the Buyer receives the Item, if the Seller sells to the EU).`,
+  escalationResponsePeriod: `**Escalation Response Period** means the period during which the Dispute Resolver can respond to a Dispute, which is within ***{{#secToDay}}{{escalationResponsePeriodInSec}}{{/secToDay}}*** days after the Buyer escalates the Dispute.`
 };
 
 const getTemplateResults = (args: { [key: string]: string }) => {
@@ -37,17 +44,20 @@ const getTemplateResults = (args: { [key: string]: string }) => {
     price: `**Item** means the thing being sold or a set of things being sold together in a single Offer for the price of ${args.priceValue} ${args.exchangeTokenSymbol}.`,
     sellerDeposit: `**Seller Deposit (Revocation Penalty)** ${args.sellerDepositValue} ${args.exchangeTokenSymbol}. Means funds deposited by the Seller and locked in the smart contracts. If a dispute happens, those funds can be used to penalize the Seller based on the Dispute Resolver decision.`,
     agentId: `Agent ${args.agentId}: An optional third party that takes a fee in successful exchanges (ending in Completed or Retracted states). E.g. a marketplace.`,
-    agentFee: `TBD`,
     buyerCancelPenalty: `**Buyer Cancel Penalty** If a Buyer Cancels their commitment before Redeem, they will incur a cancellation penalty equal to ${args.buyerCancelPenaltyValue} ${args.exchangeTokenSymbol}.`,
     validFromTo: `**Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from  ***${args.validFromDateInMS}*** to ***${args.validUntilDateInMS}***.`,
     redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***${args.voucherRedeemableFromDateInMS}*** to ***${args.voucherRedeemableUntilDateInMS}***.`,
-    redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***${args.voucherValidDurationInMS}*** days`,
-    resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***${args.resolutionPeriodDurationInMS}*** days after the dispute being raised.`,
-    fulfillmentPeriod: `**Fulfillment Period** means the time period during which the Seller must fulfill the Offer, which is up to ***${args.fulfillmentPeriodDurationInMS}*** days after the NFT Voucher is redeemed.`,
+    redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***${args.voucherValidDuration}*** days`,
+    resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***${args.resolutionPeriodDuration}*** days after the dispute being raised.`,
+    disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***${args.fulfillmentPeriodDuration}*** days after the Buyer commits to an Offer.`,
     disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is ${args.disputeResolverId}`,
     metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[${args.metadataUri}](${args.metadataUri})***.`,
-    sellerContactMethod: `TBD`,
-    disputeResolverContactMethod: `TBD`
+    sellerContactMethod: `**Seller Contact Method** means ***${args.sellerContactMethod}***.`,
+    disputeResolverContactMethod: `**Dispute Resolution Contact Method** means ***${args.disputeResolverContactMethod}***.`,
+    escalationDeposit: `**Escalation Deposit** means the funds a Buyer puts down to escalate the Dispute, which becomes part of the Deposit Pool. The Escalation Deposit is set as ${args.escalationDepositValue} ${args.exchangeTokenSymbol}.`,
+    seller: `**Seller** means a person who offers to sell an Item through a rNFT. The Seller is ***${args.sellerTradingName}***.`,
+    returnPeriod: `**Return Period** means the period the Buyer must contact the Seller for a return, which is within ***${args.returnPeriodInDays}*** days of delivery of the Item (a minimum of 14 days starting the Buyer receives the Item, if the Seller sells to the EU).`,
+    escalationResponsePeriod: `**Escalation Response Period** means the period during which the Dispute Resolver can respond to a Dispute, which is within ***${args.escalationResponsePeriod}*** days after the Buyer escalates the Dispute.`
   };
 };
 
@@ -86,6 +96,7 @@ const mockTokenInfoManager = {
 
 async function mockPrepareRenderingData(
   offerData: CreateOfferArgs,
+  additionalMetadata: AdditionalOfferMetadata,
   tokenInfo: ITokenInfo
 ): Promise<{ [key: string]: string }> {
   return {
@@ -98,18 +109,22 @@ async function mockPrepareRenderingData(
       offerData.buyerCancelPenalty,
       tokenInfo.decimals
     ).toString(),
-    agentFeeValue: "TBD",
     exchangeTokenSymbol: tokenInfo.symbol,
-    sellerContactMethod: "TBD",
-    disputeResolverContactMethod: "TBD",
+    sellerContactMethod: additionalMetadata.sellerContactMethod,
+    disputeResolverContactMethod:
+      additionalMetadata.disputeResolverContactMethod,
+    escalationDepositValue: formatUnits(
+      additionalMetadata.escalationDeposit,
+      tokenInfo.decimals
+    ).toString(),
     agentId: offerData.agentId.toString(),
     disputeResolverId: offerData.disputeResolverId.toString(),
-    voucherValidDurationInMS: offerData.voucherValidDurationInMS
+    voucherValidDuration: offerData.voucherValidDurationInMS
       ? BigNumber.from(offerData.voucherValidDurationInMS?.toString() as string)
           .div(utils.timestamp.MSEC_PER_DAY)
           .toString()
       : "0",
-    fulfillmentPeriodDurationInMS: BigNumber.from(
+    fulfillmentPeriodDuration: BigNumber.from(
       offerData.fulfillmentPeriodDurationInMS.toString()
     )
       .div(utils.timestamp.MSEC_PER_DAY)
@@ -121,7 +136,7 @@ async function mockPrepareRenderingData(
     voucherRedeemableUntilDateInMS: new Date(
       BigNumber.from(offerData.voucherRedeemableUntilDateInMS).toNumber()
     ).toISOString(),
-    resolutionPeriodDurationInMS: BigNumber.from(
+    resolutionPeriodDuration: BigNumber.from(
       offerData.resolutionPeriodDurationInMS
     )
       .div(utils.timestamp.MSEC_PER_DAY)
@@ -131,19 +146,28 @@ async function mockPrepareRenderingData(
     ).toISOString(),
     validUntilDateInMS: new Date(
       BigNumber.from(offerData.validUntilDateInMS).toNumber()
-    ).toISOString()
+    ).toISOString(),
+    sellerTradingName: additionalMetadata.sellerTradingName,
+    escalationResponsePeriod: BigNumber.from(
+      additionalMetadata.escalationResponsePeriodInSec
+    )
+      .div(utils.timestamp.SEC_PER_DAY)
+      .toString(),
+    returnPeriodInDays: additionalMetadata.returnPeriodInDays.toString()
   };
 }
 
 describe("renderContractualAgreement", () => {
   test("render basicTemplate", async () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs();
+    const mockedAdditionalMetadata = mockAdditionalOfferMetadata();
     const tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
       mockedCreateOfferArgs.exchangeToken
     );
     const render = await renderContractualAgreement(
       basicTemplate,
       mockedCreateOfferArgs,
+      mockedAdditionalMetadata,
       tokenInfo
     );
     expect(render).toEqual(basicTemplate);
@@ -153,13 +177,19 @@ describe("renderContractualAgreement", () => {
     let expected: unknown;
     let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
+    let mockedAdditionalMetadata: AdditionalOfferMetadata;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      mockedAdditionalMetadata = mockAdditionalOfferMetadata();
       tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
         mockedCreateOfferArgs.exchangeToken
       );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
+          tokenInfo
+        )
       );
     });
 
@@ -167,6 +197,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).price);
@@ -176,6 +207,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
@@ -185,24 +217,17 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.agentId,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).agentId);
-    });
-
-    xtest("offer AgentFee", async () => {
-      const render = await renderContractualAgreement(
-        templates.agentFee,
-        mockedCreateOfferArgs,
-        tokenInfo
-      );
-      expect(render).toEqual((expected as any).agentFee);
     });
 
     test("offer buyerCancelPenalty", async () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
@@ -212,6 +237,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.validFromTo,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).validFromTo);
@@ -221,6 +247,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.redemptionPeriodFromTo,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).redemptionPeriodFromTo);
@@ -230,6 +257,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.redemptionPeriodDuration,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).redemptionPeriodDuration);
@@ -239,24 +267,27 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.resolutionPeriod,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).resolutionPeriod);
     });
 
-    test("offer fulfillmentPeriod", async () => {
+    test("offer disputePeriod", async () => {
       const render = await renderContractualAgreement(
-        templates.fulfillmentPeriod,
+        templates.disputePeriod,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
-      expect(render).toEqual((expected as any).fulfillmentPeriod);
+      expect(render).toEqual((expected as any).disputePeriod);
     });
 
     test("offer disputeResolverId", async () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverId,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).disputeResolverId);
@@ -266,27 +297,70 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.metadataUri,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).metadataUri);
     });
 
-    xtest("offer sellerContactMethod", async () => {
+    test("offer sellerContactMethod", async () => {
       const render = await renderContractualAgreement(
         templates.sellerContactMethod,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).sellerContactMethod);
     });
 
-    xtest("offer disputeResolverContactMethod", async () => {
+    test("offer disputeResolverContactMethod", async () => {
       const render = await renderContractualAgreement(
         templates.disputeResolverContactMethod,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).disputeResolverContactMethod);
+    });
+
+    test("offer escalationDeposit", async () => {
+      const render = await renderContractualAgreement(
+        templates.escalationDeposit,
+        mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).escalationDeposit);
+    });
+
+    test("offer seller", async () => {
+      const render = await renderContractualAgreement(
+        templates.seller,
+        mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).seller);
+    });
+
+    test("offer returnPeriod", async () => {
+      const render = await renderContractualAgreement(
+        templates.returnPeriod,
+        mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).returnPeriod);
+    });
+
+    test("offer escalationResponsePeriod", async () => {
+      const render = await renderContractualAgreement(
+        templates.escalationResponsePeriod,
+        mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
+        tokenInfo
+      );
+      expect(render).toEqual((expected as any).escalationResponsePeriod);
     });
   });
 
@@ -294,15 +368,21 @@ describe("renderContractualAgreement", () => {
     let expected: unknown;
     let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
+    let mockedAdditionalMetadata: AdditionalOfferMetadata;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs({
         exchangeToken: TOKENS.BOSON.address
       });
+      mockedAdditionalMetadata = mockAdditionalOfferMetadata();
       tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
         mockedCreateOfferArgs.exchangeToken
       );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
+          tokenInfo
+        )
       );
     });
 
@@ -310,6 +390,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).price);
@@ -319,24 +400,17 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
-    });
-
-    xtest("offer AgentFee", async () => {
-      const render = await renderContractualAgreement(
-        templates.agentFee,
-        mockedCreateOfferArgs,
-        tokenInfo
-      );
-      expect(render).toEqual((expected as any).agentFee);
     });
 
     test("offer buyerCancelPenalty", async () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
@@ -347,6 +421,7 @@ describe("renderContractualAgreement", () => {
     let expected: unknown;
     let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
+    let mockedAdditionalMetadata: AdditionalOfferMetadata;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs({
         exchangeToken: TOKENS.USDC.address,
@@ -354,11 +429,16 @@ describe("renderContractualAgreement", () => {
         sellerDeposit: 100000, // adjust value because USDC decimals is 6, not 18
         buyerCancelPenalty: 200000 // adjust value because USDC decimals is 6, not 18
       });
+      mockedAdditionalMetadata = mockAdditionalOfferMetadata();
       tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
         mockedCreateOfferArgs.exchangeToken
       );
       expected = getTemplateResults(
-        await mockPrepareRenderingData(mockedCreateOfferArgs, tokenInfo)
+        await mockPrepareRenderingData(
+          mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
+          tokenInfo
+        )
       );
     });
 
@@ -366,6 +446,7 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.price,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).price);
@@ -375,24 +456,17 @@ describe("renderContractualAgreement", () => {
       const render = await renderContractualAgreement(
         templates.sellerDeposit,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).sellerDeposit);
-    });
-
-    xtest("offer AgentFee", async () => {
-      const render = await renderContractualAgreement(
-        templates.agentFee,
-        mockedCreateOfferArgs,
-        tokenInfo
-      );
-      expect(render).toEqual((expected as any).agentFee);
     });
 
     test("offer buyerCancelPenalty", async () => {
       const render = await renderContractualAgreement(
         templates.buyerCancelPenalty,
         mockedCreateOfferArgs,
+        mockedAdditionalMetadata,
         tokenInfo
       );
       expect(render).toEqual((expected as any).buyerCancelPenalty);
@@ -402,8 +476,10 @@ describe("renderContractualAgreement", () => {
   describe("Rendering error cases - invalid templates", () => {
     let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
+    let mockedAdditionalMetadata: AdditionalOfferMetadata;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      mockedAdditionalMetadata = mockAdditionalOfferMetadata();
       tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
         mockedCreateOfferArgs.exchangeToken
       );
@@ -414,6 +490,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(
@@ -426,6 +503,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(
@@ -438,6 +516,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(
@@ -450,6 +529,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
@@ -460,6 +540,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template as unknown as string,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(/^Unclosed tag at (\d+)/);
@@ -470,8 +551,10 @@ describe("renderContractualAgreement", () => {
     const template = "Hello World";
     let tokenInfo: ITokenInfo;
     let mockedCreateOfferArgs: CreateOfferArgs;
+    let mockedAdditionalMetadata: AdditionalOfferMetadata;
     beforeEach(async () => {
       mockedCreateOfferArgs = mockCreateOfferArgs();
+      mockedAdditionalMetadata = mockAdditionalOfferMetadata();
       tokenInfo = await mockTokenInfoManager.getExchangeTokenInfo(
         mockedCreateOfferArgs.exchangeToken
       );
@@ -481,37 +564,85 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           undefined as unknown as CreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - undefined/);
+    });
+    test("invalid offer metadata - undefined", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          undefined as unknown as AdditionalOfferMetadata,
+          tokenInfo
+        )
+      ).rejects.toThrowError(/^InvalidOfferMetadata - undefined/);
     });
     test("invalid offer data - number", async () => {
       await expect(
         renderContractualAgreement(
           template,
           123456789 as unknown as CreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
+    });
+    test("invalid offer metadata - number", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          123456789 as unknown as AdditionalOfferMetadata,
+          tokenInfo
+        )
+      ).rejects.toThrowError(/^InvalidOfferMetadata - expecting an object/);
     });
     test("invalid offer data - string", async () => {
       await expect(
         renderContractualAgreement(
           template,
           "mockedCreateOfferArgs" as unknown as CreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(/^InvalidOfferData - expecting an object/);
+    });
+    test("invalid offer metadata - string", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          "mockedAdditionalMetadata" as unknown as AdditionalOfferMetadata,
+          tokenInfo
+        )
+      ).rejects.toThrowError(/^InvalidOfferMetadata - expecting an object/);
     });
     test("invalid offer data - object", async () => {
       await expect(
         renderContractualAgreement(
           template,
           { key: "mockedCreateOfferArgs" } as unknown as CreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(
         /^InvalidOfferData - missing properties: \[(.*)\]/
+      );
+    });
+    test("invalid offer metadata - object", async () => {
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          {
+            key: "mockedAdditionalMetadata"
+          } as unknown as AdditionalOfferMetadata,
+          tokenInfo
+        )
+      ).rejects.toThrowError(
+        /^InvalidOfferMetadata - missing properties: \[(.*)\]/
       );
     });
     test.each([
@@ -540,10 +671,35 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           incompleteMockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           tokenInfo
         )
       ).rejects.toThrowError(
         new RegExp(`^InvalidOfferData - missing properties: \\[${key}\\]`)
+      );
+    });
+    test.each([
+      "sellerContactMethod",
+      "disputeResolverContactMethod",
+      "escalationDeposit",
+      "escalationResponsePeriodInSec",
+      "sellerTradingName",
+      "returnPeriodInDays"
+    ])("invalid offer metadata - missing property %s", async (key: string) => {
+      const incompleteMockedAdditionalMetadataArgs = Object.assign(
+        {},
+        mockedAdditionalMetadata
+      );
+      delete incompleteMockedAdditionalMetadataArgs[key];
+      await expect(
+        renderContractualAgreement(
+          template,
+          mockedCreateOfferArgs,
+          incompleteMockedAdditionalMetadataArgs,
+          tokenInfo
+        )
+      ).rejects.toThrowError(
+        new RegExp(`^InvalidOfferMetadata - missing properties: \\[${key}\\]`)
       );
     });
     test("invalid tokenInfo - undefined", async () => {
@@ -551,6 +707,7 @@ describe("renderContractualAgreement", () => {
         renderContractualAgreement(
           template,
           mockedCreateOfferArgs,
+          mockedAdditionalMetadata,
           undefined as unknown as ITokenInfo
         )
       ).rejects.toThrowError(/^Cannot read properties of undefined/);

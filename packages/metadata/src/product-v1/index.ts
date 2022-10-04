@@ -52,7 +52,7 @@ type Variation = {
 
 type SellerMetadata = {
   defaultVersion: number;
-  name?: string;
+  name: string;
   description?: string;
   externalUrl?: string;
   tokenId?: string;
@@ -74,6 +74,7 @@ type ShippingMetadata = {
     deliveryTime: string;
   }[];
   redemptionPoint?: string;
+  returnPeriod: string;
 };
 
 type ExchangePolicy = {
@@ -81,6 +82,8 @@ type ExchangePolicy = {
   version: number;
   label?: string;
   template: string;
+  sellerContactMethod: string;
+  disputeResolverContactMethod: string;
 };
 
 export type ProductV1Metadata = {
@@ -105,7 +108,7 @@ export type ProductV1Metadata = {
       };
   variations?: Variation[];
   seller: SellerMetadata;
-  shipping?: ShippingMetadata;
+  shipping: ShippingMetadata;
   exchangePolicy: ExchangePolicy;
   productOverrides?: ProductBase;
 };

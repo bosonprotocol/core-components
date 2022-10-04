@@ -122,7 +122,7 @@
           "minItems": 1
         }
       },
-      "required": ["defaultVersion", "contactLinks"]
+      "required": ["defaultVersion", "contactLinks", "name"]
     },
     "shipping": {
       "type": "object",
@@ -140,9 +140,10 @@
             "required": ["label", "deliveryTime"]
           }
         },
-        "redemptionPoint": { "type": "string" }
+        "redemptionPoint": { "type": "string" },
+        "returnPeriod": { "type": "string" }
       },
-      "required": []
+      "required": ["returnPeriod"]
     },
     "exchangePolicy": {
       "type": "object",
@@ -150,9 +151,11 @@
         "uuid": { "type": "string" },
         "version": { "type": "number" },
         "label": { "type": "string" },
-        "template": { "type": "string" }
+        "template": { "type": "string" },
+        "sellerContactMethod": { "type": "string" },
+        "disputeResolverContactMethod": { "type": "string" }
       },
-      "required": ["uuid", "version", "template"]
+      "required": ["uuid", "version", "template", "sellerContactMethod", "disputeResolverContactMethod"]
     },
     "productOverrides": {
       "type": "object",
@@ -213,6 +216,7 @@
     "attributes",
     "product",
     "seller",
+    "shipping",
     "exchangePolicy"
   ]
 }

@@ -1,7 +1,12 @@
+import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
+import { parseEther } from "@ethersproject/units";
 import { MetadataType } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
-import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
+import {
+  mockAdditionalOfferMetadata,
+  mockCreateOfferArgs
+} from "@bosonprotocol/common/tests/mocks";
 import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
@@ -13,6 +18,7 @@ import {
   waitForGraphNodeIndexing
 } from "./utils";
 import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
+import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 
 jest.setTimeout(120_000);
 
@@ -33,7 +39,10 @@ async function createOfferArgs(
   coreSDK: CoreSDK,
   metadata: ProductV1Metadata,
   offerParams?: Partial<CreateOfferArgs>
-): Promise<CreateOfferArgs> {
+): Promise<{
+  offerArgs: CreateOfferArgs;
+  offerMetadata: AdditionalOfferMetadata;
+}> {
   const metadataHash = await coreSDK.storeMetadata(metadata);
   const metadataUri = "ipfs://" + metadataHash;
 
@@ -43,7 +52,17 @@ async function createOfferArgs(
     ...offerParams
   });
 
-  return offerArgs;
+  const offerMetadata = {
+    sellerContactMethod: metadata.exchangePolicy.sellerContactMethod,
+    disputeResolverContactMethod:
+      metadata.exchangePolicy.disputeResolverContactMethod,
+    escalationDeposit: parseEther("0.01"),
+    escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
+    sellerTradingName: metadata.seller.name,
+    returnPeriodInDays: parseInt(metadata.shipping.returnPeriod)
+  };
+
+  return { offerArgs, offerMetadata };
 }
 
 async function createOffer(
@@ -81,9 +100,10 @@ describe("ProductV1 e2e tests", () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
 
-    const template = "Hello World!!";
+    const template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
-    const offerArgs = await createOfferArgs(coreSDK, metadata);
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
     offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
       .add(10000) // to avoid offerDaa validation error
       .toNumber();
@@ -94,22 +114,33 @@ describe("ProductV1 e2e tests", () => {
       .toNumber();
     const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
-    const render = await coreSDK.renderContractualAgreementForOffer(offer.id);
-    expect(render).toEqual("Hello World!!");
+    const render = await coreSDK.renderContractualAgreementForOffer(
+      (offer as subgraph.OfferFieldsFragment).id
+    );
+    expect(render).toEqual(
+      `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
+    );
   });
 
   test("Prepare an offer, then render the contractual agreement template from createOfferArgs", async () => {
     const coreSDK = initCoreSDKWithWallet(seedWallet);
 
-    const template = "Hello World!!";
+    const template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
-    const offerArgs = await createOfferArgs(coreSDK, metadata);
+    const { offerArgs, offerMetadata } = await createOfferArgs(
+      coreSDK,
+      metadata
+    );
 
     const render = await coreSDK.renderContractualAgreement(
       template,
-      offerArgs
+      offerArgs,
+      offerMetadata
     );
-    expect(render).toEqual("Hello World!!");
+    expect(render).toEqual(
+      `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
+    );
   });
 });
 

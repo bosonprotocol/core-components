@@ -49,6 +49,16 @@ const productMissingArguments = [
     error: undefined // don't check the error message
   },
   {
+    arg: "shipping",
+    data: { shipping: undefined },
+    error: undefined // don't check the error message
+  },
+  {
+    arg: "shipping.returnPeriod",
+    data: { shipping: { returnPeriod: undefined } },
+    error: /shipping.returnPeriod is a required field/
+  },
+  {
     arg: "exchangePolicy",
     data: { exchangePolicy: undefined },
     error: undefined // don't check the error message
@@ -73,6 +83,16 @@ const productMissingArguments = [
     arg: "exchangePolicy.template",
     data: { exchangePolicy: { template: undefined } },
     error: /exchangePolicy.template is a required field/
+  },
+  {
+    arg: "exchangePolicy.sellerContactMethod",
+    data: { exchangePolicy: { sellerContactMethod: undefined } },
+    error: /exchangePolicy.sellerContactMethod is a required field/
+  },
+  {
+    arg: "exchangePolicy.disputeResolverContactMethod",
+    data: { exchangePolicy: { disputeResolverContactMethod: undefined } },
+    error: /exchangePolicy.disputeResolverContactMethod is a required field/
   },
   {
     arg: "product.uuid",
@@ -144,6 +164,11 @@ const productMissingArguments = [
     arg: "seller.contactLinks",
     data: { seller: { contactLinks: undefined } },
     error: /seller.contactLinks is a required field/
+  },
+  {
+    arg: "seller.name",
+    data: { seller: { name: undefined } },
+    error: /seller.name is a required field/
   },
   // {
   //   arg: "seller.contactLinks empty array",
