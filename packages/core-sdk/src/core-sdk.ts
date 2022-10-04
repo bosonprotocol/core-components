@@ -337,6 +337,26 @@ export class CoreSDK {
     });
   }
 
+  /**
+   * Updates seller account by calling the `AccountHandlerFacet` contract. Only callable
+   * by admin.
+   * @param sellerUpdates - Values to update.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async updateSeller(
+    sellerUpdates: accounts.UpdateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.updateSeller({
+      sellerUpdates,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
   /* ---------------------------------- Buyer --------------------------------- */
 
   /**

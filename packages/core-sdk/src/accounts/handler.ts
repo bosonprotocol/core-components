@@ -6,7 +6,8 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import { DisputeResolverFieldsFragment } from "../subgraph";
 import {
-  encodeCreateAccount,
+  encodeCreateSeller,
+  encodeUpdateSeller,
   encodeCreateDisputeResolver,
   encodeActivateDisputeResolver,
   encodeAddFeesToDisputeResolver,
@@ -18,6 +19,7 @@ import {
 import { getDisputeResolverById } from "./subgraph";
 import {
   CreateSellerArgs,
+  UpdateSellerArgs,
   CreateDisputeResolverArgs,
   DisputeResolutionFee,
   DisputeResolverUpdates
@@ -30,7 +32,18 @@ export async function createSeller(args: {
 }): Promise<TransactionResponse> {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateAccount(args.sellerToCreate)
+    data: encodeCreateSeller(args.sellerToCreate)
+  });
+}
+
+export async function updateSeller(args: {
+  sellerUpdates: UpdateSellerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeUpdateSeller(args.sellerUpdates)
   });
 }
 
