@@ -27,7 +27,7 @@
     "src/*"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
