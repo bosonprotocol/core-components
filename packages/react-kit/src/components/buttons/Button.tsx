@@ -20,7 +20,7 @@ export interface ButtonProps {
     | "secondaryFill"
     | "secondaryInverted"
     | "accentFill"
-    | "accentInverted"
+    | "accentInverted";
   className?: string;
   children?: React.ReactNode;
   showBorder?: boolean;
