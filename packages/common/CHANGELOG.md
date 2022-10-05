@@ -3,20 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.12.0...@bosonprotocol/common@1.13.0) (2022-10-05)
-
-
-### Features
-
-* add lens contract addresses to config in common package ([#283](https://github.com/bosonprotocol/core-components/issues/283)) ([f4acbfa](https://github.com/bosonprotocol/core-components/commit/f4acbfacaf9d7cc77e3adf6e3874268814b81bf0))
-* contractual agreement template ([#278](https://github.com/bosonprotocol/core-components/issues/278)) ([e516cf5](https://github.com/bosonprotocol/core-components/commit/e516cf56eda83aefe6fb115329b31ea68b383b7d))
-* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
-* update seller wrapper ([#281](https://github.com/bosonprotocol/core-components/issues/281)) ([08521f0](https://github.com/bosonprotocol/core-components/commit/08521f0a6214ae45b1fe7cd8123407e24bd9804f))
-
-
-
-
-
 # [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.11.0...@bosonprotocol/common@1.12.0) (2022-10-03)
 
 

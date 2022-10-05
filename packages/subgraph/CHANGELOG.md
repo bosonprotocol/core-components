@@ -3,18 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.15.0...@bosonprotocol/subgraph@1.16.0) (2022-10-05)
-
-
-### Features
-
-* contractual agreement template ([#278](https://github.com/bosonprotocol/core-components/issues/278)) ([e516cf5](https://github.com/bosonprotocol/core-components/commit/e516cf56eda83aefe6fb115329b31ea68b383b7d))
-* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
-
-
-
-
-
 # [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.14.0...@bosonprotocol/subgraph@1.15.0) (2022-10-03)
 
 
