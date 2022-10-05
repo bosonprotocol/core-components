@@ -29,7 +29,7 @@ export const CancelButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "secondaryFill",
   ...coreSdkConfig
 }: ICancelButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);

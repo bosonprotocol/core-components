@@ -108,7 +108,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <ExchangeButtonWrapper>
               <CommittedButtonWrapper>
                 <Button
-                  variant="primary"
+                  variant="primaryFill"
                   {...redeemButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();

@@ -2,9 +2,10 @@ import { ButtonSize } from "./Button";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = styled.button.attrs(
-  (props: { size: ButtonSize; variant: string }) => ({
+  (props: { size: ButtonSize; variant: string; showBorder: boolean; }) => ({
     variant: props.variant,
-    size: props.size
+    size: props.size,
+    showBorder: props.showBorder,
   })
 )`
   box-sizing: border-box;
@@ -78,7 +79,7 @@ export const ButtonStyle = styled.button.attrs(
     `}
 
   ${({ variant, disabled }) =>
-    variant === "primary" &&
+    variant === "primaryFill" &&
     !disabled &&
     css`
       background: ${({ theme }) => theme?.colors?.light.primary};
@@ -99,12 +100,36 @@ export const ButtonStyle = styled.button.attrs(
     `}
 
   ${({ variant, disabled }) =>
-    variant === "primaryOutline" &&
+    variant === "primaryInverted" &&
     !disabled &&
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border: 2px solid ${({ theme }) => theme?.colors?.light.primary};
+      border: ${({ showBorder, theme }) =>
+    showBorder ? `2px solid ${theme?.colors?.light.primary}` : "none"};
+      color: ${({ theme }) => theme?.colors?.light.primary};
+      svg {
+        stroke: ${({ theme }) => theme?.colors?.light.primary};
+      }
+      :hover {
+        background: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
+        color: ${({ theme }) => theme?.colors?.light.black};
+        svg {
+          stroke: ${({ theme }) => theme?.colors?.light.black};
+        }
+      }
+    `
+    }
+
+    ${({ variant, disabled }) =>
+    variant === "secondaryFill" &&
+    !disabled &&
+    css`
+      background: ${({ theme }) => theme?.colors?.light.secondary};
+      background-color: ${({ theme }) => theme?.colors?.light.secondary};
+      border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
       color: ${({ theme }) => theme?.colors?.light.black};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.black};
@@ -120,16 +145,39 @@ export const ButtonStyle = styled.button.attrs(
       }
     `}
 
-  ${({ variant, disabled }) =>
-    variant === "secondary" &&
+    ${({ variant, disabled }) =>
+    variant === "secondaryInverted" &&
     !disabled &&
     css`
-      background: ${({ theme }) => theme?.colors?.light.orange};
-      background-color: ${({ theme }) => theme?.colors?.light.orange};
-      border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.white};
+      background: transparent;
+      border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
+      border: ${({ showBorder, theme }) =>
+    showBorder ? `2px solid ${theme?.colors?.light.secondary}` : "none"};
+      color: ${({ theme }) => theme?.colors?.light.secondary};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.white};
+        stroke: ${({ theme }) => theme?.colors?.light.secondary};
+      }
+      :hover {
+        background: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
+        color: ${({ theme }) => theme?.colors?.light.black};
+        svg {
+          stroke: ${({ theme }) => theme?.colors?.light.black};
+        }
+      }
+    `}
+
+    ${({ variant, disabled }) =>
+    variant === "accentFill" &&
+    !disabled &&
+    css`
+      background: ${({ theme }) => theme?.colors?.light.accent};
+      background-color: ${({ theme }) => theme?.colors?.light.accent};
+      border-color: transparent;
+      color: ${({ theme }) => theme?.colors?.light.black};
+      svg {
+        stroke: ${({ theme }) => theme?.colors?.light.black};
       }
       :hover {
         background: ${({ theme }) => theme?.colors?.light.black};
@@ -142,23 +190,24 @@ export const ButtonStyle = styled.button.attrs(
     `}
 
     ${({ variant, disabled }) =>
-    variant === "secondaryOutline" &&
+    variant === "accentInverted" &&
     !disabled &&
     css`
-      background: ${({ theme }) => theme?.colors?.light.white};
-      background-color: ${({ theme }) => theme?.colors?.light.white};
-      border: 2px solid ${({ theme }) => theme?.colors?.light.orange};
-      color: ${({ theme }) => theme?.colors?.light.orange};
+      background: transparent;
+      border: 2px solid ${({ theme }) => theme?.colors?.light.accent};
+      border: ${({ showBorder, theme }) =>
+    showBorder ? `2px solid ${theme?.colors?.light.accent}` : "none"};
+      color: ${({ theme }) => theme?.colors?.light.accent};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.orange};
+        stroke: ${({ theme }) => theme?.colors?.light.accent};
       }
       :hover {
-        background: ${({ theme }) => theme?.colors?.light.lightGrey};
-        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background: ${({ theme }) => theme?.colors?.light.black};
+        background-color: ${({ theme }) => theme?.colors?.light.black};
         border: 2px solid ${({ theme }) => theme?.colors?.light.black};
-        color: ${({ theme }) => theme?.colors?.light.black};
+        color: ${({ theme }) => theme?.colors?.light.white};
         svg {
-          stroke: ${({ theme }) => theme?.colors?.light.black};
+          stroke: ${({ theme }) => theme?.colors?.light.white};
         }
       }
     `}
@@ -204,15 +253,15 @@ export const ButtonStyle = styled.button.attrs(
       }
     `}
     ${({ variant, disabled }) =>
-    variant === "ghostOrange" &&
+    variant === "ghostsecondary" &&
     !disabled &&
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
       border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.orange};
+      color: ${({ theme }) => theme?.colors?.light.secondary};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.orange};
+        stroke: ${({ theme }) => theme?.colors?.light.secondary};
       }
       :hover {
         background: ${({ theme }) => theme?.colors?.light.lightGrey};
