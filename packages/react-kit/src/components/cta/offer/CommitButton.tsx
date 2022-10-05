@@ -53,7 +53,7 @@ export const CommitButton = ({
             if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxCommitToOffer({
+                await coreSdk.signMetaTxCommitToOffer({
                   offerId,
                   nonce
                 });

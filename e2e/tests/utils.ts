@@ -13,6 +13,8 @@ import {
 } from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
+import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   ACCOUNT_1,
   ACCOUNT_2,
@@ -310,4 +312,32 @@ export async function createDisputeResolver(
     protocolAdminCoreSDK,
     disputeResolverCoreSDK: drCoreSDK
   };
+}
+
+export async function createOffer(
+  coreSDK: CoreSDK,
+  offerParams?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
 }

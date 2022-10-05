@@ -55,7 +55,7 @@ export const RedeemButton = ({
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxRedeemVoucher({
+                await coreSdk.signMetaTxRedeemVoucher({
                   exchangeId,
                   nonce
                 });
