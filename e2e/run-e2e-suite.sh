@@ -24,6 +24,9 @@ echo "Deploying subgraph..."
 npm run subgraph:deploy:local
 echo "Successfully deployed subgraph ✅"
 
+echo "Waiting a few moment..."
+sleep 5
+
 echo "Run e2e tests..."
 cd ..
 npm run e2e:test

@@ -17,6 +17,10 @@ call npm run subgraph:deploy:local
 echo [92m*** Successfully deployed subgraph ***[0m
 echo.
 
+echo [92m*** Waiting a few moment... ***[0m
+timeout /t 5 /nobreak >nul
+echo.
+
 echo [92m*** Run e2e tests... ***[0m
 cd ..
 call npm run e2e:test
