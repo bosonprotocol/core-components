@@ -20,6 +20,30 @@ const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
+// https://docs.lens.xyz/docs/deployed-contract-addresses
+const chainIdToLensContractAddresses = new Map<
+  number,
+  {
+    LENS_HUB_CONTRACT: string;
+    LENS_PERIPHERY_CONTRACT: string;
+  }
+>([
+  [
+    80001,
+    {
+      LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
+      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8"
+    }
+  ],
+  [
+    137,
+    {
+      LENS_HUB_CONTRACT: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
+      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f"
+    }
+  ]
+]);
+
 export const defaultConfigs: ProtocolConfig[] = [
   {
     envName: "testing",
@@ -38,6 +62,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
+    },
+    lens: {
+      ...(chainIdToLensContractAddresses.has(80001) &&
+        chainIdToLensContractAddresses.get(80001))
     }
   },
   {
@@ -57,6 +85,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
+    },
+    lens: {
+      ...(chainIdToLensContractAddresses.has(80001) &&
+        chainIdToLensContractAddresses.get(80001))
     }
   },
   {
@@ -72,6 +104,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     },
     metaTx: {
       relayerUrl: ""
+    },
+    lens: {
+      ...(chainIdToLensContractAddresses.has(1) &&
+        chainIdToLensContractAddresses.get(1))
     }
   },
   {
@@ -89,6 +125,10 @@ export const defaultConfigs: ProtocolConfig[] = [
     },
     metaTx: {
       relayerUrl: "http://localhost:8888"
+    },
+    lens: {
+      ...(chainIdToLensContractAddresses.has(31337) &&
+        chainIdToLensContractAddresses.get(31337))
     }
   }
 ];
