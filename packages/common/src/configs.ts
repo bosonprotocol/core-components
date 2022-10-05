@@ -97,7 +97,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     nativeCoin: chainIdToInfo.get(80001), // TODO: swap to 137 after protocol deployment
     getTxExplorerUrl: chainIdToGraphTx.get(80001), // TODO: swap to 137 after protocol deployment
     subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai", // TODO: re-deploy subgraphs to correct org & swap for "real" one after protocol deployment
-    jsonRpcUrl: "https://polygon-mumbai.infura.io/v3/383117b55d614525b07f03b5979c5f19", // TODO: switch to polygon endpoint after protocol deployment
+    jsonRpcUrl:
+      "https://polygon-mumbai.infura.io/v3/383117b55d614525b07f03b5979c5f19", // TODO: switch to polygon endpoint after protocol deployment
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
