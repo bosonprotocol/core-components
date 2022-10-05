@@ -83,7 +83,8 @@ module.exports = {
       "IBosonMetaTransactionsHandler",
       "IBosonDisputeHandler",
       "IBosonVoucher",
-      "MockNativeMetaTransaction"
+      "MockNativeMetaTransaction",
+      "IBosonGroupHandler"
     ]
   }
 };
