@@ -28,4 +28,8 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
+  lens: {
+    LENS_HUB_CONTRACT?: string | undefined;
+    LENS_PERIPHERY_CONTRACT?: string | undefined;
+  };
 };
