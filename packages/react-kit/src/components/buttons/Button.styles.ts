@@ -212,67 +212,6 @@ export const ButtonStyle = styled.button.attrs(
       }
     `}
 
-    ${({ variant, disabled }) =>
-    variant === "ghost" &&
-    !disabled &&
-    css`
-      background: ${({ theme }) => theme?.colors?.light.white};
-      background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.darkGrey};
-      svg {
-        stroke: ${({ theme }) => theme?.colors?.light.darkGrey};
-      }
-      :hover {
-        background: ${({ theme }) => theme?.colors?.light.lightGrey};
-        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        color: ${({ theme }) => theme?.colors?.light.black};
-        svg {
-          stroke: ${({ theme }) => theme?.colors?.light.black};
-        }
-      }
-    `}
-    ${({ variant, disabled }) =>
-    variant === "ghostSecondary" &&
-    !disabled &&
-    css`
-      background: ${({ theme }) => theme?.colors?.light.white};
-      background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.secondary};
-      svg {
-        stroke: ${({ theme }) => theme?.colors?.light.secondary};
-      }
-      :hover {
-        background: ${({ theme }) => theme?.colors?.light.lightGrey};
-        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        color: ${({ theme }) => theme?.colors?.light.black};
-        svg {
-          stroke: ${({ theme }) => theme?.colors?.light.black};
-        }
-      }
-    `}
-    ${({ variant, disabled }) =>
-    variant === "ghostsecondary" &&
-    !disabled &&
-    css`
-      background: ${({ theme }) => theme?.colors?.light.white};
-      background-color: ${({ theme }) => theme?.colors?.light.white};
-      border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.secondary};
-      svg {
-        stroke: ${({ theme }) => theme?.colors?.light.secondary};
-      }
-      :hover {
-        background: ${({ theme }) => theme?.colors?.light.lightGrey};
-        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        color: ${({ theme }) => theme?.colors?.light.black};
-        svg {
-          stroke: ${({ theme }) => theme?.colors?.light.black};
-        }
-      }
-    `}
-
     ${({ disabled }) =>
     disabled &&
     css`

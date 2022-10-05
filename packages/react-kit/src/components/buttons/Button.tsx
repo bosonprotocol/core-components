@@ -21,12 +21,6 @@ export interface ButtonProps {
     | "secondaryInverted"
     | "accentFill"
     | "accentInverted"
-    | "ghost"
-    | "ghostSecondary"
-    | "ghostOrange"
-    | "tertiary"
-    | "danger"
-    | "warning";
   className?: string;
   children?: React.ReactNode;
   showBorder?: boolean;

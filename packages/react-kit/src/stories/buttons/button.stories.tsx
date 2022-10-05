@@ -33,12 +33,6 @@ export const AccentFill: ComponentStory<typeof Button> = Template.bind({});
 
 export const AccentInverted: ComponentStory<typeof Button> = Template.bind({});
 
-export const Ghost: ComponentStory<typeof Button> = Template.bind({});
-
-export const GhostSecondary: ComponentStory<typeof Button> = Template.bind({});
-
-export const GhostOrange: ComponentStory<typeof Button> = Template.bind({});
-
 export const Disabled: ComponentStory<typeof Button> = Template.bind({});
 
 export const Loading: ComponentStory<typeof Button> = Template.bind({});
@@ -78,24 +72,6 @@ AccentInverted.args = {
   disabled: false,
   loading: false,
   variant: "accentInverted"
-};
-
-GhostSecondary.args = {
-  disabled: false,
-  loading: false,
-  variant: "ghostSecondary"
-};
-
-GhostOrange.args = {
-  disabled: false,
-  loading: false,
-  variant: "ghostOrange"
-};
-
-Ghost.args = {
-  disabled: false,
-  loading: false,
-  variant: "ghost"
 };
 
 Disabled.args = {
