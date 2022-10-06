@@ -24,7 +24,7 @@ services:
       - "8545:8545"
 
   graph-node:
-    image: graphprotocol/graph-node
+    image: graphprotocol/graph-node:v0.27.0
     ports:
       - "8000:8000"
       - "8001:8001"
