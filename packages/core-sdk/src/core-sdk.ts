@@ -6,9 +6,10 @@ import {
   MetadataStorage,
   AnyMetadata,
   Log,
-  MetaTxConfig
+  MetaTxConfig,
+  LensContracts
 } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
@@ -20,6 +21,7 @@ import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
+import * as erc721 from "./erc721";
 import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
 import * as metadata from "./metadata";
@@ -39,6 +41,7 @@ export class CoreSDK {
   private _tokenInfoManager: TokenInfoManager;
 
   private _metaTxConfig?: Partial<MetaTxConfig>;
+  private _lensContracts?: LensContracts;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -52,6 +55,7 @@ export class CoreSDK {
     theGraphStorage?: MetadataStorage;
     chainId: number;
     metaTx?: Partial<MetaTxConfig>;
+    lensContracts?: LensContracts;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -60,6 +64,7 @@ export class CoreSDK {
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
     this._metaTxConfig = opts.metaTx;
+    this._lensContracts = opts.lensContracts;
   }
 
   /**
@@ -97,7 +102,8 @@ export class CoreSDK {
       metaTx: {
         ...defaultConfig.metaTx,
         ...args.metaTx
-      }
+      },
+      lensContracts: defaultConfig.lens
     });
   }
 
@@ -275,9 +281,75 @@ export class CoreSDK {
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByAddress(
+    if (address === AddressZero) {
+      throw new Error(`Unsupported search address '${AddressZero}'`);
+    }
+    let seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
+      queryVars
+    );
+    if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
+      // If seller is not found per address, try to find per authToken
+      const tokenType = 1; // only LENS for now
+      const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
+      tokenIds.forEach(async (tokenId) => {
+        // Just in case the user owns several auth tokens
+        seller = await this.getSellerByAuthToken(tokenId, tokenType, queryVars);
+        if (seller) {
+          return seller;
+        }
+      });
+    }
+    return seller;
+  }
+
+  // Add findSellerAuthTokens() -> authToken[]?
+  public async fetchUserAuthTokens(
+    address: string,
+    tokenType: number
+  ): Promise<Array<string>> {
+    if (tokenType !== 1) {
+      // only LENS for now
+      throw new Error(`Unsupported authTokenType '${tokenType}'`);
+    }
+    if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
+      throw new Error("LENS contract is not configured in Core-SDK");
+    }
+    const balance = await erc721.handler.balanceOf({
+      contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+      owner: address,
+      web3Lib: this._web3Lib
+    });
+
+    const ret = [];
+    const balanceBN = BigNumber.from(balance);
+    for (let index = 0; balanceBN.gt(index); index++) {
+      const tokenId = await erc721.handler.tokenOfOwnerByIndex({
+        contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+        owner: address,
+        index,
+        web3Lib: this._web3Lib
+      });
+      ret.push(tokenId);
+    }
+    return ret;
+  }
+
+  // Add getSellerByAuthToken(authToken) ?
+  public async getSellerByAuthToken(
+    tokenId: string,
+    tokenType: number,
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment> {
+    if (tokenType !== 1) {
+      // only LENS for now
+      throw new Error(`Unsupported authTokenType '${tokenType}'`);
+    }
+    return accounts.subgraph.getSellerByAuthToken(
+      this._subgraphUrl,
+      tokenId,
+      tokenType,
       queryVars
     );
   }
