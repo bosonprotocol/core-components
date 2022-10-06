@@ -6,8 +6,11 @@ import {
   mockRawOfferFromSubgraph,
   buildProductV1Metadata,
   interceptSubgraph,
-  SUBGRAPH_URL
+  SUBGRAPH_URL,
+  ZERO_ADDRESS,
+  mockRawSellerFromSubgraph
 } from "./mocks";
+import { ADDRESS } from "@bosonprotocol/common/tests/mocks";
 
 describe("#fromDefaultConfig()", () => {
   test("construct using default config from env name", () => {
@@ -90,5 +93,29 @@ describe("#renderContractualAgreementForOffer()", () => {
     await expect(
       coreSDK.renderContractualAgreementForOffer(offerId)
     ).rejects.toThrowError(/^offerData is undefined/);
+  });
+});
+
+describe("getSellerByAddress()", () => {
+  test("shall fail if search address is ZERO_ADDRESS", async () => {
+    const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
+      operator: ADDRESS
+    });
+    interceptSubgraph().reply(200, {
+      data: {
+        sellers: [mockedRawSellerFromSubgraph]
+      }
+    });
+    const defaultConfig = getDefaultConfig("testing");
+    const coreSDK = new CoreSDK({
+      web3Lib: new MockWeb3LibAdapter(),
+      subgraphUrl: SUBGRAPH_URL,
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: defaultConfig.chainId
+    });
+    expect(coreSDK).toBeInstanceOf(CoreSDK);
+    await expect(coreSDK.getSellerByAddress(ZERO_ADDRESS)).rejects.toThrowError(
+      /^Unsupported search address '0x0000000000000000000000000000000000000000'/
+    );
   });
 });
