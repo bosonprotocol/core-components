@@ -1068,19 +1068,3 @@ async function expireDispute(exchangeId: string, coreSDK: CoreSDK) {
   await txResponse.wait();
   await waitForGraphNodeIndexing();
 }
-
-// TODO: 
-// - create a seller with 4 identical addresses --> sellerId
-// - call getSellerByAddress --> compare sellerId
-// - create a seller with 4 different addresses --> sellerId
-// - call getSellerByAddress for each of the addresses --> compare sellerId
-// - create a seller with a authToken + different addresses --> sellerId
-// - check the seller admin address is 0x0
-// - call getSellerByAddress(admin) --> compare sellerId
-// - create a seller with 4 different addresses --> sellerId
-// - update a seller with a authToken --> sellerId
-// - check the seller admin address is 0x0
-// - call getSellerByAddress for each of the addresses --> compare sellerId
-
-
-

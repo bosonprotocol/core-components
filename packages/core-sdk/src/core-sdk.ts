@@ -304,7 +304,12 @@ export class CoreSDK {
     return seller;
   }
 
-  // Add findSellerAuthTokens() -> authToken[]?
+  /**
+   * Returns the array of LENS tokenIds owned by a specified address
+   * @param address - Address of seller entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Array of tokenIds
+   */
   public async fetchUserAuthTokens(
     address: string,
     tokenType: number
@@ -336,7 +341,13 @@ export class CoreSDK {
     return ret;
   }
 
-  // Add getSellerByAuthToken(authToken) ?
+  /**
+   * Returns seller entity from subgraph that owns the given auth token (if any).
+   * @param tokenId - tokenId of the Auth Token.
+   * @param tokenType - Type of the Auth Token (1 for LENS, ...).
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Seller entity from subgraph.
+   */
   public async getSellerByAuthToken(
     tokenId: string,
     tokenType: number,
