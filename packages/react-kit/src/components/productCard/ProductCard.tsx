@@ -31,7 +31,7 @@ interface IProductCard {
   price: number;
   currency: Currencies;
   avatar: string;
-  avatarName: string;
+  avatarName: JSX.Element | string;
   onCardClick?: (id: string | number) => void;
   onAvatarNameClick?: () => void;
   imageProps: IBaseImage;
@@ -90,7 +90,9 @@ export const ProductCard = (props: IProductCard) => {
               <ProductCardCreatorAvatar>
                 <img src={avatar} alt="avatar" />
               </ProductCardCreatorAvatar>
-              <ProductCardCreatorName>{avatarName}</ProductCardCreatorName>
+              <ProductCardCreatorName data-avatarname="product-card">
+                {avatarName}
+              </ProductCardCreatorName>
             </ProductCardCreator>
             <ProductCardTitle>{title}</ProductCardTitle>
           </ProductCardData>
