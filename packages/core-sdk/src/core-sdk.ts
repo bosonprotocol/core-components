@@ -293,13 +293,13 @@ export class CoreSDK {
       // If seller is not found per address, try to find per authToken
       const tokenType = 1; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
-      tokenIds.forEach(async (tokenId) => {
+      for (const tokenId of tokenIds) {
         // Just in case the user owns several auth tokens
         seller = await this.getSellerByAuthToken(tokenId, tokenType, queryVars);
         if (seller) {
           return seller;
         }
-      });
+      }
     }
     return seller;
   }
