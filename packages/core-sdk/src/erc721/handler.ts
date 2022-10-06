@@ -12,7 +12,7 @@ export async function balanceOf(args: {
     data: erc721Iface.encodeFunctionData("balanceOf", [args.owner])
   });
 
-  const [balance] = erc721Iface.decodeFunctionResult("erc721Iface", result);
+  const [balance] = erc721Iface.decodeFunctionResult("balanceOf", result);
   return String(balance);
 }
 
