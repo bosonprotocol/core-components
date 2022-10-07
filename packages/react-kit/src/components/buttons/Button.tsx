@@ -24,6 +24,7 @@ export interface ButtonProps {
   className?: string;
   children?: React.ReactNode;
   showBorder?: boolean;
+  type?: "submit" | "reset" | "button" | undefined;
 }
 
 export const Button = ({
@@ -33,6 +34,7 @@ export const Button = ({
   size = ButtonSize.Medium,
   variant = "primaryFill",
   showBorder = true,
+  type = "button",
   ...props
 }: ButtonProps) => {
   return (
@@ -42,6 +44,7 @@ export const Button = ({
       onClick={onClick}
       size={size}
       showBorder={showBorder}
+      type={type}
       {...props}
     >
       {props.loading ? (

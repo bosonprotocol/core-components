@@ -30,7 +30,7 @@ export const InputField = styled.input`
   vertical-align: middle;
   :focus {
     outline: none;
-    color: ${({ theme }) => theme?.colors?.light.secondary};
+    color: ${({ theme }) => theme?.colors?.light.accent};
   }
   :focus::placeholder {
     color: transparent;

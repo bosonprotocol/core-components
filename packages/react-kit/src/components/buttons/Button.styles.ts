@@ -2,10 +2,10 @@ import { ButtonSize } from "./Button";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = styled.button.attrs(
-  (props: { size: ButtonSize; variant: string; showBorder: boolean; }) => ({
+  (props: { size: ButtonSize; variant: string; showBorder: boolean }) => ({
     variant: props.variant,
     size: props.size,
-    showBorder: props.showBorder,
+    showBorder: props.showBorder
   })
 )`
   box-sizing: border-box;
@@ -96,6 +96,9 @@ export const ButtonStyle = styled.button.attrs(
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.white};
         }
+        span {
+          color: ${({ theme }) => theme?.colors?.light.white};
+        }
       }
     `}
 
@@ -106,7 +109,7 @@ export const ButtonStyle = styled.button.attrs(
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
       border: ${({ showBorder, theme }) =>
-    showBorder ? `2px solid ${theme?.colors?.light.primary}` : "none"};
+        showBorder ? `2px solid ${theme?.colors?.light.primary}` : "none"};
       color: ${({ theme }) => theme?.colors?.light.primary};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.primary};
@@ -114,14 +117,14 @@ export const ButtonStyle = styled.button.attrs(
       :hover {
         background: ${({ theme }) => theme?.colors?.light.lightGrey};
         background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
+        border: ${({ showBorder, theme }) =>
+          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
         color: ${({ theme }) => theme?.colors?.light.black};
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.black};
         }
       }
-    `
-    }
+    `}
 
     ${({ variant, disabled }) =>
     variant === "secondaryFill" &&
@@ -152,7 +155,7 @@ export const ButtonStyle = styled.button.attrs(
       background: transparent;
       border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
       border: ${({ showBorder, theme }) =>
-    showBorder ? `2px solid ${theme?.colors?.light.secondary}` : "none"};
+        showBorder ? `2px solid ${theme?.colors?.light.secondary}` : "none"};
       color: ${({ theme }) => theme?.colors?.light.secondary};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.secondary};
@@ -160,7 +163,8 @@ export const ButtonStyle = styled.button.attrs(
       :hover {
         background: ${({ theme }) => theme?.colors?.light.lightGrey};
         background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
+        border: ${({ showBorder, theme }) =>
+          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
         color: ${({ theme }) => theme?.colors?.light.black};
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.black};
@@ -196,7 +200,7 @@ export const ButtonStyle = styled.button.attrs(
       background: transparent;
       border: 2px solid ${({ theme }) => theme?.colors?.light.accent};
       border: ${({ showBorder, theme }) =>
-    showBorder ? `2px solid ${theme?.colors?.light.accent}` : "none"};
+        showBorder ? `2px solid ${theme?.colors?.light.accent}` : "none"};
       color: ${({ theme }) => theme?.colors?.light.accent};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.accent};
@@ -204,7 +208,8 @@ export const ButtonStyle = styled.button.attrs(
       :hover {
         background: ${({ theme }) => theme?.colors?.light.black};
         background-color: ${({ theme }) => theme?.colors?.light.black};
-        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
+        border: ${({ showBorder, theme }) =>
+          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
         color: ${({ theme }) => theme?.colors?.light.white};
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.white};
