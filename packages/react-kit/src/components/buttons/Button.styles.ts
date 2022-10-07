@@ -95,9 +95,6 @@ export const ButtonStyle = styled.button.attrs(
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.white};
         }
-        span {
-          color: ${({ theme }) => theme?.colors?.light.white};
-        }
       }
     `}
 
