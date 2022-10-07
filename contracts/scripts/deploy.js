@@ -168,19 +168,6 @@ async function main() {
     config[0].token = mockBosonToken.address;
   }
 
-  if (hre.network.name === "localhost") {
-    console.log(`\n💎 Deploying mock LENS contract...`);
-    const confirmations = 1;
-    let lensTokenContractFactory = await ethers.getContractFactory(
-      "MockNFTAuth721"
-    );
-    const lensTokenContract = await lensTokenContractFactory.deploy({
-      gasLimit
-    });
-    await lensTokenContract.deployTransaction.wait(confirmations);
-    deploymentComplete("LensToken", lensTokenContract.address, [], contracts);
-  }
-
   console.log(
     `\n💎 Deploying AccessController, ProtocolDiamond, and Diamond utility facets...`
   );

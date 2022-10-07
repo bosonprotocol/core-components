@@ -1,15 +1,11 @@
-import {
-  DAY_IN_MS,
-  DAY_IN_SEC,
-  ZERO_ADDRESS
-} from "./../../packages/core-sdk/tests/mocks";
+import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
 import { CreateSellerArgs } from "./../../packages/common/src/types/accounts";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
 import {
   DisputeState,
   ExchangeFieldsFragment
 } from "./../../packages/core-sdk/src/subgraph";
-import { utils, constants, BigNumber, BigNumberish, Wallet } from "ethers";
+import { utils, constants, BigNumber, BigNumberish } from "ethers";
 
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -30,13 +26,8 @@ import {
   seedWallet5,
   seedWallet6,
   initCoreSDKWithWallet,
-  drWallet,
-  provider,
-  ownerOfErc721Token,
-  mintErc721Token
+  drWallet
 } from "./utils";
-import { getDefaultConfig, AuthTokenType } from "@bosonprotocol/common";
-import { EthersAdapter } from "../../packages/ethers-sdk/src";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -591,107 +582,6 @@ describe("core-sdk", () => {
       const sellerId = seller.id;
 
       const seller2 = await coreSDK.getSellerByAddress(fundedWallet.address);
-      expect(seller2).toBeTruthy();
-      expect(seller2.id).toEqual(sellerId);
-    });
-
-    // This test requires a patch in the protocol-contracts submodule
-    //   --> MockNFTAuth721 to inherit from ERC721EnumerableUpgradeable instead of ERC721Upgradeable
-    //  (to be imported from "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";)
-    // Deactivate the test until the submodule is updated
-    xtest("getSellerByAddress() retrieve the seller using the auth token", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        seedWallet
-      );
-
-      const tokenType = AuthTokenType.LENS; // LENS
-      const defaultConfig = getDefaultConfig("local");
-      const lensContract = defaultConfig.lens?.LENS_HUB_CONTRACT as string;
-      const web3Lib = new EthersAdapter(provider, fundedWallet);
-      const originalAddress = fundedWallet.address;
-
-      // find a tokenId that is not minted yet
-      let tokenId = 123456789;
-      let ownerOf = "NOT_ZERO_ADDRESS";
-      while (ownerOf !== ZERO_ADDRESS) {
-        try {
-          ownerOf = await ownerOfErc721Token({
-            tokenId: tokenId.toString(),
-            contractAddress: lensContract,
-            web3Lib
-          });
-          tokenId++;
-        } catch {
-          ownerOf = ZERO_ADDRESS;
-        }
-      }
-
-      // Check the (future) seller doesn't own any auth token yet
-      let lensTokens = [] as string[];
-      lensTokens = await coreSDK.fetchUserAuthTokens(
-        originalAddress,
-        tokenType
-      );
-      expect(lensTokens.length).toEqual(0);
-
-      // Mint the token in the mocked LENS contract for the future seller
-      const tx = await mintErc721Token({
-        to: originalAddress,
-        tokenId: tokenId.toString(),
-        contractAddress: lensContract,
-        web3Lib
-      });
-      tx.wait();
-
-      // Check the (future) seller now owns an auth token
-      lensTokens = await coreSDK.fetchUserAuthTokens(
-        originalAddress,
-        tokenType
-      );
-      expect(lensTokens.length).toEqual(1);
-
-      // Create the seller account, using originalAddress
-      const seller = await createSeller(coreSDK, originalAddress);
-      expect(seller).toBeTruthy();
-
-      // Create a new address
-      const sellerId = seller.id;
-      const newWallet = Wallet.createRandom().connect(provider);
-      const newAddress = newWallet.address;
-
-      // Update the seller to assign the auth token and assign the new address to all accounts
-      const updateSellerTx = await coreSDK.updateSeller({
-        id: sellerId,
-        operator: newAddress,
-        admin: ZERO_ADDRESS, // need to be set to 0 when using auth token
-        clerk: newAddress,
-        treasury: newAddress,
-        authTokenId: tokenId.toString(),
-        authTokenType: tokenType
-      });
-      await updateSellerTx.wait();
-      await waitForGraphNodeIndexing();
-
-      // Check the seller is found using the auth token
-      const sellerAuthToken = await coreSDK.getSellerByAuthToken(
-        tokenId.toString(),
-        tokenType
-      );
-      expect(sellerAuthToken).toBeTruthy();
-      expect(sellerAuthToken.id).toEqual(sellerId);
-
-      // Check the seller is NOT found using the previous address
-      const operator = await coreSDK.getSellerByOperator(originalAddress);
-      expect(operator).not.toBeTruthy();
-      const admin = await coreSDK.getSellerByAdmin(originalAddress);
-      expect(admin).not.toBeTruthy();
-      const clerk = await coreSDK.getSellerByClerk(originalAddress);
-      expect(clerk).not.toBeTruthy();
-      const treasury = await coreSDK.getSellerByTreasury(originalAddress);
-      expect(treasury).not.toBeTruthy();
-
-      // Check the seller is found using the generic method
-      const seller2 = await coreSDK.getSellerByAddress(originalAddress);
       expect(seller2).toBeTruthy();
       expect(seller2.id).toEqual(sellerId);
     });
