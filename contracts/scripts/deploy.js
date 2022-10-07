@@ -3,6 +3,9 @@ process.env.CONFIRMATIONS = 1; // required for deployProtocolConfigFacet()
 const hre = require("hardhat");
 const ethers = hre.ethers;
 
+const protocolConfig = require("../protocol-contracts/scripts/config/protocol-parameters");
+const authTokenAddresses = require("../protocol-contracts/scripts/config/auth-token-addresses");
+
 const Role = require("../protocol-contracts/scripts/domain/Role");
 const {
   deployProtocolDiamond
@@ -17,67 +20,29 @@ const {
   deployProtocolHandlerFacets
 } = require("../protocol-contracts/scripts/util/deploy-protocol-handler-facets.js");
 const {
-  deploymentComplete,
-  verifyOnEtherscan,
-  delay
-} = require("../protocol-contracts/scripts/util/report-verify-deployments");
+  deploymentComplete
+} = require("../protocol-contracts/scripts/util/utils");
 const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
-const { oneMonth } = require("../protocol-contracts/test/utils/constants");
+const { oneMonth } = require("../protocol-contracts/test/util/constants");
 const AuthTokenType = require("../protocol-contracts/scripts/domain/AuthTokenType");
 
 const gasLimit = "20000000";
 
-function getConfig() {
-  const bosonTokenMap = {
-    ropsten: "0xf47e4fd9d2ebd6182f597ee12e487cca37fc524c"
-  };
-
-  const feePercentage = "150"; // 1.5%  = 150
-  const protocolFeeFlatBoson = "0";
-  const maxExchangesPerBatch = "100";
-  const maxOffersPerGroup = "100";
-  const maxTwinsPerBundle = "100";
-  const maxOffersPerBundle = "100";
-  const maxOffersPerBatch = "100";
-  const maxTokensPerWithdrawal = "100";
-  const maxFeesPerDisputeResolver = 100;
-  const maxEscalationResponsePeriod = oneMonth;
-  const maxDisputesPerBatch = "100";
-  const maxAllowedSellers = "100";
-  const buyerEscalationDepositPercentage = "100"; // 1%
-  const maxTotalOfferFeePercentage = 4000; // 40%
-  const maxRoyaltyPecentage = 1000; //10%
-  const maxResolutionPeriod = oneMonth;
-
+function getConfig(network) {
   return [
     {
-      token: bosonTokenMap[hre.network.name],
-      treasury: ethers.constants.AddressZero,
-      voucherBeacon: ethers.constants.AddressZero,
-      beaconProxy: ethers.constants.AddressZero
+      token: protocolConfig.TOKEN[network],
+      treasury: protocolConfig.TREASURY[network],
+      voucherBeacon: protocolConfig.BEACON[network],
+      beaconProxy: protocolConfig.BEACON_PROXY[network]
     },
     {
-      maxExchangesPerBatch,
-      maxOffersPerGroup,
-      maxTwinsPerBundle,
-      maxOffersPerBundle,
-      maxOffersPerBatch,
-      maxTokensPerWithdrawal,
-      maxFeesPerDisputeResolver,
-      maxEscalationResponsePeriod,
-      maxDisputesPerBatch,
-      maxAllowedSellers,
-      maxTotalOfferFeePercentage,
-      maxRoyaltyPecentage,
-      maxResolutionPeriod
+      ...protocolConfig.limits,
+      minDisputePeriod: "1"
     },
-    {
-      percentage: feePercentage,
-      flatBoson: protocolFeeFlatBoson
-    },
-    buyerEscalationDepositPercentage
+    protocolConfig.fees
   ];
 }
 
@@ -85,28 +50,10 @@ function getConfig() {
  * Get the contract addresses for supported NFT Auth token contracts
  * @returns {lensAddress: string, ensAddress: string}
  */
-function getAuthTokenContracts() {
-  // Lens protocol NFT contract address
-  const LENS = {
-    mainnet: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
-    hardhat: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-    test: "0x0000111122223333444455556666777788889999",
-    localhost: "0x0000111122223333444455556666777788889999",
-    mumbai: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82"
-  };
-
-  // ENS contract address
-  const ENS = {
-    mainnet: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
-    hardhat: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
-    test: "0x0000111122223333444455556666777788889999",
-    localhost: "0x0000111122223333444455556666777788889999",
-    mumbai: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85"
-  };
-
+function getAuthTokenContracts(network) {
   return {
-    lensAddress: LENS[hre.network.name],
-    ensAddress: ENS[hre.network.name]
+    lensAddress: authTokenAddresses.LENS[network],
+    ensAddress: authTokenAddresses.ENS[network]
   };
 }
 
@@ -148,8 +95,8 @@ async function main() {
   console.log(`⛓  Network: ${hre.network.name}\n📅 ${new Date()}`);
 
   // Get the protocol config
-  const config = getConfig();
-  const authTokenContracts = getAuthTokenContracts();
+  const config = getConfig(hre.network.name);
+  const authTokenContracts = getAuthTokenContracts(hre.network.name);
 
   // Get the accounts
   const accounts = await ethers.provider.listAccounts();
@@ -225,10 +172,7 @@ async function main() {
   console.log(`\n⧉ Deploying Protocol Client implementation/proxy pairs...`);
 
   // Deploy the Protocol Client implementation/proxy pairs
-  const protocolClientArgs = [
-    accessController.address,
-    protocolDiamond.address
-  ];
+  const protocolClientArgs = [protocolDiamond.address];
   const [impls, beacons, proxies] = await deployProtocolClients(
     protocolClientArgs,
     gasLimit
@@ -271,9 +215,6 @@ async function main() {
     protocolDiamond.address
   );
 
-  // Renounce temporarily granted UPGRADER role for deployer account
-  await accessController.renounceRole(Role.UPGRADER, deployer);
-
   // Add Voucher NFT addresses to protocol config
   await bosonConfigHandler.setVoucherBeaconAddress(bosonClientBeacon.address);
   await bosonConfigHandler.setBeaconProxyAddress(bosonVoucherProxy.address);
@@ -293,6 +234,8 @@ async function main() {
   );
 
   // Add roles to contracts and addresses that need it
+  // Renounce temporarily granted UPGRADER role for deployer account
+  await accessController.renounceRole(Role.UPGRADER, deployer);
   await accessController.grantRole(Role.PROTOCOL, protocolDiamond.address);
 
   console.log(`✅ Granted roles to appropriate contract and addresses.`);
@@ -346,23 +289,7 @@ async function main() {
     );
     await accountHandler.activateDisputeResolver(disputeResolverId);
     console.log(`✅ Dispute resolver activated`);
-
-    console.log("\n");
-    process.exit();
   }
-
-  // Wait a minute after deployment completes and then verify contracts on etherscan
-  console.log(
-    "\n⏲ Pause one minute, allowing deployments to propagate to Etherscan backend..."
-  );
-  await delay(60_000).then(async () => {
-    console.log("🔍 Verifying contracts on Etherscan...");
-    for (const contract of contracts) {
-      await verifyOnEtherscan(contract);
-    }
-  });
-
-  console.log("\n");
 }
 
 main()

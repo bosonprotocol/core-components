@@ -1272,7 +1272,7 @@ export class CoreSDK {
    */
   public async resolveDispute(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
     sigR: BytesLike;
     sigS: BytesLike;
     sigV: BigNumberish;
@@ -1351,12 +1351,12 @@ export class CoreSDK {
    * Signs dispute resolution message.
    * @param args - Dispute resolve arguments:
    * - `args.exchangeId` - ID of disputed exchange.
-   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * - `args.buyerPercentBasisPoints` - Percentage of deposit the buyer gets.
    * @returns Signature.
    */
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
   }) {
     return disputes.handler.signResolutionProposal({
       ...args,

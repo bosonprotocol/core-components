@@ -170,7 +170,7 @@ describe("#completeExchange()", () => {
             redeemedDate: (Date.now() / 1000).toString()
           },
           {
-            fulfillmentPeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
+            disputePeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
           }
         )
       }
@@ -196,7 +196,7 @@ describe("#completeExchange()", () => {
             redeemedDate: (Date.now() / 1000).toString()
           },
           {
-            fulfillmentPeriodDuration: "0"
+            disputePeriodDuration: "0"
           }
         )
       }
