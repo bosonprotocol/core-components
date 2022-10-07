@@ -122,15 +122,15 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
-      protocolDiamond: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      protocolDiamond: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
       testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
     },
     metaTx: {
       relayerUrl: "http://localhost:8888"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(31337) &&
-        chainIdToLensContractAddresses.get(31337))
+      LENS_HUB_CONTRACT: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
     }
   }
 ];

@@ -9,7 +9,8 @@ import {
 import {
   CoreSDK,
   getDefaultConfig,
-  accounts
+  accounts,
+  erc721
 } from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
@@ -25,6 +26,7 @@ import {
   ACCOUNT_9,
   ACCOUNT_10
 } from "../../contracts/accounts";
+import { TransactionResponse, Web3LibAdapter } from "@bosonprotocol/common";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -303,4 +305,33 @@ export async function createDisputeResolver(
     disputeResolver,
     protocolAdminCoreSDK: coreSDK
   };
+}
+
+export async function mintErc721Token(args: {
+  to: string;
+  tokenId: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  const erc721Iface = erc721.iface.erc721Iface;
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: erc721Iface.encodeFunctionData("mint", [args.to, args.tokenId])
+  });
+}
+
+export async function ownerOfErc721Token(args: {
+  tokenId: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const erc721Iface = erc721.iface.erc721Iface;
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc721Iface.encodeFunctionData("ownerOf", [args.tokenId])
+  });
+
+  const [owner] = erc721Iface.decodeFunctionResult("ownerOf", result);
+  return String(owner);
 }
