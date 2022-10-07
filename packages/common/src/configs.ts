@@ -123,7 +123,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
       protocolDiamond: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-      testErc20: "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90" // Foreign20 contract
+      testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
     },
     metaTx: {
       relayerUrl: "http://localhost:8888"
