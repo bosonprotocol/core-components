@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.16.0-alpha.2",
+  "version": "1.17.0-alpha.2",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
     "@graphprotocol/graph-ts": "^0.27.0"
@@ -23,9 +23,9 @@
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
-    "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ levalleux-ludo/bosontesting",
-    "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ levalleux-ludo/bosonmumbai",
-    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
+    "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-testing",
+    "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-staging",
+    "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai",
     "test": "npm run manifest:local && graph test"
   }
 }

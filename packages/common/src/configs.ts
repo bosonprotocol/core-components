@@ -51,7 +51,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
     subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosontesting",
+      "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -74,7 +74,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
     subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/levalleux-ludo/bosonmumbai",
+      "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
     jsonRpcUrl:
       "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
@@ -93,21 +93,23 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "production",
-    chainId: 1,
-    nativeCoin: chainIdToInfo.get(1),
-    getTxExplorerUrl: chainIdToGraphTx.get(1),
-    subgraphUrl: "",
-    jsonRpcUrl: "",
+    chainId: 80001, // TODO: swap to 137 after protocol deployment
+    nativeCoin: chainIdToInfo.get(80001), // TODO: swap to 137 after protocol deployment
+    getTxExplorerUrl: chainIdToGraphTx.get(80001), // TODO: swap to 137 after protocol deployment
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai", // TODO: re-deploy subgraphs to correct org & swap for "real" one after protocol deployment
+    jsonRpcUrl:
+      "https://polygon-mumbai.infura.io/v3/383117b55d614525b07f03b5979c5f19", // TODO: switch to polygon endpoint after protocol deployment
+    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: ""
+      protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
     },
     metaTx: {
-      relayerUrl: ""
+      relayerUrl: "https://api.biconomy.io" // TODO: where will we configure the API key? Also for staging config
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(1) &&
-        chainIdToLensContractAddresses.get(1))
+      ...(chainIdToLensContractAddresses.has(80001) &&
+        chainIdToLensContractAddresses.get(80001))
     }
   },
   {

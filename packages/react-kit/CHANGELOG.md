@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.7.0...@bosonprotocol/react-kit@0.8.0) (2022-10-05)
+
+
+### Features
+
+* fix npm publish config ([#286](https://github.com/bosonprotocol/core-components/issues/286)) ([d57bc91](https://github.com/bosonprotocol/core-components/commit/d57bc91b348f5225d0890cc3256ac464bb8ad122))
+* mkae npm packages public ([#287](https://github.com/bosonprotocol/core-components/issues/287)) ([98927c2](https://github.com/bosonprotocol/core-components/commit/98927c233740616b80da66a7de30e911e85ab09c))
+* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
+
+
+
+
+
 # [0.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.6.0...@bosonprotocol/react-kit@0.7.0) (2022-10-03)
 
 

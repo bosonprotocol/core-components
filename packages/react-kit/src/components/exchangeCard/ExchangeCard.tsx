@@ -35,7 +35,7 @@ interface Base {
   price: number;
   currency: Currencies;
   avatar: string;
-  avatarName: string;
+  avatarName: JSX.Element | string;
   onCardClick?: (id: string | number) => void;
   onAvatarNameClick?: () => void;
   imageProps: IBaseImage;
@@ -172,7 +172,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
               <ExchangeCreatorAvatar>
                 <img src={avatar} alt="avatar" />
               </ExchangeCreatorAvatar>
-              <ExchangeCreatorName>{avatarName}</ExchangeCreatorName>
+              <ExchangeCreatorName data-avatarname="exchange-card">
+                {avatarName}
+              </ExchangeCreatorName>
             </ExchangeCreator>
             <ExchangeTitle>{title}</ExchangeTitle>
           </ExchangeCarData>
