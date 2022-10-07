@@ -569,6 +569,23 @@ describe("core-sdk", () => {
       });
     });
   });
+
+  describe("getSellerByAddress()", () => {
+    test("getSellerByAddress() retrieve the seller using the address", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const sellerId = seller.id;
+
+      const seller2 = await coreSDK.getSellerByAddress(fundedWallet.address);
+      expect(seller2).toBeTruthy();
+      expect(seller2.id).toEqual(sellerId);
+    });
+  });
 });
 
 async function createOffer(
