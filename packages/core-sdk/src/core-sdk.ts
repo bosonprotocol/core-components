@@ -7,7 +7,8 @@ import {
   AnyMetadata,
   Log,
   MetaTxConfig,
-  LensContracts
+  LensContracts,
+  AuthTokenType
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
@@ -291,7 +292,7 @@ export class CoreSDK {
     );
     if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
       // If seller is not found per address, try to find per authToken
-      const tokenType = 1; // only LENS for now
+      const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
       for (const tokenId of tokenIds) {
         // Just in case the user owns several auth tokens
@@ -314,7 +315,7 @@ export class CoreSDK {
     address: string,
     tokenType: number
   ): Promise<Array<string>> {
-    if (tokenType !== 1) {
+    if (tokenType !== AuthTokenType.LENS) {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
     }
@@ -353,7 +354,7 @@ export class CoreSDK {
     tokenType: number,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
-    if (tokenType !== 1) {
+    if (tokenType !== AuthTokenType.LENS) {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
     }
