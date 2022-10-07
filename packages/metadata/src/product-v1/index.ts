@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
@@ -30,9 +31,9 @@ type ProductBase = {
   packaging_dimensions_length?: string;
   packaging_dimensions_width?: string;
   packaging_dimensions_height?: string;
-  packaging_dimensions_unit: string;
-  packaging_weight_value: string;
-  packaging_weight_unit: string;
+  packaging_dimensions_unit?: string;
+  packaging_weight_value?: string;
+  packaging_weight_unit?: string;
 };
 
 type ProductDetails = {
@@ -99,16 +100,65 @@ export type ProductV1Metadata = {
     value: string;
     display_type?: string;
   }[];
-  product:
-    | ProductBase
-    | ProductDetails
-    | {
-        uuid: string;
-        version: number;
-      };
+  product: ProductBase &
+    ProductDetails & {
+      uuid: string;
+      version: number;
+    };
   variations?: Variation[];
   seller: SellerMetadata;
   shipping: ShippingMetadata;
   exchangePolicy: ExchangePolicy;
   productOverrides?: ProductBase;
 };
+
+export type ProductV1Variant = Array<Variation>;
+
+export function createVariantProductMetadata(
+  productMetadata: ProductV1Metadata,
+  variants: Array<ProductV1Variant>
+): Array<ProductV1Metadata> {
+  // Check the productMetadata does not have any variations
+  if (productMetadata.variations) {
+    throw new Error(
+      "Unable to create variant product Metadata from an already existing variation"
+    );
+  }
+  if (variants.length < 2) {
+    throw new Error(
+      "Unable to create a variant product with less than 2 variants"
+    );
+  }
+
+  // Check the array of variants is consistent (each variant would have the same types of variations and different values)
+  const [variant0, ...nextVariants] = variants;
+  const types0 = variant0.map((variation) => variation.type);
+  for (const variant of nextVariants) {
+    if (variant.length !== types0.length) {
+      throw new Error("variants are not consistent to each other");
+    }
+    types0.forEach((type) => {
+      const options = [variant0.find((v) => v.type === type).option];
+      const variation = variant.find((v) => v.type === type);
+      if (!variation) {
+        throw new Error(
+          `missing type ${type} in variant ${JSON.stringify(variant)}`
+        );
+      }
+      if (options.includes(variation.option)) {
+        throw new Error(
+          `Redundant option value ${variation.option} for type ${type}`
+        );
+      }
+    });
+  }
+
+  // Each variant should have an different UUID
+  return variants.map((variant) => {
+    return {
+      ...productMetadata,
+      uuid: uuidv4(),
+      variations: variant
+    };
+  });
+}
