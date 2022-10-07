@@ -89,8 +89,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <ExchangeButtonWrapper>
               <RedeemButtonWrapper>
                 <Button
-                  variant="secondaryInverted"
-                  showBorder={false}
+                  variant="ghostOrange"
                   {...disputeButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -109,7 +108,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <ExchangeButtonWrapper>
               <CommittedButtonWrapper>
                 <Button
-                  variant="primaryFill"
+                  variant="primary"
                   {...redeemButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -119,8 +118,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   Redeem
                 </Button>
                 <Button
-                  variant="secondaryInverted"
-                  showBorder={false}
+                  variant="ghostOrange"
                   {...cancelButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
