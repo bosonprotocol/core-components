@@ -1,0 +1,5 @@
+HERE AFTER THE IPFS HASH OF THE UPLOADED FILES (FOR RECORDING AND TRACEABILITY)
+===============================================================================
+
+contractualAgreement.template.md QmXfDShmggHm7BzMbkzv2rRowwPyJ55mypGp32qKSPGto4
+rNFTLicense.template.md QmW9PAAUczAfx1CEzFEA1StVddRrw1rNA9ZLZjHuDWiLF7
