@@ -1,3 +1,4 @@
+export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";
 export * from "@bosonprotocol/ethers-sdk";
 export * from "@bosonprotocol/ipfs-storage";

@@ -18,7 +18,7 @@ export type UpdateSellerArgs = { id: BigNumberish } & Omit<
 
 export const AuthTokenType = {
   NONE: 0,
-  Custom: 1,
+  CUSTOM: 1,
   LENS: 2,
   ENS: 3
 };
