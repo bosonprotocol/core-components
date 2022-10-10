@@ -10,6 +10,7 @@ export type { IBosonFundsHandler } from "./IBosonFundsHandler";
 export type { IBosonMetaTransactionsHandler } from "./IBosonMetaTransactionsHandler";
 export type { IBosonOfferHandler } from "./IBosonOfferHandler";
 export type { IBosonOrchestrationHandler } from "./IBosonOrchestrationHandler";
+export type { IBosonVoucher } from "./IBosonVoucher";
 export type { ProtocolDiamond } from "./ProtocolDiamond";
 
 export { ERC20__factory } from "./factories/ERC20__factory";
@@ -21,4 +22,5 @@ export { IBosonFundsHandler__factory } from "./factories/IBosonFundsHandler__fac
 export { IBosonMetaTransactionsHandler__factory } from "./factories/IBosonMetaTransactionsHandler__factory";
 export { IBosonOfferHandler__factory } from "./factories/IBosonOfferHandler__factory";
 export { IBosonOrchestrationHandler__factory } from "./factories/IBosonOrchestrationHandler__factory";
+export { IBosonVoucher__factory } from "./factories/IBosonVoucher__factory";
 export { ProtocolDiamond__factory } from "./factories/ProtocolDiamond__factory";
