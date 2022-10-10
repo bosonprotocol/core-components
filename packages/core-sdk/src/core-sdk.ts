@@ -290,7 +290,6 @@ export class CoreSDK {
       address,
       queryVars
     );
-
     if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
@@ -307,7 +306,7 @@ export class CoreSDK {
       }
       return (await Promise.all(promises)).filter((seller) => !!seller);
     }
-    return [seller];
+    return [seller].filter((seller) => !!seller);
   }
 
   /**
