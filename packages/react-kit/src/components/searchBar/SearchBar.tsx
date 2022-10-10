@@ -106,7 +106,9 @@ export const SearchBar = ({
           buyerByAddressPromise
         ]);
 
-        const sellerByAddressList = sellerByAddress ? [sellerByAddress] : [];
+        const sellerByAddressList = sellerByAddress?.length
+          ? sellerByAddress
+          : [];
         const sellerByIdList = sellerById ? [sellerById] : [];
 
         productSearchResults = [
