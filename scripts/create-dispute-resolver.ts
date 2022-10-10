@@ -9,8 +9,8 @@ program
   .description("Creates and activates a dispute resolver.")
   .argument("<PROTOCOL_ADMIN_PK>", "Private key of account with ADMIN role.")
   .argument(
-    "<DR_ADMIN_ADDRESS>",
-    "Admin address of dispute resolver. Same address will be used for clerk, treasury and operator if no overrides set."
+    "<DR_ADMIN_PK>",
+    "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and operator."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .option(
@@ -31,29 +31,19 @@ program
     "-s, --sellers <...SELLERS>",
     "Comma-separated list of allowed seller IDs."
   )
-  .option(
-    "-o, --operator <OPERATOR_ADDRESS>",
-    "Operator address to set for dispute resolver."
-  )
-  .option(
-    "-cl, --clerk <CLERK_ADDRESS>",
-    "Clerk address to set for dispute resolver."
-  )
-  .option(
-    "-t, --treasury <TREASURY_ADDRESS>",
-    "Treasury address to set for dispute resolver."
-  )
   .parse(process.argv);
 
 async function main() {
-  const [protocolAdminPrivateKey, disputeResolverAdminAddress] = program.args;
+  const [protocolAdminPrivateKey, disputeResolverAdminPrivateKey] =
+    program.args;
 
   const opts = program.opts();
   const escalationResponsePeriodInMS =
     opts.escalationResponsePeriod || 60_000_000_000;
-  const operator = opts.operator || disputeResolverAdminAddress;
-  const clerk = opts.clerk || disputeResolverAdminAddress;
-  const treasury = opts.treasury || disputeResolverAdminAddress;
+  const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
+  const operator = disputeResolverAdminWallet.address;
+  const clerk = disputeResolverAdminWallet.address;
+  const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
   const defaultConfig = getDefaultConfig(envName);
   const chainId = defaultConfig.chainId;
@@ -70,8 +60,15 @@ async function main() {
     : [];
   const sellers = opts.sellers ? (opts.sellers as string).split(",") : [];
 
+  const coreSDKDRAdmin = CoreSDK.fromDefaultConfig({
+    web3Lib: new EthersAdapter(
+      new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
+      disputeResolverAdminWallet
+    ),
+    envName
+  });
   const protocolAdminWallet = new Wallet(protocolAdminPrivateKey);
-  const coreSDK = CoreSDK.fromDefaultConfig({
+  const coreSDKProtocolAdmin = CoreSDK.fromDefaultConfig({
     web3Lib: new EthersAdapter(
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       protocolAdminWallet
@@ -80,11 +77,11 @@ async function main() {
   });
 
   console.log(
-    `Creating dispute resolver on env ${envName} on chain ${chainId}...`
+    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId}...`
   );
-  const txResponse1 = await coreSDK.createDisputeResolver({
+  const txResponse1 = await coreSDKDRAdmin.createDisputeResolver({
     escalationResponsePeriodInMS,
-    admin: disputeResolverAdminAddress,
+    admin: disputeResolverAdminWallet.address,
     operator,
     clerk,
     treasury,
@@ -94,11 +91,13 @@ async function main() {
   });
   console.log(`Tx hash: ${txResponse1.hash}`);
   const receipt = await txResponse1.wait();
-  const disputeResolverId = coreSDK.getDisputeResolverIdFromLogs(receipt.logs);
+  const disputeResolverId = coreSDKDRAdmin.getDisputeResolverIdFromLogs(
+    receipt.logs
+  );
   console.log(`Dispute resolver with id ${disputeResolverId} created.`);
 
   console.log(`Activating dispute resolver...`);
-  const txResponse2 = await coreSDK.activateDisputeResolver(
+  const txResponse2 = await coreSDKProtocolAdmin.activateDisputeResolver(
     disputeResolverId as string
   );
   console.log(`Tx hash: ${txResponse2.hash}`);

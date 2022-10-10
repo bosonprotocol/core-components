@@ -74,13 +74,13 @@ export function argsToOfferDurationsStruct(
   args: CreateOfferArgs
 ): Partial<OfferDurationsStruct> {
   const {
-    fulfillmentPeriodDurationInMS,
+    disputePeriodDurationInMS,
     voucherValidDurationInMS = 0,
     resolutionPeriodDurationInMS
   } = args;
 
   return {
-    fulfillmentPeriod: utils.timestamp.msToSec(fulfillmentPeriodDurationInMS),
+    disputePeriod: utils.timestamp.msToSec(disputePeriodDurationInMS),
     voucherValid: utils.timestamp.msToSec(voucherValidDurationInMS),
     resolutionPeriod: utils.timestamp.msToSec(resolutionPeriodDurationInMS)
   };

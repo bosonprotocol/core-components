@@ -10,7 +10,7 @@ export type CreateOfferArgs = {
   validUntilDateInMS: BigNumberish;
   voucherRedeemableFromDateInMS: BigNumberish;
   voucherRedeemableUntilDateInMS: BigNumberish;
-  fulfillmentPeriodDurationInMS: BigNumberish;
+  disputePeriodDurationInMS: BigNumberish;
   voucherValidDurationInMS?: BigNumberish;
   resolutionPeriodDurationInMS: BigNumberish;
   exchangeToken: string;
@@ -40,7 +40,7 @@ export type OfferDatesStruct = {
 };
 
 export type OfferDurationsStruct = {
-  fulfillmentPeriod: BigNumberish;
+  disputePeriod: BigNumberish;
   voucherValid: BigNumberish;
   resolutionPeriod: BigNumberish;
 };

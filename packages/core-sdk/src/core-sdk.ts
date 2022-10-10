@@ -328,17 +328,18 @@ export class CoreSDK {
       web3Lib: this._web3Lib
     });
 
-    const ret = [];
     const balanceBN = BigNumber.from(balance);
+    const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenId = await erc721.handler.tokenOfOwnerByIndex({
+      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
         contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
         owner: address,
         index,
         web3Lib: this._web3Lib
       });
-      ret.push(tokenId);
+      promises.push(tokenIdPromise);
     }
+    const ret = await Promise.all(promises);
     return ret;
   }
 
@@ -1272,7 +1273,7 @@ export class CoreSDK {
    */
   public async resolveDispute(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
     sigR: BytesLike;
     sigS: BytesLike;
     sigV: BigNumberish;
@@ -1351,12 +1352,12 @@ export class CoreSDK {
    * Signs dispute resolution message.
    * @param args - Dispute resolve arguments:
    * - `args.exchangeId` - ID of disputed exchange.
-   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * - `args.buyerPercentBasisPoints` - Percentage of deposit the buyer gets.
    * @returns Signature.
    */
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
   }) {
     return disputes.handler.signResolutionProposal({
       ...args,

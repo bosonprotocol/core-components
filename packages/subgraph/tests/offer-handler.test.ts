@@ -34,7 +34,7 @@ const validFromDate = 1651574093;
 const validUntilDate = 1651574093;
 const voucherRedeemableFromDate = 1651574093;
 const voucherRedeemableUntilDate = 1651574093;
-const fulfillmentPeriodDuration = 10;
+const disputePeriodDuration = 10;
 const voucherValidDuration = 10;
 const resolutionPeriodDuration = 10;
 const disputeResolverId = 1;
@@ -57,7 +57,7 @@ const offerCreatedEvent = createOfferCreatedEvent(
   validUntilDate,
   voucherRedeemableFromDate,
   voucherRedeemableUntilDate,
-  fulfillmentPeriodDuration,
+  disputePeriodDuration,
   voucherValidDuration,
   resolutionPeriodDuration,
   exchangeTokenAddress,

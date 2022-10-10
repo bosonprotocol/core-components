@@ -8,7 +8,8 @@ import {
   waitForGraphNodeIndexing,
   createDisputeResolver,
   deployerWallet,
-  seedWallet3
+  seedWallet3,
+  createFundedWallet
 } from "./utils";
 
 jest.setTimeout(60_000);
@@ -28,10 +29,11 @@ describe("CoreSDK - accounts", () => {
     };
 
     test("create", async () => {
-      const disputeResolverAddress =
-        Wallet.createRandom().address.toLowerCase();
+      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -59,10 +61,11 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("activate", async () => {
-      const disputeResolverAddress =
-        Wallet.createRandom().address.toLowerCase();
+      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -90,6 +93,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,
@@ -138,6 +142,7 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -186,6 +191,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,
@@ -226,6 +232,7 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -265,6 +272,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,

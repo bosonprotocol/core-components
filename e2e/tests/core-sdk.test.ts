@@ -866,7 +866,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
 
 async function resolveDispute(
   exchangeId: string,
-  buyerPercent: string,
+  buyerPercentBasisPoints: string,
   resolverSDK: CoreSDK,
   signerSDK: CoreSDK
 ) {
@@ -878,13 +878,13 @@ async function resolveDispute(
       v: sigV
     } = await signerSDK.signDisputeResolutionProposal({
       exchangeId,
-      buyerPercent
+      buyerPercentBasisPoints
     });
 
     // send the Resolve transaction from buyer
     const txResponse = await resolverSDK.resolveDispute({
       exchangeId: exchangeId,
-      buyerPercent,
+      buyerPercentBasisPoints,
       sigR,
       sigS,
       sigV

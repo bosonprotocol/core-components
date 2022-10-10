@@ -20,8 +20,8 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
   ];
 
   const domainData = {
-    name: "BosonProtocolDiamond",
-    version: "V1",
+    name: "Boson Protocol",
+    version: "V2",
     verifyingContract: args.verifyingContractAddress,
     salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32)
   };

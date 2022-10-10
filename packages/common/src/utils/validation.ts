@@ -121,7 +121,7 @@ export const createOfferArgsSchema = object({
     .optional()
     .nullable()
     .test(...positiveIntTestArgs),
-  fulfillmentPeriodDurationInMS: string()
+  disputePeriodDurationInMS: string()
     .required()
     .test(...positiveIntTestArgs),
   resolutionPeriodDurationInMS: string()
