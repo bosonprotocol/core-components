@@ -278,7 +278,7 @@ export class CoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByAddress(
+  public async getSellersByAddress(
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment[]> {
