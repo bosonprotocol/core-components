@@ -16,7 +16,8 @@ import {
   createFundsEncumberedEvent,
   createFundsReleasedEvent,
   createFundsWithdrawnEvent,
-  createSellerCreatedEvent
+  createSellerCreatedEvent,
+  mockBosonVoucherContractCalls
 } from "./mocks";
 
 const sellerId = 1;
@@ -24,6 +25,7 @@ const buyerId = 2;
 const exchangeId = 3;
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const tokenAddress = "0x0000000000000000000000000000000000000000";
+const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 
 beforeEach(() => {
   clearStore();
@@ -65,6 +67,7 @@ test("handle FundsReleasedEvent", () => {
 });
 
 test("handle FundsEncumberedEvent", () => {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 1);
   handleSellerCreatedEvent(
     createSellerCreatedEvent(
       sellerId,
@@ -72,7 +75,7 @@ test("handle FundsEncumberedEvent", () => {
       sellerAddress,
       sellerAddress,
       sellerAddress,
-      "0x123456789a123456789a123456789a123456789a",
+      voucherCloneAddress,
       0,
       0,
       sellerAddress
