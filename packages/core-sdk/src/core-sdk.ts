@@ -305,7 +305,7 @@ export class CoreSDK {
         );
         promises.push(sellerPromise);
       }
-      return await Promise.all(promises);
+      return (await Promise.all(promises)).filter((seller) => !!seller);
     }
     return [seller];
   }
