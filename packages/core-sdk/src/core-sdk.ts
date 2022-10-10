@@ -328,17 +328,18 @@ export class CoreSDK {
       web3Lib: this._web3Lib
     });
 
-    const ret = [];
     const balanceBN = BigNumber.from(balance);
+    const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenId = await erc721.handler.tokenOfOwnerByIndex({
+      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
         contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
         owner: address,
         index,
         web3Lib: this._web3Lib
       });
-      ret.push(tokenId);
+      promises.push(tokenIdPromise);
     }
+    const ret = await Promise.all(promises);
     return ret;
   }
 
