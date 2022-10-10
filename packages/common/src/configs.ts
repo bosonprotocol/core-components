@@ -81,7 +81,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8fc9ee1affbcef914d1c29525b5addd362998ded
-      protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
+      protocolDiamond: "0x26F5BC2D2B0CA2951f55B12437Bf044Ff0DB6f2d"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
