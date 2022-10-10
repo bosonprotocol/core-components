@@ -3,38 +3,35 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
-type Props = {
+export type IExpireButton = {
   /**
-   * ID of offer to commit to.
+   * ID of voucher/exchange to expire.
    */
-  offerId: BigNumberish;
+  exchangeId: BigNumberish;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CommitButton = ({
-  offerId,
+export const ExpireButton = ({
+  exchangeId,
   disabled = false,
   showLoading = false,
-  extraInfo = "",
-  children,
-  onPendingSignature,
-  onPendingTransaction,
+  extraInfo,
   onSuccess,
   onError,
+  onPendingSignature,
+  onPendingTransaction,
   waitBlocks = 1,
+  children,
   size = ButtonSize.Large,
   variant = "primary",
   ...coreSdkConfig
-}: Props) => {
+}: IExpireButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
@@ -42,41 +39,18 @@ export const CommitButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async () => {
+      onClick={async (e) => {
+        e.stopPropagation();
         if (!isLoading) {
           try {
             setIsLoading(true);
             onPendingSignature?.();
-
-            let txResponse;
-
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
-              const nonce = Date.now();
-              const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxCommitToOffer({
-                  offerId,
-                  nonce
-                });
-              txResponse = await coreSdk.relayMetaTransaction({
-                functionName,
-                functionSignature,
-                sigR: r,
-                sigS: s,
-                sigV: v,
-                nonce
-              });
-            } else {
-              txResponse = await coreSdk.commitToOffer(offerId);
-            }
-
+            const txResponse = await coreSdk.expireVoucher(exchangeId);
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
-            const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
-              receipt.logs
-            );
 
             onSuccess?.(receipt as providers.TransactionReceipt, {
-              exchangeId: exchangeId || ""
+              exchangeId
             });
           } catch (error) {
             onError?.(error as Error);
@@ -87,7 +61,7 @@ export const CommitButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Commit"}
+        {children || "Expire"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

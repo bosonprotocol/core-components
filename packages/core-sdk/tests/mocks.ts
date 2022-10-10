@@ -38,6 +38,8 @@ export function mockRawSellerFromSubgraph(
     authTokenType: 0,
     voucherCloneAddress: ZERO_ADDRESS,
     active: true,
+    royaltyPercentage: "0",
+    contractURI: "ipfs://seller-contract-uri",
     funds: [],
     offers: [],
     exchanges: [],
@@ -96,6 +98,8 @@ export function mockRawOfferFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     exchangeToken: {
@@ -176,6 +180,8 @@ export function mockRawExchangeFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),

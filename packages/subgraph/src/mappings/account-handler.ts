@@ -10,6 +10,7 @@ import {
   DisputeResolverFeesAdded,
   DisputeResolverFeesRemoved
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
+import { IBosonVoucher } from "../../generated/BosonAccountHandler/IBosonVoucher";
 import { Seller, Buyer } from "../../generated/schema";
 
 import {
@@ -22,6 +23,10 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   const sellerFromEvent = event.params.seller;
   const authTokenFromEvent = event.params.authToken;
   const sellerId = event.params.sellerId.toString();
+
+  const bosonVoucherContract = IBosonVoucher.bind(
+    event.params.voucherCloneAddress
+  );
 
   let seller = Seller.load(sellerId);
 
@@ -38,6 +43,8 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.authTokenId = authTokenFromEvent.tokenId;
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
+  seller.contractURI = bosonVoucherContract.contractURI();
+  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.save();
 
   saveAccountEventLog(

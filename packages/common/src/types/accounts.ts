@@ -18,8 +18,9 @@ export type UpdateSellerArgs = { id: BigNumberish } & Omit<
 
 export const AuthTokenType = {
   NONE: 0,
-  LENS: 1,
-  ENS: 2
+  CUSTOM: 1,
+  LENS: 2,
+  ENS: 3
 };
 
 export type SellerStruct = {

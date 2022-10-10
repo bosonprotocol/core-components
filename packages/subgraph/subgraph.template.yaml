@@ -54,6 +54,8 @@ dataSources:
       abis:
         - name: IBosonAccountHandler
           file: ../common/src/abis/IBosonAccountHandler.json
+        - name: IBosonVoucher
+          file: ../common/src/abis/IBosonVoucher.json
         - name: ERC20
           file: ../common/src/abis/ERC20.json
         - name: ERC20NameBytes
