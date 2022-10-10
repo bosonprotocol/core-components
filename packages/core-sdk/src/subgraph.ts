@@ -6509,12 +6509,15 @@ export type Seller = Account & {
   authTokenId: Scalars["BigInt"];
   authTokenType: Scalars["Int"];
   clerk: Scalars["Bytes"];
+  contractURI: Scalars["String"];
   exchanges: Array<Exchange>;
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
   logs: Array<EventLog>;
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
+  royaltyPercentage: Scalars["BigInt"];
   sellerId: Scalars["BigInt"];
   treasury: Scalars["Bytes"];
   voucherCloneAddress: Scalars["Bytes"];
@@ -6587,6 +6590,26 @@ export type Seller_Filter = {
   clerk_not?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  contractURI?: InputMaybe<Scalars["String"]>;
+  contractURI_contains?: InputMaybe<Scalars["String"]>;
+  contractURI_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contractURI_ends_with?: InputMaybe<Scalars["String"]>;
+  contractURI_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contractURI_gt?: InputMaybe<Scalars["String"]>;
+  contractURI_gte?: InputMaybe<Scalars["String"]>;
+  contractURI_in?: InputMaybe<Array<Scalars["String"]>>;
+  contractURI_lt?: InputMaybe<Scalars["String"]>;
+  contractURI_lte?: InputMaybe<Scalars["String"]>;
+  contractURI_not?: InputMaybe<Scalars["String"]>;
+  contractURI_not_contains?: InputMaybe<Scalars["String"]>;
+  contractURI_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contractURI_not_ends_with?: InputMaybe<Scalars["String"]>;
+  contractURI_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contractURI_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  contractURI_not_starts_with?: InputMaybe<Scalars["String"]>;
+  contractURI_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  contractURI_starts_with?: InputMaybe<Scalars["String"]>;
+  contractURI_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   exchanges_?: InputMaybe<Exchange_Filter>;
   funds_?: InputMaybe<FundsEntity_Filter>;
   id?: InputMaybe<Scalars["ID"]>;
@@ -6604,6 +6627,14 @@ export type Seller_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_gte?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  royaltyPercentage_lt?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_lte?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_not?: InputMaybe<Scalars["BigInt"]>;
+  royaltyPercentage_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerId?: InputMaybe<Scalars["BigInt"]>;
   sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
   sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -6632,12 +6663,14 @@ export enum Seller_OrderBy {
   AuthTokenId = "authTokenId",
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
+  ContractUri = "contractURI",
   Exchanges = "exchanges",
   Funds = "funds",
   Id = "id",
   Logs = "logs",
   Offers = "offers",
   Operator = "operator",
+  RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
   Treasury = "treasury",
   VoucherCloneAddress = "voucherCloneAddress"
@@ -7349,6 +7382,8 @@ export type GetSellerByIdQueryQuery = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -7400,6 +7435,8 @@ export type GetSellerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -7591,6 +7628,8 @@ export type GetSellerByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -7666,6 +7705,8 @@ export type GetSellerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     logs?: Array<
@@ -7782,6 +7823,8 @@ export type GetSellersQueryQuery = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -7833,6 +7876,8 @@ export type GetSellersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8024,6 +8069,8 @@ export type GetSellersQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -8099,6 +8146,8 @@ export type GetSellersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     logs?: Array<
@@ -8259,6 +8308,8 @@ export type GetBuyerByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     logs?: Array<
@@ -8429,6 +8480,8 @@ export type GetBuyersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     logs?: Array<
@@ -8566,6 +8619,8 @@ export type GetDisputeResolverByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8757,6 +8812,8 @@ export type GetDisputeResolverByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -8940,6 +8997,8 @@ export type GetDisputeResolversQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -9131,6 +9190,8 @@ export type GetDisputeResolversQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -9255,6 +9316,8 @@ export type SellerFieldsFragment = {
   authTokenType: number;
   voucherCloneAddress: string;
   active: boolean;
+  contractURI: string;
+  royaltyPercentage: string;
   funds?: Array<{
     __typename?: "FundsEntity";
     id: string;
@@ -9306,6 +9369,8 @@ export type SellerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -9493,6 +9558,8 @@ export type SellerFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -9568,6 +9635,8 @@ export type SellerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   }>;
   logs?: Array<
@@ -9649,6 +9718,8 @@ export type BaseSellerFieldsFragment = {
   authTokenType: number;
   voucherCloneAddress: string;
   active: boolean;
+  contractURI: string;
+  royaltyPercentage: string;
 };
 
 export type BuyerFieldsFragment = {
@@ -9716,6 +9787,8 @@ export type BuyerFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   }>;
   logs?: Array<
@@ -9841,6 +9914,8 @@ export type DisputeResolverFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -10028,6 +10103,8 @@ export type DisputeResolverFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -10265,6 +10342,8 @@ export type GetDisputeByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     };
     seller: {
@@ -10278,6 +10357,8 @@ export type GetDisputeByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -10358,6 +10439,8 @@ export type GetDisputesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     };
     seller: {
@@ -10371,6 +10454,8 @@ export type GetDisputesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -10441,6 +10526,8 @@ export type DisputeFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   };
   seller: {
@@ -10454,6 +10541,8 @@ export type DisputeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
@@ -10541,6 +10630,8 @@ export type GetExchangeTokenByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10732,6 +10823,8 @@ export type GetExchangeTokenByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -10836,6 +10929,8 @@ export type GetExchangeTokensQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -11027,6 +11122,8 @@ export type GetExchangeTokensQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -11109,6 +11206,8 @@ export type ExchangeTokenFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11296,6 +11395,8 @@ export type ExchangeTokenFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -11553,6 +11654,8 @@ export type GetExchangeByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -11744,6 +11847,8 @@ export type GetExchangeByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -11805,6 +11910,8 @@ export type GetExchangeByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   } | null;
 };
@@ -11870,6 +11977,8 @@ export type GetExchangesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12061,6 +12170,8 @@ export type GetExchangesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -12122,6 +12233,8 @@ export type GetExchangesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   }>;
 };
@@ -12177,6 +12290,8 @@ export type ExchangeFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -12364,6 +12479,8 @@ export type ExchangeFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -12420,6 +12537,8 @@ export type ExchangeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
 };
 
@@ -12464,6 +12583,8 @@ export type BaseExchangeFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
 };
 
@@ -12607,6 +12728,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12798,6 +12921,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -12838,6 +12963,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -12919,6 +13046,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13110,6 +13239,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -13150,6 +13281,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13221,6 +13354,8 @@ export type BaseMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13408,6 +13543,8 @@ export type BaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -13448,6 +13585,8 @@ export type BaseMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -13518,6 +13657,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13705,6 +13846,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -13745,6 +13888,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -13861,6 +14006,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14052,6 +14199,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -14092,6 +14241,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14215,6 +14366,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     };
     exchangePolicy: {
@@ -14300,6 +14453,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14491,6 +14646,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 authTokenType: number;
                 voucherCloneAddress: string;
                 active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
               };
             };
             exchangePolicy: {
@@ -14531,6 +14688,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14654,6 +14813,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     };
     exchangePolicy: {
@@ -14729,6 +14890,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14916,6 +15079,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -14956,6 +15121,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -15079,6 +15246,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   };
   exchangePolicy: {
@@ -15153,6 +15322,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15340,6 +15511,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -15380,6 +15553,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -15503,6 +15678,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   };
   exchangePolicy: {
@@ -15671,6 +15848,8 @@ export type BaseProductV1SellerFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
 };
 
@@ -15836,6 +16015,8 @@ export type GetOfferByIdQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     seller: {
@@ -15849,6 +16030,8 @@ export type GetOfferByIdQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16036,6 +16219,8 @@ export type GetOfferByIdQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -16155,6 +16340,8 @@ export type GetOffersQueryQuery = {
         authTokenType: number;
         voucherCloneAddress: string;
         active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
       };
     }>;
     seller: {
@@ -16168,6 +16355,8 @@ export type GetOffersQueryQuery = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16355,6 +16544,8 @@ export type GetOffersQueryQuery = {
               authTokenType: number;
               voucherCloneAddress: string;
               active: boolean;
+              contractURI: string;
+              royaltyPercentage: string;
             };
           };
           exchangePolicy: {
@@ -16458,6 +16649,8 @@ export type OfferFieldsFragment = {
       authTokenType: number;
       voucherCloneAddress: string;
       active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
     };
   }>;
   seller: {
@@ -16471,6 +16664,8 @@ export type OfferFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16658,6 +16853,8 @@ export type OfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
           };
         };
         exchangePolicy: {
@@ -16725,6 +16922,8 @@ export type BaseOfferFieldsFragment = {
     authTokenType: number;
     voucherCloneAddress: string;
     active: boolean;
+    contractURI: string;
+    royaltyPercentage: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16912,6 +17111,8 @@ export type BaseOfferFieldsFragment = {
             authTokenType: number;
             voucherCloneAddress: string;
             active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
           };
         };
         exchangePolicy: {
@@ -16953,6 +17154,8 @@ export const BaseSellerFieldsFragmentDoc = gql`
     authTokenType
     voucherCloneAddress
     active
+    contractURI
+    royaltyPercentage
   }
 `;
 export const BaseFundsEntityFieldsFragmentDoc = gql`

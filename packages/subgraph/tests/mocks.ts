@@ -174,6 +174,24 @@ export function createOfferVoidedEvent(
   return offerVoidedEvent;
 }
 
+export function mockBosonVoucherContractCalls(
+  address: string,
+  contractURI: string,
+  royaltyPercentage: i32
+): void {
+  createMockedFunction(
+    Address.fromString(address),
+    "contractURI",
+    "contractURI():(string)"
+  ).returns([ethereum.Value.fromString(contractURI)]);
+
+  createMockedFunction(
+    Address.fromString(address),
+    "getRoyaltyPercentage",
+    "getRoyaltyPercentage():(uint256)"
+  ).returns([ethereum.Value.fromI32(royaltyPercentage)]);
+}
+
 export function mockExchangeTokenContractCalls(
   address: string,
   decimals: i32,
