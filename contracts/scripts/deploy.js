@@ -99,9 +99,11 @@ async function main() {
   const authTokenContracts = getAuthTokenContracts(hre.network.name);
 
   // Get the accounts
-  const accounts = await ethers.provider.listAccounts();
-  const deployer = accounts[0];
-  const disputeResolver = accounts[1];
+  const accounts = await ethers.getSigners();
+  const deployerSigner = accounts[0];
+  const deployer = deployerSigner.address;
+  const disputeResolverSigner = accounts[1];
+  const disputeResolver = disputeResolverSigner.address;
   console.log(
     "🔱 Deployer account: ",
     deployer ? deployer : "not found" && process.exit()
@@ -253,32 +255,34 @@ async function main() {
       "IBosonAccountHandler",
       protocolDiamond.address
     );
-    const response = await accountHandler.createDisputeResolver(
-      {
-        id: "1",
-        escalationResponsePeriod: oneMonth.toString(),
-        operator: disputeResolver,
-        admin: disputeResolver,
-        clerk: disputeResolver,
-        treasury: disputeResolver,
-        // TODO: use valid uri
-        metadataUri: `ipfs://disputeResolver1`,
-        active: true
-      },
-      [
+    const response = await accountHandler
+      .connect(disputeResolverSigner)
+      .createDisputeResolver(
         {
-          tokenAddress: ethers.constants.AddressZero,
-          tokenName: "Native",
-          feeAmount: "0"
+          id: "1",
+          escalationResponsePeriod: oneMonth.toString(),
+          operator: disputeResolver,
+          admin: disputeResolver,
+          clerk: disputeResolver,
+          treasury: disputeResolver,
+          // TODO: use valid uri
+          metadataUri: `ipfs://disputeResolver1`,
+          active: true
         },
-        {
-          tokenAddress: foreign20Token.address,
-          tokenName: "Foreign20",
-          feeAmount: "0"
-        }
-      ],
-      []
-    );
+        [
+          {
+            tokenAddress: ethers.constants.AddressZero,
+            tokenName: "Native",
+            feeAmount: "0"
+          },
+          {
+            tokenAddress: foreign20Token.address,
+            tokenName: "Foreign20",
+            feeAmount: "0"
+          }
+        ],
+        []
+      );
     const receipt = await response.wait();
     const event = receipt.events.find(
       (event) => event.event === "DisputeResolverCreated"
