@@ -9,7 +9,7 @@ The rNFT entitles its holder(s):
 
 If the holder of the rNFT does not redeem the rNFT before the Redemption Period is over, the holder will no longer be able to benefit from the associated Terms. Instead, upon the Cancel function being called, the current holder of the rNFT will be able to withdraw the funds (i.e. the Item Price minus the Cancellation Penalty).
 
-If the holder of the rNFT does redeem the rNFT before the Redemption Period is over, the holder needs to agree to the Buyer & Seller Agreement available on the redemption website.
+If the holder of the rNFT does redeem the rNFT before the Redemption Period is over, the holder needs to agree to the Buyer & Seller Agreement (see the link to the agreement below).
 
 ## Definition
 
