@@ -225,10 +225,11 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("add sellers", async () => {
-      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
+      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
@@ -264,10 +265,11 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("remove sellers", async () => {
-      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
+      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =

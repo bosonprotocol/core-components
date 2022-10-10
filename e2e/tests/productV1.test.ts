@@ -70,7 +70,8 @@ async function createOffer(
   sellerWallet: Wallet,
   offerArgs: CreateOfferArgs
 ) {
-  const seller = await ensureCreatedSeller(sellerWallet);
+  const sellers = await ensureCreatedSeller(sellerWallet);
+  const [seller] = sellers;
   // Check the disputeResolver exists and is active
   const disputeResolverId = offerArgs.disputeResolverId;
 

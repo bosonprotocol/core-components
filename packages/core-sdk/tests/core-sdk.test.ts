@@ -96,7 +96,7 @@ describe("#renderContractualAgreementForOffer()", () => {
   });
 });
 
-describe("getSellerByAddress()", () => {
+describe("getSellersByAddress()", () => {
   test("shall fail if search address is ZERO_ADDRESS", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
       operator: ADDRESS
@@ -114,7 +114,9 @@ describe("getSellerByAddress()", () => {
       chainId: defaultConfig.chainId
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
-    await expect(coreSDK.getSellerByAddress(ZERO_ADDRESS)).rejects.toThrowError(
+    await expect(
+      coreSDK.getSellersByAddress(ZERO_ADDRESS)
+    ).rejects.toThrowError(
       /^Unsupported search address '0x0000000000000000000000000000000000000000'/
     );
   });

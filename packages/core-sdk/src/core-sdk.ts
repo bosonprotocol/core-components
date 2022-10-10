@@ -278,14 +278,14 @@ export class CoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByAddress(
+  public async getSellersByAddress(
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
+  ): Promise<subgraph.SellerFieldsFragment[]> {
     if (address === AddressZero) {
       throw new Error(`Unsupported search address '${AddressZero}'`);
     }
-    let seller = await accounts.subgraph.getSellerByAddress(
+    const seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
       queryVars
@@ -294,15 +294,19 @@ export class CoreSDK {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
+      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
       for (const tokenId of tokenIds) {
         // Just in case the user owns several auth tokens
-        seller = await this.getSellerByAuthToken(tokenId, tokenType, queryVars);
-        if (seller) {
-          return seller;
-        }
+        const sellerPromise = this.getSellerByAuthToken(
+          tokenId,
+          tokenType,
+          queryVars
+        );
+        promises.push(sellerPromise);
       }
+      return (await Promise.all(promises)).filter((seller) => !!seller);
     }
-    return seller;
+    return [seller].filter((seller) => !!seller);
   }
 
   /**
