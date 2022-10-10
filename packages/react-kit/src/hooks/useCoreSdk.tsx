@@ -7,6 +7,7 @@ import {
 } from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
+import { LensContracts } from "@bosonprotocol/common";
 import { providers } from "ethers";
 
 export type CoreSdkConfig = {
@@ -51,6 +52,10 @@ export type CoreSdkConfig = {
    * Optional override for the MetaTx configuration
    */
   metaTx?: Partial<MetaTxConfig>;
+  /**
+   * Optional override for the Lens contracts addresses
+   */
+  lensContracts?: LensContracts;
 };
 
 /**
@@ -103,6 +108,7 @@ function initCoreSdk(config: CoreSdkConfig) {
       headers: config.ipfsMetadataStorageHeaders
     }),
     chainId: defaultConfig.chainId,
-    metaTx
+    metaTx,
+    lensContracts: config.lensContracts || defaultConfig.lens
   });
 }

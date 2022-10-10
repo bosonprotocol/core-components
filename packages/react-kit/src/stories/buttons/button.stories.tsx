@@ -19,69 +19,77 @@ const Template: ComponentStory<typeof Button> = (args) => (
   <Button {...BASE_ARGS} {...args} />
 );
 
-export const PrimaryFill: ComponentStory<typeof Button> = Template.bind({});
+export const Primary: ComponentStory<typeof Button> = Template.bind({});
 
-export const PrimaryInverted: ComponentStory<typeof Button> = Template.bind({});
+export const OutlinePrimary: ComponentStory<typeof Button> = Template.bind({});
 
-export const SecondaryFill: ComponentStory<typeof Button> = Template.bind({});
+export const Secondary: ComponentStory<typeof Button> = Template.bind({});
 
-export const SecondaryInverted: ComponentStory<typeof Button> = Template.bind(
+export const OutlineSecondary: ComponentStory<typeof Button> = Template.bind(
   {}
 );
 
-export const AccentFill: ComponentStory<typeof Button> = Template.bind({});
+export const Ghost: ComponentStory<typeof Button> = Template.bind({});
 
-export const AccentInverted: ComponentStory<typeof Button> = Template.bind({});
+export const GhostSecondary: ComponentStory<typeof Button> = Template.bind({});
+
+export const GhostOrange: ComponentStory<typeof Button> = Template.bind({});
 
 export const Disabled: ComponentStory<typeof Button> = Template.bind({});
 
 export const Loading: ComponentStory<typeof Button> = Template.bind({});
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-PrimaryFill.args = {
+Primary.args = {
   disabled: false,
   loading: false,
-  variant: "primaryFill"
+  variant: "primary"
 };
 
-PrimaryInverted.args = {
+OutlinePrimary.args = {
   disabled: false,
   loading: false,
-  variant: "primaryInverted"
+  variant: "primaryOutline"
 };
 
-SecondaryFill.args = {
+Secondary.args = {
   disabled: false,
   loading: false,
-  variant: "secondaryFill"
+  variant: "secondary"
 };
 
-SecondaryInverted.args = {
+OutlineSecondary.args = {
   disabled: false,
   loading: false,
-  variant: "secondaryInverted"
+  variant: "secondaryOutline"
 };
 
-AccentFill.args = {
+GhostSecondary.args = {
   disabled: false,
   loading: false,
-  variant: "accentFill"
+  variant: "ghostSecondary"
 };
 
-AccentInverted.args = {
+GhostOrange.args = {
   disabled: false,
   loading: false,
-  variant: "accentInverted"
+  variant: "ghostOrange"
+};
+
+Ghost.args = {
+  disabled: false,
+  loading: false,
+  variant: "ghost"
 };
 
 Disabled.args = {
   disabled: true,
   loading: false,
-  variant: "primaryFill"
+  variant: "primary"
 };
 
 Loading.args = {
   disabled: false,
   loading: true,
-  variant: "primaryFill"
+  variant: "primary"
 };

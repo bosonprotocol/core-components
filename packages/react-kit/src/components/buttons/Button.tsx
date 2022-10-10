@@ -15,15 +15,18 @@ export interface ButtonProps {
   loading?: boolean;
   size?: ButtonSize;
   variant?:
-    | "primaryFill"
-    | "primaryInverted"
-    | "secondaryFill"
-    | "secondaryInverted"
-    | "accentFill"
-    | "accentInverted";
+    | "primary"
+    | "primaryOutline"
+    | "secondary"
+    | "secondaryOutline"
+    | "ghost"
+    | "ghostSecondary"
+    | "ghostOrange"
+    | "tertiary"
+    | "danger"
+    | "warning";
   className?: string;
   children?: React.ReactNode;
-  showBorder?: boolean;
 }
 
 export const Button = ({
@@ -31,8 +34,7 @@ export const Button = ({
   onClick,
   className,
   size = ButtonSize.Medium,
-  variant = "primaryFill",
-  showBorder = true,
+  variant = "primary",
   ...props
 }: ButtonProps) => {
   return (
@@ -41,7 +43,6 @@ export const Button = ({
       className={className}
       onClick={onClick}
       size={size}
-      showBorder={showBorder}
       {...props}
     >
       {props.loading ? (
