@@ -129,11 +129,11 @@ export const sellerFundsDepositInEth = "5";
 export const defaultConfig = getDefaultConfig("local");
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
-export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);
-export const drWallet = new Wallet(ACCOUNT_2.privateKey, provider);
 // seedWallets used by accounts test
+export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);
 export const seedWallet3 = new Wallet(ACCOUNT_3.privateKey, provider);
 // seedWallets used by core-sdk test
+export const drWallet = new Wallet(ACCOUNT_2.privateKey, provider);
 export const seedWallet4 = new Wallet(ACCOUNT_4.privateKey, provider);
 export const seedWallet5 = new Wallet(ACCOUNT_5.privateKey, provider);
 export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
@@ -271,36 +271,43 @@ export async function ensureMintedAndAllowedTokens(
 }
 
 export async function createDisputeResolver(
-  wallet: Wallet,
+  drWallet: Wallet,
+  protocolWallet: Wallet,
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
   options: Partial<{
     activate: boolean;
   }> = {}
 ) {
-  const coreSDK = initCoreSDKWithWallet(wallet);
+  const drCoreSDK = initCoreSDKWithWallet(drWallet);
+  const protocolAdminCoreSDK = initCoreSDKWithWallet(protocolWallet);
 
   const receipt = await (
-    await coreSDK.createDisputeResolver(disputeResolverToCreate)
+    await drCoreSDK.createDisputeResolver(disputeResolverToCreate)
   ).wait();
-  const disputeResolverId = coreSDK.getDisputeResolverIdFromLogs(receipt.logs);
+  const disputeResolverId = drCoreSDK.getDisputeResolverIdFromLogs(
+    receipt.logs
+  );
 
   if (!disputeResolverId) {
     throw new Error("Failed to create dispute resolver");
   }
 
   if (options.activate && disputeResolverId) {
-    await (await coreSDK.activateDisputeResolver(disputeResolverId)).wait();
+    await (
+      await protocolAdminCoreSDK.activateDisputeResolver(disputeResolverId)
+    ).wait();
   }
 
   await waitForGraphNodeIndexing();
 
-  const disputeResolver = await coreSDK.getDisputeResolverById(
+  const disputeResolver = await drCoreSDK.getDisputeResolverById(
     disputeResolverId
   );
 
   return {
     disputeResolverId,
     disputeResolver,
-    protocolAdminCoreSDK: coreSDK
+    protocolAdminCoreSDK,
+    disputeResolverCoreSDK: drCoreSDK
   };
 }

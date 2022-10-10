@@ -62,7 +62,7 @@ export const baseOfferDataSchema: yup.SchemaOf<BaseOfferData> = yup.object({
   validUntilDateInMS: yup.mixed().required(),
   voucherRedeemableFromDateInMS: yup.mixed().required(),
   voucherRedeemableUntilDateInMS: yup.mixed().required(),
-  fulfillmentPeriodDurationInMS: yup.mixed().required(),
+  disputePeriodDurationInMS: yup.mixed().required(),
   resolutionPeriodDurationInMS: yup.mixed().required(),
   exchangeToken: yup.string().required(),
   disputeResolverId: yup.mixed().required(),
@@ -80,7 +80,7 @@ export type BaseOfferData = {
   validUntilDateInMS: BigNumberish;
   voucherRedeemableFromDateInMS: BigNumberish;
   voucherRedeemableUntilDateInMS: BigNumberish;
-  fulfillmentPeriodDurationInMS: BigNumberish;
+  disputePeriodDurationInMS: BigNumberish;
   resolutionPeriodDurationInMS: BigNumberish;
   exchangeToken: string;
   disputeResolverId: BigNumberish;
@@ -176,8 +176,7 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
         offerDataSubGraph.voucherRedeemableFromDate,
       voucherRedeemableUntilDateInMS:
         offerDataSubGraph.voucherRedeemableUntilDate,
-      fulfillmentPeriodDurationInMS:
-        offerDataSubGraph.fulfillmentPeriodDuration,
+      disputePeriodDurationInMS: offerDataSubGraph.disputePeriodDuration,
       resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
       exchangeToken: offerDataSubGraph.exchangeToken.address
     },

@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { ERC20 } from "./ERC20";
+export type { ERC721Enumerable } from "./ERC721Enumerable";
 export type { IBosonAccountHandler } from "./IBosonAccountHandler";
 export type { IBosonDisputeHandler } from "./IBosonDisputeHandler";
 export type { IBosonExchangeHandler } from "./IBosonExchangeHandler";
@@ -12,6 +13,7 @@ export type { IBosonOrchestrationHandler } from "./IBosonOrchestrationHandler";
 export type { ProtocolDiamond } from "./ProtocolDiamond";
 
 export { ERC20__factory } from "./factories/ERC20__factory";
+export { ERC721Enumerable__factory } from "./factories/ERC721Enumerable__factory";
 export { IBosonAccountHandler__factory } from "./factories/IBosonAccountHandler__factory";
 export { IBosonDisputeHandler__factory } from "./factories/IBosonDisputeHandler__factory";
 export { IBosonExchangeHandler__factory } from "./factories/IBosonExchangeHandler__factory";
