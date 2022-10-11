@@ -116,6 +116,8 @@ dataSources:
           handler: handleVoucherRevokedEvent
         - event: VoucherCanceled(indexed uint256,indexed uint256,indexed address)
           handler: handleVoucherCanceledEvent
+        - event: VoucherExpired(indexed uint256,indexed uint256,indexed address)
+          handler: handleVoucherExpiredEvent
         - event: VoucherRedeemed(indexed uint256,indexed uint256,indexed address)
           handler: handleVoucherRedeemedEvent
         - event: VoucherTransferred(indexed uint256,indexed uint256,indexed uint256,address)
