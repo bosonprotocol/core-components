@@ -1,6 +1,4 @@
-import { utils, constants, Wallet } from "ethers";
-
-import { CoreSDK } from "../../packages/core-sdk/src";
+import { utils, constants } from "ethers";
 
 import {
   initCoreSDKWithFundedWallet,
@@ -225,11 +223,10 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("add sellers", async () => {
-      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
-      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
@@ -265,11 +262,10 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("remove sellers", async () => {
-      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
-      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =

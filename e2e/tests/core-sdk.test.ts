@@ -92,8 +92,7 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
           coreSDK,
@@ -113,8 +112,7 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
 
@@ -312,8 +310,7 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const funds = await depositFunds({
           coreSDK,
@@ -341,8 +338,7 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
+        const seller = await ensureCreatedSeller(fundedWallet);
 
         const ethFunds = await depositFunds({
           coreSDK,
