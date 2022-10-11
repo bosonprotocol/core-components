@@ -1,10 +1,16 @@
 import {
   Web3LibAdapter,
   TransactionResponse,
-  utils
+  utils,
+  AuthTokenType
 } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
-import { DisputeResolverFieldsFragment } from "../subgraph";
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
+import { AddressZero } from "@ethersproject/constants";
+import {
+  DisputeResolverFieldsFragment,
+  GetSellersQueryQueryVariables,
+  SellerFieldsFragment
+} from "../subgraph";
 import {
   encodeCreateSeller,
   encodeUpdateSeller,
@@ -16,7 +22,8 @@ import {
   encodeRemoveSellersFromAllowList,
   encodeUpdateDisputeResolver
 } from "./interface";
-import { getDisputeResolverById } from "./subgraph";
+import { getDisputeResolverById, getSellerByAddress } from "./subgraph";
+import * as erc721Handler from "../erc721/handler";
 import {
   CreateSellerArgs,
   UpdateSellerArgs,
@@ -24,6 +31,75 @@ import {
   DisputeResolutionFee,
   DisputeResolverUpdates
 } from "./types";
+
+export async function getSellersByAddressOrAuthToken(args: {
+  lensHubContractAddress?: string;
+  accountAddress: string;
+  web3Lib: Web3LibAdapter;
+  queryVars?: GetSellersQueryQueryVariables;
+  subgraphUrl: string;
+}): Promise<SellerFieldsFragment[]> {
+  if (args.accountAddress === AddressZero) {
+    throw new Error(`Unsupported search address '${AddressZero}'`);
+  }
+  const seller = await getSellerByAddress(
+    args.subgraphUrl,
+    args.accountAddress,
+    args.queryVars
+  );
+  if (!seller && args.lensHubContractAddress) {
+    // If seller is not found per address, try to find per authToken
+    const tokenType = AuthTokenType.LENS; // only LENS for now
+    const tokenIds = await fetchAuthTokensOfAccount(args);
+    const promises: Promise<SellerFieldsFragment>[] = [];
+    for (const tokenId of tokenIds) {
+      // Just in case the user owns several auth tokens
+      const sellerPromise = this.getSellerByAuthToken(
+        tokenId,
+        tokenType,
+        args.queryVars
+      );
+      promises.push(sellerPromise);
+    }
+    return (await Promise.all(promises)).filter((seller) => !!seller);
+  }
+  return [seller].filter((seller) => !!seller);
+}
+
+export async function fetchAuthTokensOfAccount(args: {
+  lensHubContractAddress?: string;
+  accountAddress: string;
+  tokenType: number;
+  web3Lib: Web3LibAdapter;
+}): Promise<Array<string>> {
+  if (args.tokenType !== AuthTokenType.LENS) {
+    // only LENS for now
+    throw new Error(`Unsupported authTokenType '${args.tokenType}'`);
+  }
+
+  if (!args.lensHubContractAddress) {
+    throw new Error("LENS contract is not configured in Core-SDK");
+  }
+
+  const balance = await erc721Handler.balanceOf({
+    contractAddress: args.lensHubContractAddress,
+    owner: args.accountAddress,
+    web3Lib: args.web3Lib
+  });
+
+  const balanceBN = BigNumber.from(balance);
+  const tokenIdPromises: Promise<string>[] = [];
+  for (let index = 0; balanceBN.gt(index); index++) {
+    const tokenIdPromise = erc721Handler.tokenOfOwnerByIndex({
+      contractAddress: args.lensHubContractAddress,
+      owner: args.accountAddress,
+      index,
+      web3Lib: args.web3Lib
+    });
+    tokenIdPromises.push(tokenIdPromise);
+  }
+  return Promise.all(tokenIdPromises);
+}
 
 export async function createSeller(args: {
   sellerToCreate: CreateSellerArgs;

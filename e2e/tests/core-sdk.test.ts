@@ -587,8 +587,7 @@ describe("core-sdk", () => {
 
       const sellerId = seller.id;
 
-      const sellers2 = await coreSDK.getSellersByAddress(fundedWallet.address);
-      const [seller2] = sellers2;
+      const seller2 = await coreSDK.getSellerByAddress(fundedWallet.address);
       expect(seller2).toBeTruthy();
       expect(seller2.id).toEqual(sellerId);
     });

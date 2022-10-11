@@ -314,8 +314,7 @@ describe("meta-tx", () => {
 
 async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
-  const sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
-  const [seller] = sellers;
+  const seller = await sellerCoreSDK.getSellerByAddress(sellerAddress);
   // Store metadata
   const metadataHash = await sellerCoreSDK.storeMetadata({
     ...metadata,

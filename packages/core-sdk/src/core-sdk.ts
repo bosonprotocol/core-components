@@ -278,73 +278,34 @@ export class CoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellersByAddress(
+  public async getSellerByAddress(
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment[]> {
-    if (address === AddressZero) {
-      throw new Error(`Unsupported search address '${AddressZero}'`);
-    }
-    const seller = await accounts.subgraph.getSellerByAddress(
+  ): Promise<subgraph.SellerFieldsFragment> {
+    return accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
       queryVars
     );
-    if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
-      // If seller is not found per address, try to find per authToken
-      const tokenType = AuthTokenType.LENS; // only LENS for now
-      const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
-      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
-      for (const tokenId of tokenIds) {
-        // Just in case the user owns several auth tokens
-        const sellerPromise = this.getSellerByAuthToken(
-          tokenId,
-          tokenType,
-          queryVars
-        );
-        promises.push(sellerPromise);
-      }
-      return (await Promise.all(promises)).filter((seller) => !!seller);
-    }
-    return [seller].filter((seller) => !!seller);
   }
 
   /**
-   * Returns the array of LENS tokenIds owned by a specified address
+   * Returns all seller entities from subgraph by either matching address or auth token.
    * @param address - Address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Array of tokenIds
+   * @returns Seller entity from subgraph.
    */
-  public async fetchUserAuthTokens(
+  public async getSellersByAddressOrAuthToken(
     address: string,
-    tokenType: number
-  ): Promise<Array<string>> {
-    if (tokenType !== AuthTokenType.LENS) {
-      // only LENS for now
-      throw new Error(`Unsupported authTokenType '${tokenType}'`);
-    }
-    if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
-      throw new Error("LENS contract is not configured in Core-SDK");
-    }
-    const balance = await erc721.handler.balanceOf({
-      contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
-      owner: address,
-      web3Lib: this._web3Lib
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment[]> {
+    return accounts.handler.getSellersByAddressOrAuthToken({
+      lensHubContractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+      accountAddress: address,
+      web3Lib: this._web3Lib,
+      queryVars: queryVars,
+      subgraphUrl: this._subgraphUrl
     });
-
-    const balanceBN = BigNumber.from(balance);
-    const promises: Promise<string>[] = [];
-    for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
-        contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
-        owner: address,
-        index,
-        web3Lib: this._web3Lib
-      });
-      promises.push(tokenIdPromise);
-    }
-    const ret = await Promise.all(promises);
-    return ret;
   }
 
   /**
@@ -359,10 +320,6 @@ export class CoreSDK {
     tokenType: number,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
-    if (tokenType !== AuthTokenType.LENS) {
-      // only LENS for now
-      throw new Error(`Unsupported authTokenType '${tokenType}'`);
-    }
     return accounts.subgraph.getSellerByAuthToken(
       this._subgraphUrl,
       tokenId,

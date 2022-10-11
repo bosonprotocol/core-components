@@ -1,3 +1,4 @@
+import { AuthTokenType } from "@bosonprotocol/common";
 import { getSubgraphSdk } from "../utils/graphql";
 import {
   BuyerFieldsFragment,
@@ -137,6 +138,11 @@ export async function getSellerByAuthToken(
   tokenType: number,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
+  if (tokenType !== AuthTokenType.LENS) {
+    // only LENS for now
+    throw new Error(`Unsupported authTokenType '${tokenType}'`);
+  }
+
   const sellers = await getSellers(subgraphUrl, {
     sellersFilter: {
       ...queryVars.sellersFilter,
