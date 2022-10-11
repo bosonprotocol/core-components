@@ -681,6 +681,28 @@ export class CoreSDK {
   }
 
   /**
+   * Creates a batch of offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if there is an existing seller account for connected signer.
+   * @param offersToCreate - Offer arguments.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createOfferBatch(
+    offersToCreate: offers.CreateOfferArgs[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.createOfferBatch({
+      offersToCreate,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Utility method to retrieve the created `offerId` from logs after calling `createOffer`
    * or `createOfferAndSeller`.
    * @param logs - Logs to search in.
@@ -1380,16 +1402,124 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTx(
+  public async signMetaTx(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTx>[0],
+      Parameters<typeof metaTx.handler.signMetaTx>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTx({
+    return metaTx.handler.signMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createSeller` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateSeller(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateSeller({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOffer(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOfferBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `voidOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxVoidOffer(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxVoidOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxVoidOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `voidOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxVoidOfferBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxVoidOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxVoidOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `completeExchangeBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCompleteExchangeBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCompleteExchangeBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCompleteExchangeBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
       ...args
     });
   }
@@ -1399,13 +1529,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxCommitToOffer(
+  public async signMetaTxCommitToOffer(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
+      Parameters<typeof metaTx.handler.signMetaTxCommitToOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxCommitToOffer({
+    return metaTx.handler.signMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1418,13 +1548,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxCancelVoucher(
+  public async signMetaTxCancelVoucher(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxCancelVoucher>[0],
+      Parameters<typeof metaTx.handler.signMetaTxCancelVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxCancelVoucher({
+    return metaTx.handler.signMetaTxCancelVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1437,13 +1567,32 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRedeemVoucher(
+  public async signMetaTxRedeemVoucher(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRedeemVoucher>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRedeemVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRedeemVoucher({
+    return metaTx.handler.signMetaTxRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `expireVoucher` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExpireVoucher(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxExpireVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxExpireVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1456,13 +1605,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRetractDispute(
+  public async signMetaTxRetractDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRetractDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRetractDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRetractDispute({
+    return metaTx.handler.signMetaTxRetractDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1475,13 +1624,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxEscalateDispute(
+  public async signMetaTxEscalateDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxEscalateDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxEscalateDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxEscalateDispute({
+    return metaTx.handler.signMetaTxEscalateDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1494,13 +1643,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRaiseDispute(
+  public async signMetaTxRaiseDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRaiseDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRaiseDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRaiseDispute({
+    return metaTx.handler.signMetaTxRaiseDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1513,13 +1662,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxResolveDispute(
+  public async signMetaTxResolveDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxResolveDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxResolveDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxResolveDispute({
+    return metaTx.handler.signMetaTxResolveDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1532,13 +1681,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxWithdrawFunds(
+  public async signMetaTxWithdrawFunds(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxWithdrawFunds>[0],
+      Parameters<typeof metaTx.handler.signMetaTxWithdrawFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxWithdrawFunds({
+    return metaTx.handler.signMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
