@@ -57,8 +57,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/2b596b4e9aca6c5b467f5ce324ec1e7dd9fc9c1d
-      protocolDiamond: "0x7Fcf1A9c688E8e0A8d8911D7c6Fb7D1a1D796B80"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
+      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
@@ -80,8 +80,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/3f5881f66ed2a721a6689103f90a2403d03707b8
-      protocolDiamond: "0x26F5BC2D2B0CA2951f55B12437Bf044Ff0DB6f2d"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
+      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"

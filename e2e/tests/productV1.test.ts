@@ -3,10 +3,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
 import { MetadataType } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
-import {
-  mockAdditionalOfferMetadata,
-  mockCreateOfferArgs
-} from "@bosonprotocol/common/tests/mocks";
+import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
