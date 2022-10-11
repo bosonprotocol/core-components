@@ -11,6 +11,11 @@ export type MetaTxConfig = {
   apiId: string;
 };
 
+export type LensContracts = {
+  LENS_HUB_CONTRACT?: string | undefined;
+  LENS_PERIPHERY_CONTRACT?: string | undefined;
+};
+
 export type ProtocolConfig = {
   envName: EnvironmentType;
   chainId: number;
@@ -28,8 +33,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
-  lens: {
-    LENS_HUB_CONTRACT?: string | undefined;
-    LENS_PERIPHERY_CONTRACT?: string | undefined;
-  };
+  lens: LensContracts;
 };

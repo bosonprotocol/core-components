@@ -16,6 +16,13 @@ export type UpdateSellerArgs = { id: BigNumberish } & Omit<
   "contractUri" | "royaltyPercentage"
 >;
 
+export const AuthTokenType = {
+  NONE: 0,
+  CUSTOM: 1,
+  LENS: 2,
+  ENS: 3
+};
+
 export type SellerStruct = {
   id: BigNumberish;
   operator: string;

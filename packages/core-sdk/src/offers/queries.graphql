@@ -64,7 +64,7 @@ fragment BaseOfferFields on Offer {
   validUntilDate
   voucherRedeemableFromDate
   voucherRedeemableUntilDate
-  fulfillmentPeriodDuration
+  disputePeriodDuration
   voucherValidDuration
   resolutionPeriodDuration
   metadataUri

@@ -39,7 +39,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.validUntilDate = offerDatesStruct.validUntil;
     offer.voucherRedeemableFromDate = offerDatesStruct.voucherRedeemableFrom;
     offer.voucherRedeemableUntilDate = offerDatesStruct.voucherRedeemableUntil;
-    offer.fulfillmentPeriodDuration = offerDurationsStruct.fulfillmentPeriod;
+    offer.disputePeriodDuration = offerDurationsStruct.disputePeriod;
     offer.voucherValidDuration = offerDurationsStruct.voucherValid;
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
     offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;

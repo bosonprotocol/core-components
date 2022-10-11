@@ -27,7 +27,7 @@ export const CompleteButton = ({
   onPendingTransaction,
   waitBlocks = 1,
   size = ButtonSize.Large,
-  variant = "primaryFill",
+  variant = "primary",
   children,
   ...coreSdkConfig
 }: Props) => {

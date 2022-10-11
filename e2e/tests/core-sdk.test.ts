@@ -90,7 +90,8 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const seller = await ensureCreatedSeller(fundedWallet);
+        const sellers = await ensureCreatedSeller(fundedWallet);
+        const [seller] = sellers;
 
         const funds = await depositFunds({
           coreSDK,
@@ -110,7 +111,8 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const seller = await ensureCreatedSeller(fundedWallet);
+        const sellers = await ensureCreatedSeller(fundedWallet);
+        const [seller] = sellers;
 
         await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
 
@@ -308,7 +310,8 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const seller = await ensureCreatedSeller(fundedWallet);
+        const sellers = await ensureCreatedSeller(fundedWallet);
+        const [seller] = sellers;
 
         const funds = await depositFunds({
           coreSDK,
@@ -336,7 +339,8 @@ describe("core-sdk", () => {
         const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
           seedWallet
         );
-        const seller = await ensureCreatedSeller(fundedWallet);
+        const sellers = await ensureCreatedSeller(fundedWallet);
+        const [seller] = sellers;
 
         const ethFunds = await depositFunds({
           coreSDK,
@@ -393,7 +397,8 @@ describe("core-sdk", () => {
 
       beforeEach(async () => {
         await waitForGraphNodeIndexing();
-        const seller = await ensureCreatedSeller(sellerWallet);
+        const sellers = await ensureCreatedSeller(sellerWallet);
+        const [seller] = sellers;
 
         // before each case, create offer + commit + redeem
         const createdOffer = await createOffer(sellerCoreSDK, seller.id);
@@ -431,7 +436,8 @@ describe("core-sdk", () => {
 
       test("expired dispute", async () => {
         // create another offer with very small resolutionPeriod + commit + redeem
-        const seller = await ensureCreatedSeller(sellerWallet);
+        const sellers = await ensureCreatedSeller(sellerWallet);
+        const [seller] = sellers;
 
         const createdOffer = await createOffer(sellerCoreSDK, seller.id, {
           resolutionPeriodDurationInMS: 1000
@@ -567,6 +573,24 @@ describe("core-sdk", () => {
       xtest("raise dispute + escalate + expire", async () => {
         // This test case would require a specific dispute resolver created with a very small escalationResponsePeriod
       });
+    });
+  });
+
+  describe("getSellerByAddress()", () => {
+    test("getSellerByAddress() retrieve the seller using the address", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const sellerId = seller.id;
+
+      const sellers2 = await coreSDK.getSellersByAddress(fundedWallet.address);
+      const [seller2] = sellers2;
+      expect(seller2).toBeTruthy();
+      expect(seller2.id).toEqual(sellerId);
     });
   });
 });
@@ -849,7 +873,7 @@ async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
 
 async function resolveDispute(
   exchangeId: string,
-  buyerPercent: string,
+  buyerPercentBasisPoints: string,
   resolverSDK: CoreSDK,
   signerSDK: CoreSDK
 ) {
@@ -861,13 +885,13 @@ async function resolveDispute(
       v: sigV
     } = await signerSDK.signDisputeResolutionProposal({
       exchangeId,
-      buyerPercent
+      buyerPercentBasisPoints
     });
 
     // send the Resolve transaction from buyer
     const txResponse = await resolverSDK.resolveDispute({
       exchangeId: exchangeId,
-      buyerPercent,
+      buyerPercentBasisPoints,
       sigR,
       sigS,
       sigV

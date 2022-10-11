@@ -28,7 +28,7 @@ export const RevokeButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondaryFill",
+  variant = "secondary",
   ...coreSdkConfig
 }: IRevokeButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);

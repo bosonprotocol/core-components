@@ -992,9 +992,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "uint96",
+            internalType: "uint256",
             name: "royaltyPercentage",
-            type: "uint96",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",

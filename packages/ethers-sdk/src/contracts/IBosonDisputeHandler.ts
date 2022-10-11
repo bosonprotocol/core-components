@@ -21,14 +21,14 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export declare namespace BosonTypes {
   export type DisputeStruct = {
     exchangeId: BigNumberish;
-    state: BigNumberish;
     buyerPercent: BigNumberish;
+    state: BigNumberish;
   };
 
-  export type DisputeStructOutput = [BigNumber, number, BigNumber] & {
+  export type DisputeStructOutput = [BigNumber, BigNumber, number] & {
     exchangeId: BigNumber;
-    state: number;
     buyerPercent: BigNumber;
+    state: number;
   };
 
   export type DisputeDatesStruct = {

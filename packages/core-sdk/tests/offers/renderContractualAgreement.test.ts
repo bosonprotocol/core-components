@@ -28,7 +28,7 @@ const templates = {
   redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}*** to ***{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}***.`,
   redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}*** days`,
   resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}*** days after the dispute being raised.`,
-  disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***{{#msecToDay}}{{fulfillmentPeriodDurationInMS}}{{/msecToDay}}*** days after the Buyer commits to an Offer.`,
+  disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***{{#msecToDay}}{{disputePeriodDurationInMS}}{{/msecToDay}}*** days after the Buyer commits to an Offer.`,
   disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is {{disputeResolverId}}`,
   metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[{{{metadataUri}}}]({{{metadataUri}}})***.`,
   sellerContactMethod: `**Seller Contact Method** means ***{{sellerContactMethod}}***.`,
@@ -49,7 +49,7 @@ const getTemplateResults = (args: { [key: string]: string }) => {
     redemptionPeriodFromTo: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is from ***${args.voucherRedeemableFromDateInMS}*** to ***${args.voucherRedeemableUntilDateInMS}***.`,
     redemptionPeriodDuration: `**Redemption Period** means the time period after Buyer commits until the NFT Voucher expires, which is ***${args.voucherValidDuration}*** days`,
     resolutionPeriod: `**Resolution Period** means the maximum time period allowed between the date the dispute has been raised (or its clock reset), and the dispute having been resolved, which is within ***${args.resolutionPeriodDuration}*** days after the dispute being raised.`,
-    disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***${args.fulfillmentPeriodDuration}*** days after the Buyer commits to an Offer.`,
+    disputePeriod: `**Dispute Period** means the time period within which the Buyer can raise a dispute. It ends within ***${args.disputePeriodDuration}*** days after the Buyer commits to an Offer.`,
     disputeResolverId: `**Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Contractual Agreement. The ID of the DisputeResolver is ${args.disputeResolverId}`,
     metadataUri: `**Item** means the thing being sold or a set of things being sold together in a single Offer ***[${args.metadataUri}](${args.metadataUri})***.`,
     sellerContactMethod: `**Seller Contact Method** means ***${args.sellerContactMethod}***.`,
@@ -124,8 +124,8 @@ async function mockPrepareRenderingData(
           .div(utils.timestamp.MSEC_PER_DAY)
           .toString()
       : "0",
-    fulfillmentPeriodDuration: BigNumber.from(
-      offerData.fulfillmentPeriodDurationInMS.toString()
+    disputePeriodDuration: BigNumber.from(
+      offerData.disputePeriodDurationInMS.toString()
     )
       .div(utils.timestamp.MSEC_PER_DAY)
       .toString(),
@@ -655,7 +655,7 @@ describe("renderContractualAgreement", () => {
       "validUntilDateInMS",
       "voucherRedeemableFromDateInMS",
       "voucherRedeemableUntilDateInMS",
-      "fulfillmentPeriodDurationInMS",
+      "disputePeriodDurationInMS",
       "resolutionPeriodDurationInMS",
       "exchangeToken",
       "disputeResolverId",

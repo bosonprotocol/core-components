@@ -310,7 +310,7 @@ type Offer @entity {
   voucherRedeemableUntilDate: BigInt!
 
   "Offer durations"
-  fulfillmentPeriodDuration: BigInt!
+  disputePeriodDuration: BigInt!
   voucherValidDuration: BigInt!
   resolutionPeriodDuration: BigInt!
 
@@ -388,6 +388,9 @@ type Seller implements Account @entity {
   authTokenId: BigInt!
   authTokenType: Int!
   logs: [EventLog!]! @derivedFrom(field: "account")
+  contractURI: String!
+  "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
+  royaltyPercentage: BigInt!
 }
 
 type Buyer implements Account @entity {
@@ -516,6 +519,7 @@ enum EventType {
   VOUCHER_CANCELED
   VOUCHER_REDEEMED
   VOUCHER_TRANSFERRED
+  VOUCHER_EXPIRED
   EXCHANGE_COMPLETED
   "FundsHandler events"
   FUNDS_DEPOSITED

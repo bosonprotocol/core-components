@@ -29,7 +29,7 @@ export const RedeemButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "primaryFill",
+  variant = "primary",
   ...coreSdkConfig
 }: IRedeemButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);

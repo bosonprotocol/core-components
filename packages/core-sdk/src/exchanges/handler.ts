@@ -256,13 +256,13 @@ function assertCompletableExchange(
   if (isSignerOperator) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
-    const didFulfillmentPeriodElapse =
+    const didDisputePeriodElapse =
       elapsedSinceRedeemMS >
-      Number(exchange.offer.fulfillmentPeriodDuration) * 1000;
-    if (!didFulfillmentPeriodElapse) {
+      Number(exchange.offer.disputePeriodDuration) * 1000;
+    if (!didDisputePeriodElapse) {
       throw new Error(
         `Fulfillment period of ${
-          Number(exchange.offer.fulfillmentPeriodDuration) * 1000
+          Number(exchange.offer.disputePeriodDuration) * 1000
         } ms did not elapsed since redeem.`
       );
     }

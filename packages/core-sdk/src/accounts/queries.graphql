@@ -240,6 +240,8 @@ fragment BaseSellerFields on Seller {
   authTokenType
   voucherCloneAddress
   active
+  contractURI
+  royaltyPercentage
 }
 
 fragment BuyerFields on Buyer {

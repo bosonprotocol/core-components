@@ -6,9 +6,11 @@ import {
   MetadataStorage,
   AnyMetadata,
   Log,
-  MetaTxConfig
+  MetaTxConfig,
+  LensContracts,
+  AuthTokenType
 } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
@@ -20,6 +22,7 @@ import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as erc20 from "./erc20";
+import * as erc721 from "./erc721";
 import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
 import * as metadata from "./metadata";
@@ -39,6 +42,7 @@ export class CoreSDK {
   private _tokenInfoManager: TokenInfoManager;
 
   private _metaTxConfig?: Partial<MetaTxConfig>;
+  private _lensContracts?: LensContracts;
 
   /**
    * Creates an instance of `CoreSDK`
@@ -52,6 +56,7 @@ export class CoreSDK {
     theGraphStorage?: MetadataStorage;
     chainId: number;
     metaTx?: Partial<MetaTxConfig>;
+    lensContracts?: LensContracts;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -60,6 +65,7 @@ export class CoreSDK {
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
     this._metaTxConfig = opts.metaTx;
+    this._lensContracts = opts.lensContracts;
   }
 
   /**
@@ -97,7 +103,8 @@ export class CoreSDK {
       metaTx: {
         ...defaultConfig.metaTx,
         ...args.metaTx
-      }
+      },
+      lensContracts: defaultConfig.lens
     });
   }
 
@@ -271,13 +278,95 @@ export class CoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByAddress(
+  public async getSellersByAddress(
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByAddress(
+  ): Promise<subgraph.SellerFieldsFragment[]> {
+    if (address === AddressZero) {
+      throw new Error(`Unsupported search address '${AddressZero}'`);
+    }
+    const seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
+      queryVars
+    );
+    if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
+      // If seller is not found per address, try to find per authToken
+      const tokenType = AuthTokenType.LENS; // only LENS for now
+      const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
+      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
+      for (const tokenId of tokenIds) {
+        // Just in case the user owns several auth tokens
+        const sellerPromise = this.getSellerByAuthToken(
+          tokenId,
+          tokenType,
+          queryVars
+        );
+        promises.push(sellerPromise);
+      }
+      return (await Promise.all(promises)).filter((seller) => !!seller);
+    }
+    return [seller].filter((seller) => !!seller);
+  }
+
+  /**
+   * Returns the array of LENS tokenIds owned by a specified address
+   * @param address - Address of seller entity to query for.
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Array of tokenIds
+   */
+  public async fetchUserAuthTokens(
+    address: string,
+    tokenType: number
+  ): Promise<Array<string>> {
+    if (tokenType !== AuthTokenType.LENS) {
+      // only LENS for now
+      throw new Error(`Unsupported authTokenType '${tokenType}'`);
+    }
+    if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
+      throw new Error("LENS contract is not configured in Core-SDK");
+    }
+    const balance = await erc721.handler.balanceOf({
+      contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+      owner: address,
+      web3Lib: this._web3Lib
+    });
+
+    const balanceBN = BigNumber.from(balance);
+    const promises: Promise<string>[] = [];
+    for (let index = 0; balanceBN.gt(index); index++) {
+      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
+        contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+        owner: address,
+        index,
+        web3Lib: this._web3Lib
+      });
+      promises.push(tokenIdPromise);
+    }
+    const ret = await Promise.all(promises);
+    return ret;
+  }
+
+  /**
+   * Returns seller entity from subgraph that owns the given auth token (if any).
+   * @param tokenId - tokenId of the Auth Token.
+   * @param tokenType - Type of the Auth Token (1 for LENS, ...).
+   * @param queryVars - Optional query variables to skip, order or filter.
+   * @returns Seller entity from subgraph.
+   */
+  public async getSellerByAuthToken(
+    tokenId: string,
+    tokenType: number,
+    queryVars?: subgraph.GetSellersQueryQueryVariables
+  ): Promise<subgraph.SellerFieldsFragment> {
+    if (tokenType !== AuthTokenType.LENS) {
+      // only LENS for now
+      throw new Error(`Unsupported authTokenType '${tokenType}'`);
+    }
+    return accounts.subgraph.getSellerByAuthToken(
+      this._subgraphUrl,
+      tokenId,
+      tokenType,
       queryVars
     );
   }
@@ -1188,7 +1277,7 @@ export class CoreSDK {
    */
   public async resolveDispute(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
     sigR: BytesLike;
     sigS: BytesLike;
     sigV: BigNumberish;
@@ -1267,12 +1356,12 @@ export class CoreSDK {
    * Signs dispute resolution message.
    * @param args - Dispute resolve arguments:
    * - `args.exchangeId` - ID of disputed exchange.
-   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * - `args.buyerPercentBasisPoints` - Percentage of deposit the buyer gets.
    * @returns Signature.
    */
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
   }) {
     return disputes.handler.signResolutionProposal({
       ...args,

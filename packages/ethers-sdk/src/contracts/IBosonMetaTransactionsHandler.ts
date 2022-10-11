@@ -22,7 +22,7 @@ export interface IBosonMetaTransactionsHandlerInterface
   contractName: "IBosonMetaTransactionsHandler";
   functions: {
     "executeMetaTransaction(address,string,bytes,uint256,bytes32,bytes32,uint8)": FunctionFragment;
-    "isUsedNonce(uint256)": FunctionFragment;
+    "isUsedNonce(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -39,7 +39,7 @@ export interface IBosonMetaTransactionsHandlerInterface
   ): string;
   encodeFunctionData(
     functionFragment: "isUsedNonce",
-    values: [BigNumberish]
+    values: [string, BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -111,6 +111,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     ): Promise<ContractTransaction>;
 
     isUsedNonce(
+      _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
@@ -128,6 +129,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
   ): Promise<ContractTransaction>;
 
   isUsedNonce(
+    _associatedAddress: string,
     _nonce: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
@@ -145,6 +147,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     ): Promise<string>;
 
     isUsedNonce(
+      _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -178,6 +181,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     ): Promise<BigNumber>;
 
     isUsedNonce(
+      _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -196,6 +200,7 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     isUsedNonce(
+      _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

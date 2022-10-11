@@ -131,6 +131,23 @@ export async function getSellerByTreasury(
   return sellers[0];
 }
 
+export async function getSellerByAuthToken(
+  subgraphUrl: string,
+  tokenId: string,
+  tokenType: number,
+  queryVars: GetSellersQueryQueryVariables = {}
+): Promise<SellerFieldsFragment> {
+  const sellers = await getSellers(subgraphUrl, {
+    sellersFilter: {
+      ...queryVars.sellersFilter,
+      authTokenId: tokenId,
+      authTokenType: tokenType
+    },
+    ...queryVars
+  });
+  return sellers[0];
+}
+
 export async function getSellerByAddress(
   subgraphUrl: string,
   address: string,
