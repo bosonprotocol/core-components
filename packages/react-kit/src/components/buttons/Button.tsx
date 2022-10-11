@@ -10,7 +10,7 @@ export enum ButtonSize {
 }
 
 export interface ButtonProps {
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   loading?: boolean;
   size?: ButtonSize;
@@ -25,6 +25,8 @@ export interface ButtonProps {
   children?: React.ReactNode;
   showBorder?: boolean;
   type?: "submit" | "reset" | "button" | undefined;
+  style?: React.CSSProperties;
+  withBosonStyle?: boolean;
 }
 
 export const Button = ({
@@ -35,6 +37,8 @@ export const Button = ({
   variant = "primaryFill",
   showBorder = true,
   type = "button",
+  style = {},
+  withBosonStyle = false,
   ...props
 }: ButtonProps) => {
   return (
@@ -45,6 +49,8 @@ export const Button = ({
       size={size}
       showBorder={showBorder}
       type={type}
+      style={style}
+      withBosonStyle={withBosonStyle}
       {...props}
     >
       {props.loading ? (

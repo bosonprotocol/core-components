@@ -2,10 +2,16 @@ import { ButtonSize } from "./Button";
 import styled, { css } from "styled-components";
 
 export const ButtonStyle = styled.button.attrs(
-  (props: { size: ButtonSize; variant: string; showBorder: boolean }) => ({
+  (props: {
+    size: ButtonSize;
+    variant: string;
+    showBorder: boolean;
+    withBosonStyle: boolean;
+  }) => ({
     variant: props.variant,
     size: props.size,
-    showBorder: props.showBorder
+    showBorder: props.showBorder,
+    withBosonStyle: props.withBosonStyle
   })
 )`
   box-sizing: border-box;
