@@ -22,7 +22,11 @@ import {
   encodeRemoveSellersFromAllowList,
   encodeUpdateDisputeResolver
 } from "./interface";
-import { getDisputeResolverById, getSellerByAddress } from "./subgraph";
+import {
+  getDisputeResolverById,
+  getSellerByAddress,
+  getSellerByAuthToken
+} from "./subgraph";
 import * as erc721Handler from "../erc721/handler";
 import {
   CreateSellerArgs,
@@ -57,7 +61,8 @@ export async function getSellersByAddressOrAuthToken(args: {
     const promises: Promise<SellerFieldsFragment>[] = [];
     for (const tokenId of tokenIds) {
       // Just in case the user owns several auth tokens
-      const sellerPromise = this.getSellerByAuthToken(
+      const sellerPromise = getSellerByAuthToken(
+        args.subgraphUrl,
         tokenId,
         tokenType,
         args.queryVars
