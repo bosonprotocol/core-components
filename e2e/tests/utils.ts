@@ -25,7 +25,8 @@ import {
   ACCOUNT_7,
   ACCOUNT_8,
   ACCOUNT_9,
-  ACCOUNT_10
+  ACCOUNT_10,
+  ACCOUNT_11
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
@@ -143,6 +144,7 @@ export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
 export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
+export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 

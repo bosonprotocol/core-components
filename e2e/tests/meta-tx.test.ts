@@ -13,12 +13,14 @@ import {
   waitForGraphNodeIndexing,
   metadata,
   defaultConfig,
-  createOffer
+  createOffer,
+  seedWallet11
 } from "./utils";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const newSellerWallet = seedWallet11;
 // seedWallet9 is used to relay meta-transactions
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -37,22 +39,39 @@ describe("meta-tx", () => {
     offer = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
-  // TODO: Find a way to make this work. This fails with `processing error: unknown account` because
-  // the ephemeral account is not a known signer of the hardhat node.
-  describe.skip("#signMetaTxCreateSeller()", () => {
-    test("create for random wallet", async () => {
+  describe("#signMetaTxCreateSeller()", () => {
+    test("create a new seller", async () => {
       const nonce = Date.now();
-      const randomWallet = Wallet.createRandom();
-      const randomSellerCoreSDK = initCoreSDKWithWallet(randomWallet);
+      const newSellerCoreSDK = initCoreSDKWithWallet(newSellerWallet);
+
+      const [existingSeller] = await newSellerCoreSDK.getSellersByAddress(
+        newSellerWallet.address
+      );
+
+      if (existingSeller) {
+        // Change all addresses used by the seller to be able to create another one with the original address
+        // Useful when repeating the test suite on the same contracts
+        const randomWallet = Wallet.createRandom();
+        const updateTx = await newSellerCoreSDK.updateSeller({
+          id: existingSeller.id,
+          admin: randomWallet.address,
+          operator: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address,
+          authTokenId: "0",
+          authTokenType: 0
+        });
+        await updateTx.wait();
+      }
 
       // Random seller signs meta tx
       const { r, s, v, functionName, functionSignature } =
-        await randomSellerCoreSDK.signMetaTxCreateSeller({
+        await newSellerCoreSDK.signMetaTxCreateSeller({
           createSellerArgs: {
-            operator: randomWallet.address,
-            treasury: randomWallet.address,
-            admin: randomWallet.address,
-            clerk: randomWallet.address,
+            operator: newSellerWallet.address,
+            treasury: newSellerWallet.address,
+            admin: newSellerWallet.address,
+            clerk: newSellerWallet.address,
             // TODO: replace with correct uri
             contractUri: "ipfs://seller-contract",
             royaltyPercentage: "0",
@@ -64,7 +83,7 @@ describe("meta-tx", () => {
         });
 
       // `Relayer` executes meta tx on behalf of random seller
-      const metaTx = await randomSellerCoreSDK.relayMetaTransaction({
+      const metaTx = await newSellerCoreSDK.relayMetaTransaction({
         functionName,
         functionSignature,
         nonce,
@@ -74,11 +93,8 @@ describe("meta-tx", () => {
       });
 
       const metaTxReceipt = await metaTx.wait();
-      const metaTxEvent = metaTxReceipt.events?.find(
-        (event) => event.event === "MetaTransactionExecuted"
-      );
-
-      expect(metaTxEvent).toBeTruthy();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
 
