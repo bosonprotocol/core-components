@@ -22,11 +22,11 @@ const envNameToConfig: Record<
   },
   testing: {
     network: "mumbai",
-    startBlock: 28496901 // mumbai, NOT block num when protocol is deployed (manual override)
+    startBlock: 28566210 // mumbai, NOT block num when protocol is deployed (manual override)
   },
   staging: {
     network: "mumbai",
-    startBlock: 27771547 // mumbai, block num when protocol is deployed
+    startBlock: 28563076 // mumbai, block num when protocol is deployed
   },
   production: {
     network: "mumbai", // TODO: change to "providers.getNetwork(chainId).name" after protocol deploy
