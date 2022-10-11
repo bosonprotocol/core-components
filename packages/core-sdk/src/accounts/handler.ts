@@ -50,7 +50,10 @@ export async function getSellersByAddressOrAuthToken(args: {
   if (!seller && args.lensHubContractAddress) {
     // If seller is not found per address, try to find per authToken
     const tokenType = AuthTokenType.LENS; // only LENS for now
-    const tokenIds = await fetchAuthTokensOfAccount(args);
+    const tokenIds = await fetchAuthTokensOfAccount({
+      ...args,
+      tokenType
+    });
     const promises: Promise<SellerFieldsFragment>[] = [];
     for (const tokenId of tokenIds) {
       // Just in case the user owns several auth tokens
