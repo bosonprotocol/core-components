@@ -13,6 +13,8 @@ import {
 } from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
+import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   ACCOUNT_1,
   ACCOUNT_2,
@@ -23,7 +25,8 @@ import {
   ACCOUNT_7,
   ACCOUNT_8,
   ACCOUNT_9,
-  ACCOUNT_10
+  ACCOUNT_10,
+  ACCOUNT_11
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
@@ -141,6 +144,7 @@ export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
 export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
+export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 
@@ -310,4 +314,32 @@ export async function createDisputeResolver(
     protocolAdminCoreSDK,
     disputeResolverCoreSDK: drCoreSDK
   };
+}
+
+export async function createOffer(
+  coreSDK: CoreSDK,
+  offerParams?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
 }

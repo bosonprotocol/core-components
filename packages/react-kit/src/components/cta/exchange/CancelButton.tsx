@@ -55,7 +55,7 @@ export const CancelButton = ({
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxCancelVoucher({
+                await coreSdk.signMetaTxCancelVoucher({
                   exchangeId,
                   nonce
                 });

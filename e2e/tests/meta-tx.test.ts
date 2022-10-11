@@ -11,12 +11,16 @@ import {
   seedWallet7,
   seedWallet8,
   waitForGraphNodeIndexing,
-  metadata
+  metadata,
+  defaultConfig,
+  createOffer,
+  seedWallet11
 } from "./utils";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
+const newSellerWallet = seedWallet11;
 // seedWallet9 is used to relay meta-transactions
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -35,13 +39,211 @@ describe("meta-tx", () => {
     offer = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
-  describe("#signExecuteMetaTxCommitToOffer()", () => {
+  describe("#signMetaTxCreateSeller()", () => {
+    test("create a new seller", async () => {
+      const nonce = Date.now();
+      const newSellerCoreSDK = initCoreSDKWithWallet(newSellerWallet);
+
+      const [existingSeller] = await newSellerCoreSDK.getSellersByAddress(
+        newSellerWallet.address
+      );
+
+      if (existingSeller) {
+        // Change all addresses used by the seller to be able to create another one with the original address
+        // Useful when repeating the test suite on the same contracts
+        const randomWallet = Wallet.createRandom();
+        const updateTx = await newSellerCoreSDK.updateSeller({
+          id: existingSeller.id,
+          admin: randomWallet.address,
+          operator: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address,
+          authTokenId: "0",
+          authTokenType: 0
+        });
+        await updateTx.wait();
+      }
+
+      // Random seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await newSellerCoreSDK.signMetaTxCreateSeller({
+          createSellerArgs: {
+            operator: newSellerWallet.address,
+            treasury: newSellerWallet.address,
+            admin: newSellerWallet.address,
+            clerk: newSellerWallet.address,
+            // TODO: replace with correct uri
+            contractUri: "ipfs://seller-contract",
+            royaltyPercentage: "0",
+            authTokenId: "0",
+            authTokenType: 0
+          },
+          nonce,
+          chainId: defaultConfig.chainId
+        });
+
+      // `Relayer` executes meta tx on behalf of random seller
+      const metaTx = await newSellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCreateOffer()", () => {
+    test("create an offer", async () => {
+      const metadataHash = await sellerCoreSDK.storeMetadata({
+        ...metadata,
+        type: "BASE"
+      });
+      const metadataUri = "ipfs://" + metadataHash;
+
+      const createOfferArgs = mockCreateOfferArgs({
+        metadataHash,
+        metadataUri
+      });
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxCreateOffer({
+          createOfferArgs,
+          nonce,
+          chainId: defaultConfig.chainId
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCreateOfferBatch()", () => {
+    test("create batch of offers", async () => {
+      const metadataHash = await sellerCoreSDK.storeMetadata({
+        ...metadata,
+        type: "BASE"
+      });
+      const metadataUri = "ipfs://" + metadataHash;
+
+      const createOfferArgs = mockCreateOfferArgs({
+        metadataHash,
+        metadataUri
+      });
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxCreateOfferBatch({
+          createOffersArgs: [createOfferArgs, createOfferArgs],
+          nonce,
+          chainId: defaultConfig.chainId
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxVoidOffer()", () => {
+    test("void created offer", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxVoidOffer({
+          offerId: createdOffer.id,
+          nonce,
+          chainId: defaultConfig.chainId
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxVoidOfferBatch()", () => {
+    test("void created offers", async () => {
+      const createdOffer1 = await createOffer(sellerCoreSDK);
+      const createdOffer2 = await createOffer(sellerCoreSDK);
+
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxVoidOfferBatch({
+          offerIds: [createdOffer1.id, createdOffer2.id],
+          nonce,
+          chainId: defaultConfig.chainId
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCommitToOffer()", () => {
     test("non-native exchange token offer", async () => {
       const nonce = Date.now();
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
-        await buyerCoreSDK.signExecuteMetaTxCommitToOffer({
+        await buyerCoreSDK.signMetaTxCommitToOffer({
           offerId: offer.id,
           nonce
         });
@@ -61,7 +263,7 @@ describe("meta-tx", () => {
     });
   });
 
-  describe("#signExecuteMetaTxRedeemVoucher()", () => {
+  describe("#signMetaTxRedeemVoucher()", () => {
     test("non-native exchange token offer", async () => {
       const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
       const commitTxReceipt = await commitTx.wait();
@@ -73,7 +275,7 @@ describe("meta-tx", () => {
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
-        await buyerCoreSDK.signExecuteMetaTxRedeemVoucher({
+        await buyerCoreSDK.signMetaTxRedeemVoucher({
           exchangeId: Number(exchangeId),
           nonce
         });
@@ -93,7 +295,7 @@ describe("meta-tx", () => {
     });
   });
 
-  describe("#signExecuteMetaTxCancelVoucher()", () => {
+  describe("#signMetaTxCancelVoucher()", () => {
     test("non-native exchange token offer", async () => {
       const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
       const commitTxReceipt = await commitTx.wait();
@@ -105,7 +307,7 @@ describe("meta-tx", () => {
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
-        await buyerCoreSDK.signExecuteMetaTxCancelVoucher({
+        await buyerCoreSDK.signMetaTxCancelVoucher({
           exchangeId: exchangeId as string,
           nonce
         });
