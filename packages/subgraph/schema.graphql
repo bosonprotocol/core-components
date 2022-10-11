@@ -596,6 +596,6 @@ type DisputeEventLog implements EventLog @entity {
   timestamp: BigInt!
   executedBy: Bytes!
   account: Account!
-
+  
   dispute: Dispute!
 }
