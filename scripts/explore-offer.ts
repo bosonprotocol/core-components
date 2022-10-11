@@ -125,8 +125,8 @@ function exportOfferData(
     voucherRedeemableUntilDateInMS: secToMSec(
       offerData.offerDates.voucherRedeemableUntil
     ),
-    fulfillmentPeriodDurationInMS: secToMSec(
-      offerData.offerDurations.fulfillmentPeriod
+    disputePeriodDurationInMS: secToMSec(
+      offerData.offerDurations.disputePeriod
     ),
     voucherValidDurationInMS: secToMSec(offerData.offerDurations.voucherValid),
     resolutionPeriodDurationInMS: secToMSec(

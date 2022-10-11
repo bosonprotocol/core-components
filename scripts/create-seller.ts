@@ -1,18 +1,10 @@
-import { CreateOfferArgs } from "@bosonprotocol/common/src/types/offers";
 import fs from "fs";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
-import { AddressZero } from "@ethersproject/constants";
-import { erc20Iface } from "../packages/core-sdk/src/erc20/interface";
 import { providers, Contract, Wallet } from "ethers";
 import { program } from "commander";
 import { getDefaultConfig } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
-import { OfferData } from "./utils/offer";
-import {
-  ITokenInfo,
-  NATIVE_TOKENS
-} from "../packages/core-sdk/src/utils/tokenInfoManager";
 
 program
   .description("Create a Seller.")
