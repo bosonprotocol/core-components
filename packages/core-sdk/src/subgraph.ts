@@ -1366,6 +1366,7 @@ export enum EventType {
   SellerCreated = "SELLER_CREATED",
   SellerUpdated = "SELLER_UPDATED",
   VoucherCanceled = "VOUCHER_CANCELED",
+  VoucherExpired = "VOUCHER_EXPIRED",
   VoucherExtended = "VOUCHER_EXTENDED",
   VoucherRedeemed = "VOUCHER_REDEEMED",
   VoucherRevoked = "VOUCHER_REVOKED",

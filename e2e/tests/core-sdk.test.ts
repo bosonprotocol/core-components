@@ -524,15 +524,10 @@ describe("core-sdk", () => {
         // Raise the dispute
         await raiseDispute(exchange.id, buyerCoreSDK);
 
-        const disputeTimeout = await getDisputeTimeout(
-          exchange.id,
-          buyerCoreSDK
-        );
-
         // Escalate the dispute
         await escalateDispute(exchange.id, buyerCoreSDK);
 
-        await checkDisputeEscalated(exchange.id, disputeTimeout, buyerCoreSDK);
+        await checkDisputeEscalated(exchange.id, buyerCoreSDK);
       });
 
       test("raise dispute + escalate + decide", async () => {
@@ -936,11 +931,7 @@ async function escalateDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   await waitForGraphNodeIndexing();
 }
 
-async function checkDisputeEscalated(
-  exchangeId: string,
-  previousTimeout: BigNumberish,
-  coreSDK: CoreSDK
-) {
+async function checkDisputeEscalated(exchangeId: string, coreSDK: CoreSDK) {
   const exchangeAfterEscalate = await coreSDK.getExchangeById(exchangeId);
 
   // exchange state is still DISPUTED
@@ -962,9 +953,6 @@ async function checkDisputeEscalated(
 
   // dispute escalatedDate is now filled
   expect(dispute.escalatedDate).toBeTruthy();
-
-  // dispute timeout has been increased
-  expect(BigNumber.from(dispute.timeout).gt(previousTimeout)).toBe(true);
 }
 
 async function getDisputeTimeout(exchangeId: string, coreSDK: CoreSDK) {
