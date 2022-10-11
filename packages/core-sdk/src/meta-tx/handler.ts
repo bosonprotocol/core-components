@@ -76,7 +76,7 @@ export async function signMetaTxCreateSeller(
   return signMetaTx({
     ...args,
     functionName:
-      "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint96))",
+      "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint256))",
     functionSignature: encodeCreateSeller(args.createSellerArgs)
   });
 }
