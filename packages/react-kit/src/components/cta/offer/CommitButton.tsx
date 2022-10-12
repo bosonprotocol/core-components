@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { RefObject, useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
@@ -13,6 +13,8 @@ type Props = {
    * ID of offer to commit to.
    */
   offerId: BigNumberish;
+  isPauseCommitting?: boolean;
+  buttonRef?: RefObject<HTMLButtonElement>;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -29,6 +31,8 @@ export const CommitButton = ({
   onError,
   waitBlocks = 1,
   size = ButtonSize.Large,
+  isPauseCommitting = false,
+  buttonRef,
   variant = "primary",
   ...coreSdkConfig
 }: Props) => {
@@ -39,11 +43,12 @@ export const CommitButton = ({
 
   return (
     <Button
+      ref={buttonRef}
       variant={variant}
       size={size}
       disabled={disabled}
       onClick={async () => {
-        if (!isLoading) {
+        if (!isLoading && !isPauseCommitting) {
           try {
             setIsLoading(true);
             onPendingSignature?.();

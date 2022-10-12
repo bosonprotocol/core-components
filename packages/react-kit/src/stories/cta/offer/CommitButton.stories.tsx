@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { CommitButton } from "../../../components/cta/offer/CommitButton";
@@ -12,11 +12,12 @@ export default {
 } as ComponentMeta<typeof CommitButton>;
 
 const Template: ComponentStory<typeof CommitButton> = (args) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
 
   return (
     <CtaButtonWrapper>
-      <CommitButton web3Provider={provider} {...args} />
+      <CommitButton web3Provider={provider} {...args} buttonRef={buttonRef} />
     </CtaButtonWrapper>
   );
 };
