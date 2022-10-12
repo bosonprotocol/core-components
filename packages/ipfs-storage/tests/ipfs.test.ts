@@ -45,6 +45,7 @@ describe("#storeMetadata()", () => {
       description: "description",
       schemaUrl: "schemaUrl",
       externalUrl: "externalUrl",
+      licenseUrl: "licenseUrl",
       type: MetadataType.BASE
     });
 
@@ -59,6 +60,7 @@ describe("#getMetadata()", () => {
     schemaUrl: "schemaUrl",
     externalUrl: "externalUrl",
     external_url: "externalUrl",
+    licenseUrl: "licenseUrl",
     type: MetadataType.BASE
   };
 
@@ -67,6 +69,7 @@ describe("#getMetadata()", () => {
     description: METADATA_FROM_IPFS.description,
     schemaUrl: METADATA_FROM_IPFS.schemaUrl,
     externalUrl: METADATA_FROM_IPFS.externalUrl,
+    licenseUrl: METADATA_FROM_IPFS.licenseUrl,
     type: METADATA_FROM_IPFS.type
   };
 
