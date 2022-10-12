@@ -11,6 +11,7 @@ interface MetadataInterface {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   type: MetadataType!
   image: String!
@@ -48,6 +49,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.BASE"
   type: MetadataType!
@@ -79,6 +81,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.PRODUCT_V1"
   type: MetadataType!
@@ -601,6 +604,6 @@ type DisputeEventLog implements EventLog @entity {
   timestamp: BigInt!
   executedBy: Bytes!
   account: Account!
-
+  
   dispute: Dispute!
 }

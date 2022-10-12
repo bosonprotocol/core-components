@@ -34,6 +34,11 @@ const productMissingArguments = [
     error: /externalUrl is a required field/
   },
   {
+    arg: "licenseUrl",
+    data: { licenseUrl: undefined },
+    error: /licenseUrl is a required field/
+  },
+  {
     arg: "image",
     data: { image: undefined },
     error: /image is a required field/
@@ -251,7 +256,8 @@ describe("#validateMetadata()", () => {
           type: "BASE",
           name: "name",
           description: "description",
-          externalUrl: "example.com"
+          externalUrl: "example.com",
+          licenseUrl: "license.com"
         })
       ).toBeTruthy();
     });

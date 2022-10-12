@@ -7,7 +7,7 @@ import {
 } from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish } from "@ethersproject/bignumber";
 import { CreateOfferArgs } from "./types";
 
 export const bosonOfferHandlerIface = new Interface(abis.IBosonOfferHandlerABI);
@@ -17,6 +17,50 @@ export function encodeCreateOffer(args: CreateOfferArgs) {
     "createOffer",
     createOfferArgsToStructs(args)
   );
+}
+
+export function encodeCreateOfferBatch(argsBatch: CreateOfferArgs[]) {
+  const argsTuples: [
+    Partial<OfferStruct>,
+    Partial<OfferDatesStruct>,
+    Partial<OfferDurationsStruct>,
+    BigNumberish,
+    BigNumberish
+  ][] = argsBatch.map((args) => [
+    argsToOfferStruct(args),
+    argsToOfferDatesStruct(args),
+    argsToOfferDurationsStruct(args),
+    args.disputeResolverId,
+    args.agentId
+  ]);
+  const [offers, offerDates, offerDurations, disputeResolverIds, agentIds]: [
+    Partial<OfferStruct>[],
+    Partial<OfferDatesStruct>[],
+    Partial<OfferDurationsStruct>[],
+    BigNumberish[],
+    BigNumberish[]
+  ] = argsTuples.reduce(
+    (acc, tuple) => {
+      const [offer, offerDates, offerDurations, disputeResolverId, agentId] =
+        tuple;
+      return [
+        [...acc[0], offer],
+        [...acc[1], offerDates],
+        [...acc[2], offerDurations],
+        [...acc[3], disputeResolverId],
+        [...acc[4], agentId]
+      ];
+    },
+    [[], [], [], [], []]
+  );
+
+  return bosonOfferHandlerIface.encodeFunctionData("createOfferBatch", [
+    offers,
+    offerDates,
+    offerDurations,
+    disputeResolverIds,
+    agentIds
+  ]);
 }
 
 export function createOfferArgsToStructs(

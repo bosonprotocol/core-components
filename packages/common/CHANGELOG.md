@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.13.0...@bosonprotocol/common@1.14.0) (2022-10-12)
+
+
+### Features
+
+* allow to search for a seller account based on the auth token ([#295](https://github.com/bosonprotocol/core-components/issues/295)) ([31de408](https://github.com/bosonprotocol/core-components/commit/31de40861723b66e543e601606f27f668840efbc))
+* contract uri and royalty support in subgraph ([#303](https://github.com/bosonprotocol/core-components/issues/303)) ([edc44c1](https://github.com/bosonprotocol/core-components/commit/edc44c1977190635becfb8110d39396545feb5df))
+* update lens authtokentype from 1 -> 2 ([#307](https://github.com/bosonprotocol/core-components/issues/307)) ([fb3c86c](https://github.com/bosonprotocol/core-components/commit/fb3c86c4ddb1b7cd40ac5c7c29af5cff7a1ee48d))
+* update to latest commit of contracts ([#297](https://github.com/bosonprotocol/core-components/issues/297)) ([0efcc9c](https://github.com/bosonprotocol/core-components/commit/0efcc9ca05dd85bffbd48fa927f69667c605f708))
+* upgrade contracts to v2.0.0-rc.4 (testing & staging) ([#311](https://github.com/bosonprotocol/core-components/issues/311)) ([38319c4](https://github.com/bosonprotocol/core-components/commit/38319c400758a748849762c2c180a1d521f9b104))
+
+
+
+
+
 # [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.12.0...@bosonprotocol/common@1.13.0) (2022-10-05)
 
 

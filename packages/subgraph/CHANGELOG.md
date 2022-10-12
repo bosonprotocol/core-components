@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.16.0...@bosonprotocol/subgraph@1.17.0) (2022-10-12)
+
+
+### Features
+
+* contract uri and royalty support in subgraph ([#303](https://github.com/bosonprotocol/core-components/issues/303)) ([edc44c1](https://github.com/bosonprotocol/core-components/commit/edc44c1977190635becfb8110d39396545feb5df))
+* fix prod subgraph deployment & update readme ([#289](https://github.com/bosonprotocol/core-components/issues/289)) ([b9e58a3](https://github.com/bosonprotocol/core-components/commit/b9e58a367b830582dae332e556781170ea437b23))
+* handle VoucherExpired event ([#310](https://github.com/bosonprotocol/core-components/issues/310)) ([9ee7e62](https://github.com/bosonprotocol/core-components/commit/9ee7e6243928432f743b0dc033651cbed5ef52b7))
+* update to latest commit of contracts ([#297](https://github.com/bosonprotocol/core-components/issues/297)) ([0efcc9c](https://github.com/bosonprotocol/core-components/commit/0efcc9ca05dd85bffbd48fa927f69667c605f708))
+
+
+
+
+
 # [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.15.0...@bosonprotocol/subgraph@1.16.0) (2022-10-05)
 
 

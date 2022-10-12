@@ -1,3 +1,4 @@
+import { MSEC_PER_DAY, MSEC_PER_SEC } from './../../packages/common/src/utils/timestamp';
 import { utils, constants, Wallet } from "ethers";
 
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -19,7 +20,7 @@ const sellerWallet = seedWallet3; // be sure the seedWallet is not used by anoth
 
 describe("CoreSDK - accounts", () => {
   describe("dispute resolver", () => {
-    const escalationResponsePeriodInMS = 60_000_000_000;
+    const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
     // TODO: use valid metadata uri
     const metadataUri = "ipfs://dispute-resolver-uri";
     const ethDisputeResolutionFee = {
