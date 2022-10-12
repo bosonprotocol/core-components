@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/common",
-  "version": "1.14.0-alpha.17",
+  "version": "1.14.0",
   "description": "Common package",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
