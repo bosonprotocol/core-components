@@ -1,4 +1,3 @@
-import { ProductCardImageWrapper } from "./../../packages/react-kit/src/components/productCard/ProductCard.styles";
 import { v4 as uuidv4 } from "uuid";
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";

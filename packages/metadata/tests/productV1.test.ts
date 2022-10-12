@@ -1,4 +1,3 @@
-import { metadata } from './../../../e2e/tests/utils';
 import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import {
   createVariantProductMetadata,
