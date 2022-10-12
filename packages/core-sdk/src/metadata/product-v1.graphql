@@ -74,6 +74,7 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   name
   description
   externalUrl
+  licenseUrl
   schemaUrl
   type
   image
