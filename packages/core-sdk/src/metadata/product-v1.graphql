@@ -16,6 +16,24 @@ query getProductV1BrandsQuery(
   }
 }
 
+query getProductV1ProductsQuery(
+  $productsSkip: Int
+  $productsFirst: Int
+  $productsOrderBy: ProductV1Product_orderBy
+  $productsOrderDirection: OrderDirection
+  $productsFilter: ProductV1Product_filter
+) {
+  productV1Products(
+    skip: $productsSkip
+    first: $productsFirst
+    orderBy: $productsOrderBy
+    orderDirection: $productsOrderDirection
+    where: $productsFilter
+  ) {
+    ...BaseProductV1ProductFields
+  }
+}
+
 query getProductV1CategoriesQuery(
   $categoriesSkip: Int
   $categoriesFirst: Int
@@ -169,6 +187,9 @@ fragment BaseProductV1ProductFields on ProductV1Product {
   packaging_dimensions_unit
   packaging_weight_value
   packaging_weight_unit
+  productV1Seller {
+    ...BaseProductV1SellerFields
+  }
 }
 
 fragment BaseProductV1BrandFields on ProductV1Brand {
@@ -216,6 +237,7 @@ fragment BaseProductV1SellerFields on ProductV1Seller {
   description
   externalUrl
   tokenId
+  sellerId
   images {
     ...BaseProductV1MediaFields
   }

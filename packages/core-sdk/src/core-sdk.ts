@@ -181,6 +181,12 @@ export class CoreSDK {
     );
   }
 
+  public async getProductV1Products(
+    queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
+  ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
+    return metadata.subgraph.getProductV1Products(this._subgraphUrl, queryVars);
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */

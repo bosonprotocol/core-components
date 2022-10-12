@@ -30,16 +30,17 @@ export function saveProductV1Metadata(
   const uuid = convertToString(metadataObj.get("uuid"));
 
   const savedMetadataAttributeIds = saveMetadataAttributes(attributes);
+  const savedProductV1SellerId = saveProductV1Seller(
+    convertToObject(metadataObj.get("seller")),
+    offer.sellerId.toString()
+  );
   const savedProductId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("product")),
+    savedProductV1SellerId,
     false
   );
   const savedVariationIds = saveProductV1Variations(
     convertToObjectArray(metadataObj.get("variations"))
-  );
-  const savedProductV1SellerId = saveProductV1Seller(
-    convertToObject(metadataObj.get("seller")),
-    offer.sellerId.toString()
   );
   const savedShippingId = saveProductV1Shipping(
     convertToObject(metadataObj.get("shipping")),
@@ -51,6 +52,7 @@ export function saveProductV1Metadata(
   );
   const savedProductOverridesId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("productOverrides")),
+    savedProductV1SellerId,
     true
   );
 

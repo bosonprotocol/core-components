@@ -165,6 +165,10 @@ type ProductV1Product @entity {
   packaging_dimensions_unit: String
   packaging_weight_value: String
   packaging_weight_unit: String
+  """
+  Seller
+  """
+  productV1Seller: ProductV1Seller
 }
 
 type ProductV1Brand @entity {
@@ -213,6 +217,7 @@ type ProductV1Seller @entity {
   description: String
   externalUrl: String
   tokenId: String
+  sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
   """
