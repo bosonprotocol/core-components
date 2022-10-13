@@ -3394,7 +3394,9 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   offer: Offer;
   product: ProductV1Product;
   productOverrides?: Maybe<ProductV1ProductOverrides>;
+  productUuid: Scalars["String"];
   productV1Seller: ProductV1Seller;
+  productVersion: Scalars["Int"];
   quantityAvailable: Scalars["BigInt"];
   schemaUrl: Scalars["String"];
   seller: Seller;
@@ -3655,6 +3657,26 @@ export type ProductV1MetadataEntity_Filter = {
   productOverrides_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with?: InputMaybe<Scalars["String"]>;
   productOverrides_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid?: InputMaybe<Scalars["String"]>;
+  productUuid_contains?: InputMaybe<Scalars["String"]>;
+  productUuid_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid_ends_with?: InputMaybe<Scalars["String"]>;
+  productUuid_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid_gt?: InputMaybe<Scalars["String"]>;
+  productUuid_gte?: InputMaybe<Scalars["String"]>;
+  productUuid_in?: InputMaybe<Array<Scalars["String"]>>;
+  productUuid_lt?: InputMaybe<Scalars["String"]>;
+  productUuid_lte?: InputMaybe<Scalars["String"]>;
+  productUuid_not?: InputMaybe<Scalars["String"]>;
+  productUuid_not_contains?: InputMaybe<Scalars["String"]>;
+  productUuid_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid_not_ends_with?: InputMaybe<Scalars["String"]>;
+  productUuid_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  productUuid_not_starts_with?: InputMaybe<Scalars["String"]>;
+  productUuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productUuid_starts_with?: InputMaybe<Scalars["String"]>;
+  productUuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller?: InputMaybe<Scalars["String"]>;
   productV1Seller_?: InputMaybe<ProductV1Seller_Filter>;
   productV1Seller_contains?: InputMaybe<Scalars["String"]>;
@@ -3676,6 +3698,14 @@ export type ProductV1MetadataEntity_Filter = {
   productV1Seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with?: InputMaybe<Scalars["String"]>;
   productV1Seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  productVersion?: InputMaybe<Scalars["Int"]>;
+  productVersion_gt?: InputMaybe<Scalars["Int"]>;
+  productVersion_gte?: InputMaybe<Scalars["Int"]>;
+  productVersion_in?: InputMaybe<Array<Scalars["Int"]>>;
+  productVersion_lt?: InputMaybe<Scalars["Int"]>;
+  productVersion_lte?: InputMaybe<Scalars["Int"]>;
+  productVersion_not?: InputMaybe<Scalars["Int"]>;
+  productVersion_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   product_?: InputMaybe<ProductV1Product_Filter>;
   product_contains?: InputMaybe<Scalars["String"]>;
   product_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3835,7 +3865,9 @@ export enum ProductV1MetadataEntity_OrderBy {
   Offer = "offer",
   Product = "product",
   ProductOverrides = "productOverrides",
+  ProductUuid = "productUuid",
   ProductV1Seller = "productV1Seller",
+  ProductVersion = "productVersion",
   QuantityAvailable = "quantityAvailable",
   SchemaUrl = "schemaUrl",
   Seller = "seller",

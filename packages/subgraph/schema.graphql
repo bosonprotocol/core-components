@@ -106,7 +106,9 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   """
   PRODUCT_V1 specific fields
   """
-  uuid: String!
+  uuid: String! # Offer unique ID
+  productUuid: String! # Product unique ID (unique for all variants of the same product)
+  productVersion: Int! # Product version
   product: ProductV1Product!
   variations: [ProductV1Variation!]
   productV1Seller: ProductV1Seller!
