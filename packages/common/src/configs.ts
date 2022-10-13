@@ -1,4 +1,4 @@
-import { EnvironmentType, ProtocolConfig } from "./types";
+import { EnvironmentType, Lens, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
@@ -21,25 +21,21 @@ const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
 ]);
 
 // https://docs.lens.xyz/docs/deployed-contract-addresses
-const chainIdToLensContractAddresses = new Map<
-  number,
-  {
-    LENS_HUB_CONTRACT: string;
-    LENS_PERIPHERY_CONTRACT: string;
-  }
->([
+const chainIdToLensContractAddresses = new Map<number, Lens>([
   [
     80001,
     {
       LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8"
+      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8",
+      apiLink: "https://api-mumbai.lens.dev/"
     }
   ],
   [
     137,
     {
       LENS_HUB_CONTRACT: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
-      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f"
+      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f",
+      apiLink: "https://api.lens.dev"
     }
   ]
 ]);
