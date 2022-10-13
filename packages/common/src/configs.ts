@@ -93,23 +93,23 @@ export const defaultConfigs: ProtocolConfig[] = [
   },
   {
     envName: "production",
-    chainId: 80001, // TODO: swap to 137 after protocol deployment
-    nativeCoin: chainIdToInfo.get(80001), // TODO: swap to 137 after protocol deployment
-    getTxExplorerUrl: chainIdToGraphTx.get(80001), // TODO: swap to 137 after protocol deployment
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai", // TODO: re-deploy subgraphs to correct org & swap for "real" one after protocol deployment
+    chainId: 137,
+    nativeCoin: chainIdToInfo.get(137),
+    getTxExplorerUrl: chainIdToGraphTx.get(137),
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
-      "https://polygon-mumbai.infura.io/v3/383117b55d614525b07f03b5979c5f19", // TODO: switch to polygon endpoint after protocol deployment
+      "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
+      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io" // TODO: where will we configure the API key? Also for staging config
+      relayerUrl: "https://api.biconomy.io"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(80001) &&
-        chainIdToLensContractAddresses.get(80001))
+      ...(chainIdToLensContractAddresses.has(137) &&
+        chainIdToLensContractAddresses.get(137))
     }
   },
   {
