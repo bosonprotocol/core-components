@@ -237,7 +237,7 @@ describe("Multi-variant offers tests", () => {
     ];
     const [metadata1, metadata2] = productV1.createVariantProductMetadata(
       productMetadata,
-      [variations1, variations2]
+      [{productVariant: variations1}, {productVariant: variations2}]
     );
 
     const p1 = createOfferArgs(coreSDK, metadata1);

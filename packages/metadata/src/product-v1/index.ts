@@ -110,12 +110,29 @@ export type ProductV1Metadata = {
   seller: SellerMetadata;
   shipping: ShippingMetadata;
   exchangePolicy: ExchangePolicy;
-  productOverrides?: ProductBase;
+  productOverrides?: Partial<ProductBase>;
 };
 
 export type ProductV1Variant = Array<Variation>;
 
 export function createVariantProductMetadata(
+  productMetadata: ProductV1Metadata,
+  variants: Array<{ productVariant: ProductV1Variant, productOverrides?: Partial<ProductBase> }>
+): Array<ProductV1Metadata> {
+  // Build the metadata without the overrides
+  const metadatas = buildVariantProductMetadata(
+    productMetadata,
+    variants.map((variant) => variant.productVariant)
+  );
+  // Apply the overrides when present
+  for(let index = 0; index < metadatas.length; index++) {
+    metadatas[index].productOverrides = variants[index].productOverrides || undefined;
+  }
+
+  return metadatas;
+}
+
+function buildVariantProductMetadata(
   productMetadata: ProductV1Metadata,
   variants: Array<ProductV1Variant>
 ): Array<ProductV1Metadata> {
