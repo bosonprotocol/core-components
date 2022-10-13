@@ -96,7 +96,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 137,
     nativeCoin: chainIdToInfo.get(137),
     getTxExplorerUrl: chainIdToGraphTx.get(137),
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
+    subgraphUrl:
+      "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
       "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
