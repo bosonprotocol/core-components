@@ -10,11 +10,15 @@ const options = {
   size: ["XS", "XL"],
   color: ["red", "blue"]
 };
-const variantsOK = [0, 1].map((index) =>
-  types.map((type) => {
-    return { type, option: options[type][index] };
-  })
-).map((variant) => {return {productVariant: variant}});
+const variantsOK = [0, 1]
+  .map((index) =>
+    types.map((type) => {
+      return { type, option: options[type][index] };
+    })
+  )
+  .map((variant) => {
+    return { productVariant: variant };
+  });
 
 describe("#productV1 tests", () => {
   describe("createVariantProductMetadata()", () => {
@@ -38,7 +42,7 @@ describe("#productV1 tests", () => {
     test("should fail if less than 2 variants are specified", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
-      let variants: Array<{productVariant: ProductV1Variant}> = [];
+      let variants: Array<{ productVariant: ProductV1Variant }> = [];
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(/Unable to create a variant product with less than 2 variants/);
@@ -52,9 +56,11 @@ describe("#productV1 tests", () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       let variants = variantsOK.map((t) => {
-        return { productVariant: t.productVariant.map((x) => {
-          return { ...x };
-        })}
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
       }); // Be sure to CLONE variantsOK with all its elements
       variants[0].productVariant.push({
         type: "gender",
@@ -64,9 +70,11 @@ describe("#productV1 tests", () => {
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(/variants are not consistent to each other/);
       variants = variantsOK.map((t) => {
-        return { productVariant: t.productVariant.map((x) => {
-          return { ...x };
-        })}
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
       }); // Be sure to CLONE variantsOK with all its elements
       variants[variants.length - 1].productVariant.push({
         type: "gender",
@@ -81,26 +89,34 @@ describe("#productV1 tests", () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       let variants = variantsOK.map((t) => {
-        return { productVariant: t.productVariant.map((x) => {
-          return { ...x };
-        })}
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
       }); // Be sure to CLONE variantsOK with all its elements
       variants[0].productVariant[0].type = "gender";
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `missing type ${"gender"} in variant ${JSON.stringify(variants[1].productVariant)}`
+        `missing type ${"gender"} in variant ${JSON.stringify(
+          variants[1].productVariant
+        )}`
       );
       variants = variantsOK.map((t) => {
-        return { productVariant: t.productVariant.map((x) => {
-          return { ...x };
-        })}
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
       }); // Be sure to CLONE variantsOK with all its elements
       variants[variants.length - 1].productVariant[0].type = "gender";
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `missing type ${variants[0].productVariant[0].type} in variant ${JSON.stringify(
+        `missing type ${
+          variants[0].productVariant[0].type
+        } in variant ${JSON.stringify(
           variants[variants.length - 1].productVariant
         )}`
       );
@@ -110,11 +126,14 @@ describe("#productV1 tests", () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = variantsOK.map((t) => {
-        return { productVariant: t.productVariant.map((x) => {
-          return { ...x };
-        })}
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
       }); // Be sure to CLONE variantsOK with all its elements
-      variants[variants.length - 1].productVariant[0].option = variants[0].productVariant[0].option;
+      variants[variants.length - 1].productVariant[0].option =
+        variants[0].productVariant[0].option;
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
@@ -170,8 +189,10 @@ describe("#productV1 tests", () => {
         {
           title: "another title"
         }
-      ]
-      const variantsWithOverrides = variantsOK.map((v, index) => { return { ...v, productOverrides: productOverrides[index]}})
+      ];
+      const variantsWithOverrides = variantsOK.map((v, index) => {
+        return { ...v, productOverrides: productOverrides[index] };
+      });
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const metadatas = createVariantProductMetadata(
@@ -201,8 +222,10 @@ describe("#productV1 tests", () => {
         {
           title: "another title"
         }
-      ]
-      const variantsWithOverrides = variantsOK.map((v, index) => { return { ...v, productOverrides: productOverrides[index]}})
+      ];
+      const variantsWithOverrides = variantsOK.map((v, index) => {
+        return { ...v, productOverrides: productOverrides[index] };
+      });
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const metadatas = createVariantProductMetadata(

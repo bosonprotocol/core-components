@@ -117,7 +117,10 @@ export type ProductV1Variant = Array<Variation>;
 
 export function createVariantProductMetadata(
   productMetadata: ProductV1Metadata,
-  variants: Array<{ productVariant: ProductV1Variant, productOverrides?: Partial<ProductBase> }>
+  variants: Array<{
+    productVariant: ProductV1Variant;
+    productOverrides?: Partial<ProductBase>;
+  }>
 ): Array<ProductV1Metadata> {
   // Build the metadata without the overrides
   const metadatas = buildVariantProductMetadata(
@@ -125,8 +128,9 @@ export function createVariantProductMetadata(
     variants.map((variant) => variant.productVariant)
   );
   // Apply the overrides when present
-  for(let index = 0; index < metadatas.length; index++) {
-    metadatas[index].productOverrides = variants[index].productOverrides || undefined;
+  for (let index = 0; index < metadatas.length; index++) {
+    metadatas[index].productOverrides =
+      variants[index].productOverrides || undefined;
   }
 
   return metadatas;
