@@ -17,7 +17,7 @@ export type LensContracts = {
 };
 
 export type Lens = LensContracts & {
-  apiLink: string;
+  apiLink?: string;
 };
 
 export type ProtocolConfig = {
