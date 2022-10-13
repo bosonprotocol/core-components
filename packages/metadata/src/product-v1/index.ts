@@ -155,21 +155,22 @@ function buildVariantProductMetadata(
   // Check the array of variants is consistent (each variant would have the same types of variations and different values)
   const [variant0, ...nextVariants] = variants;
   const types0 = variant0.map((variation) => variation.type);
+  const variantsStringMap = new Map<string, unknown>();
+  variantsStringMap.set(JSON.stringify(variant0), JSON.stringify(variant0));
   for (const variant of nextVariants) {
+    const variantStr = JSON.stringify(variant);
+    if (variantsStringMap.has(variantStr)) {
+      throw new Error(`Redundant variant ${variantStr}`);
+    }
+    variantsStringMap.set(variantStr, variantStr);
     if (variant.length !== types0.length) {
       throw new Error("variants are not consistent to each other");
     }
     types0.forEach((type) => {
-      const options = [variant0.find((v) => v.type === type).option];
       const variation = variant.find((v) => v.type === type);
       if (!variation) {
         throw new Error(
           `missing type ${type} in variant ${JSON.stringify(variant)}`
-        );
-      }
-      if (options.includes(variation.option)) {
-        throw new Error(
-          `Redundant option value ${variation.option} for type ${type}`
         );
       }
     });

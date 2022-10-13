@@ -7,18 +7,29 @@ import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
 
 const types = ["size", "color"];
 const options = {
-  size: ["XS", "XL"],
+  size: ["S", "M", "L"],
   color: ["red", "blue"]
 };
-const variantsOK = [0, 1]
-  .map((index) =>
-    types.map((type) => {
-      return { type, option: options[type][index] };
-    })
-  )
-  .map((variant) => {
-    return { productVariant: variant };
-  });
+const variantsOK: Array<{
+  productVariant: ProductV1Variant;
+  productOverrides?: Partial<unknown>;
+}> = [];
+for (const size of options.size) {
+  for (const color of options.color) {
+    variantsOK.push({
+      productVariant: [
+        {
+          type: "size",
+          option: size
+        },
+        {
+          type: "color",
+          option: color
+        }
+      ]
+    });
+  }
+}
 
 describe("#productV1 tests", () => {
   describe("createVariantProductMetadata()", () => {
@@ -132,12 +143,33 @@ describe("#productV1 tests", () => {
           })
         };
       }); // Be sure to CLONE variantsOK with all its elements
-      variants[variants.length - 1].productVariant[0].option =
-        variants[0].productVariant[0].option;
+      variants[variants.length - 1].productVariant = [
+        ...variants[0].productVariant
+      ];
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `Redundant option value ${variants[0].productVariant[0].option} for type ${variants[0].productVariant[0].type}`
+        `Redundant variant ${JSON.stringify(variants[0].productVariant)}`
+      );
+    });
+
+    test("should fail if some variants have the same option (bis)", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const variants = variantsOK.map((t) => {
+        return {
+          productVariant: t.productVariant.map((x) => {
+            return { ...x };
+          })
+        };
+      }); // Be sure to CLONE variantsOK with all its elements
+      variants[variants.length - 2].productVariant = [
+        ...variants[1].productVariant
+      ];
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(
+        `Redundant variant ${JSON.stringify(variants[1].productVariant)}`
       );
     });
 
@@ -149,7 +181,7 @@ describe("#productV1 tests", () => {
         variantsOK
       );
 
-      expect(metadatas.length).toEqual(2);
+      expect(metadatas.length).toEqual(variantsOK.length);
 
       // We want each metadata to have its own offer uuid
       expect(metadatas[0].uuid).not.toEqual(metadatas[1].uuid);
@@ -163,7 +195,7 @@ describe("#productV1 tests", () => {
         variantsOK
       );
 
-      expect(metadatas.length).toEqual(2);
+      expect(metadatas.length).toEqual(variantsOK.length);
 
       expect(metadatas[0]).toEqual({
         ...productMetadata,
@@ -200,21 +232,16 @@ describe("#productV1 tests", () => {
         variantsWithOverrides
       );
 
-      expect(metadatas.length).toEqual(2);
+      expect(metadatas.length).toEqual(variantsOK.length);
 
-      expect(metadatas[0]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[0].uuid,
-        variations: variantsOK[0].productVariant,
-        productOverrides: productOverrides[0]
-      });
-
-      expect(metadatas[1]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[1].uuid,
-        variations: variantsOK[1].productVariant,
-        productOverrides: productOverrides[1]
-      });
+      for (let index = 0; index < variantsOK.length; index++) {
+        expect(metadatas[index]).toEqual({
+          ...productMetadata,
+          uuid: metadatas[index].uuid,
+          variations: variantsOK[index].productVariant,
+          productOverrides: productOverrides[index]
+        });
+      }
     });
     test("add optional productOverrides to the metadata", async () => {
       const productOverrides = [
@@ -233,7 +260,7 @@ describe("#productV1 tests", () => {
         variantsWithOverrides
       );
 
-      expect(metadatas.length).toEqual(2);
+      expect(metadatas.length).toEqual(variantsOK.length);
 
       expect(metadatas[0]).toEqual({
         ...productMetadata,
