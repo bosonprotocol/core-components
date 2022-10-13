@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.15.0...@bosonprotocol/common@1.16.0) (2022-10-13)
+
+
+### Bug Fixes
+
+* ci type error ([#324](https://github.com/bosonprotocol/core-components/issues/324)) ([a39ebe8](https://github.com/bosonprotocol/core-components/commit/a39ebe823a0ad59e2b21a021a5b19fc3466c06c5))
+
+
+### Features
+
+* add lens api link to common config ([#323](https://github.com/bosonprotocol/core-components/issues/323)) ([459c341](https://github.com/bosonprotocol/core-components/commit/459c34199a94668679cdbc12f334bf853d93e978))
+
+
+
+
+
 # [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.14.0...@bosonprotocol/common@1.15.0) (2022-10-13)
 
 
