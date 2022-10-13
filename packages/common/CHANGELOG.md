@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.14.0...@bosonprotocol/common@1.15.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
 # [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.13.0...@bosonprotocol/common@1.14.0) (2022-10-12)
 
 
