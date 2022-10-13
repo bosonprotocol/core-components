@@ -29,7 +29,7 @@ const envNameToConfig: Record<
     startBlock: 28563076 // mumbai, block num when protocol is deployed
   },
   production: {
-    network: "polygon",
+    network: providers.getNetwork(chainId).name,
     startBlock: 34258150 // polygon, block num when protocol is deployed
   }
 };
