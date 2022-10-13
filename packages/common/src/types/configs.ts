@@ -16,6 +16,10 @@ export type LensContracts = {
   LENS_PERIPHERY_CONTRACT?: string | undefined;
 };
 
+export type Lens = LensContracts & {
+  apiLink: string;
+};
+
 export type ProtocolConfig = {
   envName: EnvironmentType;
   chainId: number;
@@ -33,5 +37,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
-  lens: LensContracts;
+  lens: Lens;
 };
