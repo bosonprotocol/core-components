@@ -1,7 +1,8 @@
-import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import {
   createVariantProductMetadata,
-  ProductV1Variant
+  ProductV1Variant,
+  ProductBase,
+  ProductV1Metadata
 } from "../src/product-v1";
 import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
 
@@ -29,6 +30,73 @@ for (const size of options.size) {
       ]
     });
   }
+}
+
+function serializeVariant(variant: ProductV1Variant): string {
+  // Be sure each variation structure has its keys ordered
+  const orderedStruct = variant.map((variation) =>
+    Object.keys(variation)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = variation[key];
+        return obj;
+      }, {})
+  ) as ProductV1Variant;
+  // Be sure each variation in the table is ordered per type
+  const orderedTable = orderedStruct.sort((a, b) =>
+    a.type.localeCompare(b.type)
+  );
+  return JSON.stringify(orderedTable);
+}
+
+function cloneVariants(
+  variants: Array<{
+    productVariant: ProductV1Variant;
+    productOverrides?: unknown;
+  }>
+): Array<{
+  productVariant: ProductV1Variant;
+  productOverrides?: Partial<ProductBase>;
+}> {
+  return variants.map((t) => {
+    return {
+      productVariant: t.productVariant.map((x) => {
+        return { ...x };
+      })
+    };
+  }); // Be sure to CLONE variants with all its elements
+}
+
+function disorderVariantStruct(
+  variant: ProductV1Variant,
+  index = 0
+): ProductV1Variant {
+  const disorderedVariant = variant.map((variation, i) => {
+    if (i === index) {
+      return {
+        option: variation.option,
+        type: variation.type
+      };
+    }
+    return {
+      type: variation.type,
+      option: variation.option
+    };
+  });
+  return disorderedVariant;
+}
+
+function disorderVariantTable(
+  variant: ProductV1Variant,
+  index = 0
+): ProductV1Variant {
+  const disorderedVariant = variant.map((x) => {
+    return { ...x };
+  });
+  const index2 = (index + 1) % variant.length;
+  disorderedVariant[index] = variant[index2];
+  disorderedVariant[index2] = variant[index];
+  return disorderedVariant;
 }
 
 describe("#productV1 tests", () => {
@@ -66,13 +134,7 @@ describe("#productV1 tests", () => {
     test("should fail if variants are not consistent to each other", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
-      let variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      let variants = cloneVariants(variantsOK);
       variants[0].productVariant.push({
         type: "gender",
         option: "male"
@@ -80,13 +142,55 @@ describe("#productV1 tests", () => {
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(/variants are not consistent to each other/);
-      variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      variants = cloneVariants(variantsOK);
+      variants[variants.length - 1].productVariant.push({
+        type: "gender",
+        option: "male"
+      });
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(/variants are not consistent to each other/);
+    });
+
+    test("should fail if variants are not consistent to each other - disordered variants table", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      let variants = cloneVariants(variantsOK);
+      variants[0].productVariant.push({
+        type: "gender",
+        option: "male"
+      });
+      variants[0].productVariant = disorderVariantTable(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(/variants are not consistent to each other/);
+      variants = cloneVariants(variantsOK);
+      variants[variants.length - 1].productVariant.push({
+        type: "gender",
+        option: "male"
+      });
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(/variants are not consistent to each other/);
+    });
+
+    test("should fail if variants are not consistent to each other - disordered variants structure", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      let variants = cloneVariants(variantsOK);
+      variants[0].productVariant.push({
+        type: "gender",
+        option: "male"
+      });
+      variants[0].productVariant = disorderVariantStruct(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(/variants are not consistent to each other/);
+      variants = cloneVariants(variantsOK);
       variants[variants.length - 1].productVariant.push({
         type: "gender",
         option: "male"
@@ -99,35 +203,23 @@ describe("#productV1 tests", () => {
     test("should fail if variants does not have the same list of types", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
-      let variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      let variants = cloneVariants(variantsOK);
       variants[0].productVariant[0].type = "gender";
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `missing type ${"gender"} in variant ${JSON.stringify(
+        `missing type ${"gender"} in variant ${serializeVariant(
           variants[1].productVariant
         )}`
       );
-      variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      variants = cloneVariants(variantsOK);
       variants[variants.length - 1].productVariant[0].type = "gender";
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
         `missing type ${
           variants[0].productVariant[0].type
-        } in variant ${JSON.stringify(
+        } in variant ${serializeVariant(
           variants[variants.length - 1].productVariant
         )}`
       );
@@ -136,13 +228,7 @@ describe("#productV1 tests", () => {
     test("should fail if some variants have the same option", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
-      const variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      const variants = cloneVariants(variantsOK);
       // Set the last variant equal to the first variant
       variants[variants.length - 1].productVariant = [
         ...variants[0].productVariant
@@ -150,7 +236,43 @@ describe("#productV1 tests", () => {
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `Redundant variant ${JSON.stringify(variants[0].productVariant)}`
+        `Redundant variant ${serializeVariant(variants[0].productVariant)}`
+      );
+    });
+
+    test("should fail if some variants have the same option - disordered variants table", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const variants = cloneVariants(variantsOK);
+      // Set the last variant equal to the first variant
+      variants[variants.length - 1].productVariant = [
+        ...variants[0].productVariant
+      ];
+      variants[0].productVariant = disorderVariantTable(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(
+        `Redundant variant ${serializeVariant(variants[0].productVariant)}`
+      );
+    });
+
+    test("should fail if some variants have the same option - disordered variants structure", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const variants = cloneVariants(variantsOK);
+      // Set the last variant equal to the first variant
+      variants[variants.length - 1].productVariant = [
+        ...variants[0].productVariant
+      ];
+      variants[0].productVariant = disorderVariantStruct(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).toThrow(
+        `Redundant variant ${serializeVariant(variants[0].productVariant)}`
       );
     });
 
@@ -160,13 +282,7 @@ describe("#productV1 tests", () => {
       //  (last but one), just to verify the algorithm is not only working for the 1st one !
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
-      const variants = variantsOK.map((t) => {
-        return {
-          productVariant: t.productVariant.map((x) => {
-            return { ...x };
-          })
-        };
-      }); // Be sure to CLONE variantsOK with all its elements
+      const variants = cloneVariants(variantsOK);
       // Set the penultimate variant equal to the second variant (only works when variants.length >= 4)
       expect(variants.length).toBeGreaterThanOrEqual(4);
       variants[variants.length - 2].productVariant = [
@@ -175,8 +291,32 @@ describe("#productV1 tests", () => {
       expect(() =>
         createVariantProductMetadata(productMetadata, variants)
       ).toThrow(
-        `Redundant variant ${JSON.stringify(variants[1].productVariant)}`
+        `Redundant variant ${serializeVariant(variants[1].productVariant)}`
       );
+    });
+
+    test("should NOT fail if the variants table is disordered ", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const variants = cloneVariants(variantsOK);
+      variants[0].productVariant = disorderVariantTable(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).not.toThrow();
+    });
+
+    test("should NOT fail if the variants structure is disordered ", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const variants = cloneVariants(variantsOK);
+      variants[0].productVariant = disorderVariantStruct(
+        variants[0].productVariant
+      );
+      expect(() =>
+        createVariantProductMetadata(productMetadata, variants)
+      ).not.toThrow();
     });
 
     test("each metadata should have its own offer uuid", async () => {

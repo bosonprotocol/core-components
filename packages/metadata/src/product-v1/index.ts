@@ -7,7 +7,7 @@ export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   {}
 );
 
-type ProductBase = {
+export type ProductBase = {
   title: string;
   description: string;
   identification_sKU?: string;
@@ -156,9 +156,9 @@ function buildVariantProductMetadata(
   const [variant0, ...nextVariants] = variants;
   const types0 = variant0.map((variation) => variation.type);
   const variantsStringMap = new Map<string, string>();
-  variantsStringMap.set(JSON.stringify(variant0), JSON.stringify(variant0));
+  variantsStringMap.set(serializeVariant(variant0), serializeVariant(variant0));
   for (const variant of nextVariants) {
-    const variantStr = JSON.stringify(variant);
+    const variantStr = serializeVariant(variant);
     if (variantsStringMap.has(variantStr)) {
       throw new Error(`Redundant variant ${variantStr}`);
     }
@@ -170,7 +170,7 @@ function buildVariantProductMetadata(
       const variation = variant.find((v) => v.type === type);
       if (!variation) {
         throw new Error(
-          `missing type ${type} in variant ${JSON.stringify(variant)}`
+          `missing type ${type} in variant ${serializeVariant(variant)}`
         );
       }
     });
@@ -194,4 +194,21 @@ export function buildUuid(): string {
     const crypto = require("crypto");
     return crypto.randomUUID();
   }
+}
+
+function serializeVariant(variant: ProductV1Variant): string {
+  // Be sure each variation structure has its keys ordered
+  const orderedStruct = variant.map((variation) =>
+    Object.keys(variation)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = variation[key];
+        return obj;
+      }, {})
+  ) as ProductV1Variant;
+  // Be sure each variation in the table is ordered per type
+  const orderedTable = orderedStruct.sort((a, b) =>
+    a.type.localeCompare(b.type)
+  );
+  return JSON.stringify(orderedTable);
 }
