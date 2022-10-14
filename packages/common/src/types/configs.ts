@@ -14,6 +14,9 @@ export type MetaTxConfig = {
 export type LensContracts = {
   LENS_HUB_CONTRACT?: string | undefined;
   LENS_PERIPHERY_CONTRACT?: string | undefined;
+  LENS_PROFILES_CONTRACT_ADDRESS?: string | undefined;
+  LENS_PROFILES_CONTRACT_PARTIAL_ABI?: string | undefined;
+  apiLink?: string | undefined;
 };
 
 export type Lens = LensContracts & {
