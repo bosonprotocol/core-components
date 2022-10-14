@@ -156,7 +156,7 @@ describe("core-sdk", () => {
       expect(offer.voided).toBe(true);
     });
 
-    test.only("commit (native currency offer)", async () => {
+    test("commit (native currency offer)", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
@@ -177,7 +177,7 @@ describe("core-sdk", () => {
       expect(exchange).toBeTruthy();
     });
 
-    test.only("commit (ERC20 currency offer)", async () => {
+    test("commit (ERC20 currency offer)", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const sellerFundsDeposit = "5";
