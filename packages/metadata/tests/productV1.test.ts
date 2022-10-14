@@ -143,6 +143,7 @@ describe("#productV1 tests", () => {
           })
         };
       }); // Be sure to CLONE variantsOK with all its elements
+      // Set the last variant equal to the first variant
       variants[variants.length - 1].productVariant = [
         ...variants[0].productVariant
       ];
@@ -154,6 +155,9 @@ describe("#productV1 tests", () => {
     });
 
     test("should fail if some variants have the same option (bis)", async () => {
+      // The previous test is setting the last variants equals to the first one, to create a redundancy.
+      // This other test just does the same thing but between the second and the penultimate
+      //  (last but one), just to verify the algorithm is not only working for the 1st one !
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
       const variants = variantsOK.map((t) => {
@@ -163,6 +167,8 @@ describe("#productV1 tests", () => {
           })
         };
       }); // Be sure to CLONE variantsOK with all its elements
+      // Set the penultimate variant equal to the second variant (only works when variants.length >= 4)
+      expect(variants.length).toBeGreaterThanOrEqual(4);
       variants[variants.length - 2].productVariant = [
         ...variants[1].productVariant
       ];

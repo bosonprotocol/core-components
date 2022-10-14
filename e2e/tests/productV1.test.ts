@@ -135,12 +135,10 @@ async function createOfferBatch(
   ) {
     offers = [];
     await waitForGraphNodeIndexing();
-    for (const createdOfferId of createdOfferIds) {
-      const offer = await coreSDK.getOfferById(createdOfferId as string);
-      if (offer) {
-        offers.push(offer);
-      }
-    }
+    const offerPromises = createdOfferIds.map((createdOfferId) =>
+      coreSDK.getOfferById(createdOfferId as string)
+    );
+    offers = await Promise.all(offerPromises);
   }
 
   // Be sure the returned offers are in the same order as the offersArgs
@@ -235,7 +233,6 @@ describe("Multi-variant offers tests", () => {
 
     const offer1 = await createOffer(coreSDK, sellerWallet, offerArgs1);
     const offer2 = await createOffer(coreSDK, sellerWallet, offerArgs2);
-    // const [ offer1, offer2] = await Promise.all([offer_p1, offer_p2]);
     expect(offer1).toBeTruthy();
     expect(offer2).toBeTruthy();
 

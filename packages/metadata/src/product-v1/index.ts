@@ -130,6 +130,7 @@ export function createVariantProductMetadata(
   for (let index = 0; index < metadatas.length; index++) {
     metadatas[index].productOverrides =
       variants[index].productOverrides || undefined;
+    // In case the productOverrides is 'null', assign 'undefined'
   }
 
   return metadatas;
@@ -154,7 +155,7 @@ function buildVariantProductMetadata(
   // Check the array of variants is consistent (each variant would have the same types of variations and different values)
   const [variant0, ...nextVariants] = variants;
   const types0 = variant0.map((variation) => variation.type);
-  const variantsStringMap = new Map<string, unknown>();
+  const variantsStringMap = new Map<string, string>();
   variantsStringMap.set(JSON.stringify(variant0), JSON.stringify(variant0));
   for (const variant of nextVariants) {
     const variantStr = JSON.stringify(variant);
