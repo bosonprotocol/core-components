@@ -309,6 +309,17 @@ export function extractOfferData(offerData: Array<unknown>): OfferData {
   };
 }
 
+export function extractAgentId(agentIdData: Array<unknown>): {
+  exists: boolean;
+  agentId: string;
+} {
+  const [exists, agentIdBN] = agentIdData;
+  return {
+    exists: exists as boolean,
+    agentId: (agentIdBN as BigNumber).toString()
+  };
+}
+
 export function extractOfferDataExtended(
   offerData: Array<unknown>,
   tokenInfo: ITokenInfo

@@ -6,7 +6,8 @@ import {
   VoucherRedeemed,
   VoucherExtended,
   VoucherTransferred,
-  ExchangeCompleted
+  ExchangeCompleted,
+  VoucherExpired
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import { Exchange, Offer } from "../../generated/schema";
 
@@ -70,6 +71,28 @@ export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
       event.transaction.hash.toHexString(),
       event.logIndex,
       "VOUCHER_REVOKED",
+      event.block.timestamp,
+      event.params.executedBy,
+      exchangeId.toString()
+    );
+  }
+}
+
+export function handleVoucherExpiredEvent(event: VoucherExpired): void {
+  const exchangeId = event.params.exchangeId;
+
+  const exchange = Exchange.load(exchangeId.toString());
+
+  if (exchange) {
+    exchange.state = "CANCELLED";
+    exchange.expired = true;
+    exchange.cancelledDate = event.block.timestamp;
+    exchange.save();
+
+    saveExchangeEventLogs(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "VOUCHER_EXPIRED",
       event.block.timestamp,
       event.params.executedBy,
       exchangeId.toString()

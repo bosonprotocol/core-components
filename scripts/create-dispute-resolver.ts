@@ -4,6 +4,10 @@ import { program } from "commander";
 import { getDefaultConfig } from "../packages/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "@bosonprotocol/common/src/utils/timestamp";
 
 program
   .description("Creates and activates a dispute resolver.")
@@ -39,7 +43,7 @@ async function main() {
 
   const opts = program.opts();
   const escalationResponsePeriodInMS =
-    opts.escalationResponsePeriod || 60_000_000_000;
+    opts.escalationResponsePeriod || 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
   const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
   const operator = disputeResolverAdminWallet.address;
   const clerk = disputeResolverAdminWallet.address;

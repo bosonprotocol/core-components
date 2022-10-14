@@ -172,6 +172,7 @@ const defaultMockedMetadataStorageReturnValues: MockedMetadataStorageReturnValue
       name: "name",
       description: "description",
       externalUrl: "externalUrl",
+      licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
       type: MetadataType.BASE
     },

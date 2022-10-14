@@ -30,6 +30,8 @@
     "deposit-funds": "ts-node -P tsconfig.base.json ./scripts/deposit-funds.ts",
     "ipfs-upload": "ts-node -P tsconfig.base.json ./scripts/upload-to-ipfs.ts",
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
+    "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
+    "create-seller": "ts-node -P tsconfig.base.json ./scripts/create-seller.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv"
   },
