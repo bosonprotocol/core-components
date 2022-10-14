@@ -7811,7 +7811,11 @@ export type GetSellerByIdQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -8254,7 +8258,11 @@ export type GetSellersQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -8416,7 +8424,11 @@ export type GetBuyerByIdQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -8588,7 +8600,11 @@ export type GetBuyersQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -8949,7 +8965,11 @@ export type GetDisputeResolverByIdQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -9329,7 +9349,11 @@ export type GetDisputeResolversQueryQuery = {
           type: EventType;
           timestamp: string;
           executedBy: string;
-          exchange: { __typename?: "Exchange"; id: string };
+          exchange: {
+            __typename?: "Exchange";
+            id: string;
+            offer: { __typename?: "Offer"; id: string };
+          };
           account:
             | { __typename?: "Buyer"; id: string }
             | { __typename?: "DisputeResolver"; id: string }
@@ -9749,7 +9773,11 @@ export type SellerFieldsFragment = {
         type: EventType;
         timestamp: string;
         executedBy: string;
-        exchange: { __typename?: "Exchange"; id: string };
+        exchange: {
+          __typename?: "Exchange";
+          id: string;
+          offer: { __typename?: "Offer"; id: string };
+        };
         account:
           | { __typename?: "Buyer"; id: string }
           | { __typename?: "DisputeResolver"; id: string }
@@ -9901,7 +9929,11 @@ export type BuyerFieldsFragment = {
         type: EventType;
         timestamp: string;
         executedBy: string;
-        exchange: { __typename?: "Exchange"; id: string };
+        exchange: {
+          __typename?: "Exchange";
+          id: string;
+          offer: { __typename?: "Offer"; id: string };
+        };
         account:
           | { __typename?: "Buyer"; id: string }
           | { __typename?: "DisputeResolver"; id: string }
@@ -10246,7 +10278,11 @@ export type DisputeResolverFieldsFragment = {
         type: EventType;
         timestamp: string;
         executedBy: string;
-        exchange: { __typename?: "Exchange"; id: string };
+        exchange: {
+          __typename?: "Exchange";
+          id: string;
+          offer: { __typename?: "Offer"; id: string };
+        };
         account:
           | { __typename?: "Buyer"; id: string }
           | { __typename?: "DisputeResolver"; id: string }
@@ -11571,7 +11607,11 @@ export type GetEventLogsQueryQuery = {
         type: EventType;
         timestamp: string;
         executedBy: string;
-        exchange: { __typename?: "Exchange"; id: string };
+        exchange: {
+          __typename?: "Exchange";
+          id: string;
+          offer: { __typename?: "Offer"; id: string };
+        };
         account:
           | { __typename?: "Buyer"; id: string }
           | { __typename?: "DisputeResolver"; id: string }
@@ -11640,7 +11680,11 @@ type BaseEventLogFields_ExchangeEventLog_Fragment = {
   type: EventType;
   timestamp: string;
   executedBy: string;
-  exchange: { __typename?: "Exchange"; id: string };
+  exchange: {
+    __typename?: "Exchange";
+    id: string;
+    offer: { __typename?: "Offer"; id: string };
+  };
   account:
     | { __typename?: "Buyer"; id: string }
     | { __typename?: "DisputeResolver"; id: string }
@@ -17670,6 +17714,9 @@ export const BaseEventLogFieldsFragmentDoc = gql`
     ... on ExchangeEventLog {
       exchange {
         id
+        offer {
+          id
+        }
       }
     }
     ... on FundsEventLog {
