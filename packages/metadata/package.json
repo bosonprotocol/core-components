@@ -37,7 +37,6 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "schema-to-yup": "^1.11.11",
-    "uuid": "^9.0.0"
+    "schema-to-yup": "^1.11.11"
   }
 }

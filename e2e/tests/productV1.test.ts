@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
 import { MetadataType, productV1 } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
-import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
@@ -24,15 +22,15 @@ const seedWallet = seedWallet10; // be sure the seedWallet is not used by anothe
 
 function mockProductV1Metadata(
   template: string,
-  productUuid: string = uuidv4()
-): ProductV1Metadata {
+  productUuid: string = productV1.buildUuid()
+): productV1.ProductV1Metadata {
   return {
     ...productV1ValidMinimalOffer,
     product: {
       ...productV1ValidMinimalOffer.product,
       uuid: productUuid
     },
-    uuid: uuidv4(),
+    uuid: productV1.buildUuid(),
     type: MetadataType.PRODUCT_V1,
     exchangePolicy: {
       ...productV1ValidMinimalOffer.exchangePolicy,
@@ -43,7 +41,7 @@ function mockProductV1Metadata(
 
 async function createOfferArgs(
   coreSDK: CoreSDK,
-  metadata: ProductV1Metadata,
+  metadata: productV1.ProductV1Metadata,
   offerParams?: Partial<CreateOfferArgs>
 ): Promise<{
   offerArgs: CreateOfferArgs;
@@ -395,7 +393,7 @@ function resolveDateValidity(offerArgs: CreateOfferArgs) {
 }
 
 async function prepareMultiVariantOffers(coreSDK: CoreSDK) {
-  const productUuid = uuidv4();
+  const productUuid = productV1.buildUuid();
   const productMetadata = mockProductV1Metadata("a template", productUuid);
 
   const variations1 = [

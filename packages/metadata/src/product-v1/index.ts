@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { buildYup } from "schema-to-yup";
 import { SchemaOf } from "yup";
 import schema from "./schema.json";
@@ -180,8 +179,18 @@ function buildVariantProductMetadata(
   return variants.map((variant) => {
     return {
       ...productMetadata,
-      uuid: uuidv4(),
+      uuid: buildUuid(),
       variations: variant
     };
   });
+}
+
+export function buildUuid(): string {
+  if (typeof window !== "undefined" && window?.crypto) {
+    return window.crypto.randomUUID();
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const crypto = require("crypto");
+    return crypto.randomUUID();
+  }
 }
