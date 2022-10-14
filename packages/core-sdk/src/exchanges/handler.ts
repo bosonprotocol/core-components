@@ -13,6 +13,7 @@ import {
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
 import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
+import { erc20 } from "..";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
@@ -46,6 +47,18 @@ export async function commitToOffer(
 
   if (Number(offer.quantityAvailable) === 0) {
     throw new Error(`Offer with id ${args.offerId} is sold out`);
+  }
+
+  if (offer.exchangeToken.address !== AddressZero) {
+    const owner = await args.web3Lib.getSignerAddress();
+    // check if we need the committer to approve the token first
+    await erc20.handler.insureAllowance({
+      owner,
+      spender: args.contractAddress,
+      contractAddress: offer.exchangeToken.address,
+      value: offer.price,
+      web3Lib: args.web3Lib
+    });
   }
 
   return args.web3Lib.sendTransaction({

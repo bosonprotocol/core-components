@@ -919,6 +919,21 @@ export class CoreSDK {
     });
   }
 
+  public async getProtocolAllowance(
+    exchangeToken: string,
+    overrides: Partial<{
+      spender: string;
+      owner: string;
+    }> = {}
+  ): Promise<string> {
+    return erc20.handler.getAllowance({
+      contractAddress: exchangeToken,
+      owner: overrides.owner || (await this._web3Lib.getSignerAddress()),
+      spender: overrides.spender || this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                            Funds related methods                           */
   /* -------------------------------------------------------------------------- */

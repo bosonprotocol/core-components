@@ -245,7 +245,8 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
 
 export async function ensureMintedAndAllowedTokens(
   wallets: Wallet[],
-  mintAmountInEth: BigNumberish = 1_000_000
+  mintAmountInEth: BigNumberish = 1_000_000,
+  approve = true
 ) {
   const mintAmountWei = utils.parseEther(mintAmountInEth.toString());
   const walletBalances = await Promise.all(
@@ -261,16 +262,20 @@ export async function ensureMintedAndAllowedTokens(
     );
     await Promise.all(mintTxResponses.map((txResponse) => txResponse.wait()));
 
-    // Allow tokens
-    const allowTxResponses = await Promise.all(
-      wallets.map((wallet) =>
-        initCoreSDKWithWallet(wallet).approveExchangeToken(
-          MOCK_ERC20_ADDRESS,
-          mintAmountWei
+    if (approve) {
+      // Allow tokens
+      const allowTxResponses = await Promise.all(
+        wallets.map((wallet) =>
+          initCoreSDKWithWallet(wallet).approveExchangeToken(
+            MOCK_ERC20_ADDRESS,
+            mintAmountWei
+          )
         )
-      )
-    );
-    await Promise.all(allowTxResponses.map((txResponse) => txResponse.wait()));
+      );
+      await Promise.all(
+        allowTxResponses.map((txResponse) => txResponse.wait())
+      );
+    }
   }
 }
 

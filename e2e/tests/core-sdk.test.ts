@@ -1,3 +1,4 @@
+import { parseEther } from "@ethersproject/units";
 import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
 import { CreateSellerArgs } from "./../../packages/common/src/types/accounts";
 import {
@@ -28,6 +29,7 @@ import {
   drWallet,
   createOffer
 } from "./utils";
+import { CreateOfferArgs } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -154,7 +156,7 @@ describe("core-sdk", () => {
       expect(offer.voided).toBe(true);
     });
 
-    test("commit", async () => {
+    test.only("commit (native currency offer)", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
@@ -165,6 +167,49 @@ describe("core-sdk", () => {
         coreSDK: sellerCoreSDK,
         sellerId: createdOffer.seller.id
       });
+
+      const exchange = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOffer.id
+      });
+
+      expect(exchange).toBeTruthy();
+    });
+
+    test.only("commit (ERC20 currency offer)", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+      const sellerFundsDeposit = "5";
+      const offerPrice = "10";
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address,
+        {
+          exchangeToken: MOCK_ERC20_ADDRESS,
+          price: parseEther(offerPrice),
+          sellerDeposit: parseEther(sellerFundsDeposit)
+        }
+      );
+      await ensureMintedAndAllowedTokens([sellerWallet], sellerFundsDeposit);
+
+      // Fund the seller in ERC20 token
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id,
+        fundsDepositAmountInEth: sellerFundsDeposit,
+        fundsTokenAddress: MOCK_ERC20_ADDRESS
+      });
+
+      // Fund the buyer in ERC20 token, but do not approve
+      //  (as we expect commitToOffer to do it when required)
+      await ensureMintedAndAllowedTokens([buyerWallet], offerPrice, false);
+
+      // Check the allowance is not enough
+      const allowance = await buyerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowance).lt(createdOffer.price)).toBe(true);
 
       const exchange = await commitToOffer({
         buyerCoreSDK,
@@ -633,7 +678,11 @@ async function createSeller(
   return seller;
 }
 
-async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
+async function createSellerAndOffer(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  offerOverrides?: Partial<CreateOfferArgs>
+) {
   const metadataHash = await coreSDK.storeMetadata({
     ...metadata,
     type: "BASE"
@@ -653,7 +702,8 @@ async function createSellerAndOffer(coreSDK: CoreSDK, sellerAddress: string) {
     },
     mockCreateOfferArgs({
       metadataHash,
-      metadataUri
+      metadataUri,
+      ...offerOverrides
     })
   );
   const createOfferTxReceipt = await createOfferTxResponse.wait();
