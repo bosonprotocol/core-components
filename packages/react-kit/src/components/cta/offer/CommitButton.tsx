@@ -15,7 +15,9 @@ type Props = {
   offerId: BigNumberish;
   isPauseCommitting?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
-  getSignerAddress?: (signer: string | undefined) => string | undefined;
+  onGetSignerAddress?: (
+    signerAddress: string | undefined
+  ) => string | undefined;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -35,7 +37,7 @@ export const CommitButton = ({
   isPauseCommitting = false,
   buttonRef,
   variant = "primary",
-  getSignerAddress,
+  onGetSignerAddress,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -44,10 +46,10 @@ export const CommitButton = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (getSignerAddress) {
-      getSignerAddress(signerAddress);
+    if (onGetSignerAddress) {
+      onGetSignerAddress(signerAddress);
     }
-  }, [signerAddress, getSignerAddress]);
+  }, [signerAddress, onGetSignerAddress]);
 
   return (
     <Button
