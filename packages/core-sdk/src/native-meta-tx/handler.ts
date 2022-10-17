@@ -75,7 +75,7 @@ export async function relayNativeMetaTransaction(args: {
   chainId: number;
   contractAddress: string;
   metaTx: {
-    config: MetaTxConfig;
+    config: Omit<MetaTxConfig, "apiIds"> & { apiId: string };
     params: {
       userAddress: string;
       functionSignature: BytesLike;

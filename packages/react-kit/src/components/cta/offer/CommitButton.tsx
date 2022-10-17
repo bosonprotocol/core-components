@@ -1,5 +1,6 @@
 import React, { RefObject, useState } from "react";
-import { BigNumberish, providers } from "ethers";
+import { BigNumber, BigNumberish, providers } from "ethers";
+import { AddressZero } from "@ethersproject/constants";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
@@ -13,6 +14,8 @@ type Props = {
    * ID of offer to commit to.
    */
   offerId: BigNumberish;
+  exchangeToken: string;
+  price: BigNumberish;
   isPauseCommitting?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
 } & CtaButtonProps<{
@@ -21,6 +24,8 @@ type Props = {
 
 export const CommitButton = ({
   offerId,
+  exchangeToken,
+  price,
   disabled = false,
   showLoading = false,
   extraInfo = "",
@@ -52,6 +57,43 @@ export const CommitButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
+
+            if (exchangeToken !== AddressZero) {
+              // Insure allowance is enough to pay for the item price
+              const currentAllowance = await coreSdk.getProtocolAllowance(
+                exchangeToken
+              );
+              if (BigNumber.from(currentAllowance).lt(price)) {
+                let approveTxResponse;
+
+                // Need to approve
+                if (
+                  coreSdk.checkMetaTxConfigSet({
+                    contractAddress: exchangeToken
+                  }) &&
+                  signerAddress
+                ) {
+                  const { r, s, v, functionSignature } =
+                    await coreSdk.signNativeMetaTxApproveExchangeToken(
+                      exchangeToken,
+                      price
+                    );
+                  approveTxResponse = await coreSdk.relayNativeMetaTransaction(
+                    exchangeToken,
+                    {
+                      functionSignature,
+                      sigR: r,
+                      sigS: s,
+                      sigV: v
+                    }
+                  );
+                } else {
+                  approveTxResponse = await coreSdk.commitToOffer(offerId);
+                }
+
+                await approveTxResponse.wait();
+              }
+            }
 
             let txResponse;
 

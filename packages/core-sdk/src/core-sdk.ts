@@ -116,9 +116,23 @@ export class CoreSDK {
   }
 
   public get isMetaTxConfigSet() {
+    return this.checkMetaTxConfigSet();
+  }
+
+  public checkMetaTxConfigSet(
+    args: {
+      contractAddress?: string;
+      metaTransactionMethod?: string;
+    } = {}
+  ) {
+    const contractAddress = args.contractAddress || this._protocolDiamond;
+    const metaTransactionMethod =
+      args.metaTransactionMethod || "executeMetaTransaction";
     return (
       !!this._metaTxConfig &&
-      !!this._metaTxConfig.apiId &&
+      !!this._metaTxConfig.apiIds &&
+      !!this._metaTxConfig.apiIds[contractAddress] &&
+      !!this._metaTxConfig.apiIds[contractAddress][metaTransactionMethod] &&
       !!this._metaTxConfig.apiKey &&
       !!this._metaTxConfig.relayerUrl
     );
@@ -1088,8 +1102,9 @@ export class CoreSDK {
       buyer: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const buyer = overrides.buyer || (await this._web3Lib.getSignerAddress());
     return exchanges.handler.commitToOffer({
-      buyer: overrides.buyer || (await this._web3Lib.getSignerAddress()),
+      buyer,
       offerId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
@@ -1751,25 +1766,32 @@ export class CoreSDK {
     overrides: Partial<{
       userAddress: string;
       contractAddress: string;
-      metaTxConfig: Partial<MetaTxConfig>;
+      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTransactionMethod: string;
     }> = {}
   ): Promise<ContractTransaction> {
+    const contractAddress = overrides.contractAddress || this._protocolDiamond;
     const metaTxRelayerUrl =
       this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
     const metaTxApiKey =
       this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
+    const metaTransactionMethod =
+      overrides.metaTransactionMethod || "executeMetaTransaction";
+    // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
     const metaTxApiId =
-      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
+      this._metaTxConfig?.apiIds[contractAddress][metaTransactionMethod] ||
+      overrides.metaTxConfig?.apiId;
 
-    if (!this.isMetaTxConfigSet) {
+    if (
+      !this.checkMetaTxConfigSet({ contractAddress, metaTransactionMethod })
+    ) {
       throw new Error(
         "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
       );
     }
-
     return metaTx.handler.relayMetaTransaction({
       web3LibAdapter: this._web3Lib,
-      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      contractAddress,
       chainId: this._chainId,
       metaTx: {
         config: {
@@ -1850,19 +1872,26 @@ export class CoreSDK {
     },
     overrides: Partial<{
       userAddress: string;
-      metaTxConfig: Partial<MetaTxConfig>;
+      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTransactionMethod: string;
     }> = {}
   ): Promise<ContractTransaction> {
     const metaTxRelayerUrl =
-      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
+      overrides.metaTxConfig?.relayerUrl || this._metaTxConfig?.relayerUrl;
     const metaTxApiKey =
-      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
+      overrides.metaTxConfig?.apiKey || this._metaTxConfig?.apiKey;
+    const metaTransactionMethod =
+      overrides.metaTransactionMethod || "executeMetaTransaction";
+    // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
     const metaTxApiId =
-      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
+      this._metaTxConfig?.apiIds[contractAddress][metaTransactionMethod] ||
+      overrides.metaTxConfig?.apiId;
 
-    if (!this.isMetaTxConfigSet) {
+    if (
+      !this.checkMetaTxConfigSet({ contractAddress, metaTransactionMethod })
+    ) {
       throw new Error(
-        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+        `CoreSDK not configured to relay meta transactions to contract '${contractAddress}' with method '${metaTransactionMethod}'. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments.`
       );
     }
 

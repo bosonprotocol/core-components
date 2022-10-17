@@ -186,14 +186,25 @@ export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
 }
 
 export function initCoreSDKWithWallet(wallet: Wallet) {
+  const envName = "local";
+  const defaultConfig = getDefaultConfig(envName);
+  const protocolAddress = defaultConfig.contracts.protocolDiamond;
+  const testErc20Address = defaultConfig.contracts.testErc20 as string;
+  const apiIds = {};
+  apiIds[protocolAddress] = {
+    executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  };
+  apiIds[testErc20Address] = {
+    executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  };
   return CoreSDK.fromDefaultConfig({
-    envName: "local",
+    envName,
     web3Lib: new EthersAdapter(provider, wallet),
     metadataStorage: ipfsMetadataStorage,
     theGraphStorage: graphMetadataStorage,
     metaTx: {
       apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      apiIds
     }
   });
 }
