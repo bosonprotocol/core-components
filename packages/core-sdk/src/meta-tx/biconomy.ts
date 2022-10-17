@@ -34,7 +34,6 @@ export type GetRetriedHashesResponse = {
     relayerAddress: string;
     newStatus: string;
   };
-  events?: unknown[];
 };
 
 export type GetRetriedHashesArgs = {

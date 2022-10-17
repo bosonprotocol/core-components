@@ -54,8 +54,7 @@ async function toErc20(
     return {
       txHash: txReceipt.transactionHash,
       to: txReceipt.to,
-      from: txReceipt.from,
-      events: txReceipt.events.map((event) => JSON.stringify(event)) // events does not exist in Biconomy return (only added for tests)
+      from: txReceipt.from
     };
   } catch (e) {
     logger.error(`Transaction failed ${JSON.stringify(e)}`);
@@ -89,8 +88,7 @@ async function toBosonProtocol(
     return {
       txHash: txReceipt.transactionHash,
       to: txReceipt.to,
-      from: txReceipt.from,
-      events: txReceipt.events.map((event) => JSON.stringify(event)) // events does not exist in Biconomy return (only added for tests)
+      from: txReceipt.from
     };
   } catch (e) {
     logger.error(`Transaction failed ${JSON.stringify(e)}`);
