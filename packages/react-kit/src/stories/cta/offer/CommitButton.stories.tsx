@@ -17,7 +17,12 @@ const Template: ComponentStory<typeof CommitButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CommitButton web3Provider={provider} {...args} buttonRef={buttonRef} />
+      <CommitButton
+        web3Provider={provider}
+        {...args}
+        buttonRef={buttonRef}
+        getSignerAddress={(val) => console.log(val)}
+      />
     </CtaButtonWrapper>
   );
 };

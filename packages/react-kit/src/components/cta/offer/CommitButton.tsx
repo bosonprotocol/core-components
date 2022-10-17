@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from "react";
+import React, { useEffect, RefObject, useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
@@ -15,6 +15,7 @@ type Props = {
   offerId: BigNumberish;
   isPauseCommitting?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
+  getSignerAddress?: (signer: string | undefined) => string | undefined;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -34,12 +35,19 @@ export const CommitButton = ({
   isPauseCommitting = false,
   buttonRef,
   variant = "primary",
+  getSignerAddress,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (getSignerAddress) {
+      getSignerAddress(signerAddress);
+    }
+  }, [signerAddress, getSignerAddress]);
 
   return (
     <Button
