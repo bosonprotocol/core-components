@@ -11,6 +11,7 @@ interface MetadataInterface {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   type: MetadataType!
   image: String!
@@ -48,6 +49,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.BASE"
   type: MetadataType!
@@ -79,6 +81,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.PRODUCT_V1"
   type: MetadataType!
@@ -103,7 +106,9 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   """
   PRODUCT_V1 specific fields
   """
-  uuid: String!
+  uuid: String! # Offer unique ID
+  productUuid: String! # Product unique ID (unique for all variants of the same product)
+  productVersion: Int! # Product version
   product: ProductV1Product!
   variations: [ProductV1Variation!]
   productV1Seller: ProductV1Seller!
@@ -165,6 +170,10 @@ type ProductV1Product @entity {
   packaging_dimensions_unit: String
   packaging_weight_value: String
   packaging_weight_unit: String
+  """
+  Seller
+  """
+  productV1Seller: ProductV1Seller
 }
 
 type ProductV1Brand @entity {
@@ -213,6 +222,7 @@ type ProductV1Seller @entity {
   description: String
   externalUrl: String
   tokenId: String
+  sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
   """

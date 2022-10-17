@@ -1,10 +1,9 @@
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
-import { MetadataType } from "@bosonprotocol/metadata";
+import { MetadataType, productV1 } from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
-import { ProductV1Metadata } from "@bosonprotocol/metadata/dist/cjs/product-v1";
 import { Wallet } from "ethers";
 import { CoreSDK, subgraph } from "../../packages/core-sdk/src";
 import {
@@ -21,9 +20,17 @@ jest.setTimeout(120_000);
 
 const seedWallet = seedWallet10; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
-function mockProductV1Metadata(template: string): ProductV1Metadata {
+function mockProductV1Metadata(
+  template: string,
+  productUuid: string = productV1.buildUuid()
+): productV1.ProductV1Metadata {
   return {
     ...productV1ValidMinimalOffer,
+    product: {
+      ...productV1ValidMinimalOffer.product,
+      uuid: productUuid
+    },
+    uuid: productV1.buildUuid(),
     type: MetadataType.PRODUCT_V1,
     exchangePolicy: {
       ...productV1ValidMinimalOffer.exchangePolicy,
@@ -32,9 +39,26 @@ function mockProductV1Metadata(template: string): ProductV1Metadata {
   };
 }
 
+function serializeVariant(variant: productV1.ProductV1Variant): string {
+  // Be sure each variation structure has its keys ordered
+  const orderedStruct = variant.map((variation) =>
+    Object.keys(variation)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = variation[key];
+        return obj;
+      }, {})
+  ) as productV1.ProductV1Variant;
+  // Be sure each variation in the table is ordered per type
+  const orderedTable = orderedStruct.sort((a, b) =>
+    a.type.localeCompare(b.type)
+  );
+  return JSON.stringify(orderedTable);
+}
+
 async function createOfferArgs(
   coreSDK: CoreSDK,
-  metadata: ProductV1Metadata,
+  metadata: productV1.ProductV1Metadata,
   offerParams?: Partial<CreateOfferArgs>
 ): Promise<{
   offerArgs: CreateOfferArgs;
@@ -93,6 +117,64 @@ async function createOffer(
   return offer;
 }
 
+async function createOfferBatch(
+  coreSDK: CoreSDK,
+  sellerWallet: Wallet,
+  offersArgs: Array<CreateOfferArgs>
+) {
+  const sellers = await ensureCreatedSeller(sellerWallet);
+  const [seller] = sellers;
+  for (const offerArgs of offersArgs) {
+    // Check the disputeResolver exists and is active
+    const disputeResolverId = offerArgs.disputeResolverId;
+
+    const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
+    expect(dr).toBeTruthy();
+    expect(dr.active).toBe(true);
+    expect(
+      dr.sellerAllowList.length == 0 ||
+        dr.sellerAllowList.indexOf(seller.id) >= 0
+    ).toBe(true);
+  }
+  const createOfferTxResponse = await coreSDK.createOfferBatch(offersArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferIds = coreSDK.getCreatedOfferIdsFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  expect(createdOfferIds.length).toEqual(offersArgs.length);
+
+  let offers: subgraph.OfferFieldsFragment[] = [];
+  for (
+    let i = 0;
+    i < 3 && offers.length < offersArgs.length && createdOfferIds.length > 0;
+    i++
+  ) {
+    offers = [];
+    await waitForGraphNodeIndexing();
+    const offerPromises = createdOfferIds.map((createdOfferId) =>
+      coreSDK.getOfferById(createdOfferId as string)
+    );
+    offers = await Promise.all(offerPromises);
+  }
+
+  // Be sure the returned offers are in the same order as the offersArgs
+  // (here we know that the metadataHash is unique for every offer)
+  const retOffers: subgraph.OfferFieldsFragment[] = [];
+  const offersMap = new Map<string, subgraph.OfferFieldsFragment>();
+  for (const offer of offers) {
+    offersMap.set(offer.metadataHash, offer);
+  }
+  for (const offersArg of offersArgs) {
+    const offer = offersMap.get(offersArg.metadataHash);
+    if (offer) {
+      retOffers.push(offer);
+    }
+  }
+
+  return retOffers;
+}
+
 describe("ProductV1 e2e tests", () => {
   test("Create an offer, then render the contractual agreement template", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
@@ -102,14 +184,8 @@ describe("ProductV1 e2e tests", () => {
       "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
     const metadata = mockProductV1Metadata(template);
     const { offerArgs } = await createOfferArgs(coreSDK, metadata);
-    offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
-      .add(10000) // to avoid offerDaa validation error
-      .toNumber();
-    offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
-      offerArgs.voucherRedeemableFromDateInMS
-    )
-      .add(10000) // to avoid offerDaa validation error
-      .toNumber();
+    resolveDateValidity(offerArgs);
+
     const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
     expect(offer).toBeTruthy();
     const render = await coreSDK.renderContractualAgreementForOffer(
@@ -142,6 +218,235 @@ describe("ProductV1 e2e tests", () => {
   });
 });
 
-// TODO: create batch offers with productV1 metadata (different variant of same product)
-// TODO: get Product from product Id
-// TODO: get Offers from Product
+describe("Multi-variant offers tests", () => {
+  test("Create a product with 2 variants - not using batch creation", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const [offerArgs1, offerArgs2] = (await prepareMultiVariantOffers(coreSDK))
+      .offerArgs;
+
+    // Get the number of offers of this seller before
+    const offersFilter = {
+      offersFilter: {
+        sellerId: seller.id
+      }
+    };
+    const offersBefore = await coreSDK.getOffers(offersFilter);
+    expect(offersBefore).toBeTruthy();
+
+    // Get the number of products of this seller before
+    const productsFilter = {
+      productsFilter: {
+        productV1Seller_: {
+          sellerId: seller.id
+        }
+      }
+    };
+    const productsBefore = await coreSDK.getProductV1Products(productsFilter);
+    expect(productsBefore).toBeTruthy();
+
+    const offer1 = await createOffer(coreSDK, sellerWallet, offerArgs1);
+    const offer2 = await createOffer(coreSDK, sellerWallet, offerArgs2);
+    expect(offer1).toBeTruthy();
+    expect(offer2).toBeTruthy();
+
+    // Check the number of offers of this seller has been increased by 2
+    const offersAfter = await coreSDK.getOffers(offersFilter);
+    expect(offersAfter).toBeTruthy();
+    expect(offersAfter.length).toEqual(offersBefore.length + 2);
+    // Check the number of products of this seller has been increased by 1
+    const productsAfter = await coreSDK.getProductV1Products(productsFilter);
+    expect(productsAfter).toBeTruthy();
+    expect(productsAfter.length).toEqual(productsBefore.length + 1);
+  });
+
+  test("Create a product with 2 variants - using batch creation", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+
+    const [offerArgs1, offerArgs2] = (await prepareMultiVariantOffers(coreSDK))
+      .offerArgs;
+
+    // Get the number of offers of this seller before
+    const offersFilter = {
+      offersFilter: {
+        sellerId: seller.id
+      }
+    };
+    const offersBefore = await coreSDK.getOffers(offersFilter);
+    expect(offersBefore).toBeTruthy();
+
+    // Get the number of products of this seller before
+    const productsFilter = {
+      productsFilter: {
+        productV1Seller_: {
+          sellerId: seller.id
+        }
+      }
+    };
+    const productsBefore = await coreSDK.getProductV1Products(productsFilter);
+    expect(productsBefore).toBeTruthy();
+
+    const offers = await createOfferBatch(coreSDK, sellerWallet, [
+      offerArgs1,
+      offerArgs2
+    ]);
+    expect(offers.length).toEqual(2);
+
+    const [offer1, offer2] = offers;
+    expect(offer1).toBeTruthy();
+    expect(offer2).toBeTruthy();
+
+    // Check the order of returned offers matches the order of passed args
+    expect(offer1.metadataHash).toEqual(offerArgs1.metadataHash);
+    expect(offer2.metadataHash).toEqual(offerArgs2.metadataHash);
+
+    // Check the number of offers of this seller has been increased by 2
+    const offersAfter = await coreSDK.getOffers(offersFilter);
+    expect(offersAfter).toBeTruthy();
+    expect(offersAfter.length).toEqual(offersBefore.length + 2);
+
+    // Check the number of products of this seller has been increased by 1
+    const productsAfter = await coreSDK.getProductV1Products(productsFilter);
+    expect(productsAfter).toBeTruthy();
+    expect(productsAfter.length).toEqual(productsBefore.length + 1);
+  });
+
+  test("find product by productUUID", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const sellers = await ensureCreatedSeller(sellerWallet);
+    const [seller] = sellers;
+    const {
+      offerArgs: [offerArgs1, offerArgs2],
+      productUuid,
+      productMetadata
+    } = await prepareMultiVariantOffers(coreSDK);
+
+    await createOfferBatch(coreSDK, sellerWallet, [offerArgs1, offerArgs2]);
+
+    const [product] = await coreSDK.getProductV1Products({
+      productsFilter: {
+        uuid: productUuid
+      }
+    });
+
+    expect(product).toBeTruthy();
+    expect(product.title).toEqual(productMetadata.product.title);
+    expect(product.description).toEqual(productMetadata.product.description);
+    expect(product.uuid).toEqual(productMetadata.product.uuid);
+    expect(product.version).toEqual(productMetadata.product.version);
+    expect(product.productV1Seller).toBeTruthy();
+    if (product.productV1Seller) {
+      expect(product.productV1Seller.name).toEqual(productMetadata.seller.name);
+      expect(product.productV1Seller.sellerId).toEqual(seller.id);
+    }
+  });
+
+  test("find all offers associated with a product", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    await ensureCreatedSeller(sellerWallet);
+    const {
+      offerArgs: [offerArgs1, offerArgs2],
+      productUuid,
+      variations: expectedVariations
+    } = await prepareMultiVariantOffers(coreSDK);
+
+    const createdOffers = await createOfferBatch(coreSDK, sellerWallet, [
+      offerArgs1,
+      offerArgs2
+    ]);
+
+    // Look for ProductV1MetadataEntities, filtered per productUuid
+    const metadataEntities = await coreSDK.getProductV1MetadataEntities({
+      metadataFilter: {
+        productUuid
+      }
+    });
+    expect(metadataEntities.length).toEqual(2);
+
+    // Get the associated offers
+    const foundOffers = metadataEntities.map((m) => m.offer);
+    const offerIds = createdOffers.map((offer) => offer.id);
+
+    // Check we have retrieved the 2 created offers (may be returned in any order)
+    expect(offerIds.includes(foundOffers[0].id)).toBe(true);
+    expect(offerIds.includes(foundOffers[1].id)).toBe(true);
+
+    // Check the variations
+    const variations = metadataEntities.map((m) => m.variations);
+    const variationsStr = variations
+      .map((v) => {
+        return v?.map((o) => {
+          return { type: o.type, option: o.option };
+        });
+      })
+      .map((v) => (v ? serializeVariant(v) : undefined));
+    for (const expectedVariation of expectedVariations) {
+      const expStr = serializeVariant(expectedVariation);
+      expect(variationsStr.includes(expStr)).toBe(true);
+    }
+  });
+});
+
+function resolveDateValidity(offerArgs: CreateOfferArgs) {
+  offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
+    .add(10000) // to avoid offerData validation error
+    .toNumber();
+  offerArgs.voucherRedeemableFromDateInMS = BigNumber.from(
+    offerArgs.voucherRedeemableFromDateInMS
+  )
+    .add(10000) // to avoid offerData validation error
+    .toNumber();
+}
+
+async function prepareMultiVariantOffers(coreSDK: CoreSDK) {
+  const productUuid = productV1.buildUuid();
+  const productMetadata = mockProductV1Metadata("a template", productUuid);
+
+  const variations1 = [
+    {
+      type: "color",
+      option: "red"
+    },
+    {
+      type: "size",
+      option: "XS"
+    }
+  ];
+  const variations2 = [
+    {
+      type: "color",
+      option: "blue"
+    },
+    {
+      type: "size",
+      option: "S"
+    }
+  ];
+  const [metadata1, metadata2] = productV1.createVariantProductMetadata(
+    productMetadata,
+    [{ productVariant: variations1 }, { productVariant: variations2 }]
+  );
+
+  const p1 = createOfferArgs(coreSDK, metadata1);
+  const p2 = createOfferArgs(coreSDK, metadata2);
+  const [{ offerArgs: offerArgs1 }, { offerArgs: offerArgs2 }] =
+    await Promise.all([p1, p2]);
+
+  resolveDateValidity(offerArgs1);
+  resolveDateValidity(offerArgs2);
+
+  return {
+    offerArgs: [offerArgs1, offerArgs2],
+    productMetadata,
+    productUuid,
+    variations: [variations1, variations2]
+  };
+}

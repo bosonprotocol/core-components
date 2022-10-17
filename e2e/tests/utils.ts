@@ -126,6 +126,7 @@ export const metadata = {
   name: "name",
   description: "description",
   externalUrl: "external-url.com",
+  licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
 export const sellerFundsDepositInEth = "5";

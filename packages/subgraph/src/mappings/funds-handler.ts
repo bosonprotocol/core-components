@@ -54,17 +54,17 @@ export function handleFundsEncumberedEvent(event: FundsEncumbered): void {
       event.params.amount,
       event.params.exchangeToken
     );
-  }
 
-  saveFundsEventLog(
-    event.transaction.hash.toHexString(),
-    event.logIndex,
-    "FUNDS_ENCUMBERED",
-    event.block.timestamp,
-    event.params.executedBy,
-    event.params.entityId.toString(),
-    getFundsEntityId(event.params.entityId, event.params.exchangeToken)
-  );
+    saveFundsEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "FUNDS_ENCUMBERED",
+      event.block.timestamp,
+      event.params.executedBy,
+      event.params.entityId.toString(),
+      getFundsEntityId(event.params.entityId, event.params.exchangeToken)
+    );
+  }
 }
 
 export function handleFundsWithdrawnEvent(event: FundsWithdrawn): void {

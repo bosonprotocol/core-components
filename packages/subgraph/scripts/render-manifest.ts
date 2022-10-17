@@ -29,8 +29,8 @@ const envNameToConfig: Record<
     startBlock: 28563076 // mumbai, block num when protocol is deployed
   },
   production: {
-    network: "mumbai", // TODO: change to "providers.getNetwork(chainId).name" after protocol deploy
-    startBlock: 27771547 // TODO: swap out for protocol deploy block
+    network: providers.getNetwork(chainId).name,
+    startBlock: 34258150 // polygon, block num when protocol is deployed
   }
 };
 const { network, startBlock } = envNameToConfig[envName] || {
