@@ -2,6 +2,7 @@ import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
 
 import { ProductV1MetadataEntity, Offer } from "../../../../generated/schema";
 import {
+  convertToInt,
   convertToObject,
   convertToObjectArray,
   convertToString
@@ -31,16 +32,24 @@ export function saveProductV1Metadata(
   const uuid = convertToString(metadataObj.get("uuid"));
 
   const savedMetadataAttributeIds = saveMetadataAttributes(attributes);
-  const savedProductId = saveProductV1ProductOrOverrides(
-    convertToObject(metadataObj.get("product")),
-    false
-  );
-  const savedVariationIds = saveProductV1Variations(
-    convertToObjectArray(metadataObj.get("variations"))
-  );
   const savedProductV1SellerId = saveProductV1Seller(
     convertToObject(metadataObj.get("seller")),
     offer.sellerId.toString()
+  );
+  const productObj = convertToObject(metadataObj.get("product"));
+  const savedProductId = saveProductV1ProductOrOverrides(
+    productObj,
+    savedProductV1SellerId,
+    false
+  );
+  let productUuid = "";
+  let productVersion = 0;
+  if (productObj !== null) {
+    productUuid = convertToString(productObj.get("uuid"));
+    productVersion = convertToInt(productObj.get("version"));
+  }
+  const savedVariationIds = saveProductV1Variations(
+    convertToObjectArray(metadataObj.get("variations"))
   );
   const savedShippingId = saveProductV1Shipping(
     convertToObject(metadataObj.get("shipping")),
@@ -52,6 +61,7 @@ export function saveProductV1Metadata(
   );
   const savedProductOverridesId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("productOverrides")),
+    savedProductV1SellerId,
     true
   );
 
@@ -92,6 +102,8 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.numberOfRedemptions = offer.numberOfRedemptions;
 
   productV1MetadataEntity.product = savedProductId;
+  productV1MetadataEntity.productUuid = productUuid;
+  productV1MetadataEntity.productVersion = productVersion;
   productV1MetadataEntity.variations = savedVariationIds;
   productV1MetadataEntity.productV1Seller = savedProductV1SellerId;
   productV1MetadataEntity.shipping = savedShippingId;

@@ -29,7 +29,7 @@ import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
-import { getValueFromLogs } from "./utils/logs";
+import { getValueFromLogs, getValuesFromLogs } from "./utils/logs";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -179,6 +179,12 @@ export class CoreSDK {
       this._subgraphUrl,
       queryVars
     );
+  }
+
+  public async getProductV1Products(
+    queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
+  ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
+    return metadata.subgraph.getProductV1Products(this._subgraphUrl, queryVars);
   }
 
   /* -------------------------------------------------------------------------- */
@@ -725,6 +731,20 @@ export class CoreSDK {
         eventName: "OfferCreated"
       })
     );
+  }
+
+  /**
+   * Utility method to retrieve the created `offerIds` from logs after calling `createOfferBatch`
+   * @param logs - Logs to search in.
+   * @returns Array of created offerIds.
+   */
+  public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
+    return getValuesFromLogs({
+      iface: offers.iface.bosonOfferHandlerIface,
+      logs,
+      eventArgsKey: "offerId",
+      eventName: "OfferCreated"
+    });
   }
 
   /**
