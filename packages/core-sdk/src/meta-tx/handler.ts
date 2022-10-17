@@ -18,11 +18,19 @@ import {
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy } from "./biconomy";
 
-type BaseMetaTxArgs = {
+export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
   nonce: BigNumberish;
   metaTxHandlerAddress: string;
   chainId: number;
+};
+
+export type SignedMetaTx = {
+  functionName: string;
+  functionSignature: string;
+  r: string;
+  s: string;
+  v: number;
 };
 
 export async function signMetaTx(
@@ -30,7 +38,7 @@ export async function signMetaTx(
     functionName: string;
     functionSignature: string;
   }
-) {
+): Promise<SignedMetaTx> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -170,7 +178,7 @@ export async function signMetaTxCommitToOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
   }
-) {
+): Promise<SignedMetaTx> {
   const functionName = "commitToOffer(address,uint256)";
 
   const offerType = [
@@ -364,7 +372,7 @@ export async function signMetaTxWithdrawFunds(
     tokenList: string[];
     tokenAmounts: BigNumberish[];
   }
-) {
+): Promise<SignedMetaTx> {
   const functionName = "withdrawFunds(uint256,bytes32,bytes32,uint8)";
 
   const fundType = [
@@ -428,7 +436,7 @@ function makeExchangeMetaTxSigner(
     args: BaseMetaTxArgs & {
       exchangeId: BigNumberish;
     }
-  ) {
+  ): Promise<SignedMetaTx> {
     const exchangeType = [{ name: "exchangeId", type: "uint256" }];
 
     const metaTransactionType = [

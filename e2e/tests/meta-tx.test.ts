@@ -33,7 +33,9 @@ describe("meta-tx", () => {
 
   beforeAll(async () => {
     await ensureCreatedSeller(sellerWallet);
-    await ensureMintedAndAllowedTokens([sellerWallet, buyerWallet]);
+    await ensureMintedAndAllowedTokens([sellerWallet]);
+    // do not approve for buyer (we expect commit to do it when needed)
+    await ensureMintedAndAllowedTokens([buyerWallet], undefined, false);
     const createdOfferId = await createOfferAndDepositFunds(sellerWallet);
     await waitForGraphNodeIndexing();
     offer = await sellerCoreSDK.getOfferById(createdOfferId);
@@ -240,6 +242,42 @@ describe("meta-tx", () => {
   describe("#signMetaTxCommitToOffer()", () => {
     test("non-native exchange token offer", async () => {
       const nonce = Date.now();
+
+      const allowance = await buyerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowance).lt(offer.price)).toBe(true);
+
+      // `Buyer` signs native meta tx for the token approval
+      const {
+        r: r1,
+        s: s1,
+        v: v1,
+        functionSignature: functionSignature1
+      } = await buyerCoreSDK.signNativeMetaTxApproveExchangeToken(
+        MOCK_ERC20_ADDRESS,
+        offer.price
+      );
+
+      const nativeMetaTx = await buyerCoreSDK.relayNativeMetaTransaction(
+        MOCK_ERC20_ADDRESS,
+        {
+          functionSignature: functionSignature1,
+          sigR: r1,
+          sigS: s1,
+          sigV: v1
+        }
+      );
+      const nativeMetaTxReceipt = await nativeMetaTx.wait();
+      expect(nativeMetaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(nativeMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+        true
+      );
+
+      const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowanceAfter).gte(offer.price)).toBe(true);
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =

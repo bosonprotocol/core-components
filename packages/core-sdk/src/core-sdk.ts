@@ -25,11 +25,14 @@ import * as erc20 from "./erc20";
 import * as erc721 from "./erc721";
 import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
+import * as nativeMetaTx from "./native-meta-tx";
 import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
 import { getValueFromLogs } from "./utils/logs";
+
+const ERC712_VERSION = "1"; // Is consistent with all implementations of child tokens on Polygon
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -1760,6 +1763,103 @@ export class CoreSDK {
           functionName: metaTxParams.functionName,
           functionSignature: metaTxParams.functionSignature,
           nonce: metaTxParams.nonce,
+          sigR: metaTxParams.sigR,
+          sigS: metaTxParams.sigS,
+          sigV: metaTxParams.sigV
+        }
+      }
+    });
+  }
+
+  /**
+   * Encodes and signs a native "token.approve()" meta transaction that can be relayed.
+   * @param exchangeToken - The address of the token contract.
+   * @param value - The value to be approved.
+   * @param overrides - Optionally specify a spender address (default is the protocol contract address).
+   * @returns Signature.
+   */
+  public async signNativeMetaTxApproveExchangeToken(
+    exchangeToken: string,
+    value: BigNumberish,
+    overrides: Partial<{
+      spender: string;
+    }> = {}
+  ) {
+    const user = await this._web3Lib.getSignerAddress();
+    const domain = {
+      name: await erc20.handler.getName({
+        contractAddress: exchangeToken,
+        web3Lib: this._web3Lib
+      }),
+      version: ERC712_VERSION
+    };
+    const nonce = await nativeMetaTx.handler.getNonce({
+      contractAddress: exchangeToken,
+      user,
+      web3Lib: this._web3Lib
+    });
+    const functionName = "approve(address,uint256)";
+    const functionSignature = erc20.iface.erc20Iface.encodeFunctionData(
+      "approve",
+      [overrides.spender || this._protocolDiamond, value]
+    );
+    return nativeMetaTx.handler.signNativeMetaTx({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: exchangeToken,
+      chainId: this._chainId,
+      nonce: nonce,
+      functionName,
+      functionSignature,
+      domain
+    });
+  }
+
+  /**
+   * Relay a native meta transaction,
+   * @param metaTxParams - Required params for meta transaction.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async relayNativeMetaTransaction(
+    contractAddress: string,
+    metaTxParams: {
+      functionSignature: BytesLike;
+      sigR: BytesLike;
+      sigS: BytesLike;
+      sigV: BigNumberish;
+    },
+    overrides: Partial<{
+      userAddress: string;
+      metaTxConfig: Partial<MetaTxConfig>;
+    }> = {}
+  ): Promise<ContractTransaction> {
+    const metaTxRelayerUrl =
+      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
+    const metaTxApiKey =
+      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
+    const metaTxApiId =
+      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
+
+    if (!this.isMetaTxConfigSet) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
+    }
+
+    return nativeMetaTx.handler.relayNativeMetaTransaction({
+      web3LibAdapter: this._web3Lib,
+      contractAddress,
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        params: {
+          userAddress:
+            overrides.userAddress || (await this._web3Lib.getSignerAddress()),
+          functionSignature: metaTxParams.functionSignature,
           sigR: metaTxParams.sigR,
           sigS: metaTxParams.sigS,
           sigV: metaTxParams.sigV
