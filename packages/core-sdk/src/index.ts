@@ -17,4 +17,10 @@ export {
   MetaTxConfig
 } from "@bosonprotocol/common";
 
-export { MetadataType, AnyMetadata } from "@bosonprotocol/metadata";
+export {
+  MetadataType,
+  AnyMetadata,
+  validateMetadata,
+  base,
+  productV1
+} from "@bosonprotocol/metadata";
