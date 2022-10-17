@@ -2,7 +2,8 @@ import { BigNumberish, providers, Signer } from "ethers";
 import {
   TransactionResponse,
   Web3LibAdapter,
-  TransactionRequest
+  TransactionRequest,
+  TransactionReceipt
 } from "@bosonprotocol/common";
 
 export type Provider =
@@ -65,4 +66,9 @@ export class EthersAdapter implements Web3LibAdapter {
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
     return this._provider.send(rpcMethod, payload);
   }
+
+  public async getTransactionReceipt(txHash): Promise<TransactionReceipt> {
+    return this._provider.getTransactionReceipt(txHash);
+  }
+
 }

@@ -115,6 +115,7 @@ WithMetaTx.args = {
         // BOSON TOKEN
         executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
       }
-    }
+    },
+    apiKey: "change-me"
   }
 };

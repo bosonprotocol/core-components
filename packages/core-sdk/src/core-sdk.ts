@@ -14,7 +14,6 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { BytesLike } from "@ethersproject/bytes";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
-import { ContractTransaction } from "ethers";
 
 import * as accounts from "./accounts";
 import * as disputes from "./disputes";
@@ -1769,7 +1768,7 @@ export class CoreSDK {
       metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
       metaTransactionMethod: string;
     }> = {}
-  ): Promise<ContractTransaction> {
+  ): Promise<TransactionResponse> {
     const contractAddress = overrides.contractAddress || this._protocolDiamond;
     const metaTxRelayerUrl =
       this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
@@ -1875,7 +1874,7 @@ export class CoreSDK {
       metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
       metaTransactionMethod: string;
     }> = {}
-  ): Promise<ContractTransaction> {
+  ): Promise<TransactionResponse> {
     const metaTxRelayerUrl =
       overrides.metaTxConfig?.relayerUrl || this._metaTxConfig?.relayerUrl;
     const metaTxApiKey =

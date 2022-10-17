@@ -1,11 +1,14 @@
-import { MetaTxConfig, Web3LibAdapter } from "@bosonprotocol/common";
+import {
+  MetaTxConfig,
+  Web3LibAdapter,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { Biconomy } from "../meta-tx/biconomy";
 import { BaseMetaTxArgs, SignedMetaTx } from "../meta-tx/handler";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { nativeMetaTransactionsIface } from "./interface";
-import { ContractTransaction } from "@ethersproject/contracts";
 
 export async function getNonce(args: {
   contractAddress: string;
@@ -84,7 +87,7 @@ export async function relayNativeMetaTransaction(args: {
       sigV: BigNumberish;
     };
   };
-}): Promise<ContractTransaction> {
+}): Promise<TransactionResponse> {
   const { chainId, contractAddress, metaTx } = args;
 
   const biconomy = new Biconomy(
@@ -112,35 +115,16 @@ export async function relayNativeMetaTransaction(args: {
         transactionHash: relayTxResponse.txHash
       });
 
-      // TODO: add `getTransaction(hash)` to `Web3LibAdapter` and respective implementations
-      // in ethers and eth-connect flavors. This way we can populate the correct transaction
-      // data below.
+      const txHash = waitResponse.data.newHash;
+      const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
       return {
-        to: contractAddress,
-        from: metaTx.params.userAddress,
-        contractAddress: contractAddress,
-        transactionIndex: 0,
-        gasUsed: BigNumber.from(0),
-        logsBloom: "",
-        blockHash: "string",
-        transactionHash: waitResponse.data.newHash,
-        logs: [],
-        blockNumber: 0,
-        confirmations: 0,
-        cumulativeGasUsed: BigNumber.from(0),
+        to: txReceipt?.to || contractAddress,
+        from: txReceipt?.from || metaTx.params.userAddress,
+        transactionHash: txHash,
+        logs: txReceipt?.logs || [],
         effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        byzantium: true,
-        type: 0,
-        events: waitResponse.events?.map((event) => JSON.parse(event as string))
       };
     },
-    hash: relayTxResponse.txHash,
-    confirmations: 0,
-    from: metaTx.params.userAddress,
-    nonce: 0,
-    gasLimit: BigNumber.from(0),
-    data: "",
-    value: BigNumber.from(0),
-    chainId: chainId
+    hash: relayTxResponse.txHash
   };
 }

@@ -2,11 +2,11 @@ import {
   CreateOfferArgs,
   CreateSellerArgs,
   MetaTxConfig,
-  Web3LibAdapter
+  Web3LibAdapter,
+  TransactionResponse
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
-import { ContractTransaction } from "@ethersproject/contracts";
 
 import { encodeCreateSeller } from "../accounts/interface";
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
@@ -500,7 +500,7 @@ export async function relayMetaTransaction(args: {
       sigV: BigNumberish;
     };
   };
-}): Promise<ContractTransaction> {
+}): Promise<TransactionResponse> {
   const { chainId, contractAddress, metaTx } = args;
 
   const biconomy = new Biconomy(
@@ -530,35 +530,16 @@ export async function relayMetaTransaction(args: {
         transactionHash: relayTxResponse.txHash
       });
 
-      // TODO: add `getTransaction(hash)` to `Web3LibAdapter` and respective implementations
-      // in ethers and eth-connect flavors. This way we can populate the correct transaction
-      // data below.
+      const txHash = waitResponse.data.newHash;
+      const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
       return {
-        to: contractAddress,
-        from: metaTx.params.userAddress,
-        contractAddress: contractAddress,
-        transactionIndex: 0,
-        gasUsed: BigNumber.from(0),
-        logsBloom: "",
-        blockHash: "string",
-        transactionHash: waitResponse.data.newHash,
-        logs: [],
-        blockNumber: 0,
-        confirmations: 0,
-        cumulativeGasUsed: BigNumber.from(0),
+        to: txReceipt?.to || contractAddress,
+        from: txReceipt?.from || metaTx.params.userAddress,
+        transactionHash: txHash,
+        logs: txReceipt?.logs || [],
         effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        byzantium: true,
-        type: 0,
-        events: waitResponse.events?.map((event) => JSON.parse(event as string))
       };
     },
-    hash: relayTxResponse.txHash,
-    confirmations: 0,
-    from: metaTx.params.userAddress,
-    nonce: 0,
-    gasLimit: BigNumber.from(0),
-    data: "",
-    value: BigNumber.from(0),
-    chainId: chainId
+    hash: relayTxResponse.txHash
   };
 }
