@@ -342,11 +342,6 @@ describe("#productV1 tests", () => {
       );
 
       expect(metadatas.length).toEqual(variantsOK.length);
-      console.log("metadatas[0]", metadatas[0], "toEqual", {
-        ...productMetadata,
-        uuid: metadatas[0].uuid,
-        variations: variantsOK[0].productVariant
-      });
       expect(metadatas[0]).toEqual({
         ...productMetadata,
         uuid: metadatas[0].uuid,
@@ -436,14 +431,28 @@ describe("#productV1 tests", () => {
       expect(metadatas[0]).toEqual({
         ...productMetadata,
         uuid: metadatas[0].uuid,
-        variations: variantsOK[0].productVariant
+        variations: variantsOK[0].productVariant,
+        attributes: [
+          ...productMetadata.attributes,
+          ...variantsOK[0].productVariant.map((variant) => ({
+            trait_type: variant.type,
+            value: variant.option
+          }))
+        ]
       });
 
       expect(metadatas[1]).toEqual({
         ...productMetadata,
         uuid: metadatas[1].uuid,
         variations: variantsOK[1].productVariant,
-        productOverrides: productOverrides[1]
+        productOverrides: productOverrides[1],
+        attributes: [
+          ...productMetadata.attributes,
+          ...variantsOK[1].productVariant.map((variant) => ({
+            trait_type: variant.type,
+            value: variant.option
+          }))
+        ]
       });
     });
   });
