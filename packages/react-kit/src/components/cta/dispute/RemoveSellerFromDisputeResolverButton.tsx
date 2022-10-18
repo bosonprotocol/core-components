@@ -9,9 +9,6 @@ import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
 export type IRemoveSellerFromDisputeResolverButton = {
-  /**
-   * ID of voucher/exchange to cancel.
-   */
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
   buyerPercent: string;

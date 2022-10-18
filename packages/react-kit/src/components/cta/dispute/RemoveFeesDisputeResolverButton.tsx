@@ -8,9 +8,6 @@ import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
 export type IRemoveFeesDisputeResolver = {
-  /**
-   * ID of voucher/exchange to cancel.
-   */
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
   buyerPercent: string;
