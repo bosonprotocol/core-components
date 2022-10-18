@@ -75,7 +75,11 @@ export class Biconomy {
       );
     }
 
-    return response.json() as Promise<RelayTransactionResponse>;
+    const txResponse = (await response.json()) as RelayTransactionResponse;
+    if (!txResponse.txHash) {
+      throw new ApiError(txResponse.flag, txResponse.log);
+    }
+    return txResponse;
   }
 
   public async getResubmitted(

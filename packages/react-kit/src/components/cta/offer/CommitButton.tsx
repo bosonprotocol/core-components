@@ -66,7 +66,6 @@ export const CommitButton = ({
         if (!isLoading && !isPauseCommitting) {
           try {
             setIsLoading(true);
-            onPendingSignature?.();
 
             if (exchangeToken !== AddressZero) {
               // Insure allowance is enough to pay for the item price
@@ -75,6 +74,7 @@ export const CommitButton = ({
               );
               if (BigNumber.from(currentAllowance).lt(price)) {
                 let approveTxResponse;
+                onPendingSignature?.();
 
                 // Need to approve
                 if (
@@ -101,11 +101,14 @@ export const CommitButton = ({
                   approveTxResponse = await coreSdk.commitToOffer(offerId);
                 }
 
+                onPendingTransaction?.(approveTxResponse.hash);
+
                 await approveTxResponse.wait();
               }
             }
 
             let txResponse;
+            onPendingSignature?.();
 
             if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
