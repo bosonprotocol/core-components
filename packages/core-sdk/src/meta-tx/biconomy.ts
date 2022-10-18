@@ -21,19 +21,21 @@ export type RelayOverrides = {
   apiId: string;
 };
 
+export type GetRetriedHashesData = {
+  oldHash: string;
+  newHash: string;
+  oldGasPrice: string;
+  newGasPrice: string;
+  timestamp: number;
+  retryCount: number;
+  relayerAddress: string;
+  newStatus: string;
+};
+
 export type GetRetriedHashesResponse = {
   code: number;
   message: string;
-  data: {
-    oldHash: string;
-    newHash: string;
-    oldGasPrice: string;
-    newGasPrice: string;
-    timestamp: number;
-    retryCount: number;
-    relayerAddress: string;
-    newStatus: string;
-  };
+  data: GetRetriedHashesData;
 };
 
 export type GetRetriedHashesArgs = {

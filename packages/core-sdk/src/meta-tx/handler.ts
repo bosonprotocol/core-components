@@ -16,7 +16,7 @@ import {
   encodeCreateOfferBatch
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
-import { Biconomy } from "./biconomy";
+import { Biconomy, GetRetriedHashesData } from "./biconomy";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -542,4 +542,27 @@ export async function relayMetaTransaction(args: {
     },
     hash: relayTxResponse.txHash
   };
+}
+
+export async function getResubmitted(args: {
+  chainId: number;
+  metaTx: {
+    config: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+    originalHash: string;
+  };
+}): Promise<GetRetriedHashesData> {
+  const { chainId, metaTx } = args;
+
+  const biconomy = new Biconomy(
+    metaTx.config.relayerUrl,
+    metaTx.config.apiKey,
+    metaTx.config.apiId
+  );
+
+  const retriedHashesResponse = await biconomy.getResubmitted({
+    networkId: chainId,
+    transactionHash: metaTx.originalHash
+  });
+
+  return retriedHashesResponse.data;
 }

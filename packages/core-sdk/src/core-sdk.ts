@@ -30,6 +30,7 @@ import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
 import { getValueFromLogs, getValuesFromLogs } from "./utils/logs";
+import { GetRetriedHashesData } from "./meta-tx/biconomy";
 
 const ERC712_VERSION = "1"; // Is consistent with all implementations of child tokens on Polygon
 
@@ -1769,25 +1770,9 @@ export class CoreSDK {
       metaTransactionMethod: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    const contractAddress = overrides.contractAddress || this._protocolDiamond;
-    const metaTxRelayerUrl =
-      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
-    const metaTxApiKey =
-      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
-    const metaTransactionMethod =
-      overrides.metaTransactionMethod || "executeMetaTransaction";
-    // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
-    const metaTxApiId =
-      this._metaTxConfig?.apiIds[contractAddress][metaTransactionMethod] ||
-      overrides.metaTxConfig?.apiId;
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl, contractAddress } =
+      this.assertAndGetMetaTxConfig(overrides);
 
-    if (
-      !this.checkMetaTxConfigSet({ contractAddress, metaTransactionMethod })
-    ) {
-      throw new Error(
-        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
-      );
-    }
     return metaTx.handler.relayMetaTransaction({
       web3LibAdapter: this._web3Lib,
       contractAddress,
@@ -1875,24 +1860,8 @@ export class CoreSDK {
       metaTransactionMethod: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    const metaTxRelayerUrl =
-      overrides.metaTxConfig?.relayerUrl || this._metaTxConfig?.relayerUrl;
-    const metaTxApiKey =
-      overrides.metaTxConfig?.apiKey || this._metaTxConfig?.apiKey;
-    const metaTransactionMethod =
-      overrides.metaTransactionMethod || "executeMetaTransaction";
-    // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
-    const metaTxApiId =
-      this._metaTxConfig?.apiIds[contractAddress][metaTransactionMethod] ||
-      overrides.metaTxConfig?.apiId;
-
-    if (
-      !this.checkMetaTxConfigSet({ contractAddress, metaTransactionMethod })
-    ) {
-      throw new Error(
-        `CoreSDK not configured to relay meta transactions to contract '${contractAddress}' with method '${metaTransactionMethod}'. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments.`
-      );
-    }
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig({ ...overrides, contractAddress });
 
     return nativeMetaTx.handler.relayNativeMetaTransaction({
       web3LibAdapter: this._web3Lib,
@@ -1914,6 +1883,71 @@ export class CoreSDK {
         }
       }
     });
+  }
+
+  /**
+   * Returns information of submitted meta transaction.
+   * See https://docs.biconomy.io/api/native-meta-tx/get-retried-hashes.
+   * @param originalMetaTxHash - Original meta transaction as returned by `coreSDK.relayMetaTransaction`
+   * @param overrides - Optional overrides for meta transaction config.
+   * @returns - Additional meta transaction information.
+   */
+  public async getResubmittedMetaTx(
+    originalMetaTxHash: string,
+    overrides: Partial<{
+      contractAddress: string;
+      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTransactionMethod: string;
+    }> = {}
+  ): Promise<GetRetriedHashesData> {
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig(overrides);
+
+    return metaTx.handler.getResubmitted({
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        originalHash: originalMetaTxHash
+      }
+    });
+  }
+
+  private assertAndGetMetaTxConfig(
+    overrides: Partial<{
+      contractAddress: string;
+      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTransactionMethod: string;
+    }> = {}
+  ) {
+    const contractAddress = overrides.contractAddress || this._protocolDiamond;
+    const metaTransactionMethod =
+      overrides.metaTransactionMethod || "executeMetaTransaction";
+    const metaTxRelayerUrl =
+      overrides.metaTxConfig?.relayerUrl || this._metaTxConfig?.relayerUrl;
+    const metaTxApiKey =
+      overrides.metaTxConfig?.apiKey || this._metaTxConfig?.apiKey;
+    // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
+    const apiIds = this._metaTxConfig?.apiIds[contractAddress];
+    const metaTxApiId =
+      overrides.metaTxConfig?.apiId ||
+      (apiIds && apiIds[metaTransactionMethod]);
+
+    if (!(metaTxRelayerUrl && metaTxApiKey && metaTxApiId)) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
+    }
+
+    return {
+      metaTxRelayerUrl,
+      metaTxApiId,
+      metaTxApiKey,
+      contractAddress
+    };
   }
 
   /* -------------------------------------------------------------------------- */
