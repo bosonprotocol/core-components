@@ -61,7 +61,7 @@ describe("core-sdk", () => {
       ); // By default, the validity period is created with dateFrom - dateTo
     });
 
-    test.only("create seller, then create offer", async () => {
+    test("create seller, then create offer", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet
       );
