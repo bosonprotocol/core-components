@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.16.0...@bosonprotocol/common@1.17.0) (2022-10-18)
+
+
+### Features
+
+* add lens profiles contract and abi to config ([#328](https://github.com/bosonprotocol/core-components/issues/328)) ([6b45a1b](https://github.com/bosonprotocol/core-components/commit/6b45a1b73617d0345853cf475f32881217e61b50))
+
+
+
+
+
 # [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.15.0...@bosonprotocol/common@1.16.0) (2022-10-13)
 
 
