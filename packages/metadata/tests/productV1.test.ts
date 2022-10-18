@@ -342,17 +342,35 @@ describe("#productV1 tests", () => {
       );
 
       expect(metadatas.length).toEqual(variantsOK.length);
-
-      expect(metadatas[0]).toEqual({
+      console.log("metadatas[0]", metadatas[0], "toEqual", {
         ...productMetadata,
         uuid: metadatas[0].uuid,
         variations: variantsOK[0].productVariant
+      });
+      expect(metadatas[0]).toEqual({
+        ...productMetadata,
+        uuid: metadatas[0].uuid,
+        variations: variantsOK[0].productVariant,
+        attributes: [
+          ...productMetadata.attributes,
+          ...variantsOK[0].productVariant.map((variant) => ({
+            trait_type: variant.type,
+            value: variant.option
+          }))
+        ]
       });
 
       expect(metadatas[1]).toEqual({
         ...productMetadata,
         uuid: metadatas[1].uuid,
-        variations: variantsOK[1].productVariant
+        variations: variantsOK[1].productVariant,
+        attributes: [
+          ...productMetadata.attributes,
+          ...variantsOK[1].productVariant.map((variant) => ({
+            trait_type: variant.type,
+            value: variant.option
+          }))
+        ]
       });
     });
     test("add productOverrides to the metadata", async () => {
@@ -385,7 +403,14 @@ describe("#productV1 tests", () => {
           ...productMetadata,
           uuid: metadatas[index].uuid,
           variations: variantsOK[index].productVariant,
-          productOverrides: productOverrides[index]
+          productOverrides: productOverrides[index],
+          attributes: [
+            ...productMetadata.attributes,
+            ...variantsOK[index].productVariant.map((variant) => ({
+              trait_type: variant.type,
+              value: variant.option
+            }))
+          ]
         });
       }
     });
