@@ -70,5 +70,4 @@ export class EthersAdapter implements Web3LibAdapter {
   public async getTransactionReceipt(txHash): Promise<TransactionReceipt> {
     return this._provider.getTransactionReceipt(txHash);
   }
-
 }
