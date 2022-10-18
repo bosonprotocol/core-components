@@ -7,7 +7,8 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
-export type ICancelButton = {
+import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
+export type IAddSellerToDisputeResolver = {
   /**
    * ID of voucher/exchange to cancel.
    */
@@ -15,12 +16,14 @@ export type ICancelButton = {
   createSellerArgs: CreateSellerArgs;
   buyerPercent: string;
   disputeResolverId: BigNumberish;
-  feeTokenAddresses: string[];
+  sellerAllowList: BigNumberish[];
+
+  fees: DisputeResolutionFee[];
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const AddSellerToDisputeResolver = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -36,9 +39,9 @@ export const CancelButton = ({
   createSellerArgs,
   buyerPercent,
   disputeResolverId,
-  feeTokenAddresses,
+  sellerAllowList,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: IAddSellerToDisputeResolver) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,10 +57,11 @@ export const CancelButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.removeFeesFromDisputeResolver(
-              disputeResolverId,
-              feeTokenAddresses
-            );
+            const txResponse =
+              await coreSdk.addSellersToDisputeResolverAllowList(
+                disputeResolverId,
+                sellerAllowList
+              );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -74,7 +78,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Create Seller"}
+        {children || "Add Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

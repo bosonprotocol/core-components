@@ -7,18 +7,18 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
-export type ICancelButton = {
+export type ICreateDisputeResolverButton = {
   /**
    * ID of voucher/exchange to cancel.
    */
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
-  buyerPercent: string;
+  buyerPercentBasisPoints: BigNumberish;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const CreateDisputeResolverButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -32,9 +32,9 @@ export const CancelButton = ({
   size = ButtonSize.Large,
   variant = "secondary",
   createSellerArgs,
-  buyerPercent,
+  buyerPercentBasisPoints,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: ICreateDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -52,7 +52,7 @@ export const CancelButton = ({
 
             const txResponse = await coreSdk.resolveDispute({
               exchangeId,
-              buyerPercentBasisPoints: "",
+              buyerPercentBasisPoints: 0,
               sigR: "",
               sigS: "",
               sigV: ""
@@ -73,7 +73,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Create Seller"}
+        {children || "Create Dispute"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

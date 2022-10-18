@@ -7,7 +7,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
-export type ICancelButton = {
+export type IUpdateSellerButton = {
   /**
    * ID of voucher/exchange to cancel.
    */
@@ -17,7 +17,7 @@ export type ICancelButton = {
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const UpdateSellerButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -32,7 +32,7 @@ export const CancelButton = ({
   variant = "secondary",
   createSellerArgs,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: IUpdateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -65,7 +65,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Create Seller"}
+        {children || "Update Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

@@ -8,7 +8,7 @@ import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
-export type ICancelButton = {
+export type IRemoveSellerFromDisputeResolverButton = {
   /**
    * ID of voucher/exchange to cancel.
    */
@@ -16,12 +16,14 @@ export type ICancelButton = {
   createSellerArgs: CreateSellerArgs;
   buyerPercent: string;
   disputeResolverId: BigNumberish;
+  sellerAllowList: string[];
+
   fees: DisputeResolutionFee[];
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const RemoveSellerFromDisputeResolverButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -37,9 +39,9 @@ export const CancelButton = ({
   createSellerArgs,
   buyerPercent,
   disputeResolverId,
-  fees,
+  sellerAllowList,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: IRemoveSellerFromDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -55,10 +57,11 @@ export const CancelButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.addFeesToDisputeResolver(
-              disputeResolverId,
-              fees
-            );
+            const txResponse =
+              await coreSdk.removeSellersFromDisputeResolverAllowList(
+                disputeResolverId,
+                sellerAllowList
+              );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -75,7 +78,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Create Seller"}
+        {children || "Remove Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (
