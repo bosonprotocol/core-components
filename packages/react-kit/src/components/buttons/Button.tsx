@@ -44,7 +44,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    console.log(variant);
     return (
       <ButtonStyle
         variant={variant}
