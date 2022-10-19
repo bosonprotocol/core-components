@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/ethers-sdk",
-  "version": "1.9.4",
+  "version": "1.10.0-alpha.0",
   "description": "> TODO: description",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -31,7 +31,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.17.1"
+    "@bosonprotocol/common": "^1.18.0-alpha.0"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^9.0.0",

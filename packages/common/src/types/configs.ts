@@ -8,7 +8,7 @@ export type EnvironmentType = "local" | "testing" | "staging" | "production";
 export type MetaTxConfig = {
   relayerUrl: string;
   apiKey: string;
-  apiId: string;
+  apiIds: Record<string, Record<string, string>>;
 };
 
 export type LensContracts = {

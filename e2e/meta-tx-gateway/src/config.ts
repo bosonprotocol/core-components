@@ -66,6 +66,7 @@ export type Config = {
   ENV_NAME: string;
   RPC_NODE: string;
   PROTOCOL: string;
+  ERC20: string;
   PRIVATE_KEY: string;
   ACCOUNT: string;
 };
@@ -95,6 +96,7 @@ export function getConfig(): Config {
       RPC_NODE:
         args.rpcNode || process.env.RPC_NODE || defaultConfig.jsonRpcUrl,
       PROTOCOL: defaultConfig.contracts.protocolDiamond,
+      ERC20: defaultConfig.contracts.testErc20,
       PRIVATE_KEY: wallet.privateKey,
       ACCOUNT: wallet.address
     };

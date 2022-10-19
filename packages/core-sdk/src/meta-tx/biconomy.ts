@@ -36,7 +36,6 @@ export type GetRetriedHashesResponse = {
   code: number;
   message: string;
   data: GetRetriedHashesData;
-  events?: unknown[];
 };
 
 export type GetRetriedHashesArgs = {
@@ -72,13 +71,21 @@ export class Biconomy {
     });
 
     if (!response.ok) {
-      throw new ApiError(
-        response.status,
-        `Failed to relay tx: ${response.statusText}`
-      );
+      let message;
+      try {
+        const jsonResponse = await response.json();
+        message = JSON.stringify(jsonResponse);
+      } catch {
+        message = response.statusText;
+      }
+      throw new ApiError(response.status, `Failed to relay tx: ${message}`);
     }
 
-    return response.json() as Promise<RelayTransactionResponse>;
+    const txResponse = (await response.json()) as RelayTransactionResponse;
+    if (!txResponse.txHash) {
+      throw new ApiError(txResponse.flag, txResponse.log);
+    }
+    return txResponse;
   }
 
   public async getResubmitted(
