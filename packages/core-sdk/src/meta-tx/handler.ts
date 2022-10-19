@@ -3,8 +3,11 @@ import {
   CreateSellerArgs,
   MetaTxConfig,
   Web3LibAdapter,
-  TransactionResponse
+  TransactionResponse,
+  utils,
+  MetadataStorage
 } from "@bosonprotocol/common";
+import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 
@@ -92,8 +95,20 @@ export async function signMetaTxCreateSeller(
 export async function signMetaTxCreateOffer(
   args: BaseMetaTxArgs & {
     createOfferArgs: CreateOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  utils.validation.createOfferArgsSchema.validateSync(args.createOfferArgs, {
+    abortEarly: false
+  });
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
   return signMetaTx({
     ...args,
     functionName:
@@ -105,8 +120,26 @@ export async function signMetaTxCreateOffer(
 export async function signMetaTxCreateOfferBatch(
   args: BaseMetaTxArgs & {
     createOffersArgs: CreateOfferArgs[];
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  for (const offerToCreate of args.createOffersArgs) {
+    utils.validation.createOfferArgsSchema.validateSync(offerToCreate, {
+      abortEarly: false
+    });
+  }
+
+  await Promise.all(
+    args.createOffersArgs.map((offerToCreate) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: offerToCreate.metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
+    )
+  );
+
   return signMetaTx({
     ...args,
     functionName:
