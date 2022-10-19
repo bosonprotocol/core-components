@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.19.0...@bosonprotocol/subgraph@1.19.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* fix issue in subgraph when returnPeriod overflows ([#339](https://github.com/bosonprotocol/core-components/issues/339)) ([05b73bb](https://github.com/bosonprotocol/core-components/commit/05b73bb022cf01f8635cf52e48017668ebaedf8c))
+
+
+
+
+
 # [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.18.1...@bosonprotocol/subgraph@1.19.0) (2022-10-18)
 
 
