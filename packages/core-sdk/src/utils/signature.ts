@@ -7,6 +7,7 @@ type SignatureArgs = {
   verifyingContractAddress: string;
   chainId: number;
   customSignatureType?: Record<string, unknown>;
+  customDomainData?: Record<string, unknown>;
   primaryType: string;
   message: Record<string, unknown>;
 };
@@ -23,7 +24,8 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
     name: "Boson Protocol",
     version: "V2",
     verifyingContract: args.verifyingContractAddress,
-    salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32)
+    salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32),
+    ...args.customDomainData
   };
 
   const signatureTypes = {

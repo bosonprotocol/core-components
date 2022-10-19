@@ -38,7 +38,9 @@ describe("#createOffer()", () => {
           wait: async () => ({
             from: "0x",
             to: "0x",
-            logs: []
+            logs: [],
+            transactionHash: "0x",
+            effectiveGasPrice: "0"
           })
         }
       }),
