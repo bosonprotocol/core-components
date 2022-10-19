@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { AddSellerToDisputeResolver } from "../../../components/cta/dispute/AddSellerToDisputeResolver";
+import { AddSellerToDisputeResolver } from "../../../components/cta/dispute/AddSellerToDisputeResolverButton";
 import { hooks } from "../../helpers/connect-wallet";
 import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
