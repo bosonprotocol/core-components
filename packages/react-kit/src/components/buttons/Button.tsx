@@ -15,16 +15,12 @@ export interface ButtonProps {
   loading?: boolean;
   size?: ButtonSize;
   variant?:
-    | "primary"
-    | "primaryOutline"
-    | "secondary"
-    | "secondaryOutline"
-    | "ghost"
-    | "ghostSecondary"
-    | "ghostOrange"
-    | "tertiary"
-    | "danger"
-    | "warning";
+    | "primaryFill"
+    | "primaryInverted"
+    | "secondaryFill"
+    | "secondaryInverted"
+    | "accentFill"
+    | "accentInverted";
   className?: string;
   children?: React.ReactNode;
   showBorder?: boolean;
@@ -40,14 +36,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       className,
       size = ButtonSize.Medium,
-      variant = "primary",
-      showBorder,
+      variant = "primaryFill",
+      showBorder = true,
       type,
       style,
       ...props
     },
     ref
   ) => {
+    console.log(variant);
     return (
       <ButtonStyle
         variant={variant}
@@ -55,6 +52,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={onClick}
         size={size}
         ref={ref}
+        showBorder={showBorder}
+        style={style}
+        type={type}
         {...props}
       >
         {props.loading ? (
