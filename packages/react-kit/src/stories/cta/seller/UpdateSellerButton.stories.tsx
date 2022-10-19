@@ -60,13 +60,12 @@ Simple.args = {
 WithExtraInfo.args = {
   envName: "testing",
   exchangeId: "28",
-  createSellerArgs: {
-    operator: "testing",
-    admin: "testing",
-    clerk: "testing",
-    treasury: "testing",
-    contractUri: "testing",
-    royaltyPercentage: 0,
+  updateSellerArgs: {
+    id: 0,
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
     authTokenId: 0,
     authTokenType: 0
   },
