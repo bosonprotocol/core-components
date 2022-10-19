@@ -64,8 +64,11 @@ export const CommitButton = ({
             onPendingSignature?.();
 
             let txResponse;
+            const isMetaTx = Boolean(
+              coreSdk.isMetaTxConfigSet && signerAddress
+            );
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signMetaTxCommitToOffer({
@@ -84,7 +87,7 @@ export const CommitButton = ({
               txResponse = await coreSdk.commitToOffer(offerId);
             }
 
-            onPendingTransaction?.(txResponse.hash);
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
             const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
               receipt.logs
