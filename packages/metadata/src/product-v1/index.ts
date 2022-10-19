@@ -178,10 +178,17 @@ function buildVariantProductMetadata(
 
   // Each variant should have an different UUID
   return variants.map((variant) => {
+    const variantAttributes = variant.map((variation) => {
+      return {
+        trait_type: variation.type,
+        value: variation.option
+      };
+    });
     return {
       ...productMetadata,
       uuid: buildUuid(),
-      variations: variant
+      variations: variant,
+      attributes: [...productMetadata.attributes, ...variantAttributes]
     };
   });
 }

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.2...@bosonprotocol/react-kit@0.10.0) (2022-10-18)
+
+
+### Features
+
+* commit button pas ref add ([#315](https://github.com/bosonprotocol/core-components/issues/315)) ([8f9ff14](https://github.com/bosonprotocol/core-components/commit/8f9ff14815b4a7d9136af95ea87eddc7dd5e45a8))
+* getsignerAddress add to commit button ([#331](https://github.com/bosonprotocol/core-components/issues/331)) ([720f269](https://github.com/bosonprotocol/core-components/commit/720f269ddb510d8997ad319f101fe46d7c020f2e))
+
+
+
+
+
 ## [0.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.1...@bosonprotocol/react-kit@0.9.2) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

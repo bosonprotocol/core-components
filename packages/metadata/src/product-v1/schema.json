@@ -142,7 +142,10 @@
           }
         },
         "redemptionPoint": { "type": "string" },
-        "returnPeriod": { "type": "string" }
+        "returnPeriod": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
       },
       "required": ["returnPeriod"]
     },
