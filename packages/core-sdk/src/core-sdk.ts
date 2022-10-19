@@ -1475,12 +1475,13 @@ export class CoreSDK {
   public async signMetaTxCreateSeller(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxCreateSeller>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxCreateSeller({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1493,12 +1494,13 @@ export class CoreSDK {
   public async signMetaTxCreateOffer(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxCreateOffer>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxCreateOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1511,12 +1513,13 @@ export class CoreSDK {
   public async signMetaTxCreateOfferBatch(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxCreateOfferBatch>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxCreateOfferBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1529,12 +1532,13 @@ export class CoreSDK {
   public async signMetaTxVoidOffer(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxVoidOffer>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxVoidOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1547,12 +1551,13 @@ export class CoreSDK {
   public async signMetaTxVoidOfferBatch(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxVoidOfferBatch>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxVoidOfferBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }
@@ -1565,12 +1570,13 @@ export class CoreSDK {
   public async signMetaTxCompleteExchangeBatch(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxCompleteExchangeBatch>[0],
-      "web3Lib" | "metaTxHandlerAddress"
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
     return metaTx.handler.signMetaTxCompleteExchangeBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
       ...args
     });
   }

@@ -12,7 +12,6 @@ import {
   seedWallet8,
   waitForGraphNodeIndexing,
   metadata,
-  defaultConfig,
   createOffer,
   seedWallet11
 } from "./utils";
@@ -80,8 +79,7 @@ describe("meta-tx", () => {
             authTokenId: "0",
             authTokenType: 0
           },
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of random seller
@@ -119,8 +117,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await sellerCoreSDK.signMetaTxCreateOffer({
           createOfferArgs,
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of seller
@@ -158,8 +155,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await sellerCoreSDK.signMetaTxCreateOfferBatch({
           createOffersArgs: [createOfferArgs, createOfferArgs],
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of seller
@@ -188,8 +184,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await sellerCoreSDK.signMetaTxVoidOffer({
           offerId: createdOffer.id,
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of seller
@@ -219,8 +214,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await sellerCoreSDK.signMetaTxVoidOfferBatch({
           offerIds: [createdOffer1.id, createdOffer2.id],
-          nonce,
-          chainId: defaultConfig.chainId
+          nonce
         });
 
       // `Relayer` executes meta tx on behalf of seller
