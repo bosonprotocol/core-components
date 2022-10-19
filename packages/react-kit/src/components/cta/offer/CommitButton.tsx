@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, RefObject, useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
@@ -13,6 +13,11 @@ type Props = {
    * ID of offer to commit to.
    */
   offerId: BigNumberish;
+  isPauseCommitting?: boolean;
+  buttonRef?: RefObject<HTMLButtonElement>;
+  onGetSignerAddress?: (
+    signerAddress: string | undefined
+  ) => string | undefined;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -29,7 +34,10 @@ export const CommitButton = ({
   onError,
   waitBlocks = 1,
   size = ButtonSize.Large,
-  variant = "primaryFill",
+  isPauseCommitting = false,
+  buttonRef,
+  variant = "primary",
+  onGetSignerAddress,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -37,23 +45,33 @@ export const CommitButton = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (onGetSignerAddress) {
+      onGetSignerAddress(signerAddress);
+    }
+  }, [signerAddress, onGetSignerAddress]);
+
   return (
     <Button
+      ref={buttonRef}
       variant={variant}
       size={size}
       disabled={disabled}
       onClick={async () => {
-        if (!isLoading) {
+        if (!isLoading && !isPauseCommitting) {
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
             let txResponse;
+            const isMetaTx = Boolean(
+              coreSdk.isMetaTxConfigSet && signerAddress
+            );
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxCommitToOffer({
+                await coreSdk.signMetaTxCommitToOffer({
                   offerId,
                   nonce
                 });
@@ -69,7 +87,7 @@ export const CommitButton = ({
               txResponse = await coreSdk.commitToOffer(offerId);
             }
 
-            onPendingTransaction?.(txResponse.hash);
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
             const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
               receipt.logs

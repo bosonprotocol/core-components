@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.6.0...@bosonprotocol/metadata@1.6.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* fix issue in subgraph when returnPeriod overflows ([#339](https://github.com/bosonprotocol/core-components/issues/339)) ([05b73bb](https://github.com/bosonprotocol/core-components/commit/05b73bb022cf01f8635cf52e48017668ebaedf8c))
+
+
+
+
+
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.5.0...@bosonprotocol/metadata@1.6.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* variations metadata ([#337](https://github.com/bosonprotocol/core-components/issues/337)) ([ab9eaa7](https://github.com/bosonprotocol/core-components/commit/ab9eaa75edf485b458fdce78b4c5d174e8a87240))
+
+
+### Features
+
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+
+
+
+
+
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.4.0...@bosonprotocol/metadata@1.5.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
 # [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.3.1...@bosonprotocol/metadata@1.4.0) (2022-10-05)
 
 

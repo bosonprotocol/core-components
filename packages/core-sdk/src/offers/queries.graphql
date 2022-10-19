@@ -64,7 +64,7 @@ fragment BaseOfferFields on Offer {
   validUntilDate
   voucherRedeemableFromDate
   voucherRedeemableUntilDate
-  fulfillmentPeriodDuration
+  disputePeriodDuration
   voucherValidDuration
   resolutionPeriodDuration
   metadataUri
@@ -90,6 +90,7 @@ fragment BaseOfferFields on Offer {
     name
     description
     externalUrl
+    licenseUrl
     schemaUrl
     type
     ... on ProductV1MetadataEntity {

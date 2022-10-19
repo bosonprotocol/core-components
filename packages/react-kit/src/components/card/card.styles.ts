@@ -154,8 +154,8 @@ export const CardBottom = styled.div`
       opacity: 0.4;
     }
     :hover {
-      background-color: ${({ theme }) => theme?.colors?.light.accent};
-      border-color: ${({ theme }) => theme?.colors?.light.accent};
+      background-color: ${({ theme }) => theme?.colors?.light.secondary};
+      border-color: ${({ theme }) => theme?.colors?.light.secondary};
       color: #ffffff;
     }
     @media (hover: hover) {

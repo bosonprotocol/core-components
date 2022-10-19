@@ -865,7 +865,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1427,7 +1427,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1556,7 +1556,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1722,7 +1722,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1883,7 +1883,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2123,7 +2123,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2171,9 +2171,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "uint96",
+            internalType: "uint256",
             name: "royaltyPercentage",
-            type: "uint96",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -2318,7 +2318,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2408,9 +2408,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "uint96",
+            internalType: "uint256",
             name: "royaltyPercentage",
-            type: "uint96",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -2555,7 +2555,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2640,9 +2640,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "uint96",
+            internalType: "uint256",
             name: "royaltyPercentage",
-            type: "uint96",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -2787,7 +2787,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2914,9 +2914,9 @@ const _abi = [
             type: "string",
           },
           {
-            internalType: "uint96",
+            internalType: "uint256",
             name: "royaltyPercentage",
-            type: "uint96",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",

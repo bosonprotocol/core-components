@@ -17,7 +17,7 @@ export function saveExchangeToken(exchangeTokenAddress: Address): void {
       const networkName = dataSource.network();
 
       exchangeToken.decimals = BigInt.fromI32(18);
-      if (["mumbai", "polygon"].includes(networkName)) {
+      if (["mumbai", "maticmum", "polygon", "matic"].includes(networkName)) {
         exchangeToken.name = "Matic";
         exchangeToken.symbol = "MATIC";
       } else {

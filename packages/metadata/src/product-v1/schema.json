@@ -7,6 +7,7 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
+    "licenseUrl": { "type": "string" },
     "image": { "type": "string" },
     "attributes": {
       "type": "array",
@@ -141,7 +142,10 @@
           }
         },
         "redemptionPoint": { "type": "string" },
-        "returnPeriod": { "type": "string" }
+        "returnPeriod": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
       },
       "required": ["returnPeriod"]
     },
@@ -212,6 +216,7 @@
     "name",
     "description",
     "externalUrl",
+    "licenseUrl",
     "image",
     "attributes",
     "product",

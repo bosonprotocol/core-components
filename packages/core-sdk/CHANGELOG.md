@@ -3,6 +3,67 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.0...@bosonprotocol/core-sdk@1.20.1) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.19.1...@bosonprotocol/core-sdk@1.20.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* only save funds log for seller ([#325](https://github.com/bosonprotocol/core-components/issues/325)) ([5578bc9](https://github.com/bosonprotocol/core-components/commit/5578bc964c4a43166de73c065b553e2893788b3f))
+
+
+### Features
+
+* expose `metaTxHandler.getResubmitted` ([#330](https://github.com/bosonprotocol/core-components/issues/330)) ([e5abfa7](https://github.com/bosonprotocol/core-components/commit/e5abfa7d13ede12815c940f85ade3c4361525238))
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+
+
+
+
+
+## [1.19.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.19.0...@bosonprotocol/core-sdk@1.19.1) (2022-10-13)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.18.0...@bosonprotocol/core-sdk@1.19.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.17.0...@bosonprotocol/core-sdk@1.18.0) (2022-10-12)
+
+
+### Features
+
+* allow to search for a seller account based on the auth token ([#295](https://github.com/bosonprotocol/core-components/issues/295)) ([31de408](https://github.com/bosonprotocol/core-components/commit/31de40861723b66e543e601606f27f668840efbc))
+* contract uri and royalty support in subgraph ([#303](https://github.com/bosonprotocol/core-components/issues/303)) ([edc44c1](https://github.com/bosonprotocol/core-components/commit/edc44c1977190635becfb8110d39396545feb5df))
+* fetch tokenIds in parallel ([#305](https://github.com/bosonprotocol/core-components/issues/305)) ([54a1017](https://github.com/bosonprotocol/core-components/commit/54a10170fe733e071518e0d5868b5ae13b5868fe))
+* return all seller accounts linked to auth tokens ([#306](https://github.com/bosonprotocol/core-components/issues/306)) ([ad2c61a](https://github.com/bosonprotocol/core-components/commit/ad2c61a1c1276af696787c474050f75c45cda663))
+* seller meta tx + batch methods ([#292](https://github.com/bosonprotocol/core-components/issues/292)) ([c7acc0d](https://github.com/bosonprotocol/core-components/commit/c7acc0d75c2b80896dc44250a03c99f7dbdc9aff))
+* update to latest commit of contracts ([#297](https://github.com/bosonprotocol/core-components/issues/297)) ([0efcc9c](https://github.com/bosonprotocol/core-components/commit/0efcc9ca05dd85bffbd48fa927f69667c605f708))
+* upgrade contracts to v2.0.0-rc.4 (testing & staging) ([#311](https://github.com/bosonprotocol/core-components/issues/311)) ([38319c4](https://github.com/bosonprotocol/core-components/commit/38319c400758a748849762c2c180a1d521f9b104))
+
+
+
+
+
 # [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.16.0...@bosonprotocol/core-sdk@1.17.0) (2022-10-05)
 
 

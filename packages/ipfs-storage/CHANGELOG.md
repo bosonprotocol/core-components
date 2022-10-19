@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.9.1...@bosonprotocol/ipfs-storage@1.9.2) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.9.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.9.0...@bosonprotocol/ipfs-storage@1.9.1) (2022-10-18)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.8.0...@bosonprotocol/ipfs-storage@1.9.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.7.2...@bosonprotocol/ipfs-storage@1.8.0) (2022-10-05)
 
 

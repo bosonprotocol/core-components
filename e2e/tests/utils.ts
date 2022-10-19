@@ -13,6 +13,8 @@ import {
 } from "../../packages/core-sdk/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
+import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
+import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import {
   ACCOUNT_1,
   ACCOUNT_2,
@@ -23,7 +25,8 @@ import {
   ACCOUNT_7,
   ACCOUNT_8,
   ACCOUNT_9,
-  ACCOUNT_10
+  ACCOUNT_10,
+  ACCOUNT_11
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
@@ -122,6 +125,7 @@ export const metadata = {
   name: "name",
   description: "description",
   externalUrl: "external-url.com",
+  licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
 export const sellerFundsDepositInEth = "5";
@@ -129,11 +133,11 @@ export const sellerFundsDepositInEth = "5";
 export const defaultConfig = getDefaultConfig("local");
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
-export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);
-export const drWallet = new Wallet(ACCOUNT_2.privateKey, provider);
 // seedWallets used by accounts test
+export const deployerWallet = new Wallet(ACCOUNT_1.privateKey, provider);
 export const seedWallet3 = new Wallet(ACCOUNT_3.privateKey, provider);
 // seedWallets used by core-sdk test
+export const drWallet = new Wallet(ACCOUNT_2.privateKey, provider);
 export const seedWallet4 = new Wallet(ACCOUNT_4.privateKey, provider);
 export const seedWallet5 = new Wallet(ACCOUNT_5.privateKey, provider);
 export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
@@ -141,6 +145,7 @@ export const seedWallet6 = new Wallet(ACCOUNT_6.privateKey, provider);
 export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
+export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 
@@ -217,9 +222,9 @@ export async function createFundedWallet(
 export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
-  let seller = await sellerCoreSDK.getSellerByAddress(sellerAddress);
+  let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
 
-  if (!seller) {
+  if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
       operator: sellerAddress,
       treasury: sellerAddress,
@@ -233,10 +238,10 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
-    seller = await sellerCoreSDK.getSellerByAddress(sellerAddress);
+    sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   }
 
-  return seller;
+  return sellers;
 }
 
 export async function ensureMintedAndAllowedTokens(
@@ -271,36 +276,71 @@ export async function ensureMintedAndAllowedTokens(
 }
 
 export async function createDisputeResolver(
-  wallet: Wallet,
+  drWallet: Wallet,
+  protocolWallet: Wallet,
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
   options: Partial<{
     activate: boolean;
   }> = {}
 ) {
-  const coreSDK = initCoreSDKWithWallet(wallet);
+  const drCoreSDK = initCoreSDKWithWallet(drWallet);
+  const protocolAdminCoreSDK = initCoreSDKWithWallet(protocolWallet);
 
   const receipt = await (
-    await coreSDK.createDisputeResolver(disputeResolverToCreate)
+    await drCoreSDK.createDisputeResolver(disputeResolverToCreate)
   ).wait();
-  const disputeResolverId = coreSDK.getDisputeResolverIdFromLogs(receipt.logs);
+  const disputeResolverId = drCoreSDK.getDisputeResolverIdFromLogs(
+    receipt.logs
+  );
 
   if (!disputeResolverId) {
     throw new Error("Failed to create dispute resolver");
   }
 
   if (options.activate && disputeResolverId) {
-    await (await coreSDK.activateDisputeResolver(disputeResolverId)).wait();
+    await (
+      await protocolAdminCoreSDK.activateDisputeResolver(disputeResolverId)
+    ).wait();
   }
 
   await waitForGraphNodeIndexing();
 
-  const disputeResolver = await coreSDK.getDisputeResolverById(
+  const disputeResolver = await drCoreSDK.getDisputeResolverById(
     disputeResolverId
   );
 
   return {
     disputeResolverId,
     disputeResolver,
-    protocolAdminCoreSDK: coreSDK
+    protocolAdminCoreSDK,
+    disputeResolverCoreSDK: drCoreSDK
   };
+}
+
+export async function createOffer(
+  coreSDK: CoreSDK,
+  offerParams?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
 }

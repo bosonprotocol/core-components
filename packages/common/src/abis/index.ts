@@ -9,6 +9,7 @@ import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
 import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.json";
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
+import IBosonVoucherABI from "./IBosonVoucher.json";
 import ProtocolDiamondABI from "./ProtocolDiamond.json";
 
 export {
@@ -21,5 +22,6 @@ export {
   IBosonMetaTransactionsHandlerABI,
   IBosonOfferHandlerABI,
   IBosonOrchestrationHandlerABI,
+  IBosonVoucherABI,
   ProtocolDiamondABI
 };

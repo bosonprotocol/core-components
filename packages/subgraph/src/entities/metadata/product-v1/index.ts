@@ -2,6 +2,7 @@ import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
 
 import { ProductV1MetadataEntity, Offer } from "../../../../generated/schema";
 import {
+  convertToInt,
   convertToObject,
   convertToObjectArray,
   convertToString
@@ -24,22 +25,31 @@ export function saveProductV1Metadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
   const image = convertToString(metadataObj.get("image"));
   const attributes = convertToObjectArray(metadataObj.get("attributes"));
   const uuid = convertToString(metadataObj.get("uuid"));
 
   const savedMetadataAttributeIds = saveMetadataAttributes(attributes);
-  const savedProductId = saveProductV1ProductOrOverrides(
-    convertToObject(metadataObj.get("product")),
-    false
-  );
-  const savedVariationIds = saveProductV1Variations(
-    convertToObjectArray(metadataObj.get("variations"))
-  );
   const savedProductV1SellerId = saveProductV1Seller(
     convertToObject(metadataObj.get("seller")),
     offer.sellerId.toString()
+  );
+  const productObj = convertToObject(metadataObj.get("product"));
+  const savedProductId = saveProductV1ProductOrOverrides(
+    productObj,
+    savedProductV1SellerId,
+    false
+  );
+  let productUuid = "";
+  let productVersion = 0;
+  if (productObj !== null) {
+    productUuid = convertToString(productObj.get("uuid"));
+    productVersion = convertToInt(productObj.get("version"));
+  }
+  const savedVariationIds = saveProductV1Variations(
+    convertToObjectArray(metadataObj.get("variations"))
   );
   const savedShippingId = saveProductV1Shipping(
     convertToObject(metadataObj.get("shipping")),
@@ -51,6 +61,7 @@ export function saveProductV1Metadata(
   );
   const savedProductOverridesId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("productOverrides")),
+    savedProductV1SellerId,
     true
   );
 
@@ -71,6 +82,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
+  productV1MetadataEntity.licenseUrl = licenseUrl;
   productV1MetadataEntity.schemaUrl = schemaUrl;
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.image = image;
@@ -90,6 +102,8 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.numberOfRedemptions = offer.numberOfRedemptions;
 
   productV1MetadataEntity.product = savedProductId;
+  productV1MetadataEntity.productUuid = productUuid;
+  productV1MetadataEntity.productVersion = productVersion;
   productV1MetadataEntity.variations = savedVariationIds;
   productV1MetadataEntity.productV1Seller = savedProductV1SellerId;
   productV1MetadataEntity.shipping = savedShippingId;

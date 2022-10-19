@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Loading } from "../Loading";
 
 import { ButtonStyle } from "./Button.styles";
@@ -15,12 +15,16 @@ export interface ButtonProps {
   loading?: boolean;
   size?: ButtonSize;
   variant?:
-    | "primaryFill"
-    | "primaryInverted"
-    | "secondaryFill"
-    | "secondaryInverted"
-    | "accentFill"
-    | "accentInverted";
+    | "primary"
+    | "primaryOutline"
+    | "secondary"
+    | "secondaryOutline"
+    | "ghost"
+    | "ghostSecondary"
+    | "ghostOrange"
+    | "tertiary"
+    | "danger"
+    | "warning";
   className?: string;
   children?: React.ReactNode;
   showBorder?: boolean;
@@ -29,35 +33,36 @@ export interface ButtonProps {
   withBosonStyle?: boolean;
 }
 
-export const Button = ({
-  children,
-  onClick,
-  className,
-  size = ButtonSize.Medium,
-  variant = "primaryFill",
-  showBorder = true,
-  type = "button",
-  style = {},
-  withBosonStyle = false,
-  ...props
-}: ButtonProps) => {
-  return (
-    <ButtonStyle
-      variant={variant}
-      className={className}
-      onClick={onClick}
-      size={size}
-      showBorder={showBorder}
-      type={type}
-      style={style}
-      withBosonStyle={withBosonStyle}
-      {...props}
-    >
-      {props.loading ? (
-        <Loading data-loading />
-      ) : (
-        <span id="buttonText">{children}</span>
-      )}
-    </ButtonStyle>
-  );
-};
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      onClick,
+      className,
+      size = ButtonSize.Medium,
+      variant = "primary",
+      showBorder,
+      type,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <ButtonStyle
+        variant={variant}
+        className={className}
+        onClick={onClick}
+        size={size}
+        ref={ref}
+        {...props}
+      >
+        {props.loading ? (
+          <Loading data-loading />
+        ) : (
+          <span id="buttonText">{children}</span>
+        )}
+      </ButtonStyle>
+    );
+  }
+);

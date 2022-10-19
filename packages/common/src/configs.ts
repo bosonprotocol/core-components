@@ -1,4 +1,4 @@
-import { EnvironmentType, ProtocolConfig } from "./types";
+import { EnvironmentType, Lens, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
@@ -21,25 +21,29 @@ const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
 ]);
 
 // https://docs.lens.xyz/docs/deployed-contract-addresses
-const chainIdToLensContractAddresses = new Map<
-  number,
-  {
-    LENS_HUB_CONTRACT: string;
-    LENS_PERIPHERY_CONTRACT: string;
-  }
->([
+const chainIdToLensInfo = new Map<number, Lens>([
   [
     80001,
     {
       LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8"
+      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8",
+      LENS_PROFILES_CONTRACT_ADDRESS:
+        "0x60ae865ee4c725cd04353b5aab364553f56cef82",
+      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
+        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
+      apiLink: "https://api-mumbai.lens.dev/"
     }
   ],
   [
     137,
     {
       LENS_HUB_CONTRACT: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
-      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f"
+      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f",
+      LENS_PROFILES_CONTRACT_ADDRESS:
+        "0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
+      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
+        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
+      apiLink: "https://api.lens.dev"
     }
   ]
 ]);
@@ -57,15 +61,14 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8fc9ee1affbcef914d1c29525b5addd362998ded
-      protocolDiamond: "0xC95834A64c2De9AaCA8960465886EF265c26fa5A"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
+      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(80001) &&
-        chainIdToLensContractAddresses.get(80001))
+      ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
     }
   },
   {
@@ -80,36 +83,35 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8fc9ee1affbcef914d1c29525b5addd362998ded
-      protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
+      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(80001) &&
-        chainIdToLensContractAddresses.get(80001))
+      ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
     }
   },
   {
     envName: "production",
-    chainId: 80001, // TODO: swap to 137 after protocol deployment
-    nativeCoin: chainIdToInfo.get(80001), // TODO: swap to 137 after protocol deployment
-    getTxExplorerUrl: chainIdToGraphTx.get(80001), // TODO: swap to 137 after protocol deployment
-    subgraphUrl: "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai", // TODO: re-deploy subgraphs to correct org & swap for "real" one after protocol deployment
+    chainId: 137,
+    nativeCoin: chainIdToInfo.get(137),
+    getTxExplorerUrl: chainIdToGraphTx.get(137),
+    subgraphUrl:
+      "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
-      "https://polygon-mumbai.infura.io/v3/383117b55d614525b07f03b5979c5f19", // TODO: switch to polygon endpoint after protocol deployment
+      "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: "0x1796B155D4A719d6eBe0496F4914c98a480e668C"
+      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io" // TODO: where will we configure the API key? Also for staging config
+      relayerUrl: "https://api.biconomy.io"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(80001) &&
-        chainIdToLensContractAddresses.get(80001))
+      ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
     }
   },
   {
@@ -129,8 +131,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       relayerUrl: "http://localhost:8888"
     },
     lens: {
-      ...(chainIdToLensContractAddresses.has(31337) &&
-        chainIdToLensContractAddresses.get(31337))
+      ...(chainIdToLensInfo.has(31337) && chainIdToLensInfo.get(31337))
     }
   }
 ];

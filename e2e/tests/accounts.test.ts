@@ -1,3 +1,4 @@
+import { MSEC_PER_DAY, MSEC_PER_SEC } from './../../packages/common/src/utils/timestamp';
 import { utils, constants, Wallet } from "ethers";
 
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -8,7 +9,8 @@ import {
   waitForGraphNodeIndexing,
   createDisputeResolver,
   deployerWallet,
-  seedWallet3
+  seedWallet3,
+  createFundedWallet
 } from "./utils";
 
 jest.setTimeout(60_000);
@@ -18,7 +20,7 @@ const sellerWallet = seedWallet3; // be sure the seedWallet is not used by anoth
 
 describe("CoreSDK - accounts", () => {
   describe("dispute resolver", () => {
-    const escalationResponsePeriodInMS = 60_000_000_000;
+    const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
     // TODO: use valid metadata uri
     const metadataUri = "ipfs://dispute-resolver-uri";
     const ethDisputeResolutionFee = {
@@ -28,10 +30,11 @@ describe("CoreSDK - accounts", () => {
     };
 
     test("create", async () => {
-      const disputeResolverAddress =
-        Wallet.createRandom().address.toLowerCase();
+      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -59,10 +62,11 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("activate", async () => {
-      const disputeResolverAddress =
-        Wallet.createRandom().address.toLowerCase();
+      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+      const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -90,6 +94,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,
@@ -138,6 +143,7 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -186,6 +192,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,
@@ -219,13 +226,15 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("add sellers", async () => {
-      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
+      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
+        fundedWallet,
         protocolAdminWallet,
         {
           operator: disputeResolverAddress,
@@ -257,14 +266,16 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("remove sellers", async () => {
-      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
+      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
+      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(
+          fundedWallet,
           protocolAdminWallet,
           {
             operator: disputeResolverAddress,

@@ -1,3 +1,4 @@
+export { AuthTokenType } from "@bosonprotocol/common";
 export * from "@bosonprotocol/core-sdk";
 export * from "@bosonprotocol/ethers-sdk";
 export * from "@bosonprotocol/ipfs-storage";
@@ -8,6 +9,7 @@ export * from "./components/cta/exchange/RevokeButton";
 export * from "./components/cta/exchange/RedeemButton";
 export * from "./components/cta/exchange/CompleteButton";
 export * from "./components/cta/exchange/BatchCompleteButton";
+export * from "./components/cta/exchange/ExpireButton";
 export * from "./components/cta/offer/CommitButton";
 export * from "./components/cta/offer/VoidButton";
 export * from "./components/buttons/Button";

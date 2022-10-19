@@ -29,7 +29,8 @@ import * as metadata from "./metadata";
 import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
-import { getValueFromLogs } from "./utils/logs";
+import { getValueFromLogs, getValuesFromLogs } from "./utils/logs";
+import { GetRetriedHashesData } from "./meta-tx/biconomy";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -181,6 +182,12 @@ export class CoreSDK {
     );
   }
 
+  public async getProductV1Products(
+    queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
+  ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
+    return metadata.subgraph.getProductV1Products(this._subgraphUrl, queryVars);
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */
@@ -278,14 +285,14 @@ export class CoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByAddress(
+  public async getSellersByAddress(
     address: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
+  ): Promise<subgraph.SellerFieldsFragment[]> {
     if (address === AddressZero) {
       throw new Error(`Unsupported search address '${AddressZero}'`);
     }
-    let seller = await accounts.subgraph.getSellerByAddress(
+    const seller = await accounts.subgraph.getSellerByAddress(
       this._subgraphUrl,
       address,
       queryVars
@@ -294,15 +301,19 @@ export class CoreSDK {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
+      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
       for (const tokenId of tokenIds) {
         // Just in case the user owns several auth tokens
-        seller = await this.getSellerByAuthToken(tokenId, tokenType, queryVars);
-        if (seller) {
-          return seller;
-        }
+        const sellerPromise = this.getSellerByAuthToken(
+          tokenId,
+          tokenType,
+          queryVars
+        );
+        promises.push(sellerPromise);
       }
+      return (await Promise.all(promises)).filter((seller) => !!seller);
     }
-    return seller;
+    return [seller].filter((seller) => !!seller);
   }
 
   /**
@@ -328,17 +339,18 @@ export class CoreSDK {
       web3Lib: this._web3Lib
     });
 
-    const ret = [];
     const balanceBN = BigNumber.from(balance);
+    const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenId = await erc721.handler.tokenOfOwnerByIndex({
+      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
         contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
         owner: address,
         index,
         web3Lib: this._web3Lib
       });
-      ret.push(tokenId);
+      promises.push(tokenIdPromise);
     }
+    const ret = await Promise.all(promises);
     return ret;
   }
 
@@ -676,6 +688,28 @@ export class CoreSDK {
   }
 
   /**
+   * Creates a batch of offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if there is an existing seller account for connected signer.
+   * @param offersToCreate - Offer arguments.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createOfferBatch(
+    offersToCreate: offers.CreateOfferArgs[],
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.createOfferBatch({
+      offersToCreate,
+      web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Utility method to retrieve the created `offerId` from logs after calling `createOffer`
    * or `createOfferAndSeller`.
    * @param logs - Logs to search in.
@@ -698,6 +732,20 @@ export class CoreSDK {
         eventName: "OfferCreated"
       })
     );
+  }
+
+  /**
+   * Utility method to retrieve the created `offerIds` from logs after calling `createOfferBatch`
+   * @param logs - Logs to search in.
+   * @returns Array of created offerIds.
+   */
+  public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
+    return getValuesFromLogs({
+      iface: offers.iface.bosonOfferHandlerIface,
+      logs,
+      eventArgsKey: "offerId",
+      eventName: "OfferCreated"
+    });
   }
 
   /**
@@ -1272,7 +1320,7 @@ export class CoreSDK {
    */
   public async resolveDispute(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
     sigR: BytesLike;
     sigS: BytesLike;
     sigV: BigNumberish;
@@ -1351,12 +1399,12 @@ export class CoreSDK {
    * Signs dispute resolution message.
    * @param args - Dispute resolve arguments:
    * - `args.exchangeId` - ID of disputed exchange.
-   * - `args.buyerPercent` - Percentage of deposit the buyer gets.
+   * - `args.buyerPercentBasisPoints` - Percentage of deposit the buyer gets.
    * @returns Signature.
    */
   public async signDisputeResolutionProposal(args: {
     exchangeId: BigNumberish;
-    buyerPercent: BigNumberish;
+    buyerPercentBasisPoints: BigNumberish;
   }) {
     return disputes.handler.signResolutionProposal({
       ...args,
@@ -1375,16 +1423,124 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTx(
+  public async signMetaTx(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTx>[0],
+      Parameters<typeof metaTx.handler.signMetaTx>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTx({
+    return metaTx.handler.signMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createSeller` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateSeller(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateSeller>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateSeller({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOffer(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOfferBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `voidOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxVoidOffer(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxVoidOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxVoidOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `voidOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxVoidOfferBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxVoidOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxVoidOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `completeExchangeBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCompleteExchangeBatch(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCompleteExchangeBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCompleteExchangeBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
       ...args
     });
   }
@@ -1394,13 +1550,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxCommitToOffer(
+  public async signMetaTxCommitToOffer(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxCommitToOffer>[0],
+      Parameters<typeof metaTx.handler.signMetaTxCommitToOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxCommitToOffer({
+    return metaTx.handler.signMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1413,13 +1569,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxCancelVoucher(
+  public async signMetaTxCancelVoucher(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxCancelVoucher>[0],
+      Parameters<typeof metaTx.handler.signMetaTxCancelVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxCancelVoucher({
+    return metaTx.handler.signMetaTxCancelVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1432,13 +1588,32 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRedeemVoucher(
+  public async signMetaTxRedeemVoucher(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRedeemVoucher>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRedeemVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRedeemVoucher({
+    return metaTx.handler.signMetaTxRedeemVoucher({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `expireVoucher` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExpireVoucher(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxExpireVoucher>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxExpireVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1451,13 +1626,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRetractDispute(
+  public async signMetaTxRetractDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRetractDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRetractDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRetractDispute({
+    return metaTx.handler.signMetaTxRetractDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1470,13 +1645,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxEscalateDispute(
+  public async signMetaTxEscalateDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxEscalateDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxEscalateDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxEscalateDispute({
+    return metaTx.handler.signMetaTxEscalateDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1489,13 +1664,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxRaiseDispute(
+  public async signMetaTxRaiseDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxRaiseDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxRaiseDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxRaiseDispute({
+    return metaTx.handler.signMetaTxRaiseDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1508,13 +1683,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxResolveDispute(
+  public async signMetaTxResolveDispute(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxResolveDispute>[0],
+      Parameters<typeof metaTx.handler.signMetaTxResolveDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxResolveDispute({
+    return metaTx.handler.signMetaTxResolveDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1527,13 +1702,13 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-  public async signExecuteMetaTxWithdrawFunds(
+  public async signMetaTxWithdrawFunds(
     args: Omit<
-      Parameters<typeof metaTx.handler.signExecuteMetaTxWithdrawFunds>[0],
+      Parameters<typeof metaTx.handler.signMetaTxWithdrawFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return metaTx.handler.signExecuteMetaTxWithdrawFunds({
+    return metaTx.handler.signMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -1562,18 +1737,8 @@ export class CoreSDK {
       metaTxConfig: Partial<MetaTxConfig>;
     }> = {}
   ): Promise<ContractTransaction> {
-    const metaTxRelayerUrl =
-      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
-    const metaTxApiKey =
-      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
-    const metaTxApiId =
-      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
-
-    if (!this.isMetaTxConfigSet) {
-      throw new Error(
-        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
-      );
-    }
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig(overrides.metaTxConfig);
 
     return metaTx.handler.relayMetaTransaction({
       web3LibAdapter: this._web3Lib,
@@ -1597,6 +1762,61 @@ export class CoreSDK {
         }
       }
     });
+  }
+
+  /**
+   * Returns information of submitted meta transaction.
+   * See https://docs.biconomy.io/api/native-meta-tx/get-retried-hashes.
+   * @param originalMetaTxHash - Original meta transaction as returned by `coreSDK.relayMetaTransaction`
+   * @param overrides - Optional overrides for meta transaction config.
+   * @returns - Additional meta transaction information.
+   */
+  public async getResubmittedMetaTx(
+    originalMetaTxHash: string,
+    overrides: Partial<{
+      metaTxConfig: Partial<MetaTxConfig>;
+    }> = {}
+  ): Promise<GetRetriedHashesData> {
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig(overrides.metaTxConfig);
+
+    return metaTx.handler.getResubmitted({
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        originalHash: originalMetaTxHash
+      }
+    });
+  }
+
+  private assertAndGetMetaTxConfig(
+    metaTxConfigOverrides?: Partial<MetaTxConfig>
+  ) {
+    const metaTxRelayerUrl =
+      this._metaTxConfig?.relayerUrl || metaTxConfigOverrides?.relayerUrl;
+    const metaTxApiKey =
+      this._metaTxConfig?.apiKey || metaTxConfigOverrides?.apiKey;
+    const metaTxApiId =
+      this._metaTxConfig?.apiId || metaTxConfigOverrides?.apiId;
+
+    if (
+      !this.isMetaTxConfigSet ||
+      !(metaTxRelayerUrl && metaTxApiKey && metaTxApiId)
+    ) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
+    }
+
+    return {
+      metaTxRelayerUrl,
+      metaTxApiId,
+      metaTxApiKey
+    };
   }
 
   /* -------------------------------------------------------------------------- */

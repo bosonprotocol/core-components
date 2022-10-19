@@ -85,7 +85,7 @@ export const ButtonStyle = styled.button.attrs(
     `}
 
   ${({ variant, disabled }) =>
-    variant === "primaryFill" &&
+    variant === "primary" &&
     !disabled &&
     css`
       background: ${({ theme }) => theme?.colors?.light.primary};
@@ -102,43 +102,16 @@ export const ButtonStyle = styled.button.attrs(
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.white};
         }
-        span {
-          color: ${({ theme }) => theme?.colors?.light.white};
-        }
       }
     `}
 
   ${({ variant, disabled }) =>
-    variant === "primaryInverted" &&
+    variant === "primaryOutline" &&
     !disabled &&
     css`
       background: ${({ theme }) => theme?.colors?.light.white};
       background-color: ${({ theme }) => theme?.colors?.light.white};
-      border: ${({ showBorder, theme }) =>
-        showBorder ? `2px solid ${theme?.colors?.light.primary}` : "none"};
-      color: ${({ theme }) => theme?.colors?.light.primary};
-      svg {
-        stroke: ${({ theme }) => theme?.colors?.light.primary};
-      }
-      :hover {
-        background: ${({ theme }) => theme?.colors?.light.lightGrey};
-        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        border: ${({ showBorder, theme }) =>
-          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
-        color: ${({ theme }) => theme?.colors?.light.black};
-        svg {
-          stroke: ${({ theme }) => theme?.colors?.light.black};
-        }
-      }
-    `}
-
-    ${({ variant, disabled }) =>
-    variant === "secondaryFill" &&
-    !disabled &&
-    css`
-      background: ${({ theme }) => theme?.colors?.light.secondary};
-      background-color: ${({ theme }) => theme?.colors?.light.secondary};
-      border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
+      border: 2px solid ${({ theme }) => theme?.colors?.light.primary};
       color: ${({ theme }) => theme?.colors?.light.black};
       svg {
         stroke: ${({ theme }) => theme?.colors?.light.black};
@@ -154,23 +127,42 @@ export const ButtonStyle = styled.button.attrs(
       }
     `}
 
-    ${({ variant, disabled }) =>
-    variant === "secondaryInverted" &&
+  ${({ variant, disabled }) =>
+    variant === "secondary" &&
     !disabled &&
     css`
-      background: transparent;
-      border: 2px solid ${({ theme }) => theme?.colors?.light.secondary};
-      border: ${({ showBorder, theme }) =>
-        showBorder ? `2px solid ${theme?.colors?.light.secondary}` : "none"};
-      color: ${({ theme }) => theme?.colors?.light.secondary};
+      background: ${({ theme }) => theme?.colors?.light.orange};
+      background-color: ${({ theme }) => theme?.colors?.light.orange};
+      border-color: transparent;
+      color: ${({ theme }) => theme?.colors?.light.white};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.secondary};
+        stroke: ${({ theme }) => theme?.colors?.light.white};
+      }
+      :hover {
+        background: ${({ theme }) => theme?.colors?.light.black};
+        background-color: ${({ theme }) => theme?.colors?.light.black};
+        color: ${({ theme }) => theme?.colors?.light.white};
+        svg {
+          stroke: ${({ theme }) => theme?.colors?.light.white};
+        }
+      }
+    `}
+
+    ${({ variant, disabled }) =>
+    variant === "secondaryOutline" &&
+    !disabled &&
+    css`
+      background: ${({ theme }) => theme?.colors?.light.white};
+      background-color: ${({ theme }) => theme?.colors?.light.white};
+      border: 2px solid ${({ theme }) => theme?.colors?.light.orange};
+      color: ${({ theme }) => theme?.colors?.light.orange};
+      svg {
+        stroke: ${({ theme }) => theme?.colors?.light.orange};
       }
       :hover {
         background: ${({ theme }) => theme?.colors?.light.lightGrey};
         background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
-        border: ${({ showBorder, theme }) =>
-          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
+        border: 2px solid ${({ theme }) => theme?.colors?.light.black};
         color: ${({ theme }) => theme?.colors?.light.black};
         svg {
           stroke: ${({ theme }) => theme?.colors?.light.black};
@@ -179,46 +171,62 @@ export const ButtonStyle = styled.button.attrs(
     `}
 
     ${({ variant, disabled }) =>
-    variant === "accentFill" &&
+    variant === "ghost" &&
     !disabled &&
     css`
-      background: ${({ theme }) => theme?.colors?.light.accent};
-      background-color: ${({ theme }) => theme?.colors?.light.accent};
+      background: ${({ theme }) => theme?.colors?.light.white};
+      background-color: ${({ theme }) => theme?.colors?.light.white};
       border-color: transparent;
-      color: ${({ theme }) => theme?.colors?.light.black};
+      color: ${({ theme }) => theme?.colors?.light.darkGrey};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.black};
+        stroke: ${({ theme }) => theme?.colors?.light.darkGrey};
       }
       :hover {
-        background: ${({ theme }) => theme?.colors?.light.black};
-        background-color: ${({ theme }) => theme?.colors?.light.black};
-        color: ${({ theme }) => theme?.colors?.light.white};
+        background: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        color: ${({ theme }) => theme?.colors?.light.black};
         svg {
-          stroke: ${({ theme }) => theme?.colors?.light.white};
+          stroke: ${({ theme }) => theme?.colors?.light.black};
         }
       }
     `}
-
     ${({ variant, disabled }) =>
-    variant === "accentInverted" &&
+    variant === "ghostSecondary" &&
     !disabled &&
     css`
-      background: transparent;
-      border: 2px solid ${({ theme }) => theme?.colors?.light.accent};
-      border: ${({ showBorder, theme }) =>
-        showBorder ? `2px solid ${theme?.colors?.light.accent}` : "none"};
-      color: ${({ theme }) => theme?.colors?.light.accent};
+      background: ${({ theme }) => theme?.colors?.light.white};
+      background-color: ${({ theme }) => theme?.colors?.light.white};
+      border-color: transparent;
+      color: ${({ theme }) => theme?.colors?.light.secondary};
       svg {
-        stroke: ${({ theme }) => theme?.colors?.light.accent};
+        stroke: ${({ theme }) => theme?.colors?.light.secondary};
       }
       :hover {
-        background: ${({ theme }) => theme?.colors?.light.black};
-        background-color: ${({ theme }) => theme?.colors?.light.black};
-        border: ${({ showBorder, theme }) =>
-          showBorder ? `2px solid ${theme?.colors?.light.black}` : "none"};
-        color: ${({ theme }) => theme?.colors?.light.white};
+        background: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        color: ${({ theme }) => theme?.colors?.light.black};
         svg {
-          stroke: ${({ theme }) => theme?.colors?.light.white};
+          stroke: ${({ theme }) => theme?.colors?.light.black};
+        }
+      }
+    `}
+    ${({ variant, disabled }) =>
+    variant === "ghostOrange" &&
+    !disabled &&
+    css`
+      background: ${({ theme }) => theme?.colors?.light.white};
+      background-color: ${({ theme }) => theme?.colors?.light.white};
+      border-color: transparent;
+      color: ${({ theme }) => theme?.colors?.light.orange};
+      svg {
+        stroke: ${({ theme }) => theme?.colors?.light.orange};
+      }
+      :hover {
+        background: ${({ theme }) => theme?.colors?.light.lightGrey};
+        background-color: ${({ theme }) => theme?.colors?.light.lightGrey};
+        color: ${({ theme }) => theme?.colors?.light.black};
+        svg {
+          stroke: ${({ theme }) => theme?.colors?.light.black};
         }
       }
     `}

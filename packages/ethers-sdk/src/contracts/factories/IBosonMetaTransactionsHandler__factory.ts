@@ -93,6 +93,11 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_associatedAddress",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_nonce",
         type: "uint256",

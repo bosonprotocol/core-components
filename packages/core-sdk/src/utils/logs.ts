@@ -6,7 +6,22 @@ export function getValueFromLogs(args: {
   logs: Log[];
   eventArgsKey: string;
   eventName: string;
-}) {
+}): string | null {
+  const relevantLogs = getValuesFromLogs(args);
+
+  if (relevantLogs.length === 0) {
+    return null;
+  }
+
+  return relevantLogs[0];
+}
+
+export function getValuesFromLogs(args: {
+  iface: Interface;
+  logs: Log[];
+  eventArgsKey: string;
+  eventName: string;
+}): string[] {
   const parsedLogs = args.logs
     .map((log) => {
       try {
@@ -18,11 +33,13 @@ export function getValueFromLogs(args: {
     })
     .filter((log) => log !== null);
 
-  const [relevantLog] = parsedLogs.filter((log) => log.name === args.eventName);
+  const relevantLogs = parsedLogs.filter((log) => log.name === args.eventName);
 
-  if (!relevantLog) {
+  if (relevantLogs.length === 0) {
     return null;
   }
 
-  return String(relevantLog.args[args.eventArgsKey]);
+  return relevantLogs.map((relevantLog) =>
+    String(relevantLog.args[args.eventArgsKey])
+  );
 }

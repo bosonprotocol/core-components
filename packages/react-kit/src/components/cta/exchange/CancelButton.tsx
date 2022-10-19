@@ -29,7 +29,7 @@ export const CancelButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondaryFill",
+  variant = "secondary",
   ...coreSdkConfig
 }: ICancelButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -50,12 +50,15 @@ export const CancelButton = ({
             onPendingSignature?.();
 
             let txResponse;
+            const isMetaTx = Boolean(
+              coreSdk.isMetaTxConfigSet && signerAddress
+            );
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxCancelVoucher({
+                await coreSdk.signMetaTxCancelVoucher({
                   exchangeId,
                   nonce
                 });
@@ -72,7 +75,7 @@ export const CancelButton = ({
               txResponse = await coreSdk.cancelVoucher(exchangeId);
             }
 
-            onPendingTransaction?.(txResponse.hash);
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
 
             onSuccess?.(receipt as providers.TransactionReceipt, {

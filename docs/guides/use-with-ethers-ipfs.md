@@ -108,7 +108,7 @@ const txResponse = await coresSDK.createOffer({
   validUntilDateInMS: "...",
   voucherRedeemableFromDateInMS: "...",
   voucherRedeemableUntilDateInMS: "...",
-  fulfillmentPeriodDurationInMS: "...",
+  disputePeriodDurationInMS: "...",
   resolutionPeriodDurationInMS: "...",
   exchangeToken: "...",
   disputeResolverId: "...",

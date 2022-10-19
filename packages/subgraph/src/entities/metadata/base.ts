@@ -13,6 +13,7 @@ export function saveBaseMetadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
 
   let baseMetadataEntity = BaseMetadataEntity.load(metadataId);
@@ -35,6 +36,7 @@ export function saveBaseMetadata(
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;
   baseMetadataEntity.externalUrl = externalUrl;
+  baseMetadataEntity.licenseUrl = licenseUrl;
   baseMetadataEntity.schemaUrl = schemaUrl;
   baseMetadataEntity.save();
   return metadataId;

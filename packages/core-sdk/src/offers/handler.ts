@@ -5,7 +5,11 @@ import {
   MetadataStorage,
   utils
 } from "@bosonprotocol/common";
-import { bosonOfferHandlerIface, encodeCreateOffer } from "./interface";
+import {
+  bosonOfferHandlerIface,
+  encodeCreateOffer,
+  encodeCreateOfferBatch
+} from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
 import { CreateOfferArgs } from "./types";
@@ -31,6 +35,35 @@ export async function createOffer(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateOffer(args.offerToCreate)
+  });
+}
+
+export async function createOfferBatch(args: {
+  offersToCreate: CreateOfferArgs[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+}): Promise<TransactionResponse> {
+  for (const offerToCreate of args.offersToCreate) {
+    utils.validation.createOfferArgsSchema.validateSync(offerToCreate, {
+      abortEarly: false
+    });
+  }
+
+  await Promise.all(
+    args.offersToCreate.map((offerToCreate) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: offerToCreate.metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
+    )
+  );
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCreateOfferBatch(args.offersToCreate)
   });
 }
 

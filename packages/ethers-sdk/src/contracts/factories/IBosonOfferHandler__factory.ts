@@ -115,7 +115,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -342,7 +342,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -466,7 +466,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -676,7 +676,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {

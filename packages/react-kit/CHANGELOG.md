@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.10.0...@bosonprotocol/react-kit@0.11.0) (2022-10-19)
+
+
+### Bug Fixes
+
+* remove margin to prevent overlap on grid ([#338](https://github.com/bosonprotocol/core-components/issues/338)) ([79f999c](https://github.com/bosonprotocol/core-components/commit/79f999cff035687ac107b9d1c920345bbadfecca))
+
+
+### Features
+
+* add `isMetaTx` to `onPendingTransaction` hook ([#340](https://github.com/bosonprotocol/core-components/issues/340)) ([b8667ab](https://github.com/bosonprotocol/core-components/commit/b8667ab3c81f6181ace45302dd1c22d19e1d4a51))
+
+
+
+
+
+# [0.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.2...@bosonprotocol/react-kit@0.10.0) (2022-10-18)
+
+
+### Features
+
+* commit button pas ref add ([#315](https://github.com/bosonprotocol/core-components/issues/315)) ([8f9ff14](https://github.com/bosonprotocol/core-components/commit/8f9ff14815b4a7d9136af95ea87eddc7dd5e45a8))
+* getsignerAddress add to commit button ([#331](https://github.com/bosonprotocol/core-components/issues/331)) ([720f269](https://github.com/bosonprotocol/core-components/commit/720f269ddb510d8997ad319f101fe46d7c020f2e))
+
+
+
+
+
+## [0.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.1...@bosonprotocol/react-kit@0.9.2) (2022-10-13)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.9.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.0...@bosonprotocol/react-kit@0.9.1) (2022-10-13)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+# [0.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.8.0...@bosonprotocol/react-kit@0.9.0) (2022-10-12)
+
+
+### Bug Fixes
+
+* revert buttons changes ([#298](https://github.com/bosonprotocol/core-components/issues/298)) ([6e6cb9c](https://github.com/bosonprotocol/core-components/commit/6e6cb9ced923b96f23a0b51211317240588c5700))
+
+
+### Features
+
+* add lensContracts config to useCoreSdk ([#302](https://github.com/bosonprotocol/core-components/issues/302)) ([b5faadd](https://github.com/bosonprotocol/core-components/commit/b5faaddd9dea670cecc9057b0ae6bed6a3640573))
+* bp349 react kit update theme ([#285](https://github.com/bosonprotocol/core-components/issues/285)) ([4df66e9](https://github.com/bosonprotocol/core-components/commit/4df66e99568aa0a0b8390d4f151baa3f1433f2ab))
+* bp349 react kit update theme ([#296](https://github.com/bosonprotocol/core-components/issues/296)) ([bd572c8](https://github.com/bosonprotocol/core-components/commit/bd572c886fc13d1d845212f844987bbc655138b8))
+* exchange product card avatarname update ([#294](https://github.com/bosonprotocol/core-components/issues/294)) ([178d462](https://github.com/bosonprotocol/core-components/commit/178d462a23534a926e58967414bf834d7c8816c8))
+* expire cta add ([#304](https://github.com/bosonprotocol/core-components/issues/304)) ([53f2024](https://github.com/bosonprotocol/core-components/commit/53f2024a27a70c033e1be5c1580c852696b86e49))
+* return all seller accounts linked to auth tokens ([#306](https://github.com/bosonprotocol/core-components/issues/306)) ([ad2c61a](https://github.com/bosonprotocol/core-components/commit/ad2c61a1c1276af696787c474050f75c45cda663))
+* seller meta tx + batch methods ([#292](https://github.com/bosonprotocol/core-components/issues/292)) ([c7acc0d](https://github.com/bosonprotocol/core-components/commit/c7acc0d75c2b80896dc44250a03c99f7dbdc9aff))
+* update lens authtokentype from 1 -> 2 ([#307](https://github.com/bosonprotocol/core-components/issues/307)) ([fb3c86c](https://github.com/bosonprotocol/core-components/commit/fb3c86c4ddb1b7cd40ac5c7c29af5cff7a1ee48d))
+
+
+
+
+
 # [0.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.7.0...@bosonprotocol/react-kit@0.8.0) (2022-10-05)
 
 

@@ -29,7 +29,7 @@ export const RedeemButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "primaryFill",
+  variant = "primary",
   ...coreSdkConfig
 }: IRedeemButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -50,12 +50,15 @@ export const RedeemButton = ({
             onPendingSignature?.();
 
             let txResponse;
+            const isMetaTx = Boolean(
+              coreSdk.isMetaTxConfigSet && signerAddress
+            );
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signExecuteMetaTxRedeemVoucher({
+                await coreSdk.signMetaTxRedeemVoucher({
                   exchangeId,
                   nonce
                 });
@@ -72,7 +75,7 @@ export const RedeemButton = ({
               txResponse = await coreSdk.redeemVoucher(exchangeId);
             }
 
-            onPendingTransaction?.(txResponse.hash);
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
 
             onSuccess?.(receipt as providers.TransactionReceipt, {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { CommitButton } from "../../../components/cta/offer/CommitButton";
@@ -12,11 +12,19 @@ export default {
 } as ComponentMeta<typeof CommitButton>;
 
 const Template: ComponentStory<typeof CommitButton> = (args) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
-
+  const signerAddress = useCallback((signerAddress: string | undefined) => {
+    console.log(signerAddress);
+  }, []);
   return (
     <CtaButtonWrapper>
-      <CommitButton web3Provider={provider} {...args} />
+      <CommitButton
+        web3Provider={provider}
+        {...args}
+        buttonRef={buttonRef}
+        onGetSignerAddress={signerAddress}
+      />
     </CtaButtonWrapper>
   );
 };

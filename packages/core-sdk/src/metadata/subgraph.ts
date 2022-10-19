@@ -6,10 +6,12 @@ import {
   GetBaseMetadataEntityByIdQueryQueryVariables,
   GetBaseMetadataEntitiesQueryQueryVariables,
   GetProductV1BrandsQueryQueryVariables,
+  GetProductV1ProductsQueryQueryVariables,
   GetProductV1CategoriesQueryQueryVariables,
   GetProductV1MetadataEntitiesQueryQueryVariables,
   GetProductV1MetadataEntityByIdQueryQueryVariables,
   BaseProductV1BrandFieldsFragment,
+  BaseProductV1ProductFieldsFragment,
   BaseProductV1CategoryFieldsFragment
 } from "../subgraph";
 
@@ -102,4 +104,17 @@ export async function getProductV1Categories(
     });
 
   return productV1Categories;
+}
+
+export async function getProductV1Products(
+  subgraphUrl: string,
+  queryVars: GetProductV1ProductsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getProductV1ProductsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
 }

@@ -464,14 +464,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "enum BosonTypes.DisputeState",
-            name: "state",
-            type: "uint8",
-          },
-          {
             internalType: "uint256",
             name: "buyerPercent",
             type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.DisputeState",
+            name: "state",
+            type: "uint8",
           },
         ],
         internalType: "struct BosonTypes.Dispute",

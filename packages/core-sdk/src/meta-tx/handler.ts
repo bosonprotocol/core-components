@@ -1,11 +1,22 @@
-import { MetaTxConfig, Web3LibAdapter } from "@bosonprotocol/common";
+import {
+  CreateOfferArgs,
+  CreateSellerArgs,
+  MetaTxConfig,
+  Web3LibAdapter
+} from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { ContractTransaction } from "@ethersproject/contracts";
 
+import { encodeCreateSeller } from "../accounts/interface";
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
+import {
+  bosonOfferHandlerIface,
+  encodeCreateOffer,
+  encodeCreateOfferBatch
+} from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
-import { Biconomy } from "./biconomy";
+import { Biconomy, GetRetriedHashesData } from "./biconomy";
 
 type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -14,7 +25,7 @@ type BaseMetaTxArgs = {
   chainId: number;
 };
 
-export async function signExecuteMetaTx(
+export async function signMetaTx(
   args: BaseMetaTxArgs & {
     functionName: string;
     functionSignature: string;
@@ -42,16 +53,120 @@ export async function signExecuteMetaTx(
     functionSignature: args.functionSignature
   };
 
-  return prepareDataSignatureParameters({
+  const signature = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTransaction",
     message
   });
+
+  return {
+    functionName: args.functionName,
+    functionSignature: args.functionSignature,
+    ...signature
+  };
 }
 
-export async function signExecuteMetaTxCommitToOffer(
+export async function signMetaTxCreateSeller(
+  args: BaseMetaTxArgs & {
+    createSellerArgs: CreateSellerArgs;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint256))",
+    functionSignature: encodeCreateSeller(args.createSellerArgs)
+  });
+}
+
+export async function signMetaTxCreateOffer(
+  args: BaseMetaTxArgs & {
+    createOfferArgs: CreateOfferArgs;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)",
+    functionSignature: encodeCreateOffer(args.createOfferArgs)
+  });
+}
+
+export async function signMetaTxCreateOfferBatch(
+  args: BaseMetaTxArgs & {
+    createOffersArgs: CreateOfferArgs[];
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])",
+    functionSignature: encodeCreateOfferBatch(args.createOffersArgs)
+  });
+}
+
+export async function signMetaTxVoidOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "voidOffer(uint256)",
+    functionSignature: bosonOfferHandlerIface.encodeFunctionData("voidOffer", [
+      args.offerId
+    ])
+  });
+}
+
+export async function signMetaTxVoidOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "voidOfferBatch(uint256[])",
+    functionSignature: bosonOfferHandlerIface.encodeFunctionData(
+      "voidOfferBatch",
+      [args.offerIds]
+    )
+  });
+}
+
+export async function signMetaTxCompleteExchangeBatch(
+  args: BaseMetaTxArgs & {
+    exchangeIds: BigNumberish[];
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "completeExchangeBatch(uint256[])",
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "completeExchangeBatch",
+      [args.exchangeIds]
+    )
+  });
+}
+
+export async function signMetaTxExpireVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "expireVoucher(uint256)",
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "expireVoucher",
+      [args.exchangeId]
+    )
+  });
+}
+
+export async function signMetaTxCommitToOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
   }
@@ -107,7 +222,7 @@ export async function signExecuteMetaTxCommitToOffer(
   };
 }
 
-export async function signExecuteMetaTxCancelVoucher(
+export async function signMetaTxCancelVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -115,7 +230,7 @@ export async function signExecuteMetaTxCancelVoucher(
   return makeExchangeMetaTxSigner("cancelVoucher(uint256)")(args);
 }
 
-export async function signExecuteMetaTxRedeemVoucher(
+export async function signMetaTxRedeemVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -123,7 +238,7 @@ export async function signExecuteMetaTxRedeemVoucher(
   return makeExchangeMetaTxSigner("redeemVoucher(uint256)")(args);
 }
 
-export async function signExecuteMetaTxCompleteExchange(
+export async function signMetaTxCompleteExchange(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -131,7 +246,7 @@ export async function signExecuteMetaTxCompleteExchange(
   return makeExchangeMetaTxSigner("completeExchange(uint256)")(args);
 }
 
-export async function signExecuteMetaTxRetractDispute(
+export async function signMetaTxRetractDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -139,7 +254,7 @@ export async function signExecuteMetaTxRetractDispute(
   return makeExchangeMetaTxSigner("retractDispute(uint256)")(args);
 }
 
-export async function signExecuteMetaTxEscalateDispute(
+export async function signMetaTxEscalateDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -147,7 +262,7 @@ export async function signExecuteMetaTxEscalateDispute(
   return makeExchangeMetaTxSigner("escalateDispute(uint256)")(args);
 }
 
-export async function signExecuteMetaTxRaiseDispute(
+export async function signMetaTxRaiseDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
   }
@@ -187,7 +302,7 @@ export async function signExecuteMetaTxRaiseDispute(
   });
 }
 
-export async function signExecuteMetaTxResolveDispute(
+export async function signMetaTxResolveDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
     buyerPercent: string;
@@ -243,7 +358,7 @@ export async function signExecuteMetaTxResolveDispute(
   });
 }
 
-export async function signExecuteMetaTxWithdrawFunds(
+export async function signMetaTxWithdrawFunds(
   args: BaseMetaTxArgs & {
     entityId: BigNumberish;
     tokenList: string[];
@@ -438,4 +553,27 @@ export async function relayMetaTransaction(args: {
     value: BigNumber.from(0),
     chainId: chainId
   };
+}
+
+export async function getResubmitted(args: {
+  chainId: number;
+  metaTx: {
+    config: MetaTxConfig;
+    originalHash: string;
+  };
+}): Promise<GetRetriedHashesData> {
+  const { chainId, metaTx } = args;
+
+  const biconomy = new Biconomy(
+    metaTx.config.relayerUrl,
+    metaTx.config.apiKey,
+    metaTx.config.apiId
+  );
+
+  const retriedHashesResponse = await biconomy.getResubmitted({
+    networkId: chainId,
+    transactionHash: metaTx.originalHash
+  });
+
+  return retriedHashesResponse.data;
 }

@@ -38,6 +38,8 @@ export function mockRawSellerFromSubgraph(
     authTokenType: 0,
     voucherCloneAddress: ZERO_ADDRESS,
     active: true,
+    royaltyPercentage: "0",
+    contractURI: "ipfs://seller-contract-uri",
     funds: [],
     offers: [],
     exchanges: [],
@@ -74,7 +76,7 @@ export function mockRawOfferFromSubgraph(
     voucherRedeemableUntilDate: utils.timestamp
       .msToSec(Date.now() + 2 * DAY_IN_MS)
       .toString(),
-    fulfillmentPeriodDuration: "864000",
+    disputePeriodDuration: "864000",
     voucherValidDuration: "86400",
     resolutionPeriodDuration: "86400",
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
@@ -96,6 +98,8 @@ export function mockRawOfferFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     exchangeToken: {
@@ -110,6 +114,7 @@ export function mockRawOfferFromSubgraph(
       name: "Name",
       description: "Description",
       externalUrl: "externalUrl",
+      licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
       type: MetadataType.Base,
       ...metadata
@@ -176,6 +181,8 @@ export function mockRawExchangeFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),
@@ -188,6 +195,7 @@ export function buildProductV1Metadata(template: string) {
     name: "Name",
     description: "Description",
     externalUrl: "externalUrl",
+    licenseUrl: "licenseUrl",
     schemaUrl: "schemaUrl",
     type: subgraph.MetadataType.ProductV1,
     exchangePolicy: {

@@ -36,6 +36,9 @@ fragment BaseEventLogFields on EventLog {
   ... on ExchangeEventLog {
     exchange {
       id
+      offer {
+        id
+      }
     }
   }
 
