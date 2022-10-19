@@ -98,7 +98,10 @@ export const CommitButton = ({
                     }
                   );
                 } else {
-                  approveTxResponse = await coreSdk.commitToOffer(offerId);
+                  approveTxResponse = await coreSdk.approveExchangeToken(
+                    exchangeToken,
+                    price
+                  );
                 }
 
                 onPendingTransaction?.(approveTxResponse.hash);
