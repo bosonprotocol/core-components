@@ -13,7 +13,7 @@ import {
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
 import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
-import { insureAllowance } from "../erc20/handler";
+import { ensureAllowance } from "../erc20/handler";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
@@ -52,7 +52,7 @@ export async function commitToOffer(
   if (offer.exchangeToken.address !== AddressZero) {
     const owner = await args.web3Lib.getSignerAddress();
     // check if we need the committer to approve the token first
-    await erc20.handler.insureAllowance({
+    await ensureAllowance({
       owner,
       spender: args.contractAddress,
       contractAddress: offer.exchangeToken.address,

@@ -68,7 +68,7 @@ export async function getName(args: {
   return String(name);
 }
 
-export async function insureAllowance(args: {
+export async function ensureAllowance(args: {
   owner: string;
   spender: string;
   contractAddress: string;
