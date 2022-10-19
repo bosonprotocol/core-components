@@ -68,7 +68,7 @@ export const CommitButton = ({
             setIsLoading(true);
 
             if (exchangeToken !== AddressZero) {
-              // Insure allowance is enough to pay for the item price
+              // Ensure allowance is enough to pay for the item price
               const currentAllowance = await coreSdk.getProtocolAllowance(
                 exchangeToken
               );
