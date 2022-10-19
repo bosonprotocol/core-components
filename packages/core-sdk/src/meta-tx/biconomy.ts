@@ -71,10 +71,14 @@ export class Biconomy {
     });
 
     if (!response.ok) {
-      throw new ApiError(
-        response.status,
-        `Failed to relay tx: ${response.statusText}`
-      );
+      let message;
+      try {
+        const jsonResponse = await response.json();
+        message = JSON.stringify(jsonResponse);
+      } catch {
+        message = response.statusText;
+      }
+      throw new ApiError(response.status, `Failed to relay tx: ${message}`);
     }
 
     const txResponse = (await response.json()) as RelayTransactionResponse;
