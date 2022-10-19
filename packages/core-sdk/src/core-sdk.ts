@@ -32,8 +32,6 @@ import * as eventLogs from "./event-logs";
 import { getValueFromLogs, getValuesFromLogs } from "./utils/logs";
 import { GetRetriedHashesData } from "./meta-tx/biconomy";
 
-const ERC712_VERSION = "1"; // Is consistent with all implementations of child tokens on Polygon
-
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
   private _metadataStorage?: MetadataStorage;
@@ -1812,31 +1810,13 @@ export class CoreSDK {
     }> = {}
   ) {
     const user = await this._web3Lib.getSignerAddress();
-    const domain = {
-      name: await erc20.handler.getName({
-        contractAddress: exchangeToken,
-        web3Lib: this._web3Lib
-      }),
-      version: ERC712_VERSION
-    };
-    const nonce = await nativeMetaTx.handler.getNonce({
-      contractAddress: exchangeToken,
-      user,
-      web3Lib: this._web3Lib
-    });
-    const functionName = "approve(address,uint256)";
-    const functionSignature = erc20.iface.erc20Iface.encodeFunctionData(
-      "approve",
-      [overrides.spender || this._protocolDiamond, value]
-    );
-    return nativeMetaTx.handler.signNativeMetaTx({
+    return nativeMetaTx.handler.signNativeMetaTxApproveExchangeToken({
       web3Lib: this._web3Lib,
-      metaTxHandlerAddress: exchangeToken,
       chainId: this._chainId,
-      nonce: nonce,
-      functionName,
-      functionSignature,
-      domain
+      user,
+      exchangeToken,
+      spender: overrides.spender || this._protocolDiamond,
+      value
     });
   }
 

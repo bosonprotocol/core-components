@@ -9,6 +9,10 @@ import { Biconomy } from "../meta-tx/biconomy";
 import { BaseMetaTxArgs, SignedMetaTx } from "../meta-tx/handler";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { nativeMetaTransactionsIface } from "./interface";
+import { getName as getERC20Name } from "../erc20/handler";
+import { erc20Iface } from "../erc20/interface";
+
+const ERC712_VERSION = "1"; // Is consistent with all implementations of child tokens on Polygon
 
 export async function getNonce(args: {
   contractAddress: string;
@@ -71,6 +75,42 @@ export async function signNativeMetaTx(
     functionSignature: args.functionSignature,
     ...signature
   };
+}
+
+export async function signNativeMetaTxApproveExchangeToken(args: {
+  web3Lib: Web3LibAdapter;
+  chainId: number;
+  user: string;
+  exchangeToken: string;
+  spender: string;
+  value: BigNumberish;
+}) {
+  const domain = {
+    name: await getERC20Name({
+      contractAddress: args.exchangeToken,
+      web3Lib: args.web3Lib
+    }),
+    version: ERC712_VERSION
+  };
+  const nonce = await getNonce({
+    contractAddress: args.exchangeToken,
+    user: args.user,
+    web3Lib: args.web3Lib
+  });
+  const functionName = "approve(address,uint256)";
+  const functionSignature = erc20Iface.encodeFunctionData("approve", [
+    args.spender,
+    args.value
+  ]);
+  return signNativeMetaTx({
+    web3Lib: args.web3Lib,
+    metaTxHandlerAddress: args.exchangeToken,
+    chainId: args.chainId,
+    nonce: nonce,
+    functionName,
+    functionSignature,
+    domain
+  });
 }
 
 export async function relayNativeMetaTransaction(args: {
