@@ -11,7 +11,8 @@ import {
   CreateOfferArgs,
   OfferDatesStruct,
   OfferDurationsStruct,
-  TransactionRequest
+  TransactionRequest,
+  TransactionReceipt
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -104,6 +105,7 @@ type MockedWeb3LibReturnValues = {
   sendTransaction: TransactionResponse;
   call: string;
   send: string;
+  getTransactionReceipt: TransactionReceipt;
 };
 
 const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
@@ -112,27 +114,42 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
   getBalance: parseEther("0.001").toString(),
   sendTransaction: {
     hash: "0x",
-    wait: async (confirmations: number) => ({
+    wait: async () => ({
       transactionHash: "0x",
       from: ADDRESS,
       to: ADDRESS,
-      logs: []
+      logs: [],
+      status: 0,
+      effectiveGasPrice: "10"
     })
   },
   send: "0x",
-  call: "0x"
+  call: "0x",
+  getTransactionReceipt: {
+    transactionHash: "0x",
+    from: ADDRESS,
+    to: ADDRESS,
+    logs: [],
+    status: 0,
+    effectiveGasPrice: "10"
+  }
 };
 
 export class MockWeb3LibAdapter implements Web3LibAdapter {
   private _returnValues: MockedWeb3LibReturnValues;
 
   sendTransactionArgs: Array<TransactionRequest> = [];
+  getTransactionReceiptArgs: Array<string> = [];
 
   constructor(returnValues: Partial<MockedWeb3LibReturnValues> = {}) {
     this._returnValues = {
       ...defaultMockedReturnValues,
       ...returnValues
     };
+  }
+  async getTransactionReceipt(txHash: string): Promise<TransactionReceipt> {
+    this.getTransactionReceiptArgs.push(txHash);
+    return this._returnValues.getTransactionReceipt;
   }
 
   async getSignerAddress() {

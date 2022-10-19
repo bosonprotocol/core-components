@@ -26,7 +26,8 @@ import {
   ACCOUNT_8,
   ACCOUNT_9,
   ACCOUNT_10,
-  ACCOUNT_11
+  ACCOUNT_11,
+  ACCOUNT_12
 } from "../../contracts/accounts";
 
 export const MOCK_ERC20_ADDRESS =
@@ -146,6 +147,8 @@ export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
 export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
+// seedWallets used by native-meta-tx test
+export const seedWallet12 = new Wallet(ACCOUNT_12.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 
@@ -183,14 +186,26 @@ export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
 }
 
 export function initCoreSDKWithWallet(wallet: Wallet) {
+  const envName = "local";
+  const defaultConfig = getDefaultConfig(envName);
+  const protocolAddress = defaultConfig.contracts.protocolDiamond;
+  const testErc20Address = defaultConfig.contracts.testErc20 as string;
+  const apiIds = {
+    [protocolAddress]: {
+      executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    },
+    [testErc20Address]: {
+      executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    }
+  };
   return CoreSDK.fromDefaultConfig({
-    envName: "local",
+    envName,
     web3Lib: new EthersAdapter(provider, wallet),
     metadataStorage: ipfsMetadataStorage,
     theGraphStorage: graphMetadataStorage,
     metaTx: {
       apiKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      apiId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      apiIds
     }
   });
 }
@@ -246,7 +261,8 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
 
 export async function ensureMintedAndAllowedTokens(
   wallets: Wallet[],
-  mintAmountInEth: BigNumberish = 1_000_000
+  mintAmountInEth: BigNumberish = 1_000_000,
+  approve = true
 ) {
   const mintAmountWei = utils.parseEther(mintAmountInEth.toString());
   const walletBalances = await Promise.all(
@@ -262,16 +278,20 @@ export async function ensureMintedAndAllowedTokens(
     );
     await Promise.all(mintTxResponses.map((txResponse) => txResponse.wait()));
 
-    // Allow tokens
-    const allowTxResponses = await Promise.all(
-      wallets.map((wallet) =>
-        initCoreSDKWithWallet(wallet).approveExchangeToken(
-          MOCK_ERC20_ADDRESS,
-          mintAmountWei
+    if (approve) {
+      // Allow tokens
+      const allowTxResponses = await Promise.all(
+        wallets.map((wallet) =>
+          initCoreSDKWithWallet(wallet).approveExchangeToken(
+            MOCK_ERC20_ADDRESS,
+            mintAmountWei
+          )
         )
-      )
-    );
-    await Promise.all(allowTxResponses.map((txResponse) => txResponse.wait()));
+      );
+      await Promise.all(
+        allowTxResponses.map((txResponse) => txResponse.wait())
+      );
+    }
   }
 }
 

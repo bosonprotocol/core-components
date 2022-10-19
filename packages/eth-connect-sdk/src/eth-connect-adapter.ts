@@ -2,7 +2,8 @@ import { RequestManager } from "eth-connect";
 import {
   TransactionResponse,
   Web3LibAdapter,
-  TransactionRequest
+  TransactionRequest,
+  TransactionReceipt
 } from "@bosonprotocol/common";
 
 /**
@@ -73,5 +74,27 @@ export class EthConnectAdapter implements Web3LibAdapter {
 
   private async _wait(txHash: string, confirmations?: number): Promise<any> {
     throw new Error("Not implemented");
+  }
+
+  public async getTransactionReceipt(txHash): Promise<TransactionReceipt> {
+    const txObject = await this._requestManager.eth_getTransactionByHash(
+      txHash
+    );
+
+    const txReceipt = await this._requestManager.eth_getTransactionReceipt(
+      txHash
+    );
+    return {
+      from: txObject.from,
+      to: txObject.to,
+      status: txReceipt.status
+        ? parseInt(txReceipt.status.toString())
+        : undefined,
+      logs: txReceipt.logs.map((log) => {
+        return { data: log.data, topics: log.topics };
+      }),
+      transactionHash: txReceipt.transactionHash,
+      effectiveGasPrice: txReceipt.gasUsed
+    };
   }
 }

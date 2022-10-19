@@ -2,11 +2,14 @@ import {
   CreateOfferArgs,
   CreateSellerArgs,
   MetaTxConfig,
-  Web3LibAdapter
+  Web3LibAdapter,
+  TransactionResponse,
+  utils,
+  MetadataStorage
 } from "@bosonprotocol/common";
+import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
-import { ContractTransaction } from "@ethersproject/contracts";
 
 import { encodeCreateSeller } from "../accounts/interface";
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
@@ -18,11 +21,19 @@ import {
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
 
-type BaseMetaTxArgs = {
+export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
   nonce: BigNumberish;
   metaTxHandlerAddress: string;
   chainId: number;
+};
+
+export type SignedMetaTx = {
+  functionName: string;
+  functionSignature: string;
+  r: string;
+  s: string;
+  v: number;
 };
 
 export async function signMetaTx(
@@ -30,7 +41,7 @@ export async function signMetaTx(
     functionName: string;
     functionSignature: string;
   }
-) {
+): Promise<SignedMetaTx> {
   const metaTransactionType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
@@ -84,8 +95,20 @@ export async function signMetaTxCreateSeller(
 export async function signMetaTxCreateOffer(
   args: BaseMetaTxArgs & {
     createOfferArgs: CreateOfferArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  utils.validation.createOfferArgsSchema.validateSync(args.createOfferArgs, {
+    abortEarly: false
+  });
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createOfferArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
   return signMetaTx({
     ...args,
     functionName:
@@ -97,8 +120,26 @@ export async function signMetaTxCreateOffer(
 export async function signMetaTxCreateOfferBatch(
   args: BaseMetaTxArgs & {
     createOffersArgs: CreateOfferArgs[];
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  for (const offerToCreate of args.createOffersArgs) {
+    utils.validation.createOfferArgsSchema.validateSync(offerToCreate, {
+      abortEarly: false
+    });
+  }
+
+  await Promise.all(
+    args.createOffersArgs.map((offerToCreate) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: offerToCreate.metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
+    )
+  );
+
   return signMetaTx({
     ...args,
     functionName:
@@ -170,7 +211,7 @@ export async function signMetaTxCommitToOffer(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
   }
-) {
+): Promise<SignedMetaTx> {
   const functionName = "commitToOffer(address,uint256)";
 
   const offerType = [
@@ -364,7 +405,7 @@ export async function signMetaTxWithdrawFunds(
     tokenList: string[];
     tokenAmounts: BigNumberish[];
   }
-) {
+): Promise<SignedMetaTx> {
   const functionName = "withdrawFunds(uint256,bytes32,bytes32,uint8)";
 
   const fundType = [
@@ -428,7 +469,7 @@ function makeExchangeMetaTxSigner(
     args: BaseMetaTxArgs & {
       exchangeId: BigNumberish;
     }
-  ) {
+  ): Promise<SignedMetaTx> {
     const exchangeType = [{ name: "exchangeId", type: "uint256" }];
 
     const metaTransactionType = [
@@ -481,7 +522,7 @@ export async function relayMetaTransaction(args: {
   chainId: number;
   contractAddress: string;
   metaTx: {
-    config: MetaTxConfig;
+    config: Omit<MetaTxConfig, "apiIds"> & { apiId: string };
     params: {
       userAddress: string;
       functionName: string;
@@ -492,7 +533,7 @@ export async function relayMetaTransaction(args: {
       sigV: BigNumberish;
     };
   };
-}): Promise<ContractTransaction> {
+}): Promise<TransactionResponse> {
   const { chainId, contractAddress, metaTx } = args;
 
   const biconomy = new Biconomy(
@@ -522,43 +563,24 @@ export async function relayMetaTransaction(args: {
         transactionHash: relayTxResponse.txHash
       });
 
-      // TODO: add `getTransaction(hash)` to `Web3LibAdapter` and respective implementations
-      // in ethers and eth-connect flavors. This way we can populate the correct transaction
-      // data below.
+      const txHash = waitResponse.data.newHash;
+      const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
       return {
-        to: contractAddress,
-        from: metaTx.params.userAddress,
-        contractAddress: contractAddress,
-        transactionIndex: 0,
-        gasUsed: BigNumber.from(0),
-        logsBloom: "",
-        blockHash: "string",
-        transactionHash: waitResponse.data.newHash,
-        logs: [],
-        blockNumber: 0,
-        confirmations: 0,
-        cumulativeGasUsed: BigNumber.from(0),
-        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
-        byzantium: true,
-        type: 0,
-        events: waitResponse.events?.map((event) => JSON.parse(event as string))
+        to: txReceipt?.to || contractAddress,
+        from: txReceipt?.from || metaTx.params.userAddress,
+        transactionHash: txHash,
+        logs: txReceipt?.logs || [],
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice)
       };
     },
-    hash: relayTxResponse.txHash,
-    confirmations: 0,
-    from: metaTx.params.userAddress,
-    nonce: 0,
-    gasLimit: BigNumber.from(0),
-    data: "",
-    value: BigNumber.from(0),
-    chainId: chainId
+    hash: relayTxResponse.txHash
   };
 }
 
 export async function getResubmitted(args: {
   chainId: number;
   metaTx: {
-    config: MetaTxConfig;
+    config: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
     originalHash: string;
   };
 }): Promise<GetRetriedHashesData> {
