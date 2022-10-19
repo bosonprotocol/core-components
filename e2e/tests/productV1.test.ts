@@ -1,7 +1,11 @@
 import { AdditionalOfferMetadata } from "./../../packages/core-sdk/src/offers/renderContractualAgreement";
 import { BigNumber } from "@ethersproject/bignumber";
 import { parseEther } from "@ethersproject/units";
-import { MetadataType, productV1 } from "@bosonprotocol/metadata";
+import {
+  MetadataType,
+  productV1,
+  validateMetadata
+} from "@bosonprotocol/metadata";
 import { CreateOfferArgs } from "@bosonprotocol/common";
 import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 import { Wallet } from "ethers";
@@ -19,6 +23,8 @@ import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 jest.setTimeout(120_000);
 
 const seedWallet = seedWallet10; // be sure the seedWallet is not used by another test (to allow concurrent run)
+
+const MAX_INT32 = Math.pow(2, 31) - 1;
 
 function mockProductV1Metadata(
   template: string,
@@ -450,3 +456,33 @@ async function prepareMultiVariantOffers(coreSDK: CoreSDK) {
     variations: [variations1, variations2]
   };
 }
+
+describe("additional tests", () => {
+  test("overflowed returnPeriod", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const template = "Hello World!!";
+    const metadata = mockProductV1Metadata(template);
+    metadata.shipping.returnPeriod = "1" + MAX_INT32.toString(); // Set a value greater than MAX_INT32
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((offer?.metadata as any)?.shipping?.returnPeriodInDays).toEqual(
+      MAX_INT32
+    );
+  });
+  test("invalid returnPeriod", async () => {
+    const template = "Hello World!!";
+    const metadata = mockProductV1Metadata(template);
+    expect(validateMetadata(metadata)).toBe(true);
+    metadata.shipping.returnPeriod = "not a number";
+    expect(() => validateMetadata(metadata)).toThrow();
+
+    // Do not create the offer with this invalid returnPeriod because the subgraph does not support it
+  });
+});
