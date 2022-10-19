@@ -1499,6 +1499,8 @@ export class CoreSDK {
   ) {
     return metaTx.handler.signMetaTxCreateOffer({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
@@ -1518,6 +1520,8 @@ export class CoreSDK {
   ) {
     return metaTx.handler.signMetaTxCreateOfferBatch({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
