@@ -34,8 +34,8 @@ export const WithExtraInfo: ComponentStory<
 
 Simple.args = {
   envName: "testing",
-  exchangeId: "28",
-  sellerAllowList: [""],
+  disputeResolverId: 0,
+  sellerAllowList: ["0x0123456789012345678901234567890123456789"],
   web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
@@ -57,8 +57,8 @@ Simple.args = {
 
 WithExtraInfo.args = {
   envName: "testing",
-  exchangeId: "28",
-  sellerAllowList: [""],
+  disputeResolverId: 0,
+  sellerAllowList: ["0x0123456789012345678901234567890123456789"],
   web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {

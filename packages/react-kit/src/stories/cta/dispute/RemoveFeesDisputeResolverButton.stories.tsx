@@ -27,8 +27,8 @@ export const WithExtraInfo: ComponentStory<typeof RemoveFeesDisputeResolver> =
 
 Simple.args = {
   envName: "testing",
-  exchangeId: "28",
-  feeTokenAddresses: [""],
+  disputeResolverId: 0,
+  feeTokenAddresses: ["0x0123456789012345678901234567890123456789"],
   web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
@@ -50,8 +50,8 @@ Simple.args = {
 
 WithExtraInfo.args = {
   envName: "testing",
-  exchangeId: "28",
-  feeTokenAddresses: [""],
+  disputeResolverId: 0,
+  feeTokenAddresses: ["0x0123456789012345678901234567890123456789"],
   web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {

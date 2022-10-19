@@ -28,16 +28,14 @@ export const WithExtraInfo: ComponentStory<typeof UpdateDisputeResolverButton> =
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  createSellerArgs: {
-    operator: "",
-    admin: "",
-    clerk: "",
-    treasury: "",
-    contractUri: "",
-    royaltyPercentage: 0,
-    authTokenId: 0,
-    authTokenType: 0
+  disputeResolverUpdates: {
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
+    metadataUri: "0x0123456789012345678901234567890123456789"
   },
+  disputeResolverId: 1,
   web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
@@ -60,16 +58,14 @@ Simple.args = {
 WithExtraInfo.args = {
   envName: "testing",
   exchangeId: "28",
-  createSellerArgs: {
-    operator: "testing",
-    admin: "testing",
-    clerk: "testing",
-    treasury: "testing",
-    contractUri: "testing",
-    royaltyPercentage: 0,
-    authTokenId: 0,
-    authTokenType: 0
+  disputeResolverUpdates: {
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
+    metadataUri: "0x0123456789012345678901234567890123456789"
   },
+  disputeResolverId: 1,
   web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {

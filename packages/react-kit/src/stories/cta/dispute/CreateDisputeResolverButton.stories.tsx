@@ -27,14 +27,14 @@ export const WithExtraInfo: ComponentStory<typeof CreateDisputeResolverButton> =
 
 Simple.args = {
   envName: "testing",
-  exchangeId: "28",
+  exchangeId: "2",
   disputeResolverToCreate: {
-    escalationResponsePeriodInMS: 0,
-    operator: "",
-    admin: "",
-    clerk: "",
-    treasury: "",
-    metadataUri: "",
+    escalationResponsePeriodInMS: 3,
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
+    metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],
     sellerAllowList: []
   },
@@ -59,14 +59,14 @@ Simple.args = {
 
 WithExtraInfo.args = {
   envName: "testing",
-  exchangeId: "28",
+  exchangeId: "3",
   disputeResolverToCreate: {
-    escalationResponsePeriodInMS: 0,
-    operator: "",
-    admin: "",
-    clerk: "",
-    treasury: "",
-    metadataUri: "",
+    escalationResponsePeriodInMS: 3,
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
+    metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],
     sellerAllowList: []
   },

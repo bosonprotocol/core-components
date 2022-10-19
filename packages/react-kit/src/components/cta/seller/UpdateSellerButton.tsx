@@ -6,10 +6,10 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { CreateSellerArgs } from "@bosonprotocol/common";
+import { UpdateSellerArgs } from "@bosonprotocol/common";
 export type IUpdateSellerButton = {
   exchangeId: BigNumberish;
-  createSellerArgs: CreateSellerArgs;
+  updateSellerArgs: UpdateSellerArgs;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -27,7 +27,7 @@ export const UpdateSellerButton = ({
   children,
   size = ButtonSize.Large,
   variant = "secondary",
-  createSellerArgs,
+  updateSellerArgs,
   ...coreSdkConfig
 }: IUpdateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -45,7 +45,7 @@ export const UpdateSellerButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.createSeller(createSellerArgs);
+            const txResponse = await coreSdk.updateSeller(updateSellerArgs);
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);

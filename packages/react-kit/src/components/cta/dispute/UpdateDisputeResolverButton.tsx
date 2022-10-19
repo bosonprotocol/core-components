@@ -3,14 +3,16 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
+import { accounts } from "@bosonprotocol/core-sdk";
 export type IUpdateDisputeResolverButton = {
   exchangeId: BigNumberish;
+  disputeResolverId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
+  disputeResolverUpdates: accounts.DisputeResolverUpdates;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -27,14 +29,14 @@ export const UpdateDisputeResolverButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "primary",
   createSellerArgs,
+  disputeResolverId,
+  disputeResolverUpdates,
   ...coreSdkConfig
 }: IUpdateDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
 
   return (
     <Button
@@ -48,29 +50,10 @@ export const UpdateDisputeResolverButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            let txResponse;
-
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
-              const nonce = Date.now();
-
-              const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signMetaTxCreateSeller({
-                  createSellerArgs,
-                  nonce,
-                  chainId: 0
-                });
-
-              txResponse = await coreSdk.relayMetaTransaction({
-                functionName,
-                functionSignature,
-                sigR: r,
-                sigS: s,
-                sigV: v,
-                nonce
-              });
-            } else {
-              txResponse = await coreSdk.createSeller(createSellerArgs);
-            }
+            const txResponse = await coreSdk.updateDisputeResolver(
+              disputeResolverId,
+              disputeResolverUpdates
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -87,7 +70,7 @@ export const UpdateDisputeResolverButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Updaste Dispute"}
+        {children || "Update Dispute"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

@@ -6,7 +6,7 @@ import { hooks } from "../../helpers/connect-wallet";
 import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
-  title: "Visual Components/CTA/Dispute/UpdateSellerButton",
+  title: "Visual Components/CTA/Seller/UpdateSellerButton",
   component: UpdateSellerButton
 } as ComponentMeta<typeof UpdateSellerButton>;
 
@@ -29,13 +29,12 @@ export const WithExtraInfo: ComponentStory<typeof UpdateSellerButton> =
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  createSellerArgs: {
-    operator: "",
-    admin: "",
-    clerk: "",
-    treasury: "",
-    contractUri: "",
-    royaltyPercentage: 0,
+  updateSellerArgs: {
+    id: 0,
+    operator: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
+    treasury: "0x0123456789012345678901234567890123456789",
     authTokenId: 0,
     authTokenType: 0
   },

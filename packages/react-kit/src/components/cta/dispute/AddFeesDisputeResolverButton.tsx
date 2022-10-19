@@ -30,7 +30,7 @@ export const AddFeesDisputeResolverButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "primary",
   createSellerArgs,
   buyerPercent,
   disputeResolverId,

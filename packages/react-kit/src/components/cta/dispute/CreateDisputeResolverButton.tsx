@@ -6,7 +6,6 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { CreateSellerArgs } from "@bosonprotocol/common";
 import { accounts } from "@bosonprotocol/core-sdk";
 export type ICreateDisputeResolverButton = {
   exchangeId: BigNumberish;

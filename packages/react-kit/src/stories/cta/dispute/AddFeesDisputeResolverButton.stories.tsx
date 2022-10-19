@@ -31,7 +31,13 @@ export const WithExtraInfo: ComponentStory<
 Simple.args = {
   envName: "testing",
   disputeResolverId: "28",
-  fees: [{ tokenAddress: "", tokenName: "", feeAmount: 1 }],
+  fees: [
+    {
+      tokenAddress: "0x0123456789012345678901234567890123456789",
+      tokenName: "",
+      feeAmount: 1
+    }
+  ],
   web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
