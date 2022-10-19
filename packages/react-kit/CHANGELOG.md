@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.10.0...@bosonprotocol/react-kit@0.11.0) (2022-10-19)
+
+
+### Bug Fixes
+
+* remove margin to prevent overlap on grid ([#338](https://github.com/bosonprotocol/core-components/issues/338)) ([79f999c](https://github.com/bosonprotocol/core-components/commit/79f999cff035687ac107b9d1c920345bbadfecca))
+
+
+### Features
+
+* add `isMetaTx` to `onPendingTransaction` hook ([#340](https://github.com/bosonprotocol/core-components/issues/340)) ([b8667ab](https://github.com/bosonprotocol/core-components/commit/b8667ab3c81f6181ace45302dd1c22d19e1d4a51))
+
+
+
+
+
 # [0.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.2...@bosonprotocol/react-kit@0.10.0) (2022-10-18)
 
 
