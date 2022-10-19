@@ -13,7 +13,7 @@ import {
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
 import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
-import { erc20 } from "..";
+import { insureAllowance } from "../erc20/handler";
 
 type BaseExchangeHandlerArgs = {
   contractAddress: string;
