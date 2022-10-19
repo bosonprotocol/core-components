@@ -6,7 +6,7 @@ import { hooks } from "../../helpers/connect-wallet";
 import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
-  title: "Visual Components/CTA/Dispute/AddFeesDisputeResolver",
+  title: "Visual Components/CTA/Dispute/AddSellerToDisputeResolver",
   component: AddSellerToDisputeResolver
 } as ComponentMeta<typeof AddSellerToDisputeResolver>;
 

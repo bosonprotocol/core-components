@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.18.1...@bosonprotocol/subgraph@1.19.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* only save funds log for seller ([#325](https://github.com/bosonprotocol/core-components/issues/325)) ([5578bc9](https://github.com/bosonprotocol/core-components/commit/5578bc964c4a43166de73c065b553e2893788b3f))
+
+
+### Features
+
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+* update polygon network name for correct native token indexing ([#327](https://github.com/bosonprotocol/core-components/issues/327)) ([099ea3f](https://github.com/bosonprotocol/core-components/commit/099ea3f8aa311f81cda3a7cfae146208c44e91cb))
+
+
+
+
+
 ## [1.18.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.18.0...@bosonprotocol/subgraph@1.18.1) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

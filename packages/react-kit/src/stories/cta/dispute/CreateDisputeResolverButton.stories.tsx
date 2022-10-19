@@ -28,7 +28,16 @@ export const WithExtraInfo: ComponentStory<typeof CreateDisputeResolverButton> =
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  buyerPercentBasisPoints: 0,
+  disputeResolverToCreate: {
+    escalationResponsePeriodInMS: 0,
+    operator: "",
+    admin: "",
+    clerk: "",
+    treasury: "",
+    metadataUri: "",
+    fees: [],
+    sellerAllowList: []
+  },
   web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
@@ -51,7 +60,16 @@ Simple.args = {
 WithExtraInfo.args = {
   envName: "testing",
   exchangeId: "28",
-  buyerPercentBasisPoints: 0,
+  disputeResolverToCreate: {
+    escalationResponsePeriodInMS: 0,
+    operator: "",
+    admin: "",
+    clerk: "",
+    treasury: "",
+    metadataUri: "",
+    fees: [],
+    sellerAllowList: []
+  },
   web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {

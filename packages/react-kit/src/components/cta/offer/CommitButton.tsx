@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from "react";
+import React, { useEffect, RefObject, useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
@@ -15,6 +15,9 @@ type Props = {
   offerId: BigNumberish;
   isPauseCommitting?: boolean;
   buttonRef?: RefObject<HTMLButtonElement>;
+  onGetSignerAddress?: (
+    signerAddress: string | undefined
+  ) => string | undefined;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -34,12 +37,19 @@ export const CommitButton = ({
   isPauseCommitting = false,
   buttonRef,
   variant = "primary",
+  onGetSignerAddress,
   ...coreSdkConfig
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (onGetSignerAddress) {
+      onGetSignerAddress(signerAddress);
+    }
+  }, [signerAddress, onGetSignerAddress]);
 
   return (
     <Button
@@ -54,8 +64,11 @@ export const CommitButton = ({
             onPendingSignature?.();
 
             let txResponse;
+            const isMetaTx = Boolean(
+              coreSdk.isMetaTxConfigSet && signerAddress
+            );
 
-            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+            if (isMetaTx) {
               const nonce = Date.now();
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signMetaTxCommitToOffer({
@@ -74,7 +87,7 @@ export const CommitButton = ({
               txResponse = await coreSdk.commitToOffer(offerId);
             }
 
-            onPendingTransaction?.(txResponse.hash);
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
             const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
               receipt.logs

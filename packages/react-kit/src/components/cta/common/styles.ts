@@ -8,7 +8,6 @@ export const ExtraInfo = styled.span`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  margin-left: 3.125rem;
   color: ${({ theme }) => theme?.colors?.light.black};
   opacity: 0.5;
 `;
@@ -16,6 +15,7 @@ export const ExtraInfo = styled.span`
 export const ButtonTextWrapper = styled.div`
   display: flex;
   white-space: nowrap;
+  gap: 0.5rem;
 `;
 
 export const LoadingWrapper = styled.div`

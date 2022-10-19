@@ -22,7 +22,7 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
    * Optional callback to invoke after user signed the transaction and before the respective
    * number of blocks (`waitBlock`) were mined.
    */
-  onPendingTransaction?: (txHash: string) => void;
+  onPendingTransaction?: (txHash: string, isMetaTx?: boolean) => void;
   /**
    * Optional callback to invoke after the respective number of block (`waitBlocks`) were
    * mined.

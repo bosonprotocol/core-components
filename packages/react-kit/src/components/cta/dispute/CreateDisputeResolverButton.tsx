@@ -7,10 +7,10 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
+import { accounts } from "@bosonprotocol/core-sdk";
 export type ICreateDisputeResolverButton = {
   exchangeId: BigNumberish;
-  createSellerArgs: CreateSellerArgs;
-  buyerPercentBasisPoints: BigNumberish;
+  disputeResolverToCreate: accounts.CreateDisputeResolverArgs;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
@@ -27,9 +27,8 @@ export const CreateDisputeResolverButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
-  createSellerArgs,
-  buyerPercentBasisPoints,
+  variant = "primary",
+  disputeResolverToCreate,
   ...coreSdkConfig
 }: ICreateDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -47,13 +46,9 @@ export const CreateDisputeResolverButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.resolveDispute({
-              exchangeId,
-              buyerPercentBasisPoints: 0,
-              sigR: "",
-              sigS: "",
-              sigV: ""
-            });
+            const txResponse = await coreSdk.createDisputeResolver(
+              disputeResolverToCreate
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);

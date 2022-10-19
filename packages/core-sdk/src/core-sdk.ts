@@ -30,6 +30,7 @@ import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
 import { getValueFromLogs, getValuesFromLogs } from "./utils/logs";
+import { GetRetriedHashesData } from "./meta-tx/biconomy";
 
 export class CoreSDK {
   private _web3Lib: Web3LibAdapter;
@@ -1736,18 +1737,8 @@ export class CoreSDK {
       metaTxConfig: Partial<MetaTxConfig>;
     }> = {}
   ): Promise<ContractTransaction> {
-    const metaTxRelayerUrl =
-      this._metaTxConfig?.relayerUrl || overrides.metaTxConfig?.relayerUrl;
-    const metaTxApiKey =
-      this._metaTxConfig?.apiKey || overrides.metaTxConfig?.apiKey;
-    const metaTxApiId =
-      this._metaTxConfig?.apiId || overrides.metaTxConfig?.apiId;
-
-    if (!this.isMetaTxConfigSet) {
-      throw new Error(
-        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
-      );
-    }
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig(overrides.metaTxConfig);
 
     return metaTx.handler.relayMetaTransaction({
       web3LibAdapter: this._web3Lib,
@@ -1771,6 +1762,61 @@ export class CoreSDK {
         }
       }
     });
+  }
+
+  /**
+   * Returns information of submitted meta transaction.
+   * See https://docs.biconomy.io/api/native-meta-tx/get-retried-hashes.
+   * @param originalMetaTxHash - Original meta transaction as returned by `coreSDK.relayMetaTransaction`
+   * @param overrides - Optional overrides for meta transaction config.
+   * @returns - Additional meta transaction information.
+   */
+  public async getResubmittedMetaTx(
+    originalMetaTxHash: string,
+    overrides: Partial<{
+      metaTxConfig: Partial<MetaTxConfig>;
+    }> = {}
+  ): Promise<GetRetriedHashesData> {
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig(overrides.metaTxConfig);
+
+    return metaTx.handler.getResubmitted({
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        originalHash: originalMetaTxHash
+      }
+    });
+  }
+
+  private assertAndGetMetaTxConfig(
+    metaTxConfigOverrides?: Partial<MetaTxConfig>
+  ) {
+    const metaTxRelayerUrl =
+      this._metaTxConfig?.relayerUrl || metaTxConfigOverrides?.relayerUrl;
+    const metaTxApiKey =
+      this._metaTxConfig?.apiKey || metaTxConfigOverrides?.apiKey;
+    const metaTxApiId =
+      this._metaTxConfig?.apiId || metaTxConfigOverrides?.apiId;
+
+    if (
+      !this.isMetaTxConfigSet ||
+      !(metaTxRelayerUrl && metaTxApiKey && metaTxApiId)
+    ) {
+      throw new Error(
+        "CoreSDK not configured to relay meta transactions. Either pass in 'relayerUrl', 'apiKey' and 'apiId' during initialization OR as overrides arguments."
+      );
+    }
+
+    return {
+      metaTxRelayerUrl,
+      metaTxApiId,
+      metaTxApiKey
+    };
   }
 
   /* -------------------------------------------------------------------------- */

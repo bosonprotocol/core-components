@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.5.0...@bosonprotocol/metadata@1.6.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* variations metadata ([#337](https://github.com/bosonprotocol/core-components/issues/337)) ([ab9eaa7](https://github.com/bosonprotocol/core-components/commit/ab9eaa75edf485b458fdce78b4c5d174e8a87240))
+
+
+### Features
+
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+
+
+
+
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.4.0...@bosonprotocol/metadata@1.5.0) (2022-10-13)
 
 
