@@ -119,7 +119,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   Redeem
                 </Button>
                 <Button
-                  variant="secondaryInverted"
+                  variant="accentInverted"
                   showBorder={false}
                   {...cancelButtonConfig}
                   onClick={(e) => {
