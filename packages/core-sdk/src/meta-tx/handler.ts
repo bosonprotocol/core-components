@@ -20,6 +20,9 @@ import {
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
+import { isAddress } from "@ethersproject/address";
+import { AddressZero } from "@ethersproject/constants";
+import { encodeDepositFunds } from "../funds/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -455,6 +458,34 @@ export async function signMetaTxWithdrawFunds(
       [args.entityId, args.tokenList, args.tokenAmounts]
     )
   };
+}
+
+export async function signMetaTxDepositFunds(
+  args: BaseMetaTxArgs & {
+    sellerId: BigNumberish;
+    fundsTokenAddress: string;
+    fundsAmount: BigNumberish;
+  }
+) {
+  if (!isAddress(args.fundsTokenAddress)) {
+    throw new Error(`Invalid fundsTokenAddress: ${args.fundsTokenAddress}`);
+  }
+
+  if (args.fundsTokenAddress === AddressZero) {
+    throw new Error(
+      `Meta transaction can't be used to deposit native currency`
+    );
+  }
+
+  return signMetaTx({
+    ...args,
+    functionName: "depositFunds(uint256,address,uint256)",
+    functionSignature: encodeDepositFunds(
+      args.sellerId,
+      args.fundsTokenAddress,
+      args.fundsAmount
+    )
+  });
 }
 
 function makeExchangeMetaTxSigner(

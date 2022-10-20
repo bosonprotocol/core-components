@@ -1,3 +1,4 @@
+import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber } from "ethers";
 
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
@@ -15,11 +16,13 @@ import {
   createOffer,
   seedWallet11
 } from "./utils";
+import { CoreSDK } from "../../packages/core-sdk/src";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const newSellerWallet = seedWallet11;
+const newSellerAddress = newSellerWallet.address;
 // seedWallet9 is used to relay meta-transactions
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -243,30 +246,7 @@ describe("meta-tx", () => {
       expect(BigNumber.from(allowance).lt(offer.price)).toBe(true);
 
       // `Buyer` signs native meta tx for the token approval
-      const {
-        r: r1,
-        s: s1,
-        v: v1,
-        functionSignature: functionSignature1
-      } = await buyerCoreSDK.signNativeMetaTxApproveExchangeToken(
-        MOCK_ERC20_ADDRESS,
-        offer.price
-      );
-
-      const nativeMetaTx = await buyerCoreSDK.relayNativeMetaTransaction(
-        MOCK_ERC20_ADDRESS,
-        {
-          functionSignature: functionSignature1,
-          sigR: r1,
-          sigS: s1,
-          sigV: v1
-        }
-      );
-      const nativeMetaTxReceipt = await nativeMetaTx.wait();
-      expect(nativeMetaTxReceipt.transactionHash).toBeTruthy();
-      expect(BigNumber.from(nativeMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
-        true
-      );
+      await approveErc20Token(buyerCoreSDK, MOCK_ERC20_ADDRESS, offer.price);
 
       const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
         MOCK_ERC20_ADDRESS
@@ -358,6 +338,75 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
+
+  describe("#signMetaTxDepositFunds()", () => {
+    test("approve and deposit funds (ERC20)", async () => {
+      // Use the newSeller account, because the other seller funds balance is modified
+      // by other tests (when the seller deposits or a buyer commits to their offer)
+      const newSellerCoreSDK = initCoreSDKWithWallet(newSellerWallet);
+      // do not approve for newSeller (we expect the test to do it when needed)
+      await ensureMintedAndAllowedTokens([newSellerWallet], undefined, false);
+      const sellers = await sellerCoreSDK.getSellersByAddress(newSellerAddress);
+      const [seller] = sellers;
+
+      const nonce = Date.now();
+      const fundsAmount = "100";
+      const fundsTokenAddress = MOCK_ERC20_ADDRESS;
+
+      const fundsBefore = await getFunds(
+        newSellerCoreSDK,
+        seller.id,
+        fundsTokenAddress
+      );
+
+      // `Seller` signs native meta tx for the token approval
+      await approveErc20Token(
+        newSellerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        fundsAmount
+      );
+
+      const allowanceAfter = await newSellerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowanceAfter).gte(fundsAmount)).toBe(true);
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await newSellerCoreSDK.signMetaTxDepositFunds({
+          sellerId: seller.id,
+          fundsTokenAddress,
+          fundsAmount,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await newSellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await waitForGraphNodeIndexing();
+      const fundsAfter = await getFunds(
+        newSellerCoreSDK,
+        seller.id,
+        fundsTokenAddress
+      );
+      expect(
+        BigNumber.from(fundsAfter).eq(
+          BigNumber.from(fundsBefore).add(fundsAmount)
+        )
+      ).toBe(true);
+    });
+  });
 });
 
 async function createOfferAndDepositFunds(sellerWallet: Wallet) {
@@ -392,4 +441,45 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   await depositFundsTx.wait();
 
   return offerId as string;
+}
+
+async function getFunds(
+  coreSDK: CoreSDK,
+  sellerId: string,
+  tokenAddress: string
+): Promise<string> {
+  const funds = await coreSDK.getFunds({
+    fundsFilter: {
+      accountId: sellerId
+    }
+  });
+  const fund = funds?.find(
+    (fund) => fund.token.address.toLowerCase() === tokenAddress.toLowerCase()
+  );
+  return fund?.availableAmount || "0";
+}
+
+async function approveErc20Token(
+  coreSDK: CoreSDK,
+  tokenAddress: string,
+  value: BigNumberish
+) {
+  const {
+    r: r1,
+    s: s1,
+    v: v1,
+    functionSignature: functionSignature1
+  } = await coreSDK.signNativeMetaTxApproveExchangeToken(tokenAddress, value);
+
+  const nativeMetaTx = await coreSDK.relayNativeMetaTransaction(tokenAddress, {
+    functionSignature: functionSignature1,
+    sigR: r1,
+    sigS: s1,
+    sigV: v1
+  });
+  const nativeMetaTxReceipt = await nativeMetaTx.wait();
+  expect(nativeMetaTxReceipt.transactionHash).toBeTruthy();
+  expect(BigNumber.from(nativeMetaTxReceipt.effectiveGasPrice).gt(0)).toBe(
+    true
+  );
 }
