@@ -27,7 +27,7 @@ export const BatchCompleteButton = ({
   onPendingTransaction,
   waitBlocks = 1,
   size = ButtonSize.Large,
-  variant = "primary",
+  variant = "primaryFill",
   children,
   ...coreSdkConfig
 }: Props) => {

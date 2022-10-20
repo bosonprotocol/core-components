@@ -41,7 +41,7 @@ export const CommitButton = ({
   size = ButtonSize.Large,
   isPauseCommitting = false,
   buttonRef,
-  variant = "primary",
+  variant = "primaryFill",
   onGetSignerAddress,
   ...coreSdkConfig
 }: Props) => {
