@@ -10,23 +10,23 @@ export enum ButtonSize {
 }
 
 export interface ButtonProps {
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   loading?: boolean;
   size?: ButtonSize;
   variant?:
-    | "primary"
-    | "primaryOutline"
-    | "secondary"
-    | "secondaryOutline"
-    | "ghost"
-    | "ghostSecondary"
-    | "ghostOrange"
-    | "tertiary"
-    | "danger"
-    | "warning";
+    | "primaryFill"
+    | "primaryInverted"
+    | "secondaryFill"
+    | "secondaryInverted"
+    | "accentFill"
+    | "accentInverted";
   className?: string;
   children?: React.ReactNode;
+  showBorder?: boolean;
+  type?: "submit" | "reset" | "button" | undefined;
+  style?: React.CSSProperties;
+  withBosonStyle?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -37,6 +37,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       size = ButtonSize.Medium,
       variant = "primaryFill",
+      showBorder = true,
+      type,
+      style,
       ...props
     },
     ref
@@ -48,6 +51,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={onClick}
         size={size}
         ref={ref}
+        showBorder={showBorder}
+        style={style}
+        type={type}
         {...props}
       >
         {props.loading ? (
