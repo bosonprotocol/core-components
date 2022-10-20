@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       className,
       size = ButtonSize.Medium,
-      variant = "primary",
+      variant = "primaryFill",
       ...props
     },
     ref

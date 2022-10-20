@@ -26,7 +26,7 @@ export const CreateDisputeResolverButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "primary",
+  variant = "primaryFill",
   disputeResolverToCreate,
   ...coreSdkConfig
 }: ICreateDisputeResolverButton) => {

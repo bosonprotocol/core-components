@@ -32,7 +32,7 @@ export const RemoveSellerFromDisputeResolverButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "primary",
+  variant = "primaryFill",
   createSellerArgs,
   buyerPercent,
   disputeResolverId,
