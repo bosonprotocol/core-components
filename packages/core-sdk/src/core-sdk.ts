@@ -123,7 +123,9 @@ export class CoreSDK {
       metaTransactionMethod?: string;
     } = {}
   ) {
-    const contractAddress = args.contractAddress || this._protocolDiamond;
+    const contractAddress = (
+      args.contractAddress || this._protocolDiamond
+    ).toLowerCase();
     const metaTransactionMethod =
       args.metaTransactionMethod || "executeMetaTransaction";
     return (
@@ -1757,6 +1759,25 @@ export class CoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `depositFunds` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxDepositFunds(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxDepositFunds>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxDepositFunds({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Relay a meta transaction,
    * @param metaTxParams - Required params for meta transaction.
    * @param overrides - Optional overrides.
@@ -1921,7 +1942,7 @@ export class CoreSDK {
     const metaTxApiKey =
       overrides.metaTxConfig?.apiKey || this._metaTxConfig?.apiKey;
     // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
-    const apiIds = this._metaTxConfig?.apiIds[contractAddress];
+    const apiIds = this._metaTxConfig?.apiIds[contractAddress.toLowerCase()];
     const metaTxApiId =
       overrides.metaTxConfig?.apiId ||
       (apiIds && apiIds[metaTransactionMethod]);
