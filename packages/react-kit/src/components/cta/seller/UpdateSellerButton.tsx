@@ -26,7 +26,7 @@ export const UpdateSellerButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "accentInverted",
   updateSellerArgs,
   ...coreSdkConfig
 }: IUpdateSellerButton) => {

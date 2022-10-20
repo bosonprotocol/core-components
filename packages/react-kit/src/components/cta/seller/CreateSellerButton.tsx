@@ -27,7 +27,7 @@ export const CreateSellerButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "accentInverted",
   createSellerArgs,
   ...coreSdkConfig
 }: ICreateSellerButton) => {
