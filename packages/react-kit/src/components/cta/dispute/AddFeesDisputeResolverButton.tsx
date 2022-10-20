@@ -6,21 +6,23 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-type IRevokeButton = {
-  /**
-   * ID of voucher/exchange to revoke.
-   */
+import { CreateSellerArgs } from "@bosonprotocol/common";
+import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
+export type IAddFeesDisputeResolverButton = {
   exchangeId: BigNumberish;
+  createSellerArgs: CreateSellerArgs;
+  buyerPercent: string;
+  disputeResolverId: BigNumberish;
+  fees: DisputeResolutionFee[];
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const RevokeButton = ({
+export const AddFeesDisputeResolverButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
-  extraInfo = "",
+  extraInfo,
   onSuccess,
   onError,
   onPendingSignature,
@@ -28,9 +30,13 @@ export const RevokeButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "accentInverted",
+  variant = "primaryFill",
+  createSellerArgs,
+  buyerPercent,
+  disputeResolverId,
+  fees,
   ...coreSdkConfig
-}: IRevokeButton) => {
+}: IAddFeesDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,7 +51,11 @@ export const RevokeButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
-            const txResponse = await coreSdk.revokeVoucher(exchangeId);
+
+            const txResponse = await coreSdk.addFeesToDisputeResolver(
+              disputeResolverId,
+              fees
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -62,7 +72,7 @@ export const RevokeButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Revoke"}
+        {children || "Add Fees"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

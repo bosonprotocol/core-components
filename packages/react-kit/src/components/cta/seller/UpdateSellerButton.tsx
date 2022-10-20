@@ -6,21 +6,19 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-type IRevokeButton = {
-  /**
-   * ID of voucher/exchange to revoke.
-   */
+import { UpdateSellerArgs } from "@bosonprotocol/common";
+export type IUpdateSellerButton = {
   exchangeId: BigNumberish;
+  updateSellerArgs: UpdateSellerArgs;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const RevokeButton = ({
+export const UpdateSellerButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
-  extraInfo = "",
+  extraInfo,
   onSuccess,
   onError,
   onPendingSignature,
@@ -29,8 +27,9 @@ export const RevokeButton = ({
   children,
   size = ButtonSize.Large,
   variant = "accentInverted",
+  updateSellerArgs,
   ...coreSdkConfig
-}: IRevokeButton) => {
+}: IUpdateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,7 +44,8 @@ export const RevokeButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
-            const txResponse = await coreSdk.revokeVoucher(exchangeId);
+
+            const txResponse = await coreSdk.updateSeller(updateSellerArgs);
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -62,7 +62,7 @@ export const RevokeButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Revoke"}
+        {children || "Update Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

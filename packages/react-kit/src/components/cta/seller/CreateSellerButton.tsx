@@ -3,24 +3,23 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
+import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-type IRevokeButton = {
-  /**
-   * ID of voucher/exchange to revoke.
-   */
+import { CreateSellerArgs } from "@bosonprotocol/common";
+export type ICreateSellerButton = {
   exchangeId: BigNumberish;
+  createSellerArgs: CreateSellerArgs;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const RevokeButton = ({
+export const CreateSellerButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
-  extraInfo = "",
+  extraInfo,
   onSuccess,
   onError,
   onPendingSignature,
@@ -29,10 +28,13 @@ export const RevokeButton = ({
   children,
   size = ButtonSize.Large,
   variant = "accentInverted",
+  createSellerArgs,
   ...coreSdkConfig
-}: IRevokeButton) => {
+}: ICreateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
 
   return (
     <Button
@@ -45,7 +47,29 @@ export const RevokeButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
-            const txResponse = await coreSdk.revokeVoucher(exchangeId);
+
+            let txResponse;
+
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
+              const nonce = Date.now();
+
+              const { r, s, v, functionName, functionSignature } =
+                await coreSdk.signMetaTxCreateSeller({
+                  createSellerArgs,
+                  nonce
+                });
+
+              txResponse = await coreSdk.relayMetaTransaction({
+                functionName,
+                functionSignature,
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
+            } else {
+              txResponse = await coreSdk.createSeller(createSellerArgs);
+            }
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -62,7 +86,7 @@ export const RevokeButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Revoke"}
+        {children || "Create Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

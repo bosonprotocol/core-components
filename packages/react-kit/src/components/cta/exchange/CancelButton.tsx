@@ -9,9 +9,6 @@ import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
 export type ICancelButton = {
-  /**
-   * ID of voucher/exchange to cancel.
-   */
   exchangeId: BigNumberish;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
@@ -29,7 +26,7 @@ export const CancelButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "secondary",
+  variant = "accentInverted",
   ...coreSdkConfig
 }: ICancelButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);

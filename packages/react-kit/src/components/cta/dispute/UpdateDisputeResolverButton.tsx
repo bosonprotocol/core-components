@@ -6,21 +6,22 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-type IRevokeButton = {
-  /**
-   * ID of voucher/exchange to revoke.
-   */
+import { CreateSellerArgs } from "@bosonprotocol/common";
+import { accounts } from "@bosonprotocol/core-sdk";
+export type IUpdateDisputeResolverButton = {
   exchangeId: BigNumberish;
+  disputeResolverId: BigNumberish;
+  createSellerArgs: CreateSellerArgs;
+  disputeResolverUpdates: accounts.DisputeResolverUpdates;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const RevokeButton = ({
+export const UpdateDisputeResolverButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
-  extraInfo = "",
+  extraInfo,
   onSuccess,
   onError,
   onPendingSignature,
@@ -28,9 +29,12 @@ export const RevokeButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "accentInverted",
+  variant = "primaryFill",
+  createSellerArgs,
+  disputeResolverId,
+  disputeResolverUpdates,
   ...coreSdkConfig
-}: IRevokeButton) => {
+}: IUpdateDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,7 +49,11 @@ export const RevokeButton = ({
           try {
             setIsLoading(true);
             onPendingSignature?.();
-            const txResponse = await coreSdk.revokeVoucher(exchangeId);
+
+            const txResponse = await coreSdk.updateDisputeResolver(
+              disputeResolverId,
+              disputeResolverUpdates
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -62,7 +70,7 @@ export const RevokeButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Revoke"}
+        {children || "Update Dispute"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (
