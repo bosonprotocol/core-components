@@ -191,10 +191,10 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
   const protocolAddress = defaultConfig.contracts.protocolDiamond;
   const testErc20Address = defaultConfig.contracts.testErc20 as string;
   const apiIds = {
-    [protocolAddress]: {
+    [protocolAddress.toLowerCase()]: {
       executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     },
-    [testErc20Address]: {
+    [testErc20Address.toLowerCase()]: {
       executeMetaTransaction: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     }
   };

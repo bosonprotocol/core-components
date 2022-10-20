@@ -123,7 +123,9 @@ export class CoreSDK {
       metaTransactionMethod?: string;
     } = {}
   ) {
-    const contractAddress = args.contractAddress || this._protocolDiamond;
+    const contractAddress = (
+      args.contractAddress || this._protocolDiamond
+    ).toLowerCase();
     const metaTransactionMethod =
       args.metaTransactionMethod || "executeMetaTransaction";
     return (
@@ -1940,7 +1942,7 @@ export class CoreSDK {
     const metaTxApiKey =
       overrides.metaTxConfig?.apiKey || this._metaTxConfig?.apiKey;
     // metaTxApiId is depending on the contract/method(=executeMetaTransaction) to be called with Biconomy
-    const apiIds = this._metaTxConfig?.apiIds[contractAddress];
+    const apiIds = this._metaTxConfig?.apiIds[contractAddress.toLowerCase()];
     const metaTxApiId =
       overrides.metaTxConfig?.apiId ||
       (apiIds && apiIds[metaTransactionMethod]);
