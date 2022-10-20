@@ -56,8 +56,7 @@ export const CreateSellerButton = ({
               const { r, s, v, functionName, functionSignature } =
                 await coreSdk.signMetaTxCreateSeller({
                   createSellerArgs,
-                  nonce,
-                  chainId: 0
+                  nonce
                 });
 
               txResponse = await coreSdk.relayMetaTransaction({
