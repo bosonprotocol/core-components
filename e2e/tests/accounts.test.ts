@@ -1,8 +1,8 @@
-import { MSEC_PER_DAY, MSEC_PER_SEC } from './../../packages/common/src/utils/timestamp';
+
 import { utils, constants, Wallet } from "ethers";
 
+import { MSEC_PER_DAY, MSEC_PER_SEC } from '../../packages/common/src/utils/timestamp';
 import { CoreSDK } from "../../packages/core-sdk/src";
-
 import {
   initCoreSDKWithFundedWallet,
   ensureCreatedSeller,
@@ -226,11 +226,10 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("add sellers", async () => {
-      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
-      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver } = await createDisputeResolver(
@@ -266,11 +265,10 @@ describe("CoreSDK - accounts", () => {
     });
 
     test("remove sellers", async () => {
-      const [sellers, { coreSDK, fundedWallet }] = await Promise.all([
+      const [seller, { coreSDK, fundedWallet }] = await Promise.all([
         ensureCreatedSeller(sellerWallet),
         initCoreSDKWithFundedWallet(protocolAdminWallet)
       ]);
-      const [seller] = sellers;
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =

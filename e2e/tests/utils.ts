@@ -237,9 +237,9 @@ export async function createFundedWallet(
 export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
-  let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
+  let seller = await sellerCoreSDK.getSellerByAddress(sellerAddress);
 
-  if (!sellers.length) {
+  if (!seller) {
     const tx = await sellerCoreSDK.createSeller({
       operator: sellerAddress,
       treasury: sellerAddress,
@@ -253,10 +253,10 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
-    sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
+    seller = await sellerCoreSDK.getSellerByAddress(sellerAddress);
   }
 
-  return sellers;
+  return seller;
 }
 
 export async function ensureMintedAndAllowedTokens(

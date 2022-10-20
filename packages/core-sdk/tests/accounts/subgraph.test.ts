@@ -8,6 +8,7 @@ import {
   interceptSubgraph,
   mockRawSellerFromSubgraph
 } from "../mocks";
+import { AuthTokenType } from "@bosonprotocol/common";
 
 describe("#getSellerByAddress()", () => {
   test("return falsy if address no seller", async () => {
@@ -145,7 +146,7 @@ describe("#getSellerByAddress()", () => {
       operator: ADDRESS,
       treasury: ADDRESS,
       authTokenId: tokenId,
-      authTokenType: 1
+      authTokenType: AuthTokenType.LENS
     });
     interceptSubgraph()
       .times(5)
@@ -155,7 +156,11 @@ describe("#getSellerByAddress()", () => {
         }
       });
 
-    const rawSeller = await getSellerByAuthToken(SUBGRAPH_URL, tokenId, 1);
+    const rawSeller = await getSellerByAuthToken(
+      SUBGRAPH_URL,
+      tokenId,
+      AuthTokenType.LENS
+    );
 
     expect(rawSeller).toMatchObject(mockedRawSellerFromSubgraph);
   });

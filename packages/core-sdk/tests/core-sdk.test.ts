@@ -73,10 +73,6 @@ describe("#renderContractualAgreementForOffer()", () => {
   });
 
   test("Not existing offer", async () => {
-    const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
-      price: "100" + "0".repeat(18),
-      metadata: buildProductV1Metadata("{{priceValue}} {{exchangeTokenSymbol}}")
-    });
     interceptSubgraph().reply(200, {
       data: {
         offer: null
@@ -96,7 +92,7 @@ describe("#renderContractualAgreementForOffer()", () => {
   });
 });
 
-describe("getSellersByAddress()", () => {
+describe("getSellersByAddressOrAuthToken()", () => {
   test("shall fail if search address is ZERO_ADDRESS", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
       operator: ADDRESS
@@ -115,7 +111,7 @@ describe("getSellersByAddress()", () => {
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
     await expect(
-      coreSDK.getSellersByAddress(ZERO_ADDRESS)
+      coreSDK.getSellersByAddressOrAuthToken(ZERO_ADDRESS)
     ).rejects.toThrowError(
       /^Unsupported search address '0x0000000000000000000000000000000000000000'/
     );
