@@ -20,3 +20,4 @@ export * from "./components/productCard/ProductCard";
 export * from "./components/image/Image";
 
 export * as hooks from "./hooks";
+export * from "./theme";
