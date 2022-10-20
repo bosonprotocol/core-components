@@ -3,18 +3,22 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-export type ICancelButton = {
+import { CreateSellerArgs } from "@bosonprotocol/common";
+import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
+export type IAddFeesDisputeResolverButton = {
   exchangeId: BigNumberish;
+  createSellerArgs: CreateSellerArgs;
+  buyerPercent: string;
+  disputeResolverId: BigNumberish;
+  fees: DisputeResolutionFee[];
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const AddFeesDisputeResolverButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -26,13 +30,15 @@ export const CancelButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "accentInverted",
+  variant = "primaryFill",
+  createSellerArgs,
+  buyerPercent,
+  disputeResolverId,
+  fees,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: IAddFeesDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
 
   return (
     <Button
@@ -46,33 +52,12 @@ export const CancelButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            let txResponse;
-            const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress
+            const txResponse = await coreSdk.addFeesToDisputeResolver(
+              disputeResolverId,
+              fees
             );
 
-            if (isMetaTx) {
-              const nonce = Date.now();
-
-              const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signMetaTxCancelVoucher({
-                  exchangeId,
-                  nonce
-                });
-
-              txResponse = await coreSdk.relayMetaTransaction({
-                functionName,
-                functionSignature,
-                sigR: r,
-                sigS: s,
-                sigV: v,
-                nonce
-              });
-            } else {
-              txResponse = await coreSdk.cancelVoucher(exchangeId);
-            }
-
-            onPendingTransaction?.(txResponse.hash, isMetaTx);
+            onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
 
             onSuccess?.(receipt as providers.TransactionReceipt, {
@@ -87,7 +72,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Cancel"}
+        {children || "Add Fees"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (

@@ -7,14 +7,15 @@ import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-
-export type ICancelButton = {
+import { CreateSellerArgs } from "@bosonprotocol/common";
+export type ICreateSellerButton = {
   exchangeId: BigNumberish;
+  createSellerArgs: CreateSellerArgs;
 } & CtaButtonProps<{
   exchangeId: BigNumberish;
 }>;
 
-export const CancelButton = ({
+export const CreateSellerButton = ({
   exchangeId,
   disabled = false,
   showLoading = false,
@@ -27,8 +28,9 @@ export const CancelButton = ({
   children,
   size = ButtonSize.Large,
   variant = "accentInverted",
+  createSellerArgs,
   ...coreSdkConfig
-}: ICancelButton) => {
+}: ICreateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -47,16 +49,13 @@ export const CancelButton = ({
             onPendingSignature?.();
 
             let txResponse;
-            const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress
-            );
 
-            if (isMetaTx) {
+            if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signMetaTxCancelVoucher({
-                  exchangeId,
+                await coreSdk.signMetaTxCreateSeller({
+                  createSellerArgs,
                   nonce
                 });
 
@@ -69,10 +68,10 @@ export const CancelButton = ({
                 nonce
               });
             } else {
-              txResponse = await coreSdk.cancelVoucher(exchangeId);
+              txResponse = await coreSdk.createSeller(createSellerArgs);
             }
 
-            onPendingTransaction?.(txResponse.hash, isMetaTx);
+            onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
 
             onSuccess?.(receipt as providers.TransactionReceipt, {
@@ -87,7 +86,7 @@ export const CancelButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Cancel"}
+        {children || "Create Seller"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (
