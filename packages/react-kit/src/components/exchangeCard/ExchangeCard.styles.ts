@@ -179,7 +179,7 @@ export const ExchangeStatus = styled.div<{
       case "CANCELLED":
         return theme.colors.light.primary;
       case "COMMITTED":
-        return theme.colors.light.secondary;
+        return theme.colors.light.accent;
       default:
         return theme.colors.light.white;
     }
