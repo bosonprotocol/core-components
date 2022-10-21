@@ -22,7 +22,7 @@ import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
-import { encodeDepositFunds } from "../funds/interface";
+import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -409,7 +409,7 @@ export async function signMetaTxWithdrawFunds(
     tokenAmounts: BigNumberish[];
   }
 ): Promise<SignedMetaTx> {
-  const functionName = "withdrawFunds(uint256,bytes32,bytes32,uint8)";
+  const functionName = "withdrawFunds(uint256,address[],uint256[])";
 
   const fundType = [
     { name: "entityId", type: "uint256" },
@@ -453,9 +453,10 @@ export async function signMetaTxWithdrawFunds(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
-      "withdrawFunds",
-      [args.entityId, args.tokenList, args.tokenAmounts]
+    functionSignature: encodeWithdrawFunds(
+      args.entityId,
+      args.tokenList,
+      args.tokenAmounts
     )
   };
 }
