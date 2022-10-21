@@ -113,7 +113,9 @@ export const CommitButton = ({
             let txResponse;
             onPendingSignature?.();
             const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress
+              coreSdk.isMetaTxConfigSet &&
+                signerAddress &&
+                exchangeToken !== AddressZero
             );
 
             if (isMetaTx) {
