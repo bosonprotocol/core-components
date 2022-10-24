@@ -18111,6 +18111,7 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;
@@ -18127,6 +18128,7 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;

@@ -11,6 +11,7 @@ interface MetadataInterface {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   type: MetadataType!
@@ -49,6 +50,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.BASE"
@@ -81,6 +83,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   name: String!
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
+  animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   schemaUrl: String! # JSON schema URL
   "MetadataType.PRODUCT_V1"

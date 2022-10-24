@@ -6,13 +6,14 @@ import { convertToString } from "../../utils/json";
 export function saveBaseMetadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
-  timestamp: BigInt
+  timestamp: bigint
 ): string {
   const offerId = offer.id.toString();
   const metadataId = offerId + "-metadata";
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
 
@@ -36,6 +37,7 @@ export function saveBaseMetadata(
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;
   baseMetadataEntity.externalUrl = externalUrl;
+  baseMetadataEntity.animationUrl = animationUrl;
   baseMetadataEntity.licenseUrl = licenseUrl;
   baseMetadataEntity.schemaUrl = schemaUrl;
   baseMetadataEntity.save();

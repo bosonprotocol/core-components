@@ -17,7 +17,7 @@ import { saveProductV1ExchangePolicy } from "./exchange-policy";
 export function saveProductV1Metadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
-  timestamp: BigInt
+  timestamp: bigint
 ): string {
   const offerId = offer.id.toString();
   const metadataId = getMetadataEntityId(offerId);
@@ -25,6 +25,7 @@ export function saveProductV1Metadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
   const image = convertToString(metadataObj.get("image"));
@@ -82,6 +83,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
+  productV1MetadataEntity.animationUrl = animationUrl;
   productV1MetadataEntity.licenseUrl = licenseUrl;
   productV1MetadataEntity.schemaUrl = schemaUrl;
   productV1MetadataEntity.type = "PRODUCT_V1";
