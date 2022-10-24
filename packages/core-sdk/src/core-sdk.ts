@@ -204,6 +204,19 @@ export class CoreSDK {
     return metadata.subgraph.getProductV1Products(this._subgraphUrl, queryVars);
   }
 
+  public async getProductWithVariants(productUuid: string): Promise<{
+    product: subgraph.BaseProductV1ProductFieldsFragment;
+    variants: Array<{
+      offer: subgraph.OfferFieldsFragment;
+      variations: Array<subgraph.ProductV1Variation>;
+    }>;
+  }> {
+    return metadata.subgraph.getProductWithVariants(
+      this._subgraphUrl,
+      productUuid
+    );
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */

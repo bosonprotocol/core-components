@@ -118,3 +118,36 @@ export async function getProductV1Products(
 
   return productV1Products;
 }
+
+export async function getProductWithVariants(
+  subgraphUrl: string,
+  productUuid: string
+): Promise<
+  | {
+      product: BaseProductV1ProductFieldsFragment;
+      variants: {
+        offer: import("../subgraph").OfferFieldsFragment;
+        variations: import("../subgraph").ProductV1Variation[];
+      }[];
+    }
+  | undefined
+> {
+  // Look for ProductV1MetadataEntities, filtered per productUuid
+  const metadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
+    metadataFilter: {
+      productUuid
+    }
+  });
+  if (metadataEntities.length === 0) {
+    return undefined;
+  }
+  return {
+    product: metadataEntities[0].product,
+    variants: metadataEntities.map((m) => {
+      return {
+        offer: m.offer,
+        variations: m.variations
+      };
+    })
+  };
+}
