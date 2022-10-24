@@ -347,11 +347,11 @@ describe("meta-tx", () => {
       const newSellerCoreSDK = initCoreSDKWithWallet(newSellerWallet);
       // do not approve for newSeller (we expect the test to do it when needed)
       await ensureMintedAndAllowedTokens([newSellerWallet], undefined, false);
-      const sellers = await sellerCoreSDK.getSellersByAddress(newSellerAddress);
+      const sellers = await ensureCreatedSeller(newSellerWallet);
       const [seller] = sellers;
 
       const nonce = Date.now();
-      const fundsAmount = "100";
+      const fundsAmount = BigNumber.from("100");
       const fundsTokenAddress = MOCK_ERC20_ADDRESS;
 
       const fundsBefore = await getFunds(
@@ -417,7 +417,7 @@ describe("meta-tx", () => {
       const sellers = await ensureCreatedSeller(newSellerWallet);
       const [seller] = sellers;
 
-      const fundsAmount = "100";
+      const fundsAmount = BigNumber.from("100");
       const fundsTokenAddress = ZERO_ADDRESS;
 
       const fundsBefore = await getFunds(

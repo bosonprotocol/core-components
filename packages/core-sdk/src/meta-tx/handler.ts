@@ -436,9 +436,9 @@ export async function signMetaTxWithdrawFunds(
     contractAddress: args.metaTxHandlerAddress,
     functionName,
     fundDetails: {
-      entityId: args.entityId,
+      entityId: args.entityId.toString(),
       tokenList: args.tokenList,
-      tokenAmounts: args.tokenAmounts
+      tokenAmounts: args.tokenAmounts.map((bn) => bn.toString())
     }
   };
 
