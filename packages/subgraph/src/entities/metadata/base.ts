@@ -6,7 +6,8 @@ import { convertToString } from "../../utils/json";
 export function saveBaseMetadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
-  timestamp: bigint
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  timestamp: BigInt
 ): string {
   const offerId = offer.id.toString();
   const metadataId = offerId + "-metadata";

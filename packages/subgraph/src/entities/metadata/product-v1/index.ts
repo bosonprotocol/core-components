@@ -17,7 +17,8 @@ import { saveProductV1ExchangePolicy } from "./exchange-policy";
 export function saveProductV1Metadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
-  timestamp: bigint
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  timestamp: BigInt
 ): string {
   const offerId = offer.id.toString();
   const metadataId = getMetadataEntityId(offerId);
