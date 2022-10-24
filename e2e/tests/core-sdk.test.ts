@@ -39,7 +39,7 @@ jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
   describe("core user flows", () => {
-    test("create seller and offer", async () => {
+    test.only("create seller and offer", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet
       );
@@ -50,6 +50,12 @@ describe("core-sdk", () => {
       );
 
       expect(createdOffer).toBeTruthy();
+      console.log(
+        "createdOffer.metadata",
+        createdOffer.metadata,
+        "metadata",
+        metadata
+      );
       expect(createdOffer.metadata).toMatchObject(metadata);
       expect(createdOffer.seller).toBeTruthy();
       expect(createdOffer.seller.operator.toLowerCase()).toBe(
