@@ -115,7 +115,7 @@ export const CommitButton = ({
             const isMetaTx = Boolean(
               coreSdk.isMetaTxConfigSet &&
                 signerAddress &&
-                exchangeToken !== AddressZero
+                (exchangeToken !== AddressZero || BigNumber.from(price).eq(0))
             );
 
             if (isMetaTx) {
