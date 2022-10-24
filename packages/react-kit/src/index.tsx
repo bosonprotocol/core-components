@@ -12,6 +12,7 @@ export * from "./components/cta/exchange/BatchCompleteButton";
 export * from "./components/cta/exchange/ExpireButton";
 export * from "./components/cta/offer/CommitButton";
 export * from "./components/cta/offer/VoidButton";
+export * from "./components/cta/offer/BatchVoidButton";
 export * from "./components/buttons/Button";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/currencyDisplay/CurrencyDisplay";
