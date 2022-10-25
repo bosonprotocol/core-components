@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import theme from "../../theme";
+import { theme } from "../../theme";
 
 export const ProductCardCreator = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const ProductCardCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.secondary};
+  color: ${({ theme }) => theme?.colors?.light.accent};
   flex: none;
   order: 1;
   flex-grow: 0;

@@ -264,9 +264,12 @@ function assertCompletableExchange(
 ) {
   assertExchange(exchangeId, exchange);
 
-  const { isSignerOperator } = assertSignerIsBuyerOrOperator(signer, exchange);
+  const { isSignerOperator, isSignerBuyer } = assertSignerIsBuyerOrOperator(
+    signer,
+    exchange
+  );
 
-  if (isSignerOperator) {
+  if (isSignerOperator && !isSignerBuyer) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
     const didDisputePeriodElapse =

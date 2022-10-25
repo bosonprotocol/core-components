@@ -1,6 +1,6 @@
 import "styled-components";
 
-const theme = {
+export const theme = {
   colors: {
     light: {
       primary: "#02F3A2",
@@ -31,5 +31,3 @@ const theme = {
     timing: "ease-in-out"
   }
 };
-
-export default theme;
