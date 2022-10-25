@@ -12,7 +12,9 @@ import {
   GetProductV1MetadataEntityByIdQueryQueryVariables,
   BaseProductV1BrandFieldsFragment,
   BaseProductV1ProductFieldsFragment,
-  BaseProductV1CategoryFieldsFragment
+  BaseProductV1CategoryFieldsFragment,
+  OfferFieldsFragment,
+  ProductV1Variation
 } from "../subgraph";
 
 export type SingleBaseMetadataEntityQueryVariables = Omit<
@@ -126,8 +128,8 @@ export async function getProductWithVariants(
   | {
       product: BaseProductV1ProductFieldsFragment;
       variants: {
-        offer: import("../subgraph").OfferFieldsFragment;
-        variations: import("../subgraph").ProductV1Variation[];
+        offer: OfferFieldsFragment;
+        variations: ProductV1Variation[];
       }[];
     }
   | undefined
