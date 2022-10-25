@@ -23,6 +23,7 @@ import { Biconomy, GetRetriedHashesData } from "./biconomy";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
+import { bosonDisputeHandlerIface } from "../disputes/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -311,39 +312,49 @@ export async function signMetaTxRaiseDispute(
     exchangeId: BigNumberish;
   }
 ) {
-  const disputeType = [{ name: "exchangeId", type: "uint256" }];
+  const functionName = "raiseDispute(uint256)";
 
-  const metaTransactionType = [
+  const exchangeType = [{ name: "exchangeId", type: "uint256" }];
+
+  const metaTxExchangeType = [
     { name: "nonce", type: "uint256" },
     { name: "from", type: "address" },
     { name: "contractAddress", type: "address" },
     { name: "functionName", type: "string" },
-    { name: "disputeDetails", type: "MetaTxDisputeDetails" }
+    { name: "exchangeDetails", type: "MetaTxExchangeDetails" }
   ];
 
   const customSignatureType = {
-    MetaTxDispute: metaTransactionType,
-    MetaTxDisputeDetails: disputeType
-  };
+    MetaTxExchange: metaTxExchangeType,
+    MetaTxExchangeDetails: exchangeType
+};
 
   const message = {
     nonce: args.nonce.toString(),
     from: await args.web3Lib.getSignerAddress(),
     contractAddress: args.metaTxHandlerAddress,
-    functionName: "raiseDispute(uint256)",
-    disputeDetails: {
+    functionName,
+    exchangeDetails: {
       exchangeId: args.exchangeId.toString()
     }
   };
 
-  // TODO: encode function data when adding dispute resolver module
-  return prepareDataSignatureParameters({
+  const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
-    primaryType: "MetaTxDispute",
+    primaryType: "MetaTxExchange",
     message
   });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
+      "raiseDispute",
+      [args.exchangeId]
+    )
+  };
 }
 
 export async function signMetaTxResolveDispute(
