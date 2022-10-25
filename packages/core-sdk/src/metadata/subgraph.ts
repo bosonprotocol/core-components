@@ -124,16 +124,13 @@ export async function getProductV1Products(
 export async function getProductWithVariants(
   subgraphUrl: string,
   productUuid: string
-): Promise<
-  | {
-      product: BaseProductV1ProductFieldsFragment;
-      variants: {
-        offer: OfferFieldsFragment;
-        variations: ProductV1Variation[];
-      }[];
-    }
-  | undefined
-> {
+): Promise<{
+  product: BaseProductV1ProductFieldsFragment;
+  variants: {
+    offer: OfferFieldsFragment;
+    variations: ProductV1Variation[];
+  }[];
+} | null> {
   // Look for ProductV1MetadataEntities, filtered per productUuid
   const metadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
     metadataFilter: {
@@ -141,7 +138,7 @@ export async function getProductWithVariants(
     }
   });
   if (metadataEntities.length === 0) {
-    return undefined;
+    return null;
   }
   return {
     product: metadataEntities[0].product,

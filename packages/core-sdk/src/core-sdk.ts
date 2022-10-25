@@ -210,7 +210,7 @@ export class CoreSDK {
       offer: subgraph.OfferFieldsFragment;
       variations: Array<subgraph.ProductV1Variation>;
     }>;
-  }> {
+  } | null> {
     return metadata.subgraph.getProductWithVariants(
       this._subgraphUrl,
       productUuid

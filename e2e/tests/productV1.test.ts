@@ -420,29 +420,34 @@ describe("Multi-variant offers tests", () => {
     );
     expect(productWithVariants).toBeTruthy();
 
-    // Check the product data
-    checkProductMetadata(productWithVariants.product, productMetadata.product);
+    if (productWithVariants) {
+      // Check the product data
+      checkProductMetadata(
+        productWithVariants.product,
+        productMetadata.product
+      );
 
-    // // Get the associated offers
-    const foundOffers = productWithVariants.variants.map((v) => v.offer);
-    const offerIds = createdOffers.map((offer) => offer.id);
+      // // Get the associated offers
+      const foundOffers = productWithVariants.variants.map((v) => v.offer);
+      const offerIds = createdOffers.map((offer) => offer.id);
 
-    // Check we have retrieved the 2 created offers (may be returned in any order)
-    expect(offerIds.includes(foundOffers[0].id)).toBe(true);
-    expect(offerIds.includes(foundOffers[1].id)).toBe(true);
+      // Check we have retrieved the 2 created offers (may be returned in any order)
+      expect(offerIds.includes(foundOffers[0].id)).toBe(true);
+      expect(offerIds.includes(foundOffers[1].id)).toBe(true);
 
-    // Check the variations
-    const variations = productWithVariants.variants.map((m) => m.variations);
-    const variationsStr = variations
-      .map((v) => {
-        return v?.map((o) => {
-          return { type: o.type, option: o.option };
-        });
-      })
-      .map((v) => (v ? serializeVariant(v) : undefined));
-    for (const expectedVariation of expectedVariations) {
-      const expStr = serializeVariant(expectedVariation);
-      expect(variationsStr.includes(expStr)).toBe(true);
+      // Check the variations
+      const variations = productWithVariants.variants.map((m) => m.variations);
+      const variationsStr = variations
+        .map((v) => {
+          return v?.map((o) => {
+            return { type: o.type, option: o.option };
+          });
+        })
+        .map((v) => (v ? serializeVariant(v) : undefined));
+      for (const expectedVariation of expectedVariations) {
+        const expStr = serializeVariant(expectedVariation);
+        expect(variationsStr.includes(expStr)).toBe(true);
+      }
     }
   });
 
@@ -463,22 +468,27 @@ describe("Multi-variant offers tests", () => {
     );
     expect(productWithVariants).toBeTruthy();
 
-    // Check the product data
-    checkProductMetadata(productWithVariants.product, productMetadata.product);
+    if (productWithVariants) {
+      // Check the product data
+      checkProductMetadata(
+        productWithVariants.product,
+        productMetadata.product
+      );
 
-    // // Get the associated offers
-    const foundOffers = productWithVariants.variants.map((v) => v.offer);
+      // // Get the associated offers
+      const foundOffers = productWithVariants.variants.map((v) => v.offer);
 
-    // Check there is an offer and only one associated to this product
-    expect(foundOffers).toBeTruthy();
-    expect(foundOffers.length).toEqual(1);
-    expect(foundOffers[0].id).toEqual(offer?.id);
+      // Check there is an offer and only one associated to this product
+      expect(foundOffers).toBeTruthy();
+      expect(foundOffers.length).toEqual(1);
+      expect(foundOffers[0].id).toEqual(offer?.id);
 
-    // Check there is an empty variation for this product
-    const variations = productWithVariants.variants.map((m) => m.variations);
-    expect(variations).toBeTruthy();
-    expect(variations.length).toEqual(1);
-    expect(variations[0].length).toEqual(0);
+      // Check there is an empty variation for this product
+      const variations = productWithVariants.variants.map((m) => m.variations);
+      expect(variations).toBeTruthy();
+      expect(variations.length).toEqual(1);
+      expect(variations[0].length).toEqual(0);
+    }
   });
 });
 
