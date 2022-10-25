@@ -127,7 +127,7 @@ describe("#commitToOffer()", () => {
   });
 });
 
-describe.only("#completeExchange()", () => {
+describe("#completeExchange()", () => {
   test("throw if offer not existent", async () => {
     interceptSubgraph().reply(200, {
       data: {
