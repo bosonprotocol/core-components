@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/react-kit",
-  "version": "0.12.0-alpha.13",
+  "version": "0.12.0-alpha.14",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
@@ -9,9 +9,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bosonprotocol/core-sdk": "^1.21.0-alpha.13",
-    "@bosonprotocol/ethers-sdk": "^1.10.0-alpha.13",
-    "@bosonprotocol/ipfs-storage": "^1.10.0-alpha.2",
+    "@bosonprotocol/core-sdk": "^1.21.0-alpha.14",
+    "@bosonprotocol/ethers-sdk": "^1.10.0-alpha.14",
+    "@bosonprotocol/ipfs-storage": "^1.10.0-alpha.3",
     "@ethersproject/units": "^5.6.0",
     "@web3-react/core": "8.0.18-beta.0",
     "styled-components": "^5.3.5",
