@@ -399,7 +399,151 @@ describe("Multi-variant offers tests", () => {
       expect(variationsStr.includes(expStr)).toBe(true);
     }
   });
+  test("find all offers associated with a product - getProductWithVariants()", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    await ensureCreatedSeller(sellerWallet);
+    const {
+      offerArgs: [offerArgs1, offerArgs2],
+      productMetadata,
+      productUuid,
+      variations: expectedVariations
+    } = await prepareMultiVariantOffers(coreSDK);
+
+    const createdOffers = await createOfferBatch(coreSDK, sellerWallet, [
+      offerArgs1,
+      offerArgs2
+    ]);
+
+    const productWithVariants = await coreSDK.getProductWithVariants(
+      productUuid
+    );
+    expect(productWithVariants).toBeTruthy();
+
+    if (productWithVariants) {
+      // Check the product data
+      checkProductMetadata(
+        productWithVariants.product,
+        productMetadata.product
+      );
+
+      // // Get the associated offers
+      const foundOffers = productWithVariants.variants.map((v) => v.offer);
+      const offerIds = createdOffers.map((offer) => offer.id);
+
+      // Check we have retrieved the 2 created offers (may be returned in any order)
+      expect(offerIds.includes(foundOffers[0].id)).toBe(true);
+      expect(offerIds.includes(foundOffers[1].id)).toBe(true);
+
+      // Check the variations
+      const variations = productWithVariants.variants.map((m) => m.variations);
+      const variationsStr = variations
+        .map((v) => {
+          return v?.map((o) => {
+            return { type: o.type, option: o.option };
+          });
+        })
+        .map((v) => (v ? serializeVariant(v) : undefined));
+      for (const expectedVariation of expectedVariations) {
+        const expStr = serializeVariant(expectedVariation);
+        expect(variationsStr.includes(expStr)).toBe(true);
+      }
+    }
+  });
+
+  test("check getProductWithVariants() can be used for single variant product", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const productUuid = productV1.buildUuid();
+    const template = "Hello World!!";
+    const productMetadata = mockProductV1Metadata(template, productUuid);
+    const { offerArgs } = await createOfferArgs(coreSDK, productMetadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+
+    const productWithVariants = await coreSDK.getProductWithVariants(
+      productUuid
+    );
+    expect(productWithVariants).toBeTruthy();
+
+    if (productWithVariants) {
+      // Check the product data
+      checkProductMetadata(
+        productWithVariants.product,
+        productMetadata.product
+      );
+
+      // // Get the associated offers
+      const foundOffers = productWithVariants.variants.map((v) => v.offer);
+
+      // Check there is an offer and only one associated to this product
+      expect(foundOffers).toBeTruthy();
+      expect(foundOffers.length).toEqual(1);
+      expect(foundOffers[0].id).toEqual(offer?.id);
+
+      // Check there is an empty variation for this product
+      const variations = productWithVariants.variants.map((m) => m.variations);
+      expect(variations).toBeTruthy();
+      expect(variations.length).toEqual(1);
+      expect(variations[0].length).toEqual(0);
+    }
+  });
 });
+
+type SubgraphProduct = {
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  identification_sKU?: string;
+  identification_productId?: string;
+  identification_productIdType?: string;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string;
+  productionInformation_manufacturerPartNumber?: string;
+  productionInformation_modelNumber?: string;
+  productionInformation_materials?: string[];
+  visuals_images: {
+    url: string;
+    tag?: string;
+  }[];
+  visuals_videos?: {
+    url: string;
+    tag?: string;
+  }[];
+  packaging_packageQuantity?: string;
+  packaging_dimensions_length?: string;
+  packaging_dimensions_width?: string;
+  packaging_dimensions_height?: string;
+  packaging_dimensions_unit?: string;
+  packaging_weight_value?: string;
+  packaging_weight_unit?: string;
+  details_category?: string;
+  details_subCategory?: string;
+  details_subCategory2?: string;
+  details_offerCategory: string;
+  details_tags?: string[];
+  details_sections?: string[];
+  details_personalisation?: string[];
+};
+
+function checkProductMetadata(
+  productMetadata: subgraph.BaseProductV1ProductFieldsFragment,
+  productFromSubgraph: SubgraphProduct
+) {
+  expect(productFromSubgraph.uuid).toEqual(productMetadata.uuid);
+  expect(productFromSubgraph.version).toEqual(productMetadata.version);
+  expect(productFromSubgraph.title).toEqual(productMetadata.title);
+  expect(productFromSubgraph.description).toEqual(productMetadata.description);
+  expect(productFromSubgraph.productionInformation_brandName).toEqual(
+    productMetadata.brand.name
+  );
+  expect(productFromSubgraph.details_offerCategory).toEqual(
+    productMetadata.offerCategory
+  );
+}
 
 function resolveDateValidity(offerArgs: CreateOfferArgs) {
   offerArgs.validFromDateInMS = BigNumber.from(offerArgs.validFromDateInMS)
