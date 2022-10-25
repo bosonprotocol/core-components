@@ -21,27 +21,9 @@ export class IpfsMetadataStorage
    * @returns Metadata CID.
    */
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {
-    console.log(
-      "[IpfsMetadataStorage][storeMetadata]before validateMetadata, metadata",
-      metadata
-    );
     validateMetadata(metadata);
-    console.log(
-      "[IpfsMetadataStorage][storeMetadata]before convertToERC721Metadata, metadata",
-      metadata
-    );
     const metadataConformingToERC721 = convertToERC721Metadata(metadata);
-    console.log(
-      "[IpfsMetadataStorage][storeMetadata]before sortObjKeys, metadataConformingToERC721",
-      metadataConformingToERC721
-    );
     const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
-    console.log(
-      "[IpfsMetadataStorage][storeMetadata]before jsonstringify, metadataWithSortedKeys",
-      metadataWithSortedKeys,
-      "json stringify",
-      JSON.stringify(metadataWithSortedKeys)
-    );
     const cid = await this.add(JSON.stringify(metadataWithSortedKeys));
     return cid;
   }
