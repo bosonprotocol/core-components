@@ -60,7 +60,7 @@ describe("empty describe", () => {
 //   });
 // });
 
-// describe.skip("#getMetadata()", () => {
+// describe("#getMetadata()", () => {
 //   const METADATA_FROM_IPFS = {
 //     name: "name",
 //     description: "description",
