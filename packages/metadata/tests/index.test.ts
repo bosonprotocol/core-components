@@ -315,9 +315,12 @@ describe("#validateMetadata()", () => {
               ...productV1ValidFullOffer,
               ...data
             };
-        expect(() => validateMetadata(product as any as AnyMetadata)).toThrow(
-          error
+        const result = expect(() =>
+          validateMetadata(product as any as AnyMetadata)
         );
+        if (error) {
+          result.toThrow(error);
+        }
       }
     );
 
