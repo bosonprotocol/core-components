@@ -5,6 +5,7 @@ import { saveBaseMetadata } from "./base";
 import { getIpfsMetadataObject, parseIpfsHash } from "../../utils/ipfs";
 import { convertToString } from "../../utils/json";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function saveMetadata(offer: Offer, timestamp: BigInt): string | null {
   const ipfsHash = parseIpfsHash(offer.metadataUri);
 
