@@ -107,8 +107,8 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
-      - name: Run e2e tests
-        run: npm run e2e:suite
+      #- name: Run e2e tests
+      #  run: npm run e2e:suite
 
   job-summary:
     name: Create Job Summary
