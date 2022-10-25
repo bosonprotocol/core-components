@@ -445,6 +445,41 @@ describe("Multi-variant offers tests", () => {
       expect(variationsStr.includes(expStr)).toBe(true);
     }
   });
+
+  test("check getProductWithVariants() can be used for single variant product", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const productUuid = productV1.buildUuid();
+    const template = "Hello World!!";
+    const productMetadata = mockProductV1Metadata(template, productUuid);
+    const { offerArgs } = await createOfferArgs(coreSDK, productMetadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+
+    const productWithVariants = await coreSDK.getProductWithVariants(
+      productUuid
+    );
+    expect(productWithVariants).toBeTruthy();
+
+    // Check the product data
+    checkProductMetadata(productWithVariants.product, productMetadata.product);
+
+    // // Get the associated offers
+    const foundOffers = productWithVariants.variants.map((v) => v.offer);
+
+    // Check there is an offer and only one associated to this product
+    expect(foundOffers).toBeTruthy();
+    expect(foundOffers.length).toEqual(1);
+    expect(foundOffers[0].id).toEqual(offer?.id);
+
+    // Check there is an empty variation for this product
+    const variations = productWithVariants.variants.map((m) => m.variations);
+    expect(variations).toBeTruthy();
+    expect(variations.length).toEqual(1);
+    expect(variations[0].length).toEqual(0);
+  });
 });
 
 type SubgraphProduct = {
