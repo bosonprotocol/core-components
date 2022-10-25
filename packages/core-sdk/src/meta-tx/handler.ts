@@ -327,7 +327,7 @@ export async function signMetaTxRaiseDispute(
   const customSignatureType = {
     MetaTxExchange: metaTxExchangeType,
     MetaTxExchangeDetails: exchangeType
-};
+  };
 
   const message = {
     nonce: args.nonce.toString(),
