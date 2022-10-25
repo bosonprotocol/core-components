@@ -2,7 +2,7 @@ import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
-
+import { fileTypeFromBuffer, FileTypeResult } from "file-type";
 /**
  * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
  */
@@ -21,7 +21,10 @@ export class BaseIpfsStorage {
     return cid;
   }
 
-  public async get<T>(uriOrHash: string, asJson = true): Promise<T | string> {
+  public async get<T>(
+    uriOrHash: string,
+    asJson = true
+  ): Promise<{ fileType: FileTypeResult; data: T | string }> {
     let cid: CID = null;
     try {
       cid = CID.parse(
@@ -39,25 +42,34 @@ export class BaseIpfsStorage {
     return value;
   }
 
-  public async getByCID<T>(cid: string, asJson = true): Promise<T | string> {
-    const chunks = [];
+  public async getByCID<T>(
+    cid: string,
+    asJson = true
+  ): Promise<{ fileType: FileTypeResult; data: T | string }> {
+    const chunks: Uint8Array[] = [];
     for await (const chunk of this.ipfsClient.cat(cid)) {
       chunks.push(chunk);
     }
     const data = concat(chunks);
+    const fileType = await fileTypeFromBuffer(data);
+
     if (!asJson) {
-      return data as unknown as T;
+      return { data: data as unknown as T, fileType };
     }
     const dataStr = toString(data);
-    return JSON.parse(dataStr);
+    return { data: JSON.parse(dataStr), fileType };
   }
 
-  public async getByURL<T>(url: string, asJson = true): Promise<T | string> {
+  public async getByURL<T>(
+    url: string,
+    asJson = true
+  ): Promise<{ fileType: FileTypeResult; data: T | string }> {
     const response = await fetch(url);
 
+    const fileType = await fileTypeFromBuffer(await response.arrayBuffer());
     if (!asJson) {
-      return response.text();
+      return { data: await response.text(), fileType };
     }
-    return response.json();
+    return { data: await response.json(), fileType };
   }
 }
