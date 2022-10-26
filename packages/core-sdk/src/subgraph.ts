@@ -170,6 +170,7 @@ export enum Account_OrderBy {
 
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
@@ -215,6 +216,26 @@ export type BaseMetadataEntityAttributesArgs = {
 export type BaseMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -472,6 +493,7 @@ export type BaseMetadataEntity_Filter = {
 };
 
 export enum BaseMetadataEntity_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
   CreatedAt = "createdAt",
   Description = "description",
@@ -2175,6 +2197,7 @@ export enum MetadataAttribute_OrderBy {
 }
 
 export type MetadataInterface = {
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
@@ -2219,6 +2242,26 @@ export type MetadataInterfaceAttributesArgs = {
 export type MetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -2476,6 +2519,7 @@ export type MetadataInterface_Filter = {
 };
 
 export enum MetadataInterface_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
   CreatedAt = "createdAt",
   Description = "description",
@@ -3367,6 +3411,7 @@ export enum ProductV1Media_OrderBy {
 
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
@@ -3433,6 +3478,26 @@ export type ProductV1MetadataEntityVariationsArgs = {
 export type ProductV1MetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -3850,6 +3915,7 @@ export type ProductV1MetadataEntity_Filter = {
 };
 
 export enum ProductV1MetadataEntity_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
   CreatedAt = "createdAt",
   Description = "description",
@@ -7635,6 +7701,7 @@ export type GetSellerByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -7651,6 +7718,7 @@ export type GetSellerByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -8120,6 +8188,7 @@ export type GetSellersQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -8136,6 +8205,7 @@ export type GetSellersQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -8915,6 +8985,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -8931,6 +9002,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -9337,6 +9409,7 @@ export type GetDisputeResolversQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -9353,6 +9426,7 @@ export type GetDisputeResolversQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -9753,6 +9827,7 @@ export type SellerFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -9769,6 +9844,7 @@ export type SellerFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -10346,6 +10422,7 @@ export type DisputeResolverFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -10362,6 +10439,7 @@ export type DisputeResolverFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -11106,6 +11184,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -11122,6 +11201,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -11445,6 +11525,7 @@ export type GetExchangeTokensQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -11461,6 +11542,7 @@ export type GetExchangeTokensQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -11762,6 +11844,7 @@ export type ExchangeTokenFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -11778,6 +11861,7 @@ export type ExchangeTokenFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -12258,6 +12342,7 @@ export type GetExchangeByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -12274,6 +12359,7 @@ export type GetExchangeByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -12621,6 +12707,7 @@ export type GetExchangesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -12637,6 +12724,7 @@ export type GetExchangesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -12974,6 +13062,7 @@ export type ExchangeFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -12990,6 +13079,7 @@ export type ExchangeFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -13347,6 +13437,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
     schemaUrl: string;
     type: MetadataType;
@@ -13453,6 +13544,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -13469,6 +13561,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -13706,6 +13799,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
     schemaUrl: string;
     type: MetadataType;
@@ -13812,6 +13906,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -13828,6 +13923,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -14055,6 +14151,7 @@ export type BaseMetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
   schemaUrl: string;
   type: MetadataType;
@@ -14161,6 +14258,7 @@ export type BaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -14177,6 +14275,7 @@ export type BaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -14399,6 +14498,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
   schemaUrl: string;
   type: MetadataType;
@@ -14505,6 +14605,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -14521,6 +14622,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -14913,6 +15015,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
     schemaUrl: string;
     type: MetadataType;
@@ -15020,6 +15123,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -15036,6 +15140,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -15439,6 +15544,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
     schemaUrl: string;
     type: MetadataType;
@@ -15546,6 +15652,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -15562,6 +15669,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
             schemaUrl: string;
             type: MetadataType;
@@ -15955,6 +16063,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
   schemaUrl: string;
   type: MetadataType;
@@ -16062,6 +16171,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -16078,6 +16188,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -16466,6 +16577,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
   schemaUrl: string;
   type: MetadataType;
@@ -16573,6 +16685,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -16589,6 +16702,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -17397,6 +17511,7 @@ export type GetOfferByIdQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -17413,6 +17528,7 @@ export type GetOfferByIdQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -17762,6 +17878,7 @@ export type GetOffersQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -17778,6 +17895,7 @@ export type GetOffersQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
           schemaUrl: string;
           type: MetadataType;
@@ -18111,6 +18229,7 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;
@@ -18127,6 +18246,7 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;
@@ -18409,6 +18529,7 @@ export type BaseOfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;
@@ -18425,6 +18546,7 @@ export type BaseOfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
         schemaUrl: string;
         type: MetadataType;
@@ -18914,6 +19036,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       name
       description
       externalUrl
+      animationUrl
       licenseUrl
       schemaUrl
       type
@@ -19212,6 +19335,7 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
     schemaUrl
     type
@@ -19254,6 +19378,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
     schemaUrl
     type

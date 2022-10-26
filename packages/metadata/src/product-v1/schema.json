@@ -9,6 +9,7 @@
     "externalUrl": { "type": "string" },
     "licenseUrl": { "type": "string" },
     "image": { "type": "string" },
+    "animationUrl": { "type": "string" },
     "attributes": {
       "type": "array",
       "items": {
