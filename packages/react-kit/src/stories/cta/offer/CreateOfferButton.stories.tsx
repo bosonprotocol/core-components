@@ -42,6 +42,9 @@ Simple.args = {
     authTokenType: AuthTokenType.NONE
   },
   web3Provider: undefined,
+  ipfsMetadataStorageHeaders: {
+    authorization: "change-me"
+  },
   extraInfo: "",
   disabled: false,
   offersToCreate: [
@@ -96,6 +99,9 @@ WithStep.args = {
     authTokenType: AuthTokenType.NONE
   },
   web3Provider: undefined,
+  ipfsMetadataStorageHeaders: {
+    authorization: "change-me"
+  },
   extraInfo: "Step 1",
   disabled: false,
   offersToCreate: [
