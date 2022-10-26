@@ -34,6 +34,10 @@ export function getValuesFromLogs(args: {
     .filter((log) => log !== null);
 
   const relevantLogs = parsedLogs.filter((log) => log.name === args.eventName);
+  console.log(
+    "🚀  roberto --  ~ file: logs.ts ~ line 37 ~ relevantLogs",
+    relevantLogs
+  );
 
   if (relevantLogs.length === 0) {
     return null;

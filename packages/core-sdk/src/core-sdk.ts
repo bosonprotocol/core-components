@@ -8,7 +8,9 @@ import {
   Log,
   MetaTxConfig,
   LensContracts,
-  AuthTokenType
+  AuthTokenType,
+  CreateGroupArgs,
+  ConditionStruct
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
@@ -20,6 +22,7 @@ import * as disputes from "./disputes";
 import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
+import * as groups from "./groups";
 import * as erc20 from "./erc20";
 import * as erc721 from "./erc721";
 import * as funds from "./funds";
@@ -751,16 +754,21 @@ export class CoreSDK {
   }
 
   /**
-   * Utility method to retrieve the created `offerIds` from logs after calling `createOfferBatch`
+   * Utility method to retrieve the created `groupIds` from logs after calling `createGroup`
    * @param logs - Logs to search in.
    * @returns Array of created offerIds.
+   * Roberto
    */
-  public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
+  public getCreatedGroupIdsFromLogs(logs: Log[]): string[] {
+    console.log(
+      "🚀  roberto --  ~ file: core-sdk.ts ~ line 763 ~ CoreSDK ~ getCreatedGroupIdsFromLogs ~ logs",
+      logs
+    );
     return getValuesFromLogs({
-      iface: offers.iface.bosonOfferHandlerIface,
+      iface: groups.iface.bosonGroupHandlerIface,
       logs,
-      eventArgsKey: "offerId",
-      eventName: "OfferCreated"
+      eventArgsKey: "groupId",
+      eventName: "GroupCreated"
     });
   }
 
@@ -1974,5 +1982,54 @@ export class CoreSDK {
     queryVars?: subgraph.GetEventLogsQueryQueryVariables
   ) {
     return eventLogs.subgraph.getEventLogs(this._subgraphUrl, queryVars);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                             Groups                                         */
+  /* -------------------------------------------------------------------------- */
+
+  /**
+   * Creates a group of contract addresses
+   * @param groupToCreate -  group with the contract condition
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createGroup(
+    groupToCreate: CreateGroupArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return groups.handler.createGroup({
+      groupToCreate,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Creates seller account and offer and a group with a specific conditions
+   * This transaction only succeeds if there is no existing seller account for the connected signer.
+   * @param sellerToCreate - Addresses to set in the seller account.
+   * @param offerToCreate - Offer arguments.
+   * @param groupToCreate -  group with the contract condition
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createOfferWithCondition(
+    offerToCreate: offers.CreateOfferArgs,
+    condition: ConditionStruct,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return orchestration.handler.createOfferWithCondition({
+      offerToCreate,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
+      condition,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
   }
 }

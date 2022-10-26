@@ -27,9 +27,16 @@ import {
   seedWallet6,
   initCoreSDKWithWallet,
   drWallet,
-  createOffer
+  createOffer,
+  MOCK_ERC721_ADDRESS
 } from "./utils";
-import { CreateOfferArgs } from "@bosonprotocol/common";
+import {
+  CreateGroupArgs,
+  CreateOfferArgs,
+  EvaluationMethod,
+  TokenType,
+  TransactionResponse
+} from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -156,7 +163,7 @@ describe("core-sdk", () => {
       expect(offer.voided).toBe(true);
     });
 
-    test("commit (native currency offer)", async () => {
+    test.skip("commit (native currency offer)", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const createdOffer = await createSellerAndOffer(
@@ -175,6 +182,51 @@ describe("core-sdk", () => {
       });
 
       expect(exchange).toBeTruthy();
+    });
+
+    test.only("create an group and an ", async () => {
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+        await initSellerAndBuyerSDKs(seedWallet);
+
+      const createdOffer = await createSellerAndOffer(
+        sellerCoreSDK,
+        sellerWallet.address
+      );
+
+      await depositFunds({
+        coreSDK: sellerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+      await depositFunds({
+        coreSDK: buyerCoreSDK,
+        sellerId: createdOffer.seller.id
+      });
+
+      const createdGroupTx = await createGroup({
+        coreSDK: sellerCoreSDK,
+        groupToCreate: {
+          offerIds: [createdOffer.id],
+          method: EvaluationMethod.SpecificToken,
+          tokenType: TokenType.NonFungibleToken,
+          tokenAddress: MOCK_ERC721_ADDRESS,
+          tokenId: "1",
+          threshold: "0",
+          maxCommits: "3"
+        }
+      });
+      const txReceipt = await createdGroupTx.wait();
+
+      const createdOfferId = buyerCoreSDK.getCreatedGroupIdsFromLogs(
+        txReceipt.logs
+      );
+
+      const exchange = await commitToOffer({
+        buyerCoreSDK,
+        sellerCoreSDK,
+        offerId: createdOfferId[0]
+      });
+
+      expect(exchange).toBeFalsy();
     });
 
     test("commit (ERC20 currency offer)", async () => {
@@ -745,6 +797,14 @@ async function depositFunds(args: {
   if (!depositedFunds) throw new Error(`No funds found for ${tokenAddress}`);
 
   return depositedFunds;
+}
+
+async function createGroup(args: {
+  coreSDK: CoreSDK;
+  groupToCreate: CreateGroupArgs;
+}): Promise<TransactionResponse> {
+  const createdGroup = await args.coreSDK.createGroup(args.groupToCreate);
+  return createdGroup;
 }
 
 async function withdrawFunds(args: {

@@ -1,7 +1,7 @@
 export type ContractAddresses = {
   protocolDiamond: string;
-  testErc20?: string;
   testErc721?: string;
+  testErc20?: string;
   testErc1155?: string;
 };
 

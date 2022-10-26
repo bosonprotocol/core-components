@@ -267,6 +267,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   return sellers;
 }
 
+// roberto: check this mint
 export async function ensureMintedAndAllowedTokens(
   wallets: Wallet[],
   mintAmountInEth: BigNumberish = 1_000_000,
