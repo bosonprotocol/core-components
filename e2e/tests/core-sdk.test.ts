@@ -28,7 +28,8 @@ import {
   initCoreSDKWithWallet,
   drWallet,
   createOffer,
-  MOCK_ERC721_ADDRESS
+  MOCK_ERC721_ADDRESS,
+  ensureMintedERC721AndAllowedTokens
 } from "./utils";
 import {
   CreateGroupArgs,
@@ -184,7 +185,7 @@ describe("core-sdk", () => {
       expect(exchange).toBeTruthy();
     });
 
-    test.only("create an group and try to commit to offer outside of the goupr", async () => {
+    test.only("create an group and try to commit to offer outside of the group", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
 
@@ -198,6 +199,8 @@ describe("core-sdk", () => {
         sellerId: createdOffer.seller.id
       });
 
+      await ensureMintedERC721AndAllowedTokens([sellerWallet], 100);
+
       const createdGroupTx = await createGroup({
         coreSDK: sellerCoreSDK,
         groupToCreate: {
@@ -205,11 +208,12 @@ describe("core-sdk", () => {
           method: EvaluationMethod.SpecificToken,
           tokenType: TokenType.NonFungibleToken,
           tokenAddress: MOCK_ERC721_ADDRESS,
-          tokenId: "1",
+          tokenId: 100,
           threshold: "0",
           maxCommits: "3"
         }
       });
+
       const txReceipt = await createdGroupTx.wait();
 
       const groupId = buyerCoreSDK.getCreatedGroupIdsFromLogs(txReceipt.logs);
