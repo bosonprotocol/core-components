@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  CurrencyDisplay,
-  Currencies
+  Currencies,
+  CurrencyDisplay
 } from "../currencyDisplay/CurrencyDisplay";
 import { IBaseImage, Image } from "../image/Image";
+import { Tooltip, TooltipProps } from "../tooltip/Tooltip";
 import {
-  ProductCardImageWrapper,
   BottomText,
   ProductCardBottom,
   ProductCardBottomContent,
@@ -13,6 +13,7 @@ import {
   ProductCardCreatorAvatar,
   ProductCardCreatorName,
   ProductCardData,
+  ProductCardImageWrapper,
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
@@ -26,42 +27,54 @@ export enum ProductType {
   digital = "Digital"
 }
 interface IProductCard {
-  productId: string;
-  title: string;
-  price: number;
-  currency: Currencies;
+  asterisk?: boolean;
   avatar: string;
   avatarName: JSX.Element | string;
-  onCardClick?: (id: string | number) => void;
-  onAvatarNameClick?: () => void;
-  imageProps: IBaseImage;
-  productType?: ProductType;
   bottomText?: string;
-  dataTestId?: string;
-  isHoverDisabled?: boolean;
+  currency: Currencies;
   dataCard?: string;
+  dataTestId?: string;
+  imageProps: IBaseImage;
+  isHoverDisabled?: boolean;
+  onAvatarNameClick?: () => void;
+  onCardClick?: (id: string | number) => void;
+  price: number;
+  productId: string;
+  productType?: ProductType;
+  title: string;
+  tooltip?: string;
+  tooltipProps?: TooltipProps;
 }
 
 export const ProductCard = (props: IProductCard) => {
   const {
-    productId,
-    title,
-    imageProps,
-    price,
-    currency,
+    asterisk = false,
     avatar,
     avatarName,
+    bottomText,
+    currency,
+    dataCard = "product-card",
+    dataTestId = "offer",
+    imageProps,
+    isHoverDisabled = false,
     onAvatarNameClick,
     onCardClick,
-    bottomText,
-    dataTestId = "offer",
-    isHoverDisabled = false,
-    dataCard = "product-card"
+    price,
+    productId,
+    title,
+    tooltip = "",
+    tooltipProps = {}
   } = props;
 
   const isNotImageLoaded = ["idle", "loading", "error"].includes(
     imageProps?.preloadConfig?.status ?? ""
   );
+
+  const Wrapper = tooltip && tooltip !== "" ? Tooltip : React.Fragment;
+  const wrapperParams =
+    tooltip && tooltip !== ""
+      ? { wrap: false, content: tooltip, ...tooltipProps }
+      : {};
 
   return (
     <ProductCardWrapper
@@ -97,8 +110,12 @@ export const ProductCard = (props: IProductCard) => {
             <ProductCardTitle>{title}</ProductCardTitle>
           </ProductCardData>
           <ProductCardPriceWrapper>
-            <ProductCardPrice>Price</ProductCardPrice>
-            <CurrencyDisplay value={price} currency={currency} />
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
+            <Wrapper {...wrapperParams}>
+              <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
+              <CurrencyDisplay value={price} currency={currency} />
+            </Wrapper>
           </ProductCardPriceWrapper>
         </ProductCardBottomContent>
         {bottomText && <BottomText>{bottomText}</BottomText>}
