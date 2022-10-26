@@ -514,6 +514,141 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
+
+  describe("#signMetaTxRetractDispute()", () => {
+    test("retract dispute with meta-tx", async () => {
+      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTxReceipt = await commitTx.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        commitTxReceipt.logs
+      );
+      expect(exchangeId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId as string);
+      await redeemTx.wait();
+
+      const raiseDisputeTx = await buyerCoreSDK.raiseDispute(
+        exchangeId as string
+      );
+      await raiseDisputeTx.wait();
+
+      const nonce = Date.now();
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxRetractDispute({
+          exchangeId: Number(exchangeId),
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxEscalateDispute()", () => {
+    test("escalate dispute with meta-tx", async () => {
+      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTxReceipt = await commitTx.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        commitTxReceipt.logs
+      );
+      expect(exchangeId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId as string);
+      await redeemTx.wait();
+
+      const raiseDisputeTx = await buyerCoreSDK.raiseDispute(
+        exchangeId as string
+      );
+      await raiseDisputeTx.wait();
+
+      const nonce = Date.now();
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxEscalateDispute({
+          exchangeId: Number(exchangeId),
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxResolveDispute()", () => {
+    test("resolve dispute with meta-tx", async () => {
+      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTxReceipt = await commitTx.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        commitTxReceipt.logs
+      ) as string;
+      expect(exchangeId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId);
+      await redeemTx.wait();
+
+      const raiseDisputeTx = await buyerCoreSDK.raiseDispute(
+        exchangeId as string
+      );
+      await raiseDisputeTx.wait();
+
+      const buyerPercentBasisPoints = BigNumber.from("5000");
+
+      // sign the proposition message from seller
+      const counterpartySig = await sellerCoreSDK.signDisputeResolutionProposal(
+        {
+          exchangeId,
+          buyerPercentBasisPoints
+        }
+      );
+
+      const nonce = Date.now();
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxResolveDispute({
+          exchangeId: Number(exchangeId),
+          buyerPercent: buyerPercentBasisPoints,
+          counterpartySig,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
 });
 
 async function createOfferAndDepositFunds(sellerWallet: Wallet) {
