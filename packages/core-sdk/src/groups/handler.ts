@@ -1,6 +1,6 @@
 import {
-  CreateGroupArgs,
   TransactionResponse,
+  CreateGroupArgs,
   Web3LibAdapter
 } from "@bosonprotocol/common";
 import { encodeCreateGroup } from "./interface";
