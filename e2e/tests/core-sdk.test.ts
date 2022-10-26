@@ -184,7 +184,7 @@ describe("core-sdk", () => {
       expect(exchange).toBeTruthy();
     });
 
-    test.only("create an group and an ", async () => {
+    test.only("create an group and try to commit to offer outside of the goupr", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
 
@@ -195,10 +195,6 @@ describe("core-sdk", () => {
 
       await depositFunds({
         coreSDK: sellerCoreSDK,
-        sellerId: createdOffer.seller.id
-      });
-      await depositFunds({
-        coreSDK: buyerCoreSDK,
         sellerId: createdOffer.seller.id
       });
 
@@ -216,14 +212,16 @@ describe("core-sdk", () => {
       });
       const txReceipt = await createdGroupTx.wait();
 
-      const createdOfferId = buyerCoreSDK.getCreatedGroupIdsFromLogs(
-        txReceipt.logs
+      const groupId = buyerCoreSDK.getCreatedGroupIdsFromLogs(txReceipt.logs);
+      console.log(
+        "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 216 ~ test.only ~ groupId",
+        groupId
       );
 
       const exchange = await commitToOffer({
         buyerCoreSDK,
         sellerCoreSDK,
-        offerId: createdOfferId[0]
+        offerId: createdOffer.id
       });
 
       expect(exchange).toBeFalsy();

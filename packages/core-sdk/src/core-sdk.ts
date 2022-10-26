@@ -756,14 +756,9 @@ export class CoreSDK {
   /**
    * Utility method to retrieve the created `groupIds` from logs after calling `createGroup`
    * @param logs - Logs to search in.
-   * @returns Array of created offerIds.
-   * Roberto
+   * @returns Array of group Ids.
    */
   public getCreatedGroupIdsFromLogs(logs: Log[]): string[] {
-    console.log(
-      "🚀  roberto --  ~ file: core-sdk.ts ~ line 763 ~ CoreSDK ~ getCreatedGroupIdsFromLogs ~ logs",
-      logs
-    );
     return getValuesFromLogs({
       iface: groups.iface.bosonGroupHandlerIface,
       logs,
