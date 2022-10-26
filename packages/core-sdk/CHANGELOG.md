@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.1...@bosonprotocol/core-sdk@1.21.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* assertCompletableExchange function ([#353](https://github.com/bosonprotocol/core-components/issues/353)) ([489c833](https://github.com/bosonprotocol/core-components/commit/489c833d1e780cd435333c3f80e22ed093e72cd4))
+* set metadataStorage and theGraphStorage for createOffer meta-tx ([#342](https://github.com/bosonprotocol/core-components/issues/342)) ([35de252](https://github.com/bosonprotocol/core-components/commit/35de252d326804f12533e8e308d3fb7b5128a695))
+
+
+### Features
+
+* add method coreSdk.getProductWithVariants(productUUID) ([#351](https://github.com/bosonprotocol/core-components/issues/351)) ([9b5bc8b](https://github.com/bosonprotocol/core-components/commit/9b5bc8bf30506549cdd6a2afaab8059c67e9f8be))
+* add method signMetaTxDepositFunds() ([#343](https://github.com/bosonprotocol/core-components/issues/343)) ([6d822f4](https://github.com/bosonprotocol/core-components/commit/6d822f43485fb41ea7ccee5ea2a0486d6427f263))
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
 ## [1.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.0...@bosonprotocol/core-sdk@1.20.1) (2022-10-19)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
