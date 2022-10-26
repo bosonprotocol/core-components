@@ -34,6 +34,14 @@ export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
+export const MOCK_ERC721_ADDRESS =
+  getDefaultConfig("local").contracts.testErc721 ||
+  "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
+
+export const MOCK_ERC1155_ADDRESS =
+  getDefaultConfig("local").contracts.testErc1155 ||
+  "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
+
 export const MOCK_ERC20_ABI = [
   {
     inputs: [
