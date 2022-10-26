@@ -247,8 +247,15 @@ async function main() {
     console.log(`\n🌐️Custom stuff for e2e setup...`);
 
     // Deploy ERC20-compliant mock token for testing
-    const [foreign20Token] = await deployMockTokens(gasLimit, ["Foreign20"]);
+    const [foreign20Token, foreign721Token, foreign1155Token] =
+      await deployMockTokens(gasLimit, [
+        "Foreign20",
+        "Foreign721",
+        "Foreign1155"
+      ]);
     deploymentComplete("Foreign20", foreign20Token.address, [], contracts);
+    deploymentComplete("Foreign721", foreign721Token.address, [], contracts);
+    deploymentComplete("Foreign1155", foreign1155Token.address, [], contracts);
 
     // Create and activate default dispute resolver
     const accountHandler = await ethers.getContractAt(
