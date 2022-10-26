@@ -28,7 +28,7 @@ export const VoidButton = ({
   onPendingTransaction,
   waitBlocks = 1,
   size = ButtonSize.Large,
-  variant = "accentInverted",
+  variant = "secondaryFill",
   children,
   ...coreSdkConfig
 }: Props) => {
