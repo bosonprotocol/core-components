@@ -22,7 +22,8 @@ import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
-import { encodeDepositFunds } from "../funds/interface";
+import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
+import { bosonDisputeHandlerIface } from "../disputes/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -295,7 +296,10 @@ export async function signMetaTxRetractDispute(
     exchangeId: BigNumberish;
   }
 ) {
-  return makeExchangeMetaTxSigner("retractDispute(uint256)")(args);
+  return makeExchangeMetaTxSigner(
+    "retractDispute(uint256)",
+    bosonDisputeHandlerIface
+  )(args);
 }
 
 export async function signMetaTxEscalateDispute(
@@ -303,7 +307,10 @@ export async function signMetaTxEscalateDispute(
     exchangeId: BigNumberish;
   }
 ) {
-  return makeExchangeMetaTxSigner("escalateDispute(uint256)")(args);
+  return makeExchangeMetaTxSigner(
+    "escalateDispute(uint256)",
+    bosonDisputeHandlerIface
+  )(args);
 }
 
 export async function signMetaTxRaiseDispute(
@@ -311,55 +318,28 @@ export async function signMetaTxRaiseDispute(
     exchangeId: BigNumberish;
   }
 ) {
-  const disputeType = [{ name: "exchangeId", type: "uint256" }];
-
-  const metaTransactionType = [
-    { name: "nonce", type: "uint256" },
-    { name: "from", type: "address" },
-    { name: "contractAddress", type: "address" },
-    { name: "functionName", type: "string" },
-    { name: "disputeDetails", type: "MetaTxDisputeDetails" }
-  ];
-
-  const customSignatureType = {
-    MetaTxDispute: metaTransactionType,
-    MetaTxDisputeDetails: disputeType
-  };
-
-  const message = {
-    nonce: args.nonce.toString(),
-    from: await args.web3Lib.getSignerAddress(),
-    contractAddress: args.metaTxHandlerAddress,
-    functionName: "raiseDispute(uint256)",
-    disputeDetails: {
-      exchangeId: args.exchangeId.toString()
-    }
-  };
-
-  // TODO: encode function data when adding dispute resolver module
-  return prepareDataSignatureParameters({
-    ...args,
-    verifyingContractAddress: args.metaTxHandlerAddress,
-    customSignatureType,
-    primaryType: "MetaTxDispute",
-    message
-  });
+  return makeExchangeMetaTxSigner(
+    "raiseDispute(uint256)",
+    bosonDisputeHandlerIface
+  )(args);
 }
 
 export async function signMetaTxResolveDispute(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;
-    buyerPercent: string;
+    buyerPercent: BigNumberish;
     counterpartySig: {
       r: string;
       s: string;
-      v: string;
+      v: number;
     };
   }
-) {
+): Promise<SignedMetaTx> {
+  const functionName = "resolveDispute(uint256,uint256,bytes32,bytes32,uint8)";
+
   const disputeResolutionType = [
     { name: "exchangeId", type: "uint256" },
-    { name: "buyerPercent", type: "uint256" },
+    { name: "buyerPercentBasisPoints", type: "uint256" },
     { name: "sigR", type: "bytes32" },
     { name: "sigS", type: "bytes32" },
     { name: "sigV", type: "uint8" }
@@ -382,24 +362,39 @@ export async function signMetaTxResolveDispute(
     nonce: args.nonce.toString(),
     from: await args.web3Lib.getSignerAddress(),
     contractAddress: args.metaTxHandlerAddress,
-    functionName: "resolveDispute(uint256,uint256,bytes32,bytes32,uint8)",
+    functionName,
     disputeResolutionDetails: {
       exchangeId: args.exchangeId.toString(),
-      buyerPercent: args.buyerPercent.toString(),
+      buyerPercentBasisPoints: args.buyerPercent.toString(),
       sigR: args.counterpartySig.r,
       sigS: args.counterpartySig.s,
       sigV: args.counterpartySig.v
     }
   };
 
-  // TODO: encode function data when adding dispute resolver module
-  return prepareDataSignatureParameters({
+  const signatureParams = await prepareDataSignatureParameters({
     ...args,
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTxDisputeResolution",
     message
   });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
+      // remove params in brackets from string
+      functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
+      [
+        args.exchangeId,
+        args.buyerPercent,
+        args.counterpartySig.r,
+        args.counterpartySig.s,
+        args.counterpartySig.v
+      ]
+    )
+  };
 }
 
 export async function signMetaTxWithdrawFunds(
@@ -409,7 +404,7 @@ export async function signMetaTxWithdrawFunds(
     tokenAmounts: BigNumberish[];
   }
 ): Promise<SignedMetaTx> {
-  const functionName = "withdrawFunds(uint256,bytes32,bytes32,uint8)";
+  const functionName = "withdrawFunds(uint256,address[],uint256[])";
 
   const fundType = [
     { name: "entityId", type: "uint256" },
@@ -436,9 +431,9 @@ export async function signMetaTxWithdrawFunds(
     contractAddress: args.metaTxHandlerAddress,
     functionName,
     fundDetails: {
-      entityId: args.entityId,
+      entityId: args.entityId.toString(),
       tokenList: args.tokenList,
-      tokenAmounts: args.tokenAmounts
+      tokenAmounts: args.tokenAmounts.map((bn) => bn.toString())
     }
   };
 
@@ -453,9 +448,10 @@ export async function signMetaTxWithdrawFunds(
   return {
     ...signatureParams,
     functionName,
-    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
-      "withdrawFunds",
-      [args.entityId, args.tokenList, args.tokenAmounts]
+    functionSignature: encodeWithdrawFunds(
+      args.entityId,
+      args.tokenList,
+      args.tokenAmounts
     )
   };
 }
@@ -495,6 +491,8 @@ function makeExchangeMetaTxSigner(
     | "completeExchange(uint256)"
     | "retractDispute(uint256)"
     | "escalateDispute(uint256)"
+    | "raiseDispute(uint256)",
+  handlerIface = bosonExchangeHandlerIface
 ) {
   return async function signExchangeMetaTx(
     args: BaseMetaTxArgs & {
@@ -539,7 +537,7 @@ function makeExchangeMetaTxSigner(
     return {
       ...signatureParams,
       functionName,
-      functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      functionSignature: handlerIface.encodeFunctionData(
         // remove params in brackets from string
         functionName.replace(/\(([^)]*)\)[^(]*$/, ""),
         [args.exchangeId]
