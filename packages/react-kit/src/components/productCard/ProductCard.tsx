@@ -43,8 +43,27 @@ interface IProductCard {
   productType?: ProductType;
   title: string;
   tooltip?: string;
-  tooltipProps?: TooltipProps;
+  tooltipProps?: Omit<TooltipProps, "content">;
 }
+
+const Wrapper = ({
+  children,
+  tooltip,
+  tooltipProps
+}: {
+  children: React.ReactNode;
+  tooltip?: string;
+  tooltipProps?: Omit<TooltipProps, "content">;
+}) => {
+  if (tooltip && tooltip !== "") {
+    return (
+      <Tooltip wrap={false} content={tooltip} {...tooltipProps}>
+        {children}
+      </Tooltip>
+    );
+  }
+  return <>{children}</>;
+};
 
 export const ProductCard = (props: IProductCard) => {
   const {
@@ -69,12 +88,6 @@ export const ProductCard = (props: IProductCard) => {
   const isNotImageLoaded = ["idle", "loading", "error"].includes(
     imageProps?.preloadConfig?.status ?? ""
   );
-
-  const Wrapper = tooltip && tooltip !== "" ? Tooltip : React.Fragment;
-  const wrapperParams =
-    tooltip && tooltip !== ""
-      ? { wrap: false, content: tooltip, ...tooltipProps }
-      : {};
 
   return (
     <ProductCardWrapper
@@ -110,9 +123,7 @@ export const ProductCard = (props: IProductCard) => {
             <ProductCardTitle>{title}</ProductCardTitle>
           </ProductCardData>
           <ProductCardPriceWrapper>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <Wrapper {...wrapperParams}>
+            <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
               <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
               <CurrencyDisplay value={price} currency={currency} />
             </Wrapper>
