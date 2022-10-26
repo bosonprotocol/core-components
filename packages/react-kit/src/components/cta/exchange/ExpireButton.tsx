@@ -28,7 +28,7 @@ export const ExpireButton = ({
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
-  variant = "primaryFill",
+  variant = "secondaryFill",
   ...coreSdkConfig
 }: IExpireButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);

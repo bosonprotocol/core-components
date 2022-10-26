@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.1...@bosonprotocol/common@1.18.0) (2022-10-26)
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
 ## [1.17.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.0...@bosonprotocol/common@1.17.1) (2022-10-19)
 
 **Note:** Version bump only for package @bosonprotocol/common
