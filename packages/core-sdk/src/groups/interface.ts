@@ -18,6 +18,18 @@ export function encodeCreateGroup(args: CreateGroupArgs) {
 export function createGroupArgsToStructs(
   args: CreateGroupArgs
 ): [GroupStruct, ConditionStruct] {
+  const condSruct = {
+    method: args.method,
+    tokenType: args.tokenType,
+    tokenAddress: args.tokenAddress,
+    tokenId: args.tokenId,
+    threshold: args.threshold,
+    maxCommits: args.maxCommits
+  };
+  console.log(
+    "🚀  roberto --  ~ file: interface.ts ~ line 29 ~ condSruct",
+    condSruct
+  );
   return [
     {
       id: "0",

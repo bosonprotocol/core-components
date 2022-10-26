@@ -29,7 +29,7 @@ import {
   drWallet,
   createOffer,
   MOCK_ERC721_ADDRESS,
-  ensureMintedERC721AndAllowedTokens
+  ensureMintedERC721
 } from "./utils";
 import {
   CreateGroupArgs,
@@ -186,7 +186,8 @@ describe("core-sdk", () => {
     });
 
     test.only("create an group and try to commit to offer outside of the group", async () => {
-      const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
+      const tokenID = 100;
+      const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
 
       const createdOffer = await createSellerAndOffer(
@@ -199,7 +200,12 @@ describe("core-sdk", () => {
         sellerId: createdOffer.seller.id
       });
 
-      await ensureMintedERC721AndAllowedTokens([sellerWallet], 100);
+      await ensureMintedERC721([sellerWallet], tokenID);
+      // await ensureMintedERC721([buyerWallet], tokenID);
+      console.log(
+        "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 204 ~ test.only ~ tokenID",
+        tokenID
+      );
 
       const createdGroupTx = await createGroup({
         coreSDK: sellerCoreSDK,
@@ -208,7 +214,7 @@ describe("core-sdk", () => {
           method: EvaluationMethod.SpecificToken,
           tokenType: TokenType.NonFungibleToken,
           tokenAddress: MOCK_ERC721_ADDRESS,
-          tokenId: 100,
+          tokenId: tokenID,
           threshold: "0",
           maxCommits: "3"
         }
@@ -227,8 +233,12 @@ describe("core-sdk", () => {
         sellerCoreSDK,
         offerId: createdOffer.id
       });
+      console.log(
+        "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 235 ~ test.only ~ exchange",
+        exchange
+      );
 
-      expect(exchange).toBeFalsy();
+      expect(exchange).toBeTruthy();
     });
 
     test("commit (ERC20 currency offer)", async () => {
@@ -805,6 +815,10 @@ async function createGroup(args: {
   coreSDK: CoreSDK;
   groupToCreate: CreateGroupArgs;
 }): Promise<TransactionResponse> {
+  console.log(
+    "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 813 ~ groupToCreate",
+    args.groupToCreate
+  );
   const createdGroup = await args.coreSDK.createGroup(args.groupToCreate);
   return createdGroup;
 }
@@ -841,8 +855,16 @@ async function commitToOffer(args: {
     args.offerId
   );
   const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
+  console.log(
+    "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 858 ~ commitToOfferTxReceipt",
+    commitToOfferTxReceipt
+  );
   const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
     commitToOfferTxReceipt.logs
+  );
+  console.log(
+    "🚀  roberto --  ~ file: core-sdk.test.ts ~ line 862 ~ exchangeId",
+    exchangeId
   );
 
   await waitForGraphNodeIndexing();
