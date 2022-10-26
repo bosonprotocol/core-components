@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.5...@bosonprotocol/eth-connect-sdk@1.4.0) (2022-10-26)
+
+
+### Features
+
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
 ## [1.3.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.3.4...@bosonprotocol/eth-connect-sdk@1.3.5) (2022-10-19)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk

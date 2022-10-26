@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.19.1...@bosonprotocol/subgraph@1.20.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* ci ([#356](https://github.com/bosonprotocol/core-components/issues/356)) ([34a3f3f](https://github.com/bosonprotocol/core-components/commit/34a3f3f035621bacb4ae6f99577e8065d305a4ef))
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+
+
+
+
+
 ## [1.19.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.19.0...@bosonprotocol/subgraph@1.19.1) (2022-10-19)
 
 
