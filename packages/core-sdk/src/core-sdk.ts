@@ -754,6 +754,20 @@ export class CoreSDK {
   }
 
   /**
+   * Utility method to retrieve the created `offerIds` from logs after calling `createOfferBatch`
+   * @param logs - Logs to search in.
+   * @returns Array of created offerIds.
+   */
+  public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
+    return getValuesFromLogs({
+      iface: offers.iface.bosonOfferHandlerIface,
+      logs,
+      eventArgsKey: "offerId",
+      eventName: "OfferCreated"
+    });
+  }
+
+  /**
    * Utility method to retrieve the created `groupIds` from logs after calling `createGroup`
    * @param logs - Logs to search in.
    * @returns Array of group Ids.
