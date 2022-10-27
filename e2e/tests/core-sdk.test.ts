@@ -260,7 +260,7 @@ describe("core-sdk", () => {
       }
     );
 
-    test.only.each(["ERC721", "ERC1155", "ERC20"])(
+    test.each(["ERC721", "ERC1155", "ERC20"])(
       `create an group on %p token and buyer successfully commit to of that group`,
       async (token) => {
         const tokenId = Date.now().toString();
