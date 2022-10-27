@@ -2020,11 +2020,11 @@ export class CoreSDK {
   ): Promise<TransactionResponse> {
     return orchestration.handler.createOfferWithCondition({
       offerToCreate,
-      theGraphStorage: this._theGraphStorage,
-      metadataStorage: this._metadataStorage,
-      condition,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
-      web3Lib: this._web3Lib
+      web3Lib: this._web3Lib,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      condition
     });
   }
 }
