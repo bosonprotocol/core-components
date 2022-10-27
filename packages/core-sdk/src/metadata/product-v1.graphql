@@ -104,6 +104,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   }
   offer {
     ...BaseOfferFields
+    exchanges {
+    ...BaseExchangeFields
+  }
   }
   seller {
     ...BaseSellerFields

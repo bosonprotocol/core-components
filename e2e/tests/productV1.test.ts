@@ -15,6 +15,7 @@ import {
   initCoreSDKWithFundedWallet,
   initCoreSDKWithWallet,
   seedWallet10,
+  wait,
   waitForGraphNodeIndexing
 } from "./utils";
 import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
@@ -488,6 +489,57 @@ describe("Multi-variant offers tests", () => {
       expect(variations).toBeTruthy();
       expect(variations.length).toEqual(1);
       expect(variations[0].length).toEqual(0);
+    }
+  });
+  test("check getProductWithVariants() return the offer exchanges", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+    const productUuid = productV1.buildUuid();
+    const template = "Hello World!!";
+    const productMetadata = mockProductV1Metadata(template, productUuid);
+    // Create an offer with 0 price 0 deposit to make it easier to commit
+    const { offerArgs } = await createOfferArgs(coreSDK, productMetadata, {
+      price: "0",
+      sellerDeposit: "0",
+      buyerCancelPenalty: "0"
+    });
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+
+    // Wait for the offer to be committable
+    while (Date.now() < Number(offer?.validFromDate) * 1000) {
+      await wait(500);
+    }
+
+    // Commit to the offer
+    const commitTx = await coreSDK.commitToOffer(offer?.id as string);
+    await commitTx.wait();
+    await waitForGraphNodeIndexing();
+
+    const productWithVariants = await coreSDK.getProductWithVariants(
+      productUuid
+    );
+    expect(productWithVariants).toBeTruthy();
+
+    if (productWithVariants) {
+      // always true - required by compiler
+      // Check the product data
+      checkProductMetadata(
+        productWithVariants.product,
+        productMetadata.product
+      );
+
+      // // Get the associated offers
+      const foundOffers = productWithVariants.variants.map((v) => v.offer);
+
+      // Check there is an offer and only one associated to this product
+      expect(foundOffers).toBeTruthy();
+      expect(foundOffers.length).toEqual(1);
+
+      // Check there are exchanges for this offer
+      expect(foundOffers[0].exchanges).toBeTruthy();
     }
   });
 });

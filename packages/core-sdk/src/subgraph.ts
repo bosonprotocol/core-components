@@ -15060,6 +15060,56 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -15589,6 +15639,56 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -16108,6 +16208,56 @@ export type ProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    exchanges: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      disputedDate?: string | null;
+      expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    }>;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -16622,6 +16772,56 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    exchanges: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      disputedDate?: string | null;
+      expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    }>;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -19390,6 +19590,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     }
     offer {
       ...BaseOfferFields
+      exchanges {
+        ...BaseExchangeFields
+      }
     }
     seller {
       ...BaseSellerFields
@@ -19419,6 +19622,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     }
   }
   ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseProductV1ProductFieldsFragmentDoc}
