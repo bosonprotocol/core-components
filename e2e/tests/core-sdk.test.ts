@@ -219,7 +219,7 @@ describe("core-sdk", () => {
           };
         }
         if (token === "ERC1155") {
-          await ensureMintedERC1155(sellerWallet, "5");
+          await ensureMintedERC1155(sellerWallet, tokenID, "5");
           groupToCreate = {
             offerIds: [createdOffer.id],
             method: EvaluationMethod.Threshold,
@@ -257,6 +257,83 @@ describe("core-sdk", () => {
             offerId: createdOffer.id
           })
         ).rejects.toThrow(/Caller cannot commit/);
+      }
+    );
+
+    test.only.each(["ERC721", "ERC1155", "ERC20"])(
+      `create an group on %p token and buyer successfully commit to of that group`,
+      async (token) => {
+        const tokenId = Date.now().toString();
+        const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
+          await initSellerAndBuyerSDKs(seedWallet);
+
+        const createdOffer = await createSellerAndOffer(
+          sellerCoreSDK,
+          sellerWallet.address
+        );
+
+        await depositFunds({
+          coreSDK: sellerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+        await depositFunds({
+          coreSDK: buyerCoreSDK,
+          sellerId: createdOffer.seller.id
+        });
+
+        let groupToCreate;
+
+        if (token === "ERC721") {
+          await ensureMintedERC721(buyerWallet, tokenId);
+          groupToCreate = {
+            offerIds: [createdOffer.id],
+            method: EvaluationMethod.SpecificToken,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            tokenId: tokenId,
+            threshold: "0",
+            maxCommits: "3"
+          };
+        }
+        if (token === "ERC1155") {
+          await ensureMintedERC1155(buyerWallet, tokenId, "3");
+          groupToCreate = {
+            offerIds: [createdOffer.id],
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.MultiToken,
+            tokenAddress: MOCK_ERC1155_ADDRESS,
+            tokenId: tokenId,
+            threshold: "3",
+            maxCommits: "3"
+          };
+        }
+        if (token === "ERC20") {
+          await ensureMintedAndAllowedTokens([buyerWallet], "5");
+          groupToCreate = {
+            offerIds: [createdOffer.id],
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.FungibleToken,
+            tokenAddress: MOCK_ERC20_ADDRESS,
+            tokenId: tokenId,
+            threshold: "1",
+            maxCommits: "1"
+          };
+        }
+
+        const createdGroupTx = await createGroup({
+          coreSDK: sellerCoreSDK,
+          groupToCreate: groupToCreate
+        });
+
+        await createdGroupTx.wait();
+
+        const exchange = await commitToOffer({
+          buyerCoreSDK,
+          sellerCoreSDK,
+          offerId: createdOffer.id
+        });
+
+        expect(exchange).toBeTruthy();
       }
     );
 

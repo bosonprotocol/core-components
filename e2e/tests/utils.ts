@@ -236,9 +236,10 @@ export async function ensureMintedERC721(
 
 export async function ensureMintedERC1155(
   wallet: Wallet,
+  tokenId: BigNumberish,
   amount: BigNumberish
 ) {
-  await mockErc1155Contract.connect(wallet).mint(wallet.address, amount);
+  await mockErc1155Contract.connect(wallet).mint(tokenId, amount);
 }
 
 export async function createDisputeResolver(
