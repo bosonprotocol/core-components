@@ -29,7 +29,7 @@ import {
   ACCOUNT_11,
   ACCOUNT_12
 } from "../../contracts/accounts";
-import { MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
+import { MOCK_ERC1155_ABI, MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -81,6 +81,12 @@ export const mockErc20Contract = new Contract(
 export const mockErc721Contract = new Contract(
   MOCK_ERC721_ADDRESS,
   MOCK_ERC721_ABI,
+  provider
+);
+
+export const mockErc1155Contract = new Contract(
+  MOCK_ERC1155_ADDRESS,
+  MOCK_ERC1155_ABI,
   provider
 );
 
@@ -220,19 +226,19 @@ export async function ensureMintedAndAllowedTokens(
     }
   }
 }
-// roberto
+
 export async function ensureMintedERC721(
-  wallets: Wallet[],
+  wallet: Wallet,
   tokenId: BigNumberish
 ) {
-  // Mint tokens
-  const mintTxResponses = await Promise.all(
-    wallets.map((wallet) => {
-      return mockErc721Contract.connect(wallet).mint(wallet.address, tokenId);
-    })
-  );
+  await mockErc721Contract.connect(wallet).mint(tokenId, 1);
+}
 
-  await Promise.all(mintTxResponses.map((txResponse) => txResponse.wait()));
+export async function ensureMintedERC1155(
+  wallet: Wallet,
+  amount: BigNumberish
+) {
+  await mockErc1155Contract.connect(wallet).mint(wallet.address, amount);
 }
 
 export async function createDisputeResolver(
