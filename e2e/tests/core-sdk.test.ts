@@ -31,7 +31,8 @@ import {
   MOCK_ERC721_ADDRESS,
   ensureMintedERC721,
   MOCK_ERC1155_ADDRESS,
-  ensureMintedERC1155
+  ensureMintedERC1155,
+  createOfferWithCondition
 } from "./utils";
 import {
   CreateGroupArgs,
@@ -234,6 +235,36 @@ describe("core-sdk", () => {
         expect(offerWithCondition.condition).toBeTruthy();
         expect(conditionClone).toEqual(condition);
       }
+    });
+
+    test("createOfferWithCondition()", async () => {
+      const tokenID = Date.now().toString();
+      const { sellerCoreSDK, sellerWallet } = await initSellerAndBuyerSDKs(
+        seedWallet
+      );
+      await ensureCreatedSeller(sellerWallet);
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(sellerWallet, tokenID, "5");
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        tokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      // Create offer with condition
+      const offerWithCondition = await createOfferWithCondition(
+        sellerCoreSDK,
+        condition
+      );
+      // Check the condition is attached to the offer in Subgraph
+      const conditionClone = {
+        ...offerWithCondition.condition
+      };
+      delete conditionClone.id;
+      expect(conditionClone).toEqual(condition);
     });
 
     test.each(["ERC721", "ERC1155", "ERC20"])(

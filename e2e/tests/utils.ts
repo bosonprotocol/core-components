@@ -1,3 +1,4 @@
+import { ConditionStruct } from '@bosonprotocol/common';
 import {
   providers,
   Wallet,
@@ -301,6 +302,38 @@ export async function createOffer(
   });
 
   const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
+export async function createOfferWithCondition(
+  coreSDK: CoreSDK,
+  condition: ConditionStruct,
+  offerParams?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOfferWithCondition(
+    offerArgs,
+    condition
+  );
   const createOfferTxReceipt = await createOfferTxResponse.wait();
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
