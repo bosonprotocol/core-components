@@ -1,4 +1,4 @@
-import { BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from "@ethersproject/bignumber";
 
 export type CreateGroupArgs = {
   offerIds: BigNumberish[];

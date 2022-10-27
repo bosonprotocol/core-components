@@ -754,6 +754,20 @@ export class CoreSDK {
   }
 
   /**
+   * Utility method to retrieve the created `offerIds` from logs after calling `createOfferBatch`
+   * @param logs - Logs to search in.
+   * @returns Array of created offerIds.
+   */
+  public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
+    return getValuesFromLogs({
+      iface: offers.iface.bosonOfferHandlerIface,
+      logs,
+      eventArgsKey: "offerId",
+      eventName: "OfferCreated"
+    });
+  }
+
+  /**
    * Utility method to retrieve the created `groupIds` from logs after calling `createGroup`
    * @param logs - Logs to search in.
    * @returns Array of group Ids.
@@ -2020,11 +2034,11 @@ export class CoreSDK {
   ): Promise<TransactionResponse> {
     return orchestration.handler.createOfferWithCondition({
       offerToCreate,
-      theGraphStorage: this._theGraphStorage,
-      metadataStorage: this._metadataStorage,
-      condition,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
-      web3Lib: this._web3Lib
+      web3Lib: this._web3Lib,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      condition
     });
   }
 }
