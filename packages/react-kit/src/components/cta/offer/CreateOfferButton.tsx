@@ -21,7 +21,7 @@ type Props = {
     authTokenId: string;
     authTokenType: number;
   };
-  isMultiVariant?: boolean;
+  isMultiVariant: boolean;
   offersToCreate: offers.CreateOfferArgs[];
 } & CtaButtonProps<{
   offerIdData: string[] | string;
@@ -39,7 +39,7 @@ export const CreateOfferButton = ({
   waitBlocks = 1,
   size = ButtonSize.Large,
   variant = "primaryFill",
-  isMultiVariant = false,
+  isMultiVariant,
   hasSellerAccount,
   sellerInfo,
   offersToCreate,

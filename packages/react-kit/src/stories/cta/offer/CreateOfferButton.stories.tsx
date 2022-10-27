@@ -41,9 +41,10 @@ Simple.args = {
     authTokenId: "0",
     authTokenType: AuthTokenType.NONE
   },
+  isMultiVariant: true,
   web3Provider: undefined,
   ipfsMetadataStorageHeaders: {
-    authorization: "change-me"
+    authorization: ""
   },
   extraInfo: "",
   disabled: false,
@@ -52,19 +53,37 @@ Simple.args = {
       price: "100000000000000000",
       sellerDeposit: "10000000000000000",
       buyerCancelPenalty: "10000000000000000",
-      quantityAvailable: 1,
-      voucherRedeemableFromDateInMS: "1666821600000",
+      quantityAvailable: 2,
+      voucherRedeemableFromDateInMS: "1666908000000",
       voucherRedeemableUntilDateInMS: "1667257140000",
       voucherValidDurationInMS: 0,
-      validFromDateInMS: "1666821600000",
+      validFromDateInMS: "1666994400000",
       validUntilDateInMS: "1667257140000",
       disputePeriodDurationInMS: "2592000000",
       resolutionPeriodDurationInMS: "1296000000",
       exchangeToken: "0x0000000000000000000000000000000000000000",
       disputeResolverId: "3",
       agentId: 0,
-      metadataUri: "ipfs://QmTDkcuNH5ESSfwYztp2aT1pRswSCcr8koPi1qXfeNXUxG",
-      metadataHash: "QmTDkcuNH5ESSfwYztp2aT1pRswSCcr8koPi1qXfeNXUxG"
+      metadataUri: "ipfs://QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE",
+      metadataHash: "QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE"
+    },
+    {
+      price: "100000000000000000",
+      sellerDeposit: "10000000000000000",
+      buyerCancelPenalty: "10000000000000000",
+      quantityAvailable: 10,
+      voucherRedeemableFromDateInMS: "1666908000000",
+      voucherRedeemableUntilDateInMS: "1667257140000",
+      voucherValidDurationInMS: 0,
+      validFromDateInMS: "1666994400000",
+      validUntilDateInMS: "1667257140000",
+      disputePeriodDurationInMS: "2592000000",
+      resolutionPeriodDurationInMS: "1296000000",
+      exchangeToken: "0x0000000000000000000000000000000000000000",
+      disputeResolverId: "3",
+      agentId: 0,
+      metadataUri: "ipfs://Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf",
+      metadataHash: "Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf"
     }
   ],
   onPendingSignature: () => {
