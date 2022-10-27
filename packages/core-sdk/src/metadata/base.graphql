@@ -39,6 +39,7 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   description
   externalUrl
   licenseUrl
+  condition
   schemaUrl
   type
   image

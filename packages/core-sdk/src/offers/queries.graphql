@@ -94,6 +94,7 @@ fragment BaseOfferFields on Offer {
     description
     externalUrl
     licenseUrl
+    condition
     schemaUrl
     type
     ... on ProductV1MetadataEntity {

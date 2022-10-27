@@ -171,6 +171,7 @@ export enum Account_OrderBy {
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -222,6 +223,26 @@ export type BaseMetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -473,6 +494,7 @@ export type BaseMetadataEntity_Filter = {
 
 export enum BaseMetadataEntity_OrderBy {
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -2260,6 +2282,7 @@ export enum MetadataAttribute_OrderBy {
 
 export type MetadataInterface = {
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -2310,6 +2333,26 @@ export type MetadataInterface_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2561,6 +2604,7 @@ export type MetadataInterface_Filter = {
 
 export enum MetadataInterface_OrderBy {
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -3475,6 +3519,7 @@ export enum ProductV1Media_OrderBy {
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -3547,6 +3592,26 @@ export type ProductV1MetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3958,6 +4023,7 @@ export type ProductV1MetadataEntity_Filter = {
 
 export enum ProductV1MetadataEntity_OrderBy {
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangePolicy = "exchangePolicy",
@@ -7789,6 +7855,7 @@ export type GetSellerByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -7805,6 +7872,7 @@ export type GetSellerByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -8284,6 +8352,7 @@ export type GetSellersQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -8300,6 +8369,7 @@ export type GetSellersQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -9089,6 +9159,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -9105,6 +9176,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -9521,6 +9593,7 @@ export type GetDisputeResolversQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -9537,6 +9610,7 @@ export type GetDisputeResolversQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -9947,6 +10021,7 @@ export type SellerFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -9963,6 +10038,7 @@ export type SellerFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -10550,6 +10626,7 @@ export type DisputeResolverFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -10566,6 +10643,7 @@ export type DisputeResolverFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -11320,6 +11398,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -11336,6 +11415,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -11669,6 +11749,7 @@ export type GetExchangeTokensQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -11685,6 +11766,7 @@ export type GetExchangeTokensQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -11996,6 +12078,7 @@ export type ExchangeTokenFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -12012,6 +12095,7 @@ export type ExchangeTokenFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -12502,6 +12586,7 @@ export type GetExchangeByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -12518,6 +12603,7 @@ export type GetExchangeByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -12875,6 +12961,7 @@ export type GetExchangesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -12891,6 +12978,7 @@ export type GetExchangesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -13238,6 +13326,7 @@ export type ExchangeFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -13254,6 +13343,7 @@ export type ExchangeFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -13622,6 +13712,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     description: string;
     externalUrl: string;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -13738,6 +13829,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -13754,6 +13846,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -13991,6 +14084,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     description: string;
     externalUrl: string;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -14107,6 +14201,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -14123,6 +14218,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -14350,6 +14446,7 @@ export type BaseMetadataEntityFieldsFragment = {
   description: string;
   externalUrl: string;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14466,6 +14563,7 @@ export type BaseMetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -14482,6 +14580,7 @@ export type BaseMetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -14704,6 +14803,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   description: string;
   externalUrl: string;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14820,6 +14920,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -14836,6 +14937,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -15228,6 +15330,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     description: string;
     externalUrl: string;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -15345,6 +15448,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -15361,6 +15465,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -15764,6 +15869,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     description: string;
     externalUrl: string;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -15881,6 +15987,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -15897,6 +16004,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             description: string;
             externalUrl: string;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -16290,6 +16398,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
   description: string;
   externalUrl: string;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -16407,6 +16516,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -16423,6 +16533,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -16811,6 +16922,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   description: string;
   externalUrl: string;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -16928,6 +17040,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -16944,6 +17057,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -17762,6 +17876,7 @@ export type GetOfferByIdQueryQuery = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -17778,6 +17893,7 @@ export type GetOfferByIdQueryQuery = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -18137,6 +18253,7 @@ export type GetOffersQueryQuery = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -18153,6 +18270,7 @@ export type GetOffersQueryQuery = {
           description: string;
           externalUrl: string;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -18496,6 +18614,7 @@ export type OfferFieldsFragment = {
         description: string;
         externalUrl: string;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
       }
@@ -18512,6 +18631,7 @@ export type OfferFieldsFragment = {
         description: string;
         externalUrl: string;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
         attributes?: Array<{
@@ -18804,6 +18924,7 @@ export type BaseOfferFieldsFragment = {
         description: string;
         externalUrl: string;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
       }
@@ -18820,6 +18941,7 @@ export type BaseOfferFieldsFragment = {
         description: string;
         externalUrl: string;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
         attributes?: Array<{
@@ -19323,6 +19445,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       description
       externalUrl
       licenseUrl
+      condition
       schemaUrl
       type
       ... on ProductV1MetadataEntity {
@@ -19622,6 +19745,7 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image
@@ -19664,6 +19788,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image

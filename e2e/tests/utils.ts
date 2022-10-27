@@ -31,6 +31,7 @@ import {
   ACCOUNT_12
 } from "../../contracts/accounts";
 import { MOCK_ERC1155_ABI, MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
+import { BaseMetadata } from '@bosonprotocol/metadata/src/base';
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -316,18 +317,22 @@ export async function createOffer(
 export async function createOfferWithCondition(
   coreSDK: CoreSDK,
   condition: ConditionStruct,
-  offerParams?: Partial<CreateOfferArgs>
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<BaseMetadata>;
+  } = {}
 ) {
   const metadataHash = await coreSDK.storeMetadata({
     ...metadata,
-    type: "BASE"
+    type: "BASE",
+    ...overrides.metadata
   });
   const metadataUri = "ipfs://" + metadataHash;
 
   const offerArgs = mockCreateOfferArgs({
     metadataHash,
     metadataUri,
-    ...offerParams
+    ...overrides.offerParams
   });
 
   const createOfferTxResponse = await coreSDK.createOfferWithCondition(

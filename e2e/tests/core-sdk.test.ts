@@ -255,9 +255,16 @@ describe("core-sdk", () => {
         maxCommits: "3"
       };
       // Create offer with condition
+      const conditionDescription =
+        "this offer requires to own at least one NFT of Makersplace collection: https://opensea.io/collection/makersplace";
       const offerWithCondition = await createOfferWithCondition(
         sellerCoreSDK,
-        condition
+        condition,
+        {
+          metadata: {
+            condition: conditionDescription
+          }
+        }
       );
       // Check the condition is attached to the offer in Subgraph
       const conditionClone = {
@@ -265,6 +272,11 @@ describe("core-sdk", () => {
       };
       delete conditionClone.id;
       expect(conditionClone).toEqual(condition);
+      // Check the condition description is set in the metadata from the subgraph
+      expect(offerWithCondition.metadata?.condition).toBeTruthy();
+      expect(offerWithCondition.metadata?.condition).toEqual(
+        conditionDescription
+      );
     });
 
     test.each(["ERC721", "ERC1155", "ERC20"])(
