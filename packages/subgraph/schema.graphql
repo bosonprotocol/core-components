@@ -336,6 +336,7 @@ type Offer @entity {
   metadata: MetadataInterface
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
+  condition: ConditionEntity
 
   "Stats"
   numberOfCommits: BigInt!
@@ -608,4 +609,17 @@ type DisputeEventLog implements EventLog @entity {
   account: Account!
   
   dispute: Dispute!
+}
+
+"""
+Groups
+"""
+type ConditionEntity @entity {
+  id: ID! # groupId
+  method: Int!
+  tokenType: Int!
+  tokenAddress: Bytes!
+  tokenId: BigInt!
+  threshold: BigInt!
+  maxCommits: BigInt!
 }

@@ -74,6 +74,9 @@ fragment BaseOfferFields on Offer {
   disputeResolverId
   numberOfCommits
   numberOfRedemptions
+  condition {
+    ...BaseConditionFields
+  }
   seller {
     ...BaseSellerFields
   }
