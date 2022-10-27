@@ -1,15 +1,14 @@
-import React, { useEffect, RefObject, useState } from "react";
-import { BigNumber, BigNumberish, providers } from "ethers";
+import React, { useEffect } from "react";
+import { BigNumber, BigNumberish } from "ethers";
 import { AddressZero } from "@ethersproject/constants";
 
-import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
-import { Loading } from "../../Loading";
+import { CtaButton } from "../common/CtaButton";
+import { Action } from "../../../hooks/useCtaClickHandler";
 
-type Props = {
+type AdditionalProps = {
   /**
    * ID of offer to commit to.
    */
@@ -17,38 +16,28 @@ type Props = {
   exchangeToken: string;
   price: BigNumberish;
   isPauseCommitting?: boolean;
-  buttonRef?: RefObject<HTMLButtonElement>;
   onGetSignerAddress?: (
     signerAddress: string | undefined
   ) => string | undefined;
-} & CtaButtonProps<{
+};
+
+type SuccessPayload = {
   exchangeId: BigNumberish;
-}>;
+};
+
+type Props = AdditionalProps & CtaButtonProps<SuccessPayload>;
 
 export const CommitButton = ({
   offerId,
   exchangeToken,
   price,
-  disabled = false,
-  showLoading = false,
-  extraInfo = "",
-  children,
-  onPendingSignature,
-  onPendingTransaction,
-  onSuccess,
-  onError,
-  waitBlocks = 1,
-  size = ButtonSize.Large,
   isPauseCommitting = false,
-  buttonRef,
   variant = "primaryFill",
   onGetSignerAddress,
-  ...coreSdkConfig
+  ...restProps
 }: Props) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const coreSdk = useCoreSdk(restProps);
+  const signerAddress = useSignerAddress(restProps.web3Provider);
 
   useEffect(() => {
     if (onGetSignerAddress) {
@@ -56,116 +45,53 @@ export const CommitButton = ({
     }
   }, [signerAddress, onGetSignerAddress]);
 
-  return (
-    <Button
-      ref={buttonRef}
-      variant={variant}
-      size={size}
-      disabled={disabled}
-      onClick={async () => {
-        if (!isLoading && !isPauseCommitting) {
-          try {
-            setIsLoading(true);
-
-            if (exchangeToken !== AddressZero) {
-              // Ensure allowance is enough to pay for the item price
-              const currentAllowance = await coreSdk.getProtocolAllowance(
-                exchangeToken
-              );
-              if (BigNumber.from(currentAllowance).lt(price)) {
-                let approveTxResponse;
-                onPendingSignature?.();
-
-                // Need to approve
-                if (
-                  coreSdk.checkMetaTxConfigSet({
-                    contractAddress: exchangeToken
-                  }) &&
-                  signerAddress
-                ) {
-                  const { r, s, v, functionSignature } =
-                    await coreSdk.signNativeMetaTxApproveExchangeToken(
-                      exchangeToken,
-                      price
-                    );
-                  approveTxResponse = await coreSdk.relayNativeMetaTransaction(
-                    exchangeToken,
-                    {
-                      functionSignature,
-                      sigR: r,
-                      sigS: s,
-                      sigV: v
-                    }
-                  );
-                } else {
-                  approveTxResponse = await coreSdk.approveExchangeToken(
-                    exchangeToken,
-                    price
-                  );
-                }
-
-                onPendingTransaction?.(approveTxResponse.hash);
-
-                await approveTxResponse.wait();
-              }
-            }
-
-            let txResponse;
-            onPendingSignature?.();
-            const isMetaTx = Boolean(
-              coreSdk.isMetaTxConfigSet && signerAddress
-            );
-
-            if (isMetaTx) {
-              const nonce = Date.now();
-              const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signMetaTxCommitToOffer({
-                  offerId,
-                  nonce
-                });
-              txResponse = await coreSdk.relayMetaTransaction({
-                functionName,
-                functionSignature,
-                sigR: r,
-                sigS: s,
-                sigV: v,
-                nonce
-              });
-            } else {
-              txResponse = await coreSdk.commitToOffer(offerId);
-            }
-
-            onPendingTransaction?.(txResponse.hash, isMetaTx);
-            const receipt = await txResponse.wait(waitBlocks);
-            const exchangeId = coreSdk.getCommittedExchangeIdFromLogs(
-              receipt.logs
-            );
-
-            onSuccess?.(receipt as providers.TransactionReceipt, {
-              exchangeId: exchangeId || ""
-            });
-          } catch (error) {
-            onError?.(error as Error);
-          } finally {
-            setIsLoading(false);
-          }
+  const actions: Action[] = [
+    // Approve exchange token action
+    {
+      writeContractFn: () => coreSdk.approveExchangeToken(exchangeToken, price),
+      nativeMetaTxContract: exchangeToken,
+      signMetaTxFn: () =>
+        coreSdk.signNativeMetaTxApproveExchangeToken(exchangeToken, price),
+      additionalMetaTxCondition: coreSdk.checkMetaTxConfigSet({
+        contractAddress: exchangeToken
+      }),
+      shouldActionRun: async () => {
+        // only approve exchange token if
+        // - erc20 token
+        // - insufficient allowance of protocol
+        if (exchangeToken === AddressZero) {
+          return false;
         }
-      }}
-    >
-      <ButtonTextWrapper>
-        {children || "Commit"}
-        {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
-          <ExtraInfo>{extraInfo}</ExtraInfo>
-        ) : (
-          <>
-            {isLoading && showLoading && (
-              <LoadingWrapper>
-                <Loading />
-              </LoadingWrapper>
-            )}
-          </>
-        )}
-      </ButtonTextWrapper>
-    </Button>
+        const currentAllowance = await coreSdk.getProtocolAllowance(
+          exchangeToken
+        );
+        return BigNumber.from(currentAllowance).lt(price);
+      }
+    },
+    // Commit action
+    {
+      writeContractFn: () => coreSdk.commitToOffer(offerId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxCommitToOffer({
+          offerId,
+          nonce: Date.now()
+        }),
+      additionalMetaTxCondition:
+        exchangeToken !== AddressZero || BigNumber.from(price).eq(0)
+    }
+  ];
+
+  return (
+    <CtaButton
+      variant={variant}
+      defaultLabel="Commit"
+      successPayload={(receipt) => ({
+        exchangeId: coreSdk.getCommittedExchangeIdFromLogs(
+          receipt.logs
+        ) as string
+      })}
+      actions={actions}
+      {...restProps}
+    />
   );
 };

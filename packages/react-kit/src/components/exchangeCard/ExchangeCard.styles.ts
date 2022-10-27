@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import theme from "../../theme";
+import { theme } from "../../theme";
 import { ExchangeCardStatus } from "./ExchangeCard";
 
 export const ExchangeCreator = styled.div`
@@ -24,7 +24,7 @@ export const ExchangeCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.secondary};
+  color: ${({ theme }) => theme?.colors?.light.accent};
   flex: none;
   order: 1;
   flex-grow: 0;

@@ -6,6 +6,7 @@ import { convertToString } from "../../utils/json";
 export function saveBaseMetadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   timestamp: BigInt
 ): string {
   const offerId = offer.id.toString();
@@ -13,6 +14,7 @@ export function saveBaseMetadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
   const condition = convertToString(metadataObj.get("condition"));
@@ -37,6 +39,7 @@ export function saveBaseMetadata(
   baseMetadataEntity.name = name;
   baseMetadataEntity.description = description;
   baseMetadataEntity.externalUrl = externalUrl;
+  baseMetadataEntity.animationUrl = animationUrl;
   baseMetadataEntity.licenseUrl = licenseUrl;
   baseMetadataEntity.schemaUrl = schemaUrl;
   baseMetadataEntity.condition = condition;

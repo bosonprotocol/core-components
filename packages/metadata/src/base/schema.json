@@ -7,7 +7,8 @@
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
     "licenseUrl": { "type": "string" },
-    "condition": { "type": "string" }
+    "condition": { "type": "string" },
+    "animationUrl": { "type": "string" }
   },
   "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl"]
 }

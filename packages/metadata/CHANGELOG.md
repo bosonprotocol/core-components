@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.6.1...@bosonprotocol/metadata@1.7.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* ci ([#355](https://github.com/bosonprotocol/core-components/issues/355)) ([4d6f852](https://github.com/bosonprotocol/core-components/commit/4d6f85242898ed9b4335a31e18f4479a6f01904a))
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* add optional animationUrl property to base metadata ([#349](https://github.com/bosonprotocol/core-components/issues/349)) ([60452ae](https://github.com/bosonprotocol/core-components/commit/60452aef454f26788b374e83eda3369c5914e685))
+
+
+
+
+
 ## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.6.0...@bosonprotocol/metadata@1.6.1) (2022-10-19)
 
 

@@ -92,6 +92,7 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   name
   description
   externalUrl
+  animationUrl
   licenseUrl
   condition
   schemaUrl
@@ -104,6 +105,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   }
   offer {
     ...BaseOfferFields
+    exchanges {
+    ...BaseExchangeFields
+  }
   }
   seller {
     ...BaseSellerFields

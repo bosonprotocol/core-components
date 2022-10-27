@@ -1,3 +1,4 @@
+import React, { RefObject } from "react";
 import { providers } from "ethers";
 import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { ButtonProps, ButtonSize } from "../../buttons/Button";
@@ -36,4 +37,5 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
   size?: ButtonSize;
   variant?: ButtonProps["variant"];
   className?: string;
+  buttonRef?: RefObject<HTMLButtonElement>;
 };

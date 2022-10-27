@@ -17,6 +17,7 @@ import { saveProductV1ExchangePolicy } from "./exchange-policy";
 export function saveProductV1Metadata(
   offer: Offer,
   metadataObj: TypedMap<string, JSONValue>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   timestamp: BigInt
 ): string {
   const offerId = offer.id.toString();
@@ -25,6 +26,7 @@ export function saveProductV1Metadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
+  const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const condition = convertToString(metadataObj.get("condition"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
@@ -83,6 +85,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.name = name;
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
+  productV1MetadataEntity.animationUrl = animationUrl;
   productV1MetadataEntity.licenseUrl = licenseUrl;
   productV1MetadataEntity.schemaUrl = schemaUrl;
   productV1MetadataEntity.condition = condition;

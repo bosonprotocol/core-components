@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.1.6...meta-tx-gateway@1.2.0) (2022-10-26)
+
+
+### Features
+
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
 ## [1.1.6](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.1.5...meta-tx-gateway@1.1.6) (2022-10-19)
 
 **Note:** Version bump only for package meta-tx-gateway

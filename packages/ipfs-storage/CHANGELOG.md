@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.9.2...@bosonprotocol/ipfs-storage@1.10.0) (2022-10-26)
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+
+
+
+
+
 ## [1.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.9.1...@bosonprotocol/ipfs-storage@1.9.2) (2022-10-19)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

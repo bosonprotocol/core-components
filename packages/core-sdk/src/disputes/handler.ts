@@ -147,8 +147,8 @@ export async function signResolutionProposal(args: {
   };
 
   const message = {
-    exchangeId: args.exchangeId,
-    buyerPercentBasisPoints: args.buyerPercentBasisPoints
+    exchangeId: args.exchangeId.toString(),
+    buyerPercentBasisPoints: args.buyerPercentBasisPoints.toString()
   };
 
   return prepareDataSignatureParameters({

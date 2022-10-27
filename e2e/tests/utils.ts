@@ -49,6 +49,7 @@ export const metadata = {
   name: "name",
   description: "description",
   externalUrl: "external-url.com",
+  animationUrl: "animation-url.com",
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };

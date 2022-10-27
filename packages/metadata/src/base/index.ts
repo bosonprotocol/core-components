@@ -12,4 +12,5 @@ export type BaseMetadata = {
   externalUrl: string;
   licenseUrl: string;
   condition?: string;
+  animationUrl?: string;
 };

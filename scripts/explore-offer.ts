@@ -94,9 +94,9 @@ async function getTokenInfo(
   }
   const tokenContract = new Contract(exchangeToken, erc20Iface, web3Provider);
   const [decimals, name, symbol] = await Promise.all([
-    tokenContract.getDecimals(),
-    tokenContract.getName(),
-    tokenContract.getSymbol()
+    tokenContract.decimals(),
+    tokenContract.name(),
+    tokenContract.symbol()
   ]);
   return {
     decimals,

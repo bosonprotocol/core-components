@@ -93,6 +93,7 @@ fragment BaseOfferFields on Offer {
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
     condition
     schemaUrl

@@ -35,7 +35,6 @@ import {
   createOfferWithCondition
 } from "./utils";
 import {
-  ConditionStruct,
   CreateGroupArgs,
   CreateOfferArgs,
   EvaluationMethod,
@@ -511,14 +510,13 @@ describe("core-sdk", () => {
           };
         }
 
-        const createOfferCondTx = await createOfferWithCondition({
-          coreSDK: sellerCoreSDK,
-          offerToCreate: mockCreateOfferArgs({
+        const createOfferCondTx = await sellerCoreSDK.createOfferWithCondition(
+          mockCreateOfferArgs({
             metadataHash,
             metadataUri
           }),
-          condition: conditionToCreate
-        });
+          conditionToCreate
+        );
 
         const createOfferCond = await createOfferCondTx.wait();
         await waitForGraphNodeIndexing();
@@ -595,14 +593,13 @@ describe("core-sdk", () => {
           };
         }
 
-        const createOfferCondTx = await createOfferWithCondition({
-          coreSDK: sellerCoreSDK,
-          offerToCreate: mockCreateOfferArgs({
+        const createOfferCondTx = await sellerCoreSDK.createOfferWithCondition(
+          mockCreateOfferArgs({
             metadataHash,
             metadataUri
           }),
-          condition: conditionToCreate
-        });
+          conditionToCreate
+        );
 
         const createOfferCond = await createOfferCondTx.wait();
         await waitForGraphNodeIndexing();
@@ -1204,18 +1201,6 @@ async function createGroup(args: {
   groupToCreate: CreateGroupArgs;
 }): Promise<TransactionResponse> {
   const createdGroup = await args.coreSDK.createGroup(args.groupToCreate);
-  return createdGroup;
-}
-
-async function createOfferWithCondition(args: {
-  coreSDK: CoreSDK;
-  offerToCreate: offers.CreateOfferArgs;
-  condition: ConditionStruct;
-}): Promise<TransactionResponse> {
-  const createdGroup = await args.coreSDK.createOfferWithCondition(
-    args.offerToCreate,
-    args.condition
-  );
   return createdGroup;
 }
 

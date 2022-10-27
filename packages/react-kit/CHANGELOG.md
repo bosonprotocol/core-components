@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.11.0...@bosonprotocol/react-kit@0.12.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* change accent color ([#344](https://github.com/bosonprotocol/core-components/issues/344)) ([a96a747](https://github.com/bosonprotocol/core-components/commit/a96a747d89005729ad414dd7a6974c53deb56614))
+* change cards colors ([#357](https://github.com/bosonprotocol/core-components/issues/357)) ([bceb29b](https://github.com/bosonprotocol/core-components/commit/bceb29bd25fca228e449a8ac479cc6d0721628cc))
+* exchange cancel color ([#345](https://github.com/bosonprotocol/core-components/issues/345)) ([73c528c](https://github.com/bosonprotocol/core-components/commit/73c528c6d53f83cd804c8083def79df973d533d9))
+
+
+### Features
+
+* add missing ctas ([#334](https://github.com/bosonprotocol/core-components/issues/334)) ([094153a](https://github.com/bosonprotocol/core-components/commit/094153a824ff5bc39dbf829f3526fc84e1f677eb))
+* bp349 buttons themes ([#341](https://github.com/bosonprotocol/core-components/issues/341)) ([5ac2801](https://github.com/bosonprotocol/core-components/commit/5ac28010d65cb01bfbf8864a4ce9724f8d2d673a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+* exchange cta updates ([#354](https://github.com/bosonprotocol/core-components/issues/354)) ([3383185](https://github.com/bosonprotocol/core-components/commit/33831850945ccb41a07196ebb84dff9d844d9941))
+* export theme add ([#346](https://github.com/bosonprotocol/core-components/issues/346)) ([0e9cb58](https://github.com/bosonprotocol/core-components/commit/0e9cb5805add2f1fd97035e014411ad21dbfdb51))
+
+
+
+
+
 # [0.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.10.0...@bosonprotocol/react-kit@0.11.0) (2022-10-19)
 
 

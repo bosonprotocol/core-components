@@ -9,7 +9,7 @@ export function getValueFromLogs(args: {
 }): string | null {
   const relevantLogs = getValuesFromLogs(args);
 
-  if (relevantLogs.length === 0) {
+  if (!relevantLogs || relevantLogs.length === 0) {
     return null;
   }
 

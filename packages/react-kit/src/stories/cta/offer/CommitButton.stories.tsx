@@ -14,17 +14,10 @@ export default {
 const Template: ComponentStory<typeof CommitButton> = (args) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
-  const signerAddress = useCallback((signerAddress: string | undefined) => {
-    console.log(signerAddress);
-  }, []);
+
   return (
     <CtaButtonWrapper>
-      <CommitButton
-        web3Provider={provider}
-        {...args}
-        buttonRef={buttonRef}
-        onGetSignerAddress={signerAddress}
-      />
+      <CommitButton web3Provider={provider} {...args} buttonRef={buttonRef} />
     </CtaButtonWrapper>
   );
 };
@@ -40,7 +33,6 @@ Simple.args = {
   offerId: "28",
   price: "100",
   exchangeToken: "0x" + "0".repeat(40),
-  web3Provider: undefined,
   extraInfo: "",
   disabled: false,
   onPendingSignature: () => {
@@ -66,7 +58,6 @@ WithStep.args = {
   offerId: "52",
   price: "100",
   exchangeToken: "0x" + "0".repeat(40),
-  web3Provider: undefined,
   extraInfo: "Step 1",
   disabled: false,
   onPendingSignature: () => {
@@ -92,7 +83,6 @@ WithMetaTx.args = {
   offerId: "19",
   price: "1000000000000000",
   exchangeToken: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
-  web3Provider: undefined,
   extraInfo: "",
   disabled: false,
   onPendingSignature: () => {

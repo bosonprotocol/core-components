@@ -96,6 +96,7 @@ export type ProductV1Metadata = {
   licenseUrl: string;
   condition?: string;
   image: string;
+  animationUrl?: string;
   attributes: {
     trait_type: string;
     value: string;
