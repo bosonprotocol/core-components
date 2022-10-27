@@ -22,12 +22,18 @@ export const RevokeButton = ({
 }: IRevokeButton) => {
   const coreSdk = useCoreSdk(restProps);
 
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.revokeVoucher(exchangeId)
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Revoke"
       successPayload={{ exchangeId }}
-      writeContractFn={() => coreSdk.revokeVoucher(exchangeId)}
+      actions={actions}
       {...restProps}
     />
   );

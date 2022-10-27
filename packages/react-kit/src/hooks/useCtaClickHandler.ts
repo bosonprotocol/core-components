@@ -1,14 +1,24 @@
 import { TransactionResponse } from "@bosonprotocol/common";
+import { providers } from "ethers";
 import { CoreSDK, metaTx } from "@bosonprotocol/core-sdk";
-import { TransactionReceipt } from "@ethersproject/providers";
 import { useState } from "react";
+
+type WriteContractFn = () => Promise<TransactionResponse>;
+type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
+type MetaTxCondition = boolean;
+export type Action = {
+  signMetaTxFn?: SignMetaTxFn;
+  writeContractFn: WriteContractFn;
+  additionalMetaTxCondition?: MetaTxCondition;
+  nativeMetaTxContract?: string;
+  shouldActionRun?: () => Promise<boolean>;
+};
 
 export function useCtaClickHandler<T>({
   waitBlocks,
   coreSdk,
   signerAddress,
-  signMetaTxFn,
-  writeContractFn,
+  actions,
   onPendingSignature,
   onPendingTransaction,
   onError,
@@ -18,13 +28,12 @@ export function useCtaClickHandler<T>({
   waitBlocks: number;
   coreSdk: CoreSDK;
   signerAddress?: string;
-  signMetaTxFn?: () => Promise<metaTx.handler.SignedMetaTx>;
-  writeContractFn: () => Promise<TransactionResponse>;
+  actions: Action[];
   onPendingSignature?: () => void;
   onPendingTransaction?: (txHash: string, isMetaTx?: boolean) => void;
-  onSuccess?: (receipt: TransactionReceipt, payload: T) => void;
+  onSuccess?: (receipt: providers.TransactionReceipt, payload: T) => void;
   onError?: (error: Error) => void;
-  successPayload: T;
+  successPayload: T | ((receipt: providers.TransactionReceipt) => T);
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,37 +41,69 @@ export function useCtaClickHandler<T>({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
+
+    let txResponse, receipt;
+
     try {
       setIsLoading(true);
-      onPendingSignature?.();
 
-      let txResponse;
-      const isMetaTx = Boolean(
-        coreSdk.isMetaTxConfigSet && signerAddress && signMetaTxFn
-      );
+      for (const action of actions) {
+        const {
+          signMetaTxFn,
+          writeContractFn,
+          additionalMetaTxCondition = true,
+          nativeMetaTxContract,
+          shouldActionRun = () => Promise.resolve(true)
+        } = action;
 
-      if (isMetaTx && signMetaTxFn) {
-        const nonce = Date.now();
+        if (!(await shouldActionRun())) {
+          continue;
+        }
 
-        const { r, s, v, functionName, functionSignature } =
-          await signMetaTxFn();
+        const isMetaTx =
+          Boolean(coreSdk.isMetaTxConfigSet && signerAddress && signMetaTxFn) &&
+          additionalMetaTxCondition;
 
-        txResponse = await coreSdk.relayMetaTransaction({
-          functionName,
-          functionSignature,
-          sigR: r,
-          sigS: s,
-          sigV: v,
-          nonce
-        });
-      } else {
-        txResponse = await writeContractFn();
+        onPendingSignature?.();
+
+        if (isMetaTx && signMetaTxFn) {
+          const nonce = Date.now();
+
+          const { r, s, v, functionName, functionSignature } =
+            await signMetaTxFn();
+
+          txResponse = nativeMetaTxContract
+            ? await coreSdk.relayNativeMetaTransaction(nativeMetaTxContract, {
+                functionSignature,
+                sigR: r,
+                sigS: s,
+                sigV: v
+              })
+            : await coreSdk.relayMetaTransaction({
+                functionName,
+                functionSignature,
+                sigR: r,
+                sigS: s,
+                sigV: v,
+                nonce
+              });
+        } else {
+          txResponse = await writeContractFn();
+        }
+
+        if (txResponse) {
+          onPendingTransaction?.(txResponse.hash, isMetaTx);
+          receipt = await txResponse.wait(waitBlocks);
+        }
       }
 
-      onPendingTransaction?.(txResponse.hash, isMetaTx);
-      const receipt = await txResponse.wait(waitBlocks);
-
-      onSuccess?.(receipt as TransactionReceipt, successPayload);
+      if (receipt) {
+        const payload =
+          successPayload instanceof Function
+            ? successPayload(receipt as providers.TransactionReceipt)
+            : successPayload;
+        onSuccess?.(receipt as providers.TransactionReceipt, payload);
+      }
     } catch (error) {
       onError?.(error as Error);
     } finally {

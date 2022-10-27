@@ -21,18 +21,24 @@ export const RedeemButton = ({
   ...restProps
 }: IRedeemButton) => {
   const coreSdk = useCoreSdk(restProps);
+
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.redeemVoucher(exchangeId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxRedeemVoucher({
+          nonce: Date.now(),
+          exchangeId
+        })
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Redeem"
       successPayload={{ exchangeId }}
-      writeContractFn={() => coreSdk.redeemVoucher(exchangeId)}
-      signMetaTxFn={() =>
-        coreSdk.signMetaTxRedeemVoucher({
-          nonce: Date.now(),
-          exchangeId
-        })
-      }
+      actions={actions}
       {...restProps}
     />
   );

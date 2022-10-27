@@ -22,12 +22,18 @@ export const CompleteButton = ({
 }: Props) => {
   const coreSdk = useCoreSdk(restProps);
 
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.completeExchange(exchangeId)
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Complete"
       successPayload={{ exchangeId }}
-      writeContractFn={() => coreSdk.completeExchange(exchangeId)}
+      actions={actions}
       {...restProps}
     />
   );

@@ -22,18 +22,23 @@ export const CancelButton = ({
 }: ICancelButton) => {
   const coreSdk = useCoreSdk(restProps);
 
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.cancelVoucher(exchangeId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxCancelVoucher({
+          nonce: Date.now(),
+          exchangeId
+        })
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Cancel"
       successPayload={{ exchangeId }}
-      writeContractFn={() => coreSdk.cancelVoucher(exchangeId)}
-      signMetaTxFn={() =>
-        coreSdk.signMetaTxCancelVoucher({
-          nonce: Date.now(),
-          exchangeId
-        })
-      }
+      actions={actions}
       {...restProps}
     />
   );

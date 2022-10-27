@@ -22,18 +22,23 @@ export const ExpireButton = ({
 }: IExpireButton) => {
   const coreSdk = useCoreSdk(restProps);
 
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.expireVoucher(exchangeId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxExpireVoucher({
+          nonce: Date.now(),
+          exchangeId
+        })
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Expire"
       successPayload={{ exchangeId }}
-      writeContractFn={() => coreSdk.expireVoucher(exchangeId)}
-      signMetaTxFn={() =>
-        coreSdk.signMetaTxExpireVoucher({
-          nonce: Date.now(),
-          exchangeId
-        })
-      }
+      actions={actions}
       {...restProps}
     />
   );

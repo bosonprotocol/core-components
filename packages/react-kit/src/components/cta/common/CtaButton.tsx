@@ -1,20 +1,18 @@
 import React from "react";
-import { TransactionResponse } from "@bosonprotocol/common";
-import { metaTx } from "@bosonprotocol/core-sdk";
+import { providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { useCtaClickHandler } from "../../../hooks/useCtaClickHandler";
+import { useCtaClickHandler, Action } from "../../../hooks/useCtaClickHandler";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
 type Props<T> = CtaButtonProps<T> & {
   defaultLabel?: string;
-  writeContractFn: () => Promise<TransactionResponse>;
-  signMetaTxFn?: () => Promise<metaTx.handler.SignedMetaTx>;
-  successPayload: T;
+  actions: Action[];
+  successPayload: T | ((receipt: providers.TransactionReceipt) => T);
 };
 
 export function CtaButton<T>({
@@ -25,14 +23,14 @@ export function CtaButton<T>({
   onError,
   onPendingSignature,
   onPendingTransaction,
-  writeContractFn,
-  signMetaTxFn,
+  actions,
   defaultLabel,
   successPayload,
   waitBlocks = 1,
   children,
   size = ButtonSize.Large,
   variant = "secondaryFill",
+  buttonRef,
   ...coreSdkConfig
 }: Props<T>) {
   const coreSdk = useCoreSdk(coreSdkConfig);
@@ -42,8 +40,7 @@ export function CtaButton<T>({
     waitBlocks,
     coreSdk,
     signerAddress,
-    writeContractFn,
-    signMetaTxFn,
+    actions,
     onSuccess,
     successPayload,
     onError,
@@ -56,7 +53,12 @@ export function CtaButton<T>({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={clickHandler}
+      ref={buttonRef}
+      onClick={(e) => {
+        if (!isLoading) {
+          clickHandler(e);
+        }
+      }}
     >
       <ButtonTextWrapper>
         {children || defaultLabel}

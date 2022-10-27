@@ -25,18 +25,23 @@ export const BatchCompleteButton = ({
 }: Props) => {
   const coreSdk = useCoreSdk(restProps);
 
+  const actions = [
+    {
+      writeContractFn: () => coreSdk.completeExchangeBatch(exchangeIds),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxCompleteExchangeBatch({
+          nonce: Date.now(),
+          exchangeIds
+        })
+    }
+  ];
+
   return (
     <CtaButton
       variant={variant}
       defaultLabel="Batch Complete"
       successPayload={{ exchangeIds }}
-      writeContractFn={() => coreSdk.completeExchangeBatch(exchangeIds)}
-      signMetaTxFn={() =>
-        coreSdk.signMetaTxCompleteExchangeBatch({
-          nonce: Date.now(),
-          exchangeIds
-        })
-      }
+      actions={actions}
       {...restProps}
     />
   );
