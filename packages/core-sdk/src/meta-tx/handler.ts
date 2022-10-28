@@ -215,6 +215,21 @@ export async function signMetaTxExpireVoucher(
   });
 }
 
+export async function signMetaTxRevokeVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "revokeVoucher(uint256)",
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "revokeVoucher",
+      [args.exchangeId]
+    )
+  });
+}
+
 export async function signMetaTxCreateGroup(
   args: BaseMetaTxArgs & {
     createGroupArgs: CreateGroupArgs;

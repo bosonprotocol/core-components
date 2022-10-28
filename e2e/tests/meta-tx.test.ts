@@ -470,6 +470,38 @@ describe("meta-tx", () => {
     });
   });
 
+  describe("#signMetaTxRevokeVoucher()", () => {
+    test("non-native exchange token offer", async () => {
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
+      const commitTxReceipt = await commitTx.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        commitTxReceipt.logs
+      );
+
+      const nonce = Date.now();
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxRevokeVoucher({
+          exchangeId: exchangeId as string,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
   describe("#signMetaTxDepositFunds()", () => {
     test("approve and deposit funds (ERC20)", async () => {
       // Use the newSeller account, because the other seller funds balance is modified
