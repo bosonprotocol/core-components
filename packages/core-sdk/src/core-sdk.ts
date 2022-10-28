@@ -2030,11 +2030,9 @@ export class CoreSDK {
   }
 
   /**
-   * Creates seller account and offer and a group with a specific conditions
-   * This transaction only succeeds if there is no existing seller account for the connected signer.
-   * @param sellerToCreate - Addresses to set in the seller account.
+   * Creates an offer with a specific conditions
    * @param offerToCreate - Offer arguments.
-   * @param groupToCreate -  group with the contract condition
+   * @param condition -  contract condition applied to the offer
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
