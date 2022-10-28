@@ -172,6 +172,7 @@ export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -243,6 +244,26 @@ export type BaseMetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -495,6 +516,7 @@ export type BaseMetadataEntity_Filter = {
 export enum BaseMetadataEntity_OrderBy {
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -591,6 +613,90 @@ export enum Buyer_OrderBy {
   Id = "id",
   Logs = "logs",
   Wallet = "wallet"
+}
+
+/**
+ * Groups
+ *
+ */
+export type ConditionEntity = {
+  __typename?: "ConditionEntity";
+  id: Scalars["ID"];
+  maxCommits: Scalars["BigInt"];
+  method: Scalars["Int"];
+  threshold: Scalars["BigInt"];
+  tokenAddress: Scalars["Bytes"];
+  tokenId: Scalars["BigInt"];
+  tokenType: Scalars["Int"];
+};
+
+export type ConditionEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  maxCommits?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  method?: InputMaybe<Scalars["Int"]>;
+  method_gt?: InputMaybe<Scalars["Int"]>;
+  method_gte?: InputMaybe<Scalars["Int"]>;
+  method_in?: InputMaybe<Array<Scalars["Int"]>>;
+  method_lt?: InputMaybe<Scalars["Int"]>;
+  method_lte?: InputMaybe<Scalars["Int"]>;
+  method_not?: InputMaybe<Scalars["Int"]>;
+  method_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  threshold?: InputMaybe<Scalars["BigInt"]>;
+  threshold_gt?: InputMaybe<Scalars["BigInt"]>;
+  threshold_gte?: InputMaybe<Scalars["BigInt"]>;
+  threshold_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  threshold_lt?: InputMaybe<Scalars["BigInt"]>;
+  threshold_lte?: InputMaybe<Scalars["BigInt"]>;
+  threshold_not?: InputMaybe<Scalars["BigInt"]>;
+  threshold_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenAddress?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenId?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenType?: InputMaybe<Scalars["Int"]>;
+  tokenType_gt?: InputMaybe<Scalars["Int"]>;
+  tokenType_gte?: InputMaybe<Scalars["Int"]>;
+  tokenType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  tokenType_lt?: InputMaybe<Scalars["Int"]>;
+  tokenType_lte?: InputMaybe<Scalars["Int"]>;
+  tokenType_not?: InputMaybe<Scalars["Int"]>;
+  tokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum ConditionEntity_OrderBy {
+  Id = "id",
+  MaxCommits = "maxCommits",
+  Method = "method",
+  Threshold = "threshold",
+  TokenAddress = "tokenAddress",
+  TokenId = "tokenId",
+  TokenType = "tokenType"
 }
 
 export type Dispute = {
@@ -2199,6 +2305,7 @@ export enum MetadataAttribute_OrderBy {
 export type MetadataInterface = {
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -2269,6 +2376,26 @@ export type MetadataInterface_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2521,6 +2648,7 @@ export type MetadataInterface_Filter = {
 export enum MetadataInterface_OrderBy {
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -2555,6 +2683,7 @@ export type Offer = {
   agentFee: Scalars["BigInt"];
   agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
+  condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"];
   /** Offer durations */
   disputePeriodDuration: Scalars["BigInt"];
@@ -2740,6 +2869,27 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_?: InputMaybe<ConditionEntity_Filter>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3047,6 +3197,7 @@ export enum Offer_OrderBy {
   AgentFee = "agentFee",
   AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
+  Condition = "condition",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
   DisputeResolutionTerms = "disputeResolutionTerms",
@@ -3413,6 +3564,7 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -3505,6 +3657,26 @@ export type ProductV1MetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3917,6 +4089,7 @@ export type ProductV1MetadataEntity_Filter = {
 export enum ProductV1MetadataEntity_OrderBy {
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangePolicy = "exchangePolicy",
@@ -6095,6 +6268,8 @@ export type Query = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  conditionEntities: Array<ConditionEntity>;
+  conditionEntity?: Maybe<ConditionEntity>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -6224,6 +6399,22 @@ export type QueryBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type QueryConditionEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionEntity_Filter>;
+};
+
+export type QueryConditionEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 export type QueryDisputeArgs = {
@@ -6902,6 +7093,8 @@ export type Subscription = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  conditionEntities: Array<ConditionEntity>;
+  conditionEntity?: Maybe<ConditionEntity>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -7031,6 +7224,22 @@ export type SubscriptionBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type SubscriptionConditionEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionEntity_Filter>;
+};
+
+export type SubscriptionConditionEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 export type SubscriptionDisputeArgs = {
@@ -7638,6 +7847,16 @@ export type GetSellerByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -7703,6 +7922,7 @@ export type GetSellerByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -7720,6 +7940,7 @@ export type GetSellerByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -8125,6 +8346,16 @@ export type GetSellersQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8190,6 +8421,7 @@ export type GetSellersQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -8207,6 +8439,7 @@ export type GetSellersQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -8922,6 +9155,16 @@ export type GetDisputeResolverByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8987,6 +9230,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -9004,6 +9248,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -9346,6 +9591,16 @@ export type GetDisputeResolversQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -9411,6 +9666,7 @@ export type GetDisputeResolversQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -9428,6 +9684,7 @@ export type GetDisputeResolversQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -9764,6 +10021,16 @@ export type SellerFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -9829,6 +10096,7 @@ export type SellerFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -9846,6 +10114,7 @@ export type SellerFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -10359,6 +10628,16 @@ export type DisputeResolverFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -10424,6 +10703,7 @@ export type DisputeResolverFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -10441,6 +10721,7 @@ export type DisputeResolverFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -11121,6 +11402,16 @@ export type GetExchangeTokenByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -11186,6 +11477,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -11203,6 +11495,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -11462,6 +11755,16 @@ export type GetExchangeTokensQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -11527,6 +11830,7 @@ export type GetExchangeTokensQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -11544,6 +11848,7 @@ export type GetExchangeTokensQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -11781,6 +12086,16 @@ export type ExchangeTokenFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -11846,6 +12161,7 @@ export type ExchangeTokenFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -11863,6 +12179,7 @@ export type ExchangeTokenFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -12279,6 +12596,16 @@ export type GetExchangeByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -12344,6 +12671,7 @@ export type GetExchangeByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -12361,6 +12689,7 @@ export type GetExchangeByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -12644,6 +12973,16 @@ export type GetExchangesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -12709,6 +13048,7 @@ export type GetExchangesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -12726,6 +13066,7 @@ export type GetExchangesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -12999,6 +13340,16 @@ export type ExchangeFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -13064,6 +13415,7 @@ export type ExchangeFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -13081,6 +13433,7 @@ export type ExchangeFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -13420,6 +13773,17 @@ export type BaseFundsEntityFieldsFragment = {
   accountId: string;
 };
 
+export type BaseConditionFieldsFragment = {
+  __typename?: "ConditionEntity";
+  id: string;
+  method: number;
+  tokenType: number;
+  tokenAddress: string;
+  tokenId: string;
+  threshold: string;
+  maxCommits: string;
+};
+
 export type GetBaseMetadataEntityByIdQueryQueryVariables = Exact<{
   metadataId: Scalars["ID"];
   metadataSkip?: InputMaybe<Scalars["Int"]>;
@@ -13439,6 +13803,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     externalUrl: string;
     animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -13481,6 +13846,16 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -13546,6 +13921,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -13563,6 +13939,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -13801,6 +14178,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     externalUrl: string;
     animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -13843,6 +14221,16 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -13908,6 +14296,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -13925,6 +14314,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -14153,6 +14543,7 @@ export type BaseMetadataEntityFieldsFragment = {
   externalUrl: string;
   animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14195,6 +14586,16 @@ export type BaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -14260,6 +14661,7 @@ export type BaseMetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -14277,6 +14679,7 @@ export type BaseMetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -14500,6 +14903,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   externalUrl: string;
   animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14542,6 +14946,16 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -14607,6 +15021,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -14624,6 +15039,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -15017,6 +15433,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     externalUrl: string;
     animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -15110,6 +15527,16 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           royaltyPercentage: string;
         };
       }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -15175,6 +15602,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -15192,6 +15620,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -15596,6 +16025,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     externalUrl: string;
     animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -15689,6 +16119,16 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           royaltyPercentage: string;
         };
       }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -15754,6 +16194,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
           }
@@ -15771,6 +16212,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             externalUrl: string;
             animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
             attributes?: Array<{
@@ -16165,6 +16607,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
   externalUrl: string;
   animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -16258,6 +16701,16 @@ export type ProductV1MetadataEntityFieldsFragment = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -16323,6 +16776,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -16340,6 +16794,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -16729,6 +17184,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   externalUrl: string;
   animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -16822,6 +17278,16 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -16887,6 +17353,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -16904,6 +17371,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -17648,6 +18116,16 @@ export type GetOfferByIdQueryQuery = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -17713,6 +18191,7 @@ export type GetOfferByIdQueryQuery = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -17730,6 +18209,7 @@ export type GetOfferByIdQueryQuery = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -18015,6 +18495,16 @@ export type GetOffersQueryQuery = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -18080,6 +18570,7 @@ export type GetOffersQueryQuery = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
         }
@@ -18097,6 +18588,7 @@ export type GetOffersQueryQuery = {
           externalUrl: string;
           animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
           attributes?: Array<{
@@ -18366,6 +18858,16 @@ export type OfferFieldsFragment = {
       royaltyPercentage: string;
     };
   }>;
+  condition?: {
+    __typename?: "ConditionEntity";
+    id: string;
+    method: number;
+    tokenType: number;
+    tokenAddress: string;
+    tokenId: string;
+    threshold: string;
+    maxCommits: string;
+  } | null;
   seller: {
     __typename?: "Seller";
     id: string;
@@ -18431,6 +18933,7 @@ export type OfferFieldsFragment = {
         externalUrl: string;
         animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
       }
@@ -18448,6 +18951,7 @@ export type OfferFieldsFragment = {
         externalUrl: string;
         animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
         attributes?: Array<{
@@ -18666,6 +19170,16 @@ export type BaseOfferFieldsFragment = {
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  condition?: {
+    __typename?: "ConditionEntity";
+    id: string;
+    method: number;
+    tokenType: number;
+    tokenAddress: string;
+    tokenId: string;
+    threshold: string;
+    maxCommits: string;
+  } | null;
   seller: {
     __typename?: "Seller";
     id: string;
@@ -18731,6 +19245,7 @@ export type BaseOfferFieldsFragment = {
         externalUrl: string;
         animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
       }
@@ -18748,6 +19263,7 @@ export type BaseOfferFieldsFragment = {
         externalUrl: string;
         animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
         attributes?: Array<{
@@ -18980,6 +19496,17 @@ export const FundsEntityFieldsFragmentDoc = gql`
   }
   ${BaseFundsEntityFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
+`;
+export const BaseConditionFieldsFragmentDoc = gql`
+  fragment BaseConditionFields on ConditionEntity {
+    id
+    method
+    tokenType
+    tokenAddress
+    tokenId
+    threshold
+    maxCommits
+  }
 `;
 export const BaseDisputeResolverFeeFieldsFragmentDoc = gql`
   fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
@@ -19220,6 +19747,9 @@ export const BaseOfferFieldsFragmentDoc = gql`
     disputeResolverId
     numberOfCommits
     numberOfRedemptions
+    condition {
+      ...BaseConditionFields
+    }
     seller {
       ...BaseSellerFields
     }
@@ -19238,6 +19768,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       externalUrl
       animationUrl
       licenseUrl
+      condition
       schemaUrl
       type
       ... on ProductV1MetadataEntity {
@@ -19271,6 +19802,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       }
     }
   }
+  ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
@@ -19537,6 +20069,7 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     externalUrl
     animationUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image
@@ -19580,6 +20113,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     externalUrl
     animationUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image

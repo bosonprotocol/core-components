@@ -6,6 +6,7 @@ import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
 import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
+import IBosonGroupHandlerABI from "./IBosonGroupHandler.json";
 import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.json";
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
@@ -20,6 +21,7 @@ export {
   IBosonDisputeHandlerABI,
   IBosonExchangeHandlerABI,
   IBosonFundsHandlerABI,
+  IBosonGroupHandlerABI,
   IBosonMetaTransactionsHandlerABI,
   IBosonOfferHandlerABI,
   IBosonOrchestrationHandlerABI,

@@ -1,3 +1,4 @@
+import { ConditionStruct } from '@bosonprotocol/common';
 import {
   providers,
   Wallet,
@@ -29,98 +30,20 @@ import {
   ACCOUNT_11,
   ACCOUNT_12
 } from "../../contracts/accounts";
+import { MOCK_ERC1155_ABI, MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
+import { BaseMetadata } from '@bosonprotocol/metadata/src/base';
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
-export const MOCK_ERC20_ABI = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_owner",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "_spender",
-        type: "address"
-      }
-    ],
-    name: "allowance",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_holder",
-        type: "address"
-      }
-    ],
-    name: "balanceOf",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_account",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "_amount",
-        type: "uint256"
-      }
-    ],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256"
-      }
-    ],
-    name: "approve",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool"
-      }
-    ],
-    stateMutability: "nonpayable",
-    type: "function"
-  }
-];
+export const MOCK_ERC721_ADDRESS =
+  getDefaultConfig("local").contracts.testErc721 ||
+  "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
+
+export const MOCK_ERC1155_ADDRESS =
+  getDefaultConfig("local").contracts.testErc1155 ||
+  "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
 export const metadata = {
   name: "name",
@@ -156,6 +79,17 @@ export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
   MOCK_ERC20_ABI,
+  provider
+);
+export const mockErc721Contract = new Contract(
+  MOCK_ERC721_ADDRESS,
+  MOCK_ERC721_ABI,
+  provider
+);
+
+export const mockErc1155Contract = new Contract(
+  MOCK_ERC1155_ADDRESS,
+  MOCK_ERC1155_ABI,
   provider
 );
 
@@ -296,6 +230,21 @@ export async function ensureMintedAndAllowedTokens(
   }
 }
 
+export async function ensureMintedERC721(
+  wallet: Wallet,
+  tokenId: BigNumberish
+) {
+  await mockErc721Contract.connect(wallet).mint(tokenId, 1);
+}
+
+export async function ensureMintedERC1155(
+  wallet: Wallet,
+  tokenId: BigNumberish,
+  amount: BigNumberish
+) {
+  await mockErc1155Contract.connect(wallet).mint(tokenId, amount);
+}
+
 export async function createDisputeResolver(
   drWallet: Wallet,
   protocolWallet: Wallet,
@@ -355,6 +304,42 @@ export async function createOffer(
   });
 
   const createOfferTxResponse = await coreSDK.createOffer(offerArgs);
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
+export async function createOfferWithCondition(
+  coreSDK: CoreSDK,
+  condition: ConditionStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<BaseMetadata>;
+  } = {}
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const offerArgs = mockCreateOfferArgs({
+    metadataHash,
+    metadataUri,
+    ...overrides.offerParams
+  });
+
+  const createOfferTxResponse = await coreSDK.createOfferWithCondition(
+    offerArgs,
+    condition
+  );
   const createOfferTxReceipt = await createOfferTxResponse.wait();
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs

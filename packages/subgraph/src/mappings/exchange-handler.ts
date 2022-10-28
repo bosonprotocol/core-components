@@ -150,7 +150,9 @@ export function handleVoucherRedeemedEvent(event: VoucherRedeemed): void {
     const offer = Offer.load(exchange.offer);
 
     if (offer) {
-      offer.numberOfRedemptions = offer.numberOfCommits.plus(BigInt.fromI32(1));
+      offer.numberOfRedemptions = offer.numberOfRedemptions.plus(
+        BigInt.fromI32(1)
+      );
       offer.save();
 
       saveMetadata(offer, offer.createdAt);

@@ -13,6 +13,7 @@ interface MetadataInterface {
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
+  condition: String
   schemaUrl: String! # JSON schema URL
   type: MetadataType!
   image: String!
@@ -52,6 +53,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
+  condition: String
   schemaUrl: String! # JSON schema URL
   "MetadataType.BASE"
   type: MetadataType!
@@ -85,6 +87,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
+  condition: String
   schemaUrl: String! # JSON schema URL
   "MetadataType.PRODUCT_V1"
   type: MetadataType!
@@ -339,6 +342,7 @@ type Offer @entity {
   metadata: MetadataInterface
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
+  condition: ConditionEntity
 
   "Stats"
   numberOfCommits: BigInt!
@@ -611,4 +615,17 @@ type DisputeEventLog implements EventLog @entity {
   account: Account!
   
   dispute: Dispute!
+}
+
+"""
+Groups
+"""
+type ConditionEntity @entity {
+  id: ID! # groupId
+  method: Int!
+  tokenType: Int!
+  tokenAddress: Bytes!
+  tokenId: BigInt!
+  threshold: BigInt!
+  maxCommits: BigInt!
 }

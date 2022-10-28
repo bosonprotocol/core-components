@@ -94,6 +94,7 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   externalUrl
   animationUrl
   licenseUrl
+  condition
   schemaUrl
   type
   image

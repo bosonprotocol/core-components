@@ -1,6 +1,8 @@
 export type ContractAddresses = {
   protocolDiamond: string;
+  testErc721?: string;
   testErc20?: string;
+  testErc1155?: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";

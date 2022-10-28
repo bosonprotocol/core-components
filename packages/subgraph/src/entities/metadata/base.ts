@@ -17,6 +17,7 @@ export function saveBaseMetadata(
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
+  const condition = convertToString(metadataObj.get("condition"));
 
   let baseMetadataEntity = BaseMetadataEntity.load(metadataId);
 
@@ -41,6 +42,7 @@ export function saveBaseMetadata(
   baseMetadataEntity.animationUrl = animationUrl;
   baseMetadataEntity.licenseUrl = licenseUrl;
   baseMetadataEntity.schemaUrl = schemaUrl;
+  baseMetadataEntity.condition = condition;
   baseMetadataEntity.save();
   return metadataId;
 }

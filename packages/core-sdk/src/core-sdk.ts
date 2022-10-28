@@ -8,7 +8,9 @@ import {
   Log,
   MetaTxConfig,
   LensContracts,
-  AuthTokenType
+  AuthTokenType,
+  CreateGroupArgs,
+  ConditionStruct
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
@@ -20,6 +22,7 @@ import * as disputes from "./disputes";
 import * as exchanges from "./exchanges";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
+import * as groups from "./groups";
 import * as erc20 from "./erc20";
 import * as erc721 from "./erc721";
 import * as funds from "./funds";
@@ -774,6 +777,20 @@ export class CoreSDK {
       logs,
       eventArgsKey: "offerId",
       eventName: "OfferCreated"
+    });
+  }
+
+  /**
+   * Utility method to retrieve the created `groupIds` from logs after calling `createGroup`
+   * @param logs - Logs to search in.
+   * @returns Array of group Ids.
+   */
+  public getCreatedGroupIdsFromLogs(logs: Log[]): string[] {
+    return getValuesFromLogs({
+      iface: groups.iface.bosonGroupHandlerIface,
+      logs,
+      eventArgsKey: "groupId",
+      eventName: "GroupCreated"
     });
   }
 
@@ -1987,5 +2004,52 @@ export class CoreSDK {
     queryVars?: subgraph.GetEventLogsQueryQueryVariables
   ) {
     return eventLogs.subgraph.getEventLogs(this._subgraphUrl, queryVars);
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                             Groups                                         */
+  /* -------------------------------------------------------------------------- */
+
+  /**
+   * Creates a group of contract addresses
+   * @param groupToCreate -  group with the contract condition
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createGroup(
+    groupToCreate: CreateGroupArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return groups.handler.createGroup({
+      groupToCreate,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  /**
+   * Creates an offer with a specific conditions
+   * @param offerToCreate - Offer arguments.
+   * @param condition -  contract condition applied to the offer
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createOfferWithCondition(
+    offerToCreate: offers.CreateOfferArgs,
+    condition: ConditionStruct,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return orchestration.handler.createOfferWithCondition({
+      offerToCreate,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      condition
+    });
   }
 }

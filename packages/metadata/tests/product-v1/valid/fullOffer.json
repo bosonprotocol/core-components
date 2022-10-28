@@ -7,6 +7,7 @@
   "externalUrl": "https://app.bosonportal.io",
   "animationUrl": "https://app.bosonportal.io/animationUrl",
   "licenseUrl": "https://app.bosonportal.io/#/license/ecf2a6dc-555b-41b5-aca8-b7e29eebbb30",
+  "condition": "this offer requires to own at least one NFT of Makersplace collection: https://opensea.io/collection/makersplace",
   "image": "https://bsn-portal-production-image-upload-storage.s3.amazonaws.com/fc11acc4-e27b-4ede-b7d3-f16735fab406",
   "attributes": [
     {

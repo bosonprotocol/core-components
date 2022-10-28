@@ -28,6 +28,7 @@ export function saveProductV1Metadata(
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
+  const condition = convertToString(metadataObj.get("condition"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
   const image = convertToString(metadataObj.get("image"));
   const attributes = convertToObjectArray(metadataObj.get("attributes"));
@@ -87,6 +88,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.animationUrl = animationUrl;
   productV1MetadataEntity.licenseUrl = licenseUrl;
   productV1MetadataEntity.schemaUrl = schemaUrl;
+  productV1MetadataEntity.condition = condition;
   productV1MetadataEntity.type = "PRODUCT_V1";
   productV1MetadataEntity.image = image;
   productV1MetadataEntity.attributes = savedMetadataAttributeIds;

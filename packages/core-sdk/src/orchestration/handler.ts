@@ -2,9 +2,13 @@ import {
   Web3LibAdapter,
   TransactionResponse,
   MetadataStorage,
-  utils
+  utils,
+  ConditionStruct
 } from "@bosonprotocol/common";
-import { encodeCreateSellerAndOffer } from "./interface";
+import {
+  encodeCreateOfferWithCondition,
+  encodeCreateSellerAndOffer
+} from "./interface";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 
 import { CreateOfferArgs } from "../offers/types";
@@ -35,5 +39,29 @@ export async function createOfferAndSeller(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndOffer(args.sellerToCreate, args.offerToCreate)
+  });
+}
+
+export async function createOfferWithCondition(args: {
+  offerToCreate: CreateOfferArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
+  condition: ConditionStruct;
+}): Promise<TransactionResponse> {
+  utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
+    abortEarly: false
+  });
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.offerToCreate.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCreateOfferWithCondition(args.offerToCreate, args.condition)
   });
 }
