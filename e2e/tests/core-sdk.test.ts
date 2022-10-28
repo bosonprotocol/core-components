@@ -32,14 +32,13 @@ import {
   ensureMintedERC721,
   MOCK_ERC1155_ADDRESS,
   ensureMintedERC1155,
-  createOfferWithCondition
+  createOfferWithCondition,
+  createSellerAndOfferWithCondition
 } from "./utils";
 import {
-  CreateGroupArgs,
   CreateOfferArgs,
   EvaluationMethod,
-  TokenType,
-  TransactionResponse
+  TokenType
 } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -256,6 +255,48 @@ describe("core-sdk", () => {
         "this offer requires to own at least one NFT of Makersplace collection: https://opensea.io/collection/makersplace";
       const offerWithCondition = await createOfferWithCondition(
         sellerCoreSDK,
+        condition,
+        {
+          metadata: {
+            condition: conditionDescription
+          }
+        }
+      );
+      // Check the condition is attached to the offer in Subgraph
+      const conditionClone = {
+        ...offerWithCondition.condition
+      };
+      delete conditionClone.id;
+      expect(conditionClone).toEqual(condition);
+      // Check the condition description is set in the metadata from the subgraph
+      expect(offerWithCondition.metadata?.condition).toBeTruthy();
+      expect(offerWithCondition.metadata?.condition).toEqual(
+        conditionDescription
+      );
+    });
+
+    test("createSellerAndOfferWithCondition()", async () => {
+      const tokenID = Date.now().toString();
+      const { sellerCoreSDK, sellerWallet } = await initSellerAndBuyerSDKs(
+        seedWallet
+      );
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(sellerWallet, tokenID, "5");
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        tokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      // Create offer with condition
+      const conditionDescription =
+        "this offer requires to own at least one NFT of Makersplace collection: https://opensea.io/collection/makersplace";
+      const offerWithCondition = await createSellerAndOfferWithCondition(
+        sellerCoreSDK,
+        sellerWallet.address,
         condition,
         {
           metadata: {
