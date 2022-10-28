@@ -1561,6 +1561,44 @@ export class CoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `createGroup` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateGroup(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateGroup>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateGroup({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOfferWithCondition` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOfferWithCondition(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOfferWithCondition>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOfferWithCondition({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `voidOffer` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.
@@ -2044,6 +2082,33 @@ export class CoreSDK {
     }> = {}
   ): Promise<TransactionResponse> {
     return orchestration.handler.createOfferWithCondition({
+      offerToCreate,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib,
+      metadataStorage: this._metadataStorage,
+      theGraphStorage: this._theGraphStorage,
+      condition
+    });
+  }
+  /**
+   * Creates a seller account and offer with a specific conditions
+   * This transaction only succeeds if there is no existing seller account for the connected signer.
+   * @param sellerToCreate - Addresses to set in the seller account.
+   * @param offerToCreate - Offer arguments.
+   * @param condition -  contract condition applied to the offer
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async createSellerAndOfferWithCondition(
+    sellerToCreate: accounts.CreateSellerArgs,
+    offerToCreate: offers.CreateOfferArgs,
+    condition: ConditionStruct,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return orchestration.handler.createSellerAndOfferWithCondition({
+      sellerToCreate,
       offerToCreate,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,

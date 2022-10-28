@@ -5,7 +5,9 @@ import {
   Web3LibAdapter,
   TransactionResponse,
   utils,
-  MetadataStorage
+  MetadataStorage,
+  CreateGroupArgs,
+  ConditionStruct
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -24,6 +26,8 @@ import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
+import { encodeCreateGroup } from "../groups/interface";
+import { encodeCreateOfferWithCondition } from "../orchestration/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -207,6 +211,36 @@ export async function signMetaTxExpireVoucher(
     functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
       "expireVoucher",
       [args.exchangeId]
+    )
+  });
+}
+
+export async function signMetaTxCreateGroup(
+  args: BaseMetaTxArgs & {
+    createGroupArgs: CreateGroupArgs;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256))",
+    functionSignature: encodeCreateGroup(args.createGroupArgs)
+  });
+}
+
+export async function signMetaTxCreateOfferWithCondition(
+  args: BaseMetaTxArgs & {
+    offerToCreate: CreateOfferArgs;
+    condition: ConditionStruct;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),uint256)",
+    functionSignature: encodeCreateOfferWithCondition(
+      args.offerToCreate,
+      args.condition
     )
   });
 }

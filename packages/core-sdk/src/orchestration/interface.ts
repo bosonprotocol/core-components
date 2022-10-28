@@ -48,3 +48,26 @@ export function encodeCreateOfferWithCondition(
     ]
   );
 }
+
+export function encodeCreateSellerAndOfferWithCondition(
+  seller: CreateSellerArgs,
+  offer: CreateOfferArgs,
+  condition: ConditionStruct
+) {
+  const sellerArgs = createSellerArgsToStruct(seller);
+  const offerArgs = createOfferArgsToStructs(offer);
+  return bosonOrchestrationHandlerIface.encodeFunctionData(
+    "createSellerAndOfferWithCondition",
+    [
+      sellerArgs.sellerStruct,
+      offerArgs[0], // offer
+      offerArgs[1], // offerDates
+      offerArgs[2], // offerDurations
+      offerArgs[3], // disputeResolverId
+      condition,
+      sellerArgs.authTokenStruct,
+      sellerArgs.voucherInitValues,
+      offerArgs[4] // agentId
+    ]
+  );
+}

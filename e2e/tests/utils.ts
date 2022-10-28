@@ -1,4 +1,4 @@
-import { ConditionStruct } from '@bosonprotocol/common';
+import { ConditionStruct } from "@bosonprotocol/common";
 import {
   providers,
   Wallet,
@@ -31,7 +31,7 @@ import {
   ACCOUNT_12
 } from "../../contracts/accounts";
 import { MOCK_ERC1155_ABI, MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
-import { BaseMetadata } from '@bosonprotocol/metadata/src/base';
+import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -338,6 +338,51 @@ export async function createOfferWithCondition(
 
   const createOfferTxResponse = await coreSDK.createOfferWithCondition(
     offerArgs,
+    condition
+  );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
+export async function createSellerAndOfferWithCondition(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  condition: ConditionStruct,
+  overrides: {
+    offerParams?: Partial<CreateOfferArgs>;
+    metadata?: Partial<BaseMetadata>;
+  } = {}
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE",
+    ...overrides.metadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const createOfferTxResponse = await coreSDK.createSellerAndOfferWithCondition(
+    {
+      operator: sellerAddress,
+      admin: sellerAddress,
+      clerk: sellerAddress,
+      treasury: sellerAddress,
+      contractUri: metadataUri,
+      royaltyPercentage: "0",
+      authTokenId: "0",
+      authTokenType: 0
+    },
+    mockCreateOfferArgs({
+      metadataHash,
+      metadataUri,
+      ...overrides.offerParams
+    }),
     condition
   );
   const createOfferTxReceipt = await createOfferTxResponse.wait();
