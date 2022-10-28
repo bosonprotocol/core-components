@@ -24,7 +24,12 @@ export const RevokeButton = ({
 
   const actions = [
     {
-      writeContractFn: () => coreSdk.revokeVoucher(exchangeId)
+      writeContractFn: () => coreSdk.revokeVoucher(exchangeId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxRevokeVoucher({
+          nonce: Date.now(),
+          exchangeId
+        })
     }
   ];
 
