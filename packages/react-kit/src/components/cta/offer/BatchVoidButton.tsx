@@ -3,22 +3,22 @@ import { BigNumberish, providers } from "ethers";
 
 import { Button, ButtonSize } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
+import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 
 type Props = {
   /**
-   * ID of offer to void.
+   * IDs of offer to voided.
    */
-  offerId: BigNumberish;
+  offerIds: BigNumberish[];
 } & CtaButtonProps<{
-  offerId: BigNumberish;
+  offerIds: BigNumberish[];
 }>;
 
-export const VoidButton = ({
-  offerId,
+export const BatchVoidButton = ({
+  offerIds,
   disabled = false,
   showLoading = false,
   extraInfo,
@@ -57,8 +57,8 @@ export const VoidButton = ({
               const nonce = Date.now();
 
               const { r, s, v, functionName, functionSignature } =
-                await coreSdk.signMetaTxVoidOffer({
-                  offerId,
+                await coreSdk.signMetaTxVoidOfferBatch({
+                  offerIds,
                   nonce
                 });
 
@@ -71,13 +71,15 @@ export const VoidButton = ({
                 nonce
               });
             } else {
-              txResponse = await coreSdk.voidOffer(offerId);
+              txResponse = await coreSdk.voidOfferBatch(offerIds);
             }
 
             onPendingTransaction?.(txResponse.hash, isMetaTx);
             const receipt = await txResponse.wait(waitBlocks);
 
-            onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
+            onSuccess?.(receipt as providers.TransactionReceipt, {
+              offerIds
+            });
           } catch (error) {
             onError?.(error as Error);
           } finally {
@@ -87,7 +89,7 @@ export const VoidButton = ({
       }}
     >
       <ButtonTextWrapper>
-        {children || "Void"}
+        {children || "Batch Void"}
         {extraInfo && ((!isLoading && showLoading) || !showLoading) ? (
           <ExtraInfo>{extraInfo}</ExtraInfo>
         ) : (
