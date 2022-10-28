@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.18.0...@bosonprotocol/common@1.19.0) (2022-10-28)
+
+
+### Features
+
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+
+
+
+
+
 # [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.1...@bosonprotocol/common@1.18.0) (2022-10-26)
 
 

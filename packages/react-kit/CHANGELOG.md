@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.12.0...@bosonprotocol/react-kit@0.13.0) (2022-10-28)
+
+
+### Bug Fixes
+
+* add wrapper to fix type inside productCard ([#360](https://github.com/bosonprotocol/core-components/issues/360)) ([12452f2](https://github.com/bosonprotocol/core-components/commit/12452f21be58603518f37bd02b8ea79ae11dbc5c))
+
+
+### Features
+
+* add support for replaced transactions ([#364](https://github.com/bosonprotocol/core-components/issues/364)) ([111f91e](https://github.com/bosonprotocol/core-components/commit/111f91ea83bd1411f57324114eecbbf9a3d8dbdc))
+* add tooltip for product card ([#359](https://github.com/bosonprotocol/core-components/issues/359)) ([d60887d](https://github.com/bosonprotocol/core-components/commit/d60887d8f0b57eddb858e41f5cfa7c1202cb2d09))
+* bp436 react kit ctas offer ([#352](https://github.com/bosonprotocol/core-components/issues/352)) ([4843d7d](https://github.com/bosonprotocol/core-components/commit/4843d7d7159c26de988b9b54dc48b07ef126d8d3))
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+* support meta transactions ([#348](https://github.com/bosonprotocol/core-components/issues/348)) ([1fa0992](https://github.com/bosonprotocol/core-components/commit/1fa0992b6fc426597565ce517cebef9d82d5875f))
+
+
+
+
+
 # [0.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.11.0...@bosonprotocol/react-kit@0.12.0) (2022-10-26)
 
 

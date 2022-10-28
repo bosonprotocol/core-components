@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.21.0...@bosonprotocol/core-sdk@1.22.0) (2022-10-28)
+
+
+### Features
+
+* add missing methods in core-sdk used for creating token-gated offers ([#365](https://github.com/bosonprotocol/core-components/issues/365)) ([413a345](https://github.com/bosonprotocol/core-components/commit/413a345c073cab7b6a467883eb2fcf64c08587ea))
+* add the exchanges returned with the variants ([#362](https://github.com/bosonprotocol/core-components/issues/362)) ([62fd86a](https://github.com/bosonprotocol/core-components/commit/62fd86a77a557dd762e271e1741101f90fe11308))
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+* support meta transactions ([#348](https://github.com/bosonprotocol/core-components/issues/348)) ([1fa0992](https://github.com/bosonprotocol/core-components/commit/1fa0992b6fc426597565ce517cebef9d82d5875f))
+
+
+
+
+
 # [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.1...@bosonprotocol/core-sdk@1.21.0) (2022-10-26)
 
 
