@@ -217,10 +217,7 @@ describe("core-sdk", () => {
         offerIds,
         ...condition
       };
-      const createdGroupTx = await createGroup({
-        coreSDK: sellerCoreSDK,
-        groupToCreate
-      });
+      const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
       await createdGroupTx.wait();
 
       await waitForGraphNodeIndexing();
@@ -346,10 +343,7 @@ describe("core-sdk", () => {
           };
         }
 
-        const createdGroupTx = await createGroup({
-          coreSDK: sellerCoreSDK,
-          groupToCreate: groupToCreate
-        });
+        const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
 
         await createdGroupTx.wait();
 
@@ -435,10 +429,7 @@ describe("core-sdk", () => {
           };
         }
 
-        const createdGroupTx = await createGroup({
-          coreSDK: sellerCoreSDK,
-          groupToCreate: groupToCreate
-        });
+        const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
 
         await createdGroupTx.wait();
 
@@ -615,14 +606,6 @@ describe("core-sdk", () => {
             offerId: offerId || "1"
           })
         ).rejects.toThrow(/Caller cannot commit/);
-
-        // const exchange = await commitToOffer({
-        //   buyerCoreSDK,
-        //   sellerCoreSDK,
-        //   offerId: offerId || "1"
-        // });
-
-        // expect(exchange).toBeTruthy();
       }
     );
 
@@ -1194,14 +1177,6 @@ async function depositFunds(args: {
   if (!depositedFunds) throw new Error(`No funds found for ${tokenAddress}`);
 
   return depositedFunds;
-}
-
-async function createGroup(args: {
-  coreSDK: CoreSDK;
-  groupToCreate: CreateGroupArgs;
-}): Promise<TransactionResponse> {
-  const createdGroup = await args.coreSDK.createGroup(args.groupToCreate);
-  return createdGroup;
 }
 
 async function withdrawFunds(args: {

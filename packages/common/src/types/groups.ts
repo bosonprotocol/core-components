@@ -1,15 +1,5 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 
-export type CreateGroupArgs = {
-  offerIds: BigNumberish[];
-  method: number; // EvaluationMethod
-  tokenType: number; // TokenType
-  tokenAddress: string;
-  tokenId: BigNumberish;
-  threshold: BigNumberish;
-  maxCommits: BigNumberish;
-};
-
 export type GroupStruct = {
   id: BigNumberish;
   sellerId: BigNumberish;
@@ -35,4 +25,8 @@ export type ConditionStruct = {
   tokenId: BigNumberish;
   threshold: BigNumberish;
   maxCommits: BigNumberish;
+};
+
+export type CreateGroupArgs = ConditionStruct & {
+  offerIds: BigNumberish[];
 };
