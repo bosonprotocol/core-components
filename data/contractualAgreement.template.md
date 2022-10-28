@@ -14,7 +14,7 @@ The Seller and the Buyer hereinafter collectively referred to as the “**Partie
 
 ### (A) About Boson Protocol
 
-As Web3’s Commerce Layer, Boson Protocol enables the tokenization, transfer and trade of any physical thing as a Redeemable NFT.
+As Web3’s Commerce Layer, Boson Protocol enables the tokenization, transfer and trade of any physical thing as a Redeemable NFT (“**the Protocol**”).
 
 ### (B) How Boson Protocol works
 
@@ -40,7 +40,7 @@ The Seller can revoke an rNFT after the Buyer has committed to an Offer, as a re
 
 The Buyer can cancel the rNFT and receive in exchange the Item Price minus the Cancellation Penalty, where the Item Price is the price originally paid by the Primary Buyer, and not the price paid for the rNFT on the secondary market. The funds can be withdrawn immediately after the Cancellation.  If there is a secondary sale / transfer of the rNFT, and the holder of the rNFT subsequently cancels the rNFT, the holder of the rNFT can only withdraw the funds that are locked in the smart contract. The holder of the rNFT should understand and accept that the funds that can be withdrawn after Cancelling the rNFT may not cover the price paid for the rNFT.
 
-#### Redeem a Voucher
+#### Redeem an rNFT
 
 ‍The Buyer can redeem an rNFT within the Redemption Period, which specifies a start point in time at which the rNFT becomes redeemable, and a point in time at which the rNFT expires and can no longer be exchanged for the relevant Items. If the Buyer does not redeem the rNFT before the Redemption Period is over, they are deemed to have cancelled the rNFT.
 
@@ -54,43 +54,45 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    - 1.1.2. provide the contact information and the delivery details to the Seller using the Seller Contact Method.
 
-2. Fulfillment
+2. Fulfilment
 
-   2.1. When the Buyer redeems the rNFT, the Seller will have the Item delivered to the Buyer within the Delivery Period.
+   2.1. When the Buyer redeems the rNFT, the Seller will have the Item delivered to the Buyer by the Fulfilment Date.
 
 3. Dispute Resolution
 
    3.1. If the Offer is not fulfilled in accordance with the Agreement and the Seller’s Shop Policy (Exhibit A), the Buyer can raise a complaint (the “**Dispute**”), which triggers the transaction to be set to the **Dispute State**. The Buyer must raise the complaint before the Dispute Period ends.
 
-   3.2. The Buyer and the Seller shall attempt to resolve the Dispute mutually by communicating via the Seller Contact Method. They may agree to a split of the Deposit Pool. If an agreement is reached, one party (Buyer or Seller) signs a message which indicates the agreed-upon split. The other party uploads the decision on-chain and moves the Dispute to the **Resolved State** allowing the Buyer and the Seller to withdraw their payoff accordingly.
+   3.2. The Protocol's smart contracts can return funds out of the Deposit Pool if a Dispute is raised within the Dispute Period only. Buyers are advised to ensure that the agreed Fulfilment Date is set sufficiently prior to the end of the Dispute Period, in order for the Buyer to be able to raise a dispute within the Dispute Period to benefit from the trust-minimised Protocol design and in-built dispute mechanism. Any return requests or disputes received outside of the Dispute Period will need to rely on legal recourse and hence the Buyer’s ability to identify the Seller.
 
-   3.3. The dispute must be mutually resolved within the Resolution Period. The Seller can extend the Resolution Period. If the dispute has not moved to the Resolved State and no time extension is given before the Resolution Period is over, then the dispute is moved to the **Retracted State** and the transaction is completed.
+   3.3. The Buyer and the Seller shall attempt to resolve the Dispute mutually by communicating via the Seller Contact Method. They may agree to a split of the Deposit Pool. If an agreement is reached, one party (Buyer or Seller) signs a message which indicates the agreed-upon split. The other party uploads the decision on-chain and moves the Dispute to the **Resolved State** allowing the Buyer and the Seller to withdraw their payoff accordingly.
 
-   3.4. Buyer can unilaterally move the dispute to the Retracted State, or submit the dispute on-chain for a decision to the nominated DR together with the Escalation Deposit, which then moves the Dispute to the “**Escalated State**”.
+   3.4. The dispute must be mutually resolved within the Resolution Period. The Seller can extend the Resolution Period. If the dispute has not moved to the Resolved State and no time extension is given before the Resolution Period is over, then the dispute is moved to the **Retracted State** and the transaction is completed.
 
-   3.5. When a Dispute is moved to the Escalated State, an Escalation Response Period starts, which is defined by the DR. The DR can refuse to decide on a Dispute. The dispute is considered refused by the DR if the DR submits the refusal to decide on-chain, or if no decision was submitted before the end of that period. In both cases, the parties can withdraw the funds deposited in the smart contract in case of the DR refusal.
+   3.5. Buyer can unilaterally move the dispute to the Retracted State, or submit the dispute on-chain for a decision to the nominated DR together with the Escalation Deposit, which then moves the Dispute to the “**Escalated State**”.
 
-   3.6. Following escalation, the DR communicates with the Buyer and the Seller off-chain to seek facts about the dispute and reviews them against the terms of the transaction (per the decision tree and specifications below). The DR can be reached via the Dispute Resolver Contact Method. Following the submission of evidence, if any, by the Parties, the DR provides a decision about the split of the Deposit Pool by triggering an on-chain transaction (the “**Decided State**”). The Buyer and the Seller can then withdraw their payoff according to the DR’s decision.
+   3.6. When a Dispute is moved to the Escalated State, an Escalation Response Period starts, which is defined by the DR. The DR can refuse to decide on a Dispute. The dispute is considered refused by the DR if the DR submits the refusal to decide on-chain, or if no decision was submitted before the end of that period. In both cases, the parties can withdraw the funds deposited in the smart contract in case of the DR refusal.
+
+   3.7. Following escalation, the DR communicates with the Buyer and the Seller off-chain to seek facts about the dispute and reviews them against the terms of the transaction (per the decision tree and specifications below). The DR can be reached via the Dispute Resolver Contact Method. Following the submission of evidence, if any, by the Parties, the DR provides a decision about the split of the Deposit Pool by triggering an on-chain transaction (the “**Decided State**”). The Buyer and the Seller can then withdraw their payoff according to the DR’s decision.
 
    ![][image_DR_Decision_Tree_ref]
 
-   3.7. The Buyer and the Seller shall provide the following evidence to the DR to resolve the dispute:
+   3.8. The Buyer and the Seller shall provide the following evidence to the DR to resolve the dispute:
 
-   - 3.7.1. **Non-Delivery**: This includes any case relating to non-delivery, including failure by the Seller to send the Item, porch piracy, and courier failures.
+   - 3.8.1. **Non-Delivery**: This includes any case relating to non-delivery, including failure by the Seller to send the Item, porch piracy, and courier failures.
 
      - (a) Evidence Required from the Seller:
        - (i) Dispatch Evidence - a scanned copy of delivery forms or departure information, with the name, full address, and postcode (if any) of the recipient; or a delivery service receipt or customs form that includes the date of dispatch, as well as the name, full address, or postcode of the recipient.
        - (ii) Delivery Evidence - carrier tracking number with delivered status; proof of delivery - signed & received by recipient; proof of delivery - an image of the package at destination; or a valid tracking number showing movement to the address listed at the time of the transaction or agreed upon between the Buyer and the Seller.
      - (b) Evidence Required from the Buyer: order confirmation email / message where the Buyer specified the name, address, and postal code (if any) of delivery.
 
-   - 3.7.2. **Missed Estimated Time of Arrival**
+   - 3.8.2. **Missed Estimated Time of Arrival**
 
      - (a) Evidence required from the Seller:
-       - (i) Delivery Period promise, order confirmation email / message with latest permissible date of delivery mentioned; or store FEP at time of commit stating shipment times & windows, and/or permissible delay due to custom clearance and the buyer’s obligation to pay custom and duties.
+       - (i) Delivery promise, order confirmation email / message with latest permissible date of delivery mentioned; or store FEP at time of commit stating shipment times & windows, and/or permissible delay due to custom clearance and the buyer’s obligation to pay custom and duties.
        - (ii) Tracking number - showing date of delivery at the destination country
      - (b) Evidence Required from the Buyer: order confirmation email / message with the latest permissible date of delivery mentioned.
 
-   - 3.7.3. **Not meeting Buyer expectations**: This includes any case relating to item not-as-described, incomplete / incorrect / damaged order, performance / quality not adequate, wrong item sent, missing parts / accessories, item defective / does not work, description was not accurate, or arrived in addition to what was ordered.
+   - 3.8.3. **Not meeting Buyer expectations**: This includes any case relating to item not-as-described, incomplete / incorrect / damaged order, performance / quality not adequate, wrong item sent, missing parts / accessories, item defective / does not work, description was not accurate, or arrived in addition to what was ordered.
 
      - (a) Evidence required from the Seller: description of the Item at the time of purchase
      - (b) Evidence required from the Buyer:
@@ -98,7 +100,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
        - (ii) Description of the Item at the time of purchase; or
        - (iii) Description of incorrect quantities
 
-   - 3.7.4. **Returns & Cancellations**: This relates to the case where the Buyer wants to return the item or cancel the order and the Seller does not fulfil their terms of return & cancellation in the Seller’s Shop Policy (Exhibit A).
+   - 3.8.4. **Returns & Cancellations**: This relates to the case where the Buyer wants to return the item or cancel the order and the Seller does not fulfil their terms of return & cancellation in the Seller’s Shop Policy (Exhibit A).
      - (a) Evidence Required from the Seller: return & cancellation rules per the Seller’s Shop Policy (Exhibit A)
      - (b) Evidence Required from the Buyer: return requirement, evidence of requests / denials via email or communication when Seller doesn’t fulfil their terms of return & cancellation
 
@@ -136,9 +138,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Deposit Pool** means the sum of the Item Price, the Seller Deposit, and the Escalation Deposit (if applicable).
 
-   **Delivery Period** means the time period during which the Seller must have the Item delivered to the Buyer.
-
-   **Dispute Period** means the time period within which the Buyer can raise a dispute and after which the Seller is automatically paid. It ends within **_{{#msecToDay}}{{disputePeriodDurationInMS}}{{/msecToDay}}_** days after the Buyer redeems the rNFT.
+   **Dispute Period** means the time period within which the Buyer can raise a dispute and after which the Seller is paid automatically. It ends within **_{{#msecToDay}}{{disputePeriodDurationInMS}}{{/msecToDay}}_** days after the Buyer redeems the rNFT.
 
    **Dispute Resolver** means an authority that decides on a dispute between the Parties. The Dispute Resolver hears each side and then decides the outcome of the dispute in accordance with this Buyer and Seller Agreement.
 
@@ -148,6 +148,8 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Escalation Response Period** means the period during which the Dispute Resolver can respond to a Dispute, which is within **_{{#secToDay}}{{escalationResponsePeriodInSec}}{{/secToDay}}_** days after the Buyer escalates the Dispute.
 
+   **Fulfilment Date** means the date by which the Seller shall have the Item delivered to the Buyer.
+
    **Item** means the thing being sold or a set of things being sold together in a single Offer.
 
    **Item Price** means the price originally paid by the Primary Buyer for an rNFT with the right to redeem an Item at the Commit action. The Item Price is set as **_{{priceValue}} {{exchangeTokenSymbol}}_**. The Item Price includes delivery costs. For customs and import taxes, refer to Exhibit A - Seller’s Shop Policy, clause 1.1.
@@ -155,6 +157,8 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
    **Offer** means an expression of intent by the Seller to sell an Item.
 
    **Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from **_{{#toISOString}}{{validFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{validUntilDateInMS}}{{/toISOString}}_**.
+
+   **Primary Buyer** means the first buyer who has acquired the rNFT.
 
    **Seller** means a person who offers to sell an Item through a rNFT. The Seller is **_{{sellerTradingName}}_**.
 
