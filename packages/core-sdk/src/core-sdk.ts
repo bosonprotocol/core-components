@@ -1736,7 +1736,7 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-   public async signMetaTxRevokeVoucher(
+  public async signMetaTxRevokeVoucher(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxRevokeVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
