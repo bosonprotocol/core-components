@@ -35,7 +35,7 @@ const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
 jest.setTimeout(60_000);
 
 describe("meta-tx", () => {
-  let offer: OfferFieldsFragment;
+  let offerToCommit: OfferFieldsFragment;
 
   beforeAll(async () => {
     await ensureCreatedSeller(sellerWallet);
@@ -44,7 +44,7 @@ describe("meta-tx", () => {
     await ensureMintedAndAllowedTokens([buyerWallet], undefined, false);
     const createdOfferId = await createOfferAndDepositFunds(sellerWallet);
     await waitForGraphNodeIndexing();
-    offer = await sellerCoreSDK.getOfferById(createdOfferId);
+    offerToCommit = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
   describe("#signMetaTxCreateSeller()", () => {
@@ -231,8 +231,8 @@ describe("meta-tx", () => {
       );
       expect(groupId).toBeTruthy();
       await waitForGraphNodeIndexing();
-      offer = await sellerCoreSDK.getOfferById(createdOffer.id);
-      expect(offer.condition).toBeTruthy();
+      const tokenGatedOffer = await sellerCoreSDK.getOfferById(createdOffer.id);
+      expect(tokenGatedOffer.condition).toBeTruthy();
     });
   });
 
@@ -295,8 +295,10 @@ describe("meta-tx", () => {
       );
       expect(offerId).toBeTruthy();
       await waitForGraphNodeIndexing();
-      offer = await sellerCoreSDK.getOfferById(offerId as string);
-      expect(offer.condition).toBeTruthy();
+      const tokenGatedOffer = await sellerCoreSDK.getOfferById(
+        offerId as string
+      );
+      expect(tokenGatedOffer.condition).toBeTruthy();
     });
   });
 
@@ -366,20 +368,26 @@ describe("meta-tx", () => {
       const allowance = await buyerCoreSDK.getProtocolAllowance(
         MOCK_ERC20_ADDRESS
       );
-      expect(BigNumber.from(allowance).lt(offer.price)).toBe(true);
+      expect(BigNumber.from(allowance).lt(offerToCommit.price)).toBe(true);
 
       // `Buyer` signs native meta tx for the token approval
-      await approveErc20Token(buyerCoreSDK, MOCK_ERC20_ADDRESS, offer.price);
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        offerToCommit.price
+      );
 
       const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
         MOCK_ERC20_ADDRESS
       );
-      expect(BigNumber.from(allowanceAfter).gte(offer.price)).toBe(true);
+      expect(BigNumber.from(allowanceAfter).gte(offerToCommit.price)).toBe(
+        true
+      );
 
       // `Buyer` signs meta tx
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signMetaTxCommitToOffer({
-          offerId: offer.id,
+          offerId: offerToCommit.id,
           nonce
         });
 
@@ -400,7 +408,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxRedeemVoucher()", () => {
     test("non-native exchange token offer", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
@@ -432,7 +440,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxCancelVoucher()", () => {
     test("non-native exchange token offer", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
@@ -603,7 +611,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxRaiseDispute()", () => {
     test("raise dispute with meta-tx", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
@@ -639,7 +647,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxRetractDispute()", () => {
     test("retract dispute with meta-tx", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
@@ -680,7 +688,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxEscalateDispute()", () => {
     test("escalate dispute with meta-tx", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
@@ -721,7 +729,7 @@ describe("meta-tx", () => {
 
   describe("#signMetaTxResolveDispute()", () => {
     test("resolve dispute with meta-tx", async () => {
-      const commitTx = await buyerCoreSDK.commitToOffer(offer.id);
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
       const commitTxReceipt = await commitTx.wait();
       const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
         commitTxReceipt.logs
