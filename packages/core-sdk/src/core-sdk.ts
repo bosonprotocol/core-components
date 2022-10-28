@@ -1561,6 +1561,44 @@ export class CoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `createGroup` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateGroup(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateGroup>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateGroup({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `createOfferWithCondition` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCreateOfferWithCondition(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxCreateOfferWithCondition>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxCreateOfferWithCondition({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `voidOffer` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.

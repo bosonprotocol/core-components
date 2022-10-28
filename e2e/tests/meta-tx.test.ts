@@ -15,15 +15,18 @@ import {
   waitForGraphNodeIndexing,
   metadata,
   createOffer,
-  seedWallet11
+  seedWallet11,
+  ensureMintedERC1155,
+  MOCK_ERC1155_ADDRESS
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
+import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
+import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
 const buyerWallet = seedWallet8; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const newSellerWallet = seedWallet11;
-const newSellerAddress = newSellerWallet.address;
 // seedWallet9 is used to relay meta-transactions
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
@@ -175,6 +178,125 @@ describe("meta-tx", () => {
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCreateGroup()", () => {
+    test("create group", async () => {
+      const tokenID = Date.now().toString();
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(sellerWallet, tokenID, "5");
+
+      // Create the group for the 3 offers and the token condition
+      const offerIds = [createdOffer.id];
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        tokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const groupToCreate = {
+        offerIds,
+        ...condition
+      };
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxCreateGroup({
+          createGroupArgs: groupToCreate,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const [groupId] = await sellerCoreSDK.getCreatedGroupIdsFromLogs(
+        metaTxReceipt.logs
+      );
+      expect(groupId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      offer = await sellerCoreSDK.getOfferById(createdOffer.id);
+      expect(offer.condition).toBeTruthy();
+    });
+  });
+
+  describe("#signMetaTxCreateOfferWithCondition()", () => {
+    test("create offer with condition", async () => {
+      const tokenID = Date.now().toString();
+      const metadataHash = await sellerCoreSDK.storeMetadata({
+        ...metadata,
+        type: "BASE"
+      });
+      const metadataUri = "ipfs://" + metadataHash;
+
+      const createOfferArgs = mockCreateOfferArgs({
+        metadataHash,
+        metadataUri
+      });
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(sellerWallet, tokenID, "5");
+
+      // Create the group for the 3 offers and the token condition
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        tokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const nonce = Date.now();
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxCreateOfferWithCondition({
+          offerToCreate: createOfferArgs,
+          condition,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const [groupId] = await sellerCoreSDK.getCreatedGroupIdsFromLogs(
+        metaTxReceipt.logs
+      );
+      expect(groupId).toBeTruthy();
+      const offerId = await sellerCoreSDK.getCreatedOfferIdFromLogs(
+        metaTxReceipt.logs
+      );
+      expect(offerId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      offer = await sellerCoreSDK.getOfferById(offerId as string);
+      expect(offer.condition).toBeTruthy();
     });
   });
 
