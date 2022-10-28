@@ -42,6 +42,14 @@ Simple.args = {
     console.log("----------ON PENDING TRANSACTION-------------");
     console.log("txHash", txHash);
   },
+  onCancelledTransaction: (oldTxHash, newTxResponse) => {
+    console.log("----------ON CANCELLED TRANSACTION-------------");
+    console.log({ oldTxHash, newTxResponse });
+  },
+  onRepricedTransaction: (oldTxHash, newTxResponse, newTxReceipt) => {
+    console.log("----------ON REPRICED TRANSACTION-------------");
+    console.log({ oldTxHash, newTxResponse, newTxReceipt });
+  },
   onSuccess: (receipt, payload) => {
     console.log("----------ON SUCCESS-------------");
     console.log("receipt", receipt);
