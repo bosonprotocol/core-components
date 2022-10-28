@@ -1,7 +1,9 @@
 import { TransactionResponse } from "@bosonprotocol/common";
-import { providers } from "ethers";
+import { providers, errors } from "ethers";
 import { CoreSDK, metaTx } from "@bosonprotocol/core-sdk";
 import { useState } from "react";
+
+import { CtaButtonProps } from "../components/cta/common/types";
 
 type WriteContractFn = () => Promise<TransactionResponse>;
 type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
@@ -21,6 +23,8 @@ export function useCtaClickHandler<T>({
   actions,
   onPendingSignature,
   onPendingTransaction,
+  onCancelledTransaction,
+  onRepricedTransaction,
   onError,
   onSuccess,
   successPayload
@@ -29,12 +33,16 @@ export function useCtaClickHandler<T>({
   coreSdk: CoreSDK;
   signerAddress?: string;
   actions: Action[];
-  onPendingSignature?: () => void;
-  onPendingTransaction?: (txHash: string, isMetaTx?: boolean) => void;
-  onSuccess?: (receipt: providers.TransactionReceipt, payload: T) => void;
-  onError?: (error: Error) => void;
   successPayload: T | ((receipt: providers.TransactionReceipt) => T);
-}) {
+} & Pick<
+  CtaButtonProps<T>,
+  | "onPendingSignature"
+  | "onCancelledTransaction"
+  | "onRepricedTransaction"
+  | "onPendingTransaction"
+  | "onError"
+  | "onSuccess"
+>) {
   const [isLoading, setIsLoading] = useState(false);
 
   const clickHandler = async (
@@ -92,8 +100,37 @@ export function useCtaClickHandler<T>({
         }
 
         if (txResponse) {
-          onPendingTransaction?.(txResponse.hash, isMetaTx);
-          receipt = await txResponse.wait(waitBlocks);
+          try {
+            onPendingTransaction?.(txResponse.hash, isMetaTx);
+            receipt = await txResponse.wait(waitBlocks);
+          } catch (error: any) {
+            // Handle transaction that was replaced, canceled or repriced.
+            // See https://docs.ethers.io/v5/api/utils/logger/#errors--transaction-replaced
+            // for details.
+            if (error.code === errors.TRANSACTION_REPLACED) {
+              // Transaction was replaced or cancelled
+              if (error.cancelled) {
+                if (onCancelledTransaction) {
+                  onCancelledTransaction(
+                    txResponse.hash,
+                    error.replacement,
+                    isMetaTx
+                  );
+                } else {
+                  throw error;
+                }
+              } else {
+                // Transaction was repriced, i.e. speed up
+                onRepricedTransaction?.(
+                  txResponse.hash,
+                  error.replacement,
+                  error.receipt,
+                  isMetaTx
+                );
+                receipt = error.receipt;
+              }
+            }
+          }
         }
       }
 

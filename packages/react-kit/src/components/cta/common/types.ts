@@ -25,6 +25,23 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
    */
   onPendingTransaction?: (txHash: string, isMetaTx?: boolean) => void;
   /**
+   * Optional callback to invoke after a transaction was replaced or canceled.
+   */
+  onCancelledTransaction?: (
+    oldTxHash: string,
+    nexTxResponse: providers.TransactionResponse,
+    isMetaTx?: boolean
+  ) => void;
+  /**
+   * Optional callback to invoke after a transaction was repriced, i.e. speed up.
+   */
+  onRepricedTransaction?: (
+    oldTxHash: string,
+    newTxResponse: providers.TransactionResponse,
+    newTxReceipt: providers.TransactionReceipt,
+    isMetaTx?: boolean
+  ) => void;
+  /**
    * Optional callback to invoke after the respective number of block (`waitBlocks`) were
    * mined.
    */
