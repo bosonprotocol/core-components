@@ -37,7 +37,7 @@ export const RaiseDisputeButton = ({
   return (
     <CtaButton
       variant={variant}
-      defaultLabel="Expire"
+      defaultLabel="Raise"
       successPayload={{ exchangeId }}
       actions={actions}
       {...restProps}

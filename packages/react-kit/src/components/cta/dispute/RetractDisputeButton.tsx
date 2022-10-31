@@ -37,7 +37,7 @@ export const RetractDisputeButton = ({
   return (
     <CtaButton
       variant={variant}
-      defaultLabel="Expire"
+      defaultLabel="Retract"
       successPayload={{ exchangeId }}
       actions={actions}
       {...restProps}

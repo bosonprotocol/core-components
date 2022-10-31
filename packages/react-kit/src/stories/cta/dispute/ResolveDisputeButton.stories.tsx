@@ -30,9 +30,10 @@ Simple.args = {
   exchangeId: "28",
   metaTransactionsApiKey: undefined,
   proposal: {
-    signature: "",
-    percentageAmount: "",
-    type: ""
+    signature:
+      "0xe18764e41f6791c2aa09234e4487e19e778ede85d6cb5ed7c432f1a8ea91282d25637188d5aab4c4ea9592c92b4c86e3f1b02a0f61795989b3d9fda43f456c871b",
+    percentageAmount: "1",
+    type: "Refund"
   },
   metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
@@ -58,9 +59,10 @@ WithExtraInfo.args = {
   exchangeId: "28",
   metaTransactionsApiKey: undefined,
   proposal: {
-    signature: "",
-    percentageAmount: "",
-    type: ""
+    signature:
+      "0xe18764e41f6791c2aa09234e4487e19e778ede85d6cb5ed7c432f1a8ea91282d25637188d5aab4c4ea9592c92b4c86e3f1b02a0f61795989b3d9fda43f456c871b",
+    percentageAmount: "1",
+    type: "Refund"
   },
   extraInfo: "Step X",
   onPendingSignature: () => {
