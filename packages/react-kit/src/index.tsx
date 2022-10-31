@@ -27,5 +27,6 @@ export * from "./components/cta/dispute/ExtendDisputeTimeoutButton";
 export * from "./components/cta/dispute/ExpireDisputeButton";
 export * from "./components/cta/dispute/EscalateDisputeButton";
 export * from "./components/cta/dispute/RefuseDisputeButton";
+export * from "./components/cta/dispute/DecideDisputeButton";
 export * as hooks from "./hooks";
 export * from "./theme";
