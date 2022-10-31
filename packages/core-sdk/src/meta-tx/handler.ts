@@ -215,6 +215,21 @@ export async function signMetaTxExpireVoucher(
   });
 }
 
+export async function signMetaTxRevokeVoucher(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "revokeVoucher(uint256)",
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "revokeVoucher",
+      [args.exchangeId]
+    )
+  });
+}
+
 export async function signMetaTxCreateGroup(
   args: BaseMetaTxArgs & {
     createGroupArgs: CreateGroupArgs;
@@ -429,6 +444,22 @@ export async function signMetaTxResolveDispute(
       ]
     )
   };
+}
+
+export async function signMetaTxExtendDisputeTimeout(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    newTimeout: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "extendDisputeTimeout(uint256,uint256)",
+    functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
+      "extendDisputeTimeout",
+      [args.exchangeId, args.newTimeout]
+    )
+  });
 }
 
 export async function signMetaTxWithdrawFunds(
