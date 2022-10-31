@@ -1850,7 +1850,7 @@ export class CoreSDK {
    * @param args - Meta transaction args.
    * @returns Signature.
    */
-   public async signMetaTxExtendDisputeTimeout(
+  public async signMetaTxExtendDisputeTimeout(
     args: Omit<
       Parameters<typeof metaTx.handler.signMetaTxExtendDisputeTimeout>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
