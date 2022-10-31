@@ -1,7 +1,7 @@
 # Core Components Docs
 
 - [Guides](#guides)
-- [API Docs](#api-docs)
+<!-- - [API Docs](#api-docs) -->
 - [Contributor docs](#contributor-docs)
 
 ## Guides
