@@ -1846,6 +1846,25 @@ export class CoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `extendDisputeTimeout` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+   public async signMetaTxExtendDisputeTimeout(
+    args: Omit<
+      Parameters<typeof metaTx.handler.signMetaTxExtendDisputeTimeout>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return metaTx.handler.signMetaTxExtendDisputeTimeout({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `withdrawFunds` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.

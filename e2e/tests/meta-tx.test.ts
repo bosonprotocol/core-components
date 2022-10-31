@@ -811,6 +811,51 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
+
+  describe("#signMetaTxExtendDisputeTimeout()", () => {
+    test("extend dispute timeout with meta-tx", async () => {
+      const commitTx = await buyerCoreSDK.commitToOffer(offerToCommit.id);
+      const commitTxReceipt = await commitTx.wait();
+      const exchangeId = buyerCoreSDK.getCommittedExchangeIdFromLogs(
+        commitTxReceipt.logs
+      ) as string;
+      expect(exchangeId).toBeTruthy();
+      await waitForGraphNodeIndexing();
+      const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId);
+      await redeemTx.wait();
+
+      const raiseDisputeTx = await buyerCoreSDK.raiseDispute(
+        exchangeId as string
+      );
+      await raiseDisputeTx.wait();
+      await waitForGraphNodeIndexing();
+
+      const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
+      const newTimeout = BigNumber.from(dispute.timeout).add(12).toString();
+      const nonce = Date.now();
+
+      // `Seller` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxExtendDisputeTimeout({
+          exchangeId: Number(exchangeId),
+          newTimeout,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Seller`
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
 });
 
 async function createOfferAndDepositFunds(sellerWallet: Wallet) {

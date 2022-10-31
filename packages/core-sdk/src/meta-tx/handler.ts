@@ -446,6 +446,22 @@ export async function signMetaTxResolveDispute(
   };
 }
 
+export async function signMetaTxExtendDisputeTimeout(
+  args: BaseMetaTxArgs & {
+    exchangeId: BigNumberish;
+    newTimeout: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "extendDisputeTimeout(uint256,uint256)",
+    functionSignature: bosonDisputeHandlerIface.encodeFunctionData(
+      "extendDisputeTimeout",
+      [args.exchangeId, args.newTimeout]
+    )
+  });
+}
+
 export async function signMetaTxWithdrawFunds(
   args: BaseMetaTxArgs & {
     entityId: BigNumberish;
