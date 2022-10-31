@@ -20,5 +20,8 @@ export * from "./components/Loading";
 export * from "./components/productCard/ProductCard";
 export * from "./components/searchBar/SearchBar";
 export * from "./components/tooltip/Tooltip";
+export * from "./components/cta/dispute/RaiseDisputeButton";
+export * from "./components/cta/dispute/ResolveDisputeButton";
+export * from "./components/cta/dispute/RetractDisputeButton";
 export * as hooks from "./hooks";
 export * from "./theme";

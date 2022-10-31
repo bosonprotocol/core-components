@@ -4,84 +4,49 @@ import { BigNumberish, utils } from "ethers";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
-import { hooks } from "../../../stories/helpers/connect-wallet";
-import { TransactionResponse } from "@bosonprotocol/common";
-import { Exchange } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
-import { CoreSDK } from "@bosonprotocol/core-sdk";
 
 type AdditionalProps = {
-  exchange: Exchange;
-  proposal: any;
+  exchangeId: BigNumberish;
+  proposal: {
+    signature: string;
+    percentageAmount: string;
+    type: string;
+  };
 };
 
 type SuccessPayload = {
   exchangeId: BigNumberish;
 };
 
-export type IExpireButton = AdditionalProps & CtaButtonProps<SuccessPayload>;
+export type IResolveDisputeButton = AdditionalProps &
+  CtaButtonProps<SuccessPayload>;
 
 export const ResolveDisputeButton = ({
-  exchange,
+  exchangeId,
   proposal,
   variant = "secondaryFill",
   ...restProps
-}: IExpireButton) => {
-  const address = hooks.useAccount();
-  const exchangeId = exchange.id;
+}: IResolveDisputeButton) => {
   const coreSdk = useCoreSdk(restProps);
-
-  async function resolveDisputeWithMetaTx(
-    coreSdk: CoreSDK,
-    exchangeId: BigNumberish,
-    buyerPercent: BigNumberish,
-    counterpartySig: {
-      r: string;
-      s: string;
-      v: number;
-    }
-  ): Promise<TransactionResponse> {
-    const nonce = Date.now();
-    const { r, s, v, functionName, functionSignature } =
-      await coreSdk.signMetaTxResolveDispute({
-        exchangeId,
-        buyerPercent,
-        counterpartySig,
-        nonce
-      });
-    return coreSdk.relayMetaTransaction({
-      functionName,
-      functionSignature,
-      sigR: r,
-      sigS: s,
-      sigV: v,
-      nonce
-    });
-  }
+  const signature = utils.splitSignature(proposal.signature);
 
   const actions = [
     {
-      writeContractFn: () => coreSdk.expireVoucher(exchangeId),
-      signMetaTxFn: async () => {
-        let tx: TransactionResponse;
-        const isMetaTx = Boolean(coreSdk?.isMetaTxConfigSet && address);
-        const signature = utils.splitSignature(proposal.signature);
-        if (isMetaTx) {
-          tx = await resolveDisputeWithMetaTx(
-            coreSdk,
-            exchange.id,
-            proposal.percentageAmount,
-            signature
-          );
-        } else {
-          tx = await coreSdk.resolveDispute({
-            exchangeId: exchange.id,
-            buyerPercentBasisPoints: proposal.percentageAmount,
-            sigR: signature.r,
-            sigS: signature.s,
-            sigV: signature.v
-          });
-        }
-      }
+      writeContractFn: () =>
+        coreSdk.resolveDispute({
+          exchangeId: exchangeId,
+          buyerPercentBasisPoints: proposal.percentageAmount,
+          sigR: signature.r,
+          sigS: signature.s,
+          sigV: signature.v
+        }),
+      signMetaTxFn: async () =>
+        coreSdk.signMetaTxResolveDispute({
+          exchangeId,
+          buyerPercent: proposal.percentageAmount,
+          counterpartySig: signature,
+          nonce: Date.now()
+        })
     }
   ];
 
