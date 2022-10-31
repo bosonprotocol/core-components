@@ -18,7 +18,7 @@ export type IRetractDisputeButton = AdditionalProps &
 
 export const RetractDisputeButton = ({
   exchangeId,
-  variant = "secondaryFill",
+  variant = "primaryFill",
   ...restProps
 }: IRetractDisputeButton) => {
   const coreSdk = useCoreSdk(restProps);

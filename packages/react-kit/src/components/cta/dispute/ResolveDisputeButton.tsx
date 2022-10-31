@@ -24,7 +24,7 @@ export type IResolveDisputeButton = AdditionalProps &
 export const ResolveDisputeButton = ({
   exchangeId,
   proposal,
-  variant = "secondaryFill",
+  variant = "primaryFill",
   ...restProps
 }: IResolveDisputeButton) => {
   const coreSdk = useCoreSdk(restProps);
