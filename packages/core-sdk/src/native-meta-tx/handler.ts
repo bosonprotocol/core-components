@@ -1,3 +1,4 @@
+import { tokenSpecifics } from './tokenSpecifics';
 import {
   MetaTxConfig,
   Web3LibAdapter,
@@ -8,7 +9,10 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Biconomy } from "../meta-tx/biconomy";
 import { BaseMetaTxArgs, SignedMetaTx } from "../meta-tx/handler";
 import { prepareDataSignatureParameters } from "../utils/signature";
-import { nativeMetaTransactionsIface } from "./interface";
+import {
+  nativeMetaTransactionsIface,
+  alternativeNonceIface
+} from "./interface";
 import { getName as getERC20Name } from "../erc20/handler";
 import { erc20Iface } from "../erc20/interface";
 
@@ -19,18 +23,38 @@ export async function getNonce(args: {
   user: string;
   web3Lib: Web3LibAdapter;
 }): Promise<string> {
-  const result = await args.web3Lib.call({
-    to: args.contractAddress,
-    data: nativeMetaTransactionsIface.encodeFunctionData("getNonce", [
-      args.user
-    ])
-  });
-
-  const [nonce] = nativeMetaTransactionsIface.decodeFunctionResult(
-    "getNonce",
-    result
-  );
-  return String(nonce);
+  try {
+    const result = await args.web3Lib.call({
+      to: args.contractAddress,
+      data: nativeMetaTransactionsIface.encodeFunctionData("getNonce", [
+        args.user
+      ])
+    });
+    const [nonce] = nativeMetaTransactionsIface.decodeFunctionResult(
+      "getNonce",
+      result
+    );
+    return String(nonce);
+  } catch (e) {
+    // Check if the error means the 'getNonce()' function does not exists in the contract
+    if (
+      (e.message as string)?.match(
+        /Transaction reverted without a reason string/
+      )
+    ) {
+      // If so, call 'nonces()' instead (USDC case, for instance)
+      const result = await args.web3Lib.call({
+        to: args.contractAddress,
+        data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
+      });
+      const [nonce] = alternativeNonceIface.decodeFunctionResult(
+        "nonces",
+        result
+      );
+      return String(nonce);
+    }
+    throw e;
+  }
 }
 
 export async function signNativeMetaTx(
@@ -90,7 +114,9 @@ export async function signNativeMetaTxApproveExchangeToken(args: {
       contractAddress: args.exchangeToken,
       web3Lib: args.web3Lib
     }),
-    version: ERC712_VERSION
+    version:
+      tokenSpecifics[args.chainId]?.[args.exchangeToken]?.ERC712_VERSION ||
+      ERC712_VERSION
   };
   const nonce = await getNonce({
     contractAddress: args.exchangeToken,
