@@ -1,4 +1,4 @@
-import { tokenSpecifics } from './tokenSpecifics';
+import { tokenSpecifics } from "./tokenSpecifics";
 import {
   MetaTxConfig,
   Web3LibAdapter,
