@@ -1,7 +1,7 @@
 {
   "name": "@bosonprotocol/ethers-sdk",
   "version": "1.10.1",
-  "description": "> TODO: description",
+  "description": "Implementation of the Web3LibAdapter interface and contract abstractions targeting ethers for the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",

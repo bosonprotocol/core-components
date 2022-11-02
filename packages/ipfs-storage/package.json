@@ -1,7 +1,7 @@
 {
   "name": "@bosonprotocol/ipfs-storage",
   "version": "1.10.1",
-  "description": "IPFS metadata storage",
+  "description": "IPFS metadata storage implementation for building on top of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
