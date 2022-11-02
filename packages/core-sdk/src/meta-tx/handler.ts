@@ -247,8 +247,20 @@ export async function signMetaTxCreateOfferWithCondition(
   args: BaseMetaTxArgs & {
     offerToCreate: CreateOfferArgs;
     condition: ConditionStruct;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  utils.validation.createOfferArgsSchema.validateSync(args.offerToCreate, {
+    abortEarly: false
+  });
+
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.offerToCreate.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
+
   return signMetaTx({
     ...args,
     functionName:
