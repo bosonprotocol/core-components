@@ -13,20 +13,21 @@ type SuccessPayload = {
   exchangeId: BigNumberish;
 };
 
-type IRevokeButton = AdditionalProps & CtaButtonProps<SuccessPayload>;
+export type IRaiseDisputeButton = AdditionalProps &
+  CtaButtonProps<SuccessPayload>;
 
-export const RevokeButton = ({
-  exchangeId,
+export const RaiseDisputeButton = ({
   variant = "secondaryFill",
+  exchangeId,
   ...restProps
-}: IRevokeButton) => {
+}: IRaiseDisputeButton) => {
   const coreSdk = useCoreSdk(restProps);
 
   const actions = [
     {
-      writeContractFn: () => coreSdk.revokeVoucher(exchangeId),
-      signMetaTxFn: () =>
-        coreSdk.signMetaTxRevokeVoucher({
+      writeContractFn: () => coreSdk.raiseDispute(exchangeId),
+      signMetaTxFn: async () =>
+        coreSdk.signMetaTxRaiseDispute({
           nonce: Date.now(),
           exchangeId
         })
@@ -36,7 +37,7 @@ export const RevokeButton = ({
   return (
     <CtaButton
       variant={variant}
-      defaultLabel="Revoke"
+      defaultLabel="Raise"
       successPayload={{ exchangeId }}
       actions={actions}
       {...restProps}

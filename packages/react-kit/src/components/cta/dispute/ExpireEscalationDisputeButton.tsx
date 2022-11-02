@@ -13,30 +13,26 @@ type SuccessPayload = {
   exchangeId: BigNumberish;
 };
 
-type IRevokeButton = AdditionalProps & CtaButtonProps<SuccessPayload>;
+export type IExpireEscalationDisputeButton = AdditionalProps &
+  CtaButtonProps<SuccessPayload>;
 
-export const RevokeButton = ({
+export const ExpireEscalationDisputeButton = ({
   exchangeId,
   variant = "secondaryFill",
   ...restProps
-}: IRevokeButton) => {
+}: IExpireEscalationDisputeButton) => {
   const coreSdk = useCoreSdk(restProps);
-
   const actions = [
     {
-      writeContractFn: () => coreSdk.revokeVoucher(exchangeId),
-      signMetaTxFn: () =>
-        coreSdk.signMetaTxRevokeVoucher({
-          nonce: Date.now(),
-          exchangeId
-        })
+      writeContractFn: () => coreSdk.expireEscalatedDispute(exchangeId)
+      // TODO: ADD signMetaTxFn - has not been implemented in coreSDK yet.
     }
   ];
 
   return (
     <CtaButton
       variant={variant}
-      defaultLabel="Revoke"
+      defaultLabel="Expire Escalation"
       successPayload={{ exchangeId }}
       actions={actions}
       {...restProps}

@@ -24,7 +24,12 @@ export const CompleteButton = ({
 
   const actions = [
     {
-      writeContractFn: () => coreSdk.completeExchange(exchangeId)
+      writeContractFn: () => coreSdk.completeExchange(exchangeId),
+      signMetaTxFn: () =>
+        coreSdk.signMetaTxCompleteExchange({
+          nonce: Date.now(),
+          exchangeId
+        })
     }
   ];
 

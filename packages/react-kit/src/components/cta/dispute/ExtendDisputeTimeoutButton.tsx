@@ -7,36 +7,36 @@ import { CtaButton } from "../common/CtaButton";
 
 type AdditionalProps = {
   exchangeId: BigNumberish;
+  newDisputeTimeout: BigNumberish;
 };
 
 type SuccessPayload = {
   exchangeId: BigNumberish;
 };
 
-type IRevokeButton = AdditionalProps & CtaButtonProps<SuccessPayload>;
+export type IExtendDisputeTimeoutButton = AdditionalProps &
+  CtaButtonProps<SuccessPayload>;
 
-export const RevokeButton = ({
+export const ExtendDisputeTimeoutButton = ({
+  variant = "primaryFill",
   exchangeId,
-  variant = "secondaryFill",
+  newDisputeTimeout,
   ...restProps
-}: IRevokeButton) => {
+}: IExtendDisputeTimeoutButton) => {
   const coreSdk = useCoreSdk(restProps);
 
   const actions = [
     {
-      writeContractFn: () => coreSdk.revokeVoucher(exchangeId),
-      signMetaTxFn: () =>
-        coreSdk.signMetaTxRevokeVoucher({
-          nonce: Date.now(),
-          exchangeId
-        })
+      writeContractFn: () =>
+        coreSdk.extendDisputeTimeout(exchangeId, newDisputeTimeout)
+      // TODO: ADD signMetaTxFn - has not been implemented in coreSDK yet.
     }
   ];
 
   return (
     <CtaButton
       variant={variant}
-      defaultLabel="Revoke"
+      defaultLabel="Extend Time"
       successPayload={{ exchangeId }}
       actions={actions}
       {...restProps}
