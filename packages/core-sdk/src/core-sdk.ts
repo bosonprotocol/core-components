@@ -1592,6 +1592,8 @@ export class CoreSDK {
   ) {
     return metaTx.handler.signMetaTxCreateOfferWithCondition({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
