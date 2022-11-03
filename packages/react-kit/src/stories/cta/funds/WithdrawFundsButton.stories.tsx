@@ -5,7 +5,7 @@ import { WithdrawFundsButton } from "../../../components/cta/funds/WithdrawFunds
 
 import { hooks } from "../../helpers/connect-wallet";
 import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
-import { BigNumber, BigNumberish } from "ethers";
+import { BigNumberish } from "ethers";
 
 export default {
   title: "Visual Components/CTA/funds/WithdrawFundsButton",
@@ -15,9 +15,7 @@ export default {
 const Template: ComponentStory<typeof WithdrawFundsButton> = (args) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const provider = hooks.useProvider();
-  const amount = BigNumber.from("10000000000000000");
 
-  console.log("amount", amount);
   return (
     <CtaButtonWrapper>
       <WithdrawFundsButton
