@@ -74,6 +74,10 @@ export async function getProductV1MetadataEntities(
   subgraphUrl: string,
   queryVars: GetProductV1MetadataEntitiesQueryQueryVariables = {}
 ): Promise<ProductV1MetadataEntityFieldsFragment[]> {
+  console.log(
+    "🚀  roberto --  ~ file: subgraph.ts ~ line 77 ~ queryVars",
+    queryVars
+  );
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
   const { productV1MetadataEntities = [] } =
     await subgraphSdk.getProductV1MetadataEntitiesQuery({
@@ -149,4 +153,48 @@ export async function getProductWithVariants(
       };
     })
   };
+}
+export async function getProductListWithVariants(
+  subgraphUrl: string,
+  productUuids: Array<string>
+): Promise<
+  | {
+      product: BaseProductV1ProductFieldsFragment;
+      variants: {
+        offer: OfferFieldsFragment;
+        variations: ProductV1Variation[];
+      }[];
+    }[]
+  | null
+> {
+  console.log(
+    "🚀  roberto --  ~ file: subgraph.ts ~ line 173 ~ productUuids",
+    productUuids
+  );
+  // Look for ProductV1MetadataEntities, filtered per productUuid
+  const metadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
+    metadataFilter: {
+      productUuid_in: productUuids.map((productUuid) => productUuid)
+    }
+  });
+  console.log(
+    "🚀  roberto --  ~ file: subgraph.ts ~ line 193 ~ metadataEntities",
+    metadataEntities
+  );
+  if (metadataEntities.length === 0) {
+    return null;
+  }
+
+  const dataResult = metadataEntities.map((metadataEntitie) => {
+    return {
+      product: metadataEntitie.product,
+      variants: metadataEntities.map((metadataEntitie) => {
+        return {
+          offer: metadataEntitie.offer,
+          variations: metadataEntitie.variations
+        };
+      })
+    };
+  });
+  return dataResult;
 }

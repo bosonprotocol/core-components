@@ -21102,6 +21102,10 @@ export function getSdk(
       variables?: GetProductV1MetadataEntitiesQueryQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"]
     ): Promise<GetProductV1MetadataEntitiesQueryQuery> {
+      console.log(
+        "🚀  roberto --  ~ file: subgraph.ts ~ line 21103 ~ variables",
+        variables
+      );
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.request<GetProductV1MetadataEntitiesQueryQuery>(

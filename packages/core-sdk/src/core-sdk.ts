@@ -220,6 +220,22 @@ export class CoreSDK {
     );
   }
 
+  public async getProductListWithVariants(productUuids: Array<string>): Promise<
+    | {
+        product: subgraph.BaseProductV1ProductFieldsFragment;
+        variants: Array<{
+          offer: subgraph.OfferFieldsFragment;
+          variations: Array<subgraph.ProductV1Variation>;
+        }>;
+      }[]
+    | null
+  > {
+    return metadata.subgraph.getProductListWithVariants(
+      this._subgraphUrl,
+      productUuids
+    );
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */
