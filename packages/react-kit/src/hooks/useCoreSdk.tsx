@@ -121,4 +121,3 @@ function createDefaultProvider(jsonRpcUrl: string): Provider {
 }
 
 const providersCache = new Map<string, Provider>();
-
