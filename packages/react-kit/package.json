@@ -1,7 +1,7 @@
 {
   "name": "@bosonprotocol/react-kit",
   "description": "React toolkit with smart components and hooks for building on top of the Boson Protocol.",
-  "version": "0.14.0-alpha.6",
+  "version": "0.14.0-alpha.7",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
@@ -10,9 +10,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bosonprotocol/core-sdk": "^1.23.0-alpha.4",
-    "@bosonprotocol/ethers-sdk": "^1.10.2-alpha.3",
-    "@bosonprotocol/ipfs-storage": "^1.10.2-alpha.3",
+    "@bosonprotocol/core-sdk": "^1.23.0-alpha.5",
+    "@bosonprotocol/ethers-sdk": "^1.10.2-alpha.4",
+    "@bosonprotocol/ipfs-storage": "^1.10.2-alpha.4",
     "@ethersproject/units": "^5.6.0",
     "@tippyjs/react": "^4.2.6",
     "@web3-react/core": "8.0.18-beta.0",
