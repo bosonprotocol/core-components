@@ -115,31 +115,10 @@ function initCoreSdk(config: CoreSdkConfig) {
 function createDefaultProvider(jsonRpcUrl: string): Provider {
   const key = jsonRpcUrl.toLowerCase();
   if (!providersCache.has(key)) {
-    const isInfura = isInfuraRpcNode(jsonRpcUrl);
-    console.log("create JsonRpcProvider", isInfura);
-    providersCache.set(
-      key,
-      isInfura.isInfura
-        ? new providers.InfuraProvider(isInfura.network, isInfura.apiKey)
-        : new providers.StaticJsonRpcProvider(jsonRpcUrl)
-    );
+    providersCache.set(key, new providers.StaticJsonRpcProvider(jsonRpcUrl));
   }
   return providersCache.get(key) as Provider;
 }
 
 const providersCache = new Map<string, Provider>();
 
-function isInfuraRpcNode(jsonRpcUrl: string): {
-  isInfura: boolean;
-  network?: string;
-  apiKey?: string;
-} {
-  const regex = /^https:\/\/([\w-]+).infura.io\/[\w-]+\/([\w]+)$/;
-  const match = jsonRpcUrl.match(regex);
-  const isInfura: boolean = match !== null && match?.length === 3;
-  return {
-    isInfura,
-    network: isInfura ? (match as RegExpMatchArray)[1] : undefined,
-    apiKey: isInfura ? (match as RegExpMatchArray)[2] : undefined
-  };
-}
