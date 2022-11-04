@@ -78,7 +78,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
 
 function initCoreSdk(config: CoreSdkConfig) {
   const defaultConfig = getDefaultConfig(config.envName);
-  const defaultProvider = new providers.JsonRpcProvider(
+  const defaultProvider = new providers.StaticJsonRpcProvider(
     config.jsonRpcUrl || defaultConfig.jsonRpcUrl
   );
   const connectedProvider = config.web3Provider || defaultProvider;
