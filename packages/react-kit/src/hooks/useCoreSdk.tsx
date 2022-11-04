@@ -78,10 +78,9 @@ export function useCoreSdk(config: CoreSdkConfig) {
 
 function initCoreSdk(config: CoreSdkConfig) {
   const defaultConfig = getDefaultConfig(config.envName);
-  const defaultProvider = new providers.StaticJsonRpcProvider(
-    config.jsonRpcUrl || defaultConfig.jsonRpcUrl
-  );
-  const connectedProvider = config.web3Provider || defaultProvider;
+  const connectedProvider =
+    config.web3Provider ||
+    createDefaultProvider(config.jsonRpcUrl || defaultConfig.jsonRpcUrl);
   const metadataStorageUrl =
     config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl;
   const theGraphStorageUrl =
@@ -112,3 +111,13 @@ function initCoreSdk(config: CoreSdkConfig) {
     lensContracts: config.lensContracts || defaultConfig.lens
   });
 }
+
+function createDefaultProvider(jsonRpcUrl: string): Provider {
+  const key = jsonRpcUrl.toLowerCase();
+  if (!providersCache.has(key)) {
+    providersCache.set(key, new providers.StaticJsonRpcProvider(jsonRpcUrl));
+  }
+  return providersCache.get(key) as Provider;
+}
+
+const providersCache = new Map<string, Provider>();
