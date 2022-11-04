@@ -35,7 +35,7 @@ export const Image: React.FC<IBaseImage> = ({
   if (isPreloadError) {
     return (
       <ImageWrapper {...rest} data-image-wrapper>
-        <ImagePlaceholder data-image-placeholder>
+        <ImagePlaceholder data-image-placeholder position="static">
           {preloadConfig?.errorIcon ?? null}
           {preloadConfig?.errorImageText && (
             <ImageErrorText>{preloadConfig.errorImageText}</ImageErrorText>
@@ -48,7 +48,7 @@ export const Image: React.FC<IBaseImage> = ({
   if (isPreloadLoading) {
     return (
       <ImageWrapper {...rest} data-image-wrapper>
-        <ImagePlaceholder>
+        <ImagePlaceholder position="static">
           <div>
             <Loading />
           </div>
@@ -58,7 +58,7 @@ export const Image: React.FC<IBaseImage> = ({
   }
 
   return (
-    <ImageWrapper {...rest} data-image-wrapper>
+    <ImageWrapper {...rest} data-image-wrapper data-image>
       {children || ""}
       {src && <ImageContainer data-testid={dataTestId} src={src} alt={alt} />}
     </ImageWrapper>

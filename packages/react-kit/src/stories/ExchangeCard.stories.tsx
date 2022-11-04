@@ -20,7 +20,14 @@ export const Cancelled: ComponentStory<typeof ExchangeCard> = Template.bind({});
 export const Committed: ComponentStory<typeof ExchangeCard> = Template.bind({});
 
 const wrapper = (Story: Story) => (
-  <div style={{ width: "20.188rem" }}>
+  <div
+    style={{
+      width: "20.188rem",
+      height: "500px",
+      display: "grid",
+      gridTemplateColumns: "1fr"
+    }}
+  >
     <Story />
   </div>
 );
