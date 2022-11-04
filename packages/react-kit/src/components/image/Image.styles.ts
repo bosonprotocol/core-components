@@ -5,25 +5,15 @@ export const ImageWrapper = styled.div`
   overflow: hidden;
   position: relative;
   z-index: 2;
-  height: 0;
+  display: flex;
   padding-top: 120%;
   font-size: inherit;
-
-  > img,
-  > div[data-testid="image"] {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 300ms ease-in-out;
-    pointer-events: none;
-  }
 `;
 
 export const ImageContainer = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 const buttonText = css`
@@ -34,8 +24,15 @@ const buttonText = css`
   line-height: 24px;
 `;
 
-export const ImagePlaceholder = styled.div`
-  position: absolute;
+export const ImagePlaceholder = styled.div<{ position?: string }>`
+  ${({ position }) =>
+    position
+      ? css`
+          position: ${position};
+        `
+      : css`
+          position: absolute;
+        `}
   top: 0;
   height: 100%;
   width: 100%;

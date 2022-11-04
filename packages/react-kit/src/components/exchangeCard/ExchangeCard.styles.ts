@@ -4,6 +4,8 @@ import { ExchangeCardStatus } from "./ExchangeCard";
 
 export const ExchangeCreator = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
 export const ExchangeCreatorAvatar = styled.div`
@@ -20,7 +22,6 @@ export const ExchangeCreatorAvatar = styled.div`
 `;
 
 export const ExchangeCreatorName = styled.div`
-  margin-left: 0.5rem;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
@@ -60,10 +61,10 @@ export const ExchangeCarData = styled.div`
   flex-direction: column;
 `;
 
-export const ExchangeCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
+export const ExchangeCardBottom = styled.div`
   width: 100%;
-  position: ${({ $isNotImageLoaded }) =>
-    $isNotImageLoaded ? "static" : "absolute"};
+  flex: 1 1;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -76,6 +77,7 @@ export const ExchangeCardBottomContent = styled.div`
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
+  border-top: 2px solid ${theme.colors.light.border};
 `;
 
 export const ExchangeCardWrapper = styled.div<{
@@ -85,7 +87,7 @@ export const ExchangeCardWrapper = styled.div<{
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-direction: column;
   padding: 0px;
   isolation: isolate;
@@ -98,6 +100,11 @@ export const ExchangeCardWrapper = styled.div<{
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
@@ -109,7 +116,8 @@ export const ExchangeCardWrapper = styled.div<{
 
       [data-image-wrapper] {
         img {
-          transform: translate(-50%, -50%) scale(1.05);
+          transform: scale(1.05);
+          transition: all 300ms ease-in-out;
         }
       }
       [data-cta-wrapper] {
@@ -133,8 +141,9 @@ export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
   overflow: hidden;
   width: 100%;
   z-index: 0;
-  margin-bottom: auto;
-  flex-grow: 1;
+  display: flex;
+  flex: 1 1;
+  align-items: center;
 `;
 export const ExchangeButtonWrapper = styled.div`
   width: 100%;
@@ -207,6 +216,11 @@ export const CommittedBottomText = styled.p`
 export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
+  max-height: 75%;
+  :not([data-image]) {
+    align-self: stretch;
+    max-height: initial;
+  }
 `;
 
 export const ExchangeCTAWrapper = styled.div`

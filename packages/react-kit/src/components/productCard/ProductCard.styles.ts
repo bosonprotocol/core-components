@@ -3,6 +3,8 @@ import { theme } from "../../theme";
 
 export const ProductCardCreator = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
 export const ProductCardCreatorAvatar = styled.div`
@@ -19,7 +21,6 @@ export const ProductCardCreatorAvatar = styled.div`
 `;
 
 export const ProductCardCreatorName = styled.div`
-  margin-left: 0.5rem;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
@@ -61,11 +62,7 @@ export const ProductCardData = styled.div`
 
 export const ProductCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
   width: 100%;
-  position: ${({ $isNotImageLoaded }) =>
-    $isNotImageLoaded ? "static" : "absolute"};
-  left: 0;
-  right: 0;
-  bottom: 0;
+  flex: 1 1;
   background: ${theme?.colors?.light.white};
 `;
 export const ProductCardBottomContent = styled.div`
@@ -75,6 +72,8 @@ export const ProductCardBottomContent = styled.div`
   padding: 1rem 1.5rem 0.5rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
+  column-gap: 0.25rem;
+  border-top: 2px solid ${theme.colors.light.border};
 `;
 
 export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
@@ -82,7 +81,7 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-direction: column;
   padding: 0px;
   isolation: isolate;
@@ -95,6 +94,11 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
@@ -106,7 +110,8 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
 
       [data-image-wrapper] {
         img {
-          transform: translate(-50%, -50%) scale(1.05);
+          transform: scale(1.05);
+          transition: all 300ms ease-in-out;
         }
       }
     }
@@ -119,9 +124,8 @@ export const ProductCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
     $isNotImageLoaded ? "relative" : "static"};
   overflow: hidden;
   width: 100%;
+  align-self: stretch;
   z-index: 0;
-  margin-bottom: auto;
-  flex-grow: 1;
 `;
 
 export const BottomText = styled.p`
@@ -137,4 +141,5 @@ export const BottomText = styled.p`
 export const ProductCardImageWrapper = styled.div`
   width: 100%;
   height: 100%;
+  max-height: 75%;
 `;

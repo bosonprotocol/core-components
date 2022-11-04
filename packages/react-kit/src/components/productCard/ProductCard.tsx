@@ -99,11 +99,9 @@ export const ProductCard = (props: IProductCard) => {
         onCardClick?.(productId);
       }}
     >
-      <ProductCardTop $isNotImageLoaded={isNotImageLoaded}>
-        <ProductCardImageWrapper>
-          <Image {...imageProps} />
-        </ProductCardImageWrapper>
-      </ProductCardTop>
+      <ProductCardImageWrapper>
+        <Image {...imageProps} />
+      </ProductCardImageWrapper>
       <ProductCardBottom $isNotImageLoaded={isNotImageLoaded}>
         <ProductCardBottomContent>
           <ProductCardData>

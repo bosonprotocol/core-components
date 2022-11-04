@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Button, ButtonProps } from "../buttons/Button";
 import {
   CurrencyDisplay,
@@ -143,7 +143,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
   const isNotImageLoaded = ["idle", "loading", "error"].includes(
     imageProps?.preloadConfig?.status ?? ""
   );
-
+  const [height, setHeight] = useState<number | null>(null);
   return (
     <ExchangeCardWrapper
       data-card={dataCard}
@@ -160,8 +160,13 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
-      <ExchangeCardBottom $isNotImageLoaded={isNotImageLoaded}>
-        <ExchangeCardBottomContent>
+      <div style={{ height: height + "px" }} />
+      <ExchangeCardBottom>
+        <ExchangeCardBottomContent
+          ref={(div) => {
+            !!div?.clientHeight && !height && setHeight(div.clientHeight);
+          }}
+        >
           <ExchangeCarData>
             <ExchangeCreator
               onClick={(e) => {
