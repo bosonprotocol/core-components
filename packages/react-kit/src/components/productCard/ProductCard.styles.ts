@@ -140,6 +140,7 @@ export const BottomText = styled.p`
 
 export const ProductCardImageWrapper = styled.div`
   width: 100%;
-  height: 100%;
-  max-height: 75%;
+  flex: 1 1 100%;
+  min-height: 0;
+  height: auto;
 `;

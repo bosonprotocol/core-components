@@ -19,7 +19,9 @@ const Template: ComponentStory<typeof ProductCard> = (args) => (
 );
 
 const wrapper = (Story: Story) => (
-  <div style={{ width: "20.188rem" }}>
+  <div
+    style={{ height: "500px", display: "grid", gridTemplateColumns: "18rem" }}
+  >
     <Story />
   </div>
 );
@@ -30,7 +32,7 @@ export const ProductCardPrimary: ComponentStory<typeof ProductCard> =
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 ProductCardPrimary.args = {
   productId: "123",
-  title: "Super Shoe",
+  title: "Super Shoe King of HellKing of HellKing of HellKing of Hell",
   avatar:
     "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
   avatarName: (
