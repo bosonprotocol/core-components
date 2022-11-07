@@ -35,12 +35,12 @@ const wrapper = (Story: Story) => (
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redeemed.args = {
   id: "4852",
-  title: "ABI #4852",
+  title: "Super Shoe King of Hell King of HellKing of HellKing of Hell",
   avatarName: "Abi",
   avatar:
     "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9rZW1vbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
   imageProps: {
-    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    src: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHByb2R1Y3R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&h=700&q=60",
     preloadConfig: {
       status: "loading",
       errorIcon: <></>,
