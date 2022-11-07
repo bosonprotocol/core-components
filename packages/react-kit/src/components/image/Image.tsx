@@ -15,10 +15,10 @@ export interface IBaseImage extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   dataTestId?: string;
   alt?: string;
-  preloadConfig?: Partial<{
-    errorImageText?: string;
-    errorIcon?: JSX.Element;
-    disabled?: boolean;
+  withLoading?: boolean;
+  errorConfig?: Partial<{
+    errorImageText: string;
+    errorIcon: JSX.Element;
   }>;
   onLoaded?: () => void;
 }
@@ -28,28 +28,29 @@ export const Image: React.FC<IBaseImage> = ({
   children,
   dataTestId = "image",
   alt = "",
-  preloadConfig = {},
+  withLoading,
+  errorConfig = {},
   onLoaded,
   ...rest
 }) => {
   const [status, setStatus] = useState<LoadingStatus>(
-    preloadConfig.disabled ? "success" : "loading"
+    withLoading ? "loading" : "success"
   );
-  const isPreloadError = status === "error";
-  const isPreloadLoading = status === "loading";
+  const isError = status === "error";
+  const isLoading = status === "loading";
   const isSuccess = status === "success";
 
   return (
     <>
-      <ImageWrapper {...rest} data-image-wrapper hide={!isPreloadError}>
+      <ImageWrapper {...rest} data-image-wrapper hide={!isError}>
         <ImagePlaceholder data-image-placeholder position="static">
-          {preloadConfig?.errorIcon ?? null}
-          {preloadConfig?.errorImageText && (
-            <ImageErrorText>{preloadConfig.errorImageText}</ImageErrorText>
-          )}
+          {errorConfig.errorIcon ?? null}
+          <ImageErrorText>
+            {errorConfig.errorImageText || "Failed to load image"}
+          </ImageErrorText>
         </ImagePlaceholder>
       </ImageWrapper>
-      <ImageWrapper {...rest} data-image-wrapper hide={!isPreloadLoading}>
+      <ImageWrapper {...rest} data-image-wrapper hide={!isLoading}>
         <ImagePlaceholder data-image-placeholder position="static">
           <div>
             <Loading />
