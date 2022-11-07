@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Currencies,
   CurrencyDisplay
@@ -17,7 +17,6 @@ import {
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
-  ProductCardTop,
   ProductCardWrapper
 } from "./ProductCard.styles";
 
@@ -85,9 +84,9 @@ export const ProductCard = (props: IProductCard) => {
     tooltipProps = {}
   } = props;
 
-  const isNotImageLoaded = ["idle", "loading", "error"].includes(
-    imageProps?.preloadConfig?.status ?? ""
-  );
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const isNotImageLoaded = !isImageLoaded;
 
   return (
     <ProductCardWrapper
@@ -100,7 +99,7 @@ export const ProductCard = (props: IProductCard) => {
       }}
     >
       <ProductCardImageWrapper>
-        <Image {...imageProps} />
+        <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
       </ProductCardImageWrapper>
       <ProductCardBottom $isNotImageLoaded={isNotImageLoaded}>
         <ProductCardBottomContent>
