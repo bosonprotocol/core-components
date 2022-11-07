@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Loading } from "../Loading";
 
 import {
@@ -8,16 +8,19 @@ import {
   ImageWrapper
 } from "./Image.styles";
 
+type LoadingStatus = "loading" | "success" | "error";
+
 export interface IBaseImage extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
   children?: React.ReactNode;
   dataTestId?: string;
   alt?: string;
   preloadConfig?: Partial<{
-    status: "idle" | "loading" | "success" | "error";
     errorImageText?: string;
     errorIcon?: JSX.Element;
+    disabled?: boolean;
   }>;
+  onLoaded?: () => void;
 }
 
 export const Image: React.FC<IBaseImage> = ({
@@ -25,16 +28,20 @@ export const Image: React.FC<IBaseImage> = ({
   children,
   dataTestId = "image",
   alt = "",
-  preloadConfig,
+  preloadConfig = {},
+  onLoaded,
   ...rest
 }) => {
-  const isPreloadError = preloadConfig?.status === "error";
-  const isPreloadLoading =
-    preloadConfig?.status === "loading" || preloadConfig?.status === "idle";
+  const [status, setStatus] = useState<LoadingStatus>(
+    preloadConfig.disabled ? "success" : "loading"
+  );
+  const isPreloadError = status === "error";
+  const isPreloadLoading = status === "loading";
+  const isSuccess = status === "success";
 
-  if (isPreloadError) {
-    return (
-      <ImageWrapper {...rest} data-image-wrapper>
+  return (
+    <>
+      <ImageWrapper {...rest} data-image-wrapper hide={!isPreloadError}>
         <ImagePlaceholder data-image-placeholder position="static">
           {preloadConfig?.errorIcon ?? null}
           {preloadConfig?.errorImageText && (
@@ -42,25 +49,29 @@ export const Image: React.FC<IBaseImage> = ({
           )}
         </ImagePlaceholder>
       </ImageWrapper>
-    );
-  }
-
-  if (isPreloadLoading) {
-    return (
-      <ImageWrapper {...rest} data-image-wrapper>
-        <ImagePlaceholder position="static">
+      <ImageWrapper {...rest} data-image-wrapper hide={!isPreloadLoading}>
+        <ImagePlaceholder data-image-placeholder position="static">
           <div>
             <Loading />
           </div>
         </ImagePlaceholder>
       </ImageWrapper>
-    );
-  }
+      <ImageWrapper {...rest} data-image-wrapper data-image hide={!isSuccess}>
+        {children || ""}
+        <ImageContainer
+          data-testid={dataTestId}
+          src={src}
+          alt={alt}
+          onLoad={() => {
+            setStatus("success");
 
-  return (
-    <ImageWrapper {...rest} data-image-wrapper data-image>
-      {children || ""}
-      {src && <ImageContainer data-testid={dataTestId} src={src} alt={alt} />}
-    </ImageWrapper>
+            if (onLoaded) {
+              onLoaded();
+            }
+          }}
+          onError={() => setStatus("error")}
+        />
+      </ImageWrapper>
+    </>
   );
 };

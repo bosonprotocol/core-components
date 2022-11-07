@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, ButtonProps } from "../buttons/Button";
 import {
   CurrencyDisplay,
@@ -80,6 +80,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     isHoverDisabled = false,
     dataCard = "exchange-card"
   } = props;
+
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
       switch (status) {
@@ -140,10 +143,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     }
   }, [isCTAVisible, props, status]);
 
-  const isNotImageLoaded = ["idle", "loading", "error"].includes(
-    imageProps?.preloadConfig?.status ?? ""
-  );
   const [height, setHeight] = useState<number | null>(null);
+  const isNotImageLoaded = !isImageLoaded;
+
   return (
     <ExchangeCardWrapper
       data-card={dataCard}
@@ -156,7 +158,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     >
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
-          <Image {...imageProps} />
+          <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
