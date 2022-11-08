@@ -1,6 +1,7 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
 import { AddressZero } from "@ethersproject/constants";
 import { getDecimals, getName, getSymbol } from "../erc20/handler";
+import { getExchangeTokens } from "../erc20/subgraph";
 
 export interface ITokenInfo {
   name: string;
@@ -64,19 +65,38 @@ export const NATIVE_TOKENS: { [key: number]: ITokenInfo } = {
 };
 
 export class TokenInfoManager implements ITokenInfoManager {
-  private _tokenInfos = new Map<string, ITokenInfo>();
+  private static TokenInfos = new Map<number, Map<string, ITokenInfo>>();
+  private static mapInitialized = new Map<number, boolean>();
   private _web3Lib: Web3LibAdapter;
+  private _subgraphUrl: string;
+  private _chainId: number;
 
-  public constructor(chainId: number, web3Lib: Web3LibAdapter) {
+  public constructor(
+    chainId: number,
+    web3Lib: Web3LibAdapter,
+    subgraphUrl: string
+  ) {
     if (!NATIVE_TOKENS[chainId]) {
       throw new Error(`Unexpected chainId value '${chainId}'`);
     }
-    this._tokenInfos.set(AddressZero, NATIVE_TOKENS[chainId]);
+    if (!TokenInfoManager.TokenInfos.has(chainId)) {
+      const tokenInfos = new Map<string, ITokenInfo>();
+      tokenInfos.set(AddressZero, NATIVE_TOKENS[chainId]);
+      TokenInfoManager.TokenInfos.set(chainId, tokenInfos);
+    }
+    if (!TokenInfoManager.mapInitialized.has(chainId)) {
+      TokenInfoManager.mapInitialized.set(chainId, false);
+    }
     this._web3Lib = web3Lib;
+    this._subgraphUrl = subgraphUrl;
+    this._chainId = chainId;
   }
 
   public async getExchangeTokenInfo(tokenAddress: string): Promise<ITokenInfo> {
-    if (!this._tokenInfos.has(tokenAddress.toLowerCase())) {
+    await this.ensureInitialized();
+    const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
+    const key = tokenAddress.toLowerCase();
+    if (!tokenInfos.has(key)) {
       const args = {
         web3Lib: this._web3Lib,
         contractAddress: tokenAddress
@@ -86,12 +106,29 @@ export class TokenInfoManager implements ITokenInfoManager {
         getName(args),
         getSymbol(args)
       ]);
-      this._tokenInfos.set(tokenAddress.toLowerCase(), {
+      tokenInfos.set(key, {
         decimals,
         name,
         symbol
       });
     }
-    return this._tokenInfos.get(tokenAddress.toLowerCase());
+    return tokenInfos.get(key);
+  }
+
+  private async ensureInitialized() {
+    if (!TokenInfoManager.mapInitialized.get(this._chainId)) {
+      // Be sure we are initializing the map only one time per chainId
+      TokenInfoManager.mapInitialized.set(this._chainId, true);
+      const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
+      // Get all tokens from subgraph
+      const tokens = await getExchangeTokens(this._subgraphUrl);
+      for (const token of tokens) {
+        tokenInfos.set(token.address.toLowerCase(), {
+          decimals: parseInt(token.decimals),
+          name: token.name,
+          symbol: token.symbol
+        });
+      }
+    }
   }
 }

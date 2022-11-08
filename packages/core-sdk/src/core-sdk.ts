@@ -957,7 +957,8 @@ export class CoreSDK {
     if (this._tokenInfoManager === undefined) {
       this._tokenInfoManager = new TokenInfoManager(
         this._chainId,
-        this._web3Lib
+        this._web3Lib,
+        this._subgraphUrl
       );
     }
 
