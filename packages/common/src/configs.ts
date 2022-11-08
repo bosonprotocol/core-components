@@ -20,6 +20,21 @@ const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
+const chainIdToGraphAddress = new Map<number, (address?: string) => string>([
+  [
+    1234,
+    (address = "") =>
+      `https://explorer.bsn-development-potassium.bosonportal.io/address/${address}`
+  ],
+  [
+    80001,
+    (address = "") => `https://mumbai.polygonscan.com/address/${address}`
+  ],
+  [137, (address = "") => `https://polygonscan.com/address/${address}`],
+  [1, (address = "") => `https://etherscan.io/address/${address}`],
+  [31337, (address = "") => `${address}`] // TODO: add url
+]);
+
 // https://docs.lens.xyz/docs/deployed-contract-addresses
 const chainIdToLensInfo = new Map<number, Lens>([
   [
@@ -54,6 +69,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
+    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
     jsonRpcUrl:
@@ -76,6 +92,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
+    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
     jsonRpcUrl:
@@ -98,6 +115,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 137,
     nativeCoin: chainIdToInfo.get(137),
     getTxExplorerUrl: chainIdToGraphTx.get(137),
+    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
@@ -119,6 +137,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 31337,
     nativeCoin: chainIdToInfo.get(31337),
     getTxExplorerUrl: chainIdToGraphTx.get(31337),
+    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
