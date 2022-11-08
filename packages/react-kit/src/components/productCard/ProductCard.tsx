@@ -28,6 +28,7 @@ export enum ProductType {
 interface IProductCard {
   asterisk?: boolean;
   avatar: string;
+  onAvatarError?: React.ReactEventHandler<HTMLImageElement> | undefined;
   avatarName: JSX.Element | string;
   bottomText?: string;
   currency: Currencies;
@@ -68,6 +69,7 @@ export const ProductCard = (props: IProductCard) => {
   const {
     asterisk = false,
     avatar,
+    onAvatarError,
     avatarName,
     bottomText,
     currency,
@@ -111,7 +113,7 @@ export const ProductCard = (props: IProductCard) => {
               }}
             >
               <ProductCardCreatorAvatar>
-                <img src={avatar} alt="avatar" />
+                <img src={avatar} alt="avatar" onError={onAvatarError} />
               </ProductCardCreatorAvatar>
               <ProductCardCreatorName data-avatarname="product-card">
                 {avatarName}
