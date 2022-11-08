@@ -35,8 +35,9 @@ export type ProtocolConfig = {
         name: string;
         decimals: string;
       };
-  getTxExplorerUrl: undefined | ((txHash?: string) => string);
-  getAddressExplorerUrl: undefined | ((address?: string) => string);
+  getTxExplorerUrl:
+    | undefined
+    | ((txHash?: string, isAddress?: boolean) => string);
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;

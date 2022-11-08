@@ -8,31 +8,47 @@ const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
-const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
+const chainIdToGraphTx = new Map<
+  number,
+  (txHash?: string, isAddress?: boolean) => string
+>([
   [
     1234,
-    (txHash = "") =>
-      `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`
-  ],
-  [80001, (txHash = "") => `https://mumbai.polygonscan.com/tx/${txHash}`],
-  [137, (txHash = "") => `https://polygonscan.com/tx/${txHash}`],
-  [1, (txHash = "") => `https://etherscan.io/tx/${txHash}`],
-  [31337, (txHash = "") => `${txHash}`] // TODO: add url
-]);
-
-const chainIdToGraphAddress = new Map<number, (address?: string) => string>([
-  [
-    1234,
-    (address = "") =>
-      `https://explorer.bsn-development-potassium.bosonportal.io/address/${address}`
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://explorer.bsn-development-potassium.bosonportal.io/address/${txHash}`;
+      }
+      return `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`;
+    }
   ],
   [
     80001,
-    (address = "") => `https://mumbai.polygonscan.com/address/${address}`
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://mumbai.polygonscan.com/address/${txHash}`;
+      }
+      return `https://mumbai.polygonscan.com/tx/${txHash}`;
+    }
   ],
-  [137, (address = "") => `https://polygonscan.com/address/${address}`],
-  [1, (address = "") => `https://etherscan.io/address/${address}`],
-  [31337, (address = "") => `${address}`] // TODO: add url
+  [
+    137,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://polygonscan.com/address/${txHash}`;
+      }
+      return `https://polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    1,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://etherscan.io/address/${txHash}`;
+      }
+      return `https://etherscan.io/tx/${txHash}`;
+    }
+  ],
+  [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
 // https://docs.lens.xyz/docs/deployed-contract-addresses
@@ -69,7 +85,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
-    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
     jsonRpcUrl:
@@ -92,7 +107,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 80001,
     nativeCoin: chainIdToInfo.get(80001),
     getTxExplorerUrl: chainIdToGraphTx.get(80001),
-    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
     jsonRpcUrl:
@@ -115,7 +129,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 137,
     nativeCoin: chainIdToInfo.get(137),
     getTxExplorerUrl: chainIdToGraphTx.get(137),
-    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
+
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
@@ -137,7 +151,6 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 31337,
     nativeCoin: chainIdToInfo.get(31337),
     getTxExplorerUrl: chainIdToGraphTx.get(31337),
-    getAddressExplorerUrl: chainIdToGraphAddress.get(80001),
     subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
     jsonRpcUrl: "http://127.0.0.1:8545",
     theGraphIpfsUrl: "http://127.0.0.1:5001",
