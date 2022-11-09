@@ -116,7 +116,8 @@ export class TokenInfoManager implements ITokenInfoManager {
   }
 
   private async ensureInitialized() {
-    if (!TokenInfoManager.mapInitialized.get(this._chainId)) {
+    const isInitialized = TokenInfoManager.mapInitialized.get(this._chainId);
+    if (!isInitialized) {
       // Be sure we are initializing the map only one time per chainId
       TokenInfoManager.mapInitialized.set(this._chainId, true);
       const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
