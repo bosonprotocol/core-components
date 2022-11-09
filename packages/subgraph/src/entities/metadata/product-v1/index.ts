@@ -49,7 +49,8 @@ export function saveProductV1Metadata(
     productObj,
     savedProductV1SellerId,
     false,
-    variant
+    variant,
+    offer
   );
   let productUuid = "";
   let productVersion = 0;
@@ -69,7 +70,8 @@ export function saveProductV1Metadata(
     convertToObject(metadataObj.get("productOverrides")),
     savedProductV1SellerId,
     true,
-    null
+    null,
+    offer
   );
 
   if (

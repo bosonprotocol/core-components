@@ -184,6 +184,12 @@ type ProductV1Product @entity {
   PRODUCT_V1 specific fields
   """
   variants: [ProductV1Variant!]
+  notVoidedVariants: [ProductV1Variant!]
+  allVariantsVoided: Boolean
+  minValidFromDate: BigInt!
+  maxValidFromDate: BigInt!
+  minValidUntilDate: BigInt!
+  maxValidUntilDate: BigInt!
 }
 
 type ProductV1Brand @entity {

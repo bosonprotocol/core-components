@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
 import {
   ProductV1Product,
   ProductV1Brand,
@@ -6,7 +6,9 @@ import {
   ProductV1Tag,
   ProductV1Section,
   ProductV1Personalisation,
-  ProductV1ProductOverrides
+  ProductV1ProductOverrides,
+  Offer,
+  ProductV1Variant
 } from "../../../../generated/schema";
 
 import {
@@ -52,7 +54,8 @@ export function saveProductV1ProductOrOverrides(
   productOrOverrideObj: TypedMap<string, JSONValue> | null,
   productV1SellerId: string | null,
   isOverride: boolean,
-  variant: string | null
+  variant: string | null,
+  offer: Offer
 ): string | null {
   if (productOrOverrideObj === null) {
     return null;
@@ -189,7 +192,8 @@ export function saveProductV1ProductOrOverrides(
       packaging_weight_value,
       packaging_weight_unit,
       productV1SellerId,
-      variant
+      variant,
+      offer
     );
   }
 
@@ -256,7 +260,8 @@ function saveProductV1Product(
   packaging_weight_value: string,
   packaging_weight_unit: string,
   productV1SellerId: string | null,
-  variant: string | null
+  variant: string | null,
+  offer: Offer
 ): string {
   const productId = getProductId(uuid, version.toString());
   let product = ProductV1Product.load(productId);
@@ -264,6 +269,12 @@ function saveProductV1Product(
   if (!product) {
     product = new ProductV1Product(productId);
     product.variants = [];
+    product.notVoidedVariants = [];
+    product.minValidFromDate = BigInt.zero();
+    product.maxValidFromDate = BigInt.zero();
+    product.minValidUntilDate = BigInt.zero();
+    product.maxValidUntilDate = BigInt.zero();
+    product.allVariantsVoided = false;
   }
 
   product.uuid = uuid;
@@ -313,14 +324,82 @@ function saveProductV1Product(
   product.productV1Seller = productV1SellerId;
 
   if (variant !== null && product.variants !== null) {
-    const variants = product.variants as string[];
-    variants.push(variant);
-    product.variants = variants;
+    const oldVariants = product.variants as string[];
+    const newVariants: string[] = [];
+    // Remove the current Variant from the existing list (if present)
+    for (let i = 0; i < oldVariants.length; i++) {
+      const variantId = oldVariants[i];
+      const oldVariant = ProductV1Variant.load(variantId) as ProductV1Variant;
+      if (oldVariant.offer !== offer.id) {
+        newVariants.push(oldVariant.id);
+      }
+    }
+    // Add the current variant
+    newVariants.push(variant);
+    product.variants = newVariants;
   }
+  if (variant !== null && product.notVoidedVariants !== null) {
+    const oldNotVoidedVariants = product.notVoidedVariants as string[];
+    const newNotVoidedVariants: string[] = [];
+    // Remove the current Variant from the existing list (if present)
+    for (let i = 0; i < oldNotVoidedVariants.length; i++) {
+      const variantId = oldNotVoidedVariants[i];
+      const oldVariant = ProductV1Variant.load(variantId) as ProductV1Variant;
+      if (oldVariant.offer !== offer.id) {
+        newNotVoidedVariants.push(oldVariant.id);
+      }
+    }
+    if (!offer.voided) {
+      // Add the current variant only if the offer is not voided
+      newNotVoidedVariants.push(variant);
+    }
+    product.notVoidedVariants = newNotVoidedVariants;
+  }
+  if (product.minValidFromDate.equals(BigInt.zero())) {
+    product.minValidFromDate = offer.validFromDate;
+  } else {
+    product.minValidFromDate = getMin(
+      product.minValidFromDate,
+      offer.validFromDate
+    );
+  }
+  product.maxValidFromDate = getMax(
+    product.maxValidFromDate,
+    offer.validFromDate
+  );
+  if (product.minValidUntilDate.equals(BigInt.zero())) {
+    product.minValidUntilDate = offer.validUntilDate;
+  } else {
+    product.minValidUntilDate = getMin(
+      product.minValidUntilDate,
+      offer.validUntilDate
+    );
+  }
+  product.maxValidUntilDate = getMax(
+    product.maxValidUntilDate,
+    offer.validUntilDate
+  );
+  product.allVariantsVoided = product.allVariantsVoided && offer.voided;
 
   product.save();
 
   return productId;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function getMin(num1: BigInt, num2: BigInt): BigInt {
+  if (num1.lt(num2)) {
+    return num1;
+  }
+  return num2;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function getMax(num1: BigInt, num2: BigInt): BigInt {
+  if (num1.gt(num2)) {
+    return num1;
+  }
+  return num2;
 }
 
 function saveProductV1ProductOverrides(
