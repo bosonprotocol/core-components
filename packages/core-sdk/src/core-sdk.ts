@@ -220,6 +220,26 @@ export class CoreSDK {
     );
   }
 
+  public async getAllProductsWithVariants(
+    queryVars?: subgraph.GetProductV1ProductsWithVariantsQueryQueryVariables
+  ): Promise<subgraph.BaseProductV1ProductWithVariantsFieldsFragment[]> {
+    return metadata.subgraph.getAllProductsWithVariants(
+      this._subgraphUrl,
+      queryVars
+    );
+  }
+
+  public async getAllProductsWithNotVoidedVariants(
+    queryVars?: subgraph.GetAllProductsWithNotVoidedVariantsQueryQueryVariables
+  ): Promise<
+    subgraph.BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]
+  > {
+    return metadata.subgraph.getAllProductsWithNotVoidedVariants(
+      this._subgraphUrl,
+      queryVars
+    );
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */
