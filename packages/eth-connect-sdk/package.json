@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/eth-connect-sdk",
-  "version": "1.4.2-alpha.10",
+  "version": "1.4.2-alpha.11",
   "description": "Implementation of the Web3LibAdapter interface and contract abstractions targeting eth-connect for the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.20.0-alpha.0"
+    "@bosonprotocol/common": "^1.20.0-alpha.1"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
