@@ -8,15 +8,46 @@ const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
-const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
+const chainIdToGraphTx = new Map<
+  number,
+  (txHash?: string, isAddress?: boolean) => string
+>([
   [
     1234,
-    (txHash = "") =>
-      `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://explorer.bsn-development-potassium.bosonportal.io/address/${txHash}`;
+      }
+      return `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`;
+    }
   ],
-  [80001, (txHash = "") => `https://mumbai.polygonscan.com/tx/${txHash}`],
-  [137, (txHash = "") => `https://polygonscan.com/tx/${txHash}`],
-  [1, (txHash = "") => `https://etherscan.io/tx/${txHash}`],
+  [
+    80001,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://mumbai.polygonscan.com/address/${txHash}`;
+      }
+      return `https://mumbai.polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    137,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://polygonscan.com/address/${txHash}`;
+      }
+      return `https://polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    1,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://etherscan.io/address/${txHash}`;
+      }
+      return `https://etherscan.io/tx/${txHash}`;
+    }
+  ],
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
@@ -98,6 +129,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 137,
     nativeCoin: chainIdToInfo.get(137),
     getTxExplorerUrl: chainIdToGraphTx.get(137),
+
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
