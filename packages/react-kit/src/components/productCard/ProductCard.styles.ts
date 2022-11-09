@@ -130,7 +130,7 @@ export const ProductCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
 
 export const BottomText = styled.p`
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 0.975rem;
   margin: 0;
   padding: 0 1.5rem 1rem 1.5rem;
