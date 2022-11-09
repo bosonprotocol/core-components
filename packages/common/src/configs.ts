@@ -62,7 +62,8 @@ const chainIdToLensInfo = new Map<number, Lens>([
         "0x60ae865ee4c725cd04353b5aab364553f56cef82",
       LENS_PROFILES_CONTRACT_PARTIAL_ABI:
         '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api-mumbai.lens.dev/"
+      apiLink: "https://api-mumbai.lens.dev/",
+      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
     }
   ],
   [
