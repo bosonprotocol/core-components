@@ -28,16 +28,20 @@ interface CurrencyDisplayProps {
   value?: number | string;
   currency: Currencies;
   height?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
 }
 
 export const CurrencyDisplay = ({
   value,
   currency,
-  height = 25
+  height = 25,
+  ...rest
 }: CurrencyDisplayProps) => {
   return (
     <CurrencyDisplayValueWrapper
       style={{ height: `${height}px`, width: "100%" }}
+      {...rest}
     >
       <CurrencyLogo currency={currency} size={height} />
       {value && (

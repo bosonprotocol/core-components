@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import {
   Currencies,
   CurrencyDisplay
@@ -124,7 +125,15 @@ export const ProductCard = (props: IProductCard) => {
           <ProductCardPriceWrapper>
             <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
               <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
-              <CurrencyDisplay value={price} currency={currency} />
+              <CurrencyDisplay
+                value={price}
+                currency={currency}
+                style={{
+                  wordBreak: "break-all",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-end"
+                }}
+              />
             </Wrapper>
           </ProductCardPriceWrapper>
         </ProductCardBottomContent>

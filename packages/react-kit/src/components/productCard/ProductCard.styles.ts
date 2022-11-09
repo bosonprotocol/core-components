@@ -37,11 +37,15 @@ export const ProductCardTitle = styled.div`
   font-size: 1.25rem;
   line-height: 150%;
   color: ${({ theme }) => theme?.colors?.light.black};
+  word-break: break-word;
 `;
 
 export const ProductCardPriceWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-self: stretch;
+  max-width: 50%;
+  min-width: 35%;
   span {
     padding-left: 0.5rem;
   }
