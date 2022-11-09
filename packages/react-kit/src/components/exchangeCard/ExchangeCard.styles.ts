@@ -205,7 +205,7 @@ export const ExchangeStatus = styled.div<{
 
 export const CommittedBottomText = styled.p`
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 0.975rem;
   margin: 0;
   padding: 0 1.5rem 1.5rem 1.5rem;
