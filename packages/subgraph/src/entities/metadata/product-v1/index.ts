@@ -13,6 +13,7 @@ import { saveProductV1Seller } from "./seller";
 import { saveProductV1Variations } from "./variation";
 import { saveProductV1Shipping } from "./shipping";
 import { saveProductV1ExchangePolicy } from "./exchange-policy";
+import { saveProductV1Variant } from "./variant";
 
 export function saveProductV1Metadata(
   offer: Offer,
@@ -40,10 +41,15 @@ export function saveProductV1Metadata(
     offer.sellerId.toString()
   );
   const productObj = convertToObject(metadataObj.get("product"));
+  const savedVariationIds = saveProductV1Variations(
+    convertToObjectArray(metadataObj.get("variations"))
+  );
+  const variant = saveProductV1Variant(offerId, savedVariationIds);
   const savedProductId = saveProductV1ProductOrOverrides(
     productObj,
     savedProductV1SellerId,
-    false
+    false,
+    variant
   );
   let productUuid = "";
   let productVersion = 0;
@@ -51,9 +57,6 @@ export function saveProductV1Metadata(
     productUuid = convertToString(productObj.get("uuid"));
     productVersion = convertToInt(productObj.get("version"));
   }
-  const savedVariationIds = saveProductV1Variations(
-    convertToObjectArray(metadataObj.get("variations"))
-  );
   const savedShippingId = saveProductV1Shipping(
     convertToObject(metadataObj.get("shipping")),
     metadataId
@@ -65,7 +68,8 @@ export function saveProductV1Metadata(
   const savedProductOverridesId = saveProductV1ProductOrOverrides(
     convertToObject(metadataObj.get("productOverrides")),
     savedProductV1SellerId,
-    true
+    true,
+    null
   );
 
   if (

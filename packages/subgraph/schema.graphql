@@ -180,6 +180,10 @@ type ProductV1Product @entity {
   Seller
   """
   productV1Seller: ProductV1Seller
+  """
+  PRODUCT_V1 specific fields
+  """
+  variants: [ProductV1Variant!]
 }
 
 type ProductV1Brand @entity {
@@ -219,6 +223,12 @@ type ProductV1Variation @entity {
   id: ID!
   type: String!
   option: String!
+}
+
+type ProductV1Variant @entity {
+  id: ID!
+  variations: [ProductV1Variation!]
+  offer: Offer!
 }
 
 type ProductV1Seller @entity {

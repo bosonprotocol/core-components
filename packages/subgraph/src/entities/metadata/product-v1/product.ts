@@ -51,7 +51,8 @@ export function getSectionId(section: string): string {
 export function saveProductV1ProductOrOverrides(
   productOrOverrideObj: TypedMap<string, JSONValue> | null,
   productV1SellerId: string | null,
-  isOverride: boolean
+  isOverride: boolean,
+  variant: string | null
 ): string | null {
   if (productOrOverrideObj === null) {
     return null;
@@ -187,7 +188,8 @@ export function saveProductV1ProductOrOverrides(
       packaging_dimensions_unit,
       packaging_weight_value,
       packaging_weight_unit,
-      productV1SellerId
+      productV1SellerId,
+      variant
     );
   }
 
@@ -253,13 +255,15 @@ function saveProductV1Product(
   packaging_dimensions_unit: string,
   packaging_weight_value: string,
   packaging_weight_unit: string,
-  productV1SellerId: string | null
+  productV1SellerId: string | null,
+  variant: string | null
 ): string {
   const productId = getProductId(uuid, version.toString());
   let product = ProductV1Product.load(productId);
 
   if (!product) {
     product = new ProductV1Product(productId);
+    product.variants = [];
   }
 
   product.uuid = uuid;
@@ -307,6 +311,12 @@ function saveProductV1Product(
   product.packaging_weight_unit = packaging_weight_unit;
 
   product.productV1Seller = productV1SellerId;
+
+  if (variant !== null && product.variants !== null) {
+    const variants = product.variants as string[];
+    variants.push(variant);
+    product.variants = variants;
+  }
 
   product.save();
 
