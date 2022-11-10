@@ -546,211 +546,239 @@ describe("Multi-variant offers tests", () => {
       expect(foundOffers[0].exchanges).toBeTruthy();
     }
   });
-  test("Fetch all products with their variants", async () => {
-    const { coreSDK, fundedWallet: sellerWallet } =
-      await initCoreSDKWithFundedWallet(seedWallet);
-    const sellers = await ensureCreatedSeller(sellerWallet);
-    const [seller] = sellers;
-
-    const offersParams1 = [
-      {
-        validFromDateInMS: Date.now() + 1000,
-        validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
-      },
-      {
-        validFromDateInMS: Date.now() + 1 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
-      }
-    ];
-    const offersParams2 = [
-      {
-        validFromDateInMS: Date.now() + 3 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
-      },
-      {
-        validFromDateInMS: Date.now() + 2 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
-      }
-    ];
-    const {
-      offerArgs: [offerArgs1, offerArgs2],
-      productUuid: productUuid1
-    } = await prepareMultiVariantOffers(coreSDK, offersParams1);
-    const {
-      offerArgs: [offerArgs3, offerArgs4],
-      productUuid: productUuid2
-    } = await prepareMultiVariantOffers(coreSDK, offersParams2);
-
-    // Get the number of offers of this seller before
-    const offersFilter = {
-      offersFilter: {
-        sellerId: seller.id
-      }
-    };
-    const offersBefore = await coreSDK.getOffers(offersFilter);
-    expect(offersBefore).toBeTruthy();
-
-    // Get the number of products of this seller before
-    const productsFilter = {
+  describe("Fetch all products with their variants", () => {
+    let coreSDK: CoreSDK;
+    let sellerWallet: Wallet;
+    let seller: subgraph.SellerFieldsFragment;
+    let productUuid1, productUuid2: string;
+    let nbProductsBefore = 0;
+    let offers: subgraph.OfferFieldsFragment[];
+    let productsFilter: {
       productsFilter: {
         productV1Seller_: {
+          sellerId: string;
+        };
+      };
+    };
+
+    beforeEach(async () => {
+      ({ coreSDK, fundedWallet: sellerWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet));
+      const sellers = await ensureCreatedSeller(sellerWallet);
+      [seller] = sellers;
+      let offerArgs1, offerArgs2, offerArgs3, offerArgs4: CreateOfferArgs;
+
+      const offersParams1 = [
+        {
+          validFromDateInMS: Date.now() + 1000,
+          validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
+        },
+        {
+          validFromDateInMS: Date.now() + 1 * MSEC_PER_HOUR,
+          validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
+        }
+      ];
+      const offersParams2 = [
+        {
+          validFromDateInMS: Date.now() + 3 * MSEC_PER_HOUR,
+          validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
+        },
+        {
+          validFromDateInMS: Date.now() + 2 * MSEC_PER_HOUR,
+          validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
+        }
+      ];
+      ({
+        offerArgs: [offerArgs1, offerArgs2],
+        productUuid: productUuid1
+      } = await prepareMultiVariantOffers(coreSDK, offersParams1));
+      ({
+        offerArgs: [offerArgs3, offerArgs4],
+        productUuid: productUuid2
+      } = await prepareMultiVariantOffers(coreSDK, offersParams2));
+
+      // Get the number of offers of this seller before
+      const offersFilter = {
+        offersFilter: {
           sellerId: seller.id
         }
-      }
-    };
-    const productsBefore = await coreSDK.getAllProductsWithVariants(
-      productsFilter
-    );
-    expect(productsBefore).toBeTruthy();
+      };
+      const offersBefore = await coreSDK.getOffers(offersFilter);
+      expect(offersBefore).toBeTruthy();
 
-    const offers = await createOfferBatch(coreSDK, sellerWallet, [
-      offerArgs1,
-      offerArgs2,
-      offerArgs3,
-      offerArgs4
-    ]);
-    expect(offers.length).toEqual(4);
-
-    const [offer1, offer2, offer3, offer4] = offers;
-
-    // Get the products with all variants
-    const allProductsWithVariants = await coreSDK.getAllProductsWithVariants(
-      productsFilter
-    );
-    // Check the number of products of this seller has been increased by 2
-    expect(allProductsWithVariants.length).toEqual(productsBefore.length + 2);
-
-    // Check offer1 and offer2 are listed in the variants of product1
-    const productWithVariants1 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid1
-    );
-    checkProduct(productWithVariants1, "variants", [offer1, offer2]);
-    expect(productWithVariants1?.allVariantsVoided).toBe(false);
-
-    // Check offer3 and offer4 are listed in the variants of product2
-    const productWithVariants2 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid2
-    );
-    checkProduct(productWithVariants2, "variants", [offer3, offer4]);
-    expect(productWithVariants2?.allVariantsVoided).toBe(false);
-  });
-  test("Fetch all products with their not voided variants", async () => {
-    const { coreSDK, fundedWallet: sellerWallet } =
-      await initCoreSDKWithFundedWallet(seedWallet);
-    const sellers = await ensureCreatedSeller(sellerWallet);
-    const [seller] = sellers;
-
-    const offersParams1 = [
-      {
-        validFromDateInMS: Date.now() + 1000,
-        validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
-      },
-      {
-        validFromDateInMS: Date.now() + 1 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
-      }
-    ];
-    const offersParams2 = [
-      {
-        validFromDateInMS: Date.now() + 3 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY
-      },
-      {
-        validFromDateInMS: Date.now() + 2 * MSEC_PER_HOUR,
-        validUntilDateInMS: Date.now() + 1 * MSEC_PER_HOUR + 20 * MSEC_PER_DAY
-      }
-    ];
-    const {
-      offerArgs: [offerArgs1, offerArgs2],
-      productUuid: productUuid1
-    } = await prepareMultiVariantOffers(coreSDK, offersParams1);
-    const {
-      offerArgs: [offerArgs3, offerArgs4],
-      productUuid: productUuid2
-    } = await prepareMultiVariantOffers(coreSDK, offersParams2);
-
-    // Get the number of offers of this seller before
-    const offersFilter = {
-      offersFilter: {
-        sellerId: seller.id
-      }
-    };
-    const offersBefore = await coreSDK.getOffers(offersFilter);
-    expect(offersBefore).toBeTruthy();
-
-    // Get the number of products of this seller before
-    const productsFilter = {
-      productsFilter: {
-        productV1Seller_: {
-          sellerId: seller.id
+      // Get the number of products of this seller before
+      productsFilter = {
+        productsFilter: {
+          productV1Seller_: {
+            sellerId: seller.id
+          }
         }
-      }
-    };
-    const productsBefore = await coreSDK.getAllProductsWithNotVoidedVariants(
-      productsFilter
-    );
-    expect(productsBefore).toBeTruthy();
+      };
+      const productsBefore = await coreSDK.getAllProductsWithVariants(
+        productsFilter
+      );
+      expect(productsBefore).toBeTruthy();
+      nbProductsBefore = productsBefore.length;
 
-    const offers = await createOfferBatch(coreSDK, sellerWallet, [
-      offerArgs1,
-      offerArgs2,
-      offerArgs3,
-      offerArgs4
-    ]);
-    expect(offers.length).toEqual(4);
+      offers = await createOfferBatch(coreSDK, sellerWallet, [
+        offerArgs1,
+        offerArgs2,
+        offerArgs3,
+        offerArgs4
+      ]);
+      expect(offers.length).toEqual(4);
 
-    const [offer1, offer2, offer3, offer4] = offers;
+      // const [offer1, offer2, offer3, offer4] = offers;
+    });
 
-    // Get the products with all variants
-    let allProductsWithVariants =
-      await coreSDK.getAllProductsWithNotVoidedVariants(productsFilter);
-    // Check the number of products of this seller has been increased by 2
-    expect(allProductsWithVariants.length).toEqual(productsBefore.length + 2);
+    test("#getAllProductsWithVariants()", async () => {
+      // Get the products with all variants
+      const allProductsWithVariants = await coreSDK.getAllProductsWithVariants(
+        productsFilter
+      );
+      // Check the number of products of this seller has been increased by 2
+      expect(allProductsWithVariants.length).toEqual(nbProductsBefore + 2);
 
-    // Check offer1 and offer2 are listed in the variants of product1
-    let productWithVariants1 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid1
-    );
-    checkProduct(productWithVariants1, "notVoidedVariants", [offer1, offer2]);
-    expect(productWithVariants1?.allVariantsVoided).toBe(false);
+      // Check offer1 and offer2 are listed in the variants of product1
+      const productWithVariants1 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid1
+      );
+      checkProduct(productWithVariants1, "variants", [offers[0], offers[1]]);
+      expect(productWithVariants1?.allVariantsVoided).toBe(false);
 
-    // Check offer3 and offer4 are listed in the variants of product2
-    let productWithVariants2 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid2
-    );
-    checkProduct(productWithVariants2, "notVoidedVariants", [offer3, offer4]);
-    expect(productWithVariants2?.allVariantsVoided).toBe(false);
+      // Check offer3 and offer4 are listed in the variants of product2
+      const productWithVariants2 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid2
+      );
+      checkProduct(productWithVariants2, "variants", [offers[2], offers[3]]);
+      expect(productWithVariants2?.allVariantsVoided).toBe(false);
+    });
 
-    // Void the offer1
-    const voidTx = await coreSDK.voidOffer(offer1.id);
-    await voidTx.wait();
-    await waitForGraphNodeIndexing();
+    test("#getAllProductsWithNotVoidedVariants()", async () => {
+      // Get the products with all variants
+      const allProductsWithVariants =
+        await coreSDK.getAllProductsWithNotVoidedVariants(productsFilter);
+      // Check the number of products of this seller has been increased by 2
+      expect(allProductsWithVariants.length).toEqual(nbProductsBefore + 2);
 
-    // Check the notVoidedVariants for product1 only includes the offer2
-    allProductsWithVariants = await coreSDK.getAllProductsWithNotVoidedVariants(
-      productsFilter
-    );
-    productWithVariants1 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid1
-    );
-    checkProduct(productWithVariants1, "notVoidedVariants", [offer2]);
-    expect(productWithVariants1?.allVariantsVoided).toBe(false);
+      // Check offer1 and offer2 are listed in the variants of product1
+      const productWithVariants1 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid1
+      );
+      checkProduct(productWithVariants1, "notVoidedVariants", [
+        offers[0],
+        offers[1]
+      ]);
+      expect(productWithVariants1?.allVariantsVoided).toBe(false);
 
-    // Void the offer3 and offer4
-    const batchVoidTx = await coreSDK.voidOfferBatch([offer3.id, offer4.id]);
-    await batchVoidTx.wait();
-    await waitForGraphNodeIndexing();
+      // Check offer3 and offer4 are listed in the variants of product2
+      const productWithVariants2 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid2
+      );
+      checkProduct(productWithVariants2, "notVoidedVariants", [
+        offers[2],
+        offers[3]
+      ]);
+      expect(productWithVariants2?.allVariantsVoided).toBe(false);
+    });
 
-    // Check the notVoidedVariants for product2 do not include any offer
-    allProductsWithVariants = await coreSDK.getAllProductsWithNotVoidedVariants(
-      productsFilter
-    );
-    productWithVariants2 = allProductsWithVariants.find(
-      (p) => p.uuid === productUuid2
-    );
-    expect(productWithVariants2).toBeTruthy();
-    expect(productWithVariants2?.allVariantsVoided).toBe(true);
-    expect(productWithVariants2?.notVoidedVariants?.length).toEqual(0);
+    test("Check voided offers", async () => {
+      // Void the offer1
+      const voidTx = await coreSDK.voidOffer(offers[0].id);
+      await voidTx.wait();
+      await waitForGraphNodeIndexing();
+
+      // Check the notVoidedVariants for product1 only includes the offer2
+      let allProductsWithVariants =
+        await coreSDK.getAllProductsWithNotVoidedVariants(productsFilter);
+      const productWithVariants1 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid1
+      );
+      checkProduct(productWithVariants1, "notVoidedVariants", [offers[1]]);
+      expect(productWithVariants1?.allVariantsVoided).toBe(false);
+
+      // Void the offer3 and offer4
+      const batchVoidTx = await coreSDK.voidOfferBatch([
+        offers[2].id,
+        offers[3].id
+      ]);
+      await batchVoidTx.wait();
+      await waitForGraphNodeIndexing();
+
+      // Check the notVoidedVariants for product2 do not include any offer
+      allProductsWithVariants =
+        await coreSDK.getAllProductsWithNotVoidedVariants(productsFilter);
+      const productWithVariants2 = allProductsWithVariants.find(
+        (p) => p.uuid === productUuid2
+      );
+      expect(productWithVariants2).toBeTruthy();
+      expect(productWithVariants2?.allVariantsVoided).toBe(true);
+      expect(productWithVariants2?.notVoidedVariants?.length).toEqual(0);
+
+      // Check we have only one product returned using the 'allVariantsVoided' filter
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          ...productsFilter.productsFilter,
+          allVariantsVoided: false
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(1);
+      expect(allProductsWithVariants[0].uuid).toEqual(productUuid1);
+    });
+
+    test("Check filtering capacities - validity date", async () => {
+      const productsData = buildProductData(offers);
+      let allProductsWithVariants: subgraph.BaseProductV1ProductWithVariantsFieldsFragment[];
+      let targetDate: string;
+      // targetDate is before all offers validity period
+      targetDate = BigNumber.from(productsData.minValidFromDate)
+        .sub(1)
+        .toString();
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          ...productsFilter.productsFilter,
+          minValidFromDate_lte: targetDate,
+          maxValidUntilDate_gte: targetDate
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(0);
+      // targetDate is later than all offers validity period
+      targetDate = BigNumber.from(productsData.maxValidUntilDate)
+        .add(1)
+        .toString();
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          ...productsFilter.productsFilter,
+          minValidFromDate_lte: targetDate,
+          maxValidUntilDate_gte: targetDate
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(0);
+      // targetDate is between min and max of offers
+      targetDate = BigNumber.from(productsData.maxValidFromDate)
+        .add(1)
+        .toString();
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          ...productsFilter.productsFilter,
+          minValidFromDate_lte: targetDate,
+          maxValidUntilDate_gte: targetDate
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(2);
+      // targetDate is in validity period of 1 offer of 1 product only
+      targetDate = BigNumber.from(productsData.minValidFromDate)
+        .add(1)
+        .toString();
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          ...productsFilter.productsFilter,
+          minValidFromDate_lte: targetDate,
+          maxValidUntilDate_gte: targetDate
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(1);
+    });
   });
 });
 
