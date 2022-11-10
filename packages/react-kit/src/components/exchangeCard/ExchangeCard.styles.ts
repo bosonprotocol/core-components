@@ -46,7 +46,7 @@ export const ExchangeCardPriceWrapper = styled.div`
   flex-direction: column;
   align-self: stretch;
   max-width: 50%;
-  min-width: 35%;
+  min-width: 44%;
   span {
     padding-left: 0.5rem;
   }
