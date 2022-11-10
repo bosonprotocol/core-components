@@ -330,7 +330,7 @@ function saveProductV1Product(
     for (let i = 0; i < oldVariants.length; i++) {
       const variantId = oldVariants[i];
       const oldVariant = ProductV1Variant.load(variantId) as ProductV1Variant;
-      if (oldVariant.offer !== offer.id) {
+      if (oldVariant.offer != offer.id) {
         newVariants.push(oldVariant.id);
       }
     }
@@ -338,14 +338,14 @@ function saveProductV1Product(
     newVariants.push(variant);
     product.variants = newVariants;
   }
+  const newNotVoidedVariants: string[] = [];
   if (variant !== null && product.notVoidedVariants !== null) {
     const oldNotVoidedVariants = product.notVoidedVariants as string[];
-    const newNotVoidedVariants: string[] = [];
     // Remove the current Variant from the existing list (if present)
     for (let i = 0; i < oldNotVoidedVariants.length; i++) {
       const variantId = oldNotVoidedVariants[i];
       const oldVariant = ProductV1Variant.load(variantId) as ProductV1Variant;
-      if (oldVariant.offer !== offer.id) {
+      if (oldVariant.offer != offer.id) {
         newNotVoidedVariants.push(oldVariant.id);
       }
     }
@@ -358,11 +358,13 @@ function saveProductV1Product(
   if (product.minValidFromDate.equals(BigInt.zero())) {
     product.minValidFromDate = offer.validFromDate;
   } else {
+    // TODO: compute the minDate for all not voided variant (instead of all variants)
     product.minValidFromDate = getMin(
       product.minValidFromDate,
       offer.validFromDate
     );
   }
+  // TODO: compute the maxDate for all not voided variant (instead of all variants)
   product.maxValidFromDate = getMax(
     product.maxValidFromDate,
     offer.validFromDate
@@ -370,16 +372,18 @@ function saveProductV1Product(
   if (product.minValidUntilDate.equals(BigInt.zero())) {
     product.minValidUntilDate = offer.validUntilDate;
   } else {
+    // TODO: compute the minDate for all not voided variant (instead of all variants)
     product.minValidUntilDate = getMin(
       product.minValidUntilDate,
       offer.validUntilDate
     );
   }
+  // TODO: compute the maxDate for all not voided variant (instead of all variants)
   product.maxValidUntilDate = getMax(
     product.maxValidUntilDate,
     offer.validUntilDate
   );
-  product.allVariantsVoided = product.allVariantsVoided && offer.voided;
+  product.allVariantsVoided = newNotVoidedVariants.length == 0;
 
   product.save();
 
