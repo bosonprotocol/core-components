@@ -1,14 +1,14 @@
-import { BaseCoreSDK } from './../mixins/base-core-sdk';
+import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as erc20 from "../erc20";
 import * as subgraph from "../subgraph";
 import * as offers from ".";
 import * as accounts from "../accounts";
 import * as orchestration from "../orchestration";
 import * as groups from "../groups";
-import { TransactionResponse, Log } from '@bosonprotocol/common';
-import { BigNumberish } from '@ethersproject/bignumber';
-import { getValueFromLogs, getValuesFromLogs } from '../utils/logs';
-import { ITokenInfo, TokenInfoManager } from '../utils/tokenInfoManager';
+import { TransactionResponse, Log } from "@bosonprotocol/common";
+import { BigNumberish } from "@ethersproject/bignumber";
+import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
+import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -22,7 +22,7 @@ export class OfferMixin extends BaseCoreSDK {
    * @param overrides - Optional overrides.
    * @returns Transaction response.
    */
-   public async createOffer(
+  public async createOffer(
     offerToCreate: offers.CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
@@ -319,5 +319,4 @@ export class OfferMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib
     });
   }
-
 }

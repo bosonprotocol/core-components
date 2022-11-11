@@ -9,7 +9,7 @@ import { offers, orchestration } from "..";
 import { getValueFromLogs } from "../utils/logs";
 
 export class AccountsMixin extends BaseCoreSDK {
-    /* -------------------------------------------------------------------------- */
+  /* -------------------------------------------------------------------------- */
   /*                           Account related methods                          */
   /* -------------------------------------------------------------------------- */
 
@@ -21,7 +21,7 @@ export class AccountsMixin extends BaseCoreSDK {
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-   public async getSellerById(
+  public async getSellerById(
     sellerId: BigNumberish,
     queryVars?: accounts.subgraph.SingleSellerQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
@@ -481,5 +481,4 @@ export class AccountsMixin extends BaseCoreSDK {
   ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
     return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
   }
-
 }

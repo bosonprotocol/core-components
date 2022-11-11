@@ -11,21 +11,15 @@ import {
   CreateGroupArgs,
   ConditionStruct
 } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
-import { BytesLike } from "@ethersproject/bytes";
 import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 import * as accounts from "./accounts";
-import * as disputes from "./disputes";
 import * as offers from "./offers";
 import * as orchestration from "./orchestration";
 import * as groups from "./groups";
-import * as metaTx from "./meta-tx";
-import * as nativeMetaTx from "./native-meta-tx";
 import * as subgraph from "./subgraph";
 import * as eventLogs from "./event-logs";
 
-import { GetRetriedHashesData } from "./meta-tx/biconomy";
 import { MetadataMixin } from "./metadata/mixin";
 import { AccountsMixin } from "./accounts/mixin";
 import { OfferMixin } from "./offers/mixin";
