@@ -98,8 +98,8 @@ fragment BaseOfferFields on Offer {
     condition
     schemaUrl
     type
+    image
     ... on ProductV1MetadataEntity {
-      image
       attributes {
         traitType
         value
