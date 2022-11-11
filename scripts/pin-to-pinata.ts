@@ -10,7 +10,7 @@ import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
 
 function extractCID(imageUri: string) {
-  const cidFromUri = imageUri.replace("ipfs://", "").replace("ipfs://", "");
+  const cidFromUri = imageUri.replaceAll("ipfs://", "");
 
   try {
     CID.parse(cidFromUri);
@@ -19,12 +19,12 @@ function extractCID(imageUri: string) {
     // if fails to parse, we assume it could be a gateway url
     const cidFromUrl = imageUri.split("/").at(-1);
 
-    if (!cidFromUrl) {
-      throw Error(`Invalid image URI: ${imageUri}`);
+    try {
+      CID.parse(cidFromUrl || imageUri);
+      return cidFromUrl;
+    } catch (error) {
+      throw new Error(`Failed to parse CID from: ${imageUri}`);
     }
-
-    CID.parse(cidFromUrl);
-    return cidFromUrl;
   }
 }
 
@@ -65,6 +65,14 @@ async function main() {
     headers: infura ? buildInfuraHeaders(infura) : undefined
   });
 
+  const fromTimestampMS = parseInt(fromDate || 0);
+  if (isNaN(fromTimestampMS)) {
+    throw new Error(`Invalid value provided to --from-data option`);
+  }
+  const fromTimestampSec = Math.floor(
+    new Date(fromTimestampMS).getTime() / 1000
+  ).toString();
+
   const first = 100;
   let page = 0;
   let doMoreOffersExist = true;
@@ -82,15 +90,13 @@ async function main() {
         offersFilter: {
           disputeResolverId: "3",
           id_in: list ? list.split(",") : undefined,
-          createdAt_gte: Math.floor(
-            new Date(parseInt(fromDate) || 0).getTime() / 1000
-          ).toString()
+          createdAt_gte: fromTimestampSec
         }
       }
     );
     offersToProcess = [...offersToProcess, ...paginatedOffers];
 
-    if (paginatedOffers.length === 0) {
+    if (paginatedOffers.length < first) {
       doMoreOffersExist = false;
     } else {
       page++;
@@ -108,13 +114,16 @@ async function main() {
       let cids: string[] = [];
 
       try {
+        // Populate __typename to make TypeScript happy
         if (offer.metadata) {
-          offer.metadata.__typename = "ProductV1MetadataEntity";
+          if (offer.metadata.type === "PRODUCT_V1") {
+            offer.metadata.__typename = "ProductV1MetadataEntity";
+          } else if (offer.metadata.type === "BASE") {
+            offer.metadata.__typename = "BaseMetadataEntity";
+          }
         }
-        if (
-          offer.metadata?.type === "PRODUCT_V1" &&
-          offer.metadata?.__typename === "ProductV1MetadataEntity"
-        ) {
+
+        if (offer.metadata?.__typename === "ProductV1MetadataEntity") {
           const metadataImage = offer.metadata.image
             ? [extractCID(offer.metadata.image)]
             : [];
@@ -152,13 +161,18 @@ async function main() {
             });
           }
 
-          cids = [...cids, ...imageCIDs, ...videoCIDs];
+          cids = [...imageCIDs, ...videoCIDs];
+        } else if (offer.metadata?.__typename === "BaseMetadataEntity") {
+          const metadataImage = offer.metadata.image
+            ? [extractCID(offer.metadata.image)]
+            : [];
+          cids = metadataImage;
         }
       } catch (error) {
         console.warn(
-          `Failed to extract image CIDs offer with id: ${offer.id}`,
-          error
+          `Failed to extract image CIDs from offer with id: ${offer.id}`
         );
+        console.warn(`> Error: ${error.message}`);
       }
 
       return cids;
