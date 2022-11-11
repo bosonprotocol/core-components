@@ -67,7 +67,7 @@ async function main() {
 
   const fromTimestampMS = parseInt(fromDate || 0);
   if (isNaN(fromTimestampMS)) {
-    throw new Error(`Invalid value provided to --from-data option`);
+    throw new Error(`Invalid value provided to --from-date option`);
   }
   const fromTimestampSec = Math.floor(
     new Date(fromTimestampMS).getTime() / 1000
