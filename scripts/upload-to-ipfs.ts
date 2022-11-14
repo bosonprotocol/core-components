@@ -1,22 +1,9 @@
 import { BaseIpfsStorage } from "./../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
-import { InvalidArgumentError, program } from "commander";
+import { program } from "commander";
 import { getDefaultConfig } from "../packages/core-sdk/src";
 import fs from "fs";
-
-function buildInfuraHeaders(infuraOptions: string): Record<string, string> {
-  const [infuraProjectId, infuraProjectSecret] = infuraOptions.split("/");
-  if (infuraProjectSecret) {
-    return {
-      authorization: `Basic ${Buffer.from(
-        infuraProjectId + ":" + infuraProjectSecret
-      ).toString("base64")}`
-    };
-  }
-  return {
-    authorization: `Basic ${Buffer.from(infuraProjectId).toString("base64")}`
-  };
-}
+import { buildInfuraHeaders } from "./utils/infura";
 
 program
   .description("Upload to IPFS.")

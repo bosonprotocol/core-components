@@ -38,11 +38,15 @@ export const ExchangeTitle = styled.div`
   font-size: 1.25rem;
   line-height: 150%;
   color: ${({ theme }) => theme?.colors?.light.black};
+  word-break: break-word;
 `;
 
 export const ExchangeCardPriceWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-self: stretch;
+  max-width: 50%;
+  min-width: 44%;
   span {
     padding-left: 0.5rem;
   }
@@ -205,7 +209,7 @@ export const ExchangeStatus = styled.div<{
 
 export const CommittedBottomText = styled.p`
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 0.975rem;
   margin: 0;
   padding: 0 1.5rem 1.5rem 1.5rem;

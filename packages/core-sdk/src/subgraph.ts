@@ -8107,10 +8107,10 @@ export type GetSellerByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -8125,6 +8125,7 @@ export type GetSellerByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -8606,10 +8607,10 @@ export type GetSellersQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -8624,6 +8625,7 @@ export type GetSellersQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -9415,10 +9417,10 @@ export type GetDisputeResolverByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -9433,6 +9435,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -9851,10 +9854,10 @@ export type GetDisputeResolversQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -9869,6 +9872,7 @@ export type GetDisputeResolversQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -10281,10 +10285,10 @@ export type SellerFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -10299,6 +10303,7 @@ export type SellerFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -10888,10 +10893,10 @@ export type DisputeResolverFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -10906,6 +10911,7 @@ export type DisputeResolverFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -11662,10 +11668,10 @@ export type GetExchangeTokenByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -11680,6 +11686,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12015,10 +12022,10 @@ export type GetExchangeTokensQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -12033,6 +12040,7 @@ export type GetExchangeTokensQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12346,10 +12354,10 @@ export type ExchangeTokenFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -12364,6 +12372,7 @@ export type ExchangeTokenFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -12856,10 +12865,10 @@ export type GetExchangeByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -12874,6 +12883,7 @@ export type GetExchangeByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13233,10 +13243,10 @@ export type GetExchangesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -13251,6 +13261,7 @@ export type GetExchangesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13600,10 +13611,10 @@ export type ExchangeFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -13618,6 +13629,7 @@ export type ExchangeFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -14106,10 +14118,10 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -14124,6 +14136,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -14481,10 +14494,10 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -14499,6 +14512,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -14846,10 +14860,10 @@ export type BaseMetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -14864,6 +14878,7 @@ export type BaseMetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -15206,10 +15221,10 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -15224,6 +15239,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -15780,10 +15796,10 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               condition?: string | null;
               schemaUrl: string;
               type: MetadataType;
+              image: string;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
-              image: string;
               createdAt: string;
               voided: boolean;
               validFromDate: string;
@@ -15798,6 +15814,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               condition?: string | null;
               schemaUrl: string;
               type: MetadataType;
+              image: string;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -16284,10 +16301,10 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               condition?: string | null;
               schemaUrl: string;
               type: MetadataType;
+              image: string;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
-              image: string;
               createdAt: string;
               voided: boolean;
               validFromDate: string;
@@ -16302,6 +16319,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               condition?: string | null;
               schemaUrl: string;
               type: MetadataType;
+              image: string;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -16795,10 +16813,10 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -16813,6 +16831,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -17387,10 +17406,10 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -17405,6 +17424,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -17969,10 +17989,10 @@ export type ProductV1MetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -17987,6 +18007,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -18546,10 +18567,10 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -18564,6 +18585,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -19248,10 +19270,10 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -19266,6 +19288,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -19741,10 +19764,10 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -19759,6 +19782,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -20370,10 +20394,10 @@ export type GetOfferByIdQueryQuery = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -20388,6 +20412,7 @@ export type GetOfferByIdQueryQuery = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -20749,10 +20774,10 @@ export type GetOffersQueryQuery = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -20767,6 +20792,7 @@ export type GetOffersQueryQuery = {
           condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -21112,10 +21138,10 @@ export type OfferFieldsFragment = {
         condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        image: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -21130,6 +21156,7 @@ export type OfferFieldsFragment = {
         condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -21424,10 +21451,10 @@ export type BaseOfferFieldsFragment = {
         condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        image: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -21442,6 +21469,7 @@ export type BaseOfferFieldsFragment = {
         condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -21947,8 +21975,8 @@ export const BaseOfferFieldsFragmentDoc = gql`
       condition
       schemaUrl
       type
+      image
       ... on ProductV1MetadataEntity {
-        image
         attributes {
           traitType
           value

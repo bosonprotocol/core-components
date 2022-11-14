@@ -187,7 +187,15 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           </ExchangeCarData>
           <ExchangeCardPriceWrapper>
             <ExchangeCardPrice>Price</ExchangeCardPrice>
-            <CurrencyDisplay value={price} currency={currency} />
+            <CurrencyDisplay
+              value={price}
+              currency={currency}
+              style={{
+                wordBreak: "break-all",
+                alignItems: "flex-start",
+                justifyContent: "flex-end"
+              }}
+            />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
         {isCTAVisible && (

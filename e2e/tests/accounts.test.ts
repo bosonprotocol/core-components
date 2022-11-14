@@ -1,7 +1,8 @@
-import { MSEC_PER_DAY, MSEC_PER_SEC } from './../../packages/common/src/utils/timestamp';
-import { utils, constants, Wallet } from "ethers";
-
-import { CoreSDK } from "../../packages/core-sdk/src";
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "./../../packages/common/src/utils/timestamp";
+import { utils, constants } from "ethers";
 
 import {
   initCoreSDKWithFundedWallet,

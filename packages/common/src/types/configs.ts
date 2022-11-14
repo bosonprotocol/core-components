@@ -18,11 +18,11 @@ export type LensContracts = {
   LENS_PERIPHERY_CONTRACT?: string | undefined;
   LENS_PROFILES_CONTRACT_ADDRESS?: string | undefined;
   LENS_PROFILES_CONTRACT_PARTIAL_ABI?: string | undefined;
-  apiLink?: string | undefined;
 };
 
 export type Lens = LensContracts & {
   apiLink?: string;
+  ipfsGateway?: string | undefined;
 };
 
 export type ProtocolConfig = {
