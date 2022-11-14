@@ -13,7 +13,7 @@ import {
   TokenType,
   EvaluationMethod
 } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 
@@ -339,7 +339,7 @@ export class OfferMixin extends BaseCoreSDK {
         owner: buyerAddress,
         web3Lib: this._web3Lib
       });
-      return Number(balance) >= Number(threshold);
+      return BigNumber.from(balance).gte(threshold);
     }
     if (tokenType === TokenType.NonFungibleToken) {
       if (method === EvaluationMethod.Threshold) {
@@ -348,7 +348,7 @@ export class OfferMixin extends BaseCoreSDK {
           owner: buyerAddress,
           web3Lib: this._web3Lib
         });
-        return Number(balance) >= Number(threshold);
+        return BigNumber.from(balance).gte(threshold);
       }
       if (method === EvaluationMethod.SpecificToken) {
         const owner: string = await erc721.handler.ownerOf({
@@ -369,7 +369,7 @@ export class OfferMixin extends BaseCoreSDK {
         owner: buyerAddress,
         web3Lib: this._web3Lib
       });
-      return Number(balance) >= Number(threshold);
+      return BigNumber.from(balance).gte(threshold);
     }
     throw new Error(`Unsupported tokenType=${tokenType}`);
   }
