@@ -10,7 +10,9 @@ import {
   LensContracts,
   AuthTokenType,
   CreateGroupArgs,
-  ConditionStruct
+  ConditionStruct,
+  TokenType,
+  EvaluationMethod
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
@@ -25,6 +27,7 @@ import * as orchestration from "./orchestration";
 import * as groups from "./groups";
 import * as erc20 from "./erc20";
 import * as erc721 from "./erc721";
+import * as erc1155 from "./erc1155";
 import * as funds from "./funds";
 import * as metaTx from "./meta-tx";
 import * as nativeMetaTx from "./native-meta-tx";
@@ -384,6 +387,53 @@ export class CoreSDK {
     }
     const ret = await Promise.all(promises);
     return ret;
+  }
+
+  public async checkTokenGatedCondition(
+    offerCondition: subgraph.OfferFieldsFragment["condition"],
+    buyerAddress: string
+  ): Promise<boolean> {
+    const { tokenId, tokenType, threshold, method, tokenAddress } =
+      offerCondition;
+    if (tokenType === TokenType.FungibleToken) {
+      const balance: string = await erc20.handler.balanceOf({
+        contractAddress: tokenAddress,
+        owner: buyerAddress,
+        web3Lib: this._web3Lib
+      });
+      return Number(balance) >= Number(threshold);
+    }
+    if (tokenType === TokenType.NonFungibleToken) {
+      if (method === EvaluationMethod.Threshold) {
+        const balance: string = await erc721.handler.balanceOf({
+          contractAddress: tokenAddress,
+          owner: buyerAddress,
+          web3Lib: this._web3Lib
+        });
+        return Number(balance) >= Number(threshold);
+      }
+      if (method === EvaluationMethod.SpecificToken) {
+        const owner: string = await erc721.handler.ownerOf({
+          contractAddress: tokenAddress,
+          tokenId,
+          web3Lib: this._web3Lib
+        });
+        return owner === buyerAddress;
+      }
+      throw new Error(
+        `Unsupported method=${method} for this tokenType=${tokenType}`
+      );
+    }
+    if (tokenType === TokenType.MultiToken) {
+      const balance: string = await erc1155.handler.balanceOf({
+        contractAddress: tokenAddress,
+        tokenId,
+        owner: buyerAddress,
+        web3Lib: this._web3Lib
+      });
+      return Number(balance) >= Number(threshold);
+    }
+    throw new Error(`Unsupported tokenType=${tokenType}`);
   }
 
   /**
