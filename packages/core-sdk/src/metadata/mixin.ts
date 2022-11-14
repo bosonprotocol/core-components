@@ -1,7 +1,14 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
-import * as metadata from ".";
 import * as subgraph from "../subgraph";
 import { AnyMetadata } from "..";
+import {
+  getBaseMetadataEntities,
+  getProductV1MetadataEntities,
+  getProductV1Products,
+  getProductWithVariants,
+  getAllProductsWithVariants,
+  getAllProductsWithNotVoidedVariants
+} from "./subgraph";
 
 export class MetadataMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -44,10 +51,7 @@ export class MetadataMixin extends BaseCoreSDK {
   public async getBaseMetadataEntities(
     queryVars?: subgraph.GetBaseMetadataEntitiesQueryQueryVariables
   ): Promise<subgraph.BaseMetadataEntityFieldsFragment[]> {
-    return metadata.subgraph.getBaseMetadataEntities(
-      this._subgraphUrl,
-      queryVars
-    );
+    return getBaseMetadataEntities(this._subgraphUrl, queryVars);
   }
 
   /**
@@ -58,16 +62,13 @@ export class MetadataMixin extends BaseCoreSDK {
   public async getProductV1MetadataEntities(
     queryVars?: subgraph.GetProductV1MetadataEntitiesQueryQueryVariables
   ): Promise<subgraph.ProductV1MetadataEntityFieldsFragment[]> {
-    return metadata.subgraph.getProductV1MetadataEntities(
-      this._subgraphUrl,
-      queryVars
-    );
+    return getProductV1MetadataEntities(this._subgraphUrl, queryVars);
   }
 
   public async getProductV1Products(
     queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
   ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
-    return metadata.subgraph.getProductV1Products(this._subgraphUrl, queryVars);
+    return getProductV1Products(this._subgraphUrl, queryVars);
   }
 
   public async getProductWithVariants(productUuid: string): Promise<{
@@ -77,9 +78,20 @@ export class MetadataMixin extends BaseCoreSDK {
       variations: Array<subgraph.ProductV1Variation>;
     }>;
   } | null> {
-    return metadata.subgraph.getProductWithVariants(
-      this._subgraphUrl,
-      productUuid
-    );
+    return getProductWithVariants(this._subgraphUrl, productUuid);
+  }
+
+  public async getAllProductsWithVariants(
+    queryVars?: subgraph.GetProductV1ProductsWithVariantsQueryQueryVariables
+  ): Promise<subgraph.BaseProductV1ProductWithVariantsFieldsFragment[]> {
+    return getAllProductsWithVariants(this._subgraphUrl, queryVars);
+  }
+
+  public async getAllProductsWithNotVoidedVariants(
+    queryVars?: subgraph.GetAllProductsWithNotVoidedVariantsQueryQueryVariables
+  ): Promise<
+    subgraph.BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]
+  > {
+    return getAllProductsWithNotVoidedVariants(this._subgraphUrl, queryVars);
   }
 }

@@ -14,7 +14,11 @@ import {
   BaseProductV1ProductFieldsFragment,
   BaseProductV1CategoryFieldsFragment,
   OfferFieldsFragment,
-  ProductV1Variation
+  ProductV1Variation,
+  GetProductV1ProductsWithVariantsQueryQueryVariables,
+  BaseProductV1ProductWithNotVoidedVariantsFieldsFragment,
+  BaseProductV1ProductWithVariantsFieldsFragment,
+  GetAllProductsWithNotVoidedVariantsQueryQueryVariables
 } from "../subgraph";
 
 export type SingleBaseMetadataEntityQueryVariables = Omit<
@@ -115,6 +119,32 @@ export async function getProductV1Products(
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
   const { productV1Products = [] } =
     await subgraphSdk.getProductV1ProductsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
+}
+
+export async function getAllProductsWithVariants(
+  subgraphUrl: string,
+  queryVars: GetProductV1ProductsWithVariantsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductWithVariantsFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getProductV1ProductsWithVariantsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
+}
+
+export async function getAllProductsWithNotVoidedVariants(
+  subgraphUrl: string,
+  queryVars: GetAllProductsWithNotVoidedVariantsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getAllProductsWithNotVoidedVariantsQuery({
       ...queryVars
     });
 

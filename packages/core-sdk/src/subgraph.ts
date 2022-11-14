@@ -4171,6 +4171,7 @@ export enum ProductV1Personalisation_OrderBy {
 
 export type ProductV1Product = {
   __typename?: "ProductV1Product";
+  allVariantsVoided?: Maybe<Scalars["Boolean"]>;
   brand: ProductV1Brand;
   category?: Maybe<ProductV1Category>;
   description: Scalars["String"];
@@ -4193,6 +4194,11 @@ export type ProductV1Product = {
    *
    */
   identification_sKU?: Maybe<Scalars["String"]>;
+  maxValidFromDate: Scalars["BigInt"];
+  maxValidUntilDate: Scalars["BigInt"];
+  minValidFromDate: Scalars["BigInt"];
+  minValidUntilDate: Scalars["BigInt"];
+  notVoidedVariants?: Maybe<Array<ProductV1Variant>>;
   offerCategory: ProductV1OfferCategory;
   packaging_dimensions_height?: Maybe<Scalars["String"]>;
   packaging_dimensions_length?: Maybe<Scalars["String"]>;
@@ -4226,6 +4232,11 @@ export type ProductV1Product = {
   tags?: Maybe<Array<ProductV1Tag>>;
   title: Scalars["String"];
   uuid: Scalars["String"];
+  /**
+   * PRODUCT_V1 specific fields
+   *
+   */
+  variants?: Maybe<Array<ProductV1Variant>>;
   version: Scalars["Int"];
   /**
    * Visuals
@@ -4233,6 +4244,14 @@ export type ProductV1Product = {
    */
   visuals_images: Array<ProductV1Media>;
   visuals_videos?: Maybe<Array<ProductV1Media>>;
+};
+
+export type ProductV1ProductNotVoidedVariantsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variant_Filter>;
 };
 
 export type ProductV1ProductPersonalisationArgs = {
@@ -4257,6 +4276,14 @@ export type ProductV1ProductTagsArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type ProductV1ProductVariantsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variant_Filter>;
 };
 
 export type ProductV1ProductVisuals_ImagesArgs = {
@@ -4869,6 +4896,10 @@ export enum ProductV1ProductOverrides_OrderBy {
 export type ProductV1Product_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  allVariantsVoided?: InputMaybe<Scalars["Boolean"]>;
+  allVariantsVoided_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  allVariantsVoided_not?: InputMaybe<Scalars["Boolean"]>;
+  allVariantsVoided_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   brand?: InputMaybe<Scalars["String"]>;
   brand_?: InputMaybe<ProductV1Brand_Filter>;
   brand_contains?: InputMaybe<Scalars["String"]>;
@@ -5111,6 +5142,45 @@ export type ProductV1Product_Filter = {
   identification_sKU_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  maxValidFromDate?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_not?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidUntilDate?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidFromDate?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_not?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidUntilDate?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  notVoidedVariants?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_?: InputMaybe<ProductV1Variant_Filter>;
+  notVoidedVariants_contains?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   offerCategory?: InputMaybe<ProductV1OfferCategory>;
   offerCategory_in?: InputMaybe<Array<ProductV1OfferCategory>>;
   offerCategory_not?: InputMaybe<ProductV1OfferCategory>;
@@ -5597,6 +5667,13 @@ export type ProductV1Product_Filter = {
   uuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   uuid_starts_with?: InputMaybe<Scalars["String"]>;
   uuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  variants?: InputMaybe<Array<Scalars["String"]>>;
+  variants_?: InputMaybe<ProductV1Variant_Filter>;
+  variants_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variants_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   version?: InputMaybe<Scalars["Int"]>;
   version_gt?: InputMaybe<Scalars["Int"]>;
   version_gte?: InputMaybe<Scalars["Int"]>;
@@ -5622,6 +5699,7 @@ export type ProductV1Product_Filter = {
 };
 
 export enum ProductV1Product_OrderBy {
+  AllVariantsVoided = "allVariantsVoided",
   Brand = "brand",
   Category = "category",
   Description = "description",
@@ -5636,6 +5714,11 @@ export enum ProductV1Product_OrderBy {
   IdentificationProductId = "identification_productId",
   IdentificationProductIdType = "identification_productIdType",
   IdentificationSKu = "identification_sKU",
+  MaxValidFromDate = "maxValidFromDate",
+  MaxValidUntilDate = "maxValidUntilDate",
+  MinValidFromDate = "minValidFromDate",
+  MinValidUntilDate = "minValidUntilDate",
+  NotVoidedVariants = "notVoidedVariants",
   OfferCategory = "offerCategory",
   PackagingDimensionsHeight = "packaging_dimensions_height",
   PackagingDimensionsLength = "packaging_dimensions_length",
@@ -5657,6 +5740,7 @@ export enum ProductV1Product_OrderBy {
   Tags = "tags",
   Title = "title",
   Uuid = "uuid",
+  Variants = "variants",
   Version = "version",
   VisualsImages = "visuals_images",
   VisualsVideos = "visuals_videos"
@@ -6190,6 +6274,68 @@ export enum ProductV1Tag_OrderBy {
   Name = "name"
 }
 
+export type ProductV1Variant = {
+  __typename?: "ProductV1Variant";
+  id: Scalars["ID"];
+  offer: Offer;
+  variations?: Maybe<Array<ProductV1Variation>>;
+};
+
+export type ProductV1VariantVariationsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variation_Filter>;
+};
+
+export type ProductV1Variant_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  offer?: InputMaybe<Scalars["String"]>;
+  offer_?: InputMaybe<Offer_Filter>;
+  offer_contains?: InputMaybe<Scalars["String"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_gt?: InputMaybe<Scalars["String"]>;
+  offer_gte?: InputMaybe<Scalars["String"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]>;
+  offer_lte?: InputMaybe<Scalars["String"]>;
+  offer_not?: InputMaybe<Scalars["String"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  variations?: InputMaybe<Array<Scalars["String"]>>;
+  variations_?: InputMaybe<ProductV1Variation_Filter>;
+  variations_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export enum ProductV1Variant_OrderBy {
+  Id = "id",
+  Offer = "offer",
+  Variations = "variations"
+}
+
 export type ProductV1Variation = {
   __typename?: "ProductV1Variation";
   id: Scalars["ID"];
@@ -6327,6 +6473,8 @@ export type Query = {
   productV1ShippingOptions: Array<ProductV1ShippingOption>;
   productV1Tag?: Maybe<ProductV1Tag>;
   productV1Tags: Array<ProductV1Tag>;
+  productV1Variant?: Maybe<ProductV1Variant>;
+  productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
@@ -6875,6 +7023,22 @@ export type QueryProductV1TagsArgs = {
   where?: InputMaybe<ProductV1Tag_Filter>;
 };
 
+export type QueryProductV1VariantArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1VariantsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variant_Filter>;
+};
+
 export type QueryProductV1VariationArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -7152,6 +7316,8 @@ export type Subscription = {
   productV1ShippingOptions: Array<ProductV1ShippingOption>;
   productV1Tag?: Maybe<ProductV1Tag>;
   productV1Tags: Array<ProductV1Tag>;
+  productV1Variant?: Maybe<ProductV1Variant>;
+  productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
@@ -7698,6 +7864,22 @@ export type SubscriptionProductV1TagsArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type SubscriptionProductV1VariantArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1VariantsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variant_Filter>;
 };
 
 export type SubscriptionProductV1VariationArgs = {
@@ -15413,6 +15595,1016 @@ export type GetProductV1ProductsQueryQuery = {
   }>;
 };
 
+export type GetProductV1ProductsWithVariantsQueryQueryVariables = Exact<{
+  productsSkip?: InputMaybe<Scalars["Int"]>;
+  productsFirst?: InputMaybe<Scalars["Int"]>;
+  productsOrderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  productsOrderDirection?: InputMaybe<OrderDirection>;
+  productsFilter?: InputMaybe<ProductV1Product_Filter>;
+}>;
+
+export type GetProductV1ProductsWithVariantsQueryQuery = {
+  __typename?: "Query";
+  productV1Products: Array<{
+    __typename?: "ProductV1Product";
+    allVariantsVoided?: boolean | null;
+    minValidFromDate: string;
+    maxValidFromDate: string;
+    minValidUntilDate: string;
+    maxValidUntilDate: string;
+    id: string;
+    uuid: string;
+    version: number;
+    title: string;
+    description: string;
+    identification_sKU?: string | null;
+    identification_productId?: string | null;
+    identification_productIdType?: string | null;
+    productionInformation_brandName: string;
+    productionInformation_manufacturer?: string | null;
+    productionInformation_manufacturerPartNumber?: string | null;
+    productionInformation_modelNumber?: string | null;
+    productionInformation_materials?: Array<string> | null;
+    details_category?: string | null;
+    details_subCategory?: string | null;
+    details_subCategory2?: string | null;
+    details_offerCategory: string;
+    offerCategory: ProductV1OfferCategory;
+    details_tags?: Array<string> | null;
+    details_sections?: Array<string> | null;
+    details_personalisation?: Array<string> | null;
+    packaging_packageQuantity?: string | null;
+    packaging_dimensions_length?: string | null;
+    packaging_dimensions_width?: string | null;
+    packaging_dimensions_height?: string | null;
+    packaging_dimensions_unit?: string | null;
+    packaging_weight_value?: string | null;
+    packaging_weight_unit?: string | null;
+    variants?: Array<{
+      __typename?: "ProductV1Variant";
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          tokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          operator: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    operator: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                  };
+                } | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+            }
+          | null;
+      };
+      variations?: Array<{
+        __typename?: "ProductV1Variation";
+        id: string;
+        type: string;
+        option: string;
+      }> | null;
+    }> | null;
+    brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+    category?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory2?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    tags?: Array<{
+      __typename?: "ProductV1Tag";
+      id: string;
+      name: string;
+    }> | null;
+    sections?: Array<{
+      __typename?: "ProductV1Section";
+      id: string;
+      name: string;
+    }> | null;
+    personalisation?: Array<{
+      __typename?: "ProductV1Personalisation";
+      id: string;
+      name: string;
+    }> | null;
+    visuals_images: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }>;
+    visuals_videos?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    productV1Seller?: {
+      __typename?: "ProductV1Seller";
+      id: string;
+      defaultVersion: number;
+      name?: string | null;
+      description?: string | null;
+      externalUrl?: string | null;
+      tokenId?: string | null;
+      sellerId?: string | null;
+      images?: Array<{
+        __typename?: "ProductV1Media";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: ProductV1MediaType;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "ProductV1SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    } | null;
+  }>;
+};
+
+export type GetAllProductsWithNotVoidedVariantsQueryQueryVariables = Exact<{
+  productsSkip?: InputMaybe<Scalars["Int"]>;
+  productsFirst?: InputMaybe<Scalars["Int"]>;
+  productsOrderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  productsOrderDirection?: InputMaybe<OrderDirection>;
+  productsFilter?: InputMaybe<ProductV1Product_Filter>;
+}>;
+
+export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
+  __typename?: "Query";
+  productV1Products: Array<{
+    __typename?: "ProductV1Product";
+    allVariantsVoided?: boolean | null;
+    minValidFromDate: string;
+    maxValidFromDate: string;
+    minValidUntilDate: string;
+    maxValidUntilDate: string;
+    id: string;
+    uuid: string;
+    version: number;
+    title: string;
+    description: string;
+    identification_sKU?: string | null;
+    identification_productId?: string | null;
+    identification_productIdType?: string | null;
+    productionInformation_brandName: string;
+    productionInformation_manufacturer?: string | null;
+    productionInformation_manufacturerPartNumber?: string | null;
+    productionInformation_modelNumber?: string | null;
+    productionInformation_materials?: Array<string> | null;
+    details_category?: string | null;
+    details_subCategory?: string | null;
+    details_subCategory2?: string | null;
+    details_offerCategory: string;
+    offerCategory: ProductV1OfferCategory;
+    details_tags?: Array<string> | null;
+    details_sections?: Array<string> | null;
+    details_personalisation?: Array<string> | null;
+    packaging_packageQuantity?: string | null;
+    packaging_dimensions_length?: string | null;
+    packaging_dimensions_width?: string | null;
+    packaging_dimensions_height?: string | null;
+    packaging_dimensions_unit?: string | null;
+    packaging_weight_value?: string | null;
+    packaging_weight_unit?: string | null;
+    notVoidedVariants?: Array<{
+      __typename?: "ProductV1Variant";
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          tokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          operator: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    operator: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                  };
+                } | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+            }
+          | null;
+      };
+      variations?: Array<{
+        __typename?: "ProductV1Variation";
+        id: string;
+        type: string;
+        option: string;
+      }> | null;
+    }> | null;
+    brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+    category?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory2?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    tags?: Array<{
+      __typename?: "ProductV1Tag";
+      id: string;
+      name: string;
+    }> | null;
+    sections?: Array<{
+      __typename?: "ProductV1Section";
+      id: string;
+      name: string;
+    }> | null;
+    personalisation?: Array<{
+      __typename?: "ProductV1Personalisation";
+      id: string;
+      name: string;
+    }> | null;
+    visuals_images: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }>;
+    visuals_videos?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    productV1Seller?: {
+      __typename?: "ProductV1Seller";
+      id: string;
+      defaultVersion: number;
+      name?: string | null;
+      description?: string | null;
+      externalUrl?: string | null;
+      tokenId?: string | null;
+      sellerId?: string | null;
+      images?: Array<{
+        __typename?: "ProductV1Media";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: ProductV1MediaType;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "ProductV1SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    } | null;
+  }>;
+};
+
 export type GetProductV1CategoriesQueryQueryVariables = Exact<{
   categoriesSkip?: InputMaybe<Scalars["Int"]>;
   categoriesFirst?: InputMaybe<Scalars["Int"]>;
@@ -17887,6 +19079,994 @@ export type BaseProductV1ProductFieldsFragment = {
   } | null;
 };
 
+export type BaseProductV1ProductWithVariantsFieldsFragment = {
+  __typename?: "ProductV1Product";
+  allVariantsVoided?: boolean | null;
+  minValidFromDate: string;
+  maxValidFromDate: string;
+  minValidUntilDate: string;
+  maxValidUntilDate: string;
+  id: string;
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  identification_sKU?: string | null;
+  identification_productId?: string | null;
+  identification_productIdType?: string | null;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string | null;
+  productionInformation_manufacturerPartNumber?: string | null;
+  productionInformation_modelNumber?: string | null;
+  productionInformation_materials?: Array<string> | null;
+  details_category?: string | null;
+  details_subCategory?: string | null;
+  details_subCategory2?: string | null;
+  details_offerCategory: string;
+  offerCategory: ProductV1OfferCategory;
+  details_tags?: Array<string> | null;
+  details_sections?: Array<string> | null;
+  details_personalisation?: Array<string> | null;
+  packaging_packageQuantity?: string | null;
+  packaging_dimensions_length?: string | null;
+  packaging_dimensions_width?: string | null;
+  packaging_dimensions_height?: string | null;
+  packaging_dimensions_unit?: string | null;
+  packaging_weight_value?: string | null;
+  packaging_weight_unit?: string | null;
+  variants?: Array<{
+    __typename?: "ProductV1Variant";
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              } | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion: number;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              sellerId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+          }
+        | null;
+    };
+    variations?: Array<{
+      __typename?: "ProductV1Variation";
+      id: string;
+      type: string;
+      option: string;
+    }> | null;
+  }> | null;
+  brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+  category?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory2?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  tags?: Array<{
+    __typename?: "ProductV1Tag";
+    id: string;
+    name: string;
+  }> | null;
+  sections?: Array<{
+    __typename?: "ProductV1Section";
+    id: string;
+    name: string;
+  }> | null;
+  personalisation?: Array<{
+    __typename?: "ProductV1Personalisation";
+    id: string;
+    name: string;
+  }> | null;
+  visuals_images: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }>;
+  visuals_videos?: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }> | null;
+  productV1Seller?: {
+    __typename?: "ProductV1Seller";
+    id: string;
+    defaultVersion: number;
+    name?: string | null;
+    description?: string | null;
+    externalUrl?: string | null;
+    tokenId?: string | null;
+    sellerId?: string | null;
+    images?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "ProductV1SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
+    };
+  } | null;
+};
+
+export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
+  __typename?: "ProductV1Product";
+  allVariantsVoided?: boolean | null;
+  minValidFromDate: string;
+  maxValidFromDate: string;
+  minValidUntilDate: string;
+  maxValidUntilDate: string;
+  id: string;
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  identification_sKU?: string | null;
+  identification_productId?: string | null;
+  identification_productIdType?: string | null;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string | null;
+  productionInformation_manufacturerPartNumber?: string | null;
+  productionInformation_modelNumber?: string | null;
+  productionInformation_materials?: Array<string> | null;
+  details_category?: string | null;
+  details_subCategory?: string | null;
+  details_subCategory2?: string | null;
+  details_offerCategory: string;
+  offerCategory: ProductV1OfferCategory;
+  details_tags?: Array<string> | null;
+  details_sections?: Array<string> | null;
+  details_personalisation?: Array<string> | null;
+  packaging_packageQuantity?: string | null;
+  packaging_dimensions_length?: string | null;
+  packaging_dimensions_width?: string | null;
+  packaging_dimensions_height?: string | null;
+  packaging_dimensions_unit?: string | null;
+  packaging_weight_value?: string | null;
+  packaging_weight_unit?: string | null;
+  notVoidedVariants?: Array<{
+    __typename?: "ProductV1Variant";
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              } | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion: number;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              sellerId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+          }
+        | null;
+    };
+    variations?: Array<{
+      __typename?: "ProductV1Variation";
+      id: string;
+      type: string;
+      option: string;
+    }> | null;
+  }> | null;
+  brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+  category?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory2?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  tags?: Array<{
+    __typename?: "ProductV1Tag";
+    id: string;
+    name: string;
+  }> | null;
+  sections?: Array<{
+    __typename?: "ProductV1Section";
+    id: string;
+    name: string;
+  }> | null;
+  personalisation?: Array<{
+    __typename?: "ProductV1Personalisation";
+    id: string;
+    name: string;
+  }> | null;
+  visuals_images: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }>;
+  visuals_videos?: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }> | null;
+  productV1Seller?: {
+    __typename?: "ProductV1Seller";
+    id: string;
+    defaultVersion: number;
+    name?: string | null;
+    description?: string | null;
+    externalUrl?: string | null;
+    tokenId?: string | null;
+    sellerId?: string | null;
+    images?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "ProductV1SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
+    };
+  } | null;
+};
+
 export type BaseProductV1BrandFieldsFragment = {
   __typename?: "ProductV1Brand";
   id: string;
@@ -20194,6 +22374,56 @@ export const ProductV1MetadataEntityFieldsFragmentDoc = gql`
   }
   ${BaseProductV1MetadataEntityFieldsFragmentDoc}
 `;
+export const BaseProductV1ProductWithVariantsFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductWithVariantsFields on ProductV1Product {
+    ...BaseProductV1ProductFields
+    variants {
+      offer {
+        ...BaseOfferFields
+        exchanges {
+          ...BaseExchangeFields
+        }
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+    }
+    allVariantsVoided
+    minValidFromDate
+    maxValidFromDate
+    minValidUntilDate
+    maxValidUntilDate
+  }
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+`;
+export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductWithNotVoidedVariantsFields on ProductV1Product {
+    ...BaseProductV1ProductFields
+    notVoidedVariants {
+      offer {
+        ...BaseOfferFields
+        exchanges {
+          ...BaseExchangeFields
+        }
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+    }
+    allVariantsVoided
+    minValidFromDate
+    maxValidFromDate
+    minValidUntilDate
+    maxValidUntilDate
+  }
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+`;
 export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
   fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
     id
@@ -20694,6 +22924,46 @@ export const GetProductV1ProductsQueryDocument = gql`
   }
   ${BaseProductV1ProductFieldsFragmentDoc}
 `;
+export const GetProductV1ProductsWithVariantsQueryDocument = gql`
+  query getProductV1ProductsWithVariantsQuery(
+    $productsSkip: Int
+    $productsFirst: Int
+    $productsOrderBy: ProductV1Product_orderBy
+    $productsOrderDirection: OrderDirection
+    $productsFilter: ProductV1Product_filter
+  ) {
+    productV1Products(
+      skip: $productsSkip
+      first: $productsFirst
+      orderBy: $productsOrderBy
+      orderDirection: $productsOrderDirection
+      where: $productsFilter
+    ) {
+      ...BaseProductV1ProductWithVariantsFields
+    }
+  }
+  ${BaseProductV1ProductWithVariantsFieldsFragmentDoc}
+`;
+export const GetAllProductsWithNotVoidedVariantsQueryDocument = gql`
+  query getAllProductsWithNotVoidedVariantsQuery(
+    $productsSkip: Int
+    $productsFirst: Int
+    $productsOrderBy: ProductV1Product_orderBy
+    $productsOrderDirection: OrderDirection
+    $productsFilter: ProductV1Product_filter
+  ) {
+    productV1Products(
+      skip: $productsSkip
+      first: $productsFirst
+      orderBy: $productsOrderBy
+      orderDirection: $productsOrderDirection
+      where: $productsFilter
+    ) {
+      ...BaseProductV1ProductWithNotVoidedVariantsFields
+    }
+  }
+  ${BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc}
+`;
 export const GetProductV1CategoriesQueryDocument = gql`
   query getProductV1CategoriesQuery(
     $categoriesSkip: Int
@@ -21089,6 +23359,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getProductV1ProductsQuery",
+        "query"
+      );
+    },
+    getProductV1ProductsWithVariantsQuery(
+      variables?: GetProductV1ProductsWithVariantsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetProductV1ProductsWithVariantsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetProductV1ProductsWithVariantsQueryQuery>(
+            GetProductV1ProductsWithVariantsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getProductV1ProductsWithVariantsQuery",
+        "query"
+      );
+    },
+    getAllProductsWithNotVoidedVariantsQuery(
+      variables?: GetAllProductsWithNotVoidedVariantsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetAllProductsWithNotVoidedVariantsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetAllProductsWithNotVoidedVariantsQueryQuery>(
+            GetAllProductsWithNotVoidedVariantsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getAllProductsWithNotVoidedVariantsQuery",
         "query"
       );
     },
