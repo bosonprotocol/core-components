@@ -81,3 +81,17 @@ export async function ensureAllowance(args: {
     await approveTx.wait();
   }
 }
+
+export async function balanceOf(args: {
+  contractAddress: string;
+  owner: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("balanceOf", [args.owner])
+  });
+
+  const [balance] = erc20Iface.decodeFunctionResult("balanceOf", result);
+  return String(balance);
+}

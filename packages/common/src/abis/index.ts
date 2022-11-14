@@ -2,6 +2,7 @@
 
 import ERC20ABI from "./ERC20.json";
 import ERC721EnumerableABI from "./ERC721Enumerable.json";
+import ERC1155 from "./ERC1155.json";
 import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
@@ -17,6 +18,7 @@ import ProtocolDiamondABI from "./ProtocolDiamond.json";
 export {
   ERC20ABI,
   ERC721EnumerableABI,
+  ERC1155,
   IBosonAccountHandlerABI,
   IBosonDisputeHandlerABI,
   IBosonExchangeHandlerABI,

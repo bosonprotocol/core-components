@@ -1,12 +1,19 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as erc20 from "../erc20";
+import * as erc721 from "../erc721";
+import * as erc1155 from "../erc1155";
 import * as subgraph from "../subgraph";
 import * as offers from ".";
 import * as accounts from "../accounts";
 import * as orchestration from "../orchestration";
 import * as groups from "../groups";
-import { TransactionResponse, Log } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import {
+  TransactionResponse,
+  Log,
+  TokenType,
+  EvaluationMethod
+} from "@bosonprotocol/common";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 
@@ -318,5 +325,52 @@ export class OfferMixin extends BaseCoreSDK {
       spender: overrides.spender || this._protocolDiamond,
       web3Lib: this._web3Lib
     });
+  }
+
+  public async checkTokenGatedCondition(
+    offerCondition: subgraph.OfferFieldsFragment["condition"],
+    buyerAddress: string
+  ): Promise<boolean> {
+    const { tokenId, tokenType, threshold, method, tokenAddress } =
+      offerCondition;
+    if (tokenType === TokenType.FungibleToken) {
+      const balance: string = await erc20.handler.balanceOf({
+        contractAddress: tokenAddress,
+        owner: buyerAddress,
+        web3Lib: this._web3Lib
+      });
+      return BigNumber.from(balance).gte(threshold);
+    }
+    if (tokenType === TokenType.NonFungibleToken) {
+      if (method === EvaluationMethod.Threshold) {
+        const balance: string = await erc721.handler.balanceOf({
+          contractAddress: tokenAddress,
+          owner: buyerAddress,
+          web3Lib: this._web3Lib
+        });
+        return BigNumber.from(balance).gte(threshold);
+      }
+      if (method === EvaluationMethod.SpecificToken) {
+        const owner: string = await erc721.handler.ownerOf({
+          contractAddress: tokenAddress,
+          tokenId,
+          web3Lib: this._web3Lib
+        });
+        return owner === buyerAddress;
+      }
+      throw new Error(
+        `Unsupported method=${method} for this tokenType=${tokenType}`
+      );
+    }
+    if (tokenType === TokenType.MultiToken) {
+      const balance: string = await erc1155.handler.balanceOf({
+        contractAddress: tokenAddress,
+        tokenId,
+        owner: buyerAddress,
+        web3Lib: this._web3Lib
+      });
+      return BigNumber.from(balance).gte(threshold);
+    }
+    throw new Error(`Unsupported tokenType=${tokenType}`);
   }
 }
