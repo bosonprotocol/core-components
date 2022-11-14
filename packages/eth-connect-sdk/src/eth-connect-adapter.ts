@@ -92,7 +92,10 @@ export class EthConnectAdapter implements Web3LibAdapter {
   }
 
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
-    throw new Error("Not implemented");
+    return this._requestManager.sendAsync({
+      method: rpcMethod,
+      params: payload
+    });
   }
 
   private async _wait(
@@ -144,18 +147,15 @@ export class EthConnectAdapter implements Web3LibAdapter {
     txHash,
     receiptData?: { from: string; to: string }
   ): Promise<TransactionReceipt> {
-    const txObject =
-      receiptData ||
-      EthConnectAdapter.receiptData.get(txHash) ||
-      // Note: usage of requestManager.eth_getTransactionByHash is prohibited by DCL kernel
-      (await this._requestManager.eth_getTransactionByHash(txHash));
+    const txObject = receiptData || EthConnectAdapter.receiptData.get(txHash);
+    // Note: usage of requestManager.eth_getTransactionByHash is prohibited by DCL kernel
 
     const txReceipt = await this._requestManager.eth_getTransactionReceipt(
       txHash
     );
     return {
-      from: txObject.from,
-      to: txObject.to,
+      from: txObject?.from,
+      to: txObject?.to,
       status: txReceipt.status
         ? parseInt(txReceipt.status.toString())
         : undefined,
