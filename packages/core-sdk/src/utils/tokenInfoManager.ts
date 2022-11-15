@@ -70,6 +70,7 @@ export class TokenInfoManager implements ITokenInfoManager {
   private _web3Lib: Web3LibAdapter;
   private _subgraphUrl: string;
   private _chainId: number;
+  private _previousAddress: string;
 
   public constructor(
     chainId: number,
@@ -96,21 +97,26 @@ export class TokenInfoManager implements ITokenInfoManager {
     await this.ensureInitialized();
     const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
     const key = tokenAddress.toLowerCase();
-    if (!tokenInfos.has(key)) {
+
+    if (!tokenInfos.has(key) && this._previousAddress !== tokenAddress) {
       const args = {
         web3Lib: this._web3Lib,
         contractAddress: tokenAddress
       };
-      const [decimals, name, symbol] = await Promise.all([
-        getDecimals(args),
-        getName(args),
-        getSymbol(args)
-      ]);
-      tokenInfos.set(key, {
-        decimals,
-        name,
-        symbol
-      });
+      try {
+        const [decimals, name, symbol] = await Promise.all([
+          getDecimals(args),
+          getName(args),
+          getSymbol(args)
+        ]);
+        tokenInfos.set(key, {
+          decimals,
+          name,
+          symbol
+        });
+      } catch (error) {
+        this._previousAddress = tokenAddress;
+      }
     }
     return tokenInfos.get(key);
   }
