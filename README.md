@@ -21,7 +21,7 @@
 
 ## Getting started
 
-- [How tos & guides]()
+- [How tos & guides](https://docs.bosonprotocol.io/)
 - [API docs](docs/README.md)
 - [Local development](docs/local-development.md)
 
