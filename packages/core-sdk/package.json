@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/core-sdk",
-  "version": "1.23.0-alpha.20",
+  "version": "1.23.0-alpha.21",
   "description": "Facilitates interaction with the contracts and subgraphs of the Boson Protocol",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -33,7 +33,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.20.0-alpha.9",
+    "@bosonprotocol/common": "^1.20.0-alpha.10",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
