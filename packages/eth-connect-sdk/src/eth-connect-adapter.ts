@@ -60,7 +60,6 @@ export class EthConnectAdapter implements Web3LibAdapter {
   public async sendTransaction(
     transactionRequest: TransactionRequest
   ): Promise<TransactionResponse> {
-    console.log("sendTransaction()", transactionRequest);
     const from = transactionRequest.from || (await this.getSignerAddress());
     const to = transactionRequest.to || "0x";
     const txHash = await this._requestManager.eth_sendTransaction({
@@ -115,19 +114,12 @@ export class EthConnectAdapter implements Web3LibAdapter {
       );
       let nonce = presumedNonce;
       while (receipt == null && nonce <= presumedNonce) {
-        console.log("loop wait for receipt", txHash);
         await this._externalFeatures.delay(TX_POLLING_DELAY);
         receipt = await this._requestManager.eth_getTransactionReceipt(txHash);
         const blockNumber = await this._requestManager.eth_blockNumber();
         nonce = await this._requestManager.eth_getTransactionCount(
           account,
           blockNumber
-        );
-        console.log(
-          "tx presumed nonce",
-          presumedNonce,
-          "current on chain nonce",
-          nonce
         );
       }
       console.log("receipt", receipt);
