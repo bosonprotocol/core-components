@@ -406,6 +406,16 @@ interface Account {
   logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
+type PendingSeller @entity {
+  id: ID!
+  operator: Bytes
+  admin: Bytes
+  clerk: Bytes
+  authTokenId: BigInt
+  authTokenType: Int
+  seller: Seller!
+}
+
 type Seller implements Account @entity {
   id: ID! # Offer.sellerId
   sellerId: BigInt! # Allows sorting numerically by id
@@ -424,6 +434,7 @@ type Seller implements Account @entity {
   contractURI: String!
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
   royaltyPercentage: BigInt!
+  pendingSeller: PendingSeller @derivedFrom(field: "seller")
 }
 
 type Buyer implements Account @entity {

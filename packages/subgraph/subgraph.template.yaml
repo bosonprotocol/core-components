@@ -67,12 +67,20 @@ dataSources:
           handler: handleSellerCreatedEvent
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
           handler: handleSellerUpdatedEvent
+        - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
+          handler: handleSellerUpdatePendingEvent
+        - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
+          handler: handleSellerUpdateAppliedEvent
         - event: BuyerCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleBuyerCreatedEvent
         - event: DisputeResolverCreated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[],indexed address)
           handler: handleDisputeResolverCreatedEvent
         - event: DisputeResolverUpdated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverUpdatedEvent
+        - event: DisputeResolverUpdatePending(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverUpdatePendingEvent
+        - event: DisputeResolverUpdateApplied(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverUpdateAppliedEvent
         - event: DisputeResolverActivated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverActivatedEvent
         - event: DisputeResolverFeesAdded(indexed uint256,(address,string,uint256)[],indexed address)
