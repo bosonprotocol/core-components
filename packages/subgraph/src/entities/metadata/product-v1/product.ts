@@ -322,6 +322,8 @@ function saveProductV1Product(
   product.packaging_weight_unit = packaging_weight_unit;
 
   product.productV1Seller = productV1SellerId;
+  product.sellerId = offer.sellerId;
+  product.disputeResolverId = offer.disputeResolverId;
 
   if (variant !== null && product.variants !== null) {
     const oldVariants = product.variants as string[];

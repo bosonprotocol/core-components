@@ -1,4 +1,4 @@
-import { ConditionStruct } from "@bosonprotocol/common";
+import { ConditionStruct, CreateSellerArgs } from "@bosonprotocol/common";
 import {
   providers,
   Wallet,
@@ -30,8 +30,15 @@ import {
   ACCOUNT_11,
   ACCOUNT_12
 } from "../../contracts/accounts";
-import { MOCK_ERC1155_ABI, MOCK_ERC20_ABI, MOCK_ERC721_ABI } from "./mockAbis";
+import {
+  MOCK_ERC1155_ABI,
+  MOCK_ERC20_ABI,
+  MOCK_ERC721_ABI,
+  MOCK_NFT_AUTH_721_ABI
+} from "./mockAbis";
 import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
+import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
+import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -234,7 +241,8 @@ export async function ensureMintedERC721(
   wallet: Wallet,
   tokenId: BigNumberish
 ) {
-  await mockErc721Contract.connect(wallet).mint(tokenId, 1);
+  const tx = await mockErc721Contract.connect(wallet).mint(tokenId, 1);
+  await tx.wait();
 }
 
 export async function ensureMintedERC1155(
@@ -242,7 +250,8 @@ export async function ensureMintedERC1155(
   tokenId: BigNumberish,
   amount: BigNumberish
 ) {
-  await mockErc1155Contract.connect(wallet).mint(tokenId, amount);
+  const tx = await mockErc1155Contract.connect(wallet).mint(tokenId, amount);
+  await tx.wait();
 }
 
 export async function createDisputeResolver(
@@ -394,4 +403,118 @@ export async function createSellerAndOfferWithCondition(
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
+}
+
+export async function createSeller(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  sellerParams?: Partial<CreateSellerArgs>
+) {
+  const contractUri = "ipfs://0123456789abcdef";
+  const createSellerTxResponse = await coreSDK.createSeller({
+    operator: sellerAddress,
+    admin: sellerAddress,
+    clerk: sellerAddress,
+    treasury: sellerAddress,
+    contractUri,
+    royaltyPercentage: "0",
+    authTokenId: "0",
+    authTokenType: 0,
+    ...sellerParams
+  });
+  const createSellerTxReceipt = await createSellerTxResponse.wait();
+  const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
+    createSellerTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const seller = await coreSDK.getSellerById(createdSellerId as string);
+
+  return seller;
+}
+
+export async function updateSeller(
+  coreSDK: CoreSDK,
+  seller: SellerFieldsFragment,
+  sellerParams: Partial<CreateSellerArgs>
+) {
+  const updatedSellerTxResponse = await coreSDK.updateSeller({
+    ...seller,
+    ...sellerParams
+  });
+  await updatedSellerTxResponse.wait();
+  await waitForGraphNodeIndexing();
+  const updatedSeller = await coreSDK.getSellerById(seller.id as string);
+  return updatedSeller;
+}
+
+export async function createSellerAndOffer(
+  coreSDK: CoreSDK,
+  sellerAddress: string,
+  offerOverrides?: Partial<CreateOfferArgs>
+) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...metadata,
+    type: "BASE"
+  });
+  const metadataUri = "ipfs://" + metadataHash;
+
+  const createOfferTxResponse = await coreSDK.createSellerAndOffer(
+    {
+      operator: sellerAddress,
+      admin: sellerAddress,
+      clerk: sellerAddress,
+      treasury: sellerAddress,
+      contractUri: metadataUri,
+      royaltyPercentage: "0",
+      authTokenId: "0",
+      authTokenType: 0
+    },
+    mockCreateOfferArgs({
+      metadataHash,
+      metadataUri,
+      ...offerOverrides
+    })
+  );
+  const createOfferTxReceipt = await createOfferTxResponse.wait();
+  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
+    createOfferTxReceipt.logs
+  );
+
+  await waitForGraphNodeIndexing();
+  const offer = await coreSDK.getOfferById(createdOfferId as string);
+
+  return offer;
+}
+
+export async function mintLensToken(
+  wallet: Wallet,
+  to: string
+): Promise<BigNumberish> {
+  const defaultConfig = getDefaultConfig("local");
+  const lensContractAddress = defaultConfig.lens?.LENS_HUB_CONTRACT as string;
+
+  const lensContract = new Contract(
+    lensContractAddress,
+    MOCK_NFT_AUTH_721_ABI,
+    provider
+  );
+
+  // find a tokenId that is not minted yet
+  let tokenId = Date.now();
+  let ownerOf = "NOT_ZERO_ADDRESS";
+  while (ownerOf !== ZERO_ADDRESS) {
+    try {
+      ownerOf = await lensContract.ownerOf(tokenId);
+      tokenId++;
+    } catch {
+      ownerOf = ZERO_ADDRESS;
+    }
+  }
+
+  // Mint the token in the mocked LENS contract for the future seller
+  const tx = await lensContract.connect(wallet).mint(to, tokenId);
+  tx.wait();
+
+  return tokenId;
 }

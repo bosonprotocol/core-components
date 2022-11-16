@@ -167,7 +167,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       relayerUrl: "http://localhost:8888"
     },
     lens: {
-      ...(chainIdToLensInfo.has(31337) && chainIdToLensInfo.get(31337))
+      LENS_HUB_CONTRACT: "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
+      LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
     }
   }
 ];
