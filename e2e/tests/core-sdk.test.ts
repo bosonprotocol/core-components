@@ -1,6 +1,5 @@
 import { parseEther } from "@ethersproject/units";
 import { DAY_IN_MS, DAY_IN_SEC } from "./../../packages/core-sdk/tests/mocks";
-import { CreateSellerArgs } from "./../../packages/common/src/types/accounts";
 import {
   DisputeState,
   ExchangeFieldsFragment
@@ -33,13 +32,11 @@ import {
   MOCK_ERC1155_ADDRESS,
   ensureMintedERC1155,
   createOfferWithCondition,
-  createSellerAndOfferWithCondition
+  createSellerAndOfferWithCondition,
+  createSeller,
+  createSellerAndOffer
 } from "./utils";
-import {
-  CreateOfferArgs,
-  EvaluationMethod,
-  TokenType
-} from "@bosonprotocol/common";
+import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -1297,73 +1294,6 @@ async function checkDisputeResolver(
     dr.sellerAllowList.length == 0 ||
       dr.sellerAllowList.indexOf(sellerId.toString()) >= 0
   ).toBe(true);
-}
-
-async function createSeller(
-  coreSDK: CoreSDK,
-  sellerAddress: string,
-  sellerParams?: Partial<CreateSellerArgs>
-) {
-  const contractUri = "ipfs://0123456789abcdef";
-  const createSellerTxResponse = await coreSDK.createSeller({
-    operator: sellerAddress,
-    admin: sellerAddress,
-    clerk: sellerAddress,
-    treasury: sellerAddress,
-    contractUri,
-    royaltyPercentage: "0",
-    authTokenId: "0",
-    authTokenType: 0,
-    ...sellerParams
-  });
-  const createSellerTxReceipt = await createSellerTxResponse.wait();
-  const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
-    createSellerTxReceipt.logs
-  );
-
-  await waitForGraphNodeIndexing();
-  const seller = await coreSDK.getSellerById(createdSellerId as string);
-
-  return seller;
-}
-
-async function createSellerAndOffer(
-  coreSDK: CoreSDK,
-  sellerAddress: string,
-  offerOverrides?: Partial<CreateOfferArgs>
-) {
-  const metadataHash = await coreSDK.storeMetadata({
-    ...metadata,
-    type: "BASE"
-  });
-  const metadataUri = "ipfs://" + metadataHash;
-
-  const createOfferTxResponse = await coreSDK.createSellerAndOffer(
-    {
-      operator: sellerAddress,
-      admin: sellerAddress,
-      clerk: sellerAddress,
-      treasury: sellerAddress,
-      contractUri: metadataUri,
-      royaltyPercentage: "0",
-      authTokenId: "0",
-      authTokenType: 0
-    },
-    mockCreateOfferArgs({
-      metadataHash,
-      metadataUri,
-      ...offerOverrides
-    })
-  );
-  const createOfferTxReceipt = await createOfferTxResponse.wait();
-  const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
-    createOfferTxReceipt.logs
-  );
-
-  await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
-
-  return offer;
 }
 
 async function depositFunds(args: {

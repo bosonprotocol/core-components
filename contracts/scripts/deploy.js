@@ -1,4 +1,7 @@
+const gasLimit = "20000000";
 process.env.CONFIRMATIONS = 1; // required for deployProtocolConfigFacet()
+process.env.DEPLOYER_GAS_LIMIT_TEST = gasLimit;
+process.env.AUTH_TOKEN_OWNERS_LOCAL = "";
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const hre = require("hardhat");
 const ethers = hre.ethers;
@@ -23,12 +26,11 @@ const {
   deploymentComplete
 } = require("../protocol-contracts/scripts/util/utils");
 const {
-  deployMockTokens
+  deployMockTokens,
+  deployAndMintMockNFTAuthTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens");
 const { oneMonth } = require("../protocol-contracts/test/util/constants");
 const AuthTokenType = require("../protocol-contracts/scripts/domain/AuthTokenType");
-
-const gasLimit = "20000000";
 
 function getConfig(network) {
   return [
@@ -256,6 +258,8 @@ async function main() {
     deploymentComplete("Foreign20", foreign20Token.address, [], contracts);
     deploymentComplete("Foreign721", foreign721Token.address, [], contracts);
     deploymentComplete("Foreign1155", foreign1155Token.address, [], contracts);
+
+    await deployAndMintMockNFTAuthTokens();
 
     // Create and activate default dispute resolver
     const accountHandler = await ethers.getContractAt(

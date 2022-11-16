@@ -1,3 +1,5 @@
+import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
+import { Wallet, BigNumber } from "ethers";
 import {
   MSEC_PER_DAY,
   MSEC_PER_SEC
@@ -11,8 +13,12 @@ import {
   createDisputeResolver,
   deployerWallet,
   seedWallet3,
-  createFundedWallet
+  createFundedWallet,
+  createSeller,
+  updateSeller,
+  mintLensToken
 } from "./utils";
+import { AuthTokenType } from "@bosonprotocol/common";
 
 jest.setTimeout(60_000);
 
@@ -307,6 +313,123 @@ describe("CoreSDK - accounts", () => {
 
       expect(disputeResolverBeforeUpdate.sellerAllowList.length).toBe(1);
       expect(disputeResolverAfterUpdate.sellerAllowList.length).toBe(0);
+    });
+  });
+
+  describe("seller", () => {
+    test("create seller", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.admin).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
+      expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
+      expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
+    });
+    test("update seller - replace all addresses", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const randomWallet = Wallet.createRandom();
+      seller = await updateSeller(coreSDK, seller, {
+        admin: randomWallet.address,
+        operator: randomWallet.address,
+        clerk: randomWallet.address,
+        treasury: randomWallet.address
+      });
+
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.admin).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
+      expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
+      expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
+    });
+    test("update seller - assign an auth token owned by the current account", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const tokenType = AuthTokenType.LENS;
+      const tokenId = await mintLensToken(fundedWallet, fundedWallet.address);
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      seller = await updateSeller(coreSDK, seller, {
+        admin: ZERO_ADDRESS,
+        authTokenType: tokenType,
+        authTokenId: tokenId.toString()
+      });
+
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.admin).toEqual(ZERO_ADDRESS);
+      expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);
+      expect(seller.authTokenType).toEqual(tokenType);
+    });
+    test("update seller - assign an auth token and change operator/clerk addresses", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const tokenType = AuthTokenType.LENS;
+      const tokenId = await mintLensToken(fundedWallet, fundedWallet.address);
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const randomWallet = Wallet.createRandom();
+      seller = await updateSeller(coreSDK, seller, {
+        admin: ZERO_ADDRESS,
+        operator: randomWallet.address,
+        clerk: randomWallet.address,
+        authTokenType: tokenType,
+        authTokenId: tokenId.toString()
+      });
+
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.admin).toEqual(ZERO_ADDRESS);
+      expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);
+      expect(seller.authTokenType).toEqual(tokenType);
+    });
+    test("update seller - update with another operator address, then update back the operator to the admin address", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const randomWallet = Wallet.createRandom();
+      seller = await updateSeller(coreSDK, seller, {
+        operator: randomWallet.address
+      });
+
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
+
+      seller = await updateSeller(coreSDK, seller, {
+        operator: fundedWallet.address
+      });
+
+      expect(seller).toBeTruthy();
+      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
     });
   });
 });
