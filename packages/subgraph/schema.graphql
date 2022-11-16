@@ -138,6 +138,7 @@ type ProductV1Product @entity {
   """
   Product information fields
   """
+  disputeResolverId: BigInt!
   productionInformation_brandName: String!
   brand: ProductV1Brand! # ref by productionInformation_brandName
   productionInformation_manufacturer: String
@@ -180,6 +181,7 @@ type ProductV1Product @entity {
   Seller
   """
   productV1Seller: ProductV1Seller
+  sellerId: BigInt!
   """
   PRODUCT_V1 specific fields
   """
