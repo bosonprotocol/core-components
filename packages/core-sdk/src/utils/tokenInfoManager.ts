@@ -99,7 +99,9 @@ export class TokenInfoManager implements ITokenInfoManager {
     this._chainId = chainId;
   }
 
-  public async getExchangeTokenInfo(tokenAddress: string): Promise<ITokenInfo> {
+  public async getExchangeTokenInfo(
+    tokenAddress: string
+  ): Promise<ITokenInfo | undefined> {
     await this.ensureInitialized();
     const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
     const invalidAddressesSet = TokenInfoManager.InvalidAddresses.get(
@@ -107,7 +109,7 @@ export class TokenInfoManager implements ITokenInfoManager {
     );
     const key = tokenAddress.toLowerCase();
 
-    if (!tokenInfos.has(key) && !invalidAddressesSet.has(tokenAddress)) {
+    if (!tokenInfos.has(key) && !invalidAddressesSet.has(key)) {
       const args = {
         web3Lib: this._web3Lib,
         contractAddress: tokenAddress
@@ -124,7 +126,7 @@ export class TokenInfoManager implements ITokenInfoManager {
           symbol
         });
       } catch (error) {
-        invalidAddressesSet.add(tokenAddress);
+        invalidAddressesSet.add(key);
       }
     }
     return tokenInfos.get(key);
