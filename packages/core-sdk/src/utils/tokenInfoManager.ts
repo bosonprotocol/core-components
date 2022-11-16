@@ -70,7 +70,7 @@ export class TokenInfoManager implements ITokenInfoManager {
   private _web3Lib: Web3LibAdapter;
   private _subgraphUrl: string;
   private _chainId: number;
-  private _previousAddress: string;
+  private static InvalidaAddresses = new Map<number, Set<string>>();
 
   public constructor(
     chainId: number,
@@ -80,13 +80,19 @@ export class TokenInfoManager implements ITokenInfoManager {
     if (!NATIVE_TOKENS[chainId]) {
       throw new Error(`Unexpected chainId value '${chainId}'`);
     }
+
     if (!TokenInfoManager.TokenInfos.has(chainId)) {
       const tokenInfos = new Map<string, ITokenInfo>();
       tokenInfos.set(AddressZero, NATIVE_TOKENS[chainId]);
       TokenInfoManager.TokenInfos.set(chainId, tokenInfos);
     }
+
     if (!TokenInfoManager.mapInitialized.has(chainId)) {
       TokenInfoManager.mapInitialized.set(chainId, false);
+    }
+
+    if (!TokenInfoManager.InvalidaAddresses.has(chainId)) {
+      TokenInfoManager.InvalidaAddresses.set(chainId, new Set<string>());
     }
     this._web3Lib = web3Lib;
     this._subgraphUrl = subgraphUrl;
@@ -96,9 +102,12 @@ export class TokenInfoManager implements ITokenInfoManager {
   public async getExchangeTokenInfo(tokenAddress: string): Promise<ITokenInfo> {
     await this.ensureInitialized();
     const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
+    const invalidAddressesSet = TokenInfoManager.InvalidaAddresses.get(
+      this._chainId
+    );
     const key = tokenAddress.toLowerCase();
 
-    if (!tokenInfos.has(key) && this._previousAddress !== tokenAddress) {
+    if (!tokenInfos.has(key) && !invalidAddressesSet.has(tokenAddress)) {
       const args = {
         web3Lib: this._web3Lib,
         contractAddress: tokenAddress
@@ -115,7 +124,7 @@ export class TokenInfoManager implements ITokenInfoManager {
           symbol
         });
       } catch (error) {
-        this._previousAddress = tokenAddress;
+        invalidAddressesSet.add(tokenAddress);
       }
     }
     return tokenInfos.get(key);
