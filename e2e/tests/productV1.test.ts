@@ -251,9 +251,7 @@ describe("Multi-variant offers tests", () => {
     // Get the number of products of this seller before
     const productsFilter = {
       productsFilter: {
-        productV1Seller_: {
-          sellerId: seller.id
-        }
+        sellerId: seller.id
       }
     };
     const productsBefore = await coreSDK.getProductV1Products(productsFilter);
