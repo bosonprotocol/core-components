@@ -553,7 +553,7 @@ describe("Multi-variant offers tests", () => {
     let offers: subgraph.OfferFieldsFragment[];
     let productsFilter: {
       productsFilter: {
-        sellerId: string;
+        sellerId_in: string[];
       };
     };
 
@@ -605,7 +605,7 @@ describe("Multi-variant offers tests", () => {
       // Get the number of products of this seller before
       productsFilter = {
         productsFilter: {
-          sellerId: seller.id
+          sellerId_in: [seller.id]
         }
       };
       const productsBefore = await coreSDK.getAllProductsWithVariants(
