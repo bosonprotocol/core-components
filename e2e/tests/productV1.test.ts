@@ -251,9 +251,7 @@ describe("Multi-variant offers tests", () => {
     // Get the number of products of this seller before
     const productsFilter = {
       productsFilter: {
-        productV1Seller_: {
-          sellerId: seller.id
-        }
+        sellerId: seller.id
       }
     };
     const productsBefore = await coreSDK.getProductV1Products(productsFilter);
@@ -555,9 +553,7 @@ describe("Multi-variant offers tests", () => {
     let offers: subgraph.OfferFieldsFragment[];
     let productsFilter: {
       productsFilter: {
-        productV1Seller_: {
-          sellerId: string;
-        };
+        sellerId_in: string[];
       };
     };
 
@@ -609,9 +605,7 @@ describe("Multi-variant offers tests", () => {
       // Get the number of products of this seller before
       productsFilter = {
         productsFilter: {
-          productV1Seller_: {
-            sellerId: seller.id
-          }
+          sellerId_in: [seller.id]
         }
       };
       const productsBefore = await coreSDK.getAllProductsWithVariants(
@@ -620,15 +614,9 @@ describe("Multi-variant offers tests", () => {
       expect(productsBefore).toBeTruthy();
       nbProductsBefore = productsBefore.length;
 
-      offers = await createOfferBatch(coreSDK, sellerWallet, [
-        offerArgs1,
-        offerArgs2,
-        offerArgs3,
-        offerArgs4
-      ]);
-      expect(offers.length).toEqual(4);
-
-      // const [offer1, offer2, offer3, offer4] = offers;
+      const offerArgsList = [offerArgs1, offerArgs2, offerArgs3, offerArgs4];
+      offers = await createOfferBatch(coreSDK, sellerWallet, offerArgsList);
+      expect(offers.length).toEqual(offerArgsList.length);
     });
 
     test("#getAllProductsWithVariants()", async () => {
@@ -652,6 +640,24 @@ describe("Multi-variant offers tests", () => {
       );
       checkProduct(productWithVariants2, "variants", [offers[2], offers[3]]);
       expect(productWithVariants2?.allVariantsVoided).toBe(false);
+    });
+
+    test("#getAllProductsWithVariants() - filter by disputeResolverId", async () => {
+      // Get the products with all variants
+      let allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          disputeResolverId: "1"
+        }
+      });
+
+      expect(allProductsWithVariants.length).toBeGreaterThan(0);
+
+      allProductsWithVariants = await coreSDK.getAllProductsWithVariants({
+        productsFilter: {
+          disputeResolverId: "2"
+        }
+      });
+      expect(allProductsWithVariants.length).toEqual(0);
     });
 
     test("#getAllProductsWithNotVoidedVariants()", async () => {

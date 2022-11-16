@@ -4186,6 +4186,11 @@ export type ProductV1Product = {
   details_subCategory?: Maybe<Scalars["String"]>;
   details_subCategory2?: Maybe<Scalars["String"]>;
   details_tags?: Maybe<Array<Scalars["String"]>>;
+  /**
+   * Product information fields
+   *
+   */
+  disputeResolverId: Scalars["BigInt"];
   id: Scalars["ID"];
   identification_productId?: Maybe<Scalars["String"]>;
   identification_productIdType?: Maybe<Scalars["String"]>;
@@ -4217,16 +4222,13 @@ export type ProductV1Product = {
    *
    */
   productV1Seller?: Maybe<ProductV1Seller>;
-  /**
-   * Product information fields
-   *
-   */
   productionInformation_brandName: Scalars["String"];
   productionInformation_manufacturer?: Maybe<Scalars["String"]>;
   productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
   productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
   productionInformation_modelNumber?: Maybe<Scalars["String"]>;
   sections?: Maybe<Array<ProductV1Section>>;
+  sellerId: Scalars["BigInt"];
   subCategory?: Maybe<ProductV1Category>;
   subCategory2?: Maybe<ProductV1Category>;
   tags?: Maybe<Array<ProductV1Tag>>;
@@ -5064,6 +5066,14 @@ export type ProductV1Product_Filter = {
   details_tags_not?: InputMaybe<Array<Scalars["String"]>>;
   details_tags_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   details_tags_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -5578,6 +5588,14 @@ export type ProductV1Product_Filter = {
   sections_not?: InputMaybe<Array<Scalars["String"]>>;
   sections_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   sections_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  sellerId?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerId_lt?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_lte?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_not?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   subCategory?: InputMaybe<Scalars["String"]>;
   subCategory2?: InputMaybe<Scalars["String"]>;
   subCategory2_?: InputMaybe<ProductV1Category_Filter>;
@@ -5710,6 +5728,7 @@ export enum ProductV1Product_OrderBy {
   DetailsSubCategory = "details_subCategory",
   DetailsSubCategory2 = "details_subCategory2",
   DetailsTags = "details_tags",
+  DisputeResolverId = "disputeResolverId",
   Id = "id",
   IdentificationProductId = "identification_productId",
   IdentificationProductIdType = "identification_productIdType",
@@ -5735,6 +5754,7 @@ export enum ProductV1Product_OrderBy {
   ProductionInformationMaterials = "productionInformation_materials",
   ProductionInformationModelNumber = "productionInformation_modelNumber",
   Sections = "sections",
+  SellerId = "sellerId",
   SubCategory = "subCategory",
   SubCategory2 = "subCategory2",
   Tags = "tags",
