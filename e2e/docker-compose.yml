@@ -19,7 +19,7 @@ services:
 
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:de03b0655ae10e0a21ed0949e17af0dd0a4e34c5
+    image: hardhat-node:752ba8bd0830109c1d5ec555e615172b0c270d20_0
     ports:
       - "8545:8545"
 
