@@ -339,13 +339,28 @@ describe("CoreSDK - accounts", () => {
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
 
-      const randomWallet = Wallet.createRandom();
-      seller = await updateSeller(coreSDK, seller, {
-        admin: randomWallet.address,
-        operator: randomWallet.address,
-        clerk: randomWallet.address,
-        treasury: randomWallet.address
-      });
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      seller = await updateSeller(
+        coreSDK,
+        seller,
+        {
+          admin: randomWallet.address,
+          operator: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address
+        },
+        [
+          {
+            coreSDK: coreSDK2,
+            fieldsToUpdate: {
+              admin: true,
+              operator: true,
+              clerk: true
+            }
+          }
+        ]
+      );
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
@@ -366,11 +381,21 @@ describe("CoreSDK - accounts", () => {
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
 
-      seller = await updateSeller(coreSDK, seller, {
-        admin: ZERO_ADDRESS,
-        authTokenType: tokenType,
-        authTokenId: tokenId.toString()
-      });
+      seller = await updateSeller(
+        coreSDK,
+        seller,
+        {
+          admin: ZERO_ADDRESS,
+          authTokenType: tokenType,
+          authTokenId: tokenId.toString()
+        },
+        [
+          {
+            coreSDK,
+            fieldsToUpdate: { authToken: true }
+          }
+        ]
+      );
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
@@ -391,14 +416,34 @@ describe("CoreSDK - accounts", () => {
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
 
-      const randomWallet = Wallet.createRandom();
-      seller = await updateSeller(coreSDK, seller, {
-        admin: ZERO_ADDRESS,
-        operator: randomWallet.address,
-        clerk: randomWallet.address,
-        authTokenType: tokenType,
-        authTokenId: tokenId.toString()
-      });
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      seller = await updateSeller(
+        coreSDK,
+        seller,
+        {
+          admin: ZERO_ADDRESS,
+          operator: randomWallet.address,
+          clerk: randomWallet.address,
+          authTokenType: tokenType,
+          authTokenId: tokenId.toString()
+        },
+        [
+          {
+            coreSDK,
+            fieldsToUpdate: {
+              authToken: true
+            }
+          },
+          {
+            coreSDK: coreSDK2,
+            fieldsToUpdate: {
+              operator: true,
+              clerk: true
+            }
+          }
+        ]
+      );
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
@@ -416,17 +461,42 @@ describe("CoreSDK - accounts", () => {
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
 
-      const randomWallet = Wallet.createRandom();
-      seller = await updateSeller(coreSDK, seller, {
-        operator: randomWallet.address
-      });
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
+      seller = await updateSeller(
+        coreSDK,
+        seller,
+        {
+          operator: randomWallet.address
+        },
+        [
+          {
+            coreSDK: coreSDK2,
+            fieldsToUpdate: {
+              operator: true
+            }
+          }
+        ]
+      );
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
 
-      seller = await updateSeller(coreSDK, seller, {
-        operator: fundedWallet.address
-      });
+      seller = await updateSeller(
+        coreSDK,
+        seller,
+        {
+          operator: fundedWallet.address
+        },
+        [
+          {
+            coreSDK,
+            fieldsToUpdate: {
+              operator: true
+            }
+          }
+        ]
+      );
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());

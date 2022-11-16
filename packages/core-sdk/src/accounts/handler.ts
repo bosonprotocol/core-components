@@ -14,7 +14,8 @@ import {
   encodeAddSellersToAllowList,
   encodeRemoveFeesFromDisputeResolver,
   encodeRemoveSellersFromAllowList,
-  encodeUpdateDisputeResolver
+  encodeUpdateDisputeResolver,
+  encodeOptInToSellerUpdate
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -22,7 +23,8 @@ import {
   UpdateSellerArgs,
   CreateDisputeResolverArgs,
   DisputeResolutionFee,
-  DisputeResolverUpdates
+  DisputeResolverUpdates,
+  OptInToSellerUpdateArgs
 } from "./types";
 
 export async function createSeller(args: {
@@ -44,6 +46,21 @@ export async function updateSeller(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeUpdateSeller(args.sellerUpdates)
+  });
+
+  // TODO: in some case the method optInToSellerUpdate() can be called by the same account.
+  // Check in the event logs to know
+  // If so, let's call it immediately
+}
+
+export async function optInToSellerUpdate(args: {
+  sellerUpdates: OptInToSellerUpdateArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeOptInToSellerUpdate(args.sellerUpdates)
   });
 }
 

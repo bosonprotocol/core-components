@@ -16,6 +16,23 @@ export type UpdateSellerArgs = { id: BigNumberish } & Omit<
   "contractUri" | "royaltyPercentage"
 >;
 
+export const SellerUpdateFields = {
+  admin: 0,
+  operator: 1,
+  clerk: 2,
+  authToken: 3
+};
+
+export type OptInToSellerUpdateArgs = {
+  id: BigNumberish;
+  fieldsToUpdate: {
+    admin?: boolean;
+    operator?: boolean;
+    clerk?: boolean;
+    authToken?: boolean;
+  };
+};
+
 export const AuthTokenType = {
   NONE: 0,
   CUSTOM: 1,

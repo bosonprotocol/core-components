@@ -1,18 +1,18 @@
+import { Interface } from "@ethersproject/abi";
+import { BigNumberish } from "@ethersproject/bignumber";
 import {
+  CreateSellerArgs,
+  CreateDisputeResolverArgs,
+  DisputeResolutionFee,
   SellerStruct,
   AuthTokenStruct,
   VoucherInitValuesStruct,
   abis,
   DisputeResolverStruct,
   utils,
-  UpdateSellerArgs
-} from "@bosonprotocol/common";
-import { Interface } from "@ethersproject/abi";
-import { BigNumberish } from "@ethersproject/bignumber";
-import {
-  CreateSellerArgs,
-  CreateDisputeResolverArgs,
-  DisputeResolutionFee
+  UpdateSellerArgs,
+  OptInToSellerUpdateArgs,
+  SellerUpdateFields
 } from "./types";
 
 export const bosonAccountHandlerIface = new Interface(
@@ -33,6 +33,21 @@ export function encodeUpdateSeller(seller: UpdateSellerArgs) {
   return bosonAccountHandlerIface.encodeFunctionData("updateSeller", [
     sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct
+  ]);
+}
+
+export function encodeOptInToSellerUpdate(seller: OptInToSellerUpdateArgs) {
+  const fieldsToUpdate: number[] = [];
+  Object.entries(SellerUpdateFields).forEach(
+    ([key, value]: [string, number]) => {
+      if (seller.fieldsToUpdate[key]) {
+        fieldsToUpdate.push(value);
+      }
+    }
+  );
+  return bosonAccountHandlerIface.encodeFunctionData("optInToSellerUpdate", [
+    seller.id,
+    fieldsToUpdate
   ]);
 }
 

@@ -51,6 +51,7 @@ dataSources:
         - Seller
         - Buyer
         - DisputeResolver
+        - PendingSeller
       abis:
         - name: IBosonAccountHandler
           file: ../common/src/abis/IBosonAccountHandler.json
