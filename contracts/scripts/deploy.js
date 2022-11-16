@@ -2,6 +2,7 @@ const gasLimit = "20000000";
 process.env.CONFIRMATIONS = 1; // required for deployProtocolConfigFacet()
 process.env.DEPLOYER_GAS_LIMIT_TEST = gasLimit;
 process.env.AUTH_TOKEN_OWNERS_LOCAL = "";
+process.env.TIP_MULTIPLIER = "10";
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const hre = require("hardhat");
 const ethers = hre.ethers;
@@ -83,6 +84,7 @@ function getNoArgFacetNames() {
 }
 
 async function main() {
+  console.log("compile");
   // Compile everything (in case run by node)
   await hre.run("compile");
 
@@ -115,7 +117,7 @@ async function main() {
   if (hre.network.name === "localhost" || !config[0].token) {
     console.log(`\n💎 Deploying mock tokens...`);
     const [mockBosonToken] = await deployMockTokens(gasLimit);
-    deploymentComplete("BosonToken", mockBosonToken.address, [], contracts);
+    deploymentComplete("BosonToken", mockBosonToken.address, [], "", contracts);
     config[0].token = mockBosonToken.address;
   }
 
@@ -130,15 +132,17 @@ async function main() {
     "AccessController",
     accessController.address,
     [],
+    "",
     contracts
   );
-  deploymentComplete("DiamondLoupeFacet", dlf.address, [], contracts);
-  deploymentComplete("DiamondCutFacet", dcf.address, [], contracts);
-  deploymentComplete("ERC165Facet", erc165f.address, [], contracts);
+  deploymentComplete("DiamondLoupeFacet", dlf.address, [], "", contracts);
+  deploymentComplete("DiamondCutFacet", dcf.address, [], "", contracts);
+  deploymentComplete("ERC165Facet", erc165f.address, [], "", contracts);
   deploymentComplete(
     "ProtocolDiamond",
     protocolDiamond.address,
     diamondArgs,
+    "",
     contracts
   );
 
@@ -154,6 +158,7 @@ async function main() {
     "ConfigHandlerFacet",
     configHandlerFacet.address,
     [],
+    "",
     contracts
   );
 
@@ -169,6 +174,7 @@ async function main() {
       deployedFacet.name,
       deployedFacet.contract.address,
       [],
+      "",
       contracts
     );
   }
@@ -196,18 +202,21 @@ async function main() {
     "BosonVoucher Logic",
     bosonVoucherImpl.address,
     [],
+    "",
     contracts
   );
   deploymentComplete(
     "BosonVoucher Beacon",
     bosonClientBeacon.address,
     [],
+    "",
     contracts
   );
   deploymentComplete(
     "BosonVoucher Proxy",
     bosonVoucherProxy.address,
     bosonVoucherProxyArgs,
+    "",
     contracts
   );
 
@@ -255,9 +264,21 @@ async function main() {
         "Foreign721",
         "Foreign1155"
       ]);
-    deploymentComplete("Foreign20", foreign20Token.address, [], contracts);
-    deploymentComplete("Foreign721", foreign721Token.address, [], contracts);
-    deploymentComplete("Foreign1155", foreign1155Token.address, [], contracts);
+    deploymentComplete("Foreign20", foreign20Token.address, [], "", contracts);
+    deploymentComplete(
+      "Foreign721",
+      foreign721Token.address,
+      [],
+      "",
+      contracts
+    );
+    deploymentComplete(
+      "Foreign1155",
+      foreign1155Token.address,
+      [],
+      "",
+      contracts
+    );
 
     await deployAndMintMockNFTAuthTokens();
 
