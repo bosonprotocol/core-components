@@ -70,6 +70,7 @@ export class TokenInfoManager implements ITokenInfoManager {
   private _web3Lib: Web3LibAdapter;
   private _subgraphUrl: string;
   private _chainId: number;
+  private static InvalidAddresses = new Map<number, Set<string>>();
 
   public constructor(
     chainId: number,
@@ -79,38 +80,54 @@ export class TokenInfoManager implements ITokenInfoManager {
     if (!NATIVE_TOKENS[chainId]) {
       throw new Error(`Unexpected chainId value '${chainId}'`);
     }
+
     if (!TokenInfoManager.TokenInfos.has(chainId)) {
       const tokenInfos = new Map<string, ITokenInfo>();
       tokenInfos.set(AddressZero, NATIVE_TOKENS[chainId]);
       TokenInfoManager.TokenInfos.set(chainId, tokenInfos);
     }
+
     if (!TokenInfoManager.mapInitialized.has(chainId)) {
       TokenInfoManager.mapInitialized.set(chainId, false);
+    }
+
+    if (!TokenInfoManager.InvalidAddresses.has(chainId)) {
+      TokenInfoManager.InvalidAddresses.set(chainId, new Set<string>());
     }
     this._web3Lib = web3Lib;
     this._subgraphUrl = subgraphUrl;
     this._chainId = chainId;
   }
 
-  public async getExchangeTokenInfo(tokenAddress: string): Promise<ITokenInfo> {
+  public async getExchangeTokenInfo(
+    tokenAddress: string
+  ): Promise<ITokenInfo | undefined> {
     await this.ensureInitialized();
     const tokenInfos = TokenInfoManager.TokenInfos.get(this._chainId);
+    const invalidAddressesSet = TokenInfoManager.InvalidAddresses.get(
+      this._chainId
+    );
     const key = tokenAddress.toLowerCase();
-    if (!tokenInfos.has(key)) {
+
+    if (!tokenInfos.has(key) && !invalidAddressesSet.has(key)) {
       const args = {
         web3Lib: this._web3Lib,
         contractAddress: tokenAddress
       };
-      const [decimals, name, symbol] = await Promise.all([
-        getDecimals(args),
-        getName(args),
-        getSymbol(args)
-      ]);
-      tokenInfos.set(key, {
-        decimals,
-        name,
-        symbol
-      });
+      try {
+        const [decimals, name, symbol] = await Promise.all([
+          getDecimals(args),
+          getName(args),
+          getSymbol(args)
+        ]);
+        tokenInfos.set(key, {
+          decimals,
+          name,
+          symbol
+        });
+      } catch (error) {
+        invalidAddressesSet.add(key);
+      }
     }
     return tokenInfos.get(key);
   }
