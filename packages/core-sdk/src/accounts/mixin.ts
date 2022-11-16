@@ -375,6 +375,19 @@ export class AccountsMixin extends BaseCoreSDK {
     });
   }
 
+  public async optInToDisputeResolverUpdate(
+    disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.optInToDisputeResolverUpdate({
+      disputeResolverUpdates,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
   /**
    * Activates a dispute resolver account by calling the `AccountHandlerFacet` contract.
    * Note, that the caller needs to have the ADMIN role.

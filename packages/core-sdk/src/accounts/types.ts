@@ -11,6 +11,8 @@ export {
   DisputeResolverStruct,
   SellerUpdateFields,
   OptInToSellerUpdateArgs,
+  DisputeResolverUpdateFields,
+  OptInToDisputeResolverUpdateArgs,
   utils
 } from "@bosonprotocol/common";
 

@@ -15,7 +15,8 @@ import {
   encodeRemoveFeesFromDisputeResolver,
   encodeRemoveSellersFromAllowList,
   encodeUpdateDisputeResolver,
-  encodeOptInToSellerUpdate
+  encodeOptInToSellerUpdate,
+  encodeOptInToDisputeResolverUpdate
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -24,7 +25,8 @@ import {
   CreateDisputeResolverArgs,
   DisputeResolutionFee,
   DisputeResolverUpdates,
-  OptInToSellerUpdateArgs
+  OptInToSellerUpdateArgs,
+  OptInToDisputeResolverUpdateArgs
 } from "./types";
 
 export async function createSeller(args: {
@@ -163,6 +165,17 @@ export async function updateDisputeResolver(args: {
         ? utils.timestamp.msToSec(args.updates.escalationResponsePeriodInMS)
         : disputeResolver.escalationResponsePeriod
     })
+  });
+}
+
+export async function optInToDisputeResolverUpdate(args: {
+  disputeResolverUpdates: OptInToDisputeResolverUpdateArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeOptInToDisputeResolverUpdate(args.disputeResolverUpdates)
   });
 }
 

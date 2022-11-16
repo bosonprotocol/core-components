@@ -12,7 +12,9 @@ import {
   utils,
   UpdateSellerArgs,
   OptInToSellerUpdateArgs,
-  SellerUpdateFields
+  SellerUpdateFields,
+  OptInToDisputeResolverUpdateArgs,
+  DisputeResolverUpdateFields
 } from "./types";
 
 export const bosonAccountHandlerIface = new Interface(
@@ -112,6 +114,23 @@ export function encodeUpdateDisputeResolver(
   return bosonAccountHandlerIface.encodeFunctionData("updateDisputeResolver", [
     disputeResolver
   ]);
+}
+
+export function encodeOptInToDisputeResolverUpdate(
+  disputeResolver: OptInToDisputeResolverUpdateArgs
+) {
+  const fieldsToUpdate: number[] = [];
+  Object.entries(DisputeResolverUpdateFields).forEach(
+    ([key, value]: [string, number]) => {
+      if (disputeResolver.fieldsToUpdate[key]) {
+        fieldsToUpdate.push(value);
+      }
+    }
+  );
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "optInToDisputeResolverUpdate",
+    [disputeResolver.id, fieldsToUpdate]
+  );
 }
 
 export function createSellerArgsToStruct(args: CreateSellerArgs): {

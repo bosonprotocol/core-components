@@ -118,8 +118,11 @@ describe("CoreSDK - accounts", () => {
           }
         );
 
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(seedWallet3);
       await (
         await coreSDK.updateDisputeResolver(disputeResolverBeforeUpdate.id, {
+          operator: randomWallet.address,
           metadataUri: "ipfs://changed",
           escalationResponsePeriodInMS: 123_000
         })
@@ -140,6 +143,21 @@ describe("CoreSDK - accounts", () => {
       );
       expect(disputeResolverAfterUpdate.treasury).toBe(
         disputeResolverBeforeUpdate.treasury
+      );
+
+      const txOptIn = await coreSDK2.optInToDisputeResolverUpdate({
+        id: disputeResolverBeforeUpdate.id,
+        fieldsToUpdate: {
+          operator: true
+        }
+      });
+      await txOptIn.wait();
+      await waitForGraphNodeIndexing();
+      const disputeResolverAfterOptIn = await coreSDK.getDisputeResolverById(
+        disputeResolverBeforeUpdate.id
+      );
+      expect(disputeResolverAfterOptIn.operator).toBe(
+        randomWallet.address.toLowerCase()
       );
     });
 

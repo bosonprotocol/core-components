@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { Address, log, BigInt } from "@graphprotocol/graph-ts";
 import {
   SellerCreated,
   SellerUpdated,
@@ -17,7 +15,13 @@ import {
   DisputeResolverUpdatePending
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import { IBosonVoucher } from "../../generated/BosonAccountHandler/IBosonVoucher";
-import { Seller, Buyer, PendingSeller } from "../../generated/schema";
+import {
+  Seller,
+  Buyer,
+  PendingSeller,
+  DisputeResolver,
+  PendingDisputeResolver
+} from "../../generated/schema";
 
 import {
   getAndSaveDisputeResolver,
@@ -113,6 +117,7 @@ export function handleSellerUpdatePendingEvent(
     pendingSeller.seller = seller.id;
   }
 
+  // TODO: delete the property when set to 0
   pendingSeller.operator = pendingSellerFromEvent.operator;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
@@ -150,6 +155,7 @@ export function handleSellerUpdateAppliedEvent(
     pendingSeller.seller = seller.id;
   }
 
+  // TODO: delete the property when set to 0
   pendingSeller.operator = pendingSellerFromEvent.operator;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
@@ -231,19 +237,75 @@ export function handleDisputeResolverUpdatePendingEvent(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   event: DisputeResolverUpdatePending
 ): void {
-  log.error(
-    "handleDisputeResolverUpdatePendingEvent() Not implemented yet",
-    []
+  const disputeResolverId = event.params.disputeResolverId;
+  const pendingDisputeResolverFromEvent = event.params.pendingDisputeResolver;
+
+  let pendingDisputeResolver = PendingDisputeResolver.load(
+    disputeResolverId.toString()
   );
+
+  if (!pendingDisputeResolver) {
+    pendingDisputeResolver = new PendingDisputeResolver(
+      disputeResolverId.toString()
+    );
+    pendingDisputeResolver.disputeResolver = disputeResolverId.toString();
+  }
+
+  // TODO: delete the property when set to 0
+  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.operator;
+  pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
+  pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
+  pendingDisputeResolver.save();
 }
 
 export function handleDisputeResolverUpdateAppliedEvent(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   event: DisputeResolverUpdateApplied
 ): void {
-  log.error(
-    "handleDisputeResolverUpdateAppliedEvent() Not implemented yet",
-    []
+  const disputeResolverId = event.params.disputeResolverId;
+  const disputeResolverFromEvent = event.params.disputeResolver;
+  const pendingDisputeResolverFromEvent = event.params.pendingDisputeResolver;
+
+  let disputeResolver = DisputeResolver.load(disputeResolverId.toString());
+
+  if (!disputeResolver) {
+    disputeResolver = new DisputeResolver(disputeResolverId.toString());
+  }
+
+  disputeResolver.escalationResponsePeriod =
+    disputeResolverFromEvent.escalationResponsePeriod;
+  disputeResolver.operator = disputeResolverFromEvent.operator;
+  disputeResolver.admin = disputeResolverFromEvent.admin;
+  disputeResolver.clerk = disputeResolverFromEvent.clerk;
+  disputeResolver.treasury = disputeResolverFromEvent.treasury;
+  disputeResolver.metadataUri = disputeResolverFromEvent.metadataUri;
+  disputeResolver.active = disputeResolverFromEvent.active;
+  disputeResolver.save();
+
+  let pendingDisputeResolver = PendingDisputeResolver.load(
+    disputeResolverId.toString()
+  );
+
+  if (!pendingDisputeResolver) {
+    pendingDisputeResolver = new PendingDisputeResolver(
+      disputeResolverId.toString()
+    );
+    pendingDisputeResolver.disputeResolver = disputeResolverId.toString();
+  }
+
+  // TODO: delete the property when set to 0
+  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.operator;
+  pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
+  pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
+  pendingDisputeResolver.save();
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "DISPUTE_RESOLVER_UPDATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    disputeResolverId.toString()
   );
 }
 

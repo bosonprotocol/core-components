@@ -33,6 +33,21 @@ export type OptInToSellerUpdateArgs = {
   };
 };
 
+export const DisputeResolverUpdateFields = {
+  admin: 0,
+  operator: 1,
+  clerk: 2
+};
+
+export type OptInToDisputeResolverUpdateArgs = {
+  id: BigNumberish;
+  fieldsToUpdate: {
+    admin?: boolean;
+    operator?: boolean;
+    clerk?: boolean;
+  };
+};
+
 export const AuthTokenType = {
   NONE: 0,
   CUSTOM: 1,

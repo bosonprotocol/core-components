@@ -448,6 +448,14 @@ type Buyer implements Account @entity {
   logs: [EventLog!]! @derivedFrom(field: "account")
 }
 
+type PendingDisputeResolver @entity {
+  id: ID!
+  operator: Bytes
+  admin: Bytes
+  clerk: Bytes
+  disputeResolver: DisputeResolver!
+}
+
 type DisputeResolver implements Account @entity {
   id: ID!
   escalationResponsePeriod: BigInt!
@@ -462,6 +470,7 @@ type DisputeResolver implements Account @entity {
   offers: [Offer!]! @derivedFrom(field: "disputeResolver")
   funds: [FundsEntity!]! @derivedFrom(field: "account")
   logs: [EventLog!]! @derivedFrom(field: "account")
+  pendingDisputeResolver: PendingDisputeResolver @derivedFrom(field: "disputeResolver")
 }
 
 type DisputeResolutionTermsEntity @entity {
