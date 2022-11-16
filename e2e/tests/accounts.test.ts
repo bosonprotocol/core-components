@@ -385,7 +385,7 @@ describe("CoreSDK - accounts", () => {
         seedWallet3
       );
 
-      const tokenType = AuthTokenType.LENS; // LENS
+      const tokenType = AuthTokenType.LENS;
       const tokenId = await mintLensToken(fundedWallet, fundedWallet.address);
 
       let seller = await createSeller(coreSDK, fundedWallet.address);
