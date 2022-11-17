@@ -6,7 +6,7 @@ import { AuthTokenType, TransactionResponse, Log } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { offers, orchestration } from "..";
-import { getValueFromLogs } from "../utils/logs";
+import { getValueFromLogs, getValuesFromLogsExt } from "../utils/logs";
 
 export class AccountsMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -420,25 +420,37 @@ export class AccountsMixin extends BaseCoreSDK {
     tokenType: number;
     tokenId: BigNumber;
   } {
-    const pendingSellerStruct = getValueFromLogs<{
-      operator: string;
-      clerk: string;
-      admin: string;
-    }>({
+    // Extract fields pendingSeller and pendingAuthToken from
+    // SellerUpdatePending or SellerUpdateApplied events
+    const valuesFromLogs = getValuesFromLogsExt<
+      | {
+          operator: string;
+          clerk: string;
+          admin: string;
+        }
+      | {
+          tokenType: number;
+          tokenId: BigNumber;
+        }
+    >({
       iface: accounts.iface.bosonAccountHandlerIface,
       logs,
-      eventArgsKey: "pendingSeller",
-      eventName: "SellerUpdatePending"
+      eventArgsKeys: ["pendingSeller", "pendingAuthToken"],
+      eventNames: ["SellerUpdatePending", "SellerUpdateApplied"]
     });
-    const pendingAuthTokenStruct = getValueFromLogs<{
-      tokenType: number;
-      tokenId: BigNumber;
-    }>({
-      iface: accounts.iface.bosonAccountHandlerIface,
-      logs,
-      eventArgsKey: "pendingAuthToken",
-      eventName: "SellerUpdatePending"
-    });
+    const pendingSellerStruct = (
+      valuesFromLogs["pendingSeller"] as {
+        operator: string;
+        clerk: string;
+        admin: string;
+      }[]
+    )?.[0];
+    const pendingAuthTokenStruct = (
+      valuesFromLogs["pendingAuthToken"] as {
+        tokenType: number;
+        tokenId: BigNumber;
+      }[]
+    )?.[0];
     return {
       operator: pendingSellerStruct?.operator,
       admin: pendingSellerStruct?.admin,
