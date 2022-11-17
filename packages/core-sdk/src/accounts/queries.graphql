@@ -192,6 +192,9 @@ query getDisputeResolversQuery(
 
 fragment SellerFields on Seller {
   ...BaseSellerFields
+  pendingSeller {
+    ...PendingSellerFields
+  }
   funds(
     skip: $fundsSkip
     first: $fundsFirst
@@ -244,6 +247,14 @@ fragment BaseSellerFields on Seller {
   royaltyPercentage
 }
 
+fragment PendingSellerFields on PendingSeller {
+  operator
+  admin
+  clerk
+  authTokenId
+  authTokenType
+}
+
 fragment BuyerFields on Buyer {
   ...BaseBuyerFields
   funds(
@@ -283,6 +294,9 @@ fragment BaseBuyerFields on Buyer {
 
 fragment DisputeResolverFields on DisputeResolver {
   ...BaseDisputeResolverFields
+  pendingDisputeResolver {
+    ...PendingDisputeResolverFields
+  }
   offers(
     skip: $offersSkip
     first: $offersFirst
@@ -316,6 +330,12 @@ fragment BaseDisputeResolverFields on DisputeResolver {
   fees {
     ...BaseDisputeResolverFeeFields
   }
+}
+
+fragment PendingDisputeResolverFields on PendingDisputeResolver {
+  operator
+  admin
+  clerk
 }
 
 fragment BaseDisputeResolverFeeFields on DisputeResolverFee {

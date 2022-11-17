@@ -954,6 +954,7 @@ export type DisputeResolver = Account & {
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
   sellerAllowList: Array<Scalars["BigInt"]>;
   treasury: Scalars["Bytes"];
 };
@@ -1146,6 +1147,7 @@ export type DisputeResolver_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  pendingDisputeResolver_?: InputMaybe<PendingDisputeResolver_Filter>;
   sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains_nocase?: InputMaybe<Array<Scalars["BigInt"]>>;
@@ -1172,6 +1174,7 @@ export enum DisputeResolver_OrderBy {
   MetadataUri = "metadataUri",
   Offers = "offers",
   Operator = "operator",
+  PendingDisputeResolver = "pendingDisputeResolver",
   SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
 }
@@ -3232,6 +3235,164 @@ export enum Offer_OrderBy {
 export enum OrderDirection {
   Asc = "asc",
   Desc = "desc"
+}
+
+export type PendingDisputeResolver = {
+  __typename?: "PendingDisputeResolver";
+  admin?: Maybe<Scalars["Bytes"]>;
+  clerk?: Maybe<Scalars["Bytes"]>;
+  disputeResolver: DisputeResolver;
+  id: Scalars["ID"];
+  operator?: Maybe<Scalars["Bytes"]>;
+};
+
+export type PendingDisputeResolver_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  admin?: InputMaybe<Scalars["Bytes"]>;
+  admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_not?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk?: InputMaybe<Scalars["Bytes"]>;
+  clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_not?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  disputeResolver?: InputMaybe<Scalars["String"]>;
+  disputeResolver_?: InputMaybe<DisputeResolver_Filter>;
+  disputeResolver_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  operator?: InputMaybe<Scalars["Bytes"]>;
+  operator_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  operator_not?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+};
+
+export enum PendingDisputeResolver_OrderBy {
+  Admin = "admin",
+  Clerk = "clerk",
+  DisputeResolver = "disputeResolver",
+  Id = "id",
+  Operator = "operator"
+}
+
+export type PendingSeller = {
+  __typename?: "PendingSeller";
+  admin?: Maybe<Scalars["Bytes"]>;
+  authTokenId?: Maybe<Scalars["BigInt"]>;
+  authTokenType?: Maybe<Scalars["Int"]>;
+  clerk?: Maybe<Scalars["Bytes"]>;
+  id: Scalars["ID"];
+  operator?: Maybe<Scalars["Bytes"]>;
+  seller: Seller;
+};
+
+export type PendingSeller_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  admin?: InputMaybe<Scalars["Bytes"]>;
+  admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_not?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  authTokenId?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenType?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  authTokenType_lt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_lte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  clerk?: InputMaybe<Scalars["Bytes"]>;
+  clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_not?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  operator?: InputMaybe<Scalars["Bytes"]>;
+  operator_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  operator_not?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  seller?: InputMaybe<Scalars["String"]>;
+  seller_?: InputMaybe<Seller_Filter>;
+  seller_contains?: InputMaybe<Scalars["String"]>;
+  seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_gt?: InputMaybe<Scalars["String"]>;
+  seller_gte?: InputMaybe<Scalars["String"]>;
+  seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_lt?: InputMaybe<Scalars["String"]>;
+  seller_lte?: InputMaybe<Scalars["String"]>;
+  seller_not?: InputMaybe<Scalars["String"]>;
+  seller_not_contains?: InputMaybe<Scalars["String"]>;
+  seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum PendingSeller_OrderBy {
+  Admin = "admin",
+  AuthTokenId = "authTokenId",
+  AuthTokenType = "authTokenType",
+  Clerk = "clerk",
+  Id = "id",
+  Operator = "operator",
+  Seller = "seller"
 }
 
 export type ProductV1Brand = {
@@ -6466,6 +6627,10 @@ export type Query = {
   offerEventLog?: Maybe<OfferEventLog>;
   offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
+  pendingDisputeResolvers: Array<PendingDisputeResolver>;
+  pendingSeller?: Maybe<PendingSeller>;
+  pendingSellers: Array<PendingSeller>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
   productV1Categories: Array<ProductV1Category>;
@@ -6825,6 +6990,38 @@ export type QueryOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
+export type QueryPendingDisputeResolverArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryPendingDisputeResolversArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingDisputeResolver_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingDisputeResolver_Filter>;
+};
+
+export type QueryPendingSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryPendingSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingSeller_Filter>;
+};
+
 export type QueryProductV1BrandArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -7105,6 +7302,7 @@ export type Seller = Account & {
   logs: Array<EventLog>;
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
   royaltyPercentage: Scalars["BigInt"];
   sellerId: Scalars["BigInt"];
@@ -7216,6 +7414,7 @@ export type Seller_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -7259,6 +7458,7 @@ export enum Seller_OrderBy {
   Logs = "logs",
   Offers = "offers",
   Operator = "operator",
+  PendingSeller = "pendingSeller",
   RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
   Treasury = "treasury",
@@ -7309,6 +7509,10 @@ export type Subscription = {
   offerEventLog?: Maybe<OfferEventLog>;
   offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
+  pendingDisputeResolvers: Array<PendingDisputeResolver>;
+  pendingSeller?: Maybe<PendingSeller>;
+  pendingSellers: Array<PendingSeller>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
   productV1Categories: Array<ProductV1Category>;
@@ -7668,6 +7872,38 @@ export type SubscriptionOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
+export type SubscriptionPendingDisputeResolverArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionPendingDisputeResolversArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingDisputeResolver_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingDisputeResolver_Filter>;
+};
+
+export type SubscriptionPendingSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionPendingSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingSeller_Filter>;
+};
+
 export type SubscriptionProductV1BrandArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -8009,6 +8245,14 @@ export type GetSellerByIdQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    pendingSeller?: {
+      __typename?: "PendingSeller";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+      authTokenId?: string | null;
+      authTokenType?: number | null;
+    } | null;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -8509,6 +8753,14 @@ export type GetSellersQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    pendingSeller?: {
+      __typename?: "PendingSeller";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+      authTokenId?: string | null;
+      authTokenType?: number | null;
+    } | null;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -9333,6 +9585,12 @@ export type GetDisputeResolverByIdQueryQuery = {
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
+    pendingDisputeResolver?: {
+      __typename?: "PendingDisputeResolver";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+    } | null;
     offers?: Array<{
       __typename?: "Offer";
       id: string;
@@ -9770,6 +10028,12 @@ export type GetDisputeResolversQueryQuery = {
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
+    pendingDisputeResolver?: {
+      __typename?: "PendingDisputeResolver";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+    } | null;
     offers?: Array<{
       __typename?: "Offer";
       id: string;
@@ -10187,6 +10451,14 @@ export type SellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  pendingSeller?: {
+    __typename?: "PendingSeller";
+    operator?: string | null;
+    admin?: string | null;
+    clerk?: string | null;
+    authTokenId?: string | null;
+    authTokenType?: number | null;
+  } | null;
   funds?: Array<{
     __typename?: "FundsEntity";
     id: string;
@@ -10650,6 +10922,15 @@ export type BaseSellerFieldsFragment = {
   royaltyPercentage: string;
 };
 
+export type PendingSellerFieldsFragment = {
+  __typename?: "PendingSeller";
+  operator?: string | null;
+  admin?: string | null;
+  clerk?: string | null;
+  authTokenId?: string | null;
+  authTokenType?: number | null;
+};
+
 export type BuyerFieldsFragment = {
   __typename?: "Buyer";
   id: string;
@@ -10809,6 +11090,12 @@ export type DisputeResolverFieldsFragment = {
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
+  pendingDisputeResolver?: {
+    __typename?: "PendingDisputeResolver";
+    operator?: string | null;
+    admin?: string | null;
+    clerk?: string | null;
+  } | null;
   offers?: Array<{
     __typename?: "Offer";
     id: string;
@@ -11234,6 +11521,13 @@ export type BaseDisputeResolverFieldsFragment = {
       name: string;
     };
   }>;
+};
+
+export type PendingDisputeResolverFieldsFragment = {
+  __typename?: "PendingDisputeResolver";
+  operator?: string | null;
+  admin?: string | null;
+  clerk?: string | null;
 };
 
 export type BaseDisputeResolverFeeFieldsFragment = {
@@ -21695,6 +21989,15 @@ export const BaseSellerFieldsFragmentDoc = gql`
     royaltyPercentage
   }
 `;
+export const PendingSellerFieldsFragmentDoc = gql`
+  fragment PendingSellerFields on PendingSeller {
+    operator
+    admin
+    clerk
+    authTokenId
+    authTokenType
+  }
+`;
 export const BaseFundsEntityFieldsFragmentDoc = gql`
   fragment BaseFundsEntityFields on FundsEntity {
     id
@@ -22126,6 +22429,9 @@ export const BaseEventLogFieldsFragmentDoc = gql`
 export const SellerFieldsFragmentDoc = gql`
   fragment SellerFields on Seller {
     ...BaseSellerFields
+    pendingSeller {
+      ...PendingSellerFields
+    }
     funds(
       skip: $fundsSkip
       first: $fundsFirst
@@ -22164,6 +22470,7 @@ export const SellerFieldsFragmentDoc = gql`
     }
   }
   ${BaseSellerFieldsFragmentDoc}
+  ${PendingSellerFieldsFragmentDoc}
   ${FundsEntityFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
@@ -22205,9 +22512,19 @@ export const BuyerFieldsFragmentDoc = gql`
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
+export const PendingDisputeResolverFieldsFragmentDoc = gql`
+  fragment PendingDisputeResolverFields on PendingDisputeResolver {
+    operator
+    admin
+    clerk
+  }
+`;
 export const DisputeResolverFieldsFragmentDoc = gql`
   fragment DisputeResolverFields on DisputeResolver {
     ...BaseDisputeResolverFields
+    pendingDisputeResolver {
+      ...PendingDisputeResolverFields
+    }
     offers(
       skip: $offersSkip
       first: $offersFirst
@@ -22228,6 +22545,7 @@ export const DisputeResolverFieldsFragmentDoc = gql`
     }
   }
   ${BaseDisputeResolverFieldsFragmentDoc}
+  ${PendingDisputeResolverFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;

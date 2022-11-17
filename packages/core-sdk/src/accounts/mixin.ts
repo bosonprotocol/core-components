@@ -318,10 +318,13 @@ export class AccountsMixin extends BaseCoreSDK {
       await this._web3Lib.getSignerAddress()
     ).toLowerCase();
     const fieldsToUpdate = {
-      operator: currentAccount === pendingSellerUpdate.operator.toLowerCase(),
-      clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
-      admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
-      authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+      operator: currentAccount === pendingSellerUpdate.operator?.toLowerCase(),
+      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
+      admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
+      authToken:
+        pendingSellerUpdate.tokenType !== undefined &&
+        pendingSellerUpdate.tokenType !== null &&
+        pendingSellerUpdate.tokenType !== AuthTokenType.NONE
     };
     if (
       fieldsToUpdate.operator ||
@@ -437,11 +440,11 @@ export class AccountsMixin extends BaseCoreSDK {
       eventName: "SellerUpdatePending"
     });
     return {
-      operator: pendingSellerStruct.operator,
-      admin: pendingSellerStruct.admin,
-      clerk: pendingSellerStruct.clerk,
-      tokenId: pendingAuthTokenStruct.tokenId,
-      tokenType: pendingAuthTokenStruct.tokenType
+      operator: pendingSellerStruct?.operator,
+      admin: pendingSellerStruct?.admin,
+      clerk: pendingSellerStruct?.clerk,
+      tokenId: pendingAuthTokenStruct?.tokenId,
+      tokenType: pendingAuthTokenStruct?.tokenType
     };
   }
 
