@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.19.0...@bosonprotocol/common@1.20.0) (2022-11-17)
+
+
+### Features
+
+* add checkTokenGatedCondition ([#390](https://github.com/bosonprotocol/core-components/issues/390)) ([f07f6da](https://github.com/bosonprotocol/core-components/commit/f07f6dac20bcdd7a3f072876a6ae8d13f0b3e9de))
+* add lens ipfs gateway ([#383](https://github.com/bosonprotocol/core-components/issues/383)) ([5f037f3](https://github.com/bosonprotocol/core-components/commit/5f037f3a8abac2fc83bdd02784e7c3014cf1e2f1))
+* chain id to address ([#382](https://github.com/bosonprotocol/core-components/issues/382)) ([492feaf](https://github.com/bosonprotocol/core-components/commit/492feaf003cb2f14532ac84b94bd53d1ee4317e4))
+
+
+
+
+
 # [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.18.0...@bosonprotocol/common@1.19.0) (2022-10-28)
 
 

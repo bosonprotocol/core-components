@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.13.0...@bosonprotocol/react-kit@0.14.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* images cutting off text below ([#378](https://github.com/bosonprotocol/core-components/issues/378)) ([5786cea](https://github.com/bosonprotocol/core-components/commit/5786ceae81e9060f2876a6f139c9484c59c1066f))
+
+
+### Features
+
+* activate meta-transactions for revokeVoucher()/completeExchangem()/extendDisputeTimeout() ([#367](https://github.com/bosonprotocol/core-components/issues/367)) ([9a7888e](https://github.com/bosonprotocol/core-components/commit/9a7888ec3d66b072604c7802a0834549f656bf19))
+* add funts ctas ([#372](https://github.com/bosonprotocol/core-components/issues/372)) ([3bca4e9](https://github.com/bosonprotocol/core-components/commit/3bca4e994b71f1b84dddd0f9e36f475ae2cd0f88))
+* add onError handler for avatar image ([#379](https://github.com/bosonprotocol/core-components/issues/379)) ([3160bb5](https://github.com/bosonprotocol/core-components/commit/3160bb558c18bac03f5daeb79ed72cbfe1508259))
+* implement dispute CTAs ([#368](https://github.com/bosonprotocol/core-components/issues/368)) ([28cb98a](https://github.com/bosonprotocol/core-components/commit/28cb98aa5e289da7e8051a3341343ac7b420732f))
+
+
+
+
+
 # [0.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.12.0...@bosonprotocol/react-kit@0.13.0) (2022-10-28)
 
 

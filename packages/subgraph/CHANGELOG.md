@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.21.0...@bosonprotocol/subgraph@1.22.0) (2022-11-17)
+
+
+### Features
+
+* add sellerId and disputeResolverId to productFilter ([#396](https://github.com/bosonprotocol/core-components/issues/396)) ([268657e](https://github.com/bosonprotocol/core-components/commit/268657ee48bc066fbd1f0a04a3c83400541927c8))
+* fetch products with variants directly from subgraph ([#386](https://github.com/bosonprotocol/core-components/issues/386)) ([2bdb77a](https://github.com/bosonprotocol/core-components/commit/2bdb77aa2a5f4bafc2885e7d42f406b1c4f6c9a7))
+
+
+
+
+
 # [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.20.0...@bosonprotocol/subgraph@1.21.0) (2022-10-28)
 
 
