@@ -275,7 +275,7 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Updates seller account by calling the `AccountHandlerFacet` contract. Only callable
+   * Opt-in to a pending seller update by calling the `AccountHandlerFacet` contract. Only callable
    * by admin.
    * @param sellerUpdates - Values to update.
    * @param overrides - Optional overrides.
@@ -292,6 +292,56 @@ export class AccountsMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
+  }
+
+  /**
+   * Updates seller account by calling the `AccountHandlerFacet` contract,
+   * then optIn for all updates doable by the same account. Only callable
+   * by admin.
+   * @param sellerUpdates - Values to update.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async updateSellerAndOptIn(
+    sellerUpdates: accounts.UpdateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const updateTx = await this.updateSeller(sellerUpdates, overrides);
+    const txReceipt = await updateTx.wait();
+    const pendingSellerUpdate = this.getPendingSellerUpdateFromLogs(
+      txReceipt.logs
+    );
+    // Find all updates that can be opted in by the current account
+    const currentAccount = (
+      await this._web3Lib.getSignerAddress()
+    ).toLowerCase();
+    const fieldsToUpdate = {
+      operator: currentAccount === pendingSellerUpdate.operator.toLowerCase(),
+      clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+      admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+      authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+    };
+    if (
+      fieldsToUpdate.operator ||
+      fieldsToUpdate.clerk ||
+      fieldsToUpdate.admin ||
+      fieldsToUpdate.authToken
+    ) {
+      return this.optInToSellerUpdate({
+        id: sellerUpdates.id,
+        fieldsToUpdate: {
+          operator:
+            currentAccount === pendingSellerUpdate.operator.toLowerCase(),
+          clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+          admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+          authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+        }
+      });
+    }
+    // If there is nothing to optIn from the current account, then return the response from updateSeller
+    return updateTx;
   }
 
   /* ---------------------------------- Buyer --------------------------------- */
@@ -353,6 +403,46 @@ export class AccountsMixin extends BaseCoreSDK {
       eventArgsKey: "disputeResolverId",
       eventName: "DisputeResolverCreated"
     });
+  }
+
+  /**
+   * Utility method to retrieve the pending seller update fields from logs after calling `updateSeller`.
+   * @param logs - Logs to search in.
+   * @returns Created exchange id.
+   */
+  public getPendingSellerUpdateFromLogs(logs: Log[]): {
+    operator: string;
+    clerk: string;
+    admin: string;
+    tokenType: number;
+    tokenId: BigNumber;
+  } {
+    const pendingSellerStruct = getValueFromLogs<{
+      operator: string;
+      clerk: string;
+      admin: string;
+    }>({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "pendingSeller",
+      eventName: "SellerUpdatePending"
+    });
+    const pendingAuthTokenStruct = getValueFromLogs<{
+      tokenType: number;
+      tokenId: BigNumber;
+    }>({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKey: "pendingAuthToken",
+      eventName: "SellerUpdatePending"
+    });
+    return {
+      operator: pendingSellerStruct.operator,
+      admin: pendingSellerStruct.admin,
+      clerk: pendingSellerStruct.clerk,
+      tokenId: pendingAuthTokenStruct.tokenId,
+      tokenType: pendingAuthTokenStruct.tokenType
+    };
   }
 
   /**

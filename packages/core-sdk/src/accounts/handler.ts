@@ -49,10 +49,6 @@ export async function updateSeller(args: {
     to: args.contractAddress,
     data: encodeUpdateSeller(args.sellerUpdates)
   });
-
-  // TODO: in some case the method optInToSellerUpdate() can be called by the same account.
-  // Check in the event logs to know
-  // If so, let's call it immediately
 }
 
 export async function optInToSellerUpdate(args: {

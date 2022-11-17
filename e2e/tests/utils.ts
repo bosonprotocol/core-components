@@ -451,7 +451,7 @@ export async function updateSeller(
     };
   }[] = []
 ) {
-  const updatedSellerTxResponse = await coreSDK.updateSeller({
+  const updatedSellerTxResponse = await coreSDK.updateSellerAndOptIn({
     ...seller,
     ...sellerParams
   });
