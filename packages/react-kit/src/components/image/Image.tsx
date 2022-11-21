@@ -12,6 +12,7 @@ type LoadingStatus = "loading" | "success" | "error";
 
 export interface IBaseImage extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
+  fallbackSrc?: string;
   children?: React.ReactNode;
   dataTestId?: string;
   alt?: string;
@@ -25,6 +26,7 @@ export interface IBaseImage extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Image: React.FC<IBaseImage> = ({
   src,
+  fallbackSrc,
   children,
   dataTestId = "image",
   alt = "",
@@ -36,6 +38,9 @@ export const Image: React.FC<IBaseImage> = ({
   const [status, setStatus] = useState<LoadingStatus>(
     withLoading ? "loading" : "success"
   );
+  const [currentSrc, setCurrentSrc] = useState<string>(src);
+  const [didOriginalSrcFail, setDidOriginalSrcFail] = useState<boolean>(false);
+
   const isError = status === "error";
   const isLoading = status === "loading";
   const isSuccess = status === "success";
@@ -61,7 +66,7 @@ export const Image: React.FC<IBaseImage> = ({
         {children || ""}
         <ImageContainer
           data-testid={dataTestId}
-          src={src}
+          src={currentSrc}
           alt={alt}
           onLoad={() => {
             setStatus("success");
@@ -70,7 +75,14 @@ export const Image: React.FC<IBaseImage> = ({
               onLoaded();
             }
           }}
-          onError={() => setStatus("error")}
+          onError={() => {
+            if (didOriginalSrcFail || !fallbackSrc) {
+              setStatus("error");
+            } else {
+              setDidOriginalSrcFail(true);
+              setCurrentSrc(fallbackSrc);
+            }
+          }}
         />
       </ImageWrapper>
     </>
