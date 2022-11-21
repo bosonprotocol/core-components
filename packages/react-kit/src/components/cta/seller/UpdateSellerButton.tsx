@@ -45,7 +45,9 @@ export const UpdateSellerButton = ({
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.updateSeller(updateSellerArgs);
+            const txResponse = await coreSdk.updateSellerAndOptIn(
+              updateSellerArgs
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);

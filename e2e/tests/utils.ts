@@ -1,4 +1,8 @@
-import { ConditionStruct, CreateSellerArgs } from "@bosonprotocol/common";
+import {
+  ConditionStruct,
+  CreateSellerArgs,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import {
   providers,
   Wallet,
@@ -436,13 +440,32 @@ export async function createSeller(
 export async function updateSeller(
   coreSDK: CoreSDK,
   seller: SellerFieldsFragment,
-  sellerParams: Partial<CreateSellerArgs>
+  sellerParams: Partial<CreateSellerArgs>,
+  optInSequence: {
+    coreSDK: CoreSDK;
+    fieldsToUpdate: {
+      operator?: boolean;
+      clerk?: boolean;
+      admin?: boolean;
+      authToken?: boolean;
+    };
+  }[] = []
 ) {
-  const updatedSellerTxResponse = await coreSDK.updateSeller({
+  const updatedSellerTxResponse = await coreSDK.updateSellerAndOptIn({
     ...seller,
     ...sellerParams
   });
   await updatedSellerTxResponse.wait();
+  const optInTxs: TransactionResponse[] = [];
+  for (const optIn of optInSequence) {
+    optInTxs.push(
+      await optIn.coreSDK.optInToSellerUpdate({
+        id: seller.id,
+        fieldsToUpdate: optIn.fieldsToUpdate
+      })
+    );
+  }
+  await Promise.all(optInTxs.map((tx) => tx.wait()));
   await waitForGraphNodeIndexing();
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;

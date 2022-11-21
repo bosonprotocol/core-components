@@ -73,7 +73,7 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Created offer id.
    */
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
-    const offerId = getValueFromLogs({
+    const offerId = getValueFromLogs<string>({
       iface: offers.iface.bosonOfferHandlerIface,
       logs,
       eventArgsKey: "offerId",
@@ -126,7 +126,7 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Created offer id.
    */
   public getCreatedSellerIdFromLogs(logs: Log[]): string | null {
-    const sellerId = getValueFromLogs({
+    const sellerId = getValueFromLogs<string>({
       iface: accounts.iface.bosonAccountHandlerIface,
       logs,
       eventArgsKey: "sellerId",

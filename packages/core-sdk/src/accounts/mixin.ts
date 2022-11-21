@@ -6,7 +6,7 @@ import { AuthTokenType, TransactionResponse, Log } from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { offers, orchestration } from "..";
-import { getValueFromLogs } from "../utils/logs";
+import { getValueFromLogs, getValuesFromLogsExt } from "../utils/logs";
 
 export class AccountsMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -274,6 +274,79 @@ export class AccountsMixin extends BaseCoreSDK {
     });
   }
 
+  /**
+   * Opt-in to a pending seller update by calling the `AccountHandlerFacet` contract. Only callable
+   * by admin.
+   * @param sellerUpdates - Values to update.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async optInToSellerUpdate(
+    sellerUpdates: accounts.OptInToSellerUpdateArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.optInToSellerUpdate({
+      sellerUpdates,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
+   * Updates seller account by calling the `AccountHandlerFacet` contract,
+   * then optIn for all updates doable by the same account. Only callable
+   * by admin.
+   * @param sellerUpdates - Values to update.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async updateSellerAndOptIn(
+    sellerUpdates: accounts.UpdateSellerArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const updateTx = await this.updateSeller(sellerUpdates, overrides);
+    const txReceipt = await updateTx.wait();
+    const pendingSellerUpdate = this.getPendingSellerUpdateFromLogs(
+      txReceipt.logs
+    );
+    // Find all updates that can be opted in by the current account
+    const currentAccount = (
+      await this._web3Lib.getSignerAddress()
+    ).toLowerCase();
+    const fieldsToUpdate = {
+      operator: currentAccount === pendingSellerUpdate.operator?.toLowerCase(),
+      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
+      admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
+      authToken:
+        pendingSellerUpdate.tokenType !== undefined &&
+        pendingSellerUpdate.tokenType !== null &&
+        pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+    };
+    if (
+      fieldsToUpdate.operator ||
+      fieldsToUpdate.clerk ||
+      fieldsToUpdate.admin ||
+      fieldsToUpdate.authToken
+    ) {
+      return this.optInToSellerUpdate({
+        id: sellerUpdates.id,
+        fieldsToUpdate: {
+          operator:
+            currentAccount === pendingSellerUpdate.operator.toLowerCase(),
+          clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+          admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+          authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+        }
+      });
+    }
+    // If there is nothing to optIn from the current account, then return the response from updateSeller
+    return updateTx;
+  }
+
   /* ---------------------------------- Buyer --------------------------------- */
 
   /**
@@ -336,6 +409,58 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
+   * Utility method to retrieve the pending seller update fields from logs after calling `updateSeller`.
+   * @param logs - Logs to search in.
+   * @returns Created exchange id.
+   */
+  public getPendingSellerUpdateFromLogs(logs: Log[]): {
+    operator: string;
+    clerk: string;
+    admin: string;
+    tokenType: number;
+    tokenId: BigNumber;
+  } {
+    // Extract fields pendingSeller and pendingAuthToken from
+    // SellerUpdatePending or SellerUpdateApplied events
+    const valuesFromLogs = getValuesFromLogsExt<
+      | {
+          operator: string;
+          clerk: string;
+          admin: string;
+        }
+      | {
+          tokenType: number;
+          tokenId: BigNumber;
+        }
+    >({
+      iface: accounts.iface.bosonAccountHandlerIface,
+      logs,
+      eventArgsKeys: ["pendingSeller", "pendingAuthToken"],
+      eventNames: ["SellerUpdatePending", "SellerUpdateApplied"]
+    });
+    const pendingSellerStruct = (
+      valuesFromLogs["pendingSeller"] as {
+        operator: string;
+        clerk: string;
+        admin: string;
+      }[]
+    )?.[0];
+    const pendingAuthTokenStruct = (
+      valuesFromLogs["pendingAuthToken"] as {
+        tokenType: number;
+        tokenId: BigNumber;
+      }[]
+    )?.[0];
+    return {
+      operator: pendingSellerStruct?.operator,
+      admin: pendingSellerStruct?.admin,
+      clerk: pendingSellerStruct?.clerk,
+      tokenId: pendingAuthTokenStruct?.tokenId,
+      tokenType: pendingAuthTokenStruct?.tokenType
+    };
+  }
+
+  /**
    * Updates a dispute resolver account by calling the `AccountHandlerFacet` contract.
    * Note, that the caller must be the specified `admin` address of the dispute resolver account.
    * @param disputeResolverId - Id of dispute resolver to update.
@@ -352,6 +477,19 @@ export class AccountsMixin extends BaseCoreSDK {
       subgraphUrl: this._subgraphUrl,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
+    });
+  }
+
+  public async optInToDisputeResolverUpdate(
+    disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.optInToDisputeResolverUpdate({
+      disputeResolverUpdates,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
 
