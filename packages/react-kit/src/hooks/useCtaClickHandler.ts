@@ -9,6 +9,7 @@ type WriteContractFn = () => Promise<TransactionResponse>;
 type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
 type MetaTxCondition = boolean;
 export type Action = {
+  name?: string;
   signMetaTxFn?: SignMetaTxFn;
   writeContractFn: WriteContractFn;
   additionalMetaTxCondition?: MetaTxCondition;
@@ -57,6 +58,7 @@ export function useCtaClickHandler<T>({
 
       for (const action of actions) {
         const {
+          name,
           signMetaTxFn,
           writeContractFn,
           additionalMetaTxCondition = true,
@@ -72,7 +74,7 @@ export function useCtaClickHandler<T>({
           Boolean(coreSdk.isMetaTxConfigSet && signerAddress && signMetaTxFn) &&
           additionalMetaTxCondition;
 
-        onPendingSignature?.();
+        onPendingSignature?.(name);
 
         if (isMetaTx && signMetaTxFn) {
           const nonce = Date.now();
@@ -101,7 +103,7 @@ export function useCtaClickHandler<T>({
 
         if (txResponse) {
           try {
-            onPendingTransaction?.(txResponse.hash, isMetaTx);
+            onPendingTransaction?.(txResponse.hash, isMetaTx, name);
             receipt = await txResponse.wait(waitBlocks);
           } catch (error: any) {
             // Handle transaction that was replaced, canceled or repriced.
@@ -125,7 +127,8 @@ export function useCtaClickHandler<T>({
                   txResponse.hash,
                   error.replacement,
                   error.receipt,
-                  isMetaTx
+                  isMetaTx,
+                  name
                 );
                 receipt = error.receipt;
               }

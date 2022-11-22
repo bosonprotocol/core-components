@@ -29,7 +29,9 @@ export const DepositFundsButton = ({
   const signerAddress = useSignerAddress(restProps.web3Provider);
 
   const actions = [
+    // Approve exchange token
     {
+      name: "approveExchangeToken",
       writeContractFn: () =>
         coreSdk.approveExchangeToken(exchangeToken, constants.MaxInt256),
       nativeMetaTxContract: exchangeToken,
@@ -53,6 +55,7 @@ export const DepositFundsButton = ({
     },
     // Deposit funds
     {
+      name: "depositFunds",
       writeContractFn: () =>
         coreSdk.depositFunds(accountId, amountToDeposit, exchangeToken),
       signMetaTxFn: () =>

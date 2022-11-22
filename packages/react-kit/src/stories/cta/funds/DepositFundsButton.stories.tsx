@@ -39,20 +39,37 @@ Simple.args = {
   exchangeToken: "0x" + "0".repeat(40),
   amountToDeposit: 100,
   disabled: false,
-  onPendingSignature: () => {
+  onPendingSignature: (actionName) => {
     console.log("----------ON PENDING SIGNATURE-------------");
+    console.log(actionName, "actionName");
   },
-  onPendingTransaction: (txHash: string) => {
+  onPendingTransaction: (
+    txHash: string,
+    isMetaTx: boolean,
+    actionName: string
+  ) => {
     console.log("----------ON PENDING TRANSACTION-------------");
-    console.log("txHash", txHash);
+    console.log({ txHash, isMetaTx, actionName });
   },
-  onCancelledTransaction: (oldTxHash, newTxResponse) => {
+  onCancelledTransaction: (oldTxHash, newTxResponse, isMetaTx, actionName) => {
     console.log("----------ON CANCELLED TRANSACTION-------------");
-    console.log({ oldTxHash, newTxResponse });
+    console.log({ oldTxHash, newTxResponse, actionName });
   },
-  onRepricedTransaction: (oldTxHash, newTxResponse, newTxReceipt) => {
+  onRepricedTransaction: (
+    oldTxHash,
+    newTxResponse,
+    newTxReceipt,
+    isMetaTx,
+    actionName
+  ) => {
     console.log("----------ON REPRICED TRANSACTION-------------");
-    console.log({ oldTxHash, newTxResponse, newTxReceipt });
+    console.log({
+      oldTxHash,
+      newTxResponse,
+      newTxReceipt,
+      isMetaTx,
+      actionName
+    });
   },
   onSuccess: (receipt, payload) => {
     console.log("----------ON SUCCESS-------------");
