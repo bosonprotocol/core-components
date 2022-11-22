@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.14.0...@bosonprotocol/react-kit@0.15.0) (2022-11-22)
+
+
+### Features
+
+* add name property to useCtaClickHandler ([#399](https://github.com/bosonprotocol/core-components/issues/399)) ([faa06ff](https://github.com/bosonprotocol/core-components/commit/faa06ffab5f7e535878c6cd1a1922b5c8bc4e8ee))
+* **react-kit:** support fallback image src ([#398](https://github.com/bosonprotocol/core-components/issues/398)) ([fc4522d](https://github.com/bosonprotocol/core-components/commit/fc4522d06d99480a35917d68e54016bbdf5fc9c4))
+
+
+
+
+
 # [0.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.13.0...@bosonprotocol/react-kit@0.14.0) (2022-11-17)
 
 
