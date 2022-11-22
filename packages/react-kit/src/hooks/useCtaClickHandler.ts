@@ -8,8 +8,10 @@ import { CtaButtonProps } from "../components/cta/common/types";
 type WriteContractFn = () => Promise<TransactionResponse>;
 type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
 type MetaTxCondition = boolean;
+type ActionName = "approveExchangeToken" | "depositFunds";
+
 export type Action = {
-  name?: string;
+  name?: ActionName;
   signMetaTxFn?: SignMetaTxFn;
   writeContractFn: WriteContractFn;
   additionalMetaTxCondition?: MetaTxCondition;

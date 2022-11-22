@@ -31,7 +31,7 @@ export const DepositFundsButton = ({
   const actions = [
     // Approve exchange token
     {
-      name: "approveExchangeToken",
+      name: "approveExchangeToken" as const,
       writeContractFn: () =>
         coreSdk.approveExchangeToken(exchangeToken, constants.MaxInt256),
       nativeMetaTxContract: exchangeToken,
@@ -55,7 +55,7 @@ export const DepositFundsButton = ({
     },
     // Deposit funds
     {
-      name: "depositFunds",
+      name: "depositFunds" as const,
       writeContractFn: () =>
         coreSdk.depositFunds(accountId, amountToDeposit, exchangeToken),
       signMetaTxFn: () =>
