@@ -23,6 +23,7 @@ describe("#getSellerByAddress()", () => {
 
     expect(rawSeller).toBeFalsy();
   });
+
   test("return seller if address is operator", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
       operator: ADDRESS
@@ -135,6 +136,44 @@ describe("#getSellerByAddress()", () => {
     const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
 
     expect(rawSeller).toMatchObject(mockedRawSellerFromSubgraph);
+  });
+
+  test("return undefined if address is treasury", async () => {
+    const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
+      treasury: ADDRESS
+    });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
+        }
+      });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
+        }
+      });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: []
+        }
+      });
+    interceptSubgraph()
+      .times(1)
+      .reply(200, {
+        data: {
+          sellers: [mockedRawSellerFromSubgraph]
+        }
+      });
+
+    const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
+
+    expect(rawSeller).toBeUndefined();
   });
 
   test("return seller using auth token", async () => {
