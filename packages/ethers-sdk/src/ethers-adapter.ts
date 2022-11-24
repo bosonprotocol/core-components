@@ -78,6 +78,7 @@ export class EthersAdapter implements Web3LibAdapter {
         primaryType,
         message: value
       } = JSON.parse(dataToSign);
+      delete types["EIP712Domain"];
       return this._signer["_signTypedData"](domain, types, value);
     }
     return this._provider.send(rpcMethod, payload);
