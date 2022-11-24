@@ -64,6 +64,21 @@ export class EthersAdapter implements Web3LibAdapter {
   }
 
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
+    if (
+      "_signTypedData" in this._signer &&
+      rpcMethod === "eth_signTypedData_v4"
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [signerAddress, dataToSign] = payload as [string, string];
+      const {
+        types,
+        domain,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        primaryType,
+        message: value
+      } = JSON.parse(dataToSign);
+      return this._signer["_signTypedData"](domain, types, value);
+    }
     return this._provider.send(rpcMethod, payload);
   }
 
