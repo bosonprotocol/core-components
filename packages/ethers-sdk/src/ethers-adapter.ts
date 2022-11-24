@@ -65,6 +65,7 @@ export class EthersAdapter implements Web3LibAdapter {
 
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
     if (
+      this._signer &&
       "_signTypedData" in this._signer &&
       rpcMethod === "eth_signTypedData_v4"
     ) {
