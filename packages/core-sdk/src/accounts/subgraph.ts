@@ -153,14 +153,13 @@ export async function getSellerByAddress(
   address: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
-  const [operator, admin, clerk, treasury] = await Promise.all([
+  const [operator, admin, clerk] = await Promise.all([
     getSellerByOperator(subgraphUrl, address, queryVars),
     getSellerByAdmin(subgraphUrl, address, queryVars),
-    getSellerByClerk(subgraphUrl, address, queryVars),
-    getSellerByTreasury(subgraphUrl, address, queryVars)
+    getSellerByClerk(subgraphUrl, address, queryVars)
   ]);
 
-  return operator || admin || clerk || treasury;
+  return operator || admin || clerk;
 }
 
 export async function getDisputeResolverById(
