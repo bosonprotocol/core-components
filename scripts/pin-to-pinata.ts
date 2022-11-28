@@ -110,7 +110,7 @@ async function main() {
         offersOrderDirection: subgraph.OrderDirection.Asc,
         offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
         offersFilter: {
-          disputeResolverId: "3",
+          disputeResolverId: envName === "testing" ? "3" : undefined,
           id_in: list ? list.split(",") : undefined,
           createdAt_gte: fromTimestampSec
         }
