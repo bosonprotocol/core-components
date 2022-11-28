@@ -1,6 +1,6 @@
 import { program } from "commander";
 import { CID } from "multiformats/cid";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import FormData from "form-data";
 import { Readable } from "stream";
 
@@ -37,6 +37,28 @@ function bufferToStream(buffer) {
   (stream as any).path = `${Date.now()}.png`;
 
   return stream;
+}
+
+function makeFetchPinataApi(maxRetries = 1) {
+  let retries = 0;
+  async function fetchPinataApi(request: AxiosRequestConfig) {
+    try {
+      const response = await axios(request);
+      return response;
+    } catch (error) {
+      if (retries <= maxRetries) {
+        // if rate limit hit, then wait a minute and retry
+        if (error?.response?.status === 429) {
+          console.log("Rate limit hit. Retrying after 60 seconds...");
+          await new Promise((resolve) => setTimeout(resolve, 60_000));
+          retries++;
+          return fetchPinataApi(request);
+        }
+      }
+      throw error;
+    }
+  }
+  return fetchPinataApi;
 }
 
 program
@@ -182,12 +204,13 @@ async function main() {
 
   console.log("\n3. Pinning to Pinata...");
   let successCount = 0;
+  let skippedCount = 0;
   // Using naive sequential approach due to possible rate limiting.
   // TODO: Replace with batch approach
   for (const cid of uniqueCIDs) {
     try {
       // check if already pinned on Pinata
-      const response = await axios({
+      const response = await makeFetchPinataApi()({
         method: "get",
         url: `https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=${cid}`,
         headers: {
@@ -195,7 +218,8 @@ async function main() {
         }
       });
       if (response.data) {
-        console.log(`${cid} ✅ pinned already`);
+        skippedCount++;
+        console.log(`${cid} 📌 pinned already`);
         continue;
       }
     } catch (error) {
@@ -217,7 +241,7 @@ async function main() {
     formData.append("pinataOptions", '{"cidVersion": 0}');
 
     try {
-      await axios({
+      await makeFetchPinataApi()({
         method: "post",
         maxBodyLength: 104857600, //100mb
         maxContentLength: 104857600, //100mb
@@ -238,8 +262,8 @@ async function main() {
     }
   }
   console.log(
-    `Finished pinning. Success: ${successCount}, failed: ${
-      uniqueCIDs.size - successCount
+    `Finished pinning. Success: ${successCount}, skipped: ${skippedCount}, failed: ${
+      uniqueCIDs.size - successCount - skippedCount
     }`
   );
 }
