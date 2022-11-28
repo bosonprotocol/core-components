@@ -29,9 +29,9 @@ jobs:
       - id: build
         run: npm run build -- --cache-dir=".turbo"
       - name: Set current date as env variable
-        run: echo "NOW::$(date +'%s')000" >> $GITHUB_ENV
+        run: echo "NOW=$(date +'%s')000" >> $GITHUB_ENV
       - name: Set from date as env variable
-        run: echo "FROM_DATE::$(( $NOW - 24 * 60 * 60 * 1000 ))" >> $GITHUB_ENV
+        run: echo "FROM_DATE=$(( $NOW - 24 * 60 * 60 * 1000 ))" >> $GITHUB_ENV
       - name: Pin for each env
         env:
           PINATA_JWT: ${{ secrets.PINATA_JWT }}
