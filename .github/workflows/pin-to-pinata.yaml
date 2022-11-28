@@ -1,11 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - ci-pin-pinat
-  # schedule:
-  #   - cron: "0 * * * *" # run every hour
+  schedule:
+    - cron: "0 * * * *" # run every hour
 
 jobs:
   pin-to-pinata:
