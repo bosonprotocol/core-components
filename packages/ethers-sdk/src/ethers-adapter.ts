@@ -71,17 +71,8 @@ export class EthersAdapter implements Web3LibAdapter {
     ) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [signerAddress, dataToSign] = payload as [string, string];
-      const {
-        types,
-        domain,
-        primaryType,
-        message: value
-      } = JSON.parse(dataToSign);
-      Object.keys(types).forEach((typeKey) => {
-        if (typeKey !== primaryType) {
-          delete types[typeKey];
-        }
-      });
+      const { types, domain, message: value } = JSON.parse(dataToSign);
+      delete types["EIP712Domain"];
       return this._signer["_signTypedData"](domain, types, value);
     }
     return this._provider.send(rpcMethod, payload);
