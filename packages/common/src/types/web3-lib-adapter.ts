@@ -17,6 +17,7 @@ export type TransactionRequest = Partial<{
 
 export type TransactionResponse = {
   hash: string;
+  nonce?: number;
   wait: (confirmations?: number) => Promise<TransactionReceipt>;
 };
 
