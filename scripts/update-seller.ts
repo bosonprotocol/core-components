@@ -1,7 +1,7 @@
 import { AddressZero } from "@ethersproject/constants";
 import fs from "fs";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
-import { providers, Contract, Wallet } from "ethers";
+import { providers, Contract, Wallet, utils } from "ethers";
 import { program } from "commander";
 import { getDefaultConfig, UpdateSellerArgs } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
@@ -17,6 +17,9 @@ program
   )
   .option("-d, --data <SELLER_DATA>", "JSON file with the Seller parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("--gasLimit <GAS_LIMIT>", "gas limit")
+  .option("--gasPrice <GAS_PRICE>", "gas price en gwei")
+  .option("--nonce <NONCE>", "gas price en gwei")
   .option("--id <SELLER_ID>", "SellerId")
   .option("--admin <ADMIN>", "New admin address")
   .option("--treasury <TREASURY>", "New treasury address")
@@ -39,6 +42,21 @@ async function main() {
   const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
   const sellerWallet = new Wallet(sellerPrivateKey);
+
+  let txParams;
+  if (opts.gasPrice || opts.gasLimit || opts.nonce) {
+    const nonce = opts.nonce ? parseInt(opts.nonce) : undefined;
+    if (nonce && isNaN(nonce)) {
+      throw `Invalid number value '${opts.nonce}' for 'nonce'`;
+    }
+    txParams = {
+      gasPrice: opts.gasPrice
+        ? utils.parseUnits(opts.gasPrice, "gwei")
+        : undefined,
+      gasLimit: opts.gasLimit ?? undefined,
+      nonce: nonce ?? undefined
+    };
+  }
 
   let sellerDataJson = {} as UpdateSellerArgs;
   if (opts.data) {
@@ -143,8 +161,18 @@ async function main() {
   });
 
   console.log(`Updating seller on env ${envName} on chain ${chainId}...`);
-  const txResponse1 = await coreSDK.updateSellerAndOptIn(sellerDataJson);
-  console.log(`Tx hash: ${txResponse1.hash}`);
+  const txResponse1 = await coreSDK.updateSellerAndOptIn(
+    sellerDataJson,
+    {
+      txParams
+    },
+    (updateTx) => {
+      console.log(
+        `Update seller tx hash: ${updateTx.hash}, nonce: ${updateTx.nonce}`
+      );
+    }
+  );
+  console.log(`Tx hash: ${txResponse1.hash}, nonce: ${txResponse1.nonce}`);
   const txReceipt1 = await txResponse1.wait();
   const pendingSellerUpdate = coreSDK.getPendingSellerUpdateFromLogs(
     txReceipt1.logs
@@ -178,10 +206,15 @@ async function main() {
         )}`
       );
       txOptIns.push(
-        await optInSigner.sdk.optInToSellerUpdate({
-          id: sellerDataJson.id,
-          fieldsToUpdate: optInSigner.fields
-        })
+        await optInSigner.sdk.optInToSellerUpdate(
+          {
+            id: sellerDataJson.id,
+            fieldsToUpdate: optInSigner.fields
+          },
+          {
+            txParams
+          }
+        )
       );
     }
   }

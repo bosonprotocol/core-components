@@ -1,7 +1,8 @@
 import {
   Web3LibAdapter,
   TransactionResponse,
-  utils
+  utils,
+  TransactionRequest
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { DisputeResolverFieldsFragment } from "../subgraph";
@@ -40,23 +41,31 @@ export async function createSeller(args: {
   });
 }
 
-export async function updateSeller(args: {
-  sellerUpdates: UpdateSellerArgs;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+export async function updateSeller(
+  args: {
+    sellerUpdates: UpdateSellerArgs;
+    contractAddress: string;
+    web3Lib: Web3LibAdapter;
+  },
+  txParams: TransactionRequest = {}
+): Promise<TransactionResponse> {
   return args.web3Lib.sendTransaction({
+    ...txParams,
     to: args.contractAddress,
     data: encodeUpdateSeller(args.sellerUpdates)
   });
 }
 
-export async function optInToSellerUpdate(args: {
-  sellerUpdates: OptInToSellerUpdateArgs;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-}): Promise<TransactionResponse> {
+export async function optInToSellerUpdate(
+  args: {
+    sellerUpdates: OptInToSellerUpdateArgs;
+    contractAddress: string;
+    web3Lib: Web3LibAdapter;
+  },
+  txParams: TransactionRequest = {}
+): Promise<TransactionResponse> {
   return args.web3Lib.sendTransaction({
+    ...txParams,
     to: args.contractAddress,
     data: encodeOptInToSellerUpdate(args.sellerUpdates)
   });

@@ -2,7 +2,12 @@ import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as accounts from ".";
 import * as subgraph from "../subgraph";
 import * as erc721 from "../erc721";
-import { AuthTokenType, TransactionResponse, Log } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  TransactionResponse,
+  Log,
+  TransactionRequest
+} from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
 import { offers, orchestration } from "..";
@@ -265,13 +270,17 @@ export class AccountsMixin extends BaseCoreSDK {
     sellerUpdates: accounts.UpdateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
+      txParams: TransactionRequest;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.updateSeller({
-      sellerUpdates,
-      web3Lib: this._web3Lib,
-      contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    return accounts.handler.updateSeller(
+      {
+        sellerUpdates,
+        web3Lib: this._web3Lib,
+        contractAddress: overrides.contractAddress || this._protocolDiamond
+      },
+      overrides.txParams
+    );
   }
 
   /**
@@ -285,13 +294,17 @@ export class AccountsMixin extends BaseCoreSDK {
     sellerUpdates: accounts.OptInToSellerUpdateArgs,
     overrides: Partial<{
       contractAddress: string;
+      txParams: TransactionRequest;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.optInToSellerUpdate({
-      sellerUpdates,
-      web3Lib: this._web3Lib,
-      contractAddress: overrides.contractAddress || this._protocolDiamond
-    });
+    return accounts.handler.optInToSellerUpdate(
+      {
+        sellerUpdates,
+        web3Lib: this._web3Lib,
+        contractAddress: overrides.contractAddress || this._protocolDiamond
+      },
+      overrides.txParams
+    );
   }
 
   /**
@@ -306,9 +319,14 @@ export class AccountsMixin extends BaseCoreSDK {
     sellerUpdates: accounts.UpdateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
-    }> = {}
+      txParams: TransactionRequest;
+    }> = {},
+    updateSellerCallback?: (TransactionResponse) => void
   ): Promise<TransactionResponse> {
     const updateTx = await this.updateSeller(sellerUpdates, overrides);
+    if (updateSellerCallback) {
+      updateSellerCallback(updateTx);
+    }
     const txReceipt = await updateTx.wait();
     const pendingSellerUpdate = this.getPendingSellerUpdateFromLogs(
       txReceipt.logs
@@ -332,16 +350,19 @@ export class AccountsMixin extends BaseCoreSDK {
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
     ) {
-      return this.optInToSellerUpdate({
-        id: sellerUpdates.id,
-        fieldsToUpdate: {
-          operator:
-            currentAccount === pendingSellerUpdate.operator.toLowerCase(),
-          clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
-          admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
-          authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
-        }
-      });
+      return this.optInToSellerUpdate(
+        {
+          id: sellerUpdates.id,
+          fieldsToUpdate: {
+            operator:
+              currentAccount === pendingSellerUpdate.operator.toLowerCase(),
+            clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+            admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+            authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
+          }
+        },
+        overrides
+      );
     }
     // If there is nothing to optIn from the current account, then return the response from updateSeller
     return updateTx;
