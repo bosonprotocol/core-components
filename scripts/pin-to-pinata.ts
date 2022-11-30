@@ -260,7 +260,6 @@ async function main() {
         `${cid} ❌`,
         error?.response?.status || error.code || error.message
       );
-      // console.error("err", error);
     }
   }
   console.log(
