@@ -212,7 +212,8 @@ async function main() {
       // check if already pinned on Pinata
       const response = await makeFetchPinataApi()({
         method: "get",
-        url: `https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=${cid}`,
+        // url: `https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=${cid}`,
+        url: `https://gray-permanent-fly-490.mypinata.cloud/ipfs/${cid}`,
         headers: {
           Authorization: `Bearer ${pinata}`
         }
@@ -259,6 +260,7 @@ async function main() {
         `${cid} ❌`,
         error?.response?.status || error.code || error.message
       );
+      // console.error("err", error);
     }
   }
   console.log(
