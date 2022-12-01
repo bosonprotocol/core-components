@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.15.0...@bosonprotocol/react-kit@0.16.0) (2022-12-01)
+
+
+### Features
+
+* cta button types update ([#400](https://github.com/bosonprotocol/core-components/issues/400)) ([2c6e743](https://github.com/bosonprotocol/core-components/commit/2c6e74335e4ee5621663d8195793eec02b0cd214))
+
+
+
+
+
 # [0.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.14.0...@bosonprotocol/react-kit@0.15.0) (2022-11-22)
 
 

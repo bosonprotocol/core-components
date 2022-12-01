@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.1...@bosonprotocol/core-sdk@1.23.2) (2022-12-01)
+
+
+### Bug Fixes
+
+* remove treasury from getSellerByAddress ([#402](https://github.com/bosonprotocol/core-components/issues/402)) ([b13f78e](https://github.com/bosonprotocol/core-components/commit/b13f78e39e6beeb92c2acac8f1494f943790a25b))
+
+
+
+
+
 ## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.0...@bosonprotocol/core-sdk@1.23.1) (2022-11-22)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk
