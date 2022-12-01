@@ -9,6 +9,13 @@ import { EnvironmentType } from "../packages/common/src/types/configs";
 import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
 
+const imageIpfsGatewayMap = {
+  local: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
+  testing: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
+  staging: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
+  production: "https://gray-permanent-fly-490.mypinata.cloud/ipfs/"
+} as const;
+
 function extractCID(imageUri: string) {
   const cidFromUri = imageUri.replaceAll("ipfs://", "");
 
@@ -203,6 +210,9 @@ async function main() {
   console.log(`Extracted ${uniqueCIDs.size} unique CIDs`);
 
   console.log("\n3. Pinning to Pinata...");
+  const imageIpfsGateway =
+    imageIpfsGatewayMap[envName] ||
+    "https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=";
   let successCount = 0;
   let skippedCount = 0;
   // Using naive sequential approach due to possible rate limiting.
@@ -212,8 +222,7 @@ async function main() {
       // check if already pinned on Pinata
       const response = await makeFetchPinataApi()({
         method: "get",
-        // url: `https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=${cid}`,
-        url: `https://gray-permanent-fly-490.mypinata.cloud/ipfs/${cid}`,
+        url: `${imageIpfsGateway}${cid}`,
         headers: {
           Authorization: `Bearer ${pinata}`
         }
