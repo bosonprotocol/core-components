@@ -1,6 +1,6 @@
 import { TransactionResponse } from "@bosonprotocol/common";
-import { providers, errors } from "ethers";
 import { CoreSDK, metaTx } from "@bosonprotocol/core-sdk";
+import { errors, providers } from "ethers";
 import { useState } from "react";
 
 import { CtaButtonProps } from "../components/cta/common/types";
@@ -8,8 +8,7 @@ import { CtaButtonProps } from "../components/cta/common/types";
 type WriteContractFn = () => Promise<TransactionResponse>;
 type SignMetaTxFn = () => Promise<metaTx.handler.SignedMetaTx>;
 type MetaTxCondition = boolean;
-type ActionName = "approveExchangeToken" | "depositFunds";
-
+export type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 export type Action = {
   name?: ActionName;
   signMetaTxFn?: SignMetaTxFn;
