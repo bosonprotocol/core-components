@@ -19,12 +19,17 @@ import {
   ITokenInfo,
   NATIVE_TOKENS
 } from "../packages/core-sdk/src/utils/tokenInfoManager";
+import { buildInfuraHeaders } from "./utils/infura";
 
 program
   .description("Explore an on-chain Offer.")
   .argument("<OFFER_ID>", "Id of the Offer")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .option("--export <FILEPATH>", "Export offer data to a JSON file")
+  .option(
+    "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
+    "ProjectId and Secret required to address Infura IPFS gateway"
+  )
   .parse(process.argv);
 
 async function main() {
@@ -61,7 +66,10 @@ async function main() {
 
   console.log("Fetching offer metadata...");
   const ipfsMetadataStorage = new IpfsMetadataStorage({
-    url: defaultConfig.theGraphIpfsUrl
+    url: opts.infura
+      ? defaultConfig.ipfsMetadataUrl
+      : defaultConfig.theGraphIpfsUrl,
+    headers: opts.infura ? buildInfuraHeaders(opts.infura) : undefined
   });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);
