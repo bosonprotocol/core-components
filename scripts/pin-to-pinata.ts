@@ -10,9 +10,9 @@ import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
 
 const imageIpfsGatewayMap = {
-  local: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
-  testing: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
-  staging: "https://fuchsia-payable-smelt-901.mypinata.cloud/ipfs/",
+  local: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
+  testing: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
+  staging: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
   production: "https://gray-permanent-fly-490.mypinata.cloud/ipfs/"
 } as const;
 
