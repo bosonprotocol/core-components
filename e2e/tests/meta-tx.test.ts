@@ -1,6 +1,6 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { Wallet, BigNumber } from "ethers";
+import { Wallet, BigNumber, constants } from "ethers";
 
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -17,7 +17,8 @@ import {
   createOffer,
   seedWallet11,
   ensureMintedERC1155,
-  MOCK_ERC1155_ADDRESS
+  MOCK_ERC1155_ADDRESS,
+  initCoreSDKWithFundedWallet
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -102,6 +103,129 @@ describe("meta-tx", () => {
       const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxUpdateSeller()", () => {
+    test("update seller", async () => {
+      const nonce = Date.now();
+      const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
+      const [seller] = await sellerCoreSDK.getSellersByAddress(
+        sellerWallet.address
+      );
+      expect(seller).toBeTruthy();
+
+      const randomWallet = Wallet.createRandom();
+
+      // Random seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxUpdateSeller({
+          updateSellerArgs: {
+            id: seller.id,
+            operator: randomWallet.address,
+            treasury: randomWallet.address,
+            admin: randomWallet.address,
+            clerk: randomWallet.address,
+            authTokenId: "0",
+            authTokenType: 0
+          },
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of random seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await waitForGraphNodeIndexing();
+      const existingSeller = await sellerCoreSDK.getSellerById(seller.id);
+      expect(existingSeller.pendingSeller?.admin).toBe(
+        randomWallet.address.toLowerCase()
+      );
+    });
+  });
+
+  describe("#signMetaTxOptInToSellerUpdate()", () => {
+    test("optInToSellerUpdate", async () => {
+      const { coreSDK: seller1CoreSDK, fundedWallet: sellerWallet1 } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      await ensureCreatedSeller(sellerWallet1);
+      const [seller1] = await seller1CoreSDK.getSellersByAddress(
+        sellerWallet1.address
+      );
+      let nonce = Date.now();
+      const randomWallet = Wallet.createRandom();
+      const randomCoreSDK = initCoreSDKWithWallet(randomWallet);
+      // set seller address from seller 1 to random address
+      const updateSellerResultRandom =
+        await seller1CoreSDK.signMetaTxUpdateSeller({
+          updateSellerArgs: {
+            id: seller1.id,
+            operator: randomWallet.address,
+            treasury: randomWallet.address,
+            admin: randomWallet.address,
+            clerk: randomWallet.address,
+            authTokenId: "0",
+            authTokenType: 0
+          },
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of random seller
+      const metaTxUpdateSellerRandom =
+        await seller1CoreSDK.relayMetaTransaction({
+          functionName: updateSellerResultRandom.functionName,
+          functionSignature: updateSellerResultRandom.functionSignature,
+          nonce,
+          sigR: updateSellerResultRandom.r,
+          sigS: updateSellerResultRandom.s,
+          sigV: updateSellerResultRandom.v
+        });
+      await metaTxUpdateSellerRandom.wait();
+
+      await waitForGraphNodeIndexing();
+
+      nonce = Date.now();
+      const { r, s, v, functionName, functionSignature } =
+        await randomCoreSDK.signMetaTxOptInToSellerUpdate({
+          optInToSellerUpdateArgs: {
+            id: seller1.id,
+            fieldsToUpdate: {
+              admin: true
+            }
+          },
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of random seller
+      const metaTx = await randomCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      await waitForGraphNodeIndexing();
+      const existingSeller = await seller1CoreSDK.getSellerById(seller1.id);
+      expect(existingSeller.pendingSeller?.admin).toBe(constants.AddressZero);
+      expect(existingSeller.admin.toLowerCase()).toBe(
+        randomWallet.address.toLowerCase()
+      );
     });
   });
 

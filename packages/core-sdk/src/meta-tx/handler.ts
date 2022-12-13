@@ -7,13 +7,19 @@ import {
   utils,
   MetadataStorage,
   CreateGroupArgs,
-  ConditionStruct
+  ConditionStruct,
+  UpdateSellerArgs,
+  OptInToSellerUpdateArgs
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 
-import { encodeCreateSeller } from "../accounts/interface";
+import {
+  encodeCreateSeller,
+  encodeOptInToSellerUpdate,
+  encodeUpdateSeller
+} from "../accounts/interface";
 import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
@@ -97,6 +103,31 @@ export async function signMetaTxCreateSeller(
     functionName:
       "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint256))",
     functionSignature: encodeCreateSeller(args.createSellerArgs)
+  });
+}
+
+export async function signMetaTxUpdateSeller(
+  args: BaseMetaTxArgs & {
+    updateSellerArgs: UpdateSellerArgs;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName:
+      "updateSeller((uint256,address,address,address,address,bool),(uint256,uint8))",
+    functionSignature: encodeUpdateSeller(args.updateSellerArgs)
+  });
+}
+
+export async function signMetaTxOptInToSellerUpdate(
+  args: BaseMetaTxArgs & {
+    optInToSellerUpdateArgs: OptInToSellerUpdateArgs;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "optInToSellerUpdate(uint256,uint8[])",
+    functionSignature: encodeOptInToSellerUpdate(args.optInToSellerUpdateArgs)
   });
 }
 
