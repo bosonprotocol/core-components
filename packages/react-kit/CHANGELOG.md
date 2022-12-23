@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.0...@bosonprotocol/react-kit@0.16.1) (2022-12-23)
+
+
+### Bug Fixes
+
+* add action name to handle approval of erc20 token ([#410](https://github.com/bosonprotocol/core-components/issues/410)) ([b68a43c](https://github.com/bosonprotocol/core-components/commit/b68a43c5f0c05aa30f79b8755cb7d21a03f4527a))
+
+
+
+
+
 # [0.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.15.0...@bosonprotocol/react-kit@0.16.0) (2022-12-01)
 
 

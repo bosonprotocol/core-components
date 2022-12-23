@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.2...@bosonprotocol/core-sdk@1.24.0) (2022-12-23)
+
+
+### Features
+
+* add update seller and opt in with meta transactions ([#413](https://github.com/bosonprotocol/core-components/issues/413)) ([39828a2](https://github.com/bosonprotocol/core-components/commit/39828a2fac33a246b86d3066d002883182d3293e))
+
+
+
+
+
 ## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.1...@bosonprotocol/core-sdk@1.23.2) (2022-12-01)
 
 
