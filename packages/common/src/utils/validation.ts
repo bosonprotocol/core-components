@@ -89,7 +89,7 @@ export const createOfferArgsSchema = object({
       then: string()
         .test(
           "not-zero",
-          "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
+          "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero",
           isNotZero
         )
         .test(...futureDateTestArgs)
@@ -113,7 +113,7 @@ export const createOfferArgsSchema = object({
         ),
       otherwise: string().test(
         "is-zero",
-        "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
+        "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMS must be non zero",
         isZero
       )
     }),
