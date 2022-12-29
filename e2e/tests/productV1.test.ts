@@ -363,7 +363,7 @@ describe("Multi-variant offers tests", () => {
 
     const {
       offerArgs: [offerArgs1, offerArgs2]
-    } = await prepareMultiVariantOffers(coreSDK, [{ disputeResolverId: "1" }]);
+    } = await prepareMultiVariantOffers(coreSDK);
 
     await createOfferBatch(coreSDK, sellerWallet, [offerArgs1, offerArgs2]);
 
