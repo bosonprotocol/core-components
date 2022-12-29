@@ -357,6 +357,33 @@ describe("Multi-variant offers tests", () => {
     }
   });
 
+  test("#getProductV1MetadataEntities - filter by disputeResolverId", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const {
+      offerArgs: [offerArgs1, offerArgs2]
+    } = await prepareMultiVariantOffers(coreSDK, [{ disputeResolverId: "1" }]);
+
+    await createOfferBatch(coreSDK, sellerWallet, [offerArgs1, offerArgs2]);
+
+    const metadatasWithDrId0 = await coreSDK.getProductV1MetadataEntities({
+      metadataFilter: {
+        disputeResolverId: "0"
+      }
+    });
+
+    expect(metadatasWithDrId0.length).toBeGreaterThan(0);
+
+    const metadatasWithDrId2 = await coreSDK.getProductV1MetadataEntities({
+      metadataFilter: {
+        disputeResolverId: "2"
+      }
+    });
+
+    expect(metadatasWithDrId2.length).toBe(0);
+  });
+
   test("find all offers associated with a product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
