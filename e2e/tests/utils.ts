@@ -403,9 +403,11 @@ export async function createSellerAndOfferWithCondition(
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
-
+  if (createdOfferId === null) {
+    throw new Error("Failed to create offer with condition");
+  }
   await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
 }
