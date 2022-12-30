@@ -644,6 +644,29 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address payable",
+        name: "_buyer",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_exchangeId",
+        type: "uint256",
+      },
+    ],
+    name: "commitToPreMintedOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_exchangeId",
         type: "uint256",

@@ -8,6 +8,7 @@ import {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -22,7 +23,9 @@ export interface IBosonMetaTransactionsHandlerInterface
   contractName: "IBosonMetaTransactionsHandler";
   functions: {
     "executeMetaTransaction(address,string,bytes,uint256,bytes32,bytes32,uint8)": FunctionFragment;
+    "isFunctionAllowlisted(string)": FunctionFragment;
     "isUsedNonce(address,uint256)": FunctionFragment;
+    "setAllowlistedFunctions(bytes32[],bool)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -38,8 +41,16 @@ export interface IBosonMetaTransactionsHandlerInterface
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "isFunctionAllowlisted",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isUsedNonce",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAllowlistedFunctions",
+    values: [BytesLike[], boolean]
   ): string;
 
   decodeFunctionResult(
@@ -47,16 +58,34 @@ export interface IBosonMetaTransactionsHandlerInterface
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "isFunctionAllowlisted",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isUsedNonce",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAllowlistedFunctions",
     data: BytesLike
   ): Result;
 
   events: {
+    "FunctionsAllowlisted(bytes32[],bool,address)": EventFragment;
     "MetaTransactionExecuted(address,address,string,uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "FunctionsAllowlisted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MetaTransactionExecuted"): EventFragment;
 }
+
+export type FunctionsAllowlistedEvent = TypedEvent<
+  [string[], boolean, string],
+  { functionNameHashes: string[]; isAllowlisted: boolean; executedBy: string }
+>;
+
+export type FunctionsAllowlistedEventFilter =
+  TypedEventFilter<FunctionsAllowlistedEvent>;
 
 export type MetaTransactionExecutedEvent = TypedEvent<
   [string, string, string, BigNumber],
@@ -110,11 +139,27 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    "isFunctionAllowlisted(string)"(
+      _functionName: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean] & { isAllowlisted: boolean }>;
+
+    "isFunctionAllowlisted(bytes32)"(
+      _functionNameHash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean] & { isAllowlisted: boolean }>;
+
     isUsedNonce(
       _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    setAllowlistedFunctions(
+      _functionNameHashes: BytesLike[],
+      _isAllowlisted: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   executeMetaTransaction(
@@ -128,11 +173,27 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  "isFunctionAllowlisted(string)"(
+    _functionName: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isFunctionAllowlisted(bytes32)"(
+    _functionNameHash: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   isUsedNonce(
     _associatedAddress: string,
     _nonce: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  setAllowlistedFunctions(
+    _functionNameHashes: BytesLike[],
+    _isAllowlisted: boolean,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     executeMetaTransaction(
@@ -146,14 +207,41 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    "isFunctionAllowlisted(string)"(
+      _functionName: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isFunctionAllowlisted(bytes32)"(
+      _functionNameHash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     isUsedNonce(
       _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    setAllowlistedFunctions(
+      _functionNameHashes: BytesLike[],
+      _isAllowlisted: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
+    "FunctionsAllowlisted(bytes32[],bool,address)"(
+      functionNameHashes?: null,
+      isAllowlisted?: null,
+      executedBy?: string | null
+    ): FunctionsAllowlistedEventFilter;
+    FunctionsAllowlisted(
+      functionNameHashes?: null,
+      isAllowlisted?: null,
+      executedBy?: string | null
+    ): FunctionsAllowlistedEventFilter;
+
     "MetaTransactionExecuted(address,address,string,uint256)"(
       userAddress?: string | null,
       relayerAddress?: string | null,
@@ -180,10 +268,26 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    "isFunctionAllowlisted(string)"(
+      _functionName: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isFunctionAllowlisted(bytes32)"(
+      _functionNameHash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isUsedNonce(
       _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    setAllowlistedFunctions(
+      _functionNameHashes: BytesLike[],
+      _isAllowlisted: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
@@ -199,10 +303,26 @@ export interface IBosonMetaTransactionsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    "isFunctionAllowlisted(string)"(
+      _functionName: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isFunctionAllowlisted(bytes32)"(
+      _functionNameHash: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isUsedNonce(
       _associatedAddress: string,
       _nonce: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setAllowlistedFunctions(
+      _functionNameHashes: BytesLike[],
+      _isAllowlisted: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

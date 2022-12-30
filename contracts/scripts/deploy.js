@@ -18,9 +18,6 @@ const {
   deployProtocolClients
 } = require("../protocol-contracts/scripts/util/deploy-protocol-clients.js");
 const {
-  deployProtocolConfigFacet
-} = require("../protocol-contracts/scripts/util/deploy-protocol-config-facet.js");
-const {
   deployProtocolHandlerFacets
 } = require("../protocol-contracts/scripts/util/deploy-protocol-handler-facets.js");
 const {
@@ -156,17 +153,6 @@ async function main() {
 
   // Temporarily grant UPGRADER role to deployer account
   await accessController.grantRole(Role.UPGRADER, deployer);
-
-  const {
-    facets: [configHandlerFacet]
-  } = await deployProtocolConfigFacet(protocolDiamond, config, gasLimit);
-  deploymentComplete(
-    "ConfigHandlerFacet",
-    configHandlerFacet.address,
-    [],
-    "",
-    contracts
-  );
 
   // Deploy and cut facets
   const deployedFacets = await deployProtocolHandlerFacets(

@@ -349,73 +349,6 @@ const _abi = [
         type: "tuple",
       },
       {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "DisputeResolverActivated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "disputeResolverId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "escalationResponsePeriod",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "operator",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "admin",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "clerk",
-            type: "address",
-          },
-          {
-            internalType: "address payable",
-            name: "treasury",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "metadataUri",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "active",
-            type: "bool",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.DisputeResolver",
-        name: "disputeResolver",
-        type: "tuple",
-      },
-      {
         components: [
           {
             internalType: "address",
@@ -579,13 +512,128 @@ const _abi = [
         type: "tuple",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolver",
+        name: "pendingDisputeResolver",
+        type: "tuple",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
         type: "address",
       },
     ],
-    name: "DisputeResolverUpdated",
+    name: "DisputeResolverUpdateApplied",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "disputeResolverId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "escalationResponsePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.DisputeResolver",
+        name: "pendingDisputeResolver",
+        type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "DisputeResolverUpdatePending",
     type: "event",
   },
   {
@@ -1008,6 +1056,43 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "startExchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "endExchangeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "RangeReserved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
         name: "sellerId",
         type: "uint256",
       },
@@ -1134,6 +1219,44 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Seller",
+        name: "pendingSeller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
             name: "tokenId",
             type: "uint256",
           },
@@ -1149,13 +1272,106 @@ const _abi = [
         type: "tuple",
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "pendingAuthToken",
+        type: "tuple",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
         type: "address",
       },
     ],
-    name: "SellerUpdated",
+    name: "SellerUpdateApplied",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Seller",
+        name: "pendingSeller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.AuthToken",
+        name: "pendingAuthToken",
+        type: "tuple",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "SellerUpdatePending",
     type: "event",
   },
   {
@@ -1992,6 +2208,685 @@ const _abi = [
       },
     ],
     name: "createOfferWithConditionAndTwinAndBundle",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_groupId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createPremintedOfferAddToGroup",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "supplyAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.Twin",
+        name: "_twin",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createPremintedOfferAndTwinWithBundle",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.Condition",
+        name: "_condition",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createPremintedOfferWithCondition",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.Condition",
+        name: "_condition",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "supplyAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.Twin",
+        name: "_twin",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createPremintedOfferWithConditionAndTwinAndBundle",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2932,6 +3827,977 @@ const _abi = [
     name: "createSellerAndOfferWithConditionAndTwinAndBundle",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Seller",
+        name: "_seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createSellerAndPremintedOffer",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Seller",
+        name: "_seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "supplyAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.Twin",
+        name: "_twin",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createSellerAndPremintedOfferAndTwinWithBundle",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Seller",
+        name: "_seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.Condition",
+        name: "_condition",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createSellerAndPremintedOfferWithCondition",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "admin",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "clerk",
+            type: "address",
+          },
+          {
+            internalType: "address payable",
+            name: "treasury",
+            type: "address",
+          },
+          {
+            internalType: "bool",
+            name: "active",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Seller",
+        name: "_seller",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerDeposit",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "buyerCancelPenalty",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "quantityAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "exchangeToken",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metadataUri",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "metadataHash",
+            type: "string",
+          },
+          {
+            internalType: "bool",
+            name: "voided",
+            type: "bool",
+          },
+        ],
+        internalType: "struct BosonTypes.Offer",
+        name: "_offer",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "validFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "validUntil",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableFrom",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherRedeemableUntil",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDates",
+        name: "_offerDates",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "disputePeriod",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "voucherValid",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "resolutionPeriod",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.OfferDurations",
+        name: "_offerDurations",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_disputeResolverId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_reservedRangeLength",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.Condition",
+        name: "_condition",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "sellerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "supplyAvailable",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.Twin",
+        name: "_twin",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "enum BosonTypes.AuthTokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct BosonTypes.AuthToken",
+        name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "_agentId",
+        type: "uint256",
+      },
+    ],
+    name: "createSellerAndPremintedOfferWithConditionAndTwinAndBundle",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_exchangeId",
+        type: "uint256",
+      },
+    ],
+    name: "raiseAndEscalateDispute",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
 ];

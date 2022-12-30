@@ -272,6 +272,7 @@ export async function createDisputeResolver(
   const receipt = await (
     await drCoreSDK.createDisputeResolver(disputeResolverToCreate)
   ).wait();
+  console.log("receipt", receipt);
   const disputeResolverId = drCoreSDK.getDisputeResolverIdFromLogs(
     receipt.logs
   );
@@ -432,7 +433,10 @@ export async function createSeller(
   );
 
   await waitForGraphNodeIndexing();
-  const seller = await coreSDK.getSellerById(createdSellerId as string);
+  if (createdSellerId === null) {
+    throw new Error("Failed to create seller");
+  }
+  const seller = await coreSDK.getSellerById(createdSellerId);
 
   return seller;
 }
@@ -503,9 +507,11 @@ export async function createSellerAndOffer(
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
-
+  if (createdOfferId === null) {
+    throw new Error("Failed to create offer");
+  }
   await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
 }
