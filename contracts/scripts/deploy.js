@@ -13,12 +13,21 @@ const {
 } = require("../protocol-contracts/scripts/deploy-suite.js");
 
 const {
-  deployAndMintMockNFTAuthTokens
+  deployAndMintMockNFTAuthTokens,
+  deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
 
 async function main() {
-  await deploySuite("localhost", undefined); // TODO: verify
+  await deploySuite("localhost", undefined);
   await deployAndMintMockNFTAuthTokens();
+  const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
+  const deployedTokens = await deployMockTokens(mockTokens);
+  console.log(`✅ Mock tokens deployed: ${deployedTokens.length}`);
+  for (const [index, mockToken] of Object.entries(mockTokens)) {
+    console.log(
+      `✅ Mock token ${mockToken} has been deployed at ${deployedTokens[index].address}`
+    );
+  }
 }
 
 main()

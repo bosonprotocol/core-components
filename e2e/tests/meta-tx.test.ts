@@ -18,7 +18,9 @@ import {
   seedWallet11,
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
-  initCoreSDKWithFundedWallet
+  initCoreSDKWithFundedWallet,
+  createDisputeResolverIfRequired,
+  seedWallet13
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -39,6 +41,7 @@ describe("meta-tx", () => {
   let offerToCommit: OfferFieldsFragment;
 
   beforeAll(async () => {
+    await createDisputeResolverIfRequired();
     await ensureCreatedSeller(sellerWallet);
     await ensureMintedAndAllowedTokens([sellerWallet]);
     // do not approve for buyer (we expect commit to do it when needed)
@@ -60,17 +63,27 @@ describe("meta-tx", () => {
       if (existingSeller) {
         // Change all addresses used by the seller to be able to create another one with the original address
         // Useful when repeating the test suite on the same contracts
-        const randomWallet = Wallet.createRandom();
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
-          admin: randomWallet.address,
-          operator: randomWallet.address,
-          clerk: randomWallet.address,
-          treasury: randomWallet.address,
+          admin: seedWallet13.address,
+          operator: seedWallet13.address,
+          clerk: seedWallet13.address,
+          treasury: seedWallet13.address,
           authTokenId: "0",
           authTokenType: 0
         });
         await updateTx.wait();
+        const randomSellerCoreSDK = initCoreSDKWithWallet(seedWallet13);
+        const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
+          id: existingSeller.id,
+          fieldsToUpdate: {
+            admin: true,
+            operator: true,
+            clerk: true,
+            authToken: true
+          }
+        });
+        await optinTx.wait();
       }
 
       // Random seller signs meta tx

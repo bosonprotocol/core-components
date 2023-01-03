@@ -7,6 +7,7 @@ import {
   providers,
   Wallet,
   utils,
+  constants,
   Contract,
   BigNumber,
   BigNumberish
@@ -32,7 +33,8 @@ import {
   ACCOUNT_9,
   ACCOUNT_10,
   ACCOUNT_11,
-  ACCOUNT_12
+  ACCOUNT_12,
+  ACCOUNT_13
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -43,6 +45,10 @@ import {
 import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "../../packages/common/src/utils/timestamp";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -82,6 +88,7 @@ export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
 export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
+export const seedWallet13 = new Wallet(ACCOUNT_13.privateKey, provider);
 // seedWallets used by native-meta-tx test
 export const seedWallet12 = new Wallet(ACCOUNT_12.privateKey, provider);
 // seedWallets used by productV1 test
@@ -289,6 +296,50 @@ export async function createDisputeResolver(
     protocolAdminCoreSDK,
     disputeResolverCoreSDK: drCoreSDK
   };
+}
+
+export async function createDisputeResolverIfRequired() {
+  const protocolAdminWallet = deployerWallet;
+
+  const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+    protocolAdminWallet
+  );
+  const ethDisputeResolutionFee = {
+    tokenAddress: constants.AddressZero,
+    tokenName: "Native",
+    feeAmount: utils.parseEther("0")
+  };
+  const erc20DisputeResolutionFee = {
+    tokenAddress: MOCK_ERC20_ADDRESS,
+    tokenName: "erc20",
+    feeAmount: utils.parseEther("0")
+  };
+  const disputeResolverId = 1;
+  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
+  if (dr && !dr.fees.length) {
+    await (
+      await coreSDK.addFeesToDisputeResolver(disputeResolverId, [
+        ethDisputeResolutionFee,
+        erc20DisputeResolutionFee
+      ])
+    ).wait();
+    await waitForGraphNodeIndexing();
+  } else if (!dr) {
+    const metadataUri = "ipfs://dispute-resolver-uri";
+    const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+    const disputeResolverAddress = fundedWallet.address;
+
+    await createDisputeResolver(fundedWallet, protocolAdminWallet, {
+      operator: disputeResolverAddress,
+      clerk: disputeResolverAddress,
+      admin: disputeResolverAddress,
+      treasury: disputeResolverAddress,
+      metadataUri,
+      escalationResponsePeriodInMS,
+      fees: [ethDisputeResolutionFee, erc20DisputeResolutionFee],
+      sellerAllowList: []
+    });
+  }
 }
 
 export async function createOffer(
