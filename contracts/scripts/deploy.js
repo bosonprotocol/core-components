@@ -3,6 +3,7 @@ process.env.CONFIRMATIONS = 1; // required for deployProtocolConfigFacet()
 process.env.DEPLOYER_GAS_LIMIT_TEST = gasLimit;
 process.env.AUTH_TOKEN_OWNERS_LOCAL = "";
 process.env.TIP_MULTIPLIER = "10";
+process.env.ADMIN_ADDRESS_LOCAL = "0x5131738127d2E5Edc999b1634342833667eBC8Bc"; // any non-zero address
 require("dotenv").config({
   path: "./protocol-contracts/.env"
 });
