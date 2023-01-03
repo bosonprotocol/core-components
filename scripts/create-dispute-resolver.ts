@@ -98,15 +98,9 @@ async function main() {
   const disputeResolverId = coreSDKDRAdmin.getDisputeResolverIdFromLogs(
     receipt.logs
   );
-  console.log(`Dispute resolver with id ${disputeResolverId} created.`);
-
-  console.log(`Activating dispute resolver...`);
-  const txResponse2 = await coreSDKProtocolAdmin.activateDisputeResolver(
-    disputeResolverId as string
+  console.log(
+    `Dispute resolver with id ${disputeResolverId} created and activated.`
   );
-  console.log(`Tx hash: ${txResponse2.hash}`);
-  await txResponse2.wait();
-  console.log(`Dispute resolver with id ${disputeResolverId} activated.`);
 }
 
 main()

@@ -5,7 +5,10 @@ import {
   ExchangeFieldsFragment
 } from "./../../packages/core-sdk/src/subgraph";
 import { utils, constants, BigNumber, BigNumberish } from "ethers";
-
+import {
+  MSEC_PER_DAY,
+  MSEC_PER_SEC
+} from "./../../packages/common/src/utils/timestamp";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import {
@@ -34,10 +37,13 @@ import {
   createOfferWithCondition,
   createSellerAndOfferWithCondition,
   createSeller,
-  createSellerAndOffer
+  createSellerAndOffer,
+  createDisputeResolver,
+  deployerWallet
 } from "./utils";
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
 
+const protocolAdminWallet = deployerWallet;
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const buyerWallet2 = seedWallet6; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -45,6 +51,48 @@ const buyerWallet2 = seedWallet6; // be sure the seedWallet is not used by anoth
 jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
+  beforeAll(async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      protocolAdminWallet
+    );
+    const ethDisputeResolutionFee = {
+      tokenAddress: constants.AddressZero,
+      tokenName: "Native",
+      feeAmount: utils.parseEther("0")
+    };
+    const erc20DisputeResolutionFee = {
+      tokenAddress: MOCK_ERC20_ADDRESS,
+      tokenName: "erc20",
+      feeAmount: utils.parseEther("0")
+    };
+    const disputeResolverId = 1;
+    const dr = await coreSDK.getDisputeResolverById(1);
+    if (dr && !dr.fees.length) {
+      await (
+        await coreSDK.addFeesToDisputeResolver(disputeResolverId, [
+          ethDisputeResolutionFee,
+          erc20DisputeResolutionFee
+        ])
+      ).wait();
+      await waitForGraphNodeIndexing();
+    } else if (!dr) {
+      const metadataUri = "ipfs://dispute-resolver-uri";
+      const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+      const disputeResolverAddress = fundedWallet.address;
+
+      await createDisputeResolver(fundedWallet, protocolAdminWallet, {
+        operator: disputeResolverAddress,
+        clerk: disputeResolverAddress,
+        admin: disputeResolverAddress,
+        treasury: disputeResolverAddress,
+        metadataUri,
+        escalationResponsePeriodInMS,
+        fees: [ethDisputeResolutionFee, erc20DisputeResolutionFee],
+        sellerAllowList: []
+      });
+    }
+  });
+
   describe("core user flows", () => {
     test("create seller and offer", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(

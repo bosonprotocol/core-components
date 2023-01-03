@@ -1,5 +1,5 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
-import { Wallet, BigNumber } from "ethers";
+import { BigNumber } from "ethers";
 import {
   MSEC_PER_DAY,
   MSEC_PER_SEC
@@ -33,7 +33,7 @@ describe("CoreSDK - accounts", () => {
     const ethDisputeResolutionFee = {
       tokenAddress: constants.AddressZero,
       tokenName: "Native",
-      feeAmount: utils.parseEther("1")
+      feeAmount: utils.parseEther("0")
     };
 
     test("create", async () => {
@@ -55,7 +55,7 @@ describe("CoreSDK - accounts", () => {
         }
       );
 
-      expect(disputeResolver.active).toBeFalsy();
+      expect(disputeResolver.active).toBeTruthy();
       expect(disputeResolver.admin).toBe(disputeResolverAddress);
       expect(disputeResolver.clerk).toBe(disputeResolverAddress);
       expect(disputeResolver.operator).toBe(disputeResolverAddress);
@@ -68,14 +68,14 @@ describe("CoreSDK - accounts", () => {
       );
     });
 
-    test("activate", async () => {
-      const fundedWallet = await createFundedWallet(protocolAdminWallet);
+    test("update", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        protocolAdminWallet
+      );
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
-      const { disputeResolver } = await createDisputeResolver(
-        fundedWallet,
-        protocolAdminWallet,
-        {
+      const { disputeResolver: disputeResolverBeforeUpdate } =
+        await createDisputeResolver(fundedWallet, protocolAdminWallet, {
           operator: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
@@ -84,39 +84,7 @@ describe("CoreSDK - accounts", () => {
           escalationResponsePeriodInMS,
           fees: [],
           sellerAllowList: []
-        },
-        {
-          activate: true
-        }
-      );
-
-      expect(disputeResolver.active).toBeTruthy();
-    });
-
-    test("update", async () => {
-      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-        protocolAdminWallet
-      );
-      const disputeResolverAddress = fundedWallet.address.toLowerCase();
-
-      const { disputeResolver: disputeResolverBeforeUpdate } =
-        await createDisputeResolver(
-          fundedWallet,
-          protocolAdminWallet,
-          {
-            operator: disputeResolverAddress,
-            clerk: disputeResolverAddress,
-            admin: disputeResolverAddress,
-            treasury: disputeResolverAddress,
-            metadataUri,
-            escalationResponsePeriodInMS,
-            fees: [],
-            sellerAllowList: []
-          },
-          {
-            activate: true
-          }
-        );
+        });
 
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(seedWallet3);
@@ -186,18 +154,17 @@ describe("CoreSDK - accounts", () => {
           treasury: disputeResolverAddress,
           metadataUri,
           escalationResponsePeriodInMS,
-          fees: [],
+          fees: [ethDisputeResolutionFee],
           sellerAllowList: []
-        },
-        {
-          activate: true
         }
       );
-
+      const secondFee = {
+        tokenAddress: "0x0000000000000000000000000000000000000001",
+        tokenName: "Not-Native",
+        feeAmount: utils.parseEther("0")
+      };
       await (
-        await coreSDK.addFeesToDisputeResolver(disputeResolver.id, [
-          ethDisputeResolutionFee
-        ])
+        await coreSDK.addFeesToDisputeResolver(disputeResolver.id, [secondFee])
       ).wait();
       await waitForGraphNodeIndexing();
 
@@ -216,6 +183,18 @@ describe("CoreSDK - accounts", () => {
       );
       expect(disputeResolverAfterUpdate.fees[0].token.decimals).toBe("18");
       expect(disputeResolverAfterUpdate.fees[0].token.symbol).toBe("ETH");
+
+      expect(disputeResolverAfterUpdate.fees[1].tokenAddress).toBe(
+        secondFee.tokenAddress
+      );
+      expect(disputeResolverAfterUpdate.fees[1].tokenName).toBe(
+        secondFee.tokenName
+      );
+      expect(disputeResolverAfterUpdate.fees[1].feeAmount).toBe(
+        secondFee.feeAmount.toString()
+      );
+      expect(disputeResolverAfterUpdate.fees[1].token.decimals).toBe("0");
+      expect(disputeResolverAfterUpdate.fees[1].token.symbol).toBe("unknown");
     });
 
     test("remove fees", async () => {
@@ -225,23 +204,16 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
-        await createDisputeResolver(
-          fundedWallet,
-          protocolAdminWallet,
-          {
-            operator: disputeResolverAddress,
-            clerk: disputeResolverAddress,
-            admin: disputeResolverAddress,
-            treasury: disputeResolverAddress,
-            metadataUri,
-            escalationResponsePeriodInMS,
-            fees: [ethDisputeResolutionFee],
-            sellerAllowList: []
-          },
-          {
-            activate: true
-          }
-        );
+        await createDisputeResolver(fundedWallet, protocolAdminWallet, {
+          operator: disputeResolverAddress,
+          clerk: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [ethDisputeResolutionFee],
+          sellerAllowList: []
+        });
 
       await (
         await coreSDK.removeFeesFromDisputeResolver(
@@ -279,9 +251,6 @@ describe("CoreSDK - accounts", () => {
           escalationResponsePeriodInMS,
           fees: [],
           sellerAllowList: []
-        },
-        {
-          activate: true
         }
       );
 
@@ -308,23 +277,16 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAddress = fundedWallet.address.toLowerCase();
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
-        await createDisputeResolver(
-          fundedWallet,
-          protocolAdminWallet,
-          {
-            operator: disputeResolverAddress,
-            clerk: disputeResolverAddress,
-            admin: disputeResolverAddress,
-            treasury: disputeResolverAddress,
-            metadataUri,
-            escalationResponsePeriodInMS,
-            fees: [],
-            sellerAllowList: [seller.id]
-          },
-          {
-            activate: true
-          }
-        );
+        await createDisputeResolver(fundedWallet, protocolAdminWallet, {
+          operator: disputeResolverAddress,
+          clerk: disputeResolverAddress,
+          admin: disputeResolverAddress,
+          treasury: disputeResolverAddress,
+          metadataUri,
+          escalationResponsePeriodInMS,
+          fees: [],
+          sellerAllowList: [seller.id]
+        });
 
       await (
         await coreSDK.removeSellersFromDisputeResolverAllowList(

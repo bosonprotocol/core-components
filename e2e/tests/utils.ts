@@ -261,30 +261,20 @@ export async function ensureMintedERC1155(
 export async function createDisputeResolver(
   drWallet: Wallet,
   protocolWallet: Wallet,
-  disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
-  options: Partial<{
-    activate: boolean;
-  }> = {}
+  disputeResolverToCreate: accounts.CreateDisputeResolverArgs
 ) {
   const drCoreSDK = initCoreSDKWithWallet(drWallet);
   const protocolAdminCoreSDK = initCoreSDKWithWallet(protocolWallet);
-
   const receipt = await (
     await drCoreSDK.createDisputeResolver(disputeResolverToCreate)
   ).wait();
-  console.log("receipt", receipt);
+
   const disputeResolverId = drCoreSDK.getDisputeResolverIdFromLogs(
     receipt.logs
   );
 
   if (!disputeResolverId) {
     throw new Error("Failed to create dispute resolver");
-  }
-
-  if (options.activate && disputeResolverId) {
-    await (
-      await protocolAdminCoreSDK.activateDisputeResolver(disputeResolverId)
-    ).wait();
   }
 
   await waitForGraphNodeIndexing();
@@ -545,7 +535,7 @@ export async function mintLensToken(
 
   // Mint the token in the mocked LENS contract for the future seller
   const tx = await lensContract.connect(wallet).mint(to, tokenId);
-  tx.wait();
+  await tx.wait();
 
   return tokenId;
 }

@@ -10,7 +10,7 @@ function cleanup() {
 
 cd e2e
 
-docker-compose up -d
+docker-compose up -d #--force-recreate
 
 echo "Waiting for services..."
 sleep 15

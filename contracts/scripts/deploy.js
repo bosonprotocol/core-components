@@ -12,8 +12,13 @@ const {
   deploySuite
 } = require("../protocol-contracts/scripts/deploy-suite.js");
 
+const {
+  deployAndMintMockNFTAuthTokens
+} = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
+
 async function main() {
-  await deploySuite("localhost", undefined);
+  await deploySuite("localhost", undefined); // TODO: verify
+  await deployAndMintMockNFTAuthTokens();
 }
 
 main()
