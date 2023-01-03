@@ -21,8 +21,7 @@ async function main() {
   await deploySuite("localhost", undefined);
   await deployAndMintMockNFTAuthTokens();
   const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
-  const deployedTokens = await deployMockTokens(mockTokens);
-  console.log(`✅ Mock tokens deployed: ${deployedTokens.length}`);
+  const deployedTokens = await deployMockTokens([...mockTokens]);
   for (const [index, mockToken] of Object.entries(mockTokens)) {
     console.log(
       `✅ Mock token ${mockToken} has been deployed at ${deployedTokens[index].address}`
