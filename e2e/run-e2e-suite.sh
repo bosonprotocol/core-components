@@ -26,6 +26,6 @@ echo "Successfully deployed subgraph ✅"
 
 echo "Run e2e tests..."
 cd ..
-npm run e2e:test
+npm run e2e:test e2e/tests/accounts.test.ts
 
 exit

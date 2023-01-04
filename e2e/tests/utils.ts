@@ -458,6 +458,17 @@ export async function createSeller(
   sellerParams?: Partial<CreateSellerArgs>
 ) {
   const contractUri = "ipfs://0123456789abcdef";
+  console.log("inside createSeller params", {
+    operator: sellerAddress,
+    admin: sellerAddress,
+    clerk: sellerAddress,
+    treasury: sellerAddress,
+    contractUri,
+    royaltyPercentage: "0",
+    authTokenId: "0",
+    authTokenType: 0,
+    ...sellerParams
+  });
   const createSellerTxResponse = await coreSDK.createSeller({
     operator: sellerAddress,
     admin: sellerAddress,
@@ -570,7 +581,7 @@ export async function mintLensToken(
     MOCK_NFT_AUTH_721_ABI,
     provider
   );
-
+  console.log("inside mintLensToken lensContractAddress", lensContractAddress);
   // find a tokenId that is not minted yet
   let tokenId = Date.now();
   let ownerOf = "NOT_ZERO_ADDRESS";
@@ -582,6 +593,7 @@ export async function mintLensToken(
       ownerOf = ZERO_ADDRESS;
     }
   }
+  console.log("inside mintLensToken tokenId", tokenId, "ownerOf", ownerOf);
 
   // Mint the token in the mocked LENS contract for the future seller
   const tx = await lensContract.connect(wallet).mint(to, tokenId);
