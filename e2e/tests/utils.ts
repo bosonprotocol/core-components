@@ -301,9 +301,8 @@ export async function createDisputeResolver(
 export async function createDisputeResolverIfRequired() {
   const protocolAdminWallet = deployerWallet;
 
-  const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-    protocolAdminWallet
-  );
+  const { coreSDK, fundedWallet: protocolAdminFundedWallet } =
+    await initCoreSDKWithFundedWallet(protocolAdminWallet);
   const ethDisputeResolutionFee = {
     tokenAddress: constants.AddressZero,
     tokenName: "Native",
@@ -327,9 +326,9 @@ export async function createDisputeResolverIfRequired() {
   } else if (!dr) {
     const metadataUri = "ipfs://dispute-resolver-uri";
     const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
-    const disputeResolverAddress = fundedWallet.address;
+    const disputeResolverAddress = drWallet.address;
 
-    await createDisputeResolver(fundedWallet, protocolAdminWallet, {
+    await createDisputeResolver(drWallet, protocolAdminFundedWallet, {
       operator: disputeResolverAddress,
       clerk: disputeResolverAddress,
       admin: disputeResolverAddress,
