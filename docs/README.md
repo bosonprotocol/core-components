@@ -22,3 +22,4 @@
 - [Monorepo tools](./monorepo-tools.md)
 - [Pull requests](./pull-requests.md)
 - [Releases](./releases.md)
+- [Code of Conduct](/docs/code-of-conduct.md)
