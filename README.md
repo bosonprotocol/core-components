@@ -39,3 +39,9 @@ The core components can be found in the [`packages`](/packages) folder of this m
 | [`metadata`](/packages/metadata/README.md)                 | ![](https://img.shields.io/npm/v/@bosonprotocol/metadata?style=flat-square&color=02c987)        | Package which contains supported metadata types and tools.                                                                                                                                                                                 |
 | [`react-kit`](/packages/react-kit/README.md)               | ![](https://img.shields.io/npm/v/@bosonprotocol/react-kit?style=flat-square&color=02c987)       | React toolkit with smart components and hooks.                                                                                                                                                                                             |
 | [`subgraph`](/packages/subgraph/README.md)                 | ![](https://img.shields.io/badge/The%20Graph-Hosted-blueviolet?style=flat-square)               | Schemas and mappings of the [Boson Protocol subgraph](https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon) on [The Graph](https://thegraph.com/en/).                                                                             |
+
+## Contributing
+
+We welcome contributions! The ultimate goal is for all of the Boson Protocol repositories to be fully owned by the community and contributors. Issues, pull requests, suggestions, and any sort of involvement are more than welcome.
+
+By being in this community, you agree to the [Code of Conduct](/docs/code-of-conduct.md). Take a look at it, if you haven't already.
