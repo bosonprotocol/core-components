@@ -167,7 +167,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       relayerUrl: "http://localhost:8888"
     },
     lens: {
-      LENS_HUB_CONTRACT: "0x851356ae760d987E095750cCeb3bC6014560891C", // see contracts/protocol-contracts/scripts/config -> LENS -> localhost
+      LENS_HUB_CONTRACT: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
     }
   }
