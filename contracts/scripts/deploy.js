@@ -19,8 +19,10 @@ const {
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
 
 async function main() {
+  const { addresses } = await deployAndMintMockNFTAuthTokens();
+  process.env.LENS_ADDRESS = addresses[0];
+  process.env.ENS_ADDRESS = addresses[1];
   await deploySuite("localhost", undefined);
-  await deployAndMintMockNFTAuthTokens();
   const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
   const deployedTokens = await deployMockTokens([...mockTokens]);
   for (const [index, mockToken] of Object.entries(mockTokens)) {
