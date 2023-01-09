@@ -1,10 +1,11 @@
 import "styled-components";
 
-const theme = {
+export const theme = {
   colors: {
     light: {
       primary: "#02F3A2",
-      secondary: "#7829F9",
+      secondary: "#FC6838",
+      accent: "#7829F9",
       black: "#09182C",
       lightGrey: "#F1F3F9",
       darkGrey: "#556072",
@@ -30,5 +31,3 @@ const theme = {
     timing: "ease-in-out"
   }
 };
-
-export default theme;

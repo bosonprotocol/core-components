@@ -58,6 +58,17 @@ const ACCOUNT_10 = {
     "0xbf1bbaeabb036f080dccf9589db26471057f9dc6dcb4bfc87f08dfd2326f648d"
 };
 
+const ACCOUNT_11 = {
+  address: "0x85aa07b513803d30373B2FeCA308b8d1c45Ea893",
+  privateKey:
+    "0x6d677479a1304dae02ffd06656ebe408e6aaa014dca8238b3917080213117c25"
+};
+
+const ACCOUNT_12 = {
+  address: "0xf5bBA1aA5f84484137c2eeC6312F1993709E759B",
+  privateKey: "35253a0b89df66fa7c4fb98e46925f6e8804b55a80e2e1c3f22cb1b90a11567b"
+};
+
 const ACCOUNTS = [
   ACCOUNT_1,
   ACCOUNT_2,
@@ -68,7 +79,9 @@ const ACCOUNTS = [
   ACCOUNT_7,
   ACCOUNT_8,
   ACCOUNT_9,
-  ACCOUNT_10
+  ACCOUNT_10,
+  ACCOUNT_11,
+  ACCOUNT_12
 ];
 
 module.exports = {
@@ -82,5 +95,7 @@ module.exports = {
   ACCOUNT_7,
   ACCOUNT_8,
   ACCOUNT_9,
-  ACCOUNT_10
+  ACCOUNT_10,
+  ACCOUNT_11,
+  ACCOUNT_12
 };

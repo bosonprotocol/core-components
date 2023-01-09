@@ -1,3 +1,4 @@
+import { Web3LibAdapter, EnvironmentType } from "@bosonprotocol/common";
 import { getDefaultConfig } from "@bosonprotocol/core-sdk";
 import { CoreSDK } from "../src/core-sdk";
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
@@ -5,8 +6,11 @@ import {
   mockRawOfferFromSubgraph,
   buildProductV1Metadata,
   interceptSubgraph,
-  SUBGRAPH_URL
+  SUBGRAPH_URL,
+  ZERO_ADDRESS,
+  mockRawSellerFromSubgraph
 } from "./mocks";
+import { ADDRESS } from "@bosonprotocol/common/tests/mocks";
 
 describe("#fromDefaultConfig()", () => {
   test("construct using default config from env name", () => {
@@ -21,33 +25,16 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter(),
-        envName: "unknown"
+        envName: "unknown" as EnvironmentType
       })
     ).toThrow();
   });
 
-  test("construct using default config from chain id", () => {
-    const coreSDK = CoreSDK.fromDefaultConfig({
-      web3Lib: new MockWeb3LibAdapter(),
-      chainId: 1234
-    });
-    expect(coreSDK).toBeInstanceOf(CoreSDK);
-  });
-
-  test("throw for unknown chain id", () => {
-    expect(() =>
-      CoreSDK.fromDefaultConfig({
-        web3Lib: new MockWeb3LibAdapter(),
-        chainId: 9999999999
-      })
-    ).toThrow();
-  });
-
-  test("throw for if chainId and env not set", () => {
+  test("throw for if env not set", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter()
-      })
+      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter })
     ).toThrow();
   });
 });
@@ -70,11 +57,12 @@ describe("#renderContractualAgreementForOffer()", () => {
         productV1MetadataEntity: mockedRawOfferFromSubgraph.metadata
       }
     });
-    const defaultConfig = getDefaultConfig({ envName: "testing" });
+    const defaultConfig = getDefaultConfig("testing");
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
-      protocolDiamond: defaultConfig.contracts.protocolDiamond
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: defaultConfig.chainId
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
     expect(mockedRawOfferFromSubgraph.id).toEqual(offerId);
@@ -94,15 +82,42 @@ describe("#renderContractualAgreementForOffer()", () => {
         offer: null
       }
     });
-    const defaultConfig = getDefaultConfig({ envName: "testing" });
+    const defaultConfig = getDefaultConfig("testing");
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
-      protocolDiamond: defaultConfig.contracts.protocolDiamond
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: defaultConfig.chainId
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
     await expect(
       coreSDK.renderContractualAgreementForOffer(offerId)
     ).rejects.toThrowError(/^offerData is undefined/);
+  });
+});
+
+describe("getSellersByAddress()", () => {
+  test("shall fail if search address is ZERO_ADDRESS", async () => {
+    const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
+      operator: ADDRESS
+    });
+    interceptSubgraph().reply(200, {
+      data: {
+        sellers: [mockedRawSellerFromSubgraph]
+      }
+    });
+    const defaultConfig = getDefaultConfig("testing");
+    const coreSDK = new CoreSDK({
+      web3Lib: new MockWeb3LibAdapter(),
+      subgraphUrl: SUBGRAPH_URL,
+      protocolDiamond: defaultConfig.contracts.protocolDiamond,
+      chainId: defaultConfig.chainId
+    });
+    expect(coreSDK).toBeInstanceOf(CoreSDK);
+    await expect(
+      coreSDK.getSellersByAddress(ZERO_ADDRESS)
+    ).rejects.toThrowError(
+      /^Unsupported search address '0x0000000000000000000000000000000000000000'/
+    );
   });
 });

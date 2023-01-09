@@ -1,7 +1,7 @@
 {
   "name": "@bosonprotocol/core-sdk",
-  "version": "1.12.0-alpha.10",
-  "description": "> TODO: description",
+  "version": "1.24.0",
+  "description": "Facilitates interaction with the contracts and subgraphs of the Boson Protocol",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/cjs/index.d.ts",
@@ -30,10 +30,10 @@
     "src/*"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "dependencies": {
-    "@bosonprotocol/common": "^1.9.0-alpha.10",
+    "@bosonprotocol/common": "^1.20.2",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
@@ -43,7 +43,8 @@
     "cross-fetch": "^3.1.5",
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "^8.10.0",

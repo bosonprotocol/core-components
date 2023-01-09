@@ -75,13 +75,13 @@ export declare namespace BosonTypes {
   };
 
   export type OfferDurationsStruct = {
-    fulfillmentPeriod: BigNumberish;
+    disputePeriod: BigNumberish;
     voucherValid: BigNumberish;
     resolutionPeriod: BigNumberish;
   };
 
   export type OfferDurationsStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    fulfillmentPeriod: BigNumber;
+    disputePeriod: BigNumber;
     voucherValid: BigNumber;
     resolutionPeriod: BigNumber;
   };

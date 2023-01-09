@@ -64,13 +64,19 @@ fragment BaseOfferFields on Offer {
   validUntilDate
   voucherRedeemableFromDate
   voucherRedeemableUntilDate
-  fulfillmentPeriodDuration
+  disputePeriodDuration
   voucherValidDuration
   resolutionPeriodDuration
   metadataUri
   metadataHash
+  voided
   voidedAt
   disputeResolverId
+  numberOfCommits
+  numberOfRedemptions
+  condition {
+    ...BaseConditionFields
+  }
   seller {
     ...BaseSellerFields
   }
@@ -87,10 +93,13 @@ fragment BaseOfferFields on Offer {
     name
     description
     externalUrl
+    animationUrl
+    licenseUrl
+    condition
     schemaUrl
     type
+    image
     ... on ProductV1MetadataEntity {
-      image
       attributes {
         traitType
         value

@@ -27,7 +27,7 @@ export const WithExtraInfo: ComponentStory<typeof VoidButton> = Template.bind(
 );
 
 Simple.args = {
-  chainId: 1234,
+  envName: "testing",
   offerId: "28",
   web3Provider: undefined,
   onPendingSignature: () => {
@@ -49,9 +49,8 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  chainId: 1234,
+  envName: "testing",
   offerId: "28",
-  web3Provider: undefined,
   extraInfo: "Step x",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

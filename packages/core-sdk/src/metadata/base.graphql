@@ -38,6 +38,9 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   name
   description
   externalUrl
+  animationUrl
+  licenseUrl
+  condition
   schemaUrl
   type
   image
@@ -60,4 +63,6 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   validFromDate
   validUntilDate
   quantityAvailable
+  numberOfCommits
+  numberOfRedemptions
 }

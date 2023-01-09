@@ -5,7 +5,10 @@
     "type": { "type": "string", "enum": ["BASE"] },
     "name": { "type": "string" },
     "description": { "type": "string" },
-    "externalUrl": { "type": "string" }
+    "externalUrl": { "type": "string" },
+    "licenseUrl": { "type": "string" },
+    "condition": { "type": "string" },
+    "animationUrl": { "type": "string" }
   },
-  "required": ["schemaUrl", "type", "name", "description", "externalUrl"]
+  "required": ["schemaUrl", "type", "name", "description", "externalUrl", "licenseUrl"]
 }

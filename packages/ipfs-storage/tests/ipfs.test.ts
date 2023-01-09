@@ -1,5 +1,4 @@
 import { IpfsMetadataStorage } from "../src/";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "../src/constants";
 import { IPFS_HASH } from "@bosonprotocol/common/tests/mocks";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -18,21 +17,6 @@ const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, true);
 const { create } = jest.requireActual("ipfs-http-client");
 
 const IPFS_URL = "https://ipfs.api.com:5001";
-
-describe("#fromTheGraphIpfsUrl()", () => {
-  it("create instance from default The Graph IPFS url", () => {
-    mockedIpfsHttpClient.create.mockReturnValueOnce(
-      create({
-        url: DEFAULT_THE_GRAPH_IPFS_URL
-      })
-    );
-
-    const theGraphIpfsStorage = IpfsMetadataStorage.fromTheGraphIpfsUrl();
-    const endpointConfig = theGraphIpfsStorage.ipfsClient.getEndpointConfig();
-
-    expect(endpointConfig.host).toEqual("api.thegraph.com");
-  });
-});
 
 describe("#storeMetadata()", () => {
   it("throw if invalid metadata", async () => {
@@ -61,6 +45,8 @@ describe("#storeMetadata()", () => {
       description: "description",
       schemaUrl: "schemaUrl",
       externalUrl: "externalUrl",
+      animationUrl: "animationUrl",
+      licenseUrl: "licenseUrl",
       type: MetadataType.BASE
     });
 
@@ -75,6 +61,9 @@ describe("#getMetadata()", () => {
     schemaUrl: "schemaUrl",
     externalUrl: "externalUrl",
     external_url: "externalUrl",
+    animationUrl: "animationUrl",
+    animation_url: "animation_url",
+    licenseUrl: "licenseUrl",
     type: MetadataType.BASE
   };
 
@@ -83,6 +72,8 @@ describe("#getMetadata()", () => {
     description: METADATA_FROM_IPFS.description,
     schemaUrl: METADATA_FROM_IPFS.schemaUrl,
     externalUrl: METADATA_FROM_IPFS.externalUrl,
+    animationUrl: METADATA_FROM_IPFS.animationUrl,
+    licenseUrl: METADATA_FROM_IPFS.licenseUrl,
     type: METADATA_FROM_IPFS.type
   };
 

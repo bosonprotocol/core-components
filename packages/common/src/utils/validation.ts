@@ -1,5 +1,5 @@
 import { object, string } from "yup";
-import { BigNumber } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { isAddress } from "@ethersproject/address";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
@@ -69,42 +69,59 @@ export const createOfferArgsSchema = object({
     .required()
     .test(...positiveIntTestArgs)
     .test(...futureDateTestArgs)
-    .test(
-      "is-before-redeemable-until-date",
-      "${path} has be before voucherRedeemableUntilDateInMS",
-      (value, ctx) => {
-        return BigNumber.from(ctx.parent.voucherRedeemableUntilDateInMS).gt(
-          BigNumber.from(value)
-        );
-      }
-    ),
+    .when("voucherRedeemableUntilDateInMS", {
+      is: isNotZero,
+      then: string().test(
+        "is-before-redeemable-until-date",
+        "${path} has to be before voucherRedeemableUntilDateInMS",
+        (value, ctx) => {
+          return BigNumber.from(ctx.parent.voucherRedeemableUntilDateInMS).gt(
+            BigNumber.from(value)
+          );
+        }
+      )
+    }),
   voucherRedeemableUntilDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
-    .test(...futureDateTestArgs)
-    .test(
-      "is-after-redeemable-from-date",
-      "${path} has to be after voucherRedeemableFromDateInMS",
-      (value, ctx) => {
-        return BigNumber.from(ctx.parent.voucherRedeemableFromDateInMS).lt(
-          BigNumber.from(value)
-        );
-      }
-    )
-    .test(
-      "is-after-valid-until-date",
-      "${path} has to be after or equal validUntilDateInMS",
-      (value, ctx) => {
-        return BigNumber.from(ctx.parent.validUntilDateInMS).lte(
-          BigNumber.from(value)
-        );
-      }
-    ),
+    .when("voucherValidDurationInMS", {
+      is: isZero,
+      then: string()
+        .test(
+          "not-zero",
+          "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
+          isNotZero
+        )
+        .test(...futureDateTestArgs)
+        .test(
+          "is-after-redeemable-from-date",
+          "${path} has to be after voucherRedeemableFromDateInMS",
+          (value, ctx) => {
+            return BigNumber.from(ctx.parent.voucherRedeemableFromDateInMS).lt(
+              BigNumber.from(value)
+            );
+          }
+        )
+        .test(
+          "is-after-valid-until-date",
+          "${path} has to be after or equal validUntilDateInMS",
+          (value, ctx) => {
+            return BigNumber.from(ctx.parent.validUntilDateInMS).lte(
+              BigNumber.from(value)
+            );
+          }
+        ),
+      otherwise: string().test(
+        "is-zero",
+        "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
+        isZero
+      )
+    }),
   voucherValidDurationInMS: string()
     .optional()
     .nullable()
     .test(...positiveIntTestArgs),
-  fulfillmentPeriodDurationInMS: string()
+  disputePeriodDurationInMS: string()
     .required()
     .test(...positiveIntTestArgs),
   resolutionPeriodDurationInMS: string()
@@ -158,6 +175,14 @@ function isPositiveInt(value: unknown) {
 
 function isFutureDate(value: string) {
   return BigNumber.from(value).gt(Date.now());
+}
+
+function isZero(value: BigNumberish) {
+  return BigNumber.from(value).isZero();
+}
+
+function isNotZero(value: BigNumberish) {
+  return !isZero(value);
 }
 
 function isMetadataUri(value: unknown) {

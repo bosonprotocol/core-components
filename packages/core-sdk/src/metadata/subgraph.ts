@@ -6,11 +6,19 @@ import {
   GetBaseMetadataEntityByIdQueryQueryVariables,
   GetBaseMetadataEntitiesQueryQueryVariables,
   GetProductV1BrandsQueryQueryVariables,
+  GetProductV1ProductsQueryQueryVariables,
   GetProductV1CategoriesQueryQueryVariables,
   GetProductV1MetadataEntitiesQueryQueryVariables,
   GetProductV1MetadataEntityByIdQueryQueryVariables,
   BaseProductV1BrandFieldsFragment,
-  BaseProductV1CategoryFieldsFragment
+  BaseProductV1ProductFieldsFragment,
+  BaseProductV1CategoryFieldsFragment,
+  OfferFieldsFragment,
+  ProductV1Variation,
+  GetProductV1ProductsWithVariantsQueryQueryVariables,
+  BaseProductV1ProductWithNotVoidedVariantsFieldsFragment,
+  BaseProductV1ProductWithVariantsFieldsFragment,
+  GetAllProductsWithNotVoidedVariantsQueryQueryVariables
 } from "../subgraph";
 
 export type SingleBaseMetadataEntityQueryVariables = Omit<
@@ -102,4 +110,73 @@ export async function getProductV1Categories(
     });
 
   return productV1Categories;
+}
+
+export async function getProductV1Products(
+  subgraphUrl: string,
+  queryVars: GetProductV1ProductsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getProductV1ProductsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
+}
+
+export async function getAllProductsWithVariants(
+  subgraphUrl: string,
+  queryVars: GetProductV1ProductsWithVariantsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductWithVariantsFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getProductV1ProductsWithVariantsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
+}
+
+export async function getAllProductsWithNotVoidedVariants(
+  subgraphUrl: string,
+  queryVars: GetAllProductsWithNotVoidedVariantsQueryQueryVariables = {}
+): Promise<BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { productV1Products = [] } =
+    await subgraphSdk.getAllProductsWithNotVoidedVariantsQuery({
+      ...queryVars
+    });
+
+  return productV1Products;
+}
+
+export async function getProductWithVariants(
+  subgraphUrl: string,
+  productUuid: string
+): Promise<{
+  product: BaseProductV1ProductFieldsFragment;
+  variants: {
+    offer: OfferFieldsFragment;
+    variations: ProductV1Variation[];
+  }[];
+} | null> {
+  // Look for ProductV1MetadataEntities, filtered per productUuid
+  const metadataEntities = await getProductV1MetadataEntities(subgraphUrl, {
+    metadataFilter: {
+      productUuid
+    }
+  });
+  if (metadataEntities.length === 0) {
+    return null;
+  }
+  return {
+    product: metadataEntities[0].product,
+    variants: metadataEntities.map((m) => {
+      return {
+        offer: m.offer,
+        variations: m.variations
+      };
+    })
+  };
 }

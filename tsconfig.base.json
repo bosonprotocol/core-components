@@ -4,11 +4,7 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": [
-      "esnext",
-      "es5",
-      "dom"
-    ],
+    "lib": ["esnext", "es5", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -18,7 +14,7 @@
     "pretty": false,
     "sourceMap": true,
     "skipLibCheck": true,
-    "target": "es6",
+    "target": "ESNext",
     "resolveJsonModule": true
   },
   "exclude": [
@@ -28,6 +24,6 @@
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/*.stories.*",
-    "dist",
+    "dist"
   ]
 }

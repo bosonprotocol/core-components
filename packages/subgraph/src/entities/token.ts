@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, dataSource } from "@graphprotocol/graph-ts";
 import { ERC20 } from "../../generated/BosonOfferHandler/ERC20";
 import { ERC20SymbolBytes } from "../../generated/BosonOfferHandler/ERC20SymbolBytes";
 import { ERC20NameBytes } from "../../generated/BosonOfferHandler/ERC20NameBytes";
@@ -14,9 +14,16 @@ export function saveExchangeToken(exchangeTokenAddress: Address): void {
 
     // ZERO_ADDRESS implies native currency
     if (isZeroAddress(exchangeTokenAddress.toHexString())) {
+      const networkName = dataSource.network();
+
       exchangeToken.decimals = BigInt.fromI32(18);
-      exchangeToken.name = "Ether";
-      exchangeToken.symbol = "ETH";
+      if (["mumbai", "maticmum", "polygon", "matic"].includes(networkName)) {
+        exchangeToken.name = "Matic";
+        exchangeToken.symbol = "MATIC";
+      } else {
+        exchangeToken.name = "Ether";
+        exchangeToken.symbol = "ETH";
+      }
     } else {
       exchangeToken.decimals = fetchTokenDecimals(exchangeTokenAddress);
       exchangeToken.name = fetchTokenName(exchangeTokenAddress);

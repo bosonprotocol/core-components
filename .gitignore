@@ -29,3 +29,6 @@ utils/graph/data
 # tests
 .nyc_output
 coverage/
+
+# scripts
+scripts/abi-signatures.csv

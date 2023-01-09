@@ -1,0 +1,9 @@
+fragment BaseConditionFields on ConditionEntity {
+  id
+  method
+  tokenType
+  tokenAddress
+  tokenId
+  threshold
+  maxCommits
+}
