@@ -333,6 +333,33 @@ describe("#productV1 tests", () => {
       expect(metadatas[0].uuid).not.toEqual(metadatas[1].uuid);
     });
 
+    test("each metadata should have externalUrl and licenseUrl replaced with the new offer uuid", async () => {
+      const productMetadata =
+        productV1ValidMinimalOffer as unknown as ProductV1Metadata;
+      const oldUUID = productMetadata.uuid;
+      const oldExternalUrl = productMetadata.externalUrl;
+      const oldLicenseUrl = productMetadata.licenseUrl;
+      const metadatas = createVariantProductMetadata(
+        productMetadata,
+        variantsOK
+      );
+
+      expect(metadatas.length).toEqual(variantsOK.length);
+
+      // We want each metadata to have its own offer uuid
+      for (let i = 0; i < variantsOK.length; i++) {
+        expect(metadatas[i].uuid).not.toEqual(oldUUID);
+        expect(metadatas[i].externalUrl).not.toEqual(oldExternalUrl);
+        expect(metadatas[i].externalUrl).toEqual(
+          oldExternalUrl.replace(oldUUID, metadatas[i].uuid)
+        );
+        expect(metadatas[i].licenseUrl).not.toEqual(oldLicenseUrl);
+        expect(metadatas[i].licenseUrl).toEqual(
+          oldLicenseUrl.replace(oldUUID, metadatas[i].uuid)
+        );
+      }
+    });
+
     test("each metadata should be based on the product metadata", async () => {
       const productMetadata =
         productV1ValidMinimalOffer as unknown as ProductV1Metadata;
@@ -342,18 +369,22 @@ describe("#productV1 tests", () => {
       );
 
       expect(metadatas.length).toEqual(variantsOK.length);
-
-      expect(metadatas[0]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[0].uuid,
-        variations: variantsOK[0].productVariant
-      });
-
-      expect(metadatas[1]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[1].uuid,
-        variations: variantsOK[1].productVariant
-      });
+      for (let i = 0; i < variantsOK.length; i++) {
+        expect(metadatas[i]).toEqual({
+          ...productMetadata,
+          uuid: metadatas[i].uuid,
+          variations: variantsOK[i].productVariant,
+          externalUrl: metadatas[i].externalUrl,
+          licenseUrl: metadatas[i].licenseUrl,
+          attributes: [
+            ...productMetadata.attributes,
+            ...variantsOK[i].productVariant.map((variant) => ({
+              trait_type: variant.type,
+              value: variant.option
+            }))
+          ]
+        });
+      }
     });
     test("add productOverrides to the metadata", async () => {
       const productOverrides = [
@@ -385,7 +416,16 @@ describe("#productV1 tests", () => {
           ...productMetadata,
           uuid: metadatas[index].uuid,
           variations: variantsOK[index].productVariant,
-          productOverrides: productOverrides[index]
+          externalUrl: metadatas[index].externalUrl,
+          licenseUrl: metadatas[index].licenseUrl,
+          productOverrides: productOverrides[index],
+          attributes: [
+            ...productMetadata.attributes,
+            ...variantsOK[index].productVariant.map((variant) => ({
+              trait_type: variant.type,
+              value: variant.option
+            }))
+          ]
         });
       }
     });
@@ -408,18 +448,23 @@ describe("#productV1 tests", () => {
 
       expect(metadatas.length).toEqual(variantsOK.length);
 
-      expect(metadatas[0]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[0].uuid,
-        variations: variantsOK[0].productVariant
-      });
-
-      expect(metadatas[1]).toEqual({
-        ...productMetadata,
-        uuid: metadatas[1].uuid,
-        variations: variantsOK[1].productVariant,
-        productOverrides: productOverrides[1]
-      });
+      for (let i = 0; i < variantsOK.length; i++) {
+        expect(metadatas[i]).toEqual({
+          ...productMetadata,
+          uuid: metadatas[i].uuid,
+          variations: variantsOK[i].productVariant,
+          externalUrl: metadatas[i].externalUrl,
+          licenseUrl: metadatas[i].licenseUrl,
+          productOverrides: productOverrides[i],
+          attributes: [
+            ...productMetadata.attributes,
+            ...variantsOK[i].productVariant.map((variant) => ({
+              trait_type: variant.type,
+              value: variant.option
+            }))
+          ]
+        });
+      }
     });
   });
 });

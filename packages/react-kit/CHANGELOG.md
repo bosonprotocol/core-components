@@ -3,6 +3,129 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.0...@bosonprotocol/react-kit@0.16.1) (2022-12-23)
+
+
+### Bug Fixes
+
+* add action name to handle approval of erc20 token ([#410](https://github.com/bosonprotocol/core-components/issues/410)) ([b68a43c](https://github.com/bosonprotocol/core-components/commit/b68a43c5f0c05aa30f79b8755cb7d21a03f4527a))
+
+
+
+
+
+# [0.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.15.0...@bosonprotocol/react-kit@0.16.0) (2022-12-01)
+
+
+### Features
+
+* cta button types update ([#400](https://github.com/bosonprotocol/core-components/issues/400)) ([2c6e743](https://github.com/bosonprotocol/core-components/commit/2c6e74335e4ee5621663d8195793eec02b0cd214))
+
+
+
+
+
+# [0.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.14.0...@bosonprotocol/react-kit@0.15.0) (2022-11-22)
+
+
+### Features
+
+* add name property to useCtaClickHandler ([#399](https://github.com/bosonprotocol/core-components/issues/399)) ([faa06ff](https://github.com/bosonprotocol/core-components/commit/faa06ffab5f7e535878c6cd1a1922b5c8bc4e8ee))
+* **react-kit:** support fallback image src ([#398](https://github.com/bosonprotocol/core-components/issues/398)) ([fc4522d](https://github.com/bosonprotocol/core-components/commit/fc4522d06d99480a35917d68e54016bbdf5fc9c4))
+
+
+
+
+
+# [0.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.13.0...@bosonprotocol/react-kit@0.14.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* images cutting off text below ([#378](https://github.com/bosonprotocol/core-components/issues/378)) ([5786cea](https://github.com/bosonprotocol/core-components/commit/5786ceae81e9060f2876a6f139c9484c59c1066f))
+
+
+### Features
+
+* activate meta-transactions for revokeVoucher()/completeExchangem()/extendDisputeTimeout() ([#367](https://github.com/bosonprotocol/core-components/issues/367)) ([9a7888e](https://github.com/bosonprotocol/core-components/commit/9a7888ec3d66b072604c7802a0834549f656bf19))
+* add funts ctas ([#372](https://github.com/bosonprotocol/core-components/issues/372)) ([3bca4e9](https://github.com/bosonprotocol/core-components/commit/3bca4e994b71f1b84dddd0f9e36f475ae2cd0f88))
+* add onError handler for avatar image ([#379](https://github.com/bosonprotocol/core-components/issues/379)) ([3160bb5](https://github.com/bosonprotocol/core-components/commit/3160bb558c18bac03f5daeb79ed72cbfe1508259))
+* implement dispute CTAs ([#368](https://github.com/bosonprotocol/core-components/issues/368)) ([28cb98a](https://github.com/bosonprotocol/core-components/commit/28cb98aa5e289da7e8051a3341343ac7b420732f))
+
+
+
+
+
+# [0.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.12.0...@bosonprotocol/react-kit@0.13.0) (2022-10-28)
+
+
+### Bug Fixes
+
+* add wrapper to fix type inside productCard ([#360](https://github.com/bosonprotocol/core-components/issues/360)) ([12452f2](https://github.com/bosonprotocol/core-components/commit/12452f21be58603518f37bd02b8ea79ae11dbc5c))
+
+
+### Features
+
+* add support for replaced transactions ([#364](https://github.com/bosonprotocol/core-components/issues/364)) ([111f91e](https://github.com/bosonprotocol/core-components/commit/111f91ea83bd1411f57324114eecbbf9a3d8dbdc))
+* add tooltip for product card ([#359](https://github.com/bosonprotocol/core-components/issues/359)) ([d60887d](https://github.com/bosonprotocol/core-components/commit/d60887d8f0b57eddb858e41f5cfa7c1202cb2d09))
+* bp436 react kit ctas offer ([#352](https://github.com/bosonprotocol/core-components/issues/352)) ([4843d7d](https://github.com/bosonprotocol/core-components/commit/4843d7d7159c26de988b9b54dc48b07ef126d8d3))
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+* support meta transactions ([#348](https://github.com/bosonprotocol/core-components/issues/348)) ([1fa0992](https://github.com/bosonprotocol/core-components/commit/1fa0992b6fc426597565ce517cebef9d82d5875f))
+
+
+
+
+
+# [0.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.11.0...@bosonprotocol/react-kit@0.12.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* change accent color ([#344](https://github.com/bosonprotocol/core-components/issues/344)) ([a96a747](https://github.com/bosonprotocol/core-components/commit/a96a747d89005729ad414dd7a6974c53deb56614))
+* change cards colors ([#357](https://github.com/bosonprotocol/core-components/issues/357)) ([bceb29b](https://github.com/bosonprotocol/core-components/commit/bceb29bd25fca228e449a8ac479cc6d0721628cc))
+* exchange cancel color ([#345](https://github.com/bosonprotocol/core-components/issues/345)) ([73c528c](https://github.com/bosonprotocol/core-components/commit/73c528c6d53f83cd804c8083def79df973d533d9))
+
+
+### Features
+
+* add missing ctas ([#334](https://github.com/bosonprotocol/core-components/issues/334)) ([094153a](https://github.com/bosonprotocol/core-components/commit/094153a824ff5bc39dbf829f3526fc84e1f677eb))
+* bp349 buttons themes ([#341](https://github.com/bosonprotocol/core-components/issues/341)) ([5ac2801](https://github.com/bosonprotocol/core-components/commit/5ac28010d65cb01bfbf8864a4ce9724f8d2d673a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+* exchange cta updates ([#354](https://github.com/bosonprotocol/core-components/issues/354)) ([3383185](https://github.com/bosonprotocol/core-components/commit/33831850945ccb41a07196ebb84dff9d844d9941))
+* export theme add ([#346](https://github.com/bosonprotocol/core-components/issues/346)) ([0e9cb58](https://github.com/bosonprotocol/core-components/commit/0e9cb5805add2f1fd97035e014411ad21dbfdb51))
+
+
+
+
+
+# [0.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.10.0...@bosonprotocol/react-kit@0.11.0) (2022-10-19)
+
+
+### Bug Fixes
+
+* remove margin to prevent overlap on grid ([#338](https://github.com/bosonprotocol/core-components/issues/338)) ([79f999c](https://github.com/bosonprotocol/core-components/commit/79f999cff035687ac107b9d1c920345bbadfecca))
+
+
+### Features
+
+* add `isMetaTx` to `onPendingTransaction` hook ([#340](https://github.com/bosonprotocol/core-components/issues/340)) ([b8667ab](https://github.com/bosonprotocol/core-components/commit/b8667ab3c81f6181ace45302dd1c22d19e1d4a51))
+
+
+
+
+
+# [0.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.2...@bosonprotocol/react-kit@0.10.0) (2022-10-18)
+
+
+### Features
+
+* commit button pas ref add ([#315](https://github.com/bosonprotocol/core-components/issues/315)) ([8f9ff14](https://github.com/bosonprotocol/core-components/commit/8f9ff14815b4a7d9136af95ea87eddc7dd5e45a8))
+* getsignerAddress add to commit button ([#331](https://github.com/bosonprotocol/core-components/issues/331)) ([720f269](https://github.com/bosonprotocol/core-components/commit/720f269ddb510d8997ad319f101fe46d7c020f2e))
+
+
+
+
+
 ## [0.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.9.1...@bosonprotocol/react-kit@0.9.2) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit

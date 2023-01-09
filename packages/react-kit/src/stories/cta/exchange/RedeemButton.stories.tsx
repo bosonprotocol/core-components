@@ -32,7 +32,6 @@ Simple.args = {
   envName: "testing",
   exchangeId: "92",
   disabled: false,
-  web3Provider: undefined,
   metaTransactionsApiKey: undefined,
   metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {

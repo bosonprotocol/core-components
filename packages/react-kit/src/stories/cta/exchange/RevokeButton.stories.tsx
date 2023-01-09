@@ -26,7 +26,6 @@ export const WithStep: ComponentStory<typeof RevokeButton> = Template.bind({});
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  web3Provider: undefined,
   disabled: false,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
@@ -49,7 +48,6 @@ Simple.args = {
 WithStep.args = {
   envName: "testing",
   exchangeId: "28",
-  web3Provider: undefined,
   extraInfo: "Step 2",
   disabled: false,
   onPendingSignature: () => {

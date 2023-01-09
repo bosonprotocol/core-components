@@ -51,6 +51,7 @@ dataSources:
         - Seller
         - Buyer
         - DisputeResolver
+        - PendingSeller
       abis:
         - name: IBosonAccountHandler
           file: ../common/src/abis/IBosonAccountHandler.json
@@ -67,12 +68,20 @@ dataSources:
           handler: handleSellerCreatedEvent
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
           handler: handleSellerUpdatedEvent
+        - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
+          handler: handleSellerUpdatePendingEvent
+        - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
+          handler: handleSellerUpdateAppliedEvent
         - event: BuyerCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleBuyerCreatedEvent
         - event: DisputeResolverCreated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[],indexed address)
           handler: handleDisputeResolverCreatedEvent
         - event: DisputeResolverUpdated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverUpdatedEvent
+        - event: DisputeResolverUpdatePending(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverUpdatePendingEvent
+        - event: DisputeResolverUpdateApplied(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverUpdateAppliedEvent
         - event: DisputeResolverActivated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverActivatedEvent
         - event: DisputeResolverFeesAdded(indexed uint256,(address,string,uint256)[],indexed address)
@@ -195,3 +204,25 @@ dataSources:
         - event: EscalatedDisputeExpired(indexed uint256,indexed address)
           handler: handleEscalatedDisputeExpiredEvent
       file: ./src/mappings/dispute-handler.ts
+  - kind: ethereum/contract
+    name: BosonGroupHandler
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonGroupHandler
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Condition
+      abis:
+        - name: IBosonGroupHandler
+          file: ../common/src/abis/IBosonGroupHandler.json
+      eventHandlers:
+        - event: GroupCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+          handler: handleGroupCreatedEvent
+        - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+          handler: handleGroupUpdatedEvent
+      file: ./src/mappings/group-handler.ts

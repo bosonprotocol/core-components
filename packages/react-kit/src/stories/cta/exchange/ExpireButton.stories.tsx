@@ -28,7 +28,6 @@ export const WithExtraInfo: ComponentStory<typeof ExpireButton> = Template.bind(
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  web3Provider: undefined,
   metaTransactionsApiKey: undefined,
   metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {

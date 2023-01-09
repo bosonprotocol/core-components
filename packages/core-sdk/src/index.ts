@@ -8,7 +8,9 @@ export * as erc20 from "./erc20";
 export * as erc721 from "./erc721";
 export * as funds from "./funds";
 export * as metaTx from "./meta-tx";
+export * as nativeMetaTx from "./native-meta-tx";
 export * as subgraph from "./subgraph";
+export * as groups from "./groups";
 
 export {
   defaultConfigs,
@@ -17,4 +19,10 @@ export {
   MetaTxConfig
 } from "@bosonprotocol/common";
 
-export { MetadataType, AnyMetadata } from "@bosonprotocol/metadata";
+export {
+  MetadataType,
+  AnyMetadata,
+  validateMetadata,
+  base,
+  productV1
+} from "@bosonprotocol/metadata";

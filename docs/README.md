@@ -1,7 +1,7 @@
 # Core Components Docs
 
 - [Guides](#guides)
-- [API Docs](#api-docs)
+<!-- - [API Docs](#api-docs) -->
 - [Contributor docs](#contributor-docs)
 
 ## Guides
@@ -22,3 +22,4 @@
 - [Monorepo tools](./monorepo-tools.md)
 - [Pull requests](./pull-requests.md)
 - [Releases](./releases.md)
+- [Code of Conduct](/docs/code-of-conduct.md)

@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.8.0...@bosonprotocol/metadata@1.8.1) (2022-12-01)
+
+
+### Bug Fixes
+
+* urls in metadata need to be reset with the new UUID ([#406](https://github.com/bosonprotocol/core-components/issues/406)) ([13ac7bf](https://github.com/bosonprotocol/core-components/commit/13ac7bf97b697083a92c5da239c12d7644e6de73))
+
+
+
+
+
+# [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.7.0...@bosonprotocol/metadata@1.8.0) (2022-10-28)
+
+
+### Features
+
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+
+
+
+
+
+# [1.7.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.6.1...@bosonprotocol/metadata@1.7.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* ci ([#355](https://github.com/bosonprotocol/core-components/issues/355)) ([4d6f852](https://github.com/bosonprotocol/core-components/commit/4d6f85242898ed9b4335a31e18f4479a6f01904a))
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* add optional animationUrl property to base metadata ([#349](https://github.com/bosonprotocol/core-components/issues/349)) ([60452ae](https://github.com/bosonprotocol/core-components/commit/60452aef454f26788b374e83eda3369c5914e685))
+
+
+
+
+
+## [1.6.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.6.0...@bosonprotocol/metadata@1.6.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* fix issue in subgraph when returnPeriod overflows ([#339](https://github.com/bosonprotocol/core-components/issues/339)) ([05b73bb](https://github.com/bosonprotocol/core-components/commit/05b73bb022cf01f8635cf52e48017668ebaedf8c))
+
+
+
+
+
+# [1.6.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.5.0...@bosonprotocol/metadata@1.6.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* variations metadata ([#337](https://github.com/bosonprotocol/core-components/issues/337)) ([ab9eaa7](https://github.com/bosonprotocol/core-components/commit/ab9eaa75edf485b458fdce78b4c5d174e8a87240))
+
+
+### Features
+
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+
+
+
+
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.4.0...@bosonprotocol/metadata@1.5.0) (2022-10-13)
 
 

@@ -8,7 +8,9 @@
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
     "licenseUrl": { "type": "string" },
+    "condition": { "type": "string" },
     "image": { "type": "string" },
+    "animationUrl": { "type": "string" },
     "attributes": {
       "type": "array",
       "items": {
@@ -142,7 +144,10 @@
           }
         },
         "redemptionPoint": { "type": "string" },
-        "returnPeriod": { "type": "string" }
+        "returnPeriod": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
       },
       "required": ["returnPeriod"]
     },

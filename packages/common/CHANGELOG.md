@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.1...@bosonprotocol/common@1.20.2) (2022-12-01)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.0...@bosonprotocol/common@1.20.1) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.19.0...@bosonprotocol/common@1.20.0) (2022-11-17)
+
+
+### Features
+
+* add checkTokenGatedCondition ([#390](https://github.com/bosonprotocol/core-components/issues/390)) ([f07f6da](https://github.com/bosonprotocol/core-components/commit/f07f6dac20bcdd7a3f072876a6ae8d13f0b3e9de))
+* add lens ipfs gateway ([#383](https://github.com/bosonprotocol/core-components/issues/383)) ([5f037f3](https://github.com/bosonprotocol/core-components/commit/5f037f3a8abac2fc83bdd02784e7c3014cf1e2f1))
+* chain id to address ([#382](https://github.com/bosonprotocol/core-components/issues/382)) ([492feaf](https://github.com/bosonprotocol/core-components/commit/492feaf003cb2f14532ac84b94bd53d1ee4317e4))
+
+
+
+
+
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.18.0...@bosonprotocol/common@1.19.0) (2022-10-28)
+
+
+### Features
+
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+
+
+
+
+
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.1...@bosonprotocol/common@1.18.0) (2022-10-26)
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
+## [1.17.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.0...@bosonprotocol/common@1.17.1) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.16.0...@bosonprotocol/common@1.17.0) (2022-10-18)
+
+
+### Features
+
+* add lens profiles contract and abi to config ([#328](https://github.com/bosonprotocol/core-components/issues/328)) ([6b45a1b](https://github.com/bosonprotocol/core-components/commit/6b45a1b73617d0345853cf475f32881217e61b50))
+
+
+
+
+
 # [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.15.0...@bosonprotocol/common@1.16.0) (2022-10-13)
 
 

@@ -16,6 +16,20 @@ export async function balanceOf(args: {
   return String(balance);
 }
 
+export async function ownerOf(args: {
+  contractAddress: string;
+  tokenId: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc721Iface.encodeFunctionData("ownerOf", [args.tokenId])
+  });
+
+  const [owner] = erc721Iface.decodeFunctionResult("ownerOf", result);
+  return String(owner);
+}
+
 export async function tokenOfOwnerByIndex(args: {
   contractAddress: string;
   owner: string;

@@ -94,7 +94,9 @@ export type ProductV1Metadata = {
   description: string;
   externalUrl: string;
   licenseUrl: string;
+  condition?: string;
   image: string;
+  animationUrl?: string;
   attributes: {
     trait_type: string;
     value: string;
@@ -178,10 +180,27 @@ function buildVariantProductMetadata(
 
   // Each variant should have an different UUID
   return variants.map((variant) => {
+    const variantAttributes = variant.map((variation) => {
+      return {
+        trait_type: variation.type,
+        value: variation.option
+      };
+    });
+    const uuid = buildUuid();
+    // externalUrl and licenseUrl needs to be patched with the new UUID
+    const [externalUrl, licenseUrl] = replaceUUID(
+      productMetadata.uuid,
+      uuid,
+      productMetadata,
+      ["externalUrl", "licenseUrl"]
+    );
     return {
       ...productMetadata,
-      uuid: buildUuid(),
-      variations: variant
+      uuid,
+      externalUrl,
+      licenseUrl,
+      variations: variant,
+      attributes: [...productMetadata.attributes, ...variantAttributes]
     };
   });
 }
@@ -211,4 +230,22 @@ function serializeVariant(variant: ProductV1Variant): string {
     a.type.localeCompare(b.type)
   );
   return JSON.stringify(orderedTable);
+}
+
+function replaceUUID(
+  oldUUID: string,
+  newUUID: string,
+  metadata: Record<string, unknown>,
+  fields: string[]
+): string[] {
+  const ret = [];
+  for (const field of fields) {
+    // Note: in case metadata[field] does not exist or can not be converted into a string, the value is returned as is
+    ret.push(
+      String(metadata[field])
+        ? String(metadata[field]).replaceAll(oldUUID, newUUID)
+        : metadata[field]
+    );
+  }
+  return ret;
 }

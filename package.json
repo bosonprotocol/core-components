@@ -32,8 +32,10 @@
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
     "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
     "create-seller": "ts-node -P tsconfig.base.json ./scripts/create-seller.ts",
+    "update-seller": "ts-node -P tsconfig.base.json ./scripts/update-seller.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
-    "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv"
+    "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv",
+    "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts"
   },
   "repository": {
     "type": "git",
@@ -57,6 +59,7 @@
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-tsdoc": "^0.2.16",
+    "form-data": "^4.0.0",
     "graphql": "^16.5.0",
     "lerna": "^5.5.1",
     "prettier": "^2.6.2",

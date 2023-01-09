@@ -3,6 +3,119 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.2...@bosonprotocol/core-sdk@1.24.0) (2022-12-23)
+
+
+### Features
+
+* add update seller and opt in with meta transactions ([#413](https://github.com/bosonprotocol/core-components/issues/413)) ([39828a2](https://github.com/bosonprotocol/core-components/commit/39828a2fac33a246b86d3066d002883182d3293e))
+
+
+
+
+
+## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.1...@bosonprotocol/core-sdk@1.23.2) (2022-12-01)
+
+
+### Bug Fixes
+
+* remove treasury from getSellerByAddress ([#402](https://github.com/bosonprotocol/core-components/issues/402)) ([b13f78e](https://github.com/bosonprotocol/core-components/commit/b13f78e39e6beeb92c2acac8f1494f943790a25b))
+
+
+
+
+
+## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.0...@bosonprotocol/core-sdk@1.23.1) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.22.0...@bosonprotocol/core-sdk@1.23.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* adapt meta-tx signature to ledger hardware wallet ([#374](https://github.com/bosonprotocol/core-components/issues/374)) ([51791bb](https://github.com/bosonprotocol/core-components/commit/51791bbed51640ae1ba559da4750e91661afdfe7))
+* fix issue with metadata when signing meta-tx for createOfferWithCondi… ([#371](https://github.com/bosonprotocol/core-components/issues/371)) ([a241285](https://github.com/bosonprotocol/core-components/commit/a241285dd255abd8e37c9c050c275585f488a1bf))
+* fix issue with signing the approve meta-tx for the USDC token ([#370](https://github.com/bosonprotocol/core-components/issues/370)) ([5d85c94](https://github.com/bosonprotocol/core-components/commit/5d85c94409ae28941a217440bee4807a32a5a7a3))
+* validate address only once ([#393](https://github.com/bosonprotocol/core-components/issues/393)) ([2c1759a](https://github.com/bosonprotocol/core-components/commit/2c1759a72c617756b42a34e3b2a1d67ac2d44a57))
+
+
+### Features
+
+* activate meta-transactions for revokeVoucher()/completeExchangem()/extendDisputeTimeout() ([#367](https://github.com/bosonprotocol/core-components/issues/367)) ([9a7888e](https://github.com/bosonprotocol/core-components/commit/9a7888ec3d66b072604c7802a0834549f656bf19))
+* add checkTokenGatedCondition ([#390](https://github.com/bosonprotocol/core-components/issues/390)) ([f07f6da](https://github.com/bosonprotocol/core-components/commit/f07f6dac20bcdd7a3f072876a6ae8d13f0b3e9de))
+* add sellerId and disputeResolverId to productFilter ([#396](https://github.com/bosonprotocol/core-components/issues/396)) ([268657e](https://github.com/bosonprotocol/core-components/commit/268657ee48bc066fbd1f0a04a3c83400541927c8))
+* fetch products with variants directly from subgraph ([#386](https://github.com/bosonprotocol/core-components/issues/386)) ([2bdb77a](https://github.com/bosonprotocol/core-components/commit/2bdb77aa2a5f4bafc2885e7d42f406b1c4f6c9a7))
+* get token info from subgraph (when available) ([#380](https://github.com/bosonprotocol/core-components/issues/380)) ([61119f6](https://github.com/bosonprotocol/core-components/commit/61119f62c8c5f3f433f81339d8fbe0ebd4dace27))
+* script to port images to pinata ([#388](https://github.com/bosonprotocol/core-components/issues/388)) ([c0af4a9](https://github.com/bosonprotocol/core-components/commit/c0af4a9b4d4147e0be46ca98b24e008de49846a1))
+
+
+
+
+
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.21.0...@bosonprotocol/core-sdk@1.22.0) (2022-10-28)
+
+
+### Features
+
+* add missing methods in core-sdk used for creating token-gated offers ([#365](https://github.com/bosonprotocol/core-components/issues/365)) ([413a345](https://github.com/bosonprotocol/core-components/commit/413a345c073cab7b6a467883eb2fcf64c08587ea))
+* add the exchanges returned with the variants ([#362](https://github.com/bosonprotocol/core-components/issues/362)) ([62fd86a](https://github.com/bosonprotocol/core-components/commit/62fd86a77a557dd762e271e1741101f90fe11308))
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+* support meta transactions ([#348](https://github.com/bosonprotocol/core-components/issues/348)) ([1fa0992](https://github.com/bosonprotocol/core-components/commit/1fa0992b6fc426597565ce517cebef9d82d5875f))
+
+
+
+
+
+# [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.1...@bosonprotocol/core-sdk@1.21.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* assertCompletableExchange function ([#353](https://github.com/bosonprotocol/core-components/issues/353)) ([489c833](https://github.com/bosonprotocol/core-components/commit/489c833d1e780cd435333c3f80e22ed093e72cd4))
+* set metadataStorage and theGraphStorage for createOffer meta-tx ([#342](https://github.com/bosonprotocol/core-components/issues/342)) ([35de252](https://github.com/bosonprotocol/core-components/commit/35de252d326804f12533e8e308d3fb7b5128a695))
+
+
+### Features
+
+* add method coreSdk.getProductWithVariants(productUUID) ([#351](https://github.com/bosonprotocol/core-components/issues/351)) ([9b5bc8b](https://github.com/bosonprotocol/core-components/commit/9b5bc8bf30506549cdd6a2afaab8059c67e9f8be))
+* add method signMetaTxDepositFunds() ([#343](https://github.com/bosonprotocol/core-components/issues/343)) ([6d822f4](https://github.com/bosonprotocol/core-components/commit/6d822f43485fb41ea7ccee5ea2a0486d6427f263))
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
+## [1.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.20.0...@bosonprotocol/core-sdk@1.20.1) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.19.1...@bosonprotocol/core-sdk@1.20.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* only save funds log for seller ([#325](https://github.com/bosonprotocol/core-components/issues/325)) ([5578bc9](https://github.com/bosonprotocol/core-components/commit/5578bc964c4a43166de73c065b553e2893788b3f))
+
+
+### Features
+
+* expose `metaTxHandler.getResubmitted` ([#330](https://github.com/bosonprotocol/core-components/issues/330)) ([e5abfa7](https://github.com/bosonprotocol/core-components/commit/e5abfa7d13ede12815c940f85ade3c4361525238))
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+
+
+
+
+
 ## [1.19.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.19.0...@bosonprotocol/core-sdk@1.19.1) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/core-sdk

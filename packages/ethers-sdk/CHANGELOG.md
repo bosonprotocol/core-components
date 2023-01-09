@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.3...@bosonprotocol/ethers-sdk@1.11.0) (2022-12-01)
+
+
+### Bug Fixes
+
+* meta tx signature issue ([#407](https://github.com/bosonprotocol/core-components/issues/407)) ([ee753bf](https://github.com/bosonprotocol/core-components/commit/ee753bf5f3a0642b7cf8d031c1e4c9372e48e5e6))
+* remove EIP712Domain from types to avoid 'ambiguous primary types or unused types' error ([#404](https://github.com/bosonprotocol/core-components/issues/404)) ([73daf21](https://github.com/bosonprotocol/core-components/commit/73daf21f6e70ccf5af487e6232f8425f33ee2705))
+
+
+### Features
+
+* change send function so that signers that dont have eth_signTypedData_v4 dont fail ([#403](https://github.com/bosonprotocol/core-components/issues/403)) ([12c20e1](https://github.com/bosonprotocol/core-components/commit/12c20e1584bc1c8f767ef7b64f4759f31101bd5b))
+
+
+
+
+
+## [1.10.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.2...@bosonprotocol/ethers-sdk@1.10.3) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.10.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.1...@bosonprotocol/ethers-sdk@1.10.2) (2022-11-17)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.0...@bosonprotocol/ethers-sdk@1.10.1) (2022-10-28)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.9.4...@bosonprotocol/ethers-sdk@1.10.0) (2022-10-26)
+
+
+### Features
+
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
+## [1.9.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.9.3...@bosonprotocol/ethers-sdk@1.9.4) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.9.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.9.2...@bosonprotocol/ethers-sdk@1.9.3) (2022-10-18)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
 ## [1.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.9.1...@bosonprotocol/ethers-sdk@1.9.2) (2022-10-13)
 
 **Note:** Version bump only for package @bosonprotocol/ethers-sdk

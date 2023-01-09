@@ -114,9 +114,11 @@ export function mockRawOfferFromSubgraph(
       name: "Name",
       description: "Description",
       externalUrl: "externalUrl",
+      animationUrl: "animationUrl",
       licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
       type: MetadataType.Base,
+      image: "imageUrl",
       ...metadata
     },
     exchanges: [],
@@ -195,8 +197,10 @@ export function buildProductV1Metadata(template: string) {
     name: "Name",
     description: "Description",
     externalUrl: "externalUrl",
+    animationUrl: "animationUrl",
     licenseUrl: "licenseUrl",
     schemaUrl: "schemaUrl",
+    image: "imageUrl",
     type: subgraph.MetadataType.ProductV1,
     exchangePolicy: {
       template,

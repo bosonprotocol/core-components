@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, ButtonProps } from "../buttons/Button";
 import {
   CurrencyDisplay,
@@ -80,6 +80,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     isHoverDisabled = false,
     dataCard = "exchange-card"
   } = props;
+
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   const exchangeCardBottom = useMemo(() => {
     if (isCTAVisible) {
       switch (status) {
@@ -89,7 +92,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <ExchangeButtonWrapper>
               <RedeemButtonWrapper>
                 <Button
-                  variant="ghostOrange"
+                  variant="secondaryInverted"
+                  showBorder={false}
                   {...disputeButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -108,7 +112,7 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
             <ExchangeButtonWrapper>
               <CommittedButtonWrapper>
                 <Button
-                  variant="primary"
+                  variant="primaryFill"
                   {...redeemButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -118,7 +122,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   Redeem
                 </Button>
                 <Button
-                  variant="ghostOrange"
+                  variant="secondaryInverted"
+                  showBorder={false}
                   {...cancelButtonConfig}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -138,9 +143,8 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     }
   }, [isCTAVisible, props, status]);
 
-  const isNotImageLoaded = ["idle", "loading", "error"].includes(
-    imageProps?.preloadConfig?.status ?? ""
-  );
+  const [height, setHeight] = useState<number | null>(null);
+  const isNotImageLoaded = !isImageLoaded;
 
   return (
     <ExchangeCardWrapper
@@ -154,12 +158,17 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
     >
       <ExchangeCardTop $isNotImageLoaded={isNotImageLoaded}>
         <ExchangeImageWrapper>
-          <Image {...imageProps} />
+          <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
         </ExchangeImageWrapper>
         <ExchangeStatus $status={status}>{status.toLowerCase()}</ExchangeStatus>
       </ExchangeCardTop>
-      <ExchangeCardBottom $isNotImageLoaded={isNotImageLoaded}>
-        <ExchangeCardBottomContent>
+      <div style={{ height: height + "px" }} />
+      <ExchangeCardBottom>
+        <ExchangeCardBottomContent
+          ref={(div) => {
+            !!div?.clientHeight && !height && setHeight(div.clientHeight);
+          }}
+        >
           <ExchangeCarData>
             <ExchangeCreator
               onClick={(e) => {
@@ -178,7 +187,15 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
           </ExchangeCarData>
           <ExchangeCardPriceWrapper>
             <ExchangeCardPrice>Price</ExchangeCardPrice>
-            <CurrencyDisplay value={price} currency={currency} />
+            <CurrencyDisplay
+              value={price}
+              currency={currency}
+              style={{
+                wordBreak: "break-all",
+                alignItems: "flex-start",
+                justifyContent: "flex-end"
+              }}
+            />
           </ExchangeCardPriceWrapper>
         </ExchangeCardBottomContent>
         {isCTAVisible && (

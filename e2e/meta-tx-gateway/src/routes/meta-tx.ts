@@ -20,7 +20,6 @@ export const metaTxRouterV2 = Router();
  *   to: string;
  *   from: string;
  *   txHash: string;
- *   events: any[];
  * }
  * ```
  */

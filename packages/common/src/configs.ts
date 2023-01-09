@@ -8,15 +8,46 @@ const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
-const chainIdToGraphTx = new Map<number, (txHash?: string) => string>([
+const chainIdToGraphTx = new Map<
+  number,
+  (txHash?: string, isAddress?: boolean) => string
+>([
   [
     1234,
-    (txHash = "") =>
-      `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://explorer.bsn-development-potassium.bosonportal.io/address/${txHash}`;
+      }
+      return `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`;
+    }
   ],
-  [80001, (txHash = "") => `https://mumbai.polygonscan.com/tx/${txHash}`],
-  [137, (txHash = "") => `https://polygonscan.com/tx/${txHash}`],
-  [1, (txHash = "") => `https://etherscan.io/tx/${txHash}`],
+  [
+    80001,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://mumbai.polygonscan.com/address/${txHash}`;
+      }
+      return `https://mumbai.polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    137,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://polygonscan.com/address/${txHash}`;
+      }
+      return `https://polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    1,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://etherscan.io/address/${txHash}`;
+      }
+      return `https://etherscan.io/tx/${txHash}`;
+    }
+  ],
   [31337, (txHash = "") => `${txHash}`] // TODO: add url
 ]);
 
@@ -31,7 +62,8 @@ const chainIdToLensInfo = new Map<number, Lens>([
         "0x60ae865ee4c725cd04353b5aab364553f56cef82",
       LENS_PROFILES_CONTRACT_PARTIAL_ABI:
         '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api-mumbai.lens.dev/"
+      apiLink: "https://api-mumbai.lens.dev/",
+      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
     }
   ],
   [
@@ -43,7 +75,8 @@ const chainIdToLensInfo = new Map<number, Lens>([
         "0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
       LENS_PROFILES_CONTRACT_PARTIAL_ABI:
         '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api.lens.dev"
+      apiLink: "https://api.lens.dev",
+      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
     }
   ]
 ]);
@@ -98,6 +131,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     chainId: 137,
     nativeCoin: chainIdToInfo.get(137),
     getTxExplorerUrl: chainIdToGraphTx.get(137),
+
     subgraphUrl:
       "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
     jsonRpcUrl:
@@ -125,13 +159,16 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
       protocolDiamond: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575" // Foreign20 contract
+      testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575", // Foreign20 contract
+      testErc721: "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90", // Foreign721 contract
+      testErc1155: "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1" // Foreign1155 contract
     },
     metaTx: {
       relayerUrl: "http://localhost:8888"
     },
     lens: {
-      ...(chainIdToLensInfo.has(31337) && chainIdToLensInfo.get(31337))
+      LENS_HUB_CONTRACT: "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
+      LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
     }
   }
 ];

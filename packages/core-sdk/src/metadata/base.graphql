@@ -38,7 +38,9 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   name
   description
   externalUrl
+  animationUrl
   licenseUrl
+  condition
   schemaUrl
   type
   image

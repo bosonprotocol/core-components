@@ -51,7 +51,6 @@ Simple.args = {
 WithExtraInfo.args = {
   envName: "testing",
   offerId: "28",
-  web3Provider: undefined,
   extraInfo: "Step x",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

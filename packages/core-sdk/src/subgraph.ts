@@ -170,7 +170,9 @@ export enum Account_OrderBy {
 
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -215,6 +217,26 @@ export type BaseMetadataEntityAttributesArgs = {
 export type BaseMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -222,6 +244,26 @@ export type BaseMetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -472,7 +514,9 @@ export type BaseMetadataEntity_Filter = {
 };
 
 export enum BaseMetadataEntity_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -569,6 +613,90 @@ export enum Buyer_OrderBy {
   Id = "id",
   Logs = "logs",
   Wallet = "wallet"
+}
+
+/**
+ * Groups
+ *
+ */
+export type ConditionEntity = {
+  __typename?: "ConditionEntity";
+  id: Scalars["ID"];
+  maxCommits: Scalars["BigInt"];
+  method: Scalars["Int"];
+  threshold: Scalars["BigInt"];
+  tokenAddress: Scalars["Bytes"];
+  tokenId: Scalars["BigInt"];
+  tokenType: Scalars["Int"];
+};
+
+export type ConditionEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  maxCommits?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  method?: InputMaybe<Scalars["Int"]>;
+  method_gt?: InputMaybe<Scalars["Int"]>;
+  method_gte?: InputMaybe<Scalars["Int"]>;
+  method_in?: InputMaybe<Array<Scalars["Int"]>>;
+  method_lt?: InputMaybe<Scalars["Int"]>;
+  method_lte?: InputMaybe<Scalars["Int"]>;
+  method_not?: InputMaybe<Scalars["Int"]>;
+  method_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  threshold?: InputMaybe<Scalars["BigInt"]>;
+  threshold_gt?: InputMaybe<Scalars["BigInt"]>;
+  threshold_gte?: InputMaybe<Scalars["BigInt"]>;
+  threshold_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  threshold_lt?: InputMaybe<Scalars["BigInt"]>;
+  threshold_lte?: InputMaybe<Scalars["BigInt"]>;
+  threshold_not?: InputMaybe<Scalars["BigInt"]>;
+  threshold_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenAddress?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  tokenId?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenType?: InputMaybe<Scalars["Int"]>;
+  tokenType_gt?: InputMaybe<Scalars["Int"]>;
+  tokenType_gte?: InputMaybe<Scalars["Int"]>;
+  tokenType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  tokenType_lt?: InputMaybe<Scalars["Int"]>;
+  tokenType_lte?: InputMaybe<Scalars["Int"]>;
+  tokenType_not?: InputMaybe<Scalars["Int"]>;
+  tokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum ConditionEntity_OrderBy {
+  Id = "id",
+  MaxCommits = "maxCommits",
+  Method = "method",
+  Threshold = "threshold",
+  TokenAddress = "tokenAddress",
+  TokenId = "tokenId",
+  TokenType = "tokenType"
 }
 
 export type Dispute = {
@@ -826,6 +954,7 @@ export type DisputeResolver = Account & {
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
   sellerAllowList: Array<Scalars["BigInt"]>;
   treasury: Scalars["Bytes"];
 };
@@ -1018,6 +1147,7 @@ export type DisputeResolver_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  pendingDisputeResolver_?: InputMaybe<PendingDisputeResolver_Filter>;
   sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains_nocase?: InputMaybe<Array<Scalars["BigInt"]>>;
@@ -1044,6 +1174,7 @@ export enum DisputeResolver_OrderBy {
   MetadataUri = "metadataUri",
   Offers = "offers",
   Operator = "operator",
+  PendingDisputeResolver = "pendingDisputeResolver",
   SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
 }
@@ -2175,7 +2306,9 @@ export enum MetadataAttribute_OrderBy {
 }
 
 export type MetadataInterface = {
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -2219,6 +2352,26 @@ export type MetadataInterfaceAttributesArgs = {
 export type MetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -2226,6 +2379,26 @@ export type MetadataInterface_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -2476,7 +2649,9 @@ export type MetadataInterface_Filter = {
 };
 
 export enum MetadataInterface_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangeToken = "exchangeToken",
@@ -2511,6 +2686,7 @@ export type Offer = {
   agentFee: Scalars["BigInt"];
   agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
+  condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"];
   /** Offer durations */
   disputePeriodDuration: Scalars["BigInt"];
@@ -2696,6 +2872,27 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_?: InputMaybe<ConditionEntity_Filter>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3003,6 +3200,7 @@ export enum Offer_OrderBy {
   AgentFee = "agentFee",
   AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
+  Condition = "condition",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
   DisputeResolutionTerms = "disputeResolutionTerms",
@@ -3037,6 +3235,164 @@ export enum Offer_OrderBy {
 export enum OrderDirection {
   Asc = "asc",
   Desc = "desc"
+}
+
+export type PendingDisputeResolver = {
+  __typename?: "PendingDisputeResolver";
+  admin?: Maybe<Scalars["Bytes"]>;
+  clerk?: Maybe<Scalars["Bytes"]>;
+  disputeResolver: DisputeResolver;
+  id: Scalars["ID"];
+  operator?: Maybe<Scalars["Bytes"]>;
+};
+
+export type PendingDisputeResolver_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  admin?: InputMaybe<Scalars["Bytes"]>;
+  admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_not?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk?: InputMaybe<Scalars["Bytes"]>;
+  clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_not?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  disputeResolver?: InputMaybe<Scalars["String"]>;
+  disputeResolver_?: InputMaybe<DisputeResolver_Filter>;
+  disputeResolver_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_gte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_lt?: InputMaybe<Scalars["String"]>;
+  disputeResolver_lte?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolver_not_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with?: InputMaybe<Scalars["String"]>;
+  disputeResolver_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  operator?: InputMaybe<Scalars["Bytes"]>;
+  operator_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  operator_not?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+};
+
+export enum PendingDisputeResolver_OrderBy {
+  Admin = "admin",
+  Clerk = "clerk",
+  DisputeResolver = "disputeResolver",
+  Id = "id",
+  Operator = "operator"
+}
+
+export type PendingSeller = {
+  __typename?: "PendingSeller";
+  admin?: Maybe<Scalars["Bytes"]>;
+  authTokenId?: Maybe<Scalars["BigInt"]>;
+  authTokenType?: Maybe<Scalars["Int"]>;
+  clerk?: Maybe<Scalars["Bytes"]>;
+  id: Scalars["ID"];
+  operator?: Maybe<Scalars["Bytes"]>;
+  seller: Seller;
+};
+
+export type PendingSeller_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  admin?: InputMaybe<Scalars["Bytes"]>;
+  admin_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  admin_not?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  authTokenId?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  authTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  authTokenType?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_gte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  authTokenType_lt?: InputMaybe<Scalars["Int"]>;
+  authTokenType_lte?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not?: InputMaybe<Scalars["Int"]>;
+  authTokenType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  clerk?: InputMaybe<Scalars["Bytes"]>;
+  clerk_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  clerk_not?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  clerk_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  operator?: InputMaybe<Scalars["Bytes"]>;
+  operator_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  operator_not?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  seller?: InputMaybe<Scalars["String"]>;
+  seller_?: InputMaybe<Seller_Filter>;
+  seller_contains?: InputMaybe<Scalars["String"]>;
+  seller_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_gt?: InputMaybe<Scalars["String"]>;
+  seller_gte?: InputMaybe<Scalars["String"]>;
+  seller_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_lt?: InputMaybe<Scalars["String"]>;
+  seller_lte?: InputMaybe<Scalars["String"]>;
+  seller_not?: InputMaybe<Scalars["String"]>;
+  seller_not_contains?: InputMaybe<Scalars["String"]>;
+  seller_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with?: InputMaybe<Scalars["String"]>;
+  seller_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  seller_not_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  seller_starts_with?: InputMaybe<Scalars["String"]>;
+  seller_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum PendingSeller_OrderBy {
+  Admin = "admin",
+  AuthTokenId = "authTokenId",
+  AuthTokenType = "authTokenType",
+  Clerk = "clerk",
+  Id = "id",
+  Operator = "operator",
+  Seller = "seller"
 }
 
 export type ProductV1Brand = {
@@ -3367,7 +3723,9 @@ export enum ProductV1Media_OrderBy {
 
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
+  animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  condition?: Maybe<Scalars["String"]>;
   /**
    * Enriched fields from offer entity to allow nested query workaround
    *
@@ -3433,6 +3791,26 @@ export type ProductV1MetadataEntityVariationsArgs = {
 export type ProductV1MetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationUrl?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_gt?: InputMaybe<Scalars["String"]>;
+  animationUrl_gte?: InputMaybe<Scalars["String"]>;
+  animationUrl_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_lt?: InputMaybe<Scalars["String"]>;
+  animationUrl_lte?: InputMaybe<Scalars["String"]>;
+  animationUrl_not?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with?: InputMaybe<Scalars["String"]>;
+  animationUrl_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   attributes?: InputMaybe<Array<Scalars["String"]>>;
   attributes_?: InputMaybe<MetadataAttribute_Filter>;
   attributes_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -3440,6 +3818,26 @@ export type ProductV1MetadataEntity_Filter = {
   attributes_not?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   attributes_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  condition?: InputMaybe<Scalars["String"]>;
+  condition_contains?: InputMaybe<Scalars["String"]>;
+  condition_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_gt?: InputMaybe<Scalars["String"]>;
+  condition_gte?: InputMaybe<Scalars["String"]>;
+  condition_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_lt?: InputMaybe<Scalars["String"]>;
+  condition_lte?: InputMaybe<Scalars["String"]>;
+  condition_not?: InputMaybe<Scalars["String"]>;
+  condition_not_contains?: InputMaybe<Scalars["String"]>;
+  condition_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with?: InputMaybe<Scalars["String"]>;
+  condition_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  condition_not_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  condition_starts_with?: InputMaybe<Scalars["String"]>;
+  condition_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
   createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3850,7 +4248,9 @@ export type ProductV1MetadataEntity_Filter = {
 };
 
 export enum ProductV1MetadataEntity_OrderBy {
+  AnimationUrl = "animationUrl",
   Attributes = "attributes",
+  Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
   ExchangePolicy = "exchangePolicy",
@@ -3932,6 +4332,7 @@ export enum ProductV1Personalisation_OrderBy {
 
 export type ProductV1Product = {
   __typename?: "ProductV1Product";
+  allVariantsVoided?: Maybe<Scalars["Boolean"]>;
   brand: ProductV1Brand;
   category?: Maybe<ProductV1Category>;
   description: Scalars["String"];
@@ -3946,6 +4347,11 @@ export type ProductV1Product = {
   details_subCategory?: Maybe<Scalars["String"]>;
   details_subCategory2?: Maybe<Scalars["String"]>;
   details_tags?: Maybe<Array<Scalars["String"]>>;
+  /**
+   * Product information fields
+   *
+   */
+  disputeResolverId: Scalars["BigInt"];
   id: Scalars["ID"];
   identification_productId?: Maybe<Scalars["String"]>;
   identification_productIdType?: Maybe<Scalars["String"]>;
@@ -3954,6 +4360,11 @@ export type ProductV1Product = {
    *
    */
   identification_sKU?: Maybe<Scalars["String"]>;
+  maxValidFromDate: Scalars["BigInt"];
+  maxValidUntilDate: Scalars["BigInt"];
+  minValidFromDate: Scalars["BigInt"];
+  minValidUntilDate: Scalars["BigInt"];
+  notVoidedVariants?: Maybe<Array<ProductV1Variant>>;
   offerCategory: ProductV1OfferCategory;
   packaging_dimensions_height?: Maybe<Scalars["String"]>;
   packaging_dimensions_length?: Maybe<Scalars["String"]>;
@@ -3972,21 +4383,23 @@ export type ProductV1Product = {
    *
    */
   productV1Seller?: Maybe<ProductV1Seller>;
-  /**
-   * Product information fields
-   *
-   */
   productionInformation_brandName: Scalars["String"];
   productionInformation_manufacturer?: Maybe<Scalars["String"]>;
   productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
   productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
   productionInformation_modelNumber?: Maybe<Scalars["String"]>;
   sections?: Maybe<Array<ProductV1Section>>;
+  sellerId: Scalars["BigInt"];
   subCategory?: Maybe<ProductV1Category>;
   subCategory2?: Maybe<ProductV1Category>;
   tags?: Maybe<Array<ProductV1Tag>>;
   title: Scalars["String"];
   uuid: Scalars["String"];
+  /**
+   * PRODUCT_V1 specific fields
+   *
+   */
+  variants?: Maybe<Array<ProductV1Variant>>;
   version: Scalars["Int"];
   /**
    * Visuals
@@ -3994,6 +4407,14 @@ export type ProductV1Product = {
    */
   visuals_images: Array<ProductV1Media>;
   visuals_videos?: Maybe<Array<ProductV1Media>>;
+};
+
+export type ProductV1ProductNotVoidedVariantsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variant_Filter>;
 };
 
 export type ProductV1ProductPersonalisationArgs = {
@@ -4018,6 +4439,14 @@ export type ProductV1ProductTagsArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<ProductV1Tag_Filter>;
+};
+
+export type ProductV1ProductVariantsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variant_Filter>;
 };
 
 export type ProductV1ProductVisuals_ImagesArgs = {
@@ -4630,6 +5059,10 @@ export enum ProductV1ProductOverrides_OrderBy {
 export type ProductV1Product_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  allVariantsVoided?: InputMaybe<Scalars["Boolean"]>;
+  allVariantsVoided_in?: InputMaybe<Array<Scalars["Boolean"]>>;
+  allVariantsVoided_not?: InputMaybe<Scalars["Boolean"]>;
+  allVariantsVoided_not_in?: InputMaybe<Array<Scalars["Boolean"]>>;
   brand?: InputMaybe<Scalars["String"]>;
   brand_?: InputMaybe<ProductV1Brand_Filter>;
   brand_contains?: InputMaybe<Scalars["String"]>;
@@ -4794,6 +5227,14 @@ export type ProductV1Product_Filter = {
   details_tags_not?: InputMaybe<Array<Scalars["String"]>>;
   details_tags_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   details_tags_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -4872,6 +5313,45 @@ export type ProductV1Product_Filter = {
   identification_sKU_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with?: InputMaybe<Scalars["String"]>;
   identification_sKU_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  maxValidFromDate?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_not?: InputMaybe<Scalars["BigInt"]>;
+  maxValidFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidUntilDate?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxValidUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
+  maxValidUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidFromDate?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidFromDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_not?: InputMaybe<Scalars["BigInt"]>;
+  minValidFromDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidUntilDate?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_gt?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_gte?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minValidUntilDate_lt?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_lte?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_not?: InputMaybe<Scalars["BigInt"]>;
+  minValidUntilDate_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  notVoidedVariants?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_?: InputMaybe<ProductV1Variant_Filter>;
+  notVoidedVariants_contains?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  notVoidedVariants_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   offerCategory?: InputMaybe<ProductV1OfferCategory>;
   offerCategory_in?: InputMaybe<Array<ProductV1OfferCategory>>;
   offerCategory_not?: InputMaybe<ProductV1OfferCategory>;
@@ -5269,6 +5749,14 @@ export type ProductV1Product_Filter = {
   sections_not?: InputMaybe<Array<Scalars["String"]>>;
   sections_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   sections_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  sellerId?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_gt?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_gte?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  sellerId_lt?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_lte?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_not?: InputMaybe<Scalars["BigInt"]>;
+  sellerId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   subCategory?: InputMaybe<Scalars["String"]>;
   subCategory2?: InputMaybe<Scalars["String"]>;
   subCategory2_?: InputMaybe<ProductV1Category_Filter>;
@@ -5358,6 +5846,13 @@ export type ProductV1Product_Filter = {
   uuid_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   uuid_starts_with?: InputMaybe<Scalars["String"]>;
   uuid_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  variants?: InputMaybe<Array<Scalars["String"]>>;
+  variants_?: InputMaybe<ProductV1Variant_Filter>;
+  variants_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variants_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variants_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   version?: InputMaybe<Scalars["Int"]>;
   version_gt?: InputMaybe<Scalars["Int"]>;
   version_gte?: InputMaybe<Scalars["Int"]>;
@@ -5383,6 +5878,7 @@ export type ProductV1Product_Filter = {
 };
 
 export enum ProductV1Product_OrderBy {
+  AllVariantsVoided = "allVariantsVoided",
   Brand = "brand",
   Category = "category",
   Description = "description",
@@ -5393,10 +5889,16 @@ export enum ProductV1Product_OrderBy {
   DetailsSubCategory = "details_subCategory",
   DetailsSubCategory2 = "details_subCategory2",
   DetailsTags = "details_tags",
+  DisputeResolverId = "disputeResolverId",
   Id = "id",
   IdentificationProductId = "identification_productId",
   IdentificationProductIdType = "identification_productIdType",
   IdentificationSKu = "identification_sKU",
+  MaxValidFromDate = "maxValidFromDate",
+  MaxValidUntilDate = "maxValidUntilDate",
+  MinValidFromDate = "minValidFromDate",
+  MinValidUntilDate = "minValidUntilDate",
+  NotVoidedVariants = "notVoidedVariants",
   OfferCategory = "offerCategory",
   PackagingDimensionsHeight = "packaging_dimensions_height",
   PackagingDimensionsLength = "packaging_dimensions_length",
@@ -5413,11 +5915,13 @@ export enum ProductV1Product_OrderBy {
   ProductionInformationMaterials = "productionInformation_materials",
   ProductionInformationModelNumber = "productionInformation_modelNumber",
   Sections = "sections",
+  SellerId = "sellerId",
   SubCategory = "subCategory",
   SubCategory2 = "subCategory2",
   Tags = "tags",
   Title = "title",
   Uuid = "uuid",
+  Variants = "variants",
   Version = "version",
   VisualsImages = "visuals_images",
   VisualsVideos = "visuals_videos"
@@ -5951,6 +6455,68 @@ export enum ProductV1Tag_OrderBy {
   Name = "name"
 }
 
+export type ProductV1Variant = {
+  __typename?: "ProductV1Variant";
+  id: Scalars["ID"];
+  offer: Offer;
+  variations?: Maybe<Array<ProductV1Variation>>;
+};
+
+export type ProductV1VariantVariationsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variation_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<ProductV1Variation_Filter>;
+};
+
+export type ProductV1Variant_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  offer?: InputMaybe<Scalars["String"]>;
+  offer_?: InputMaybe<Offer_Filter>;
+  offer_contains?: InputMaybe<Scalars["String"]>;
+  offer_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_gt?: InputMaybe<Scalars["String"]>;
+  offer_gte?: InputMaybe<Scalars["String"]>;
+  offer_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_lt?: InputMaybe<Scalars["String"]>;
+  offer_lte?: InputMaybe<Scalars["String"]>;
+  offer_not?: InputMaybe<Scalars["String"]>;
+  offer_not_contains?: InputMaybe<Scalars["String"]>;
+  offer_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offer_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offer_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offer_starts_with?: InputMaybe<Scalars["String"]>;
+  offer_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  variations?: InputMaybe<Array<Scalars["String"]>>;
+  variations_?: InputMaybe<ProductV1Variation_Filter>;
+  variations_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  variations_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export enum ProductV1Variant_OrderBy {
+  Id = "id",
+  Offer = "offer",
+  Variations = "variations"
+}
+
 export type ProductV1Variation = {
   __typename?: "ProductV1Variation";
   id: Scalars["ID"];
@@ -6029,6 +6595,8 @@ export type Query = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  conditionEntities: Array<ConditionEntity>;
+  conditionEntity?: Maybe<ConditionEntity>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -6059,6 +6627,10 @@ export type Query = {
   offerEventLog?: Maybe<OfferEventLog>;
   offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
+  pendingDisputeResolvers: Array<PendingDisputeResolver>;
+  pendingSeller?: Maybe<PendingSeller>;
+  pendingSellers: Array<PendingSeller>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
   productV1Categories: Array<ProductV1Category>;
@@ -6086,6 +6658,8 @@ export type Query = {
   productV1ShippingOptions: Array<ProductV1ShippingOption>;
   productV1Tag?: Maybe<ProductV1Tag>;
   productV1Tags: Array<ProductV1Tag>;
+  productV1Variant?: Maybe<ProductV1Variant>;
+  productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
@@ -6158,6 +6732,22 @@ export type QueryBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type QueryConditionEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionEntity_Filter>;
+};
+
+export type QueryConditionEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 export type QueryDisputeArgs = {
@@ -6400,6 +6990,38 @@ export type QueryOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
+export type QueryPendingDisputeResolverArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryPendingDisputeResolversArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingDisputeResolver_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingDisputeResolver_Filter>;
+};
+
+export type QueryPendingSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryPendingSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingSeller_Filter>;
+};
+
 export type QueryProductV1BrandArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -6618,6 +7240,22 @@ export type QueryProductV1TagsArgs = {
   where?: InputMaybe<ProductV1Tag_Filter>;
 };
 
+export type QueryProductV1VariantArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryProductV1VariantsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variant_Filter>;
+};
+
 export type QueryProductV1VariationArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -6664,6 +7302,7 @@ export type Seller = Account & {
   logs: Array<EventLog>;
   offers: Array<Offer>;
   operator: Scalars["Bytes"];
+  pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
   royaltyPercentage: Scalars["BigInt"];
   sellerId: Scalars["BigInt"];
@@ -6775,6 +7414,7 @@ export type Seller_Filter = {
   operator_not?: InputMaybe<Scalars["Bytes"]>;
   operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
   operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -6818,6 +7458,7 @@ export enum Seller_OrderBy {
   Logs = "logs",
   Offers = "offers",
   Operator = "operator",
+  PendingSeller = "pendingSeller",
   RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
   Treasury = "treasury",
@@ -6836,6 +7477,8 @@ export type Subscription = {
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
   buyers: Array<Buyer>;
+  conditionEntities: Array<ConditionEntity>;
+  conditionEntity?: Maybe<ConditionEntity>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -6866,6 +7509,10 @@ export type Subscription = {
   offerEventLog?: Maybe<OfferEventLog>;
   offerEventLogs: Array<OfferEventLog>;
   offers: Array<Offer>;
+  pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
+  pendingDisputeResolvers: Array<PendingDisputeResolver>;
+  pendingSeller?: Maybe<PendingSeller>;
+  pendingSellers: Array<PendingSeller>;
   productV1Brand?: Maybe<ProductV1Brand>;
   productV1Brands: Array<ProductV1Brand>;
   productV1Categories: Array<ProductV1Category>;
@@ -6893,6 +7540,8 @@ export type Subscription = {
   productV1ShippingOptions: Array<ProductV1ShippingOption>;
   productV1Tag?: Maybe<ProductV1Tag>;
   productV1Tags: Array<ProductV1Tag>;
+  productV1Variant?: Maybe<ProductV1Variant>;
+  productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
   seller?: Maybe<Seller>;
@@ -6965,6 +7614,22 @@ export type SubscriptionBuyersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Buyer_Filter>;
+};
+
+export type SubscriptionConditionEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionEntity_Filter>;
+};
+
+export type SubscriptionConditionEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 export type SubscriptionDisputeArgs = {
@@ -7207,6 +7872,38 @@ export type SubscriptionOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
+export type SubscriptionPendingDisputeResolverArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionPendingDisputeResolversArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingDisputeResolver_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingDisputeResolver_Filter>;
+};
+
+export type SubscriptionPendingSellerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionPendingSellersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<PendingSeller_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PendingSeller_Filter>;
+};
+
 export type SubscriptionProductV1BrandArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -7425,6 +8122,22 @@ export type SubscriptionProductV1TagsArgs = {
   where?: InputMaybe<ProductV1Tag_Filter>;
 };
 
+export type SubscriptionProductV1VariantArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionProductV1VariantsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ProductV1Variant_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ProductV1Variant_Filter>;
+};
+
 export type SubscriptionProductV1VariationArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -7532,6 +8245,14 @@ export type GetSellerByIdQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    pendingSeller?: {
+      __typename?: "PendingSeller";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+      authTokenId?: string | null;
+      authTokenType?: number | null;
+    } | null;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -7572,6 +8293,16 @@ export type GetSellerByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -7635,13 +8366,15 @@ export type GetSellerByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -7651,9 +8384,12 @@ export type GetSellerByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -8017,6 +8753,14 @@ export type GetSellersQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    pendingSeller?: {
+      __typename?: "PendingSeller";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+      authTokenId?: string | null;
+      authTokenType?: number | null;
+    } | null;
     funds?: Array<{
       __typename?: "FundsEntity";
       id: string;
@@ -8057,6 +8801,16 @@ export type GetSellersQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8120,13 +8874,15 @@ export type GetSellersQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -8136,9 +8892,12 @@ export type GetSellersQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -8826,6 +9585,12 @@ export type GetDisputeResolverByIdQueryQuery = {
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
+    pendingDisputeResolver?: {
+      __typename?: "PendingDisputeResolver";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+    } | null;
     offers?: Array<{
       __typename?: "Offer";
       id: string;
@@ -8852,6 +9617,16 @@ export type GetDisputeResolverByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -8915,13 +9690,15 @@ export type GetDisputeResolverByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -8931,9 +9708,12 @@ export type GetDisputeResolverByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -9248,6 +10028,12 @@ export type GetDisputeResolversQueryQuery = {
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
+    pendingDisputeResolver?: {
+      __typename?: "PendingDisputeResolver";
+      operator?: string | null;
+      admin?: string | null;
+      clerk?: string | null;
+    } | null;
     offers?: Array<{
       __typename?: "Offer";
       id: string;
@@ -9274,6 +10060,16 @@ export type GetDisputeResolversQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -9337,13 +10133,15 @@ export type GetDisputeResolversQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -9353,9 +10151,12 @@ export type GetDisputeResolversQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -9650,6 +10451,14 @@ export type SellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  pendingSeller?: {
+    __typename?: "PendingSeller";
+    operator?: string | null;
+    admin?: string | null;
+    clerk?: string | null;
+    authTokenId?: string | null;
+    authTokenType?: number | null;
+  } | null;
   funds?: Array<{
     __typename?: "FundsEntity";
     id: string;
@@ -9690,6 +10499,16 @@ export type SellerFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -9753,13 +10572,15 @@ export type SellerFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -9769,9 +10590,12 @@ export type SellerFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -10098,6 +10922,15 @@ export type BaseSellerFieldsFragment = {
   royaltyPercentage: string;
 };
 
+export type PendingSellerFieldsFragment = {
+  __typename?: "PendingSeller";
+  operator?: string | null;
+  admin?: string | null;
+  clerk?: string | null;
+  authTokenId?: string | null;
+  authTokenType?: number | null;
+};
+
 export type BuyerFieldsFragment = {
   __typename?: "Buyer";
   id: string;
@@ -10257,6 +11090,12 @@ export type DisputeResolverFieldsFragment = {
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
+  pendingDisputeResolver?: {
+    __typename?: "PendingDisputeResolver";
+    operator?: string | null;
+    admin?: string | null;
+    clerk?: string | null;
+  } | null;
   offers?: Array<{
     __typename?: "Offer";
     id: string;
@@ -10283,6 +11122,16 @@ export type DisputeResolverFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -10346,13 +11195,15 @@ export type DisputeResolverFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -10362,9 +11213,12 @@ export type DisputeResolverFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -10667,6 +11521,13 @@ export type BaseDisputeResolverFieldsFragment = {
       name: string;
     };
   }>;
+};
+
+export type PendingDisputeResolverFieldsFragment = {
+  __typename?: "PendingDisputeResolver";
+  operator?: string | null;
+  admin?: string | null;
+  clerk?: string | null;
 };
 
 export type BaseDisputeResolverFeeFieldsFragment = {
@@ -11043,6 +11904,16 @@ export type GetExchangeTokenByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -11106,13 +11977,15 @@ export type GetExchangeTokenByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -11122,9 +11995,12 @@ export type GetExchangeTokenByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -11382,6 +12258,16 @@ export type GetExchangeTokensQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -11445,13 +12331,15 @@ export type GetExchangeTokensQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -11461,9 +12349,12 @@ export type GetExchangeTokensQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -11699,6 +12590,16 @@ export type ExchangeTokenFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -11762,13 +12663,15 @@ export type ExchangeTokenFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -11778,9 +12681,12 @@ export type ExchangeTokenFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -12195,6 +13101,16 @@ export type GetExchangeByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -12258,13 +13174,15 @@ export type GetExchangeByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -12274,9 +13192,12 @@ export type GetExchangeByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12558,6 +13479,16 @@ export type GetExchangesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -12621,13 +13552,15 @@ export type GetExchangesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -12637,9 +13570,12 @@ export type GetExchangesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12911,6 +13847,16 @@ export type ExchangeFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -12974,13 +13920,15 @@ export type ExchangeFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -12990,9 +13938,12 @@ export type ExchangeFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -13330,6 +14281,17 @@ export type BaseFundsEntityFieldsFragment = {
   accountId: string;
 };
 
+export type BaseConditionFieldsFragment = {
+  __typename?: "ConditionEntity";
+  id: string;
+  method: number;
+  tokenType: number;
+  tokenAddress: string;
+  tokenId: string;
+  threshold: string;
+  maxCommits: string;
+};
+
 export type GetBaseMetadataEntityByIdQueryQueryVariables = Exact<{
   metadataId: Scalars["ID"];
   metadataSkip?: InputMaybe<Scalars["Int"]>;
@@ -13347,7 +14309,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -13390,6 +14354,16 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -13453,13 +14427,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -13469,9 +14445,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13706,7 +14685,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -13749,6 +14730,16 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -13812,13 +14803,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -13828,9 +14821,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -14055,7 +15051,9 @@ export type BaseMetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14098,6 +15096,16 @@ export type BaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -14161,13 +15169,15 @@ export type BaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -14177,9 +15187,12 @@ export type BaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -14399,7 +15412,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -14442,6 +15457,16 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -14505,13 +15530,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -14521,9 +15548,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -14879,6 +15909,1016 @@ export type GetProductV1ProductsQueryQuery = {
   }>;
 };
 
+export type GetProductV1ProductsWithVariantsQueryQueryVariables = Exact<{
+  productsSkip?: InputMaybe<Scalars["Int"]>;
+  productsFirst?: InputMaybe<Scalars["Int"]>;
+  productsOrderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  productsOrderDirection?: InputMaybe<OrderDirection>;
+  productsFilter?: InputMaybe<ProductV1Product_Filter>;
+}>;
+
+export type GetProductV1ProductsWithVariantsQueryQuery = {
+  __typename?: "Query";
+  productV1Products: Array<{
+    __typename?: "ProductV1Product";
+    allVariantsVoided?: boolean | null;
+    minValidFromDate: string;
+    maxValidFromDate: string;
+    minValidUntilDate: string;
+    maxValidUntilDate: string;
+    id: string;
+    uuid: string;
+    version: number;
+    title: string;
+    description: string;
+    identification_sKU?: string | null;
+    identification_productId?: string | null;
+    identification_productIdType?: string | null;
+    productionInformation_brandName: string;
+    productionInformation_manufacturer?: string | null;
+    productionInformation_manufacturerPartNumber?: string | null;
+    productionInformation_modelNumber?: string | null;
+    productionInformation_materials?: Array<string> | null;
+    details_category?: string | null;
+    details_subCategory?: string | null;
+    details_subCategory2?: string | null;
+    details_offerCategory: string;
+    offerCategory: ProductV1OfferCategory;
+    details_tags?: Array<string> | null;
+    details_sections?: Array<string> | null;
+    details_personalisation?: Array<string> | null;
+    packaging_packageQuantity?: string | null;
+    packaging_dimensions_length?: string | null;
+    packaging_dimensions_width?: string | null;
+    packaging_dimensions_height?: string | null;
+    packaging_dimensions_unit?: string | null;
+    packaging_weight_value?: string | null;
+    packaging_weight_unit?: string | null;
+    variants?: Array<{
+      __typename?: "ProductV1Variant";
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          tokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          operator: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    operator: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                  };
+                } | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+            }
+          | null;
+      };
+      variations?: Array<{
+        __typename?: "ProductV1Variation";
+        id: string;
+        type: string;
+        option: string;
+      }> | null;
+    }> | null;
+    brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+    category?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory2?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    tags?: Array<{
+      __typename?: "ProductV1Tag";
+      id: string;
+      name: string;
+    }> | null;
+    sections?: Array<{
+      __typename?: "ProductV1Section";
+      id: string;
+      name: string;
+    }> | null;
+    personalisation?: Array<{
+      __typename?: "ProductV1Personalisation";
+      id: string;
+      name: string;
+    }> | null;
+    visuals_images: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }>;
+    visuals_videos?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    productV1Seller?: {
+      __typename?: "ProductV1Seller";
+      id: string;
+      defaultVersion: number;
+      name?: string | null;
+      description?: string | null;
+      externalUrl?: string | null;
+      tokenId?: string | null;
+      sellerId?: string | null;
+      images?: Array<{
+        __typename?: "ProductV1Media";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: ProductV1MediaType;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "ProductV1SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    } | null;
+  }>;
+};
+
+export type GetAllProductsWithNotVoidedVariantsQueryQueryVariables = Exact<{
+  productsSkip?: InputMaybe<Scalars["Int"]>;
+  productsFirst?: InputMaybe<Scalars["Int"]>;
+  productsOrderBy?: InputMaybe<ProductV1Product_OrderBy>;
+  productsOrderDirection?: InputMaybe<OrderDirection>;
+  productsFilter?: InputMaybe<ProductV1Product_Filter>;
+}>;
+
+export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
+  __typename?: "Query";
+  productV1Products: Array<{
+    __typename?: "ProductV1Product";
+    allVariantsVoided?: boolean | null;
+    minValidFromDate: string;
+    maxValidFromDate: string;
+    minValidUntilDate: string;
+    maxValidUntilDate: string;
+    id: string;
+    uuid: string;
+    version: number;
+    title: string;
+    description: string;
+    identification_sKU?: string | null;
+    identification_productId?: string | null;
+    identification_productIdType?: string | null;
+    productionInformation_brandName: string;
+    productionInformation_manufacturer?: string | null;
+    productionInformation_manufacturerPartNumber?: string | null;
+    productionInformation_modelNumber?: string | null;
+    productionInformation_materials?: Array<string> | null;
+    details_category?: string | null;
+    details_subCategory?: string | null;
+    details_subCategory2?: string | null;
+    details_offerCategory: string;
+    offerCategory: ProductV1OfferCategory;
+    details_tags?: Array<string> | null;
+    details_sections?: Array<string> | null;
+    details_personalisation?: Array<string> | null;
+    packaging_packageQuantity?: string | null;
+    packaging_dimensions_length?: string | null;
+    packaging_dimensions_width?: string | null;
+    packaging_dimensions_height?: string | null;
+    packaging_dimensions_unit?: string | null;
+    packaging_weight_value?: string | null;
+    packaging_weight_unit?: string | null;
+    notVoidedVariants?: Array<{
+      __typename?: "ProductV1Variant";
+      offer: {
+        __typename?: "Offer";
+        id: string;
+        createdAt: string;
+        price: string;
+        sellerDeposit: string;
+        protocolFee: string;
+        agentFee: string;
+        agentId: string;
+        buyerCancelPenalty: string;
+        quantityAvailable: string;
+        quantityInitial: string;
+        validFromDate: string;
+        validUntilDate: string;
+        voucherRedeemableFromDate: string;
+        voucherRedeemableUntilDate: string;
+        disputePeriodDuration: string;
+        voucherValidDuration: string;
+        resolutionPeriodDuration: string;
+        metadataUri: string;
+        metadataHash: string;
+        voided: boolean;
+        voidedAt?: string | null;
+        disputeResolverId: string;
+        numberOfCommits: string;
+        numberOfRedemptions: string;
+        exchanges: Array<{
+          __typename?: "Exchange";
+          id: string;
+          disputed: boolean;
+          state: ExchangeState;
+          committedDate: string;
+          finalizedDate?: string | null;
+          validUntilDate: string;
+          redeemedDate?: string | null;
+          revokedDate?: string | null;
+          cancelledDate?: string | null;
+          completedDate?: string | null;
+          disputedDate?: string | null;
+          expired: boolean;
+          dispute?: {
+            __typename?: "Dispute";
+            id: string;
+            exchangeId: string;
+            state: DisputeState;
+            buyerPercent: string;
+            disputedDate: string;
+            escalatedDate?: string | null;
+            finalizedDate?: string | null;
+            retractedDate?: string | null;
+            resolvedDate?: string | null;
+            decidedDate?: string | null;
+            refusedDate?: string | null;
+            timeout: string;
+          } | null;
+          buyer: {
+            __typename?: "Buyer";
+            id: string;
+            wallet: string;
+            active: boolean;
+          };
+          seller: {
+            __typename?: "Seller";
+            id: string;
+            operator: string;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            authTokenId: string;
+            authTokenType: number;
+            voucherCloneAddress: string;
+            active: boolean;
+            contractURI: string;
+            royaltyPercentage: string;
+          };
+        }>;
+        condition?: {
+          __typename?: "ConditionEntity";
+          id: string;
+          method: number;
+          tokenType: number;
+          tokenAddress: string;
+          tokenId: string;
+          threshold: string;
+          maxCommits: string;
+        } | null;
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+        exchangeToken: {
+          __typename?: "ExchangeToken";
+          id: string;
+          address: string;
+          decimals: string;
+          symbol: string;
+          name: string;
+        };
+        disputeResolver: {
+          __typename?: "DisputeResolver";
+          id: string;
+          escalationResponsePeriod: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          operator: string;
+          metadataUri: string;
+          active: boolean;
+          sellerAllowList: Array<string>;
+          fees: Array<{
+            __typename?: "DisputeResolverFee";
+            id: string;
+            tokenAddress: string;
+            tokenName: string;
+            feeAmount: string;
+            token: {
+              __typename?: "ExchangeToken";
+              id: string;
+              address: string;
+              decimals: string;
+              symbol: string;
+              name: string;
+            };
+          }>;
+        };
+        disputeResolutionTerms: {
+          __typename?: "DisputeResolutionTermsEntity";
+          id: string;
+          disputeResolverId: string;
+          escalationResponsePeriod: string;
+          feeAmount: string;
+          buyerEscalationDeposit: string;
+        };
+        metadata?:
+          | {
+              __typename?: "BaseMetadataEntity";
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+            }
+          | {
+              __typename?: "ProductV1MetadataEntity";
+              createdAt: string;
+              voided: boolean;
+              validFromDate: string;
+              validUntilDate: string;
+              quantityAvailable: string;
+              uuid: string;
+              name: string;
+              description: string;
+              externalUrl: string;
+              animationUrl?: string | null;
+              licenseUrl: string;
+              condition?: string | null;
+              schemaUrl: string;
+              type: MetadataType;
+              image: string;
+              attributes?: Array<{
+                __typename?: "MetadataAttribute";
+                traitType: string;
+                value: string;
+                displayType: string;
+              }> | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                details_category?: string | null;
+                details_subCategory?: string | null;
+                details_subCategory2?: string | null;
+                details_offerCategory: string;
+                offerCategory: ProductV1OfferCategory;
+                details_tags?: Array<string> | null;
+                details_sections?: Array<string> | null;
+                details_personalisation?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                category?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                subCategory2?: {
+                  __typename?: "ProductV1Category";
+                  id: string;
+                  name: string;
+                } | null;
+                tags?: Array<{
+                  __typename?: "ProductV1Tag";
+                  id: string;
+                  name: string;
+                }> | null;
+                sections?: Array<{
+                  __typename?: "ProductV1Section";
+                  id: string;
+                  name: string;
+                }> | null;
+                personalisation?: Array<{
+                  __typename?: "ProductV1Personalisation";
+                  id: string;
+                  name: string;
+                }> | null;
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                productV1Seller?: {
+                  __typename?: "ProductV1Seller";
+                  id: string;
+                  defaultVersion: number;
+                  name?: string | null;
+                  description?: string | null;
+                  externalUrl?: string | null;
+                  tokenId?: string | null;
+                  sellerId?: string | null;
+                  images?: Array<{
+                    __typename?: "ProductV1Media";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: ProductV1MediaType;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "ProductV1SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  seller: {
+                    __typename?: "Seller";
+                    id: string;
+                    operator: string;
+                    admin: string;
+                    clerk: string;
+                    treasury: string;
+                    authTokenId: string;
+                    authTokenType: number;
+                    voucherCloneAddress: string;
+                    active: boolean;
+                    contractURI: string;
+                    royaltyPercentage: string;
+                  };
+                } | null;
+              };
+              variations?: Array<{
+                __typename?: "ProductV1Variation";
+                id: string;
+                type: string;
+                option: string;
+              }> | null;
+              productV1Seller: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              };
+              exchangePolicy: {
+                __typename?: "ProductV1ExchangePolicy";
+                id: string;
+                uuid: string;
+                version: number;
+                label?: string | null;
+                template: string;
+                sellerContactMethod: string;
+                disputeResolverContactMethod: string;
+              };
+              shipping?: {
+                __typename?: "ProductV1ShippingOption";
+                id: string;
+                defaultVersion?: number | null;
+                countryOfOrigin?: string | null;
+                redemptionPoint?: string | null;
+                returnPeriodInDays: number;
+                supportedJurisdictions?: Array<{
+                  __typename?: "ProductV1ShippingJurisdiction";
+                  id: string;
+                  label: string;
+                  deliveryTime: string;
+                }> | null;
+              } | null;
+            }
+          | null;
+      };
+      variations?: Array<{
+        __typename?: "ProductV1Variation";
+        id: string;
+        type: string;
+        option: string;
+      }> | null;
+    }> | null;
+    brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+    category?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    subCategory2?: {
+      __typename?: "ProductV1Category";
+      id: string;
+      name: string;
+    } | null;
+    tags?: Array<{
+      __typename?: "ProductV1Tag";
+      id: string;
+      name: string;
+    }> | null;
+    sections?: Array<{
+      __typename?: "ProductV1Section";
+      id: string;
+      name: string;
+    }> | null;
+    personalisation?: Array<{
+      __typename?: "ProductV1Personalisation";
+      id: string;
+      name: string;
+    }> | null;
+    visuals_images: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }>;
+    visuals_videos?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    productV1Seller?: {
+      __typename?: "ProductV1Seller";
+      id: string;
+      defaultVersion: number;
+      name?: string | null;
+      description?: string | null;
+      externalUrl?: string | null;
+      tokenId?: string | null;
+      sellerId?: string | null;
+      images?: Array<{
+        __typename?: "ProductV1Media";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: ProductV1MediaType;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "ProductV1SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    } | null;
+  }>;
+};
+
 export type GetProductV1CategoriesQueryQueryVariables = Exact<{
   categoriesSkip?: InputMaybe<Scalars["Int"]>;
   categoriesFirst?: InputMaybe<Scalars["Int"]>;
@@ -14913,7 +16953,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -14957,6 +16999,66 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -15020,13 +17122,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -15036,9 +17140,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -15439,7 +17546,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     name: string;
     description: string;
     externalUrl: string;
+    animationUrl?: string | null;
     licenseUrl: string;
+    condition?: string | null;
     schemaUrl: string;
     type: MetadataType;
     image: string;
@@ -15483,6 +17592,66 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
       seller: {
         __typename?: "Seller";
         id: string;
@@ -15546,13 +17715,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
-            image: string;
             createdAt: string;
             voided: boolean;
             validFromDate: string;
@@ -15562,9 +17733,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             name: string;
             description: string;
             externalUrl: string;
+            animationUrl?: string | null;
             licenseUrl: string;
+            condition?: string | null;
             schemaUrl: string;
             type: MetadataType;
+            image: string;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -15955,7 +18129,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -15999,6 +18175,66 @@ export type ProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    exchanges: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      disputedDate?: string | null;
+      expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -16062,13 +18298,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -16078,9 +18316,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -16466,7 +18707,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   name: string;
   description: string;
   externalUrl: string;
+  animationUrl?: string | null;
   licenseUrl: string;
+  condition?: string | null;
   schemaUrl: string;
   type: MetadataType;
   image: string;
@@ -16510,6 +18753,66 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    exchanges: Array<{
+      __typename?: "Exchange";
+      id: string;
+      disputed: boolean;
+      state: ExchangeState;
+      committedDate: string;
+      finalizedDate?: string | null;
+      validUntilDate: string;
+      redeemedDate?: string | null;
+      revokedDate?: string | null;
+      cancelledDate?: string | null;
+      completedDate?: string | null;
+      disputedDate?: string | null;
+      expired: boolean;
+      dispute?: {
+        __typename?: "Dispute";
+        id: string;
+        exchangeId: string;
+        state: DisputeState;
+        buyerPercent: string;
+        disputedDate: string;
+        escalatedDate?: string | null;
+        finalizedDate?: string | null;
+        retractedDate?: string | null;
+        resolvedDate?: string | null;
+        decidedDate?: string | null;
+        refusedDate?: string | null;
+        timeout: string;
+      } | null;
+      buyer: {
+        __typename?: "Buyer";
+        id: string;
+        wallet: string;
+        active: boolean;
+      };
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+    }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -16573,13 +18876,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -16589,9 +18894,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -17085,6 +19393,994 @@ export type BaseProductV1ProductFieldsFragment = {
   } | null;
 };
 
+export type BaseProductV1ProductWithVariantsFieldsFragment = {
+  __typename?: "ProductV1Product";
+  allVariantsVoided?: boolean | null;
+  minValidFromDate: string;
+  maxValidFromDate: string;
+  minValidUntilDate: string;
+  maxValidUntilDate: string;
+  id: string;
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  identification_sKU?: string | null;
+  identification_productId?: string | null;
+  identification_productIdType?: string | null;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string | null;
+  productionInformation_manufacturerPartNumber?: string | null;
+  productionInformation_modelNumber?: string | null;
+  productionInformation_materials?: Array<string> | null;
+  details_category?: string | null;
+  details_subCategory?: string | null;
+  details_subCategory2?: string | null;
+  details_offerCategory: string;
+  offerCategory: ProductV1OfferCategory;
+  details_tags?: Array<string> | null;
+  details_sections?: Array<string> | null;
+  details_personalisation?: Array<string> | null;
+  packaging_packageQuantity?: string | null;
+  packaging_dimensions_length?: string | null;
+  packaging_dimensions_width?: string | null;
+  packaging_dimensions_height?: string | null;
+  packaging_dimensions_unit?: string | null;
+  packaging_weight_value?: string | null;
+  packaging_weight_unit?: string | null;
+  variants?: Array<{
+    __typename?: "ProductV1Variant";
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              } | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion: number;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              sellerId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+          }
+        | null;
+    };
+    variations?: Array<{
+      __typename?: "ProductV1Variation";
+      id: string;
+      type: string;
+      option: string;
+    }> | null;
+  }> | null;
+  brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+  category?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory2?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  tags?: Array<{
+    __typename?: "ProductV1Tag";
+    id: string;
+    name: string;
+  }> | null;
+  sections?: Array<{
+    __typename?: "ProductV1Section";
+    id: string;
+    name: string;
+  }> | null;
+  personalisation?: Array<{
+    __typename?: "ProductV1Personalisation";
+    id: string;
+    name: string;
+  }> | null;
+  visuals_images: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }>;
+  visuals_videos?: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }> | null;
+  productV1Seller?: {
+    __typename?: "ProductV1Seller";
+    id: string;
+    defaultVersion: number;
+    name?: string | null;
+    description?: string | null;
+    externalUrl?: string | null;
+    tokenId?: string | null;
+    sellerId?: string | null;
+    images?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "ProductV1SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
+    };
+  } | null;
+};
+
+export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
+  __typename?: "ProductV1Product";
+  allVariantsVoided?: boolean | null;
+  minValidFromDate: string;
+  maxValidFromDate: string;
+  minValidUntilDate: string;
+  maxValidUntilDate: string;
+  id: string;
+  uuid: string;
+  version: number;
+  title: string;
+  description: string;
+  identification_sKU?: string | null;
+  identification_productId?: string | null;
+  identification_productIdType?: string | null;
+  productionInformation_brandName: string;
+  productionInformation_manufacturer?: string | null;
+  productionInformation_manufacturerPartNumber?: string | null;
+  productionInformation_modelNumber?: string | null;
+  productionInformation_materials?: Array<string> | null;
+  details_category?: string | null;
+  details_subCategory?: string | null;
+  details_subCategory2?: string | null;
+  details_offerCategory: string;
+  offerCategory: ProductV1OfferCategory;
+  details_tags?: Array<string> | null;
+  details_sections?: Array<string> | null;
+  details_personalisation?: Array<string> | null;
+  packaging_packageQuantity?: string | null;
+  packaging_dimensions_length?: string | null;
+  packaging_dimensions_width?: string | null;
+  packaging_dimensions_height?: string | null;
+  packaging_dimensions_unit?: string | null;
+  packaging_weight_value?: string | null;
+  packaging_weight_unit?: string | null;
+  notVoidedVariants?: Array<{
+    __typename?: "ProductV1Variant";
+    offer: {
+      __typename?: "Offer";
+      id: string;
+      createdAt: string;
+      price: string;
+      sellerDeposit: string;
+      protocolFee: string;
+      agentFee: string;
+      agentId: string;
+      buyerCancelPenalty: string;
+      quantityAvailable: string;
+      quantityInitial: string;
+      validFromDate: string;
+      validUntilDate: string;
+      voucherRedeemableFromDate: string;
+      voucherRedeemableUntilDate: string;
+      disputePeriodDuration: string;
+      voucherValidDuration: string;
+      resolutionPeriodDuration: string;
+      metadataUri: string;
+      metadataHash: string;
+      voided: boolean;
+      voidedAt?: string | null;
+      disputeResolverId: string;
+      numberOfCommits: string;
+      numberOfRedemptions: string;
+      exchanges: Array<{
+        __typename?: "Exchange";
+        id: string;
+        disputed: boolean;
+        state: ExchangeState;
+        committedDate: string;
+        finalizedDate?: string | null;
+        validUntilDate: string;
+        redeemedDate?: string | null;
+        revokedDate?: string | null;
+        cancelledDate?: string | null;
+        completedDate?: string | null;
+        disputedDate?: string | null;
+        expired: boolean;
+        dispute?: {
+          __typename?: "Dispute";
+          id: string;
+          exchangeId: string;
+          state: DisputeState;
+          buyerPercent: string;
+          disputedDate: string;
+          escalatedDate?: string | null;
+          finalizedDate?: string | null;
+          retractedDate?: string | null;
+          resolvedDate?: string | null;
+          decidedDate?: string | null;
+          refusedDate?: string | null;
+          timeout: string;
+        } | null;
+        buyer: {
+          __typename?: "Buyer";
+          id: string;
+          wallet: string;
+          active: boolean;
+        };
+        seller: {
+          __typename?: "Seller";
+          id: string;
+          operator: string;
+          admin: string;
+          clerk: string;
+          treasury: string;
+          authTokenId: string;
+          authTokenType: number;
+          voucherCloneAddress: string;
+          active: boolean;
+          contractURI: string;
+          royaltyPercentage: string;
+        };
+      }>;
+      condition?: {
+        __typename?: "ConditionEntity";
+        id: string;
+        method: number;
+        tokenType: number;
+        tokenAddress: string;
+        tokenId: string;
+        threshold: string;
+        maxCommits: string;
+      } | null;
+      seller: {
+        __typename?: "Seller";
+        id: string;
+        operator: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        authTokenId: string;
+        authTokenType: number;
+        voucherCloneAddress: string;
+        active: boolean;
+        contractURI: string;
+        royaltyPercentage: string;
+      };
+      exchangeToken: {
+        __typename?: "ExchangeToken";
+        id: string;
+        address: string;
+        decimals: string;
+        symbol: string;
+        name: string;
+      };
+      disputeResolver: {
+        __typename?: "DisputeResolver";
+        id: string;
+        escalationResponsePeriod: string;
+        admin: string;
+        clerk: string;
+        treasury: string;
+        operator: string;
+        metadataUri: string;
+        active: boolean;
+        sellerAllowList: Array<string>;
+        fees: Array<{
+          __typename?: "DisputeResolverFee";
+          id: string;
+          tokenAddress: string;
+          tokenName: string;
+          feeAmount: string;
+          token: {
+            __typename?: "ExchangeToken";
+            id: string;
+            address: string;
+            decimals: string;
+            symbol: string;
+            name: string;
+          };
+        }>;
+      };
+      disputeResolutionTerms: {
+        __typename?: "DisputeResolutionTermsEntity";
+        id: string;
+        disputeResolverId: string;
+        escalationResponsePeriod: string;
+        feeAmount: string;
+        buyerEscalationDeposit: string;
+      };
+      metadata?:
+        | {
+            __typename?: "BaseMetadataEntity";
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+          }
+        | {
+            __typename?: "ProductV1MetadataEntity";
+            createdAt: string;
+            voided: boolean;
+            validFromDate: string;
+            validUntilDate: string;
+            quantityAvailable: string;
+            uuid: string;
+            name: string;
+            description: string;
+            externalUrl: string;
+            animationUrl?: string | null;
+            licenseUrl: string;
+            condition?: string | null;
+            schemaUrl: string;
+            type: MetadataType;
+            image: string;
+            attributes?: Array<{
+              __typename?: "MetadataAttribute";
+              traitType: string;
+              value: string;
+              displayType: string;
+            }> | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              details_category?: string | null;
+              details_subCategory?: string | null;
+              details_subCategory2?: string | null;
+              details_offerCategory: string;
+              offerCategory: ProductV1OfferCategory;
+              details_tags?: Array<string> | null;
+              details_sections?: Array<string> | null;
+              details_personalisation?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              category?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              subCategory2?: {
+                __typename?: "ProductV1Category";
+                id: string;
+                name: string;
+              } | null;
+              tags?: Array<{
+                __typename?: "ProductV1Tag";
+                id: string;
+                name: string;
+              }> | null;
+              sections?: Array<{
+                __typename?: "ProductV1Section";
+                id: string;
+                name: string;
+              }> | null;
+              personalisation?: Array<{
+                __typename?: "ProductV1Personalisation";
+                id: string;
+                name: string;
+              }> | null;
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              productV1Seller?: {
+                __typename?: "ProductV1Seller";
+                id: string;
+                defaultVersion: number;
+                name?: string | null;
+                description?: string | null;
+                externalUrl?: string | null;
+                tokenId?: string | null;
+                sellerId?: string | null;
+                images?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "ProductV1SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                seller: {
+                  __typename?: "Seller";
+                  id: string;
+                  operator: string;
+                  admin: string;
+                  clerk: string;
+                  treasury: string;
+                  authTokenId: string;
+                  authTokenType: number;
+                  voucherCloneAddress: string;
+                  active: boolean;
+                  contractURI: string;
+                  royaltyPercentage: string;
+                };
+              } | null;
+            };
+            variations?: Array<{
+              __typename?: "ProductV1Variation";
+              id: string;
+              type: string;
+              option: string;
+            }> | null;
+            productV1Seller: {
+              __typename?: "ProductV1Seller";
+              id: string;
+              defaultVersion: number;
+              name?: string | null;
+              description?: string | null;
+              externalUrl?: string | null;
+              tokenId?: string | null;
+              sellerId?: string | null;
+              images?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "ProductV1SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              seller: {
+                __typename?: "Seller";
+                id: string;
+                operator: string;
+                admin: string;
+                clerk: string;
+                treasury: string;
+                authTokenId: string;
+                authTokenType: number;
+                voucherCloneAddress: string;
+                active: boolean;
+                contractURI: string;
+                royaltyPercentage: string;
+              };
+            };
+            exchangePolicy: {
+              __typename?: "ProductV1ExchangePolicy";
+              id: string;
+              uuid: string;
+              version: number;
+              label?: string | null;
+              template: string;
+              sellerContactMethod: string;
+              disputeResolverContactMethod: string;
+            };
+            shipping?: {
+              __typename?: "ProductV1ShippingOption";
+              id: string;
+              defaultVersion?: number | null;
+              countryOfOrigin?: string | null;
+              redemptionPoint?: string | null;
+              returnPeriodInDays: number;
+              supportedJurisdictions?: Array<{
+                __typename?: "ProductV1ShippingJurisdiction";
+                id: string;
+                label: string;
+                deliveryTime: string;
+              }> | null;
+            } | null;
+          }
+        | null;
+    };
+    variations?: Array<{
+      __typename?: "ProductV1Variation";
+      id: string;
+      type: string;
+      option: string;
+    }> | null;
+  }> | null;
+  brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+  category?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  subCategory2?: {
+    __typename?: "ProductV1Category";
+    id: string;
+    name: string;
+  } | null;
+  tags?: Array<{
+    __typename?: "ProductV1Tag";
+    id: string;
+    name: string;
+  }> | null;
+  sections?: Array<{
+    __typename?: "ProductV1Section";
+    id: string;
+    name: string;
+  }> | null;
+  personalisation?: Array<{
+    __typename?: "ProductV1Personalisation";
+    id: string;
+    name: string;
+  }> | null;
+  visuals_images: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }>;
+  visuals_videos?: Array<{
+    __typename?: "ProductV1Media";
+    id: string;
+    url: string;
+    tag?: string | null;
+    type: ProductV1MediaType;
+  }> | null;
+  productV1Seller?: {
+    __typename?: "ProductV1Seller";
+    id: string;
+    defaultVersion: number;
+    name?: string | null;
+    description?: string | null;
+    externalUrl?: string | null;
+    tokenId?: string | null;
+    sellerId?: string | null;
+    images?: Array<{
+      __typename?: "ProductV1Media";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: ProductV1MediaType;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "ProductV1SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    seller: {
+      __typename?: "Seller";
+      id: string;
+      operator: string;
+      admin: string;
+      clerk: string;
+      treasury: string;
+      authTokenId: string;
+      authTokenType: number;
+      voucherCloneAddress: string;
+      active: boolean;
+      contractURI: string;
+      royaltyPercentage: string;
+    };
+  } | null;
+};
+
 export type BaseProductV1BrandFieldsFragment = {
   __typename?: "ProductV1Brand";
   id: string;
@@ -17334,6 +20630,16 @@ export type GetOfferByIdQueryQuery = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -17397,13 +20703,15 @@ export type GetOfferByIdQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -17413,9 +20721,12 @@ export type GetOfferByIdQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -17699,6 +21010,16 @@ export type GetOffersQueryQuery = {
         royaltyPercentage: string;
       };
     }>;
+    condition?: {
+      __typename?: "ConditionEntity";
+      id: string;
+      method: number;
+      tokenType: number;
+      tokenAddress: string;
+      tokenId: string;
+      threshold: string;
+      maxCommits: string;
+    } | null;
     seller: {
       __typename?: "Seller";
       id: string;
@@ -17762,13 +21083,15 @@ export type GetOffersQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
-          image: string;
           createdAt: string;
           voided: boolean;
           validFromDate: string;
@@ -17778,9 +21101,12 @@ export type GetOffersQueryQuery = {
           name: string;
           description: string;
           externalUrl: string;
+          animationUrl?: string | null;
           licenseUrl: string;
+          condition?: string | null;
           schemaUrl: string;
           type: MetadataType;
+          image: string;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -18048,6 +21374,16 @@ export type OfferFieldsFragment = {
       royaltyPercentage: string;
     };
   }>;
+  condition?: {
+    __typename?: "ConditionEntity";
+    id: string;
+    method: number;
+    tokenType: number;
+    tokenAddress: string;
+    tokenId: string;
+    threshold: string;
+    maxCommits: string;
+  } | null;
   seller: {
     __typename?: "Seller";
     id: string;
@@ -18111,13 +21447,15 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        image: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -18127,9 +21465,12 @@ export type OfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -18346,6 +21687,16 @@ export type BaseOfferFieldsFragment = {
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  condition?: {
+    __typename?: "ConditionEntity";
+    id: string;
+    method: number;
+    tokenType: number;
+    tokenAddress: string;
+    tokenId: string;
+    threshold: string;
+    maxCommits: string;
+  } | null;
   seller: {
     __typename?: "Seller";
     id: string;
@@ -18409,13 +21760,15 @@ export type BaseOfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
-        image: string;
         createdAt: string;
         voided: boolean;
         validFromDate: string;
@@ -18425,9 +21778,12 @@ export type BaseOfferFieldsFragment = {
         name: string;
         description: string;
         externalUrl: string;
+        animationUrl?: string | null;
         licenseUrl: string;
+        condition?: string | null;
         schemaUrl: string;
         type: MetadataType;
+        image: string;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -18633,6 +21989,15 @@ export const BaseSellerFieldsFragmentDoc = gql`
     royaltyPercentage
   }
 `;
+export const PendingSellerFieldsFragmentDoc = gql`
+  fragment PendingSellerFields on PendingSeller {
+    operator
+    admin
+    clerk
+    authTokenId
+    authTokenType
+  }
+`;
 export const BaseFundsEntityFieldsFragmentDoc = gql`
   fragment BaseFundsEntityFields on FundsEntity {
     id
@@ -18658,6 +22023,17 @@ export const FundsEntityFieldsFragmentDoc = gql`
   }
   ${BaseFundsEntityFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
+`;
+export const BaseConditionFieldsFragmentDoc = gql`
+  fragment BaseConditionFields on ConditionEntity {
+    id
+    method
+    tokenType
+    tokenAddress
+    tokenId
+    threshold
+    maxCommits
+  }
 `;
 export const BaseDisputeResolverFeeFieldsFragmentDoc = gql`
   fragment BaseDisputeResolverFeeFields on DisputeResolverFee {
@@ -18898,6 +22274,9 @@ export const BaseOfferFieldsFragmentDoc = gql`
     disputeResolverId
     numberOfCommits
     numberOfRedemptions
+    condition {
+      ...BaseConditionFields
+    }
     seller {
       ...BaseSellerFields
     }
@@ -18914,11 +22293,13 @@ export const BaseOfferFieldsFragmentDoc = gql`
       name
       description
       externalUrl
+      animationUrl
       licenseUrl
+      condition
       schemaUrl
       type
+      image
       ... on ProductV1MetadataEntity {
-        image
         attributes {
           traitType
           value
@@ -18948,6 +22329,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       }
     }
   }
+  ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
@@ -19047,6 +22429,9 @@ export const BaseEventLogFieldsFragmentDoc = gql`
 export const SellerFieldsFragmentDoc = gql`
   fragment SellerFields on Seller {
     ...BaseSellerFields
+    pendingSeller {
+      ...PendingSellerFields
+    }
     funds(
       skip: $fundsSkip
       first: $fundsFirst
@@ -19085,6 +22470,7 @@ export const SellerFieldsFragmentDoc = gql`
     }
   }
   ${BaseSellerFieldsFragmentDoc}
+  ${PendingSellerFieldsFragmentDoc}
   ${FundsEntityFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
@@ -19126,9 +22512,19 @@ export const BuyerFieldsFragmentDoc = gql`
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
+export const PendingDisputeResolverFieldsFragmentDoc = gql`
+  fragment PendingDisputeResolverFields on PendingDisputeResolver {
+    operator
+    admin
+    clerk
+  }
+`;
 export const DisputeResolverFieldsFragmentDoc = gql`
   fragment DisputeResolverFields on DisputeResolver {
     ...BaseDisputeResolverFields
+    pendingDisputeResolver {
+      ...PendingDisputeResolverFields
+    }
     offers(
       skip: $offersSkip
       first: $offersFirst
@@ -19149,6 +22545,7 @@ export const DisputeResolverFieldsFragmentDoc = gql`
     }
   }
   ${BaseDisputeResolverFieldsFragmentDoc}
+  ${PendingDisputeResolverFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
@@ -19212,7 +22609,9 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image
@@ -19254,7 +22653,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
+    condition
     schemaUrl
     type
     image
@@ -19265,6 +22666,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     }
     offer {
       ...BaseOfferFields
+      exchanges {
+        ...BaseExchangeFields
+      }
     }
     seller {
       ...BaseSellerFields
@@ -19294,6 +22698,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     }
   }
   ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseProductV1ProductFieldsFragmentDoc}
@@ -19306,6 +22711,56 @@ export const ProductV1MetadataEntityFieldsFragmentDoc = gql`
     ...BaseProductV1MetadataEntityFields
   }
   ${BaseProductV1MetadataEntityFieldsFragmentDoc}
+`;
+export const BaseProductV1ProductWithVariantsFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductWithVariantsFields on ProductV1Product {
+    ...BaseProductV1ProductFields
+    variants {
+      offer {
+        ...BaseOfferFields
+        exchanges {
+          ...BaseExchangeFields
+        }
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+    }
+    allVariantsVoided
+    minValidFromDate
+    maxValidFromDate
+    minValidUntilDate
+    maxValidUntilDate
+  }
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+`;
+export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductWithNotVoidedVariantsFields on ProductV1Product {
+    ...BaseProductV1ProductFields
+    notVoidedVariants {
+      offer {
+        ...BaseOfferFields
+        exchanges {
+          ...BaseExchangeFields
+        }
+      }
+      variations {
+        ...BaseProductV1VariationFields
+      }
+    }
+    allVariantsVoided
+    minValidFromDate
+    maxValidFromDate
+    minValidUntilDate
+    maxValidUntilDate
+  }
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseOfferFieldsFragmentDoc}
+  ${BaseExchangeFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
 `;
 export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
   fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
@@ -19807,6 +23262,46 @@ export const GetProductV1ProductsQueryDocument = gql`
   }
   ${BaseProductV1ProductFieldsFragmentDoc}
 `;
+export const GetProductV1ProductsWithVariantsQueryDocument = gql`
+  query getProductV1ProductsWithVariantsQuery(
+    $productsSkip: Int
+    $productsFirst: Int
+    $productsOrderBy: ProductV1Product_orderBy
+    $productsOrderDirection: OrderDirection
+    $productsFilter: ProductV1Product_filter
+  ) {
+    productV1Products(
+      skip: $productsSkip
+      first: $productsFirst
+      orderBy: $productsOrderBy
+      orderDirection: $productsOrderDirection
+      where: $productsFilter
+    ) {
+      ...BaseProductV1ProductWithVariantsFields
+    }
+  }
+  ${BaseProductV1ProductWithVariantsFieldsFragmentDoc}
+`;
+export const GetAllProductsWithNotVoidedVariantsQueryDocument = gql`
+  query getAllProductsWithNotVoidedVariantsQuery(
+    $productsSkip: Int
+    $productsFirst: Int
+    $productsOrderBy: ProductV1Product_orderBy
+    $productsOrderDirection: OrderDirection
+    $productsFilter: ProductV1Product_filter
+  ) {
+    productV1Products(
+      skip: $productsSkip
+      first: $productsFirst
+      orderBy: $productsOrderBy
+      orderDirection: $productsOrderDirection
+      where: $productsFilter
+    ) {
+      ...BaseProductV1ProductWithNotVoidedVariantsFields
+    }
+  }
+  ${BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc}
+`;
 export const GetProductV1CategoriesQueryDocument = gql`
   query getProductV1CategoriesQuery(
     $categoriesSkip: Int
@@ -20202,6 +23697,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getProductV1ProductsQuery",
+        "query"
+      );
+    },
+    getProductV1ProductsWithVariantsQuery(
+      variables?: GetProductV1ProductsWithVariantsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetProductV1ProductsWithVariantsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetProductV1ProductsWithVariantsQueryQuery>(
+            GetProductV1ProductsWithVariantsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getProductV1ProductsWithVariantsQuery",
+        "query"
+      );
+    },
+    getAllProductsWithNotVoidedVariantsQuery(
+      variables?: GetAllProductsWithNotVoidedVariantsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetAllProductsWithNotVoidedVariantsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetAllProductsWithNotVoidedVariantsQueryQuery>(
+            GetAllProductsWithNotVoidedVariantsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getAllProductsWithNotVoidedVariantsQuery",
         "query"
       );
     },

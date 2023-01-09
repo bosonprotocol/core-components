@@ -1,6 +1,8 @@
 export type ContractAddresses = {
   protocolDiamond: string;
+  testErc721?: string;
   testErc20?: string;
+  testErc1155?: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";
@@ -8,7 +10,7 @@ export type EnvironmentType = "local" | "testing" | "staging" | "production";
 export type MetaTxConfig = {
   relayerUrl: string;
   apiKey: string;
-  apiId: string;
+  apiIds: Record<string, Record<string, string>>;
 };
 
 export type LensContracts = {
@@ -16,11 +18,11 @@ export type LensContracts = {
   LENS_PERIPHERY_CONTRACT?: string | undefined;
   LENS_PROFILES_CONTRACT_ADDRESS?: string | undefined;
   LENS_PROFILES_CONTRACT_PARTIAL_ABI?: string | undefined;
-  apiLink?: string | undefined;
 };
 
 export type Lens = LensContracts & {
   apiLink?: string;
+  ipfsGateway?: string | undefined;
 };
 
 export type ProtocolConfig = {
@@ -33,7 +35,9 @@ export type ProtocolConfig = {
         name: string;
         decimals: string;
       };
-  getTxExplorerUrl: undefined | ((txHash?: string) => string);
+  getTxExplorerUrl:
+    | undefined
+    | ((txHash?: string, isAddress?: boolean) => string);
   subgraphUrl: string;
   theGraphIpfsUrl?: string;
   jsonRpcUrl: string;

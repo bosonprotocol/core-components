@@ -74,6 +74,9 @@ fragment BaseOfferFields on Offer {
   disputeResolverId
   numberOfCommits
   numberOfRedemptions
+  condition {
+    ...BaseConditionFields
+  }
   seller {
     ...BaseSellerFields
   }
@@ -90,11 +93,13 @@ fragment BaseOfferFields on Offer {
     name
     description
     externalUrl
+    animationUrl
     licenseUrl
+    condition
     schemaUrl
     type
+    image
     ... on ProductV1MetadataEntity {
-      image
       attributes {
         traitType
         value
