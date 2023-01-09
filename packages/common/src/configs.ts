@@ -158,7 +158,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
-      protocolDiamond: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      protocolDiamond: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       testErc20: "0x95401dc811bb5740090279Ba06cfA8fcF6113778", // Foreign20 contract
       testErc721: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign721 contract
       testErc1155: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49" // Foreign1155 contract

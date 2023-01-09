@@ -359,19 +359,16 @@ describe("CoreSDK - accounts", () => {
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
     });
-    test.only("update seller - assign an auth token owned by the current account", async () => {
+    test("update seller - assign an auth token owned by the current account", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
       );
 
-      const tokenType = AuthTokenType.LENS;
-      console.log("before mintLensToken");
-      const tokenId = await mintLensToken(fundedWallet, fundedWallet.address);
-      console.log("after mintLensToken");
-
       let seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
-      console.log("before updateSeller");
+
+      const tokenType = AuthTokenType.LENS;
+      const tokenId = await mintLensToken(fundedWallet, fundedWallet.address);
 
       seller = await updateSeller(coreSDK, seller, {
         admin: ZERO_ADDRESS,
