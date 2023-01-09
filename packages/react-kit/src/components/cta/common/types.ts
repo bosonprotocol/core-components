@@ -2,6 +2,7 @@ import React, { RefObject } from "react";
 import { providers } from "ethers";
 import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
 import { ButtonProps, ButtonSize } from "../../buttons/Button";
+import { Action } from "../../../hooks/useCtaClickHandler";
 
 export type CtaButtonProps<T> = CoreSdkConfig & {
   showLoading?: boolean;
@@ -18,19 +19,24 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
   /**
    * Optional callback to invoke before user signs the transaction.
    */
-  onPendingSignature?: () => void;
+  onPendingSignature?: (actionName?: Action["name"]) => void;
   /**
    * Optional callback to invoke after user signed the transaction and before the respective
    * number of blocks (`waitBlock`) were mined.
    */
-  onPendingTransaction?: (txHash: string, isMetaTx?: boolean) => void;
+  onPendingTransaction?: (
+    txHash: string,
+    isMetaTx?: boolean,
+    actionName?: Action["name"]
+  ) => void;
   /**
    * Optional callback to invoke after a transaction was replaced or canceled.
    */
   onCancelledTransaction?: (
     oldTxHash: string,
     nexTxResponse: providers.TransactionResponse,
-    isMetaTx?: boolean
+    isMetaTx?: boolean,
+    actionName?: Action["name"]
   ) => void;
   /**
    * Optional callback to invoke after a transaction was repriced, i.e. speed up.
@@ -39,7 +45,8 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
     oldTxHash: string,
     newTxResponse: providers.TransactionResponse,
     newTxReceipt: providers.TransactionReceipt,
-    isMetaTx?: boolean
+    isMetaTx?: boolean,
+    actionName?: Action["name"]
   ) => void;
   /**
    * Optional callback to invoke after the respective number of block (`waitBlocks`) were

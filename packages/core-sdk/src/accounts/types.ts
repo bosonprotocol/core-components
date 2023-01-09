@@ -4,7 +4,16 @@ import { DisputeResolverStruct } from "@bosonprotocol/common";
 export {
   CreateSellerArgs,
   UpdateSellerArgs,
-  DisputeResolverStruct
+  SellerStruct,
+  AuthTokenStruct,
+  VoucherInitValuesStruct,
+  abis,
+  DisputeResolverStruct,
+  SellerUpdateFields,
+  OptInToSellerUpdateArgs,
+  DisputeResolverUpdateFields,
+  OptInToDisputeResolverUpdateArgs,
+  utils
 } from "@bosonprotocol/common";
 
 export type CreateDisputeResolverArgs = {

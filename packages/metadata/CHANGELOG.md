@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.8.0...@bosonprotocol/metadata@1.8.1) (2022-12-01)
+
+
+### Bug Fixes
+
+* urls in metadata need to be reset with the new UUID ([#406](https://github.com/bosonprotocol/core-components/issues/406)) ([13ac7bf](https://github.com/bosonprotocol/core-components/commit/13ac7bf97b697083a92c5da239c12d7644e6de73))
+
+
+
+
+
 # [1.8.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.7.0...@bosonprotocol/metadata@1.8.0) (2022-10-28)
 
 

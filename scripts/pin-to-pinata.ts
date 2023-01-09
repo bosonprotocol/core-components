@@ -1,6 +1,6 @@
 import { program } from "commander";
 import { CID } from "multiformats/cid";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import FormData from "form-data";
 import { Readable } from "stream";
 
@@ -8,6 +8,13 @@ import { BaseIpfsStorage } from "../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "../packages/common/src/types/configs";
 import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
+
+const imageIpfsGatewayMap = {
+  local: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
+  testing: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
+  staging: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
+  production: "https://gray-permanent-fly-490.mypinata.cloud/ipfs/"
+} as const;
 
 function extractCID(imageUri: string) {
   const cidFromUri = imageUri.replaceAll("ipfs://", "");
@@ -37,6 +44,28 @@ function bufferToStream(buffer) {
   (stream as any).path = `${Date.now()}.png`;
 
   return stream;
+}
+
+function makeFetchPinataApi(maxRetries = 1) {
+  let retries = 0;
+  async function fetchPinataApi(request: AxiosRequestConfig) {
+    try {
+      const response = await axios(request);
+      return response;
+    } catch (error) {
+      if (retries <= maxRetries) {
+        // if rate limit hit, then wait a minute and retry
+        if (error?.response?.status === 429) {
+          console.log("Rate limit hit. Retrying after 60 seconds...");
+          await new Promise((resolve) => setTimeout(resolve, 60_000));
+          retries++;
+          return fetchPinataApi(request);
+        }
+      }
+      throw error;
+    }
+  }
+  return fetchPinataApi;
 }
 
 program
@@ -88,7 +117,7 @@ async function main() {
         offersOrderDirection: subgraph.OrderDirection.Asc,
         offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
         offersFilter: {
-          disputeResolverId: "3",
+          disputeResolverId: envName === "testing" ? "3" : undefined,
           id_in: list ? list.split(",") : undefined,
           createdAt_gte: fromTimestampSec
         }
@@ -181,21 +210,26 @@ async function main() {
   console.log(`Extracted ${uniqueCIDs.size} unique CIDs`);
 
   console.log("\n3. Pinning to Pinata...");
+  const imageIpfsGateway =
+    imageIpfsGatewayMap[envName] ||
+    "https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=";
   let successCount = 0;
+  let skippedCount = 0;
   // Using naive sequential approach due to possible rate limiting.
   // TODO: Replace with batch approach
   for (const cid of uniqueCIDs) {
     try {
       // check if already pinned on Pinata
-      const response = await axios({
+      const response = await makeFetchPinataApi()({
         method: "get",
-        url: `https://api.pinata.cloud/data/pinList?includesCount=false&hashContains=${cid}`,
+        url: `${imageIpfsGateway}${cid}`,
         headers: {
           Authorization: `Bearer ${pinata}`
         }
       });
       if (response.data) {
-        console.log(`${cid} ✅ pinned already`);
+        skippedCount++;
+        console.log(`${cid} 📌 pinned already`);
         continue;
       }
     } catch (error) {
@@ -217,7 +251,7 @@ async function main() {
     formData.append("pinataOptions", '{"cidVersion": 0}');
 
     try {
-      await axios({
+      await makeFetchPinataApi()({
         method: "post",
         maxBodyLength: 104857600, //100mb
         maxContentLength: 104857600, //100mb
@@ -238,8 +272,8 @@ async function main() {
     }
   }
   console.log(
-    `Finished pinning. Success: ${successCount}, failed: ${
-      uniqueCIDs.size - successCount
+    `Finished pinning. Success: ${successCount}, skipped: ${skippedCount}, failed: ${
+      uniqueCIDs.size - successCount - skippedCount
     }`
   );
 }

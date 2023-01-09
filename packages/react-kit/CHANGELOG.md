@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.0...@bosonprotocol/react-kit@0.16.1) (2022-12-23)
+
+
+### Bug Fixes
+
+* add action name to handle approval of erc20 token ([#410](https://github.com/bosonprotocol/core-components/issues/410)) ([b68a43c](https://github.com/bosonprotocol/core-components/commit/b68a43c5f0c05aa30f79b8755cb7d21a03f4527a))
+
+
+
+
+
+# [0.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.15.0...@bosonprotocol/react-kit@0.16.0) (2022-12-01)
+
+
+### Features
+
+* cta button types update ([#400](https://github.com/bosonprotocol/core-components/issues/400)) ([2c6e743](https://github.com/bosonprotocol/core-components/commit/2c6e74335e4ee5621663d8195793eec02b0cd214))
+
+
+
+
+
+# [0.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.14.0...@bosonprotocol/react-kit@0.15.0) (2022-11-22)
+
+
+### Features
+
+* add name property to useCtaClickHandler ([#399](https://github.com/bosonprotocol/core-components/issues/399)) ([faa06ff](https://github.com/bosonprotocol/core-components/commit/faa06ffab5f7e535878c6cd1a1922b5c8bc4e8ee))
+* **react-kit:** support fallback image src ([#398](https://github.com/bosonprotocol/core-components/issues/398)) ([fc4522d](https://github.com/bosonprotocol/core-components/commit/fc4522d06d99480a35917d68e54016bbdf5fc9c4))
+
+
+
+
+
+# [0.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.13.0...@bosonprotocol/react-kit@0.14.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* images cutting off text below ([#378](https://github.com/bosonprotocol/core-components/issues/378)) ([5786cea](https://github.com/bosonprotocol/core-components/commit/5786ceae81e9060f2876a6f139c9484c59c1066f))
+
+
+### Features
+
+* activate meta-transactions for revokeVoucher()/completeExchangem()/extendDisputeTimeout() ([#367](https://github.com/bosonprotocol/core-components/issues/367)) ([9a7888e](https://github.com/bosonprotocol/core-components/commit/9a7888ec3d66b072604c7802a0834549f656bf19))
+* add funts ctas ([#372](https://github.com/bosonprotocol/core-components/issues/372)) ([3bca4e9](https://github.com/bosonprotocol/core-components/commit/3bca4e994b71f1b84dddd0f9e36f475ae2cd0f88))
+* add onError handler for avatar image ([#379](https://github.com/bosonprotocol/core-components/issues/379)) ([3160bb5](https://github.com/bosonprotocol/core-components/commit/3160bb558c18bac03f5daeb79ed72cbfe1508259))
+* implement dispute CTAs ([#368](https://github.com/bosonprotocol/core-components/issues/368)) ([28cb98a](https://github.com/bosonprotocol/core-components/commit/28cb98aa5e289da7e8051a3341343ac7b420732f))
+
+
+
+
+
 # [0.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.12.0...@bosonprotocol/react-kit@0.13.0) (2022-10-28)
 
 

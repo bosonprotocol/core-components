@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { BigNumber, BigNumberish } from "ethers";
 import { AddressZero } from "@ethersproject/constants";
+import { BigNumber, BigNumberish } from "ethers";
+import React, { useEffect } from "react";
 
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import { useSignerAddress } from "../../../hooks/useSignerAddress";
-import { CtaButtonProps } from "../common/types";
-import { CtaButton } from "../common/CtaButton";
 import { Action } from "../../../hooks/useCtaClickHandler";
+import { useSignerAddress } from "../../../hooks/useSignerAddress";
+import { CtaButton } from "../common/CtaButton";
+import { CtaButtonProps } from "../common/types";
 
 type AdditionalProps = {
   /**
@@ -48,6 +48,7 @@ export const CommitButton = ({
   const actions: Action[] = [
     // Approve exchange token action
     {
+      name: "approveExchangeToken",
       writeContractFn: () => coreSdk.approveExchangeToken(exchangeToken, price),
       nativeMetaTxContract: exchangeToken,
       signMetaTxFn: () =>
@@ -70,6 +71,7 @@ export const CommitButton = ({
     },
     // Commit action
     {
+      name: "commit",
       writeContractFn: () => coreSdk.commitToOffer(offerId),
       signMetaTxFn: () =>
         coreSdk.signMetaTxCommitToOffer({

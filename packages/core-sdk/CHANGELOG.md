@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.2...@bosonprotocol/core-sdk@1.24.0) (2022-12-23)
+
+
+### Features
+
+* add update seller and opt in with meta transactions ([#413](https://github.com/bosonprotocol/core-components/issues/413)) ([39828a2](https://github.com/bosonprotocol/core-components/commit/39828a2fac33a246b86d3066d002883182d3293e))
+
+
+
+
+
+## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.1...@bosonprotocol/core-sdk@1.23.2) (2022-12-01)
+
+
+### Bug Fixes
+
+* remove treasury from getSellerByAddress ([#402](https://github.com/bosonprotocol/core-components/issues/402)) ([b13f78e](https://github.com/bosonprotocol/core-components/commit/b13f78e39e6beeb92c2acac8f1494f943790a25b))
+
+
+
+
+
+## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.0...@bosonprotocol/core-sdk@1.23.1) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.22.0...@bosonprotocol/core-sdk@1.23.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* adapt meta-tx signature to ledger hardware wallet ([#374](https://github.com/bosonprotocol/core-components/issues/374)) ([51791bb](https://github.com/bosonprotocol/core-components/commit/51791bbed51640ae1ba559da4750e91661afdfe7))
+* fix issue with metadata when signing meta-tx for createOfferWithCondi… ([#371](https://github.com/bosonprotocol/core-components/issues/371)) ([a241285](https://github.com/bosonprotocol/core-components/commit/a241285dd255abd8e37c9c050c275585f488a1bf))
+* fix issue with signing the approve meta-tx for the USDC token ([#370](https://github.com/bosonprotocol/core-components/issues/370)) ([5d85c94](https://github.com/bosonprotocol/core-components/commit/5d85c94409ae28941a217440bee4807a32a5a7a3))
+* validate address only once ([#393](https://github.com/bosonprotocol/core-components/issues/393)) ([2c1759a](https://github.com/bosonprotocol/core-components/commit/2c1759a72c617756b42a34e3b2a1d67ac2d44a57))
+
+
+### Features
+
+* activate meta-transactions for revokeVoucher()/completeExchangem()/extendDisputeTimeout() ([#367](https://github.com/bosonprotocol/core-components/issues/367)) ([9a7888e](https://github.com/bosonprotocol/core-components/commit/9a7888ec3d66b072604c7802a0834549f656bf19))
+* add checkTokenGatedCondition ([#390](https://github.com/bosonprotocol/core-components/issues/390)) ([f07f6da](https://github.com/bosonprotocol/core-components/commit/f07f6dac20bcdd7a3f072876a6ae8d13f0b3e9de))
+* add sellerId and disputeResolverId to productFilter ([#396](https://github.com/bosonprotocol/core-components/issues/396)) ([268657e](https://github.com/bosonprotocol/core-components/commit/268657ee48bc066fbd1f0a04a3c83400541927c8))
+* fetch products with variants directly from subgraph ([#386](https://github.com/bosonprotocol/core-components/issues/386)) ([2bdb77a](https://github.com/bosonprotocol/core-components/commit/2bdb77aa2a5f4bafc2885e7d42f406b1c4f6c9a7))
+* get token info from subgraph (when available) ([#380](https://github.com/bosonprotocol/core-components/issues/380)) ([61119f6](https://github.com/bosonprotocol/core-components/commit/61119f62c8c5f3f433f81339d8fbe0ebd4dace27))
+* script to port images to pinata ([#388](https://github.com/bosonprotocol/core-components/issues/388)) ([c0af4a9](https://github.com/bosonprotocol/core-components/commit/c0af4a9b4d4147e0be46ca98b24e008de49846a1))
+
+
+
+
+
 # [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.21.0...@bosonprotocol/core-sdk@1.22.0) (2022-10-28)
 
 
