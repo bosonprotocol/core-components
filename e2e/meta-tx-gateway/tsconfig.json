@@ -2,10 +2,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "rootDir": "./",
+    // "rootDir": "./",
     "esModuleInterop": true,
     "outDir": "./build",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@bosonprotocol/common": ["../../packages/common"],
+      "@bosonprotocol/metadata": ["../../packages/metadata"]
+    }
   },
   "include": ["src", "index.ts"]
 }

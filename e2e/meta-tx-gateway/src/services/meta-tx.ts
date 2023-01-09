@@ -1,6 +1,6 @@
 import { logger } from "./../utils/logger";
 import { ContractTransaction } from "ethers";
-import { abis } from "@bosonprotocol/common";
+import * as abis from "@bosonprotocol/common/src/abis";
 import { Interface } from "@ethersproject/abi";
 import { ethers } from "ethers";
 import { Config, getConfig } from "../config";
