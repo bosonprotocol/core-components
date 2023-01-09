@@ -4,7 +4,7 @@ services:
     build:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
-    image: meta-tx-gateway:20230104111300
+    image: meta-tx-gateway:20230109111300
     ports:
       - "8888:8888"
     environment:

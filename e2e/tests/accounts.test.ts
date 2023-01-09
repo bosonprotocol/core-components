@@ -375,7 +375,6 @@ describe("CoreSDK - accounts", () => {
         authTokenType: tokenType,
         authTokenId: tokenId.toString()
       });
-      console.log("after updateSeller");
 
       expect(seller).toBeTruthy();
       expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
