@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
+import {
+  CoreSDK,
+  getDefaultConfig,
+  EnvironmentType,
+  MetaTxConfig
+} from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
+import { LensContracts } from "@bosonprotocol/common";
 import { providers } from "ethers";
-import { EnvironmentType } from "@bosonprotocol/common/src/types";
 
 export type CoreSdkConfig = {
   /**
@@ -43,6 +48,14 @@ export type CoreSdkConfig = {
    * Optional override for The Graph IPFS  storage headers.
    */
   theGraphIpfsStorageHeaders?: Headers | Record<string, string>;
+  /**
+   * Optional override for the MetaTx configuration
+   */
+  metaTx?: Partial<MetaTxConfig>;
+  /**
+   * Optional override for the Lens contracts addresses
+   */
+  lensContracts?: LensContracts;
 };
 
 /**
@@ -58,23 +71,23 @@ export function useCoreSdk(config: CoreSdkConfig) {
   useEffect(() => {
     const newCoreSdk = initCoreSdk(config);
     setCoreSdk(newCoreSdk);
-  }, [config.web3Provider]);
+  }, [config.web3Provider, config.envName]);
 
   return coreSdk;
 }
 
 function initCoreSdk(config: CoreSdkConfig) {
   const defaultConfig = getDefaultConfig(config.envName);
-  const defaultProvider = new providers.JsonRpcProvider(
-    config.jsonRpcUrl || defaultConfig.jsonRpcUrl
-  );
-  const connectedProvider = config.web3Provider || defaultProvider;
+  const connectedProvider =
+    config.web3Provider ||
+    createDefaultProvider(config.jsonRpcUrl || defaultConfig.jsonRpcUrl);
   const metadataStorageUrl =
     config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl;
   const theGraphStorageUrl =
     config.theGraphIpfsUrl ||
     defaultConfig.theGraphIpfsUrl ||
     metadataStorageUrl;
+  const metaTx = config.metaTx || defaultConfig.metaTx;
 
   return new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
@@ -93,6 +106,18 @@ function initCoreSdk(config: CoreSdkConfig) {
       url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders
     }),
-    chainId: defaultConfig.chainId
+    chainId: defaultConfig.chainId,
+    metaTx,
+    lensContracts: config.lensContracts || defaultConfig.lens
   });
 }
+
+function createDefaultProvider(jsonRpcUrl: string): Provider {
+  const key = jsonRpcUrl.toLowerCase();
+  if (!providersCache.has(key)) {
+    providersCache.set(key, new providers.StaticJsonRpcProvider(jsonRpcUrl));
+  }
+  return providersCache.get(key) as Provider;
+}
+
+const providersCache = new Map<string, Provider>();

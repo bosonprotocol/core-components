@@ -22,15 +22,15 @@ const envNameToConfig: Record<
   },
   testing: {
     network: "mumbai",
-    startBlock: 28101225 // mumbai, block num when protocol is deployed
+    startBlock: 28566210 // mumbai, NOT block num when protocol is deployed (manual override)
   },
   staging: {
     network: "mumbai",
-    startBlock: 27771547 // mumbai, block num when protocol is deployed
+    startBlock: 28563076 // mumbai, block num when protocol is deployed
   },
   production: {
     network: providers.getNetwork(chainId).name,
-    startBlock: 12027000
+    startBlock: 34258150 // polygon, block num when protocol is deployed
   }
 };
 const { network, startBlock } = envNameToConfig[envName] || {

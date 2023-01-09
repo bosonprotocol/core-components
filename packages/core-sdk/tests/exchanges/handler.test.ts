@@ -162,7 +162,7 @@ describe("#completeExchange()", () => {
     ).rejects.toThrow(/buyer.*or operator.*/);
   });
 
-  test("throw if fulfillment period not elapsed", async () => {
+  test("dont throw an error if fulfillment period not elapsed - if we're both buyer and seller", async () => {
     interceptSubgraph().reply(200, {
       data: {
         exchange: mockRawExchangeFromSubgraph(
@@ -170,7 +170,38 @@ describe("#completeExchange()", () => {
             redeemedDate: (Date.now() / 1000).toString()
           },
           {
-            fulfillmentPeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
+            disputePeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
+          }
+        )
+      }
+    });
+
+    await expect(
+      completeExchange({
+        contractAddress: ADDRESS,
+        subgraphUrl: SUBGRAPH_URL,
+        exchangeId: 1,
+        web3Lib: new MockWeb3LibAdapter({
+          getSignerAddress: ZERO_ADDRESS
+        })
+      })
+    );
+  });
+
+  test("throw if fulfillment period not elapsed - if we're only the seller", async () => {
+    interceptSubgraph().reply(200, {
+      data: {
+        exchange: mockRawExchangeFromSubgraph(
+          {
+            redeemedDate: (Date.now() / 1000).toString(),
+            buyer: {
+              wallet: "0x0000000000000000000000000000000000000001", // any address different from null address, which would be ours
+              active: true,
+              id: "22"
+            }
+          },
+          {
+            disputePeriodDuration: Math.floor(DAY_IN_MS / 1000).toString()
           }
         )
       }
@@ -196,7 +227,7 @@ describe("#completeExchange()", () => {
             redeemedDate: (Date.now() / 1000).toString()
           },
           {
-            fulfillmentPeriodDuration: "0"
+            disputePeriodDuration: "0"
           }
         )
       }

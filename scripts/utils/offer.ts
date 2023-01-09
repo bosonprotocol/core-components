@@ -129,13 +129,13 @@ function offerDatesFromStruct(struct: Array<any>): OfferDates {
 }
 
 type OfferDurations = {
-  fulfillmentPeriod: string;
+  disputePeriod: string;
   voucherValid: string;
   resolutionPeriod: string;
 };
 
 type ExtendedOfferDurations = OfferDurations & {
-  fulfillmentPeriodDuration: string;
+  disputePeriodDuration: string;
   voucherValidDuration: string;
   resolutionPeriodDuration: string;
 };
@@ -157,9 +157,7 @@ function extendOfferDurations(
 ): ExtendedOfferDurations {
   return {
     ...offerDurationsStruct,
-    fulfillmentPeriodDuration: convertDuration(
-      offerDurationsStruct.fulfillmentPeriod
-    ),
+    disputePeriodDuration: convertDuration(offerDurationsStruct.disputePeriod),
     resolutionPeriodDuration: convertDuration(
       offerDurationsStruct.resolutionPeriod
     ),
@@ -168,9 +166,9 @@ function extendOfferDurations(
 }
 
 function offerDurationsFromStruct(struct: Array<any>): OfferDurations {
-  const [fulfillmentPeriod, voucherValid, resolutionPeriod] = struct;
+  const [disputePeriod, voucherValid, resolutionPeriod] = struct;
   return {
-    fulfillmentPeriod: fulfillmentPeriod.toString(),
+    disputePeriod: disputePeriod.toString(),
     voucherValid: voucherValid.toString(),
     resolutionPeriod: resolutionPeriod.toString()
   };
@@ -308,6 +306,17 @@ export function extractOfferData(offerData: Array<unknown>): OfferData {
     offerDurations,
     disputeResolutionTerms,
     offerFees
+  };
+}
+
+export function extractAgentId(agentIdData: Array<unknown>): {
+  exists: boolean;
+  agentId: string;
+} {
+  const [exists, agentIdBN] = agentIdData;
+  return {
+    exists: exists as boolean,
+    agentId: (agentIdBN as BigNumber).toString()
   };
 }
 

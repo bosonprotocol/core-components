@@ -35,17 +35,13 @@ Image.args = {
 Image.decorators = [(Story) => wrapper(Story)];
 ImageLoading.args = {
   src: "",
-  alt: "image loading",
-  preloadConfig: {
-    status: "loading"
-  }
+  alt: "image loading"
 };
 ImageLoading.decorators = [(Story) => wrapper(Story)];
 ImageError.args = {
   src: "",
   alt: "image loading",
-  preloadConfig: {
-    status: "error",
+  errorConfig: {
     errorImageText: "IMAGE NOT AVAILABLE",
     errorIcon: (
       <div

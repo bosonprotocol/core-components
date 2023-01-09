@@ -14,7 +14,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IAccessControlUpgradeable",
+        internalType: "contract IAccessControl",
         name: "_accessController",
         type: "address",
       },
@@ -46,7 +46,7 @@ const _abi = [
         type: "bytes4[]",
       },
     ],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "constructor",
   },
   {

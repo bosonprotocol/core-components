@@ -1,29 +1,47 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import { Bitcoin, Ether, Solana, Polygon, Tether } from "../../icons/coins";
+import {
+  Bitcoin,
+  Boson,
+  Dai,
+  Ether,
+  Polygon,
+  Solana,
+  Tether,
+  Usdc,
+  Weth
+} from "../../icons/coins";
 
 export enum Currencies {
-  ETH = "ETH",
+  BOSON = "BOSON",
   BTC = "BTC",
+  DAI = "DAI",
+  ETH = "ETH",
   POLYGON = "MATIC",
   SOLANA = "SOL",
-  TETHER = "USDT"
+  TETHER = "USDT",
+  USDC = "USDC",
+  WETH = "WETH"
 }
 interface CurrencyDisplayProps {
   value?: number | string;
   currency: Currencies;
   height?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
 }
 
 export const CurrencyDisplay = ({
   value,
   currency,
-  height = 25
+  height = 25,
+  ...rest
 }: CurrencyDisplayProps) => {
   return (
     <CurrencyDisplayValueWrapper
       style={{ height: `${height}px`, width: "100%" }}
+      {...rest}
     >
       <CurrencyLogo currency={currency} size={height} />
       {value && (
@@ -77,6 +95,18 @@ export const CurrencyLogo = ({
 
     case Currencies.TETHER:
       return <Tether size={size} />;
+
+    case Currencies.DAI:
+      return <Dai size={size} />;
+
+    case Currencies.WETH:
+      return <Weth size={size} />;
+
+    case Currencies.BOSON:
+      return <Boson size={size} />;
+
+    case Currencies.USDC:
+      return <Usdc size={size} />;
 
     default:
       return <div>{currency}</div>;

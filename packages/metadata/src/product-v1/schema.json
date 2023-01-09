@@ -7,7 +7,10 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "externalUrl": { "type": "string" },
+    "licenseUrl": { "type": "string" },
+    "condition": { "type": "string" },
     "image": { "type": "string" },
+    "animationUrl": { "type": "string" },
     "attributes": {
       "type": "array",
       "items": {
@@ -122,7 +125,7 @@
           "minItems": 1
         }
       },
-      "required": ["defaultVersion", "contactLinks"]
+      "required": ["defaultVersion", "contactLinks", "name"]
     },
     "shipping": {
       "type": "object",
@@ -140,9 +143,13 @@
             "required": ["label", "deliveryTime"]
           }
         },
-        "redemptionPoint": { "type": "string" }
+        "redemptionPoint": { "type": "string" },
+        "returnPeriod": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        }
       },
-      "required": []
+      "required": ["returnPeriod"]
     },
     "exchangePolicy": {
       "type": "object",
@@ -150,9 +157,11 @@
         "uuid": { "type": "string" },
         "version": { "type": "number" },
         "label": { "type": "string" },
-        "template": { "type": "string" }
+        "template": { "type": "string" },
+        "sellerContactMethod": { "type": "string" },
+        "disputeResolverContactMethod": { "type": "string" }
       },
-      "required": ["uuid", "version", "template"]
+      "required": ["uuid", "version", "template", "sellerContactMethod", "disputeResolverContactMethod"]
     },
     "productOverrides": {
       "type": "object",
@@ -209,10 +218,12 @@
     "name",
     "description",
     "externalUrl",
+    "licenseUrl",
     "image",
     "attributes",
     "product",
     "seller",
+    "shipping",
     "exchangePolicy"
   ]
 }

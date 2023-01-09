@@ -5,16 +5,13 @@ export const Bitcoin = ({ size }: { size: number }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlSpace="preserve"
-      shape-rendering="geometricPrecision"
-      text-rendering="geometricPrecision"
-      image-rendering="optimizeQuality"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      viewBox="0 0 4091.27 4091.73"
+      shapeRendering="geometricPrecision"
+      clipRule="evenodd"
       width={size}
       height={size}
+      viewBox="0 0 4091.27 4091.73"
     >
-      <g fill-rule="nonzero">
+      <g fillRule="nonzero">
         <path
           fill="#F7931A"
           d="M4030.06 2540.77C3756.82 3636.78 2646.74 4303.79 1550.6 4030.48 454.92 3757.24-212.09 2647.09 61.27 1551.17c273.12-1096.13 1383.2-1763.19 2479-1489.95C3636.33 334.46 4303.3 1444.73 4030.03 2540.79l.02-.02z"

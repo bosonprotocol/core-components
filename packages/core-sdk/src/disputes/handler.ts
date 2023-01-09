@@ -74,7 +74,7 @@ export async function expireDisputeBatch(args: {
 
 export async function resolveDispute(args: {
   exchangeId: BigNumberish;
-  buyerPercent: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
   sigR: BytesLike;
   sigS: BytesLike;
   sigV: BigNumberish;
@@ -134,7 +134,7 @@ export async function expireEscalatedDispute(args: {
 
 export async function signResolutionProposal(args: {
   exchangeId: BigNumberish;
-  buyerPercent: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
   chainId: number;
@@ -142,13 +142,13 @@ export async function signResolutionProposal(args: {
   const customSignatureType = {
     Resolution: [
       { name: "exchangeId", type: "uint256" },
-      { name: "buyerPercent", type: "uint256" }
+      { name: "buyerPercentBasisPoints", type: "uint256" }
     ]
   };
 
   const message = {
-    exchangeId: args.exchangeId,
-    buyerPercent: args.buyerPercent
+    exchangeId: args.exchangeId.toString(),
+    buyerPercentBasisPoints: args.buyerPercentBasisPoints.toString()
   };
 
   return prepareDataSignatureParameters({

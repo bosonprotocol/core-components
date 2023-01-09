@@ -38,7 +38,9 @@ describe("#createOffer()", () => {
           wait: async () => ({
             from: "0x",
             to: "0x",
-            logs: []
+            logs: [],
+            transactionHash: "0x",
+            effectiveGasPrice: "0"
           })
         }
       }),
@@ -104,7 +106,9 @@ describe("#voidOffer()", () => {
             authTokenId: "0",
             authTokenType: 0,
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
-            active: true
+            active: true,
+            royaltyPercentage: "0",
+            contractURI: "ipfs://seller-contract-uri"
           }
         })
       }
@@ -135,7 +139,9 @@ describe("#voidOffer()", () => {
             authTokenId: "0",
             authTokenType: 0,
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
-            active: true
+            active: true,
+            royaltyPercentage: "0",
+            contractURI: "ipfs://seller-contract-uri"
           }
         })
       }
@@ -212,7 +218,9 @@ describe("#voidOfferBatch()", () => {
               authTokenId: "0",
               authTokenType: 0,
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
-              active: true
+              active: true,
+              royaltyPercentage: "0",
+              contractURI: "ipfs://seller-contract-uri"
             }
           })
         ]
@@ -246,7 +254,9 @@ describe("#voidOfferBatch()", () => {
               authTokenId: "0",
               authTokenType: 0,
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
-              active: true
+              active: true,
+              royaltyPercentage: "0",
+              contractURI: "ipfs://seller-contract-uri"
             }
           })
         ]

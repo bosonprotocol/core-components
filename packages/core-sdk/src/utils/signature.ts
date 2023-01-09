@@ -7,6 +7,7 @@ type SignatureArgs = {
   verifyingContractAddress: string;
   chainId: number;
   customSignatureType?: Record<string, unknown>;
+  customDomainData?: Record<string, unknown>;
   primaryType: string;
   message: Record<string, unknown>;
 };
@@ -20,10 +21,11 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
   ];
 
   const domainData = {
-    name: "BosonProtocolDiamond",
-    version: "V1",
+    name: "Boson Protocol",
+    version: "V2",
     verifyingContract: args.verifyingContractAddress,
-    salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32)
+    salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32),
+    ...args.customDomainData
   };
 
   const signatureTypes = {
@@ -55,7 +57,12 @@ export function getSignatureParameters(signature: string) {
   signature = signature.substring(2);
   const r = "0x" + signature.substring(0, 64);
   const s = "0x" + signature.substring(64, 128);
-  const v = parseInt(signature.substring(128, 130), 16);
+  let v = parseInt(signature.substring(128, 130), 16);
+
+  if (!isNaN(v) && v < 2) {
+    // support Ledger signature
+    v = v + 27;
+  }
 
   return {
     r,

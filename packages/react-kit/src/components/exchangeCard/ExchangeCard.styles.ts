@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import theme from "../../theme";
+import { theme } from "../../theme";
 import { ExchangeCardStatus } from "./ExchangeCard";
 
 export const ExchangeCreator = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
 export const ExchangeCreatorAvatar = styled.div`
@@ -20,11 +22,10 @@ export const ExchangeCreatorAvatar = styled.div`
 `;
 
 export const ExchangeCreatorName = styled.div`
-  margin-left: 0.5rem;
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.secondary};
+  color: ${({ theme }) => theme?.colors?.light.accent};
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -37,11 +38,15 @@ export const ExchangeTitle = styled.div`
   font-size: 1.25rem;
   line-height: 150%;
   color: ${({ theme }) => theme?.colors?.light.black};
+  word-break: break-word;
 `;
 
 export const ExchangeCardPriceWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-self: stretch;
+  max-width: 50%;
+  min-width: 44%;
   span {
     padding-left: 0.5rem;
   }
@@ -60,10 +65,10 @@ export const ExchangeCarData = styled.div`
   flex-direction: column;
 `;
 
-export const ExchangeCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
+export const ExchangeCardBottom = styled.div`
   width: 100%;
-  position: ${({ $isNotImageLoaded }) =>
-    $isNotImageLoaded ? "static" : "absolute"};
+  flex: 1 1;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -76,14 +81,17 @@ export const ExchangeCardBottomContent = styled.div`
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   align-items: flex-start;
+  border-top: 2px solid ${theme.colors.light.border};
 `;
 
-export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+export const ExchangeCardWrapper = styled.div<{
+  $isHoverDisabled: boolean;
+}>`
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-direction: column;
   padding: 0px;
   isolation: isolate;
@@ -96,6 +104,11 @@ export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   [data-image-wrapper] {
     position: static;
     padding-top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
@@ -107,12 +120,23 @@ export const ExchangeCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
 
       [data-image-wrapper] {
         img {
-          transform: translate(-50%, -50%) scale(1.05);
+          transform: scale(1.05);
+          transition: all 300ms ease-in-out;
         }
+      }
+      [data-cta-wrapper] {
+        transition: all 0.4s ease-in-out;
+        max-height: 100rem;
       }
     }
   `
-      : ""}
+      : `
+      &:hover {
+      [data-cta-wrapper] {
+        transition: all 0.4s ease-in-out;
+        max-height: 100rem;
+      }
+    `}
 `;
 
 export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
@@ -121,8 +145,9 @@ export const ExchangeCardTop = styled.div<{ $isNotImageLoaded: boolean }>`
   overflow: hidden;
   width: 100%;
   z-index: 0;
-  margin-bottom: auto;
-  flex-grow: 1;
+  display: flex;
+  flex: 1 1;
+  align-items: center;
 `;
 export const ExchangeButtonWrapper = styled.div`
   width: 100%;
@@ -167,7 +192,7 @@ export const ExchangeStatus = styled.div<{
       case "CANCELLED":
         return theme.colors.light.primary;
       case "COMMITTED":
-        return theme.colors.light.secondary;
+        return theme.colors.light.accent;
       default:
         return theme.colors.light.white;
     }
@@ -184,7 +209,7 @@ export const ExchangeStatus = styled.div<{
 
 export const CommittedBottomText = styled.p`
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 0.975rem;
   margin: 0;
   padding: 0 1.5rem 1.5rem 1.5rem;
@@ -195,4 +220,14 @@ export const CommittedBottomText = styled.p`
 export const ExchangeImageWrapper = styled.div`
   width: 100%;
   height: 100%;
+  max-height: 75%;
+  :not([data-image]) {
+    align-self: stretch;
+    max-height: initial;
+  }
+`;
+
+export const ExchangeCTAWrapper = styled.div`
+  transition: all 0.4s ease-out;
+  max-height: 0;
 `;

@@ -38,6 +38,8 @@ export function mockRawSellerFromSubgraph(
     authTokenType: 0,
     voucherCloneAddress: ZERO_ADDRESS,
     active: true,
+    royaltyPercentage: "0",
+    contractURI: "ipfs://seller-contract-uri",
     funds: [],
     offers: [],
     exchanges: [],
@@ -74,15 +76,18 @@ export function mockRawOfferFromSubgraph(
     voucherRedeemableUntilDate: utils.timestamp
       .msToSec(Date.now() + 2 * DAY_IN_MS)
       .toString(),
-    fulfillmentPeriodDuration: "864000",
+    disputePeriodDuration: "864000",
     voucherValidDuration: "86400",
     resolutionPeriodDuration: "86400",
     metadataUri: "ipfs:///QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     metadataHash: "QmUttPYRg6mgDAzpjBjMTCvmfsqcgD6UpXj5PRqjvj6nT6",
     voidedAt: null,
+    voided: false,
     protocolFee: "1",
     agentFee: "0",
     agentId: "0",
+    numberOfCommits: "0",
+    numberOfRedemptions: "0",
     seller: {
       id: "1",
       operator: ZERO_ADDRESS,
@@ -93,6 +98,8 @@ export function mockRawOfferFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     exchangeToken: {
@@ -107,8 +114,11 @@ export function mockRawOfferFromSubgraph(
       name: "Name",
       description: "Description",
       externalUrl: "externalUrl",
+      animationUrl: "animationUrl",
+      licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
       type: MetadataType.Base,
+      image: "imageUrl",
       ...metadata
     },
     exchanges: [],
@@ -173,6 +183,8 @@ export function mockRawExchangeFromSubgraph(
       authTokenType: 0,
       voucherCloneAddress: ZERO_ADDRESS,
       active: true,
+      royaltyPercentage: "0",
+      contractURI: "ipfs://seller-contract-uri",
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),
@@ -185,10 +197,21 @@ export function buildProductV1Metadata(template: string) {
     name: "Name",
     description: "Description",
     externalUrl: "externalUrl",
+    animationUrl: "animationUrl",
+    licenseUrl: "licenseUrl",
     schemaUrl: "schemaUrl",
+    image: "imageUrl",
     type: subgraph.MetadataType.ProductV1,
     exchangePolicy: {
-      template
+      template,
+      sellerContactMethod: "Chat App in the dApp",
+      disputeResolverContactMethod: "email to: disputes@redeemeum.com"
+    },
+    productV1Seller: {
+      name: "Best Brand Ever"
+    },
+    shipping: {
+      returnPeriodInDays: 15
     }
   };
 }

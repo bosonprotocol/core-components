@@ -1,3 +1,6 @@
+import { BigNumber } from "@ethersproject/bignumber";
+import { CreateOfferArgs } from "./../packages/common/src/types/offers";
+import fs from "fs";
 import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { IpfsMetadataStorage } from "./../packages/ipfs-storage/src/ipfs/metadata";
 import { AddressZero } from "@ethersproject/constants";
@@ -6,16 +9,27 @@ import { providers, Contract } from "ethers";
 import { program } from "commander";
 import { abis } from "@bosonprotocol/common";
 import { getDefaultConfig } from "../packages/common/src";
-import { extractOfferData, extractOfferDataExtended } from "./utils/offer";
+import {
+  extractAgentId,
+  extractOfferData,
+  extractOfferDataExtended,
+  OfferData
+} from "./utils/offer";
 import {
   ITokenInfo,
   NATIVE_TOKENS
 } from "../packages/core-sdk/src/utils/tokenInfoManager";
+import { buildInfuraHeaders } from "./utils/infura";
 
 program
   .description("Explore an on-chain Offer.")
   .argument("<OFFER_ID>", "Id of the Offer")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("--export <FILEPATH>", "Export offer data to a JSON file")
+  .option(
+    "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
+    "ProjectId and Secret required to address Infura IPFS gateway"
+  )
   .parse(process.argv);
 
 async function main() {
@@ -45,14 +59,24 @@ async function main() {
     web3Provider,
     chainId
   );
+  const agentIdRaw = await offerHandler.getAgentIdByOffer(offerId);
+  const { agentId } = extractAgentId(agentIdRaw);
   const extendedOfferData = extractOfferDataExtended(offerDataRaw, tokenInfo);
   console.log("extendedOfferData", extendedOfferData);
 
+  console.log("Fetching offer metadata...");
   const ipfsMetadataStorage = new IpfsMetadataStorage({
-    url: defaultConfig.theGraphIpfsUrl
+    url: opts.infura
+      ? defaultConfig.ipfsMetadataUrl
+      : defaultConfig.theGraphIpfsUrl,
+    headers: opts.infura ? buildInfuraHeaders(opts.infura) : undefined
   });
   const metadata = await ipfsMetadataStorage.get(offerData.offer.metadataHash);
   console.log("metadata", metadata);
+
+  if (opts.export) {
+    exportOfferData(opts.export, offerData, agentId);
+  }
 }
 
 main()
@@ -78,13 +102,52 @@ async function getTokenInfo(
   }
   const tokenContract = new Contract(exchangeToken, erc20Iface, web3Provider);
   const [decimals, name, symbol] = await Promise.all([
-    tokenContract.getDecimals(),
-    tokenContract.getName(),
-    tokenContract.getSymbol()
+    tokenContract.decimals(),
+    tokenContract.name(),
+    tokenContract.symbol()
   ]);
   return {
     decimals,
     name,
     symbol
   };
+}
+
+function exportOfferData(
+  filePath: string,
+  offerData: OfferData,
+  agentId: string
+) {
+  console.log("Export offer creation data to", filePath);
+  const createOfferArgs: CreateOfferArgs = {
+    price: offerData.offer.price,
+    sellerDeposit: offerData.offer.sellerDeposit,
+    agentId,
+    buyerCancelPenalty: offerData.offer.buyerCancelPenalty,
+    quantityAvailable: offerData.offer.quantityAvailable,
+    validFromDateInMS: secToMSec(offerData.offerDates.validFrom),
+    validUntilDateInMS: secToMSec(offerData.offerDates.validUntil),
+    voucherRedeemableFromDateInMS: secToMSec(
+      offerData.offerDates.voucherRedeemableFrom
+    ),
+    voucherRedeemableUntilDateInMS: secToMSec(
+      offerData.offerDates.voucherRedeemableUntil
+    ),
+    disputePeriodDurationInMS: secToMSec(
+      offerData.offerDurations.disputePeriod
+    ),
+    voucherValidDurationInMS: secToMSec(offerData.offerDurations.voucherValid),
+    resolutionPeriodDurationInMS: secToMSec(
+      offerData.offerDurations.resolutionPeriod
+    ),
+    exchangeToken: offerData.offer.exchangeToken,
+    disputeResolverId: offerData.disputeResolutionTerms.disputeResolverId,
+    metadataUri: offerData.offer.metadataUri,
+    metadataHash: offerData.offer.metadataHash
+  };
+  fs.writeFileSync(filePath, JSON.stringify(createOfferArgs, undefined, 2));
+}
+
+function secToMSec(sec: string): string {
+  return BigNumber.from(sec).mul(1000).toString();
 }

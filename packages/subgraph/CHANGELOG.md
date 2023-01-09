@@ -3,6 +3,140 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.22.0...@bosonprotocol/subgraph@1.22.1) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.21.0...@bosonprotocol/subgraph@1.22.0) (2022-11-17)
+
+
+### Features
+
+* add sellerId and disputeResolverId to productFilter ([#396](https://github.com/bosonprotocol/core-components/issues/396)) ([268657e](https://github.com/bosonprotocol/core-components/commit/268657ee48bc066fbd1f0a04a3c83400541927c8))
+* fetch products with variants directly from subgraph ([#386](https://github.com/bosonprotocol/core-components/issues/386)) ([2bdb77a](https://github.com/bosonprotocol/core-components/commit/2bdb77aa2a5f4bafc2885e7d42f406b1c4f6c9a7))
+
+
+
+
+
+# [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.20.0...@bosonprotocol/subgraph@1.21.0) (2022-10-28)
+
+
+### Features
+
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+
+
+
+
+
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.19.1...@bosonprotocol/subgraph@1.20.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* ci ([#356](https://github.com/bosonprotocol/core-components/issues/356)) ([34a3f3f](https://github.com/bosonprotocol/core-components/commit/34a3f3f035621bacb4ae6f99577e8065d305a4ef))
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+
+
+
+
+
+## [1.19.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.19.0...@bosonprotocol/subgraph@1.19.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* fix issue in subgraph when returnPeriod overflows ([#339](https://github.com/bosonprotocol/core-components/issues/339)) ([05b73bb](https://github.com/bosonprotocol/core-components/commit/05b73bb022cf01f8635cf52e48017668ebaedf8c))
+
+
+
+
+
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.18.1...@bosonprotocol/subgraph@1.19.0) (2022-10-18)
+
+
+### Bug Fixes
+
+* only save funds log for seller ([#325](https://github.com/bosonprotocol/core-components/issues/325)) ([5578bc9](https://github.com/bosonprotocol/core-components/commit/5578bc964c4a43166de73c065b553e2893788b3f))
+
+
+### Features
+
+* multi variant products ([#317](https://github.com/bosonprotocol/core-components/issues/317)) ([2863a66](https://github.com/bosonprotocol/core-components/commit/2863a66bb687d4da2ce0f6694466c03739a1c682))
+* update polygon network name for correct native token indexing ([#327](https://github.com/bosonprotocol/core-components/issues/327)) ([099ea3f](https://github.com/bosonprotocol/core-components/commit/099ea3f8aa311f81cda3a7cfae146208c44e91cb))
+
+
+
+
+
+## [1.18.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.18.0...@bosonprotocol/subgraph@1.18.1) (2022-10-13)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.17.0...@bosonprotocol/subgraph@1.18.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.16.0...@bosonprotocol/subgraph@1.17.0) (2022-10-12)
+
+
+### Features
+
+* contract uri and royalty support in subgraph ([#303](https://github.com/bosonprotocol/core-components/issues/303)) ([edc44c1](https://github.com/bosonprotocol/core-components/commit/edc44c1977190635becfb8110d39396545feb5df))
+* fix prod subgraph deployment & update readme ([#289](https://github.com/bosonprotocol/core-components/issues/289)) ([b9e58a3](https://github.com/bosonprotocol/core-components/commit/b9e58a367b830582dae332e556781170ea437b23))
+* handle VoucherExpired event ([#310](https://github.com/bosonprotocol/core-components/issues/310)) ([9ee7e62](https://github.com/bosonprotocol/core-components/commit/9ee7e6243928432f743b0dc033651cbed5ef52b7))
+* update to latest commit of contracts ([#297](https://github.com/bosonprotocol/core-components/issues/297)) ([0efcc9c](https://github.com/bosonprotocol/core-components/commit/0efcc9ca05dd85bffbd48fa927f69667c605f708))
+
+
+
+
+
+# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.15.0...@bosonprotocol/subgraph@1.16.0) (2022-10-05)
+
+
+### Features
+
+* contractual agreement template ([#278](https://github.com/bosonprotocol/core-components/issues/278)) ([e516cf5](https://github.com/bosonprotocol/core-components/commit/e516cf56eda83aefe6fb115329b31ea68b383b7d))
+* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
+
+
+
+
+
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.14.0...@bosonprotocol/subgraph@1.15.0) (2022-10-03)
+
+
+### Features
+
+* add `EventLog` entity ([#280](https://github.com/bosonprotocol/core-components/issues/280)) ([73c128e](https://github.com/bosonprotocol/core-components/commit/73c128e61e5928101e081014cb5a79e477355d36))
+* add num of commits / redemptions ([#273](https://github.com/bosonprotocol/core-components/issues/273)) ([96345d0](https://github.com/bosonprotocol/core-components/commit/96345d03adfbdf5c27a2216446733f8dc16d8791))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+* update readme with testing subgraph details ([#263](https://github.com/bosonprotocol/core-components/issues/263)) ([a03065b](https://github.com/bosonprotocol/core-components/commit/a03065b492b532ee998feefcf6275de10e8484f1))
+
+
+
+
+
 # [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.13.2...@bosonprotocol/subgraph@1.14.0) (2022-09-08)
 
 ### Features

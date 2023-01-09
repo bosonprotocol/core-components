@@ -7,12 +7,23 @@ import {
 } from "../../generated/BosonFundsHandler/IBosonFundsHandler";
 import { FundsEntity, Seller } from "../../generated/schema";
 import { saveExchangeToken } from "../entities/token";
+import { saveFundsEventLog } from "../entities/event-log";
 
 export function handleFundsDepositedEvent(event: FundsDeposited): void {
   handleIncreasingFundsEvent(
     event.params.sellerId,
     event.params.amount,
     event.params.tokenAddress
+  );
+
+  saveFundsEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "FUNDS_DEPOSITED",
+    event.block.timestamp,
+    event.params.executedBy,
+    event.params.sellerId.toString(),
+    getFundsEntityId(event.params.sellerId, event.params.tokenAddress)
   );
 }
 
@@ -21,6 +32,16 @@ export function handleFundsReleasedEvent(event: FundsReleased): void {
     event.params.entityId,
     event.params.amount,
     event.params.exchangeToken
+  );
+
+  saveFundsEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "FUNDS_RELEASED",
+    event.block.timestamp,
+    event.params.executedBy,
+    event.params.entityId.toString(),
+    getFundsEntityId(event.params.entityId, event.params.exchangeToken)
   );
 }
 
@@ -33,6 +54,16 @@ export function handleFundsEncumberedEvent(event: FundsEncumbered): void {
       event.params.amount,
       event.params.exchangeToken
     );
+
+    saveFundsEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "FUNDS_ENCUMBERED",
+      event.block.timestamp,
+      event.params.executedBy,
+      event.params.entityId.toString(),
+      getFundsEntityId(event.params.entityId, event.params.exchangeToken)
+    );
   }
 }
 
@@ -41,6 +72,16 @@ export function handleFundsWithdrawnEvent(event: FundsWithdrawn): void {
     event.params.sellerId,
     event.params.amount,
     event.params.tokenAddress
+  );
+
+  saveFundsEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "FUNDS_WITHDRAWN",
+    event.block.timestamp,
+    event.params.executedBy,
+    event.params.sellerId.toString(),
+    getFundsEntityId(event.params.sellerId, event.params.tokenAddress)
   );
 }
 

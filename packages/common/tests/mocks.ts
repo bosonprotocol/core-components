@@ -1,4 +1,5 @@
-import { MSEC_PER_DAY } from "../src/utils/timestamp";
+import { AdditionalOfferMetadata } from "./../../core-sdk/src/offers/renderContractualAgreement";
+import { MSEC_PER_DAY, SEC_PER_DAY } from "../src/utils/timestamp";
 import { parseEther } from "@ethersproject/units";
 import { AddressZero } from "@ethersproject/constants";
 import {
@@ -10,7 +11,8 @@ import {
   CreateOfferArgs,
   OfferDatesStruct,
   OfferDurationsStruct,
-  TransactionRequest
+  TransactionRequest,
+  TransactionReceipt
 } from "../src/types";
 import { MetadataType } from "@bosonprotocol/metadata";
 
@@ -51,7 +53,7 @@ export function mockOfferDurationsStruct(
   overrides?: Partial<OfferDurationsStruct>
 ): OfferDurationsStruct {
   return {
-    fulfillmentPeriod: 60 * 60,
+    disputePeriod: 60 * 60,
     voucherValid: 60 * 60,
     resolutionPeriod: 60 * 60,
     ...overrides
@@ -71,13 +73,27 @@ export function mockCreateOfferArgs(
     validUntilDateInMS: Date.now() + 20 * MSEC_PER_DAY,
     voucherRedeemableFromDateInMS: Date.now() + 1000,
     voucherRedeemableUntilDateInMS: Date.now() + 30 * MSEC_PER_DAY,
-    fulfillmentPeriodDurationInMS: 40 * MSEC_PER_DAY,
+    disputePeriodDurationInMS: 40 * MSEC_PER_DAY,
     voucherValidDurationInMS: 0,
     resolutionPeriodDurationInMS: 50 * MSEC_PER_DAY,
     exchangeToken: AddressZero,
     disputeResolverId: "1",
     metadataUri: IPFS_URI,
     metadataHash: IPFS_HASH,
+    ...overrides
+  };
+}
+
+export function mockAdditionalOfferMetadata(
+  overrides?: Partial<AdditionalOfferMetadata>
+): AdditionalOfferMetadata {
+  return {
+    sellerContactMethod: "Chat App in the dApp",
+    disputeResolverContactMethod: "email to: disputes@redeemeum.com",
+    escalationDeposit: parseEther("0.01"),
+    escalationResponsePeriodInSec: 20 * SEC_PER_DAY,
+    sellerTradingName: "Best Brand Ever",
+    returnPeriodInDays: 15,
     ...overrides
   };
 }
@@ -89,6 +105,7 @@ type MockedWeb3LibReturnValues = {
   sendTransaction: TransactionResponse;
   call: string;
   send: string;
+  getTransactionReceipt: TransactionReceipt;
 };
 
 const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
@@ -97,27 +114,42 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
   getBalance: parseEther("0.001").toString(),
   sendTransaction: {
     hash: "0x",
-    wait: async (confirmations: number) => ({
+    wait: async () => ({
       transactionHash: "0x",
       from: ADDRESS,
       to: ADDRESS,
-      logs: []
+      logs: [],
+      status: 0,
+      effectiveGasPrice: "10"
     })
   },
   send: "0x",
-  call: "0x"
+  call: "0x",
+  getTransactionReceipt: {
+    transactionHash: "0x",
+    from: ADDRESS,
+    to: ADDRESS,
+    logs: [],
+    status: 0,
+    effectiveGasPrice: "10"
+  }
 };
 
 export class MockWeb3LibAdapter implements Web3LibAdapter {
   private _returnValues: MockedWeb3LibReturnValues;
 
   sendTransactionArgs: Array<TransactionRequest> = [];
+  getTransactionReceiptArgs: Array<string> = [];
 
   constructor(returnValues: Partial<MockedWeb3LibReturnValues> = {}) {
     this._returnValues = {
       ...defaultMockedReturnValues,
       ...returnValues
     };
+  }
+  async getTransactionReceipt(txHash: string): Promise<TransactionReceipt> {
+    this.getTransactionReceiptArgs.push(txHash);
+    return this._returnValues.getTransactionReceipt;
   }
 
   async getSignerAddress() {
@@ -157,6 +189,8 @@ const defaultMockedMetadataStorageReturnValues: MockedMetadataStorageReturnValue
       name: "name",
       description: "description",
       externalUrl: "externalUrl",
+      animationUrl: "animationUrl",
+      licenseUrl: "licenseUrl",
       schemaUrl: "schemaUrl",
       type: MetadataType.BASE
     },

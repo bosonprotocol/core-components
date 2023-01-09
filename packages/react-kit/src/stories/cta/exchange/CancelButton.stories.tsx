@@ -28,8 +28,8 @@ export const WithExtraInfo: ComponentStory<typeof CancelButton> = Template.bind(
 Simple.args = {
   envName: "testing",
   exchangeId: "28",
-  web3Provider: undefined,
   metaTransactionsApiKey: undefined,
+  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -51,7 +51,6 @@ Simple.args = {
 WithExtraInfo.args = {
   envName: "testing",
   exchangeId: "28",
-  web3Provider: undefined,
   metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {

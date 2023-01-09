@@ -42,6 +42,12 @@ test("save PRODUCT_V1 metadata product-v1-full.json", () => {
     "uuid",
     metadataUuid
   );
+  assert.fieldEquals(
+    "ProductV1MetadataEntity",
+    metadataId,
+    "animationUrl",
+    "https://app.bosonportal.io/animation"
+  );
   assert.entityCount("MetadataAttribute", 3);
 
   // product-level fields

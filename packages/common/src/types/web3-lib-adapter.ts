@@ -25,6 +25,8 @@ export type TransactionReceipt = {
   to: string;
   status?: number;
   logs: Log[];
+  transactionHash: string;
+  effectiveGasPrice: BigNumberish;
 };
 
 export interface Web3LibAdapter {
@@ -39,4 +41,5 @@ export interface Web3LibAdapter {
   ): Promise<TransactionResponse>;
   call(transactionRequest: TransactionRequest): Promise<string>;
   send(rpcMethod: string, payload: unknown[]): Promise<string>;
+  getTransactionReceipt(txHash: string): Promise<TransactionReceipt>;
 }

@@ -21,6 +21,9 @@ const Template: ComponentStory<typeof RedeemButton> = (args) => {
 };
 
 export const Simple: ComponentStory<typeof RedeemButton> = Template.bind({});
+export const WithBiconomy: ComponentStory<typeof RedeemButton> = Template.bind(
+  {}
+);
 export const WithExtraInfo: ComponentStory<typeof RedeemButton> = Template.bind(
   {}
 );
@@ -29,8 +32,8 @@ Simple.args = {
   envName: "testing",
   exchangeId: "92",
   disabled: false,
-  web3Provider: undefined,
   metaTransactionsApiKey: undefined,
+  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -47,6 +50,13 @@ Simple.args = {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
   }
+};
+
+WithBiconomy.args = {
+  ...Simple.args,
+  envName: "staging",
+  metaTransactionsApiKey: "vYoPWofBr.e4f3e2f9-69e5-4076-8ce1-3b8e0916e02c",
+  metaTransactionsApiId: "3b8898fa-1e48-4bb2-8afa-aabc84b86ec0"
 };
 
 WithExtraInfo.args = {

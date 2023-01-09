@@ -74,7 +74,7 @@ export const SearchBar = ({
 
         const sellerByIdPromise = coreSdk.getSellerById(value);
 
-        const sellerByAddressPromise = coreSdk.getSellerByAddress(value);
+        const sellerByAddressPromise = coreSdk.getSellersByAddress(value);
 
         const buyerByAddressPromise = coreSdk.getBuyers({
           buyersFilter: {
@@ -106,7 +106,9 @@ export const SearchBar = ({
           buyerByAddressPromise
         ]);
 
-        const sellerByAddressList = sellerByAddress ? [sellerByAddress] : [];
+        const sellerByAddressList = sellerByAddress?.length
+          ? sellerByAddress
+          : [];
         const sellerByIdList = sellerById ? [sellerById] : [];
 
         productSearchResults = [

@@ -30,6 +30,7 @@ module.exports = {
       fallback: {
         ...config.resolve.fallback,
         stream: false,
+        crypto: false,
       }
     };
     config.plugins.push(

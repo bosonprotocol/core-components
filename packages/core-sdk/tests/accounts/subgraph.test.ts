@@ -1,4 +1,7 @@
-import { getSellerByAddress } from "../../src/accounts/subgraph";
+import {
+  getSellerByAddress,
+  getSellerByAuthToken
+} from "../../src/accounts/subgraph";
 import { ADDRESS } from "@bosonprotocol/common/tests/mocks";
 import {
   SUBGRAPH_URL,
@@ -9,7 +12,7 @@ import {
 describe("#getSellerByAddress()", () => {
   test("return falsy if address no seller", async () => {
     interceptSubgraph()
-      .times(4)
+      .times(3)
       .reply(200, {
         data: {
           sellers: []
@@ -20,6 +23,24 @@ describe("#getSellerByAddress()", () => {
 
     expect(rawSeller).toBeFalsy();
   });
+
+  test("return undefined if address is treasury", async () => {
+    const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
+      treasury: ADDRESS
+    });
+    interceptSubgraph()
+      .times(3)
+      .reply(200, {
+        data: {
+          sellers: []
+        }
+      });
+
+    const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
+
+    expect(rawSeller).toBeUndefined();
+  });
+
   test("return seller if address is operator", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
       operator: ADDRESS
@@ -29,13 +50,6 @@ describe("#getSellerByAddress()", () => {
       .reply(200, {
         data: {
           sellers: [mockedRawSellerFromSubgraph]
-        }
-      });
-    interceptSubgraph()
-      .times(1)
-      .reply(200, {
-        data: {
-          sellers: []
         }
       });
     interceptSubgraph()
@@ -83,13 +97,6 @@ describe("#getSellerByAddress()", () => {
           sellers: []
         }
       });
-    interceptSubgraph()
-      .times(1)
-      .reply(200, {
-        data: {
-          sellers: []
-        }
-      });
 
     const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
 
@@ -121,15 +128,31 @@ describe("#getSellerByAddress()", () => {
           sellers: [mockedRawSellerFromSubgraph]
         }
       });
+
+    const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
+
+    expect(rawSeller).toMatchObject(mockedRawSellerFromSubgraph);
+  });
+
+  test("return seller using auth token", async () => {
+    const tokenId = "123456789";
+    const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
+      admin: ADDRESS,
+      clerk: ADDRESS,
+      operator: ADDRESS,
+      treasury: ADDRESS,
+      authTokenId: tokenId,
+      authTokenType: 1
+    });
     interceptSubgraph()
-      .times(1)
+      .times(5)
       .reply(200, {
         data: {
-          sellers: []
+          sellers: [mockedRawSellerFromSubgraph]
         }
       });
 
-    const rawSeller = await getSellerByAddress(SUBGRAPH_URL, ADDRESS);
+    const rawSeller = await getSellerByAuthToken(SUBGRAPH_URL, tokenId, 1);
 
     expect(rawSeller).toMatchObject(mockedRawSellerFromSubgraph);
   });

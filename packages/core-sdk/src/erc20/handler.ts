@@ -1,5 +1,5 @@
 import { Web3LibAdapter } from "@bosonprotocol/common";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { erc20Iface } from "./interface";
 
 export async function approve(args: {
@@ -66,4 +66,32 @@ export async function getName(args: {
 
   const [name] = erc20Iface.decodeFunctionResult("name", result);
   return String(name);
+}
+
+export async function ensureAllowance(args: {
+  owner: string;
+  spender: string;
+  contractAddress: string;
+  value: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}) {
+  const allowance = await getAllowance(args);
+  if (BigNumber.from(allowance).lt(args.value)) {
+    const approveTx = await approve(args);
+    await approveTx.wait();
+  }
+}
+
+export async function balanceOf(args: {
+  contractAddress: string;
+  owner: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: erc20Iface.encodeFunctionData("balanceOf", [args.owner])
+  });
+
+  const [balance] = erc20Iface.decodeFunctionResult("balanceOf", result);
+  return String(balance);
 }

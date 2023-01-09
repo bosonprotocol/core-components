@@ -32,6 +32,15 @@ query getDisputesQuery(
 
 fragment DisputeFields on Dispute {
   ...BaseDisputeFields
+  exchange {
+    ...BaseExchangeFields
+  }
+  seller {
+    ...BaseSellerFields
+  }
+  buyer {
+    ...BaseBuyerFields
+  }
 }
 
 fragment BaseDisputeFields on Dispute {
@@ -47,13 +56,4 @@ fragment BaseDisputeFields on Dispute {
   decidedDate
   refusedDate
   timeout
-  exchange {
-    ...BaseExchangeFields
-  }
-  seller {
-    ...BaseSellerFields
-  }
-  buyer {
-    ...BaseBuyerFields
-  }
 }
