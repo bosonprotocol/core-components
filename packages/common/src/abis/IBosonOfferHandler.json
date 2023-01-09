@@ -104,7 +104,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -331,7 +331,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -455,7 +455,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -665,7 +665,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {

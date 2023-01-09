@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
-import { CoreSDK, getDefaultConfig } from "@bosonprotocol/core-sdk";
+import {
+  CoreSDK,
+  getDefaultConfig,
+  EnvironmentType,
+  MetaTxConfig
+} from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
+import { LensContracts } from "@bosonprotocol/common";
 import { providers } from "ethers";
 
 export type CoreSdkConfig = {
   /**
-   * Target chain.
+   * Target Environment
    */
-  chainId: number;
+  envName: EnvironmentType;
   /**
    * Ethers provider that will be passed to `CoreSDK`. Defaults to `JsonRpcProvider`
    * connected via default URL of respective chain ID.
@@ -35,9 +41,21 @@ export type CoreSdkConfig = {
    */
   ipfsMetadataStorageHeaders?: Headers | Record<string, string>;
   /**
-   * Optional override for Thr Graph IPFS storage to use.
+   * Optional override for The Graph IPFS storage to use.
    */
   theGraphIpfsUrl?: string;
+  /**
+   * Optional override for The Graph IPFS  storage headers.
+   */
+  theGraphIpfsStorageHeaders?: Headers | Record<string, string>;
+  /**
+   * Optional override for the MetaTx configuration
+   */
+  metaTx?: Partial<MetaTxConfig>;
+  /**
+   * Optional override for the Lens contracts addresses
+   */
+  lensContracts?: LensContracts;
 };
 
 /**
@@ -53,29 +71,53 @@ export function useCoreSdk(config: CoreSdkConfig) {
   useEffect(() => {
     const newCoreSdk = initCoreSdk(config);
     setCoreSdk(newCoreSdk);
-  }, [config.web3Provider]);
+  }, [config.web3Provider, config.envName]);
 
   return coreSdk;
 }
 
 function initCoreSdk(config: CoreSdkConfig) {
-  const defaultConfig = getDefaultConfig({ chainId: config.chainId });
-  const defaultProvider = new providers.JsonRpcProvider(
-    config.jsonRpcUrl || defaultConfig.jsonRpcUrl
-  );
-  const connectedProvider = config.web3Provider || defaultProvider;
+  const defaultConfig = getDefaultConfig(config.envName);
+  const connectedProvider =
+    config.web3Provider ||
+    createDefaultProvider(config.jsonRpcUrl || defaultConfig.jsonRpcUrl);
+  const metadataStorageUrl =
+    config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl;
+  const theGraphStorageUrl =
+    config.theGraphIpfsUrl ||
+    defaultConfig.theGraphIpfsUrl ||
+    metadataStorageUrl;
+  const metaTx = config.metaTx || defaultConfig.metaTx;
 
   return new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,
-    theGraphStorage: IpfsMetadataStorage.fromTheGraphIpfsUrl(
-      config.theGraphIpfsUrl || defaultConfig.theGraphIpfsUrl
-    ),
+    theGraphStorage: new IpfsMetadataStorage({
+      url: theGraphStorageUrl,
+      headers:
+        config.theGraphIpfsStorageHeaders ||
+        theGraphStorageUrl === metadataStorageUrl
+          ? config.ipfsMetadataStorageHeaders
+          : undefined
+    }),
     metadataStorage: new IpfsMetadataStorage({
-      url: config.ipfsMetadataStorageUrl || defaultConfig.ipfsMetadataUrl,
+      url: metadataStorageUrl,
       headers: config.ipfsMetadataStorageHeaders
-    })
+    }),
+    chainId: defaultConfig.chainId,
+    metaTx,
+    lensContracts: config.lensContracts || defaultConfig.lens
   });
 }
+
+function createDefaultProvider(jsonRpcUrl: string): Provider {
+  const key = jsonRpcUrl.toLowerCase();
+  if (!providersCache.has(key)) {
+    providersCache.set(key, new providers.StaticJsonRpcProvider(jsonRpcUrl));
+  }
+  return providersCache.get(key) as Provider;
+}
+
+const providersCache = new Map<string, Provider>();

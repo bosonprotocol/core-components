@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  schedule:
+    - cron: "0 * * * *" # run every hour
+
+jobs:
+  pin-to-pinata:
+    name: Pin images to Pinata
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
+      - run: npm ci
+      - id: build
+        run: npm run build -- --cache-dir=".turbo"
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%s')000" >> $GITHUB_ENV
+      - name: Set from date as env variable
+        run: echo "FROM_DATE=$(( $NOW - 24 * 60 * 60 * 1000 ))" >> $GITHUB_ENV
+      - name: Pin for each env
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          INFURA_PROJECT_ID: ${{ secrets.INFURA_PROJECT_ID }}
+          INFURA_PROJECT_SECRET: ${{ secrets.INFURA_PROJECT_SECRET }}
+        run: |
+          echo "Pin for testing env..."
+          npm run pin-to-pinata -- \
+            -e testing \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
+
+          echo "Pin for staging env..."
+          npm run pin-to-pinata -- \
+            -e staging \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
+
+          echo "Pin for production env..."
+          npm run pin-to-pinata -- \
+            -e production \
+            -fd ${{ env.FROM_DATE }} \
+            -p ${{ env.PINATA_JWT }} \
+            -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}

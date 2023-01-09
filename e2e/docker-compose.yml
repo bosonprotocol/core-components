@@ -1,13 +1,30 @@
 version: "3"
 services:
+  meta-tx-gateway:
+    build:
+      context: ../.
+      dockerfile: ./e2e/meta-tx-gateway/Dockerfile
+    image: meta-tx-gateway:20221017190800
+    ports:
+      - "8888:8888"
+    environment:
+      - ENV_NAME=local
+      - PRIVATE_KEY=0x316b234f5fea007dcc40404188b588fb90cb9bb1e33fc163e212eab2f8565293 # ACCOUNT_9 from ./contracts/accounts.js
+      - RPC_NODE=http://host.docker.internal:8545
+    depends_on:
+      - hardhat-node
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command: ["sh", "-c", "sleep 3 && npm run start"]
+
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:25a707871f4117d29cd5536ef337841509bea2c8
+    image: hardhat-node:752ba8bd0830109c1d5ec555e615172b0c270d20_0
     ports:
       - "8545:8545"
 
   graph-node:
-    image: graphprotocol/graph-node
+    image: graphprotocol/graph-node:v0.27.0 # TODO: find out why ^0.28.0 not starting to index
     ports:
       - "8000:8000"
       - "8001:8001"

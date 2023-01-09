@@ -1,0 +1,56 @@
+query getEventLogsQuery(
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
+) {
+  eventLogs(
+    skip: $logsSkip
+    first: $logsFirst
+    orderBy: $logsOrderBy
+    orderDirection: $logsOrderDirection
+    where: $logsFilter
+  ) {
+    ...BaseEventLogFields
+  }
+}
+
+fragment BaseEventLogFields on EventLog {
+  id
+  hash
+  type
+  timestamp
+  executedBy
+
+  account {
+    id
+  }
+
+  ... on OfferEventLog {
+    offer {
+      id
+    }
+  }
+
+  ... on ExchangeEventLog {
+    exchange {
+      id
+      offer {
+        id
+      }
+    }
+  }
+
+  ... on FundsEventLog {
+    funds {
+      id
+    }
+  }
+
+  ... on DisputeEventLog {
+    dispute {
+      id
+    }
+  }
+}

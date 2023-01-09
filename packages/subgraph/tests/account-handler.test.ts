@@ -12,23 +12,26 @@ import {
 import {
   createSellerCreatedEvent,
   createSellerUpdatedEvent,
-  createBuyerCreatedEvent
+  createBuyerCreatedEvent,
+  mockBosonVoucherContractCalls
 } from "./mocks";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
+const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 
 beforeEach(() => {
   clearStore();
 });
 
 test("handle SellerCreatedEvent", () => {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
   const sellerCreatedEvent = createSellerCreatedEvent(
     1,
     sellerAddress,
     sellerAddress,
     sellerAddress,
     sellerAddress,
-    "0x123456789a123456789a123456789a123456789a",
+    voucherCloneAddress,
     0,
     0,
     sellerAddress
@@ -45,7 +48,7 @@ test("handle SellerCreatedEvent", () => {
     "Seller",
     "1",
     "voucherCloneAddress",
-    "0x123456789a123456789a123456789a123456789a"
+    voucherCloneAddress.toLowerCase()
   );
 });
 

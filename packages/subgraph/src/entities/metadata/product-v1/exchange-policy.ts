@@ -19,6 +19,8 @@ export function saveProductV1ExchangePolicy(
   const version = convertToInt(exchangePolicyObj.get("version"));
   const label = convertToString(exchangePolicyObj.get("label"));
   const template = convertToString(exchangePolicyObj.get("template"));
+  const sellerContactMethod = convertToString(exchangePolicyObj.get("sellerContactMethod"));
+  const disputeResolverContactMethod = convertToString(exchangePolicyObj.get("disputeResolverContactMethod"));
 
   const exchangePolicyId = getExchangePolicyId(productV1MetadataEntityId);
 
@@ -32,6 +34,8 @@ export function saveProductV1ExchangePolicy(
   exchangePolicy.version = version;
   exchangePolicy.label = label;
   exchangePolicy.template = template;
+  exchangePolicy.sellerContactMethod = sellerContactMethod;
+  exchangePolicy.disputeResolverContactMethod = disputeResolverContactMethod;
   exchangePolicy.save();
 
   return exchangePolicyId;

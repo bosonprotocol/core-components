@@ -32,18 +32,6 @@ query getDisputesQuery(
 
 fragment DisputeFields on Dispute {
   ...BaseDisputeFields
-}
-
-fragment BaseDisputeFields on Dispute {
-  id
-  exchangeId
-  complaint
-  state
-  buyerPercent
-  disputedDate
-  escalatedDate
-  finalizedDate
-  timeout
   exchange {
     ...BaseExchangeFields
   }
@@ -53,4 +41,19 @@ fragment BaseDisputeFields on Dispute {
   buyer {
     ...BaseBuyerFields
   }
+}
+
+fragment BaseDisputeFields on Dispute {
+  id
+  exchangeId
+  state
+  buyerPercent
+  disputedDate
+  escalatedDate
+  finalizedDate
+  retractedDate
+  resolvedDate
+  decidedDate
+  refusedDate
+  timeout
 }

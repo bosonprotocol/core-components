@@ -50,6 +50,7 @@ export function saveProductV1Seller(
   productV1Seller.description = description;
   productV1Seller.externalUrl = externalUrl;
   productV1Seller.tokenId = tokenId;
+  productV1Seller.sellerId = sellerAccountId;
   productV1Seller.images = savedImageIds;
   productV1Seller.contactLinks = savedContactLinkIds;
   productV1Seller.seller = sellerAccountId;

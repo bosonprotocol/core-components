@@ -1,28 +1,53 @@
 import * as yup from "yup";
 import { ITokenInfo } from "./../utils/tokenInfoManager";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { offers, subgraph } from "..";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "@ethersproject/units";
 import { productV1 } from "@bosonprotocol/metadata";
 
-export type TemplateRenderingData = offers.CreateOfferArgs & {
-  priceValue: string; // Convert in decimals value
-  sellerDepositValue: string; // Convert in decimals value
-  buyerCancelPenaltyValue: string; // Convert in decimals value
-  agentFeeValue: string; // Convert in decimals value
-  exchangeTokenSymbol: string;
+import { CreateOfferArgs } from "./types";
+import {
+  OfferFieldsFragment,
+  MetadataType,
+  ProductV1MetadataEntity
+} from "../subgraph";
+
+export type AdditionalOfferMetadata = {
   sellerContactMethod: string;
   disputeResolverContactMethod: string;
-  toISOString: () => void;
-  msecToDay: () => void;
+  escalationDeposit: BigNumberish;
+  escalationResponsePeriodInSec: BigNumberish;
+  sellerTradingName: string;
+  returnPeriodInDays: number;
 };
+
+export type TemplateRenderingData = CreateOfferArgs &
+  AdditionalOfferMetadata & {
+    priceValue: string; // Convert in decimals value
+    sellerDepositValue: string; // Convert in decimals value
+    buyerCancelPenaltyValue: string; // Convert in decimals value
+    escalationDepositValue: string; // Convert in decimals value
+    exchangeTokenSymbol: string;
+    toISOString: () => void;
+    msecToDay: () => void;
+    secToDay: () => void;
+  };
 
 export class InvalidOfferDataError extends Error {
   constructor(public missingProperties: string[]) {
     super(
       `InvalidOfferData - missing properties: [${missingProperties.join(",")}]`
+    );
+  }
+}
+
+export class InvalidOfferMetadataError extends Error {
+  constructor(public missingProperties: string[]) {
+    super(
+      `InvalidOfferMetadata - missing properties: [${missingProperties.join(
+        ","
+      )}]`
     );
   }
 }
@@ -37,7 +62,7 @@ export const baseOfferDataSchema: yup.SchemaOf<BaseOfferData> = yup.object({
   validUntilDateInMS: yup.mixed().required(),
   voucherRedeemableFromDateInMS: yup.mixed().required(),
   voucherRedeemableUntilDateInMS: yup.mixed().required(),
-  fulfillmentPeriodDurationInMS: yup.mixed().required(),
+  disputePeriodDurationInMS: yup.mixed().required(),
   resolutionPeriodDurationInMS: yup.mixed().required(),
   exchangeToken: yup.string().required(),
   disputeResolverId: yup.mixed().required(),
@@ -55,13 +80,23 @@ export type BaseOfferData = {
   validUntilDateInMS: BigNumberish;
   voucherRedeemableFromDateInMS: BigNumberish;
   voucherRedeemableUntilDateInMS: BigNumberish;
-  fulfillmentPeriodDurationInMS: BigNumberish;
+  disputePeriodDurationInMS: BigNumberish;
   resolutionPeriodDurationInMS: BigNumberish;
   exchangeToken: string;
   disputeResolverId: BigNumberish;
   metadataUri: string;
   metadataHash: string;
 };
+
+export const baseOfferMetadataSchema: yup.SchemaOf<AdditionalOfferMetadata> =
+  yup.object({
+    sellerContactMethod: yup.string().required(),
+    disputeResolverContactMethod: yup.string().required(),
+    escalationDeposit: yup.mixed().required(),
+    escalationResponsePeriodInSec: yup.mixed().required(),
+    sellerTradingName: yup.string().required(),
+    returnPeriodInDays: yup.number().required()
+  });
 
 function checkOfferDataIsValid(
   offerData: unknown,
@@ -95,9 +130,43 @@ function checkOfferDataIsValid(
   return true;
 }
 
-function convertExistingOfferData(
-  offerDataSubGraph: subgraph.OfferFieldsFragment
-): { offerData: offers.CreateOfferArgs; tokenInfo: ITokenInfo } {
+function checkOfferMetadataIsValid(
+  offerMetadata: unknown,
+  throwIfInvalid = false
+): boolean {
+  if (offerMetadata === undefined || offerMetadata === null) {
+    throw new Error("InvalidOfferMetadata - undefined");
+  }
+  if (typeof offerMetadata !== "object") {
+    throw new Error("InvalidOfferMetadata - expecting an object");
+  }
+  try {
+    baseOfferMetadataSchema.validateSync(offerMetadata, { abortEarly: false });
+  } catch (e) {
+    const missingProperties = [];
+    const getMissingProp = (error) => {
+      return error.match(/(.*) is a required field/)[1] || error;
+    };
+    if (throwIfInvalid) {
+      if (e.errors) {
+        e.errors.forEach((error: string) => {
+          missingProperties.push(getMissingProp(error));
+        });
+      } else {
+        missingProperties.push(getMissingProp(e));
+      }
+      throw new InvalidOfferMetadataError(missingProperties);
+    }
+    return false;
+  }
+  return true;
+}
+
+function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
+  offerData: CreateOfferArgs;
+  offerMetadata: AdditionalOfferMetadata;
+  tokenInfo: ITokenInfo;
+} {
   return {
     offerData: {
       ...offerDataSubGraph,
@@ -107,10 +176,26 @@ function convertExistingOfferData(
         offerDataSubGraph.voucherRedeemableFromDate,
       voucherRedeemableUntilDateInMS:
         offerDataSubGraph.voucherRedeemableUntilDate,
-      fulfillmentPeriodDurationInMS:
-        offerDataSubGraph.fulfillmentPeriodDuration,
+      disputePeriodDurationInMS: offerDataSubGraph.disputePeriodDuration,
       resolutionPeriodDurationInMS: offerDataSubGraph.resolutionPeriodDuration,
       exchangeToken: offerDataSubGraph.exchangeToken.address
+    },
+    offerMetadata: {
+      sellerContactMethod: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.exchangePolicy.sellerContactMethod,
+      disputeResolverContactMethod: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.exchangePolicy.disputeResolverContactMethod,
+      escalationDeposit:
+        offerDataSubGraph.disputeResolutionTerms.buyerEscalationDeposit,
+      escalationResponsePeriodInSec:
+        offerDataSubGraph.disputeResolutionTerms.escalationResponsePeriod,
+      sellerTradingName: (offerDataSubGraph.metadata as ProductV1MetadataEntity)
+        ?.productV1Seller?.name,
+      returnPeriodInDays: (
+        offerDataSubGraph.metadata as ProductV1MetadataEntity
+      )?.shipping.returnPeriodInDays
     },
     tokenInfo: {
       ...offerDataSubGraph.exchangeToken,
@@ -120,34 +205,56 @@ function convertExistingOfferData(
 }
 
 export async function prepareRenderingData(
-  offerData: offers.CreateOfferArgs,
+  offerData: CreateOfferArgs,
+  offerMetadata: AdditionalOfferMetadata,
   tokenInfo: ITokenInfo
 ): Promise<TemplateRenderingData> {
   return {
     ...offerData,
+    ...offerMetadata,
     priceValue: formatUnits(offerData.price, tokenInfo.decimals),
     exchangeTokenSymbol: tokenInfo.symbol,
     sellerDepositValue: formatUnits(
       offerData.sellerDeposit,
       tokenInfo.decimals
     ),
-    agentFeeValue: "0", // TODO: get the agentFee of the specified offerData.agentId
     buyerCancelPenaltyValue: formatUnits(
       offerData.buyerCancelPenalty,
       tokenInfo.decimals
     ),
-    sellerContactMethod: "TBD", // TODO: what is the sellerContactMethod?
-    disputeResolverContactMethod: "TBD", // TODO: what is the disputeResolverContactMethod?
+    escalationDepositValue: formatUnits(
+      offerMetadata.escalationDeposit,
+      tokenInfo.decimals
+    ),
     toISOString: function () {
       return function (num, render) {
-        return new Date(parseInt(render(num))).toISOString();
+        try {
+          return new Date(parseInt(render(num))).toISOString();
+        } catch {
+          return `[[${num} - invalid Date]]`;
+        }
       };
     },
     msecToDay: function () {
       return function (num, render) {
-        return BigNumber.from(render(num))
-          .div(utils.timestamp.MSEC_PER_DAY)
-          .toString();
+        try {
+          return BigNumber.from(render(num))
+            .div(utils.timestamp.MSEC_PER_DAY)
+            .toString();
+        } catch {
+          return `[[${num} - invalid BigNumber]]`;
+        }
+      };
+    },
+    secToDay: function () {
+      return function (num, render) {
+        try {
+          return BigNumber.from(render(num))
+            .div(utils.timestamp.SEC_PER_DAY)
+            .toString();
+        } catch {
+          return `[[${num} - invalid BigNumber]]`;
+        }
       };
     }
   };
@@ -156,17 +263,23 @@ export async function prepareRenderingData(
 // inject a template + all offer details
 export async function renderContractualAgreement(
   template: string,
-  offerData: offers.CreateOfferArgs,
+  offerData: CreateOfferArgs,
+  offerMetadata: AdditionalOfferMetadata,
   tokenInfo: ITokenInfo
 ): Promise<string> {
   // Check the passed offerData is matching the required type
   checkOfferDataIsValid(offerData, true);
-  const preparedData = await prepareRenderingData(offerData, tokenInfo);
+  checkOfferMetadataIsValid(offerMetadata, true);
+  const preparedData = await prepareRenderingData(
+    offerData,
+    offerMetadata,
+    tokenInfo
+  );
   return Mustache.render(template, preparedData);
 }
 
 export async function renderContractualAgreementForOffer(
-  existingOfferData: subgraph.OfferFieldsFragment
+  existingOfferData: OfferFieldsFragment
 ): Promise<string> {
   if (!existingOfferData) {
     throw new Error(`offerData is undefined`);
@@ -174,7 +287,7 @@ export async function renderContractualAgreementForOffer(
   if (!existingOfferData.metadata) {
     throw new Error(`Offer Metadata is undefined`);
   }
-  if (existingOfferData.metadata.type !== subgraph.MetadataType.ProductV1) {
+  if (existingOfferData.metadata.type !== MetadataType.ProductV1) {
     throw new Error(
       `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`
     );
@@ -198,6 +311,7 @@ export async function renderContractualAgreementForOffer(
   return renderContractualAgreement(
     template,
     convertedOfferArgs.offerData,
+    convertedOfferArgs.offerMetadata,
     convertedOfferArgs.tokenInfo
   );
 }

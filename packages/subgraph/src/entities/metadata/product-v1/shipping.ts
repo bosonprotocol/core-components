@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
 import {
   ProductV1ShippingJurisdiction,
   ProductV1ShippingOption
@@ -32,6 +32,12 @@ export function saveProductV1Shipping(
   const defaultVersion = convertToInt(shippingObj.get("defaultVersion"));
   const countryOfOrigin = convertToString(shippingObj.get("countryOfOrigin"));
   const redemptionPoint = convertToString(shippingObj.get("redemptionPoint"));
+  // Can't use convertToInt() here because the type of "returnPeriod" in the JSON is string
+  const returnPeriod = convertToString(shippingObj.get("returnPeriod"));
+  const returnPeriodBigInt = BigInt.fromString(returnPeriod);
+  const returnPeriodInDays = returnPeriodBigInt.isI32()
+    ? returnPeriodBigInt.toI32()
+    : i32.MAX_VALUE;
   const supportedJurisdictions = convertToObjectArray(
     shippingObj.get("supportedJurisdictions")
   );
@@ -52,6 +58,7 @@ export function saveProductV1Shipping(
   shippingOption.countryOfOrigin = countryOfOrigin;
   shippingOption.redemptionPoint = redemptionPoint;
   shippingOption.supportedJurisdictions = savedJurisdictionIds;
+  shippingOption.returnPeriodInDays = returnPeriodInDays as i32;
   shippingOption.save();
 
   return shippingOptionId;

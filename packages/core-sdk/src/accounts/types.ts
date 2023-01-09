@@ -1,7 +1,20 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 import { DisputeResolverStruct } from "@bosonprotocol/common";
 
-export { CreateSellerArgs, DisputeResolverStruct } from "@bosonprotocol/common";
+export {
+  CreateSellerArgs,
+  UpdateSellerArgs,
+  SellerStruct,
+  AuthTokenStruct,
+  VoucherInitValuesStruct,
+  abis,
+  DisputeResolverStruct,
+  SellerUpdateFields,
+  OptInToSellerUpdateArgs,
+  DisputeResolverUpdateFields,
+  OptInToDisputeResolverUpdateArgs,
+  utils
+} from "@bosonprotocol/common";
 
 export type CreateDisputeResolverArgs = {
   escalationResponsePeriodInMS: number;

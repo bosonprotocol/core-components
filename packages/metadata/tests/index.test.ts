@@ -34,6 +34,16 @@ const productMissingArguments = [
     error: /externalUrl is a required field/
   },
   {
+    arg: "animationUrl",
+    data: { animationUrl: undefined },
+    error: undefined // don't check the error message
+  },
+  {
+    arg: "licenseUrl",
+    data: { licenseUrl: undefined },
+    error: /licenseUrl is a required field/
+  },
+  {
     arg: "image",
     data: { image: undefined },
     error: /image is a required field/
@@ -47,6 +57,16 @@ const productMissingArguments = [
     arg: "product",
     data: { product: undefined },
     error: undefined // don't check the error message
+  },
+  {
+    arg: "shipping",
+    data: { shipping: undefined },
+    error: undefined // don't check the error message
+  },
+  {
+    arg: "shipping.returnPeriod",
+    data: { shipping: { returnPeriod: undefined } },
+    error: /shipping.returnPeriod is a required field/
   },
   {
     arg: "exchangePolicy",
@@ -73,6 +93,16 @@ const productMissingArguments = [
     arg: "exchangePolicy.template",
     data: { exchangePolicy: { template: undefined } },
     error: /exchangePolicy.template is a required field/
+  },
+  {
+    arg: "exchangePolicy.sellerContactMethod",
+    data: { exchangePolicy: { sellerContactMethod: undefined } },
+    error: /exchangePolicy.sellerContactMethod is a required field/
+  },
+  {
+    arg: "exchangePolicy.disputeResolverContactMethod",
+    data: { exchangePolicy: { disputeResolverContactMethod: undefined } },
+    error: /exchangePolicy.disputeResolverContactMethod is a required field/
   },
   {
     arg: "product.uuid",
@@ -145,6 +175,11 @@ const productMissingArguments = [
     data: { seller: { contactLinks: undefined } },
     error: /seller.contactLinks is a required field/
   },
+  {
+    arg: "seller.name",
+    data: { seller: { name: undefined } },
+    error: /seller.name is a required field/
+  },
   // {
   //   arg: "seller.contactLinks empty array",
   //   data: { seller: { defaultVersion: 1, contactLinks: [] } },
@@ -215,7 +250,7 @@ describe("#validateMetadata()", () => {
       expect(() =>
         validateMetadata({
           type: "BASE"
-        } as any as AnyMetadata)
+        } as unknown as AnyMetadata)
       ).toThrow();
     });
 
@@ -226,7 +261,9 @@ describe("#validateMetadata()", () => {
           type: "BASE",
           name: "name",
           description: "description",
-          externalUrl: "example.com"
+          externalUrl: "example.com",
+          animationUrl: "animationUrl.com",
+          licenseUrl: "license.com"
         })
       ).toBeTruthy();
     });
@@ -237,19 +274,19 @@ describe("#validateMetadata()", () => {
       expect(() =>
         validateMetadata({
           type: "PRODUCT_V1"
-        } as any as AnyMetadata)
+        } as unknown as AnyMetadata)
       ).toThrow();
     });
 
     test("not throw for full offer", () => {
       expect(
-        validateMetadata(productV1ValidFullOffer as any as AnyMetadata)
+        validateMetadata(productV1ValidFullOffer as unknown as AnyMetadata)
       ).toBeTruthy();
     });
 
     test("not throw for minimal offer", () => {
       expect(
-        validateMetadata(productV1ValidMinimalOffer as any as AnyMetadata)
+        validateMetadata(productV1ValidMinimalOffer as unknown as AnyMetadata)
       ).toBeTruthy();
     });
 
@@ -278,9 +315,12 @@ describe("#validateMetadata()", () => {
               ...productV1ValidFullOffer,
               ...data
             };
-        expect(() => validateMetadata(product as any as AnyMetadata)).toThrow(
-          error
+        const result = expect(() =>
+          validateMetadata(product as any as AnyMetadata)
         );
+        if (error) {
+          result.toThrow(error);
+        }
       }
     );
 

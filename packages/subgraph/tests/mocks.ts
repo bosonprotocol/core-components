@@ -1,6 +1,6 @@
-import { VoucherExtended } from './../generated/BosonExchangeHandler/IBosonExchangeHandler';
-import { SellerCreatedAuthTokenStruct } from './../generated/BosonAccountHandler/IBosonAccountHandler';
-import { OfferCreatedOfferFeesStruct } from './../generated/BosonOfferHandler/IBosonOfferHandler';
+import { VoucherExtended } from "./../generated/BosonExchangeHandler/IBosonExchangeHandler";
+import { SellerCreatedAuthTokenStruct } from "./../generated/BosonAccountHandler/IBosonAccountHandler";
+import { OfferCreatedOfferFeesStruct } from "./../generated/BosonOfferHandler/IBosonOfferHandler";
 import {
   OfferCreated,
   OfferCreatedOfferDatesStruct,
@@ -12,7 +12,7 @@ import {
 import {
   BuyerCommitted,
   BuyerCommittedExchangeStruct,
-  BuyerCommittedExchangeVoucherStruct
+  BuyerCommittedVoucherStruct
 } from "../generated/BosonExchangeHandler/IBosonExchangeHandler";
 import {
   SellerCreated,
@@ -46,7 +46,7 @@ export function createOfferCreatedEvent(
   validUntilDate: i32,
   voucherRedeemableFromDate: i32,
   voucherRedeemableUntilDate: i32,
-  fulfillmentPeriodDuration: i32,
+  disputePeriodDuration: i32,
   voucherValidDuration: i32,
   resolutionPeriodDuration: i32,
   exchangeToken: string,
@@ -103,7 +103,7 @@ export function createOfferCreatedEvent(
     "offerDurations",
     ethereum.Value.fromTuple(
       createOfferDurationsStruct(
-        fulfillmentPeriodDuration,
+        disputePeriodDuration,
         voucherValidDuration,
         resolutionPeriodDuration
       )
@@ -174,6 +174,24 @@ export function createOfferVoidedEvent(
   return offerVoidedEvent;
 }
 
+export function mockBosonVoucherContractCalls(
+  address: string,
+  contractURI: string,
+  royaltyPercentage: i32
+): void {
+  createMockedFunction(
+    Address.fromString(address),
+    "contractURI",
+    "contractURI():(string)"
+  ).returns([ethereum.Value.fromString(contractURI)]);
+
+  createMockedFunction(
+    Address.fromString(address),
+    "getRoyaltyPercentage",
+    "getRoyaltyPercentage():(uint256)"
+  ).returns([ethereum.Value.fromI32(royaltyPercentage)]);
+}
+
 export function mockExchangeTokenContractCalls(
   address: string,
   decimals: i32,
@@ -207,7 +225,7 @@ export function createBuyerCommittedEvent(
   const buyerCommittedEvent = changetype<BuyerCommitted>(newMockEvent());
   buyerCommittedEvent.parameters = new Array();
 
-  const voucherStruct = new BuyerCommittedExchangeVoucherStruct();
+  const voucherStruct = new BuyerCommittedVoucherStruct();
   voucherStruct.push(ethereum.Value.fromI32(0));
   voucherStruct.push(ethereum.Value.fromI32(0));
   voucherStruct.push(ethereum.Value.fromI32(0));
@@ -218,8 +236,6 @@ export function createBuyerCommittedEvent(
   exchangeStruct.push(ethereum.Value.fromI32(offerId));
   exchangeStruct.push(ethereum.Value.fromI32(buyerId));
   exchangeStruct.push(ethereum.Value.fromI32(0));
-  exchangeStruct.push(ethereum.Value.fromTuple(voucherStruct));
-  exchangeStruct.push(ethereum.Value.fromBoolean(false));
   exchangeStruct.push(ethereum.Value.fromI32(0)); // COMMITTED
 
   const offerIdParam = new ethereum.EventParam(
@@ -238,11 +254,21 @@ export function createBuyerCommittedEvent(
     "exchange",
     ethereum.Value.fromTuple(exchangeStruct)
   );
+  const voucherParam = new ethereum.EventParam(
+    "voucher",
+    ethereum.Value.fromTuple(voucherStruct)
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.zero())
+  );
 
   buyerCommittedEvent.parameters.push(offerIdParam);
   buyerCommittedEvent.parameters.push(buyerIdParam);
   buyerCommittedEvent.parameters.push(exchangeIdParam);
   buyerCommittedEvent.parameters.push(exchangeParam);
+  buyerCommittedEvent.parameters.push(voucherParam);
+  buyerCommittedEvent.parameters.push(executedByParam);
 
   return buyerCommittedEvent;
 }
@@ -255,7 +281,7 @@ export function createVoucherExtendedEvent(
 ): VoucherExtended {
   const voucherExtendedEvent = changetype<VoucherExtended>(newMockEvent());
   voucherExtendedEvent.parameters = new Array();
-  
+
   const offerIdParam = new ethereum.EventParam(
     "offerId",
     ethereum.Value.fromI32(offerId)
@@ -585,12 +611,12 @@ export function createOfferDatesStruct(
 }
 
 export function createOfferDurationsStruct(
-  fulfillmentPeriodDuration: i32,
+  disputePeriodDuration: i32,
   voucherValidDuration: i32,
   resolutionPeriodDuration: i32
 ): OfferCreatedOfferDurationsStruct {
   const tuple = new OfferCreatedOfferDurationsStruct();
-  tuple.push(ethereum.Value.fromI32(fulfillmentPeriodDuration));
+  tuple.push(ethereum.Value.fromI32(disputePeriodDuration));
   tuple.push(ethereum.Value.fromI32(voucherValidDuration));
   tuple.push(ethereum.Value.fromI32(resolutionPeriodDuration));
   return tuple;

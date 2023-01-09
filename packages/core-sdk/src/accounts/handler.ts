@@ -6,21 +6,27 @@ import {
 import { BigNumberish } from "@ethersproject/bignumber";
 import { DisputeResolverFieldsFragment } from "../subgraph";
 import {
-  encodeCreateAccount,
+  encodeCreateSeller,
+  encodeUpdateSeller,
   encodeCreateDisputeResolver,
   encodeActivateDisputeResolver,
   encodeAddFeesToDisputeResolver,
   encodeAddSellersToAllowList,
   encodeRemoveFeesFromDisputeResolver,
   encodeRemoveSellersFromAllowList,
-  encodeUpdateDisputeResolver
+  encodeUpdateDisputeResolver,
+  encodeOptInToSellerUpdate,
+  encodeOptInToDisputeResolverUpdate
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
   CreateSellerArgs,
+  UpdateSellerArgs,
   CreateDisputeResolverArgs,
   DisputeResolutionFee,
-  DisputeResolverUpdates
+  DisputeResolverUpdates,
+  OptInToSellerUpdateArgs,
+  OptInToDisputeResolverUpdateArgs
 } from "./types";
 
 export async function createSeller(args: {
@@ -30,7 +36,29 @@ export async function createSeller(args: {
 }): Promise<TransactionResponse> {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateAccount(args.sellerToCreate)
+    data: encodeCreateSeller(args.sellerToCreate)
+  });
+}
+
+export async function updateSeller(args: {
+  sellerUpdates: UpdateSellerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeUpdateSeller(args.sellerUpdates)
+  });
+}
+
+export async function optInToSellerUpdate(args: {
+  sellerUpdates: OptInToSellerUpdateArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeOptInToSellerUpdate(args.sellerUpdates)
   });
 }
 
@@ -133,6 +161,17 @@ export async function updateDisputeResolver(args: {
         ? utils.timestamp.msToSec(args.updates.escalationResponsePeriodInMS)
         : disputeResolver.escalationResponsePeriod
     })
+  });
+}
+
+export async function optInToDisputeResolverUpdate(args: {
+  disputeResolverUpdates: OptInToDisputeResolverUpdateArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeOptInToDisputeResolverUpdate(args.disputeResolverUpdates)
   });
 }
 

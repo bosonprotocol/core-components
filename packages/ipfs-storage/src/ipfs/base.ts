@@ -2,19 +2,15 @@ import { create, IPFSHTTPClient, Options } from "ipfs-http-client";
 import fetch from "cross-fetch";
 import { concat, toString } from "uint8arrays";
 import { CID } from "multiformats/cid";
-import { DEFAULT_THE_GRAPH_IPFS_URL } from "../constants";
 
+/**
+ * Base IPFS storage class that wraps an instance of `IPFSHTTPClient`.
+ */
 export class BaseIpfsStorage {
   public ipfsClient: IPFSHTTPClient;
 
   constructor(opts: Options) {
     this.ipfsClient = create(opts);
-  }
-
-  static fromTheGraphIpfsUrl(theGraphIpfsUrl?: string) {
-    return new BaseIpfsStorage({
-      url: theGraphIpfsUrl || DEFAULT_THE_GRAPH_IPFS_URL
-    });
   }
 
   public async add(value: Parameters<IPFSHTTPClient["add"]>[0]) {
@@ -25,7 +21,7 @@ export class BaseIpfsStorage {
     return cid;
   }
 
-  public async get<T>(uriOrHash: string): Promise<T> {
+  public async get<T>(uriOrHash: string, asJson = true): Promise<T | string> {
     let cid: CID = null;
     try {
       cid = CID.parse(
@@ -38,25 +34,30 @@ export class BaseIpfsStorage {
     }
 
     const value = await (cid
-      ? this.getByCID<T>(cid.toString())
-      : this.getByURL<T>(uriOrHash));
+      ? this.getByCID<T>(cid.toString(), asJson)
+      : this.getByURL<T>(uriOrHash, asJson));
     return value;
   }
 
-  public async getByCID<T>(cid: string): Promise<T> {
+  public async getByCID<T>(cid: string, asJson = true): Promise<T | string> {
     const chunks = [];
     for await (const chunk of this.ipfsClient.cat(cid)) {
       chunks.push(chunk);
     }
     const data = concat(chunks);
-    const parsed = JSON.parse(toString(data));
-    return parsed;
+    if (!asJson) {
+      return data as unknown as T;
+    }
+    const dataStr = toString(data);
+    return JSON.parse(dataStr);
   }
 
-  public async getByURL<T>(url: string): Promise<T> {
+  public async getByURL<T>(url: string, asJson = true): Promise<T | string> {
     const response = await fetch(url);
 
-    const parsed = await response.json();
-    return parsed;
+    if (!asJson) {
+      return response.text();
+    }
+    return response.json();
   }
 }
