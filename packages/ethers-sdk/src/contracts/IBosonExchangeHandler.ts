@@ -19,6 +19,28 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace BosonTypes {
+  export type ExchangeStruct = {
+    id: BigNumberish;
+    offerId: BigNumberish;
+    buyerId: BigNumberish;
+    finalizedDate: BigNumberish;
+    state: BigNumberish;
+  };
+
+  export type ExchangeStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    number
+  ] & {
+    id: BigNumber;
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    finalizedDate: BigNumber;
+    state: number;
+  };
+
   export type VoucherStruct = {
     committedDate: BigNumberish;
     validUntilDate: BigNumberish;
@@ -36,31 +58,6 @@ export declare namespace BosonTypes {
     validUntilDate: BigNumber;
     redeemedDate: BigNumber;
     expired: boolean;
-  };
-
-  export type ExchangeStruct = {
-    id: BigNumberish;
-    offerId: BigNumberish;
-    buyerId: BigNumberish;
-    finalizedDate: BigNumberish;
-    voucher: BosonTypes.VoucherStruct;
-    state: BigNumberish;
-  };
-
-  export type ExchangeStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BosonTypes.VoucherStructOutput,
-    number
-  ] & {
-    id: BigNumber;
-    offerId: BigNumber;
-    buyerId: BigNumber;
-    finalizedDate: BigNumber;
-    voucher: BosonTypes.VoucherStructOutput;
-    state: number;
   };
 
   export type TwinStruct = {
@@ -90,6 +87,130 @@ export declare namespace BosonTypes {
     tokenAddress: string;
     tokenType: number;
   };
+
+  export type OfferFeesStruct = {
+    protocolFee: BigNumberish;
+    agentFee: BigNumberish;
+  };
+
+  export type OfferFeesStructOutput = [BigNumber, BigNumber] & {
+    protocolFee: BigNumber;
+    agentFee: BigNumber;
+  };
+
+  export type ConditionStruct = {
+    method: BigNumberish;
+    tokenType: BigNumberish;
+    tokenAddress: string;
+    tokenId: BigNumberish;
+    threshold: BigNumberish;
+    maxCommits: BigNumberish;
+  };
+
+  export type ConditionStructOutput = [
+    number,
+    number,
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    method: number;
+    tokenType: number;
+    tokenAddress: string;
+    tokenId: BigNumber;
+    threshold: BigNumber;
+    maxCommits: BigNumber;
+  };
+
+  export type TwinReceiptStruct = {
+    twinId: BigNumberish;
+    tokenId: BigNumberish;
+    amount: BigNumberish;
+    tokenAddress: string;
+    tokenType: BigNumberish;
+  };
+
+  export type TwinReceiptStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    number
+  ] & {
+    twinId: BigNumber;
+    tokenId: BigNumber;
+    amount: BigNumber;
+    tokenAddress: string;
+    tokenType: number;
+  };
+
+  export type ReceiptStruct = {
+    exchangeId: BigNumberish;
+    offerId: BigNumberish;
+    buyerId: BigNumberish;
+    sellerId: BigNumberish;
+    price: BigNumberish;
+    sellerDeposit: BigNumberish;
+    buyerCancelPenalty: BigNumberish;
+    offerFees: BosonTypes.OfferFeesStruct;
+    agentId: BigNumberish;
+    exchangeToken: string;
+    finalizedDate: BigNumberish;
+    condition: BosonTypes.ConditionStruct;
+    committedDate: BigNumberish;
+    redeemedDate: BigNumberish;
+    voucherExpired: boolean;
+    disputeResolverId: BigNumberish;
+    disputedDate: BigNumberish;
+    escalatedDate: BigNumberish;
+    disputeState: BigNumberish;
+    twinReceipts: BosonTypes.TwinReceiptStruct[];
+  };
+
+  export type ReceiptStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BosonTypes.OfferFeesStructOutput,
+    BigNumber,
+    string,
+    BigNumber,
+    BosonTypes.ConditionStructOutput,
+    BigNumber,
+    BigNumber,
+    boolean,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    number,
+    BosonTypes.TwinReceiptStructOutput[]
+  ] & {
+    exchangeId: BigNumber;
+    offerId: BigNumber;
+    buyerId: BigNumber;
+    sellerId: BigNumber;
+    price: BigNumber;
+    sellerDeposit: BigNumber;
+    buyerCancelPenalty: BigNumber;
+    offerFees: BosonTypes.OfferFeesStructOutput;
+    agentId: BigNumber;
+    exchangeToken: string;
+    finalizedDate: BigNumber;
+    condition: BosonTypes.ConditionStructOutput;
+    committedDate: BigNumber;
+    redeemedDate: BigNumber;
+    voucherExpired: boolean;
+    disputeResolverId: BigNumber;
+    disputedDate: BigNumber;
+    escalatedDate: BigNumber;
+    disputeState: number;
+    twinReceipts: BosonTypes.TwinReceiptStructOutput[];
+  };
 }
 
 export interface IBosonExchangeHandlerInterface extends utils.Interface {
@@ -104,6 +225,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "getExchange(uint256)": FunctionFragment;
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
+    "getReceipt(uint256)": FunctionFragment;
     "isExchangeFinalized(uint256)": FunctionFragment;
     "onVoucherTransferred(uint256,address)": FunctionFragment;
     "redeemVoucher(uint256)": FunctionFragment;
@@ -145,6 +267,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getNextExchangeId",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getReceipt",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isExchangeFinalized",
@@ -199,6 +325,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     functionFragment: "getNextExchangeId",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isExchangeFinalized",
     data: BytesLike
@@ -217,7 +344,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "BuyerCommitted(uint256,uint256,uint256,tuple,address)": EventFragment;
+    "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)": EventFragment;
     "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
@@ -254,12 +381,20 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 }
 
 export type BuyerCommittedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, BosonTypes.ExchangeStructOutput, string],
+  [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BosonTypes.ExchangeStructOutput,
+    BosonTypes.VoucherStructOutput,
+    string
+  ],
   {
     offerId: BigNumber;
     buyerId: BigNumber;
     exchangeId: BigNumber;
     exchange: BosonTypes.ExchangeStructOutput;
+    voucher: BosonTypes.VoucherStructOutput;
     executedBy: string;
   }
 >;
@@ -495,9 +630,14 @@ export interface IBosonExchangeHandler extends BaseContract {
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BosonTypes.ExchangeStructOutput] & {
+      [
+        boolean,
+        BosonTypes.ExchangeStructOutput,
+        BosonTypes.VoucherStructOutput
+      ] & {
         exists: boolean;
         exchange: BosonTypes.ExchangeStructOutput;
+        voucher: BosonTypes.VoucherStructOutput;
       }
     >;
 
@@ -509,6 +649,15 @@ export interface IBosonExchangeHandler extends BaseContract {
     getNextExchangeId(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { nextExchangeId: BigNumber }>;
+
+    getReceipt(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BosonTypes.ReceiptStructOutput] & {
+        receipt: BosonTypes.ReceiptStructOutput;
+      }
+    >;
 
     isExchangeFinalized(
       _exchangeId: BigNumberish,
@@ -568,9 +717,14 @@ export interface IBosonExchangeHandler extends BaseContract {
     _exchangeId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [boolean, BosonTypes.ExchangeStructOutput] & {
+    [
+      boolean,
+      BosonTypes.ExchangeStructOutput,
+      BosonTypes.VoucherStructOutput
+    ] & {
       exists: boolean;
       exchange: BosonTypes.ExchangeStructOutput;
+      voucher: BosonTypes.VoucherStructOutput;
     }
   >;
 
@@ -580,6 +734,11 @@ export interface IBosonExchangeHandler extends BaseContract {
   ): Promise<[boolean, number] & { exists: boolean; state: number }>;
 
   getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getReceipt(
+    _exchangeId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BosonTypes.ReceiptStructOutput>;
 
   isExchangeFinalized(
     _exchangeId: BigNumberish,
@@ -639,9 +798,14 @@ export interface IBosonExchangeHandler extends BaseContract {
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BosonTypes.ExchangeStructOutput] & {
+      [
+        boolean,
+        BosonTypes.ExchangeStructOutput,
+        BosonTypes.VoucherStructOutput
+      ] & {
         exists: boolean;
         exchange: BosonTypes.ExchangeStructOutput;
+        voucher: BosonTypes.VoucherStructOutput;
       }
     >;
 
@@ -651,6 +815,11 @@ export interface IBosonExchangeHandler extends BaseContract {
     ): Promise<[boolean, number] & { exists: boolean; state: number }>;
 
     getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getReceipt(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BosonTypes.ReceiptStructOutput>;
 
     isExchangeFinalized(
       _exchangeId: BigNumberish,
@@ -675,11 +844,12 @@ export interface IBosonExchangeHandler extends BaseContract {
   };
 
   filters: {
-    "BuyerCommitted(uint256,uint256,uint256,tuple,address)"(
+    "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)"(
       offerId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
       exchange?: null,
+      voucher?: null,
       executedBy?: null
     ): BuyerCommittedEventFilter;
     BuyerCommitted(
@@ -687,6 +857,7 @@ export interface IBosonExchangeHandler extends BaseContract {
       buyerId?: BigNumberish | null,
       exchangeId?: BigNumberish | null,
       exchange?: null,
+      voucher?: null,
       executedBy?: null
     ): BuyerCommittedEventFilter;
 
@@ -933,6 +1104,11 @@ export interface IBosonExchangeHandler extends BaseContract {
 
     getNextExchangeId(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getReceipt(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -999,6 +1175,11 @@ export interface IBosonExchangeHandler extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getNextExchangeId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getReceipt(
+      _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     isExchangeFinalized(
       _exchangeId: BigNumberish,

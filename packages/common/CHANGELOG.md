@@ -3,6 +3,211 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.1...@bosonprotocol/common@1.20.2) (2022-12-01)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.0...@bosonprotocol/common@1.20.1) (2022-11-22)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.19.0...@bosonprotocol/common@1.20.0) (2022-11-17)
+
+
+### Features
+
+* add checkTokenGatedCondition ([#390](https://github.com/bosonprotocol/core-components/issues/390)) ([f07f6da](https://github.com/bosonprotocol/core-components/commit/f07f6dac20bcdd7a3f072876a6ae8d13f0b3e9de))
+* add lens ipfs gateway ([#383](https://github.com/bosonprotocol/core-components/issues/383)) ([5f037f3](https://github.com/bosonprotocol/core-components/commit/5f037f3a8abac2fc83bdd02784e7c3014cf1e2f1))
+* chain id to address ([#382](https://github.com/bosonprotocol/core-components/issues/382)) ([492feaf](https://github.com/bosonprotocol/core-components/commit/492feaf003cb2f14532ac84b94bd53d1ee4317e4))
+
+
+
+
+
+# [1.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.18.0...@bosonprotocol/common@1.19.0) (2022-10-28)
+
+
+### Features
+
+* create and manage token gated offers ([#363](https://github.com/bosonprotocol/core-components/issues/363)) ([94978e8](https://github.com/bosonprotocol/core-components/commit/94978e81957bbca5c4cd28a5375be1b579a013c8))
+
+
+
+
+
+# [1.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.1...@bosonprotocol/common@1.18.0) (2022-10-26)
+
+
+### Features
+
+* add optional animationUrl prop to ProductV1Metadata ([#350](https://github.com/bosonprotocol/core-components/issues/350)) ([0ea5983](https://github.com/bosonprotocol/core-components/commit/0ea5983e00f11754bc2c9b757d95562fb6a1776a))
+* ensure approve is called when needed  before committing to an offer ([#326](https://github.com/bosonprotocol/core-components/issues/326)) ([cb20d73](https://github.com/bosonprotocol/core-components/commit/cb20d73a418a6c07aea325553a4646ed9ac925a9))
+
+
+
+
+
+## [1.17.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.17.0...@bosonprotocol/common@1.17.1) (2022-10-19)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.16.0...@bosonprotocol/common@1.17.0) (2022-10-18)
+
+
+### Features
+
+* add lens profiles contract and abi to config ([#328](https://github.com/bosonprotocol/core-components/issues/328)) ([6b45a1b](https://github.com/bosonprotocol/core-components/commit/6b45a1b73617d0345853cf475f32881217e61b50))
+
+
+
+
+
+# [1.16.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.15.0...@bosonprotocol/common@1.16.0) (2022-10-13)
+
+
+### Bug Fixes
+
+* ci type error ([#324](https://github.com/bosonprotocol/core-components/issues/324)) ([a39ebe8](https://github.com/bosonprotocol/core-components/commit/a39ebe823a0ad59e2b21a021a5b19fc3466c06c5))
+
+
+### Features
+
+* add lens api link to common config ([#323](https://github.com/bosonprotocol/core-components/issues/323)) ([459c341](https://github.com/bosonprotocol/core-components/commit/459c34199a94668679cdbc12f334bf853d93e978))
+
+
+
+
+
+# [1.15.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.14.0...@bosonprotocol/common@1.15.0) (2022-10-13)
+
+
+### Features
+
+* add licenseUrl field to metadata ([#316](https://github.com/bosonprotocol/core-components/issues/316)) ([fee50b4](https://github.com/bosonprotocol/core-components/commit/fee50b4065f851fad409219715484eb62dcc18bd))
+
+
+
+
+
+# [1.14.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.13.0...@bosonprotocol/common@1.14.0) (2022-10-12)
+
+
+### Features
+
+* allow to search for a seller account based on the auth token ([#295](https://github.com/bosonprotocol/core-components/issues/295)) ([31de408](https://github.com/bosonprotocol/core-components/commit/31de40861723b66e543e601606f27f668840efbc))
+* contract uri and royalty support in subgraph ([#303](https://github.com/bosonprotocol/core-components/issues/303)) ([edc44c1](https://github.com/bosonprotocol/core-components/commit/edc44c1977190635becfb8110d39396545feb5df))
+* update lens authtokentype from 1 -> 2 ([#307](https://github.com/bosonprotocol/core-components/issues/307)) ([fb3c86c](https://github.com/bosonprotocol/core-components/commit/fb3c86c4ddb1b7cd40ac5c7c29af5cff7a1ee48d))
+* update to latest commit of contracts ([#297](https://github.com/bosonprotocol/core-components/issues/297)) ([0efcc9c](https://github.com/bosonprotocol/core-components/commit/0efcc9ca05dd85bffbd48fa927f69667c605f708))
+* upgrade contracts to v2.0.0-rc.4 (testing & staging) ([#311](https://github.com/bosonprotocol/core-components/issues/311)) ([38319c4](https://github.com/bosonprotocol/core-components/commit/38319c400758a748849762c2c180a1d521f9b104))
+
+
+
+
+
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.12.0...@bosonprotocol/common@1.13.0) (2022-10-05)
+
+
+### Features
+
+* add lens contract addresses to config in common package ([#283](https://github.com/bosonprotocol/core-components/issues/283)) ([f4acbfa](https://github.com/bosonprotocol/core-components/commit/f4acbfacaf9d7cc77e3adf6e3874268814b81bf0))
+* contractual agreement template ([#278](https://github.com/bosonprotocol/core-components/issues/278)) ([e516cf5](https://github.com/bosonprotocol/core-components/commit/e516cf56eda83aefe6fb115329b31ea68b383b7d))
+* set up prod config & ci ([#284](https://github.com/bosonprotocol/core-components/issues/284)) ([830f193](https://github.com/bosonprotocol/core-components/commit/830f1939de1e4c232b5b575d391bff3d3ccfdbe7))
+* update seller wrapper ([#281](https://github.com/bosonprotocol/core-components/issues/281)) ([08521f0](https://github.com/bosonprotocol/core-components/commit/08521f0a6214ae45b1fe7cd8123407e24bd9804f))
+
+
+
+
+
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.11.0...@bosonprotocol/common@1.12.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* try fixing the isolatedModules issue when building the dApp ([#257](https://github.com/bosonprotocol/core-components/issues/257)) ([295a6d7](https://github.com/bosonprotocol/core-components/commit/295a6d709ef2948072cf9162022a0d94cf25af3a))
+
+
+### Features
+
+* add a method to relay meta transactions through native API ([#239](https://github.com/bosonprotocol/core-components/issues/239)) ([51e370e](https://github.com/bosonprotocol/core-components/commit/51e370eaaa2466cf5c8f06116e705f6e01843d12)), closes [#268](https://github.com/bosonprotocol/core-components/issues/268)
+* add explorer url getter to retrieve any tx details ([#271](https://github.com/bosonprotocol/core-components/issues/271)) ([6990f5b](https://github.com/bosonprotocol/core-components/commit/6990f5b65c7ed6e248eef6aea2330818b2572024))
+* ensure fee when create dr ([#231](https://github.com/bosonprotocol/core-components/issues/231)) ([6531271](https://github.com/bosonprotocol/core-components/commit/6531271419fd977e89174f0627dfe139a875ff4a))
+* migrate TESTING env to Mumbai ([#254](https://github.com/bosonprotocol/core-components/issues/254)) ([ebfc5eb](https://github.com/bosonprotocol/core-components/commit/ebfc5eb3bf633ac317068b11dade7be3c78be1b2))
+
+
+
+
+
+# [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.2...@bosonprotocol/common@1.11.0) (2022-09-08)
+
+### Features
+
+* deprecate widgets, widgets-sdk and parent-app ([#226](https://github.com/bosonprotocol/core-components/issues/226)) ([a7fb47c](https://github.com/bosonprotocol/core-components/commit/a7fb47cbbc8c46ae738dd29e010f40db7f9b0abe))
+* update contracts to pre-release v2.0.0-rc.1 ([#204](https://github.com/bosonprotocol/core-components/issues/204)) ([f74d664](https://github.com/bosonprotocol/core-components/commit/f74d6644ed3687d5eed6b503e3564581485a05b6))
+
+## [1.10.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.1...@bosonprotocol/common@1.10.2) (2022-08-30)
+
+### Bug Fixes
+
+* the graph ipfs storage url on staging ([#218](https://github.com/bosonprotocol/core-components/issues/218)) ([d6db3e3](https://github.com/bosonprotocol/core-components/commit/d6db3e3d89a1f20849d3f03807c3bd9a70c839e8))
+
+## [1.10.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.10.0...@bosonprotocol/common@1.10.1) (2022-08-26)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.4...@bosonprotocol/common@1.10.0) (2022-08-26)
+
+### Bug Fixes
+
+* staging config ipfs metadata url ([#213](https://github.com/bosonprotocol/core-components/issues/213)) ([cebd580](https://github.com/bosonprotocol/core-components/commit/cebd5808a3754b6ef92896d970da6814c45fdae2))
+
+### Features
+
+* update nativeCoin properties in subgraph & add nativeCoin info in the defaultConfig ([#214](https://github.com/bosonprotocol/core-components/issues/214)) ([a0a7891](https://github.com/bosonprotocol/core-components/commit/a0a78914c7622d0877ed413a6640a80d967ca317))
+
+## [1.9.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.3...@bosonprotocol/common@1.9.4) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+## [1.9.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.2...@bosonprotocol/common@1.9.3) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+## [1.9.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.1...@bosonprotocol/common@1.9.2) (2022-08-25)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+## [1.9.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.9.0...@bosonprotocol/common@1.9.1) (2022-08-25)
+
+### Bug Fixes
+
+* change subgraph URL on staging ([#208](https://github.com/bosonprotocol/core-components/issues/208)) ([964890d](https://github.com/bosonprotocol/core-components/commit/964890d63445f8f050f9a142d8aaf5e52a5c6c8c))
+
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.8.1...@bosonprotocol/common@1.9.0) (2022-08-25)
+
+### Bug Fixes
+
+* fill voucherRedeemableUntil OR voucherValid with correct values … ([#203](https://github.com/bosonprotocol/core-components/issues/203)) ([9a2bdd2](https://github.com/bosonprotocol/core-components/commit/9a2bdd26ef8de06f32a6fd99727809656bd29aee))
+
+### Features
+
+* bp292 - contractual agreement - implement rendering method ([#191](https://github.com/bosonprotocol/core-components/issues/191)) ([822fe1f](https://github.com/bosonprotocol/core-components/commit/822fe1f4ffba12e07456986e01bf3f474f780cef))
+* contracts update ([#181](https://github.com/bosonprotocol/core-components/issues/181)) ([599a518](https://github.com/bosonprotocol/core-components/commit/599a5188cd350defe22c49626370b198c49bd6f7))
+* contracts update ([#188](https://github.com/bosonprotocol/core-components/issues/188)) ([be1dbe4](https://github.com/bosonprotocol/core-components/commit/be1dbe43740b4a2fcd5c7a06147bcdb8f9c7b1b0))
+* dispute resolver support in subgraph and core-sdk ([#185](https://github.com/bosonprotocol/core-components/issues/185)) ([0a12bba](https://github.com/bosonprotocol/core-components/commit/0a12bba6c46a1907df8417da6057aecd099283d9))
+* subgraph and core-sdk DisputeHandlerFacet ([#186](https://github.com/bosonprotocol/core-components/issues/186)) ([ac58f3d](https://github.com/bosonprotocol/core-components/commit/ac58f3d3beb83d5526b99d410ea2ff6c02db58fa))
+
 ## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.8.0...@bosonprotocol/common@1.8.1) (2022-07-12)
 
 **Note:** Version bump only for package @bosonprotocol/common

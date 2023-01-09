@@ -95,9 +95,9 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}
       - run: npm ci
-      - name: Build sdks
+      - name: Build
         run: |
-          npm run build:sdks -- --cache-dir=".turbo"
+          npm run build -- --cache-dir=".turbo"
       # Pull the latest image to build, and avoid caching pull-only images.
       # (docker pull is faster than caching in most cases.)
       - run: cd e2e && docker-compose pull && cd ..

@@ -568,6 +568,188 @@
         "type": "tuple"
       },
       {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "escalationResponsePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.DisputeResolver",
+        "name": "pendingDisputeResolver",
+        "type": "tuple"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "DisputeResolverUpdateApplied",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "disputeResolverId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "escalationResponsePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.DisputeResolver",
+        "name": "pendingDisputeResolver",
+        "type": "tuple"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "DisputeResolverUpdatePending",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "disputeResolverId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "escalationResponsePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.DisputeResolver",
+        "name": "disputeResolver",
+        "type": "tuple"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "executedBy",
@@ -608,48 +790,49 @@
             "internalType": "uint256[]",
             "name": "offerIds",
             "type": "uint256[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "enum BosonTypes.EvaluationMethod",
-                "name": "method",
-                "type": "uint8"
-              },
-              {
-                "internalType": "enum BosonTypes.TokenType",
-                "name": "tokenType",
-                "type": "uint8"
-              },
-              {
-                "internalType": "address",
-                "name": "tokenAddress",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "threshold",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "maxCommits",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct BosonTypes.Condition",
-            "name": "condition",
-            "type": "tuple"
           }
         ],
         "indexed": false,
         "internalType": "struct BosonTypes.Group",
         "name": "group",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "enum BosonTypes.EvaluationMethod",
+            "name": "method",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum BosonTypes.TokenType",
+            "name": "tokenType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "threshold",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxCommits",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.Condition",
+        "name": "condition",
         "type": "tuple"
       },
       {
@@ -693,48 +876,49 @@
             "internalType": "uint256[]",
             "name": "offerIds",
             "type": "uint256[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "enum BosonTypes.EvaluationMethod",
-                "name": "method",
-                "type": "uint8"
-              },
-              {
-                "internalType": "enum BosonTypes.TokenType",
-                "name": "tokenType",
-                "type": "uint8"
-              },
-              {
-                "internalType": "address",
-                "name": "tokenAddress",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "threshold",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "maxCommits",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct BosonTypes.Condition",
-            "name": "condition",
-            "type": "tuple"
           }
         ],
         "indexed": false,
         "internalType": "struct BosonTypes.Group",
         "name": "group",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "enum BosonTypes.EvaluationMethod",
+            "name": "method",
+            "type": "uint8"
+          },
+          {
+            "internalType": "enum BosonTypes.TokenType",
+            "name": "tokenType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "threshold",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxCommits",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.Condition",
+        "name": "condition",
         "type": "tuple"
       },
       {
@@ -852,7 +1036,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -1068,6 +1252,212 @@
       }
     ],
     "name": "SellerCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "sellerId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.Seller",
+        "name": "seller",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.Seller",
+        "name": "pendingSeller",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum BosonTypes.AuthTokenType",
+            "name": "tokenType",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.AuthToken",
+        "name": "authToken",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum BosonTypes.AuthTokenType",
+            "name": "tokenType",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.AuthToken",
+        "name": "pendingAuthToken",
+        "type": "tuple"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "SellerUpdateApplied",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "sellerId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "operator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "admin",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "clerk",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.Seller",
+        "name": "pendingSeller",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum BosonTypes.AuthTokenType",
+            "name": "tokenType",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct BosonTypes.AuthToken",
+        "name": "pendingAuthToken",
+        "type": "tuple"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executedBy",
+        "type": "address"
+      }
+    ],
+    "name": "SellerUpdatePending",
     "type": "event"
   },
   {
@@ -1414,7 +1804,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -1543,7 +1933,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -1709,7 +2099,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -1870,7 +2260,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -2023,11 +2413,6 @@
         "type": "tuple"
       },
       {
-        "internalType": "string",
-        "name": "_contractURI",
-        "type": "string"
-      },
-      {
         "components": [
           {
             "internalType": "uint256",
@@ -2115,7 +2500,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -2153,6 +2538,23 @@
         ],
         "internalType": "struct BosonTypes.AuthToken",
         "name": "_authToken",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltyPercentage",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BosonTypes.VoucherInitValues",
+        "name": "_voucherInitValues",
         "type": "tuple"
       },
       {
@@ -2206,11 +2608,6 @@
         "type": "tuple"
       },
       {
-        "internalType": "string",
-        "name": "_contractURI",
-        "type": "string"
-      },
-      {
         "components": [
           {
             "internalType": "uint256",
@@ -2298,7 +2695,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -2378,6 +2775,23 @@
         ],
         "internalType": "struct BosonTypes.AuthToken",
         "name": "_authToken",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltyPercentage",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BosonTypes.VoucherInitValues",
+        "name": "_voucherInitValues",
         "type": "tuple"
       },
       {
@@ -2431,11 +2845,6 @@
         "type": "tuple"
       },
       {
-        "internalType": "string",
-        "name": "_contractURI",
-        "type": "string"
-      },
-      {
         "components": [
           {
             "internalType": "uint256",
@@ -2523,7 +2932,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -2601,6 +3010,23 @@
         "type": "tuple"
       },
       {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltyPercentage",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BosonTypes.VoucherInitValues",
+        "name": "_voucherInitValues",
+        "type": "tuple"
+      },
+      {
         "internalType": "uint256",
         "name": "_agentId",
         "type": "uint256"
@@ -2649,11 +3075,6 @@
         "internalType": "struct BosonTypes.Seller",
         "name": "_seller",
         "type": "tuple"
-      },
-      {
-        "internalType": "string",
-        "name": "_contractURI",
-        "type": "string"
       },
       {
         "components": [
@@ -2743,7 +3164,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "fulfillmentPeriod",
+            "name": "disputePeriod",
             "type": "uint256"
           },
           {
@@ -2860,6 +3281,23 @@
         ],
         "internalType": "struct BosonTypes.AuthToken",
         "name": "_authToken",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltyPercentage",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BosonTypes.VoucherInitValues",
+        "name": "_voucherInitValues",
         "type": "tuple"
       },
       {

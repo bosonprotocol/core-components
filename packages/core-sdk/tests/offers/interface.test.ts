@@ -8,8 +8,7 @@ import { mockCreateOfferArgs } from "@bosonprotocol/common/tests/mocks";
 describe("#encodeCreateOffer()", () => {
   test("encode correct calldata", () => {
     const mockedCreateOfferArgs = mockCreateOfferArgs({
-      voucherValidDurationInMS: 1000,
-      voucherRedeemableUntilDateInMS: 0
+      voucherValidDurationInMS: 1000
     });
 
     const encodedCalldata = encodeCreateOffer(mockedCreateOfferArgs);
@@ -35,8 +34,9 @@ describe("#encodeCreateOffer()", () => {
       voucherRedeemableFrom,
       voucherRedeemableUntil
     ] = decodedCalldata[1].toString().split(","); // OfferDates struct
-    const [fulfillmentPeriod, voucherValid, resolutionPeriod] =
-      decodedCalldata[2].toString().split(","); // OfferDurations struct
+    const [disputePeriod, voucherValid, resolutionPeriod] = decodedCalldata[2]
+      .toString()
+      .split(","); // OfferDurations struct
     const disputeResolverId = decodedCalldata[3].toString();
     const agentId = decodedCalldata[4].toString();
 
@@ -80,9 +80,9 @@ describe("#encodeCreateOffer()", () => {
         .msToSec(mockedCreateOfferArgs.resolutionPeriodDurationInMS)
         .toString()
     );
-    expect(fulfillmentPeriod).toBe(
+    expect(disputePeriod).toBe(
       utils.timestamp
-        .msToSec(mockedCreateOfferArgs.fulfillmentPeriodDurationInMS)
+        .msToSec(mockedCreateOfferArgs.disputePeriodDurationInMS)
         .toString()
     );
     expect(voucherValid).toBe(

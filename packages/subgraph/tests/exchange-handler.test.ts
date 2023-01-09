@@ -25,12 +25,14 @@ test("handle BuyerCommittedEvent", () => {
   const offerId = 1;
   const offer = new Offer(offerId.toString());
   offer.quantityAvailable = BigInt.fromI32(1);
+  offer.numberOfCommits = BigInt.fromI32(0);
   offer.metadataUri = metadataHash;
   offer.metadataHash = metadataHash;
   offer.save();
 
   const metadata = new BaseMetadataEntity(offerId.toString() + "-metadata");
   metadata.quantityAvailable = offer.quantityAvailable;
+  metadata.numberOfCommits = BigInt.fromI32(0);
   metadata.save();
 
   const buyerCommittedEvent = createBuyerCommittedEvent(offerId, 2, 3);
@@ -38,11 +40,18 @@ test("handle BuyerCommittedEvent", () => {
   handleBuyerCommittedEvent(buyerCommittedEvent);
 
   assert.fieldEquals("Offer", "1", "quantityAvailable", "0");
+  assert.fieldEquals("Offer", "1", "numberOfCommits", "1");
   assert.fieldEquals(
     "BaseMetadataEntity",
     "1-metadata",
     "quantityAvailable",
     "0"
+  );
+  assert.fieldEquals(
+    "BaseMetadataEntity",
+    "1-metadata",
+    "numberOfCommits",
+    "1"
   );
   assert.fieldEquals("Exchange", "3", "id", "3");
   assert.fieldEquals("Exchange", "3", "state", "COMMITTED");

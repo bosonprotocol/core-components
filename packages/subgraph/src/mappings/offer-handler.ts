@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   OfferCreated,
   OfferVoided
@@ -10,6 +11,7 @@ import {
   getDisputeResolutionTermsId,
   saveDisputeResolutionTerms
 } from "../entities/dispute-resolution";
+import { saveOfferEventLog } from "../entities/event-log";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -37,7 +39,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.validUntilDate = offerDatesStruct.validUntil;
     offer.voucherRedeemableFromDate = offerDatesStruct.voucherRedeemableFrom;
     offer.voucherRedeemableUntilDate = offerDatesStruct.voucherRedeemableUntil;
-    offer.fulfillmentPeriodDuration = offerDurationsStruct.fulfillmentPeriod;
+    offer.disputePeriodDuration = offerDurationsStruct.disputePeriod;
     offer.voucherValidDuration = offerDurationsStruct.voucherValid;
     offer.resolutionPeriodDuration = offerDurationsStruct.resolutionPeriod;
     offer.disputeResolverId = disputeResolutionTermsStruct.disputeResolverId;
@@ -54,6 +56,8 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.metadataHash = offerStruct.metadataHash;
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
+    offer.numberOfCommits = BigInt.fromI32(0);
+    offer.numberOfRedemptions = BigInt.fromI32(0);
 
     offer.save();
 
@@ -61,6 +65,15 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     saveMetadata(offer, event.block.timestamp);
     saveDisputeResolutionTerms(
       disputeResolutionTermsStruct,
+      offerId.toString()
+    );
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_CREATED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offerStruct.sellerId.toString(),
       offerId.toString()
     );
   }
@@ -78,5 +91,14 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
     offer.save();
 
     saveMetadata(offer, offer.createdAt);
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_VOIDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offer.sellerId.toString(),
+      offerId.toString()
+    );
   }
 }

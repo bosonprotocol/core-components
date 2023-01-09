@@ -42,34 +42,12 @@ Requires:
 If you want to run a local e2e setup with a deployed subgraph and contracts, run in the root of this monorepo
 
 ```bash
-npm run build:sdks
+npm run build
 npm run e2e:services
 ```
 
 This will start a dockerized IPFS node, Graph node, PostgresDB and hardhat node and deploy all required contracts and subgraph.
 For details have a look at the [`e2e/docker-compose.yml`](../e2e/docker-compose.yml) file.
-
-### Local widgets and example parent app
-
-In the root of this monorepo run
-
-```bash
-# only needed first time running dev env
-npm run build
-
-# run dev environment
-npm run dev
-```
-
-This will build every package and start dev servers for the [widgets](../apps/widgets/) and the [example parent react app](../examples/react-parent-app/):
-
-- widgets -> http://localhost:3000
-- example react parent app -> http://localhost:4000
-
-Per default the example app will be connected to our testing environment.
-You can change the chain id by modifying the respective value in the [`.env`](../examples/react-parent-app/.env) file of the example app.
-
-If you want to connect to the local e2e setup from above, then you need to use the chain id `31337`.
 
 ## Linting
 

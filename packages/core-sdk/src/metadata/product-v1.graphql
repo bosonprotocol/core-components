@@ -16,6 +16,60 @@ query getProductV1BrandsQuery(
   }
 }
 
+query getProductV1ProductsQuery(
+  $productsSkip: Int
+  $productsFirst: Int
+  $productsOrderBy: ProductV1Product_orderBy
+  $productsOrderDirection: OrderDirection
+  $productsFilter: ProductV1Product_filter
+) {
+  productV1Products(
+    skip: $productsSkip
+    first: $productsFirst
+    orderBy: $productsOrderBy
+    orderDirection: $productsOrderDirection
+    where: $productsFilter
+  ) {
+    ...BaseProductV1ProductFields
+  }
+}
+
+query getProductV1ProductsWithVariantsQuery(
+  $productsSkip: Int
+  $productsFirst: Int
+  $productsOrderBy: ProductV1Product_orderBy
+  $productsOrderDirection: OrderDirection
+  $productsFilter: ProductV1Product_filter
+) {
+  productV1Products(
+    skip: $productsSkip
+    first: $productsFirst
+    orderBy: $productsOrderBy
+    orderDirection: $productsOrderDirection
+    where: $productsFilter
+  ) {
+    ...BaseProductV1ProductWithVariantsFields
+  }
+}
+
+query getAllProductsWithNotVoidedVariantsQuery(
+  $productsSkip: Int
+  $productsFirst: Int
+  $productsOrderBy: ProductV1Product_orderBy
+  $productsOrderDirection: OrderDirection
+  $productsFilter: ProductV1Product_filter
+) {
+  productV1Products(
+    skip: $productsSkip
+    first: $productsFirst
+    orderBy: $productsOrderBy
+    orderDirection: $productsOrderDirection
+    where: $productsFilter
+  ) {
+    ...BaseProductV1ProductWithNotVoidedVariantsFields
+  }
+}
+
 query getProductV1CategoriesQuery(
   $categoriesSkip: Int
   $categoriesFirst: Int
@@ -74,6 +128,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   name
   description
   externalUrl
+  animationUrl
+  licenseUrl
+  condition
   schemaUrl
   type
   image
@@ -84,6 +141,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   }
   offer {
     ...BaseOfferFields
+    exchanges {
+    ...BaseExchangeFields
+    }
   }
   seller {
     ...BaseSellerFields
@@ -96,7 +156,8 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   validFromDate
   validUntilDate
   quantityAvailable
-
+  numberOfCommits
+  numberOfRedemptions
   uuid
   product {
     ...BaseProductV1ProductFields
@@ -168,6 +229,49 @@ fragment BaseProductV1ProductFields on ProductV1Product {
   packaging_dimensions_unit
   packaging_weight_value
   packaging_weight_unit
+  productV1Seller {
+    ...BaseProductV1SellerFields
+  }
+}
+
+fragment BaseProductV1ProductWithVariantsFields on ProductV1Product {
+  ...BaseProductV1ProductFields
+  variants {
+    offer {
+      ...BaseOfferFields
+      exchanges {
+      ...BaseExchangeFields
+      }
+    }
+    variations {
+      ...BaseProductV1VariationFields
+    }
+  }
+  allVariantsVoided
+  minValidFromDate
+  maxValidFromDate
+  minValidUntilDate
+  maxValidUntilDate
+}
+
+fragment BaseProductV1ProductWithNotVoidedVariantsFields on ProductV1Product {
+  ...BaseProductV1ProductFields
+  notVoidedVariants {
+    offer {
+      ...BaseOfferFields
+      exchanges {
+      ...BaseExchangeFields
+      }
+    }
+    variations {
+      ...BaseProductV1VariationFields
+    }
+  }
+  allVariantsVoided
+  minValidFromDate
+  maxValidFromDate
+  minValidUntilDate
+  maxValidUntilDate
 }
 
 fragment BaseProductV1BrandFields on ProductV1Brand {
@@ -215,6 +319,7 @@ fragment BaseProductV1SellerFields on ProductV1Seller {
   description
   externalUrl
   tokenId
+  sellerId
   images {
     ...BaseProductV1MediaFields
   }
@@ -240,6 +345,7 @@ fragment BaseProductV1ShippingOptionFields on ProductV1ShippingOption {
     ...BaseProductV1ShippingJurisdictionFields
   }
   redemptionPoint
+  returnPeriodInDays
 }
 
 fragment BaseProductV1ShippingJurisdictionFields on ProductV1ShippingJurisdiction {
@@ -254,6 +360,8 @@ fragment BaseProductV1ExchangePolicyFields on ProductV1ExchangePolicy {
   version
   label
   template
+  sellerContactMethod
+  disputeResolverContactMethod
 }
 
 fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {

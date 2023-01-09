@@ -1,28 +1,55 @@
-import {
-  SellerStruct,
-  AuthTokenStruct,
-  abis,
-  DisputeResolverStruct,
-  utils
-} from "@bosonprotocol/common";
 import { Interface } from "@ethersproject/abi";
 import { BigNumberish } from "@ethersproject/bignumber";
 import {
   CreateSellerArgs,
   CreateDisputeResolverArgs,
-  DisputeResolutionFee
+  DisputeResolutionFee,
+  SellerStruct,
+  AuthTokenStruct,
+  VoucherInitValuesStruct,
+  abis,
+  DisputeResolverStruct,
+  utils,
+  UpdateSellerArgs,
+  OptInToSellerUpdateArgs,
+  SellerUpdateFields,
+  OptInToDisputeResolverUpdateArgs,
+  DisputeResolverUpdateFields
 } from "./types";
 
 export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
 );
 
-export function encodeCreateAccount(seller: CreateSellerArgs) {
+export function encodeCreateSeller(seller: CreateSellerArgs) {
   const sellerArgs = createSellerArgsToStruct(seller);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
     sellerArgs.sellerStruct,
-    seller.contractUri,
+    sellerArgs.authTokenStruct,
+    sellerArgs.voucherInitValues
+  ]);
+}
+
+export function encodeUpdateSeller(seller: UpdateSellerArgs) {
+  const sellerArgs = updateSellerArgsToStruct(seller);
+  return bosonAccountHandlerIface.encodeFunctionData("updateSeller", [
+    sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct
+  ]);
+}
+
+export function encodeOptInToSellerUpdate(seller: OptInToSellerUpdateArgs) {
+  const fieldsToUpdate: number[] = [];
+  Object.entries(SellerUpdateFields).forEach(
+    ([key, value]: [string, number]) => {
+      if (seller.fieldsToUpdate[key]) {
+        fieldsToUpdate.push(value);
+      }
+    }
+  );
+  return bosonAccountHandlerIface.encodeFunctionData("optInToSellerUpdate", [
+    seller.id,
+    fieldsToUpdate
   ]);
 }
 
@@ -89,24 +116,72 @@ export function encodeUpdateDisputeResolver(
   ]);
 }
 
+export function encodeOptInToDisputeResolverUpdate(
+  disputeResolver: OptInToDisputeResolverUpdateArgs
+) {
+  const fieldsToUpdate: number[] = [];
+  Object.entries(DisputeResolverUpdateFields).forEach(
+    ([key, value]: [string, number]) => {
+      if (disputeResolver.fieldsToUpdate[key]) {
+        fieldsToUpdate.push(value);
+      }
+    }
+  );
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "optInToDisputeResolverUpdate",
+    [disputeResolver.id, fieldsToUpdate]
+  );
+}
+
 export function createSellerArgsToStruct(args: CreateSellerArgs): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
+  voucherInitValues: VoucherInitValuesStruct;
 } {
+  const {
+    authTokenId,
+    authTokenType,
+    contractUri,
+    royaltyPercentage,
+    ...sellerStructArgs
+  } = args;
+  return {
+    sellerStruct: argsToSellerStruct(sellerStructArgs),
+    authTokenStruct: {
+      tokenId: authTokenId,
+      tokenType: authTokenType
+    },
+    voucherInitValues: {
+      contractURI: contractUri,
+      royaltyPercentage
+    }
+  };
+}
+
+export function updateSellerArgsToStruct(args: UpdateSellerArgs) {
   const { authTokenId, authTokenType, ...sellerStructArgs } = args;
   return {
-    sellerStruct: {
-      // NOTE: It doesn't matter which values we set for `id` and `active` here
-      // as they will be overridden by the contract. But to conform to the struct
-      // we need to set some arbitrary values.
-      id: "0",
-      active: true,
-      ...sellerStructArgs
-    },
+    sellerStruct: argsToSellerStruct(sellerStructArgs),
     authTokenStruct: {
       tokenId: authTokenId,
       tokenType: authTokenType
     }
+  };
+}
+
+function argsToSellerStruct(args: {
+  operator: string;
+  admin: string;
+  clerk: string;
+  treasury: string;
+}): Partial<SellerStruct> {
+  return {
+    // NOTE: It doesn't matter which values we set for `id` and `active` here
+    // as they will be overridden by the contract. But to conform to the struct
+    // we need to set some arbitrary values.
+    id: "0",
+    active: true,
+    ...args
   };
 }
 

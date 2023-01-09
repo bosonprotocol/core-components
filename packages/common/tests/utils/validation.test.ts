@@ -1,3 +1,4 @@
+import { MSEC_PER_DAY } from "../../src/utils/timestamp";
 import { createOfferArgsSchema } from "../../src/utils/validation";
 import { mockCreateOfferArgs } from "../mocks";
 
@@ -6,6 +7,54 @@ describe("#createOfferArgsSchema()", () => {
     expect(
       createOfferArgsSchema.validateSync(mockCreateOfferArgs())
     ).toBeTruthy();
+  });
+
+  test("not throw when voucherRedeemableUntilDateInMS > 0 and voucherValidDurationInMS == 0", () => {
+    expect(
+      createOfferArgsSchema.validateSync(
+        mockCreateOfferArgs({
+          voucherRedeemableUntilDateInMS: Date.now() + 30 * MSEC_PER_DAY,
+          voucherValidDurationInMS: 0
+        })
+      )
+    ).toBeTruthy();
+  });
+
+  test("not throw when voucherRedeemableUntilDateInMS == 0 and voucherValidDurationInMS > 0", () => {
+    expect(
+      createOfferArgsSchema.validateSync(
+        mockCreateOfferArgs({
+          voucherRedeemableUntilDateInMS: 0,
+          voucherValidDurationInMS: 30 * MSEC_PER_DAY
+        })
+      )
+    ).toBeTruthy();
+  });
+
+  test("throw when voucherRedeemableUntilDateInMS == 0 and voucherValidDurationInMS == 0", () => {
+    expect(() => {
+      createOfferArgsSchema.validateSync(
+        mockCreateOfferArgs({
+          voucherRedeemableUntilDateInMS: 0,
+          voucherValidDurationInMS: 0
+        })
+      );
+    }).toThrow(
+      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero/
+    );
+  });
+
+  test("throw when voucherRedeemableUntilDateInMS > 0 and voucherValidDurationInMS > 0", () => {
+    expect(() => {
+      createOfferArgsSchema.validateSync(
+        mockCreateOfferArgs({
+          voucherRedeemableUntilDateInMS: Date.now() + 30 * MSEC_PER_DAY,
+          voucherValidDurationInMS: 30 * MSEC_PER_DAY
+        })
+      );
+    }).toThrow(
+      /Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero/
+    );
   });
 
   test("throw for invalid string value", () => {
@@ -26,7 +75,7 @@ describe("#createOfferArgsSchema()", () => {
           validUntilDateInMS: Date.now() - 60 * 1000
         })
       );
-    }).toThrow();
+    }).toThrow(/validUntilDateInMS has to be a date in the future/);
   });
 
   test("throw for invalid price values", () => {

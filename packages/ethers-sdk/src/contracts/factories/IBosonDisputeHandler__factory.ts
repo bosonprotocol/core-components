@@ -102,12 +102,6 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "string",
-        name: "complaint",
-        type: "string",
-      },
-      {
-        indexed: false,
         internalType: "address",
         name: "executedBy",
         type: "address",
@@ -470,19 +464,14 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "string",
-            name: "complaint",
-            type: "string",
+            internalType: "uint256",
+            name: "buyerPercent",
+            type: "uint256",
           },
           {
             internalType: "enum BosonTypes.DisputeState",
             name: "state",
             type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "buyerPercent",
-            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Dispute",
@@ -598,11 +587,6 @@ const _abi = [
         internalType: "uint256",
         name: "_exchangeId",
         type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "_complaint",
-        type: "string",
       },
     ],
     name: "raiseDispute",

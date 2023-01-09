@@ -131,19 +131,35 @@ export async function getSellerByTreasury(
   return sellers[0];
 }
 
+export async function getSellerByAuthToken(
+  subgraphUrl: string,
+  tokenId: string,
+  tokenType: number,
+  queryVars: GetSellersQueryQueryVariables = {}
+): Promise<SellerFieldsFragment> {
+  const sellers = await getSellers(subgraphUrl, {
+    sellersFilter: {
+      ...queryVars.sellersFilter,
+      authTokenId: tokenId,
+      authTokenType: tokenType
+    },
+    ...queryVars
+  });
+  return sellers[0];
+}
+
 export async function getSellerByAddress(
   subgraphUrl: string,
   address: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
-  const [operator, admin, clerk, treasury] = await Promise.all([
+  const [operator, admin, clerk] = await Promise.all([
     getSellerByOperator(subgraphUrl, address, queryVars),
     getSellerByAdmin(subgraphUrl, address, queryVars),
-    getSellerByClerk(subgraphUrl, address, queryVars),
-    getSellerByTreasury(subgraphUrl, address, queryVars)
+    getSellerByClerk(subgraphUrl, address, queryVars)
   ]);
 
-  return operator || admin || clerk || treasury;
+  return operator || admin || clerk;
 }
 
 export async function getDisputeResolverById(

@@ -51,13 +51,9 @@ export function encodeExtendDisputeTimeout(args: {
   ]);
 }
 
-export function encodeRaiseDispute(args: {
-  exchangeId: BigNumberish;
-  complaint: string;
-}) {
+export function encodeRaiseDispute(args: { exchangeId: BigNumberish }) {
   return bosonDisputeHandlerIface.encodeFunctionData("raiseDispute", [
-    args.exchangeId,
-    args.complaint
+    args.exchangeId
   ]);
 }
 
@@ -69,14 +65,14 @@ export function encodeRefuseEscalatedDispute(exchangeId: BigNumberish) {
 
 export function encodeResolveDispute(args: {
   exchangeId: BigNumberish;
-  buyerPercent: BigNumberish;
+  buyerPercentBasisPoints: BigNumberish;
   sigR: BytesLike;
   sigS: BytesLike;
   sigV: BigNumberish;
 }) {
   return bosonDisputeHandlerIface.encodeFunctionData("resolveDispute", [
     args.exchangeId,
-    args.buyerPercent,
+    args.buyerPercentBasisPoints,
     args.sigR,
     args.sigS,
     args.sigV

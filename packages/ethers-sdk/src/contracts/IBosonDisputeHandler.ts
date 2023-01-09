@@ -21,16 +21,14 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export declare namespace BosonTypes {
   export type DisputeStruct = {
     exchangeId: BigNumberish;
-    complaint: string;
-    state: BigNumberish;
     buyerPercent: BigNumberish;
+    state: BigNumberish;
   };
 
-  export type DisputeStructOutput = [BigNumber, string, number, BigNumber] & {
+  export type DisputeStructOutput = [BigNumber, BigNumber, number] & {
     exchangeId: BigNumber;
-    complaint: string;
-    state: number;
     buyerPercent: BigNumber;
+    state: number;
   };
 
   export type DisputeDatesStruct = {
@@ -66,7 +64,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
     "getDisputeState(uint256)": FunctionFragment;
     "getDisputeTimeout(uint256)": FunctionFragment;
     "isDisputeFinalized(uint256)": FunctionFragment;
-    "raiseDispute(uint256,string)": FunctionFragment;
+    "raiseDispute(uint256)": FunctionFragment;
     "refuseEscalatedDispute(uint256)": FunctionFragment;
     "resolveDispute(uint256,uint256,bytes32,bytes32,uint8)": FunctionFragment;
     "retractDispute(uint256)": FunctionFragment;
@@ -114,7 +112,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "raiseDispute",
-    values: [BigNumberish, string]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "refuseEscalatedDispute",
@@ -187,7 +185,7 @@ export interface IBosonDisputeHandlerInterface extends utils.Interface {
     "DisputeDecided(uint256,uint256,address)": EventFragment;
     "DisputeEscalated(uint256,uint256,address)": EventFragment;
     "DisputeExpired(uint256,address)": EventFragment;
-    "DisputeRaised(uint256,uint256,uint256,string,address)": EventFragment;
+    "DisputeRaised(uint256,uint256,uint256,address)": EventFragment;
     "DisputeResolved(uint256,uint256,address)": EventFragment;
     "DisputeRetracted(uint256,address)": EventFragment;
     "DisputeTimeoutExtended(uint256,uint256,address)": EventFragment;
@@ -237,12 +235,11 @@ export type DisputeExpiredEvent = TypedEvent<
 export type DisputeExpiredEventFilter = TypedEventFilter<DisputeExpiredEvent>;
 
 export type DisputeRaisedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, string, string],
+  [BigNumber, BigNumber, BigNumber, string],
   {
     exchangeId: BigNumber;
     buyerId: BigNumber;
     sellerId: BigNumber;
-    complaint: string;
     executedBy: string;
   }
 >;
@@ -431,7 +428,6 @@ export interface IBosonDisputeHandler extends BaseContract {
 
     raiseDispute(
       _exchangeId: BigNumberish,
-      _complaint: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -519,7 +515,6 @@ export interface IBosonDisputeHandler extends BaseContract {
 
   raiseDispute(
     _exchangeId: BigNumberish,
-    _complaint: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -607,7 +602,6 @@ export interface IBosonDisputeHandler extends BaseContract {
 
     raiseDispute(
       _exchangeId: BigNumberish,
-      _complaint: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -663,18 +657,16 @@ export interface IBosonDisputeHandler extends BaseContract {
       executedBy?: string | null
     ): DisputeExpiredEventFilter;
 
-    "DisputeRaised(uint256,uint256,uint256,string,address)"(
+    "DisputeRaised(uint256,uint256,uint256,address)"(
       exchangeId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      complaint?: null,
       executedBy?: null
     ): DisputeRaisedEventFilter;
     DisputeRaised(
       exchangeId?: BigNumberish | null,
       buyerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
-      complaint?: null,
       executedBy?: null
     ): DisputeRaisedEventFilter;
 
@@ -839,7 +831,6 @@ export interface IBosonDisputeHandler extends BaseContract {
 
     raiseDispute(
       _exchangeId: BigNumberish,
-      _complaint: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -918,7 +909,6 @@ export interface IBosonDisputeHandler extends BaseContract {
 
     raiseDispute(
       _exchangeId: BigNumberish,
-      _complaint: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

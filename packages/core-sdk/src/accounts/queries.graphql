@@ -15,9 +15,15 @@ query getSellerByIdQuery(
   $exchangesOrderBy: Exchange_orderBy
   $exchangesOrderDirection: OrderDirection
   $exchangesFilter: Exchange_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeExchanges: Boolean = false
   $includeOffers: Boolean = false
   $includeFunds: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   seller(id: $sellerId) {
     ...SellerFields
@@ -45,9 +51,15 @@ query getSellersQuery(
   $exchangesOrderBy: Exchange_orderBy
   $exchangesOrderDirection: OrderDirection
   $exchangesFilter: Exchange_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeExchanges: Boolean = false
   $includeOffers: Boolean = false
   $includeFunds: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   sellers(
     skip: $sellersSkip
@@ -72,8 +84,14 @@ query getBuyerByIdQuery(
   $exchangesOrderBy: Exchange_orderBy
   $exchangesOrderDirection: OrderDirection
   $exchangesFilter: Exchange_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeExchanges: Boolean = false
   $includeFunds: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   buyer(id: $buyerId) {
     ...BuyerFields
@@ -101,9 +119,15 @@ query getBuyersQuery(
   $exchangesOrderBy: Exchange_orderBy
   $exchangesOrderDirection: OrderDirection
   $exchangesFilter: Exchange_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeExchanges: Boolean = false
   $includeOffers: Boolean = false
   $includeFunds: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   buyers(
     skip: $buyersSkip
@@ -123,7 +147,13 @@ query getDisputeResolverByIdQuery(
   $offersOrderBy: Offer_orderBy
   $offersOrderDirection: OrderDirection
   $offersFilter: Offer_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeOffers: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   disputeResolver(id: $disputeResolverId) {
     ...DisputeResolverFields
@@ -141,7 +171,13 @@ query getDisputeResolversQuery(
   $offersOrderBy: Offer_orderBy
   $offersOrderDirection: OrderDirection
   $offersFilter: Offer_filter
+  $logsSkip: Int
+  $logsFirst: Int
+  $logsOrderBy: EventLog_orderBy
+  $logsOrderDirection: OrderDirection
+  $logsFilter: EventLog_filter
   $includeOffers: Boolean = false
+  $includeLogs: Boolean = false
 ) {
   disputeResolvers(
     skip: $disputeResolversSkip
@@ -156,6 +192,9 @@ query getDisputeResolversQuery(
 
 fragment SellerFields on Seller {
   ...BaseSellerFields
+  pendingSeller {
+    ...PendingSellerFields
+  }
   funds(
     skip: $fundsSkip
     first: $fundsFirst
@@ -183,6 +222,15 @@ fragment SellerFields on Seller {
   ) @include(if: $includeExchanges) {
     ...BaseExchangeFields
   }
+  logs(
+    skip: $logsSkip
+    first: $logsFirst
+    orderBy: $logsOrderBy
+    orderDirection: $logsOrderDirection
+    where: $logsFilter
+  ) @include(if: $includeLogs) {
+    ...BaseEventLogFields
+  }
 }
 
 fragment BaseSellerFields on Seller {
@@ -195,6 +243,16 @@ fragment BaseSellerFields on Seller {
   authTokenType
   voucherCloneAddress
   active
+  contractURI
+  royaltyPercentage
+}
+
+fragment PendingSellerFields on PendingSeller {
+  operator
+  admin
+  clerk
+  authTokenId
+  authTokenType
 }
 
 fragment BuyerFields on Buyer {
@@ -217,6 +275,15 @@ fragment BuyerFields on Buyer {
   ) @include(if: $includeExchanges) {
     ...BaseExchangeFields
   }
+  logs(
+    skip: $logsSkip
+    first: $logsFirst
+    orderBy: $logsOrderBy
+    orderDirection: $logsOrderDirection
+    where: $logsFilter
+  ) @include(if: $includeLogs) {
+    ...BaseEventLogFields
+  }
 }
 
 fragment BaseBuyerFields on Buyer {
@@ -227,6 +294,9 @@ fragment BaseBuyerFields on Buyer {
 
 fragment DisputeResolverFields on DisputeResolver {
   ...BaseDisputeResolverFields
+  pendingDisputeResolver {
+    ...PendingDisputeResolverFields
+  }
   offers(
     skip: $offersSkip
     first: $offersFirst
@@ -235,6 +305,15 @@ fragment DisputeResolverFields on DisputeResolver {
     where: $offersFilter
   ) @include(if: $includeOffers) {
     ...BaseOfferFields
+  }
+  logs(
+    skip: $logsSkip
+    first: $logsFirst
+    orderBy: $logsOrderBy
+    orderDirection: $logsOrderDirection
+    where: $logsFilter
+  ) @include(if: $includeLogs) {
+    ...BaseEventLogFields
   }
 }
 
@@ -251,6 +330,12 @@ fragment BaseDisputeResolverFields on DisputeResolver {
   fees {
     ...BaseDisputeResolverFeeFields
   }
+}
+
+fragment PendingDisputeResolverFields on PendingDisputeResolver {
+  operator
+  admin
+  clerk
 }
 
 fragment BaseDisputeResolverFeeFields on DisputeResolverFee {

@@ -620,47 +620,48 @@ const _abi = [
             name: "offerIds",
             type: "uint256[]",
           },
-          {
-            components: [
-              {
-                internalType: "enum BosonTypes.EvaluationMethod",
-                name: "method",
-                type: "uint8",
-              },
-              {
-                internalType: "enum BosonTypes.TokenType",
-                name: "tokenType",
-                type: "uint8",
-              },
-              {
-                internalType: "address",
-                name: "tokenAddress",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "tokenId",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "threshold",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "maxCommits",
-                type: "uint256",
-              },
-            ],
-            internalType: "struct BosonTypes.Condition",
-            name: "condition",
-            type: "tuple",
-          },
         ],
         indexed: false,
         internalType: "struct BosonTypes.Group",
         name: "group",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Condition",
+        name: "condition",
         type: "tuple",
       },
       {
@@ -705,47 +706,48 @@ const _abi = [
             name: "offerIds",
             type: "uint256[]",
           },
-          {
-            components: [
-              {
-                internalType: "enum BosonTypes.EvaluationMethod",
-                name: "method",
-                type: "uint8",
-              },
-              {
-                internalType: "enum BosonTypes.TokenType",
-                name: "tokenType",
-                type: "uint8",
-              },
-              {
-                internalType: "address",
-                name: "tokenAddress",
-                type: "address",
-              },
-              {
-                internalType: "uint256",
-                name: "tokenId",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "threshold",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "maxCommits",
-                type: "uint256",
-              },
-            ],
-            internalType: "struct BosonTypes.Condition",
-            name: "condition",
-            type: "tuple",
-          },
         ],
         indexed: false,
         internalType: "struct BosonTypes.Group",
         name: "group",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "enum BosonTypes.EvaluationMethod",
+            name: "method",
+            type: "uint8",
+          },
+          {
+            internalType: "enum BosonTypes.TokenType",
+            name: "tokenType",
+            type: "uint8",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "threshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxCommits",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct BosonTypes.Condition",
+        name: "condition",
         type: "tuple",
       },
       {
@@ -863,7 +865,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1425,7 +1427,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1554,7 +1556,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1720,7 +1722,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -1881,7 +1883,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2034,11 +2036,6 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "string",
-        name: "_contractURI",
-        type: "string",
-      },
-      {
         components: [
           {
             internalType: "uint256",
@@ -2126,7 +2123,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2164,6 +2161,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.AuthToken",
         name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
         type: "tuple",
       },
       {
@@ -2217,11 +2231,6 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "string",
-        name: "_contractURI",
-        type: "string",
-      },
-      {
         components: [
           {
             internalType: "uint256",
@@ -2309,7 +2318,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2389,6 +2398,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.AuthToken",
         name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
         type: "tuple",
       },
       {
@@ -2442,11 +2468,6 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "string",
-        name: "_contractURI",
-        type: "string",
-      },
-      {
         components: [
           {
             internalType: "uint256",
@@ -2534,7 +2555,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2612,6 +2633,23 @@ const _abi = [
         type: "tuple",
       },
       {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+      {
         internalType: "uint256",
         name: "_agentId",
         type: "uint256",
@@ -2660,11 +2698,6 @@ const _abi = [
         internalType: "struct BosonTypes.Seller",
         name: "_seller",
         type: "tuple",
-      },
-      {
-        internalType: "string",
-        name: "_contractURI",
-        type: "string",
       },
       {
         components: [
@@ -2754,7 +2787,7 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "fulfillmentPeriod",
+            name: "disputePeriod",
             type: "uint256",
           },
           {
@@ -2871,6 +2904,23 @@ const _abi = [
         ],
         internalType: "struct BosonTypes.AuthToken",
         name: "_authToken",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
         type: "tuple",
       },
       {
