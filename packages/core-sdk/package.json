@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/core-sdk",
-  "version": "1.23.2",
+  "version": "1.24.0",
   "description": "Facilitates interaction with the contracts and subgraphs of the Boson Protocol",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
