@@ -184,7 +184,7 @@ function checkIfOfferReservable(
 
   if (
     offerFromSubgraph.quantityAvailable >= length ||
-    BigInt(length.toString()) >= BigInt(2) ** BigInt(128)
+    BigInt(length.toString()) >= 340282366920938463463374607431768211456n // same as BigInt(2) ** BigInt(128) without changing target
   ) {
     throw new Error(`Range length is too large`);
   }
