@@ -8,7 +8,8 @@ import {
   encodeCompleteExchangeBatch,
   encodeRevokeVoucher,
   encodeExpireVoucher,
-  encodeRedeemVoucher
+  encodeRedeemVoucher,
+  encodeCommitToPreMintedOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
@@ -66,6 +67,24 @@ export async function commitToOffer(
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
+  });
+}
+
+export async function commitToPreMintedOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    exchangeId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    from: args.buyer,
+    to: args.contractAddress,
+    data: encodeCommitToPreMintedOffer(
+      args.buyer,
+      args.offerId,
+      args.exchangeId
+    )
   });
 }
 
