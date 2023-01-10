@@ -33,8 +33,7 @@ import {
   createOfferWithCondition,
   createSellerAndOfferWithCondition,
   createSeller,
-  createSellerAndOffer,
-  createDisputeResolverIfRequired
+  createSellerAndOffer
 } from "./utils";
 import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
 
@@ -45,10 +44,6 @@ const buyerWallet2 = seedWallet6; // be sure the seedWallet is not used by anoth
 jest.setTimeout(60_000);
 
 describe("core-sdk", () => {
-  beforeAll(async () => {
-    await createDisputeResolverIfRequired();
-  });
-
   describe("core user flows", () => {
     test("create seller and offer", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
