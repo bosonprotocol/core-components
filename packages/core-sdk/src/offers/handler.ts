@@ -182,10 +182,7 @@ function checkIfOfferReservable(
     throw new Error(`Range length is zero`);
   }
 
-  if (
-    offerFromSubgraph.quantityAvailable >= length ||
-    BigInt(length.toString()) >= 340282366920938463463374607431768211456n // same as BigInt(2) ** BigInt(128) without changing target
-  ) {
+  if (offerFromSubgraph.quantityAvailable >= length) {
     throw new Error(`Range length is too large`);
   }
 }
