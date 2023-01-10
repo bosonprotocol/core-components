@@ -2,8 +2,7 @@ import { BigNumber } from "ethers";
 import {
   seedWallet12,
   initCoreSDKWithWallet,
-  MOCK_ERC20_ADDRESS,
-  createDisputeResolverIfRequired
+  MOCK_ERC20_ADDRESS
 } from "./utils";
 
 const seedWallet = seedWallet12; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -14,9 +13,6 @@ const coreSDK = initCoreSDKWithWallet(seedWallet);
 jest.setTimeout(60_000);
 
 describe("native-meta-tx", () => {
-  beforeAll(async () => {
-    await createDisputeResolverIfRequired();
-  });
   test("approve ERC20 token", async () => {
     const allowanceBefore = await coreSDK.getProtocolAllowance(
       MOCK_ERC20_ADDRESS

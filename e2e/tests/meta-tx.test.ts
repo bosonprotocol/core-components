@@ -19,7 +19,6 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  createDisputeResolverIfRequired,
   seedWallet13
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
@@ -41,7 +40,6 @@ describe("meta-tx", () => {
   let offerToCommit: OfferFieldsFragment;
 
   beforeAll(async () => {
-    await createDisputeResolverIfRequired();
     await ensureCreatedSeller(sellerWallet);
     await ensureMintedAndAllowedTokens([sellerWallet]);
     // do not approve for buyer (we expect commit to do it when needed)
