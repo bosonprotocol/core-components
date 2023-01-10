@@ -298,49 +298,6 @@ export async function createDisputeResolver(
   };
 }
 
-export async function createDisputeResolverIfRequired() {
-  const protocolAdminWallet = deployerWallet;
-
-  const { coreSDK, fundedWallet: protocolAdminFundedWallet } =
-    await initCoreSDKWithFundedWallet(protocolAdminWallet);
-  const ethDisputeResolutionFee = {
-    tokenAddress: constants.AddressZero,
-    tokenName: "Native",
-    feeAmount: utils.parseEther("0")
-  };
-  const erc20DisputeResolutionFee = {
-    tokenAddress: MOCK_ERC20_ADDRESS,
-    tokenName: "erc20",
-    feeAmount: utils.parseEther("0")
-  };
-  const disputeResolverId = 1;
-  const dr = await coreSDK.getDisputeResolverById(disputeResolverId);
-  if (dr && !dr.fees.length) {
-    await (
-      await coreSDK.addFeesToDisputeResolver(disputeResolverId, [
-        ethDisputeResolutionFee,
-        erc20DisputeResolutionFee
-      ])
-    ).wait();
-    await waitForGraphNodeIndexing();
-  } else if (!dr) {
-    const metadataUri = "ipfs://dispute-resolver-uri";
-    const escalationResponsePeriodInMS = 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
-    const disputeResolverAddress = drWallet.address;
-
-    await createDisputeResolver(drWallet, protocolAdminFundedWallet, {
-      operator: disputeResolverAddress,
-      clerk: disputeResolverAddress,
-      admin: disputeResolverAddress,
-      treasury: disputeResolverAddress,
-      metadataUri,
-      escalationResponsePeriodInMS,
-      fees: [ethDisputeResolutionFee, erc20DisputeResolutionFee],
-      sellerAllowList: []
-    });
-  }
-}
-
 export async function createOffer(
   coreSDK: CoreSDK,
   offerParams?: Partial<CreateOfferArgs>
