@@ -182,7 +182,7 @@ function checkIfOfferReservable(
     throw new Error(`Range length is zero`);
   }
 
-  if (offerFromSubgraph.quantityAvailable >= length) {
+  if (offerFromSubgraph.quantityAvailable < length) {
     throw new Error(`Range length is too large`);
   }
 }
