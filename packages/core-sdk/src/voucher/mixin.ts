@@ -95,4 +95,32 @@ export class VoucherMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib
     });
   }
+
+  /**
+   * Pre-mints all or part of an offer's reserved vouchers.
+   * @param offerId -  Offer ID
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async transferFrom(
+    offerId: BigNumberish,
+    to: BigNumberish,
+    tokenId: BigNumberish,
+    overrides: Partial<{
+      owner: BigNumberish;
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
+
+    return handler.transferFrom({
+      from: overrides.owner || (await this._web3Lib.getSignerAddress()),
+      to,
+      tokenId,
+      contractAddress:
+        overrides.contractAddress ||
+        offerFromSubgraph.seller.voucherCloneAddress,
+      web3Lib: this._web3Lib
+    });
+  }
 }

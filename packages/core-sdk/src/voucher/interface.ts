@@ -31,3 +31,15 @@ export function decodeGetRangeByOfferId(result: string) {
 export function encodePreMint(offerId: BigNumberish, amount: BigNumberish) {
   return bosonVoucherIface.encodeFunctionData("preMint", [offerId, amount]);
 }
+
+export function encodeTransferFrom(
+  from: BigNumberish,
+  to: BigNumberish,
+  tokenId: BigNumberish
+) {
+  return bosonVoucherIface.encodeFunctionData("transferFrom", [
+    from,
+    to,
+    tokenId
+  ]);
+}

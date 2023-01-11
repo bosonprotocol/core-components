@@ -81,6 +81,12 @@ const ACCOUNT_14 = {
     "0x1527fa84bbd0be4ca5663856fcea5dabd3c27cd888a02ae98dc4a178326d6f2f"
 };
 
+const ACCOUNT_15 = {
+  address: "0x7c5F377448811512AcCE2ca1F30c1BCd351ee4f9",
+  privateKey:
+    "0xf7ac2238f7b83f16d7f584c291c495bf75d6a0abe36d3b430d0beb2a145df4fd"
+};
+
 const ACCOUNTS = [
   ACCOUNT_1,
   ACCOUNT_2,
@@ -95,7 +101,8 @@ const ACCOUNTS = [
   ACCOUNT_11,
   ACCOUNT_12,
   ACCOUNT_13,
-  ACCOUNT_14
+  ACCOUNT_14,
+  ACCOUNT_15
 ];
 
 module.exports = {
@@ -113,5 +120,6 @@ module.exports = {
   ACCOUNT_11,
   ACCOUNT_12,
   ACCOUNT_13,
-  ACCOUNT_14
+  ACCOUNT_14,
+  ACCOUNT_15
 };

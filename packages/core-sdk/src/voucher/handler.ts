@@ -7,7 +7,8 @@ import {
   encodeBurnPremintedVouchers,
   encodeGetAvailablePreMints,
   encodeGetRangeByOfferId,
-  encodePreMint
+  encodePreMint,
+  encodeTransferFrom
 } from "./interface";
 
 export async function burnPremintedVouchers(args: {
@@ -62,5 +63,18 @@ export async function preMint(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodePreMint(args.offerId, args.amount)
+  });
+}
+
+export async function transferFrom(args: {
+  from: BigNumberish;
+  to: BigNumberish;
+  tokenId: BigNumberish;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeTransferFrom(args.from, args.to, args.tokenId)
   });
 }
