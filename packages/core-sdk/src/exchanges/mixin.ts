@@ -10,8 +10,7 @@ import {
   redeemVoucher,
   completeExchange,
   completeExchangeBatch,
-  expireVoucher,
-  commitToPreMintedOffer
+  expireVoucher
 } from "./handler";
 import { getExchangeById, getExchanges } from "./subgraph";
 import { bosonExchangeHandlerIface } from "./interface";
@@ -62,31 +61,6 @@ export class ExchangesMixin extends BaseCoreSDK {
     return commitToOffer({
       buyer,
       offerId,
-      web3Lib: this._web3Lib,
-      subgraphUrl: this._subgraphUrl,
-      contractAddress: this._protocolDiamond
-    });
-  }
-
-  /**
-   * Commits to a preminted offer by calling the `ExchangeHandlerContract`.
-   * @param offerId - ID of offer to commit to.
-   * @param exchangeId - ID of the exchange
-   * @param overrides - Optional overrides.
-   * @returns Transaction response.
-   */
-  public async commitToPreMintedOffer(
-    offerId: BigNumberish,
-    exchangeId: BigNumberish,
-    overrides: Partial<{
-      buyer: string;
-    }> = {}
-  ): Promise<TransactionResponse> {
-    const buyer = overrides.buyer || (await this._web3Lib.getSignerAddress());
-    return commitToPreMintedOffer({
-      buyer,
-      offerId,
-      exchangeId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: this._protocolDiamond

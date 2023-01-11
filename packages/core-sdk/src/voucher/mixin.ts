@@ -1,6 +1,8 @@
 import { TransactionResponse } from "@bosonprotocol/common";
+import { Range } from "@bosonprotocol/common/src/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
+import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
 export class VoucherMixin extends BaseCoreSDK {
@@ -16,9 +18,12 @@ export class VoucherMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
     return handler.burnPremintedVouchers({
       offerId,
-      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      contractAddress:
+        overrides.contractAddress ||
+        offerFromSubgraph.seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });
   }
@@ -35,9 +40,12 @@ export class VoucherMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<string> {
+    const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
     return handler.getAvailablePreMints({
       offerId,
-      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      contractAddress:
+        overrides.contractAddress ||
+        offerFromSubgraph.seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });
   }
@@ -53,10 +61,13 @@ export class VoucherMixin extends BaseCoreSDK {
     overrides: Partial<{
       contractAddress: string;
     }> = {}
-  ): Promise<unknown> {
+  ): Promise<Range> {
+    const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
     return handler.getRangeByOfferId({
       offerId,
-      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      contractAddress:
+        overrides.contractAddress ||
+        offerFromSubgraph.seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });
   }
@@ -74,10 +85,13 @@ export class VoucherMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
     return handler.preMint({
       offerId,
       amount,
-      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      contractAddress:
+        overrides.contractAddress ||
+        offerFromSubgraph.seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });
   }

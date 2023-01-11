@@ -1,4 +1,5 @@
 import { TransactionResponse, Web3LibAdapter } from "@bosonprotocol/common";
+import { Range } from "@bosonprotocol/common/src/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import {
   decodeGetAvailablePreMints,
@@ -37,13 +38,19 @@ export async function getRangeByOfferId(args: {
   offerId: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<unknown> {
+}): Promise<Range> {
   const result = await args.web3Lib.call({
     to: args.contractAddress,
     data: encodeGetRangeByOfferId(args.offerId)
   });
   const [range] = decodeGetRangeByOfferId(result);
-  return range as unknown; // TODO: create type and import it from @bosonprotocol/common
+  return {
+    offerId: range.offerId,
+    start: range.start,
+    length: range._length,
+    minted: range.minted,
+    lastBurnedTokenId: range.lastBurnedTokenId
+  };
 }
 
 export async function preMint(args: {
