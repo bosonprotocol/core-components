@@ -129,3 +129,13 @@ export function argsToOfferDurationsStruct(
     resolutionPeriod: utils.timestamp.msToSec(resolutionPeriodDurationInMS)
   };
 }
+
+export function encodeReserveRange(
+  offerId: BigNumberish,
+  length: BigNumberish
+) {
+  return bosonOfferHandlerIface.encodeFunctionData("reserveRange", [
+    offerId,
+    length
+  ]);
+}

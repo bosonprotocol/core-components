@@ -991,6 +991,57 @@ describe("meta-tx", () => {
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
+
+  describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
+    test("reserveRange and preMint with meta-tx", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const length = 10;
+      const offerId = createdOffer.id;
+      let nonce = Date.now();
+      console.log("createdOffer", createdOffer);
+      const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
+        offerId,
+        length,
+        nonce
+      });
+
+      let metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName: metaReserveRange.functionName,
+        functionSignature: metaReserveRange.functionSignature,
+        nonce,
+        sigR: metaReserveRange.r,
+        sigS: metaReserveRange.s,
+        sigV: metaReserveRange.v
+      });
+
+      let metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      nonce = Date.now();
+      const amount = 10;
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxPreMint({
+          offerId,
+          amount,
+          nonce
+        });
+
+      metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
 });
 
 async function createOfferAndDepositFunds(sellerWallet: Wallet) {

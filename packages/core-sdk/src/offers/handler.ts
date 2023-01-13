@@ -8,7 +8,8 @@ import {
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
-  encodeCreateOfferBatch
+  encodeCreateOfferBatch,
+  encodeReserveRange
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -86,10 +87,7 @@ export async function reserveRange(args: {
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: bosonOfferHandlerIface.encodeFunctionData("reserveRange", [
-      args.offerId,
-      args.length
-    ])
+    data: encodeReserveRange(args.offerId, args.length)
   });
 }
 

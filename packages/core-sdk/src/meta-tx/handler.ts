@@ -24,7 +24,8 @@ import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
-  encodeCreateOfferBatch
+  encodeCreateOfferBatch,
+  encodeReserveRange
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
@@ -34,6 +35,7 @@ import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
+import { encodePreMint } from "../voucher/interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -271,6 +273,32 @@ export async function signMetaTxCreateGroup(
     functionName:
       "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256))",
     functionSignature: encodeCreateGroup(args.createGroupArgs)
+  });
+}
+
+export async function signMetaTxReserveRange(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    length: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "reserveRange(uint256,uint256)",
+    functionSignature: encodeReserveRange(args.offerId, args.length)
+  });
+}
+
+export async function signMetaTxPreMint(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    amount: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "preMint(uint256,uint256)",
+    functionSignature: encodePreMint(args.offerId, args.amount)
   });
 }
 
