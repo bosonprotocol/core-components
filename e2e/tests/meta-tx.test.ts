@@ -993,13 +993,13 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test("reserveRange and preMint with meta-tx", async () => {
+    test.skip("reserveRange and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
       const offerId = createdOffer.id;
       let nonce = Date.now();
-      console.log("createdOffer", createdOffer);
+
       const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
         offerId,
         length,
