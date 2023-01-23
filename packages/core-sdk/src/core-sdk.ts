@@ -18,6 +18,7 @@ import { OfferMixin } from "./offers/mixin";
 import { FundsMixin } from "./funds/mixin";
 import { ExchangesMixin } from "./exchanges/mixin";
 import { EventLogsMixin } from "./event-logs/mixin";
+import { VoucherMixin } from "./voucher/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -103,7 +104,8 @@ export interface CoreSDK
     NativeMetaTxMixin,
     GroupsMixin,
     OrchestrationMixin,
-    EventLogsMixin {}
+    EventLogsMixin,
+    VoucherMixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -115,5 +117,6 @@ applyMixins(CoreSDK, [
   NativeMetaTxMixin,
   GroupsMixin,
   OrchestrationMixin,
-  EventLogsMixin
+  EventLogsMixin,
+  VoucherMixin
 ]);

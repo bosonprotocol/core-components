@@ -7,7 +7,6 @@ import {
   providers,
   Wallet,
   utils,
-  constants,
   Contract,
   BigNumber,
   BigNumberish
@@ -34,7 +33,9 @@ import {
   ACCOUNT_10,
   ACCOUNT_11,
   ACCOUNT_12,
-  ACCOUNT_13
+  ACCOUNT_13,
+  ACCOUNT_14,
+  ACCOUNT_15
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -45,10 +46,6 @@ import {
 import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
-import {
-  MSEC_PER_DAY,
-  MSEC_PER_SEC
-} from "../../packages/common/src/utils/timestamp";
 
 export const MOCK_ERC20_ADDRESS =
   getDefaultConfig("local").contracts.testErc20 ||
@@ -93,6 +90,9 @@ export const seedWallet13 = new Wallet(ACCOUNT_13.privateKey, provider);
 export const seedWallet12 = new Wallet(ACCOUNT_12.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
+// seedWallets used by core-sdk-premint test
+export const seedWallet14 = new Wallet(ACCOUNT_14.privateKey, provider);
+export const seedWallet15 = new Wallet(ACCOUNT_15.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
