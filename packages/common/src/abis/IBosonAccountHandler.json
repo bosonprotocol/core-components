@@ -238,46 +238,22 @@
       },
       {
         "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
+          { "internalType": "uint256", "name": "id", "type": "uint256" },
           {
             "internalType": "uint256",
             "name": "escalationResponsePeriod",
             "type": "uint256"
           },
-          {
-            "internalType": "address",
-            "name": "operator",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "admin",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "clerk",
-            "type": "address"
-          },
+          { "internalType": "address", "name": "operator", "type": "address" },
+          { "internalType": "address", "name": "admin", "type": "address" },
+          { "internalType": "address", "name": "clerk", "type": "address" },
           {
             "internalType": "address payable",
             "name": "treasury",
             "type": "address"
           },
-          {
-            "internalType": "string",
-            "name": "metadataUri",
-            "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
+          { "internalType": "string", "name": "metadataUri", "type": "string" },
+          { "internalType": "bool", "name": "active", "type": "bool" }
         ],
         "indexed": false,
         "internalType": "struct BosonTypes.DisputeResolver",
@@ -650,46 +626,22 @@
       },
       {
         "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
+          { "internalType": "uint256", "name": "id", "type": "uint256" },
           {
             "internalType": "uint256",
             "name": "escalationResponsePeriod",
             "type": "uint256"
           },
-          {
-            "internalType": "address",
-            "name": "operator",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "admin",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "clerk",
-            "type": "address"
-          },
+          { "internalType": "address", "name": "operator", "type": "address" },
+          { "internalType": "address", "name": "admin", "type": "address" },
+          { "internalType": "address", "name": "clerk", "type": "address" },
           {
             "internalType": "address payable",
             "name": "treasury",
             "type": "address"
           },
-          {
-            "internalType": "string",
-            "name": "metadataUri",
-            "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
+          { "internalType": "string", "name": "metadataUri", "type": "string" },
+          { "internalType": "bool", "name": "active", "type": "bool" }
         ],
         "indexed": false,
         "internalType": "struct BosonTypes.DisputeResolver",
@@ -1004,36 +956,16 @@
       },
       {
         "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "operator",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "admin",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "clerk",
-            "type": "address"
-          },
+          { "internalType": "uint256", "name": "id", "type": "uint256" },
+          { "internalType": "address", "name": "operator", "type": "address" },
+          { "internalType": "address", "name": "admin", "type": "address" },
+          { "internalType": "address", "name": "clerk", "type": "address" },
           {
             "internalType": "address payable",
             "name": "treasury",
             "type": "address"
           },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
+          { "internalType": "bool", "name": "active", "type": "bool" }
         ],
         "indexed": false,
         "internalType": "struct BosonTypes.Seller",
@@ -1042,11 +974,7 @@
       },
       {
         "components": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
           {
             "internalType": "enum BosonTypes.AuthTokenType",
             "name": "tokenType",
@@ -1067,19 +995,6 @@
     ],
     "name": "SellerUpdated",
     "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_disputeResolverId",
-        "type": "uint256"
-      }
-    ],
-    "name": "activateDisputeResolver",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "inputs": [

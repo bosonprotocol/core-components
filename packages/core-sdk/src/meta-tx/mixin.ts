@@ -2,6 +2,7 @@ import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
+import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
 export class MetaTxMixin extends BaseCoreSDK {
@@ -131,6 +132,38 @@ export class MetaTxMixin extends BaseCoreSDK {
     return handler.signMetaTxCreateGroup({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  public async signMetaTxReserveRange(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxReserveRange>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxReserveRange({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  public async signMetaTxPreMint(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxPreMint>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    const offerFromSubgraph = await getOfferById(
+      this._subgraphUrl,
+      args.offerId
+    );
+    return handler.signMetaTxPreMint({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: offerFromSubgraph.seller.voucherCloneAddress,
       chainId: this._chainId,
       ...args
     });

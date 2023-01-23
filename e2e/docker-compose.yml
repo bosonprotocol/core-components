@@ -4,7 +4,7 @@ services:
     build:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
-    image: meta-tx-gateway:20221017190800
+    image: meta-tx-gateway:20230109111300
     ports:
       - "8888:8888"
     environment:
@@ -19,9 +19,11 @@ services:
 
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:752ba8bd0830109c1d5ec555e615172b0c270d20_0
+    image: hardhat-node:29bee3aeaa7dbb54af6ee6170118a4bf492f0b9d_3
     ports:
       - "8545:8545"
+    volumes:
+      - ../contracts/scripts/deploy.js:/app/scripts/deploy.js
 
   graph-node:
     image: graphprotocol/graph-node:v0.27.0 # TODO: find out why ^0.28.0 not starting to index

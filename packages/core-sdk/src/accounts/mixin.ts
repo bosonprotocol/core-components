@@ -494,22 +494,6 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Activates a dispute resolver account by calling the `AccountHandlerFacet` contract.
-   * Note, that the caller needs to have the ADMIN role.
-   * @param disputeResolverId - Id of dispute resolver to activate.
-   * @returns Transaction response.
-   */
-  public async activateDisputeResolver(
-    disputeResolverId: BigNumberish
-  ): Promise<TransactionResponse> {
-    return accounts.handler.activateDisputeResolver({
-      disputeResolverId,
-      contractAddress: this._protocolDiamond,
-      web3Lib: this._web3Lib
-    });
-  }
-
-  /**
    * Adds fees to a dispute resolver account by calling the `AccountHandlerFacet`
    * contract. Note, that the caller must be the specified `admin` address of the dispute
    * resolver account.

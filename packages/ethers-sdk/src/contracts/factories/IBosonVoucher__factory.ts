@@ -74,6 +74,52 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "offerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "start",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "length",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "minted",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastBurnedTokenId",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IBosonVoucher.Range",
+        name: "range",
+        type: "tuple",
+      },
+    ],
+    name: "RangeReserved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint256",
         name: "royaltyPercentage",
@@ -174,6 +220,19 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
+    name: "burnPremintedVouchers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_exchangeId",
         type: "uint256",
       },
@@ -210,6 +269,71 @@ const _abi = [
         internalType: "address",
         name: "operator",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
+    name: "getAvailablePreMints",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "count",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+    ],
+    name: "getRangeByOfferId",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "offerId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "start",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "length",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "minted",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "lastBurnedTokenId",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IBosonVoucher.Range",
+        name: "range",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -313,6 +437,47 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+    ],
+    name: "preMint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_start",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_length",
+        type: "uint256",
+      },
+    ],
+    name: "reserveRange",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

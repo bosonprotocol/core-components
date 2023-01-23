@@ -7,9 +7,11 @@ export async function balanceOf(args: {
   owner: string;
   web3Lib: Web3LibAdapter;
 }): Promise<string> {
+  const data = erc721Iface.encodeFunctionData("balanceOf", [args.owner]);
+
   const result = await args.web3Lib.call({
     to: args.contractAddress,
-    data: erc721Iface.encodeFunctionData("balanceOf", [args.owner])
+    data: data
   });
 
   const [balance] = erc721Iface.decodeFunctionResult("balanceOf", result);

@@ -61,13 +61,6 @@ export function encodeCreateDisputeResolver(args: CreateDisputeResolverArgs) {
   ]);
 }
 
-export function encodeActivateDisputeResolver(disputeResolverId: BigNumberish) {
-  return bosonAccountHandlerIface.encodeFunctionData(
-    "activateDisputeResolver",
-    [disputeResolverId]
-  );
-}
-
 export function encodeAddFeesToDisputeResolver(args: {
   disputeResolverId: BigNumberish;
   fees: DisputeResolutionFee[];
