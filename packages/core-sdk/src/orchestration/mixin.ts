@@ -1,7 +1,14 @@
-import { ConditionStruct, TransactionResponse } from "@bosonprotocol/common";
-import { handler } from ".";
-import { offers, accounts } from "..";
+import {
+  ConditionStruct,
+  CreateOfferArgs,
+  CreateSellerArgs,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
+import {
+  createOfferWithCondition,
+  createSellerAndOfferWithCondition
+} from "./handler";
 
 export class OrchestrationMixin extends BaseCoreSDK {
   /**
@@ -12,13 +19,13 @@ export class OrchestrationMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createOfferWithCondition(
-    offerToCreate: offers.CreateOfferArgs,
+    offerToCreate: CreateOfferArgs,
     condition: ConditionStruct,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return handler.createOfferWithCondition({
+    return createOfferWithCondition({
       offerToCreate,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib,
@@ -37,14 +44,14 @@ export class OrchestrationMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createSellerAndOfferWithCondition(
-    sellerToCreate: accounts.CreateSellerArgs,
-    offerToCreate: offers.CreateOfferArgs,
+    sellerToCreate: CreateSellerArgs,
+    offerToCreate: CreateOfferArgs,
     condition: ConditionStruct,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return handler.createSellerAndOfferWithCondition({
+    return createSellerAndOfferWithCondition({
       sellerToCreate,
       offerToCreate,
       contractAddress: overrides.contractAddress || this._protocolDiamond,

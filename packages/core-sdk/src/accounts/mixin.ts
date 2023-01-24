@@ -1,12 +1,66 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
-import * as accounts from ".";
-import * as subgraph from "../subgraph";
-import * as erc721 from "../erc721";
-import { AuthTokenType, TransactionResponse, Log } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  TransactionResponse,
+  Log,
+  CreateSellerArgs,
+  UpdateSellerArgs,
+  OptInToSellerUpdateArgs,
+  OptInToDisputeResolverUpdateArgs,
+  CreateOfferArgs
+} from "@bosonprotocol/common";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { AddressZero } from "@ethersproject/constants";
-import { offers, orchestration } from "..";
 import { getValueFromLogs, getValuesFromLogsExt } from "../utils/logs";
+import {
+  getBuyerById,
+  getBuyers,
+  getDisputeResolverById,
+  getDisputeResolvers,
+  getSellerByAddress,
+  getSellerByAdmin,
+  getSellerByAuthToken,
+  getSellerByClerk,
+  getSellerById,
+  getSellerByOperator,
+  getSellerByTreasury,
+  getSellers,
+  SingleBuyerQueryVariables,
+  SingleDisputeResolverQueryVariables,
+  SingleSellerQueryVariables
+} from "./subgraph";
+import {
+  CreateDisputeResolverArgs,
+  DisputeResolutionFee,
+  DisputeResolverUpdates
+} from "./index";
+import {
+  activateDisputeResolver,
+  addFeesToDisputeResolver,
+  addSellersToAllowList,
+  createDisputeResolver,
+  createSeller,
+  optInToDisputeResolverUpdate,
+  optInToSellerUpdate,
+  removeFeesFromDisputeResolver,
+  removeSellersFromAllowList,
+  updateDisputeResolver,
+  updateSeller
+} from "./handler";
+import { createOfferAndSeller } from "../orchestration/handler";
+import { bosonAccountHandlerIface } from "./interface";
+import {
+  BuyerFieldsFragment,
+  DisputeResolverFieldsFragment,
+  GetBuyersQueryQueryVariables,
+  GetDisputeResolversQueryQueryVariables,
+  GetSellersQueryQueryVariables,
+  SellerFieldsFragment
+} from "../subgraph";
+import {
+  balanceOf as erc721_balanceOf,
+  tokenOfOwnerByIndex
+} from "../erc721/handler";
 
 export class AccountsMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -23,13 +77,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellerById(
     sellerId: BigNumberish,
-    queryVars?: accounts.subgraph.SingleSellerQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerById(
-      this._subgraphUrl,
-      sellerId,
-      queryVars
-    );
+    queryVars?: SingleSellerQueryVariables
+  ): Promise<SellerFieldsFragment> {
+    return getSellerById(this._subgraphUrl, sellerId, queryVars);
   }
 
   /**
@@ -40,13 +90,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellerByOperator(
     operator: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByOperator(
-      this._subgraphUrl,
-      operator,
-      queryVars
-    );
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment> {
+    return getSellerByOperator(this._subgraphUrl, operator, queryVars);
   }
 
   /**
@@ -57,13 +103,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellerByClerk(
     clerk: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByClerk(
-      this._subgraphUrl,
-      clerk,
-      queryVars
-    );
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment> {
+    return getSellerByClerk(this._subgraphUrl, clerk, queryVars);
   }
 
   /**
@@ -74,13 +116,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellerByAdmin(
     admin: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByAdmin(
-      this._subgraphUrl,
-      admin,
-      queryVars
-    );
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment> {
+    return getSellerByAdmin(this._subgraphUrl, admin, queryVars);
   }
 
   /**
@@ -91,13 +129,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellerByTreasury(
     treasury: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByTreasury(
-      this._subgraphUrl,
-      treasury,
-      queryVars
-    );
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment> {
+    return getSellerByTreasury(this._subgraphUrl, treasury, queryVars);
   }
 
   /**
@@ -108,12 +142,12 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getSellersByAddress(
     address: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment[]> {
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment[]> {
     if (address === AddressZero) {
       throw new Error(`Unsupported search address '${AddressZero}'`);
     }
-    const seller = await accounts.subgraph.getSellerByAddress(
+    const seller = await getSellerByAddress(
       this._subgraphUrl,
       address,
       queryVars
@@ -122,7 +156,7 @@ export class AccountsMixin extends BaseCoreSDK {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
-      const promises: Promise<subgraph.SellerFieldsFragment>[] = [];
+      const promises: Promise<SellerFieldsFragment>[] = [];
       for (const tokenId of tokenIds) {
         // Just in case the user owns several auth tokens
         const sellerPromise = this.getSellerByAuthToken(
@@ -154,7 +188,7 @@ export class AccountsMixin extends BaseCoreSDK {
     if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
       throw new Error("LENS contract is not configured in Core-SDK");
     }
-    const balance = await erc721.handler.balanceOf({
+    const balance = await erc721_balanceOf({
       contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
       owner: address,
       web3Lib: this._web3Lib
@@ -163,7 +197,7 @@ export class AccountsMixin extends BaseCoreSDK {
     const balanceBN = BigNumber.from(balance);
     const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
-      const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
+      const tokenIdPromise = tokenOfOwnerByIndex({
         contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
         owner: address,
         index,
@@ -185,13 +219,13 @@ export class AccountsMixin extends BaseCoreSDK {
   public async getSellerByAuthToken(
     tokenId: string,
     tokenType: number,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment> {
     if (tokenType !== AuthTokenType.LENS) {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
     }
-    return accounts.subgraph.getSellerByAuthToken(
+    return getSellerByAuthToken(
       this._subgraphUrl,
       tokenId,
       tokenType,
@@ -205,9 +239,9 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Seller entities from subgraph.
    */
   public async getSellers(
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment[]> {
-    return accounts.subgraph.getSellers(this._subgraphUrl, queryVars);
+    queryVars?: GetSellersQueryQueryVariables
+  ): Promise<SellerFieldsFragment[]> {
+    return getSellers(this._subgraphUrl, queryVars);
   }
 
   /**
@@ -217,12 +251,12 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createSeller(
-    sellerToCreate: accounts.CreateSellerArgs,
+    sellerToCreate: CreateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.createSeller({
+    return createSeller({
       sellerToCreate,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
@@ -238,13 +272,13 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createSellerAndOffer(
-    sellerToCreate: accounts.CreateSellerArgs,
-    offerToCreate: offers.CreateOfferArgs,
+    sellerToCreate: CreateSellerArgs,
+    offerToCreate: CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return orchestration.handler.createOfferAndSeller({
+    return createOfferAndSeller({
       sellerToCreate,
       offerToCreate,
       web3Lib: this._web3Lib,
@@ -262,12 +296,12 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async updateSeller(
-    sellerUpdates: accounts.UpdateSellerArgs,
+    sellerUpdates: UpdateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.updateSeller({
+    return updateSeller({
       sellerUpdates,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
@@ -282,12 +316,12 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async optInToSellerUpdate(
-    sellerUpdates: accounts.OptInToSellerUpdateArgs,
+    sellerUpdates: OptInToSellerUpdateArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.optInToSellerUpdate({
+    return optInToSellerUpdate({
       sellerUpdates,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
@@ -303,7 +337,7 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async updateSellerAndOptIn(
-    sellerUpdates: accounts.UpdateSellerArgs,
+    sellerUpdates: UpdateSellerArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
@@ -357,13 +391,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getBuyerById(
     buyerId: BigNumberish,
-    queryVars?: accounts.subgraph.SingleBuyerQueryVariables
-  ): Promise<subgraph.BuyerFieldsFragment> {
-    return accounts.subgraph.getBuyerById(
-      this._subgraphUrl,
-      buyerId,
-      queryVars
-    );
+    queryVars?: SingleBuyerQueryVariables
+  ): Promise<BuyerFieldsFragment> {
+    return getBuyerById(this._subgraphUrl, buyerId, queryVars);
   }
 
   /**
@@ -372,9 +402,9 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Buyer entities from subgraph.
    */
   public async getBuyers(
-    queryVars?: subgraph.GetBuyersQueryQueryVariables
-  ): Promise<subgraph.BuyerFieldsFragment[]> {
-    return accounts.subgraph.getBuyers(this._subgraphUrl, queryVars);
+    queryVars?: GetBuyersQueryQueryVariables
+  ): Promise<BuyerFieldsFragment[]> {
+    return getBuyers(this._subgraphUrl, queryVars);
   }
 
   /* ---------------------------- Dispute Resolver ---------------------------- */
@@ -385,9 +415,9 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createDisputeResolver(
-    disputeResolverToCreate: accounts.CreateDisputeResolverArgs
+    disputeResolverToCreate: CreateDisputeResolverArgs
   ): Promise<TransactionResponse> {
-    return accounts.handler.createDisputeResolver({
+    return createDisputeResolver({
       disputeResolverToCreate,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
@@ -401,7 +431,7 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public getDisputeResolverIdFromLogs(logs: Log[]): string | null {
     return getValueFromLogs({
-      iface: accounts.iface.bosonAccountHandlerIface,
+      iface: bosonAccountHandlerIface,
       logs,
       eventArgsKey: "disputeResolverId",
       eventName: "DisputeResolverCreated"
@@ -433,7 +463,7 @@ export class AccountsMixin extends BaseCoreSDK {
           tokenId: BigNumber;
         }
     >({
-      iface: accounts.iface.bosonAccountHandlerIface,
+      iface: bosonAccountHandlerIface,
       logs,
       eventArgsKeys: ["pendingSeller", "pendingAuthToken"],
       eventNames: ["SellerUpdatePending", "SellerUpdateApplied"]
@@ -469,9 +499,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async updateDisputeResolver(
     disputeResolverId: BigNumberish,
-    updates: accounts.DisputeResolverUpdates
+    updates: DisputeResolverUpdates
   ): Promise<TransactionResponse> {
-    return accounts.handler.updateDisputeResolver({
+    return updateDisputeResolver({
       disputeResolverId,
       updates,
       subgraphUrl: this._subgraphUrl,
@@ -481,12 +511,12 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   public async optInToDisputeResolverUpdate(
-    disputeResolverUpdates: accounts.OptInToDisputeResolverUpdateArgs,
+    disputeResolverUpdates: OptInToDisputeResolverUpdateArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return accounts.handler.optInToDisputeResolverUpdate({
+    return optInToDisputeResolverUpdate({
       disputeResolverUpdates,
       web3Lib: this._web3Lib,
       contractAddress: overrides.contractAddress || this._protocolDiamond
@@ -502,7 +532,7 @@ export class AccountsMixin extends BaseCoreSDK {
   public async activateDisputeResolver(
     disputeResolverId: BigNumberish
   ): Promise<TransactionResponse> {
-    return accounts.handler.activateDisputeResolver({
+    return activateDisputeResolver({
       disputeResolverId,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib
@@ -520,9 +550,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async addFeesToDisputeResolver(
     disputeResolverId: BigNumberish,
-    fees: accounts.DisputeResolutionFee[]
+    fees: DisputeResolutionFee[]
   ): Promise<TransactionResponse> {
-    return accounts.handler.addFeesToDisputeResolver({
+    return addFeesToDisputeResolver({
       disputeResolverId,
       fees,
       contractAddress: this._protocolDiamond,
@@ -543,7 +573,7 @@ export class AccountsMixin extends BaseCoreSDK {
     disputeResolverId: BigNumberish,
     sellerAllowList: BigNumberish[]
   ): Promise<TransactionResponse> {
-    return accounts.handler.addSellersToAllowList({
+    return addSellersToAllowList({
       disputeResolverId,
       sellerAllowList,
       contractAddress: this._protocolDiamond,
@@ -563,7 +593,7 @@ export class AccountsMixin extends BaseCoreSDK {
     disputeResolverId: BigNumberish,
     feeTokenAddresses: string[]
   ): Promise<TransactionResponse> {
-    return accounts.handler.removeFeesFromDisputeResolver({
+    return removeFeesFromDisputeResolver({
       disputeResolverId,
       feeTokenAddresses,
       contractAddress: this._protocolDiamond,
@@ -584,7 +614,7 @@ export class AccountsMixin extends BaseCoreSDK {
     disputeResolverId: BigNumberish,
     sellerAllowList: string[]
   ): Promise<TransactionResponse> {
-    return accounts.handler.removeSellersFromAllowList({
+    return removeSellersFromAllowList({
       disputeResolverId,
       sellerAllowList,
       contractAddress: this._protocolDiamond,
@@ -600,9 +630,9 @@ export class AccountsMixin extends BaseCoreSDK {
    */
   public async getDisputeResolverById(
     disputeResolverId: BigNumberish,
-    queryVars?: accounts.subgraph.SingleDisputeResolverQueryVariables
-  ): Promise<subgraph.DisputeResolverFieldsFragment> {
-    return accounts.subgraph.getDisputeResolverById(
+    queryVars?: SingleDisputeResolverQueryVariables
+  ): Promise<DisputeResolverFieldsFragment> {
+    return getDisputeResolverById(
       this._subgraphUrl,
       disputeResolverId,
       queryVars
@@ -615,8 +645,8 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Dispute resolver entities from subgraph.
    */
   public async getDisputeResolvers(
-    queryVars?: subgraph.GetDisputeResolversQueryQueryVariables
-  ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
-    return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
+    queryVars?: GetDisputeResolversQueryQueryVariables
+  ): Promise<DisputeResolverFieldsFragment[]> {
+    return getDisputeResolvers(this._subgraphUrl, queryVars);
   }
 }

@@ -1,6 +1,4 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
-import * as subgraph from "../subgraph";
-import { AnyMetadata } from "..";
 import {
   getBaseMetadataEntities,
   getProductV1MetadataEntities,
@@ -9,6 +7,21 @@ import {
   getAllProductsWithVariants,
   getAllProductsWithNotVoidedVariants
 } from "./subgraph";
+import { AnyMetadata } from "@bosonprotocol/common";
+import {
+  BaseMetadataEntityFieldsFragment,
+  BaseProductV1ProductFieldsFragment,
+  BaseProductV1ProductWithNotVoidedVariantsFieldsFragment,
+  BaseProductV1ProductWithVariantsFieldsFragment,
+  GetAllProductsWithNotVoidedVariantsQueryQueryVariables,
+  GetBaseMetadataEntitiesQueryQueryVariables,
+  GetProductV1MetadataEntitiesQueryQueryVariables,
+  GetProductV1ProductsQueryQueryVariables,
+  GetProductV1ProductsWithVariantsQueryQueryVariables,
+  OfferFieldsFragment,
+  ProductV1MetadataEntityFieldsFragment,
+  ProductV1Variation
+} from "../subgraph";
 
 export class MetadataMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -49,8 +62,8 @@ export class MetadataMixin extends BaseCoreSDK {
    * @returns BaseMetadataEntities from subgraph.
    */
   public async getBaseMetadataEntities(
-    queryVars?: subgraph.GetBaseMetadataEntitiesQueryQueryVariables
-  ): Promise<subgraph.BaseMetadataEntityFieldsFragment[]> {
+    queryVars?: GetBaseMetadataEntitiesQueryQueryVariables
+  ): Promise<BaseMetadataEntityFieldsFragment[]> {
     return getBaseMetadataEntities(this._subgraphUrl, queryVars);
   }
 
@@ -60,38 +73,36 @@ export class MetadataMixin extends BaseCoreSDK {
    * @returns ProductV1MetadataEntities from subgraph.
    */
   public async getProductV1MetadataEntities(
-    queryVars?: subgraph.GetProductV1MetadataEntitiesQueryQueryVariables
-  ): Promise<subgraph.ProductV1MetadataEntityFieldsFragment[]> {
+    queryVars?: GetProductV1MetadataEntitiesQueryQueryVariables
+  ): Promise<ProductV1MetadataEntityFieldsFragment[]> {
     return getProductV1MetadataEntities(this._subgraphUrl, queryVars);
   }
 
   public async getProductV1Products(
-    queryVars?: subgraph.GetProductV1ProductsQueryQueryVariables
-  ): Promise<subgraph.BaseProductV1ProductFieldsFragment[]> {
+    queryVars?: GetProductV1ProductsQueryQueryVariables
+  ): Promise<BaseProductV1ProductFieldsFragment[]> {
     return getProductV1Products(this._subgraphUrl, queryVars);
   }
 
   public async getProductWithVariants(productUuid: string): Promise<{
-    product: subgraph.BaseProductV1ProductFieldsFragment;
+    product: BaseProductV1ProductFieldsFragment;
     variants: Array<{
-      offer: subgraph.OfferFieldsFragment;
-      variations: Array<subgraph.ProductV1Variation>;
+      offer: OfferFieldsFragment;
+      variations: Array<ProductV1Variation>;
     }>;
   } | null> {
     return getProductWithVariants(this._subgraphUrl, productUuid);
   }
 
   public async getAllProductsWithVariants(
-    queryVars?: subgraph.GetProductV1ProductsWithVariantsQueryQueryVariables
-  ): Promise<subgraph.BaseProductV1ProductWithVariantsFieldsFragment[]> {
+    queryVars?: GetProductV1ProductsWithVariantsQueryQueryVariables
+  ): Promise<BaseProductV1ProductWithVariantsFieldsFragment[]> {
     return getAllProductsWithVariants(this._subgraphUrl, queryVars);
   }
 
   public async getAllProductsWithNotVoidedVariants(
-    queryVars?: subgraph.GetAllProductsWithNotVoidedVariantsQueryQueryVariables
-  ): Promise<
-    subgraph.BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]
-  > {
+    queryVars?: GetAllProductsWithNotVoidedVariantsQueryQueryVariables
+  ): Promise<BaseProductV1ProductWithNotVoidedVariantsFieldsFragment[]> {
     return getAllProductsWithNotVoidedVariants(this._subgraphUrl, queryVars);
   }
 }

@@ -3,19 +3,34 @@ import * as erc20 from "../erc20";
 import * as erc721 from "../erc721";
 import * as erc1155 from "../erc1155";
 import * as subgraph from "../subgraph";
-import * as offers from ".";
 import * as accounts from "../accounts";
 import * as orchestration from "../orchestration";
-import * as groups from "../groups";
 import {
   TransactionResponse,
   Log,
   TokenType,
-  EvaluationMethod
+  EvaluationMethod,
+  CreateOfferArgs
 } from "@bosonprotocol/common";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
+import {
+  createOffer,
+  createOfferBatch,
+  voidOffer,
+  voidOfferBatch
+} from "./handler";
+import { bosonOfferHandlerIface } from "./interface";
+import { bosonOrchestrationHandlerIface } from "../orchestration/interface";
+import { bosonGroupHandlerIface } from "../groups/interface";
+import { getOfferById, getOffers, SingleOfferQueryVariables } from "./subgraph";
+import { GetOffersQueryQueryVariables, OfferFieldsFragment } from "../subgraph";
+import {
+  AdditionalOfferMetadata,
+  renderContractualAgreement,
+  renderContractualAgreementForOffer
+} from "./renderContractualAgreement";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -30,12 +45,12 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createOffer(
-    offerToCreate: offers.CreateOfferArgs,
+    offerToCreate: CreateOfferArgs,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return offers.handler.createOffer({
+    return createOffer({
       offerToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
@@ -52,12 +67,12 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Transaction response.
    */
   public async createOfferBatch(
-    offersToCreate: offers.CreateOfferArgs[],
+    offersToCreate: CreateOfferArgs[],
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return offers.handler.createOfferBatch({
+    return createOfferBatch({
       offersToCreate,
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
@@ -74,7 +89,7 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public getCreatedOfferIdFromLogs(logs: Log[]): string | null {
     const offerId = getValueFromLogs<string>({
-      iface: offers.iface.bosonOfferHandlerIface,
+      iface: bosonOfferHandlerIface,
       logs,
       eventArgsKey: "offerId",
       eventName: "OfferCreated"
@@ -83,7 +98,7 @@ export class OfferMixin extends BaseCoreSDK {
     return (
       offerId ||
       getValueFromLogs({
-        iface: orchestration.iface.bosonOrchestrationHandlerIface,
+        iface: bosonOrchestrationHandlerIface,
         logs,
         eventArgsKey: "offerId",
         eventName: "OfferCreated"
@@ -98,7 +113,7 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public getCreatedOfferIdsFromLogs(logs: Log[]): string[] {
     return getValuesFromLogs({
-      iface: offers.iface.bosonOfferHandlerIface,
+      iface: bosonOfferHandlerIface,
       logs,
       eventArgsKey: "offerId",
       eventName: "OfferCreated"
@@ -112,7 +127,7 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public getCreatedGroupIdsFromLogs(logs: Log[]): string[] {
     return getValuesFromLogs({
-      iface: groups.iface.bosonGroupHandlerIface,
+      iface: bosonGroupHandlerIface,
       logs,
       eventArgsKey: "groupId",
       eventName: "GroupCreated"
@@ -157,7 +172,7 @@ export class OfferMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return offers.handler.voidOffer({
+    return voidOffer({
       offerId,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
@@ -179,7 +194,7 @@ export class OfferMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
-    return offers.handler.voidOfferBatch({
+    return voidOfferBatch({
       offerIds,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
@@ -195,9 +210,9 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public async getOfferById(
     offerId: BigNumberish,
-    queryVars?: offers.subgraph.SingleOfferQueryVariables
+    queryVars?: SingleOfferQueryVariables
   ): Promise<subgraph.OfferFieldsFragment> {
-    return offers.subgraph.getOfferById(this._subgraphUrl, offerId, queryVars);
+    return getOfferById(this._subgraphUrl, offerId, queryVars);
   }
 
   /**
@@ -206,9 +221,9 @@ export class OfferMixin extends BaseCoreSDK {
    * @returns Offer entities from subgraph.
    */
   public async getOffers(
-    queryVars?: subgraph.GetOffersQueryQueryVariables
-  ): Promise<subgraph.OfferFieldsFragment[]> {
-    return offers.subgraph.getOffers(this._subgraphUrl, queryVars);
+    queryVars?: GetOffersQueryQueryVariables
+  ): Promise<OfferFieldsFragment[]> {
+    return getOffers(this._subgraphUrl, queryVars);
   }
 
   /**
@@ -219,11 +234,8 @@ export class OfferMixin extends BaseCoreSDK {
   public async renderContractualAgreementForOffer(
     offerId: BigNumberish
   ): Promise<string> {
-    const offerData = await offers.subgraph.getOfferById(
-      this._subgraphUrl,
-      offerId
-    );
-    return offers.renderContractualAgreementForOffer(offerData);
+    const offerData = await getOfferById(this._subgraphUrl, offerId);
+    return renderContractualAgreementForOffer(offerData);
   }
 
   /**
@@ -234,11 +246,11 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public async renderContractualAgreement(
     template: string,
-    offerData: offers.CreateOfferArgs,
-    offerMetadata: offers.AdditionalOfferMetadata
+    offerData: CreateOfferArgs,
+    offerMetadata: AdditionalOfferMetadata
   ): Promise<string> {
     const tokenInfo = await this.getExchangeTokenInfo(offerData.exchangeToken);
-    return offers.renderContractualAgreement(
+    return renderContractualAgreement(
       template,
       offerData,
       offerMetadata,

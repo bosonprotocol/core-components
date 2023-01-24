@@ -1,9 +1,37 @@
 import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
-import { handler } from ".";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
+import {
+  signMetaTx,
+  signMetaTxCreateSeller,
+  signMetaTxUpdateSeller,
+  signMetaTxOptInToSellerUpdate,
+  signMetaTxCreateOffer,
+  signMetaTxCreateOfferBatch,
+  signMetaTxCreateGroup,
+  signMetaTxCreateOfferWithCondition,
+  signMetaTxVoidOffer,
+  signMetaTxVoidOfferBatch,
+  signMetaTxCompleteExchange,
+  signMetaTxCompleteExchangeBatch,
+  signMetaTxCommitToOffer,
+  signMetaTxCancelVoucher,
+  signMetaTxRedeemVoucher,
+  signMetaTxExpireVoucher,
+  signMetaTxRevokeVoucher,
+  signMetaTxRetractDispute,
+  signMetaTxEscalateDispute,
+  signMetaTxRaiseDispute,
+  signMetaTxResolveDispute,
+  signMetaTxExtendDisputeTimeout,
+  signMetaTxWithdrawFunds,
+  signMetaTxDepositFunds,
+  relayMetaTransaction,
+  getResubmitted
+} from "./handler";
+
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -16,11 +44,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTx(
     args: Omit<
-      Parameters<typeof handler.signMetaTx>[0],
+      Parameters<typeof signMetaTx>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTx({
+    return signMetaTx({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -35,11 +63,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCreateSeller(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCreateSeller>[0],
+      Parameters<typeof signMetaTxCreateSeller>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCreateSeller({
+    return signMetaTxCreateSeller({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -49,11 +77,11 @@ export class MetaTxMixin extends BaseCoreSDK {
 
   public async signMetaTxUpdateSeller(
     args: Omit<
-      Parameters<typeof handler.signMetaTxUpdateSeller>[0],
+      Parameters<typeof signMetaTxUpdateSeller>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxUpdateSeller({
+    return signMetaTxUpdateSeller({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -63,11 +91,11 @@ export class MetaTxMixin extends BaseCoreSDK {
 
   public async signMetaTxOptInToSellerUpdate(
     args: Omit<
-      Parameters<typeof handler.signMetaTxOptInToSellerUpdate>[0],
+      Parameters<typeof signMetaTxOptInToSellerUpdate>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxOptInToSellerUpdate({
+    return signMetaTxOptInToSellerUpdate({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -82,11 +110,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCreateOffer(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCreateOffer>[0],
+      Parameters<typeof signMetaTxCreateOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCreateOffer({
+    return signMetaTxCreateOffer({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
@@ -103,11 +131,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCreateOfferBatch(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCreateOfferBatch>[0],
+      Parameters<typeof signMetaTxCreateOfferBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCreateOfferBatch({
+    return signMetaTxCreateOfferBatch({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
@@ -124,11 +152,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCreateGroup(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCreateGroup>[0],
+      Parameters<typeof signMetaTxCreateGroup>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCreateGroup({
+    return signMetaTxCreateGroup({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -143,11 +171,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCreateOfferWithCondition(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCreateOfferWithCondition>[0],
+      Parameters<typeof signMetaTxCreateOfferWithCondition>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCreateOfferWithCondition({
+    return signMetaTxCreateOfferWithCondition({
       web3Lib: this._web3Lib,
       theGraphStorage: this._theGraphStorage,
       metadataStorage: this._metadataStorage,
@@ -164,11 +192,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxVoidOffer(
     args: Omit<
-      Parameters<typeof handler.signMetaTxVoidOffer>[0],
+      Parameters<typeof signMetaTxVoidOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxVoidOffer({
+    return signMetaTxVoidOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -183,11 +211,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxVoidOfferBatch(
     args: Omit<
-      Parameters<typeof handler.signMetaTxVoidOfferBatch>[0],
+      Parameters<typeof signMetaTxVoidOfferBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxVoidOfferBatch({
+    return signMetaTxVoidOfferBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -202,11 +230,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCompleteExchange(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCompleteExchange>[0],
+      Parameters<typeof signMetaTxCompleteExchange>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCompleteExchange({
+    return signMetaTxCompleteExchange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -221,11 +249,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCompleteExchangeBatch(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCompleteExchangeBatch>[0],
+      Parameters<typeof signMetaTxCompleteExchangeBatch>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCompleteExchangeBatch({
+    return signMetaTxCompleteExchangeBatch({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -240,11 +268,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCommitToOffer(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCommitToOffer>[0],
+      Parameters<typeof signMetaTxCommitToOffer>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCommitToOffer({
+    return signMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -259,11 +287,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxCancelVoucher(
     args: Omit<
-      Parameters<typeof handler.signMetaTxCancelVoucher>[0],
+      Parameters<typeof signMetaTxCancelVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxCancelVoucher({
+    return signMetaTxCancelVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -278,11 +306,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxRedeemVoucher(
     args: Omit<
-      Parameters<typeof handler.signMetaTxRedeemVoucher>[0],
+      Parameters<typeof signMetaTxRedeemVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxRedeemVoucher({
+    return signMetaTxRedeemVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -297,11 +325,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxExpireVoucher(
     args: Omit<
-      Parameters<typeof handler.signMetaTxExpireVoucher>[0],
+      Parameters<typeof signMetaTxExpireVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxExpireVoucher({
+    return signMetaTxExpireVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -316,11 +344,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxRevokeVoucher(
     args: Omit<
-      Parameters<typeof handler.signMetaTxRevokeVoucher>[0],
+      Parameters<typeof signMetaTxRevokeVoucher>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxRevokeVoucher({
+    return signMetaTxRevokeVoucher({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -335,11 +363,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxRetractDispute(
     args: Omit<
-      Parameters<typeof handler.signMetaTxRetractDispute>[0],
+      Parameters<typeof signMetaTxRetractDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxRetractDispute({
+    return signMetaTxRetractDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -354,11 +382,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxEscalateDispute(
     args: Omit<
-      Parameters<typeof handler.signMetaTxEscalateDispute>[0],
+      Parameters<typeof signMetaTxEscalateDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxEscalateDispute({
+    return signMetaTxEscalateDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -373,11 +401,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxRaiseDispute(
     args: Omit<
-      Parameters<typeof handler.signMetaTxRaiseDispute>[0],
+      Parameters<typeof signMetaTxRaiseDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxRaiseDispute({
+    return signMetaTxRaiseDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -392,11 +420,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxResolveDispute(
     args: Omit<
-      Parameters<typeof handler.signMetaTxResolveDispute>[0],
+      Parameters<typeof signMetaTxResolveDispute>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxResolveDispute({
+    return signMetaTxResolveDispute({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -411,11 +439,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxExtendDisputeTimeout(
     args: Omit<
-      Parameters<typeof handler.signMetaTxExtendDisputeTimeout>[0],
+      Parameters<typeof signMetaTxExtendDisputeTimeout>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxExtendDisputeTimeout({
+    return signMetaTxExtendDisputeTimeout({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -430,11 +458,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxWithdrawFunds(
     args: Omit<
-      Parameters<typeof handler.signMetaTxWithdrawFunds>[0],
+      Parameters<typeof signMetaTxWithdrawFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxWithdrawFunds({
+    return signMetaTxWithdrawFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -449,11 +477,11 @@ export class MetaTxMixin extends BaseCoreSDK {
    */
   public async signMetaTxDepositFunds(
     args: Omit<
-      Parameters<typeof handler.signMetaTxDepositFunds>[0],
+      Parameters<typeof signMetaTxDepositFunds>[0],
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
-    return handler.signMetaTxDepositFunds({
+    return signMetaTxDepositFunds({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
@@ -486,7 +514,7 @@ export class MetaTxMixin extends BaseCoreSDK {
     const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl, contractAddress } =
       this.assertAndGetMetaTxConfig(overrides);
 
-    return handler.relayMetaTransaction({
+    return relayMetaTransaction({
       web3LibAdapter: this._web3Lib,
       contractAddress,
       chainId: this._chainId,
@@ -528,7 +556,7 @@ export class MetaTxMixin extends BaseCoreSDK {
     const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
       this.assertAndGetMetaTxConfig(overrides);
 
-    return handler.getResubmitted({
+    return getResubmitted({
       chainId: this._chainId,
       metaTx: {
         config: {

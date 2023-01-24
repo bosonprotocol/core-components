@@ -10,8 +10,7 @@ import {
   MetadataStorage,
   MetaTxConfig
 } from "@bosonprotocol/common";
-import { EnvironmentType } from "@bosonprotocol/common/src/types";
-
+import { EnvironmentType } from "@bosonprotocol/common";
 import { MetadataMixin } from "./metadata/mixin";
 import { AccountsMixin } from "./accounts/mixin";
 import { OfferMixin } from "./offers/mixin";
