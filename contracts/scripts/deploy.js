@@ -90,6 +90,10 @@ async function main() {
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
+  const MockForwarder = await ethers.getContractFactory("MockForwarder");
+
+  const forwarder = await MockForwarder.deploy();
+  console.log("deployed forwarder", forwarder);
 }
 
 main()

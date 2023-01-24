@@ -15,7 +15,7 @@ jest.setTimeout(60_000);
 const seedWallet = seedWallet14; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const buyerWallet = seedWallet15;
 
-describe("core-sdk-premint", () => {
+describe.only("core-sdk-premint", () => {
   test("can reserveRange and then preMint some vouchers and there are still some left to preMint", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet

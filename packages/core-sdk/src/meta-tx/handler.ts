@@ -44,6 +44,14 @@ export type BaseMetaTxArgs = {
   chainId: number;
 };
 
+export type BaseVoucherMetaTxArgs = {
+  web3Lib: Web3LibAdapter;
+  nonce: BigNumberish;
+  bosonVoucherAddress: string;
+  forwarderAddress: string;
+  chainId: number;
+};
+
 export type SignedMetaTx = {
   functionName: string;
   functionSignature: string;
@@ -85,6 +93,47 @@ export async function signMetaTx(
     verifyingContractAddress: args.metaTxHandlerAddress,
     customSignatureType,
     primaryType: "MetaTransaction",
+    message
+  });
+
+  return {
+    functionName: args.functionName,
+    functionSignature: args.functionSignature,
+    ...signature
+  };
+}
+
+export async function signVoucherMetaTx(
+  args: BaseVoucherMetaTxArgs & {
+    functionName: string; // TODO: necessary?
+    functionSignature: string;
+  }
+): Promise<SignedMetaTx> {
+  const forwardType = [
+    { name: "from", type: "address" },
+    { name: "to", type: "address" },
+    { name: "nonce", type: "uint256" },
+    { name: "data", type: "bytes" }
+  ];
+
+  const customSignatureType = {
+    ForwardRequest: forwardType
+  };
+
+  const signerAddress = await args.web3Lib.getSignerAddress();
+
+  const message = {
+    from: signerAddress,
+    to: args.bosonVoucherAddress,
+    nonce: args.nonce,
+    data: args.functionSignature
+  };
+
+  const signature = await prepareDataSignatureParameters({
+    ...args,
+    verifyingContractAddress: args.forwarderAddress,
+    customSignatureType,
+    primaryType: "ForwardRequest",
     message
   });
 
@@ -290,12 +339,12 @@ export async function signMetaTxReserveRange(
 }
 
 export async function signMetaTxPreMint(
-  args: BaseMetaTxArgs & {
+  args: BaseVoucherMetaTxArgs & {
     offerId: BigNumberish;
     amount: BigNumberish;
   }
 ) {
-  return signMetaTx({
+  return signVoucherMetaTx({
     ...args,
     functionName: "preMint(uint256,uint256)",
     functionSignature: encodePreMint(args.offerId, args.amount)

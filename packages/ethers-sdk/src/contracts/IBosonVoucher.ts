@@ -19,7 +19,6 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export declare namespace IBosonVoucher {
   export type RangeStruct = {
-    offerId: BigNumberish;
     start: BigNumberish;
     length: BigNumberish;
     minted: BigNumberish;
@@ -30,10 +29,8 @@ export declare namespace IBosonVoucher {
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber,
     BigNumber
   ] & {
-    offerId: BigNumber;
     start: BigNumber;
     length: BigNumber;
     minted: BigNumber;
@@ -70,6 +67,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "tokenURI(uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "transferPremintedFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -167,6 +165,10 @@ export interface IBosonVoucherInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferPremintedFrom",
+    values: [string, string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -249,6 +251,10 @@ export interface IBosonVoucherInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferPremintedFrom",
     data: BytesLike
   ): Result;
 
@@ -491,6 +497,15 @@ export interface IBosonVoucher extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   approve(
@@ -621,6 +636,15 @@ export interface IBosonVoucher extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  transferPremintedFrom(
+    _from: string,
+    _to: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    _data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     approve(
       to: string,
@@ -747,6 +771,15 @@ export interface IBosonVoucher extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -950,6 +983,15 @@ export interface IBosonVoucher extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1087,6 +1129,15 @@ export interface IBosonVoucher extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

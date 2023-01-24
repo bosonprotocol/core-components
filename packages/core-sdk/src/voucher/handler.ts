@@ -46,7 +46,6 @@ export async function getRangeByOfferId(args: {
   });
   const [range] = decodeGetRangeByOfferId(result);
   return {
-    offerId: range.offerId,
     start: range.start,
     length: range._length,
     minted: range.minted,

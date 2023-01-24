@@ -993,7 +993,7 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test.skip("reserveRange and preMint with meta-tx", async () => {
+    test.only("reserveRange and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
@@ -1018,14 +1018,17 @@ describe("meta-tx", () => {
       let metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
-
+      console.log("now premint");
       nonce = Date.now();
+
+      const forwarderAddress = "0x4826533B4897376654Bb4d4AD88B7faFD0C98528"; // TODO: it shouldnt be hardcoded here, extracted from deploy.js
       const amount = 10;
       const { r, s, v, functionName, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
           amount,
-          nonce
+          nonce,
+          forwarderAddress
         });
 
       metaTx = await sellerCoreSDK.relayMetaTransaction({

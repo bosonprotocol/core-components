@@ -4,7 +4,7 @@ services:
     build:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
-    image: meta-tx-gateway:20230109111300
+    image: meta-tx-gateway:20230124153900
     ports:
       - "8888:8888"
     environment:
@@ -19,7 +19,7 @@ services:
 
   hardhat-node:
     build: ../contracts
-    image: hardhat-node:29bee3aeaa7dbb54af6ee6170118a4bf492f0b9d_3
+    image: hardhat-node:1f87d6e9ecbe23044a8c36b3f8925754e54e6b2c_1
     ports:
       - "8545:8545"
     volumes:
