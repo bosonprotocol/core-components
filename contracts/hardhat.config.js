@@ -95,7 +95,8 @@ module.exports = {
       "IBosonDisputeHandler",
       "IBosonVoucher",
       "MockNativeMetaTransaction",
-      "IBosonGroupHandler"
+      "IBosonGroupHandler",
+      "MockForwarder"
     ]
   }
 };

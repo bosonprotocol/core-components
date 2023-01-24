@@ -3,6 +3,7 @@ export type ContractAddresses = {
   testErc721?: string;
   testErc20?: string;
   testErc1155?: string;
+  forwarder?: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";

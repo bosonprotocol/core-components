@@ -5,6 +5,8 @@ import { Interface } from "@ethersproject/abi";
 import { ethers } from "ethers";
 import { Config, getConfig } from "../config";
 import { getSigner } from "../utils/web3";
+import { BytesLike } from "@ethersproject/bytes";
+import { BigNumberish } from "@ethersproject/bignumber";
 
 export type PostMetaTxBody = {
   to: string;
@@ -22,6 +24,7 @@ export async function postMetaTx(body: PostMetaTxBody) {
   if (body.to.toLowerCase() === config.ERC20.toLowerCase()) {
     return toErc20(config, signer, body);
   }
+  return viaForwarder(config, signer, body);
   logger.error(
     `Targeted contract ${body.to} is neither protocol (${config.PROTOCOL}) nor testErc20 (${config.ERC20})`
   );
@@ -84,6 +87,54 @@ async function toBosonProtocol(
   try {
     const tx: ContractTransaction =
       await bosonMetaTransactionsHandler.executeMetaTransaction(...body.params);
+    const txReceipt = await tx.wait();
+    return {
+      txHash: txReceipt.transactionHash,
+      to: txReceipt.to,
+      from: txReceipt.from
+    };
+  } catch (e) {
+    logger.error(`Transaction failed ${JSON.stringify(e)}`);
+    throw {
+      code: e.code || "12345", // TODO: get the codes
+      message: e.toString()
+    };
+  }
+}
+
+async function viaForwarder(
+  config: Config,
+  signer: ethers.Signer,
+  body: PostMetaTxBody
+) {
+  logger.info(
+    `Relay Meta Transaction via Forwarder Contract ${
+      config.FORWARDER
+    }, params: ${JSON.stringify(body)}`
+  );
+  const forwarderContract = new ethers.Contract(
+    config.FORWARDER,
+    abis.ForwarderABI,
+    signer
+  );
+  const params = body.params as unknown as {
+    userAddress: string;
+    functionSignature: BytesLike;
+    sigR: BytesLike;
+    sigS: BytesLike;
+    sigV: BigNumberish;
+  };
+  const signature =
+    "0x" +
+    String(params.sigR).slice(2) +
+    String(params.sigS).slice(2) +
+    params.sigV.toString(16).slice(2); // TODO: to be verified
+  const forwardRequest = []; // TODO: retrieve { from: address, to: address, nonce, data }
+  try {
+    const tx: ContractTransaction = await forwarderContract.execute(
+      forwardRequest,
+      signature
+    );
     const txReceipt = await tx.wait();
     return {
       txHash: txReceipt.transactionHash,

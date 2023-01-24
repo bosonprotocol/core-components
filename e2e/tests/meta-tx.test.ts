@@ -1019,11 +1019,11 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
       console.log("now premint");
-      nonce = Date.now();
+      nonce = Date.now(); // TODO: nonce should be got from the forwarder contract: forwarder.getNonce(sellerAddress)
 
       const forwarderAddress = "0x4826533B4897376654Bb4d4AD88B7faFD0C98528"; // TODO: it shouldnt be hardcoded here, extracted from deploy.js
       const amount = 10;
-      const { r, s, v, functionName, functionSignature } =
+      const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
           amount,
@@ -1031,14 +1031,16 @@ describe("meta-tx", () => {
           forwarderAddress
         });
 
-      metaTx = await sellerCoreSDK.relayMetaTransaction({
-        functionName,
-        functionSignature,
-        nonce,
-        sigR: r,
-        sigS: s,
-        sigV: v
-      });
+      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
 
       metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();

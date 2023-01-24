@@ -105,10 +105,14 @@ export async function signMetaTx(
 
 export async function signVoucherMetaTx(
   args: BaseVoucherMetaTxArgs & {
-    functionName: string; // TODO: necessary?
     functionSignature: string;
   }
-): Promise<SignedMetaTx> {
+): Promise<{ 
+  to: string;
+  functionSignature: string;
+  r: string;
+  s: string;
+  v: number; }> {
   const forwardType = [
     { name: "from", type: "address" },
     { name: "to", type: "address" },
@@ -138,7 +142,7 @@ export async function signVoucherMetaTx(
   });
 
   return {
-    functionName: args.functionName,
+    to: message.to,
     functionSignature: args.functionSignature,
     ...signature
   };
@@ -346,7 +350,6 @@ export async function signMetaTxPreMint(
 ) {
   return signVoucherMetaTx({
     ...args,
-    functionName: "preMint(uint256,uint256)",
     functionSignature: encodePreMint(args.offerId, args.amount)
   });
 }
