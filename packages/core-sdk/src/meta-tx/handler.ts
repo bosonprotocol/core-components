@@ -122,10 +122,17 @@ export async function signVoucherMetaTx(
   ];
 
   const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
     ForwardRequest: forwardType
   };
 
   const signerAddress = await args.web3Lib.getSignerAddress();
+  const chainId = await args.web3Lib.getChainId();
 
   const message = {
     from: signerAddress,
@@ -139,7 +146,13 @@ export async function signVoucherMetaTx(
     verifyingContractAddress: args.forwarderAddress,
     customSignatureType,
     primaryType: "ForwardRequest",
-    message
+    message,
+    customDomainData: {
+      name: "MockForwarder",
+      version: "0.0.1",
+      chainId,
+      salt: undefined
+    }
   });
 
   return {

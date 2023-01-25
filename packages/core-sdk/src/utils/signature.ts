@@ -27,12 +27,17 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
     salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32),
     ...args.customDomainData
   };
-
+  Object.keys(domainData).forEach((key) => {
+    if (domainData[key] === undefined) {
+      delete domainData[key];
+    }
+  });
+  console.log({ domainData });
   const signatureTypes = {
     EIP712Domain: domainType,
     ...args.customSignatureType
   };
-
+  console.log({ signatureTypes: JSON.stringify(signatureTypes) });
   const dataToSign = JSON.stringify({
     types: signatureTypes,
     domain: domainData,

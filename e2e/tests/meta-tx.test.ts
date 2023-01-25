@@ -1029,6 +1029,7 @@ describe("meta-tx", () => {
       nonce = await forwarderContract.getNonce(sellerWallet.address);
 
       const amount = 10;
+      console.log({ offerId });
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
