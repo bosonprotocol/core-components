@@ -107,12 +107,13 @@ export async function signVoucherMetaTx(
   args: BaseVoucherMetaTxArgs & {
     functionSignature: string;
   }
-): Promise<{ 
+): Promise<{
   to: string;
   functionSignature: string;
   r: string;
   s: string;
-  v: number; }> {
+  v: number;
+}> {
   const forwardType = [
     { name: "from", type: "address" },
     { name: "to", type: "address" },

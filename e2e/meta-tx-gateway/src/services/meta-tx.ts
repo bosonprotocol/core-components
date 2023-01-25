@@ -117,19 +117,19 @@ async function viaForwarder(
     abis.ForwarderABI,
     signer
   );
-  const params = body.params as unknown as {
-    userAddress: string;
-    functionSignature: BytesLike;
-    sigR: BytesLike;
-    sigS: BytesLike;
-    sigV: BigNumberish;
-  };
+  const [userAddress, functionSignature, sigR, sigS, sigV] = body.params as [
+    string,
+    string,
+    string,
+    string,
+    number
+  ];
+  console.log("body", body, { sigR, sigS, sigV, sigV16: sigV.toString(16) });
   const signature =
-    "0x" +
-    String(params.sigR).slice(2) +
-    String(params.sigS).slice(2) +
-    params.sigV.toString(16).slice(2); // TODO: to be verified
-  const forwardRequest = []; // TODO: retrieve { from: address, to: address, nonce, data }
+    "0x" + String(sigR).slice(2) + String(sigS).slice(2) + sigV.toString(16);
+  const nonce = await forwarderContract.getNonce(userAddress);
+  const forwardRequest = [userAddress, body.to, nonce, functionSignature];
+  console.log({ forwardRequest, signature });
   try {
     const tx: ContractTransaction = await forwarderContract.execute(
       forwardRequest,
