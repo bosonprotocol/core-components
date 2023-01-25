@@ -1,9 +1,9 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { Wallet, BigNumber, constants } from "ethers";
-
+import { Wallet, BigNumber, constants, Contract } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { abis } from "@bosonprotocol/common";
 
 import {
   initCoreSDKWithWallet,
@@ -1019,9 +1019,15 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
       console.log("now premint");
-      nonce = Date.now(); // TODO: nonce should be got from the forwarder contract: forwarder.getNonce(sellerAddress)
 
       const forwarderAddress = "0x4826533B4897376654Bb4d4AD88B7faFD0C98528"; // TODO: it shouldnt be hardcoded here, extracted from deploy.js
+      const forwarderContract = new Contract(
+        forwarderAddress,
+        abis.ForwarderABI,
+        sellerWallet
+      );
+      nonce = await forwarderContract.getNonce(sellerWallet.address);
+
       const amount = 10;
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
