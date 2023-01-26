@@ -96,7 +96,7 @@ export const defaultConfigs: ProtocolConfig[] = [
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
       protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21",
-      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
+      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"

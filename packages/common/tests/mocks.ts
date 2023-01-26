@@ -152,10 +152,6 @@ export class MockWeb3LibAdapter implements Web3LibAdapter {
     return this._returnValues.getTransactionReceipt;
   }
 
-  getProvider() {
-    return null;
-  }
-
   async getSignerAddress() {
     return this._returnValues.getSignerAddress;
   }
