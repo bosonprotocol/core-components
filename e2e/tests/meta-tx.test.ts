@@ -999,7 +999,7 @@ describe("meta-tx", () => {
 
       const length = 10;
       const offerId = createdOffer.id;
-      let nonce = Date.now();
+      const nonce = Date.now();
 
       const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
         offerId,
@@ -1020,22 +1020,12 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      const forwarderAddress = MOCK_FORWARDER_ADDRESS;
-      const forwarderContract = new Contract(
-        forwarderAddress,
-        abis.ForwarderABI,
-        sellerWallet
-      );
-      nonce = await forwarderContract.getNonce(sellerWallet.address);
-
       const amount = 10;
 
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
-          amount,
-          nonce,
-          forwarderAddress
+          amount
         });
 
       metaTx = await sellerCoreSDK.relayNativeMetaTransaction(

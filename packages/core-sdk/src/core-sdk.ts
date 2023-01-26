@@ -57,7 +57,8 @@ export class CoreSDK extends BaseCoreSDK {
         ...defaultConfig.metaTx,
         ...args.metaTx
       },
-      lensContracts: defaultConfig.lens
+      lensContracts: defaultConfig.lens,
+      contracts: defaultConfig.contracts
     });
   }
 

@@ -31,6 +31,10 @@ export class EthConnectAdapter implements Web3LibAdapter {
     this._externalFeatures = externalFeatures;
   }
 
+  public getProvider() {
+    return null;
+  }
+
   public async getSignerAddress() {
     if (this._externalFeatures?.getSignerAddress) {
       const address = await this._externalFeatures?.getSignerAddress();
