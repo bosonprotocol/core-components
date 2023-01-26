@@ -1,10 +1,12 @@
-import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
+import { abis, MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
 import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
+import { Contract } from "ethers";
+import { getNonce } from "../forwarder/handler";
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -154,9 +156,20 @@ export class MetaTxMixin extends BaseCoreSDK {
   public async signMetaTxPreMint(
     args: Omit<
       Parameters<typeof handler.signMetaTxPreMint>[0],
-      "web3Lib" | "bosonVoucherAddress" | "chainId"
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
     >
   ) {
+    const signerAddress = await this._web3Lib.getSignerAddress();
+    const forwarderAddress = this._contracts.forwarder;
+    const nonce = await getNonce({
+      contractAddress: forwarderAddress,
+      user: signerAddress,
+      web3Lib: this._web3Lib
+    });
     const offerFromSubgraph = await getOfferById(
       this._subgraphUrl,
       args.offerId
@@ -165,6 +178,8 @@ export class MetaTxMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib,
       bosonVoucherAddress: offerFromSubgraph.seller.voucherCloneAddress,
       chainId: this._chainId,
+      nonce,
+      forwarderAddress,
       ...args
     });
   }

@@ -95,7 +95,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
-      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21"
+      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21",
+      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
@@ -117,7 +118,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
-      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB"
+      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB",
+      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
@@ -139,7 +141,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5"
+      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
     },
     metaTx: {
       relayerUrl: "https://api.biconomy.io"
