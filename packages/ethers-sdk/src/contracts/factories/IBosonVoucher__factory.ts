@@ -83,11 +83,6 @@ const _abi = [
         components: [
           {
             internalType: "uint256",
-            name: "offerId",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
             name: "start",
             type: "uint256",
           },
@@ -305,11 +300,6 @@ const _abi = [
     outputs: [
       {
         components: [
-          {
-            internalType: "uint256",
-            name: "offerId",
-            type: "uint256",
-          },
           {
             internalType: "uint256",
             name: "start",
@@ -687,6 +677,39 @@ const _abi = [
       },
     ],
     name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "transferPremintedFrom",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

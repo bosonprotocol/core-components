@@ -26,6 +26,14 @@ async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
   process.env.LENS_ADDRESS = addresses[0];
   process.env.ENS_ADDRESS = addresses[1];
+  const MockForwarder = await ethers.getContractFactory("MockForwarder");
+  const forwarder = await MockForwarder.deploy();
+  process.env.FORWARDER_ADDRESS = forwarder.address;
+  console.log(
+    "deployed forwarder",
+    "process.env.FORWARDER_ADDRESS",
+    process.env.FORWARDER_ADDRESS
+  );
   await deploySuite("localhost", undefined);
   const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
   const deployedTokens = await deployMockTokens([...mockTokens]);

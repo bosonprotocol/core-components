@@ -1,9 +1,9 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { Wallet, BigNumber, constants } from "ethers";
-
+import { Wallet, BigNumber, constants, Contract } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { abis } from "@bosonprotocol/common";
 
 import {
   initCoreSDKWithWallet,
@@ -19,7 +19,8 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13
+  seedWallet13,
+  MOCK_FORWARDER_ADDRESS
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -993,7 +994,7 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test.skip("reserveRange and preMint with meta-tx", async () => {
+    test("reserveRange and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
@@ -1019,23 +1020,34 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      nonce = Date.now();
+      const forwarderAddress = MOCK_FORWARDER_ADDRESS;
+      const forwarderContract = new Contract(
+        forwarderAddress,
+        abis.ForwarderABI,
+        sellerWallet
+      );
+      nonce = await forwarderContract.getNonce(sellerWallet.address);
+
       const amount = 10;
-      const { r, s, v, functionName, functionSignature } =
+
+      const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
           amount,
-          nonce
+          nonce,
+          forwarderAddress
         });
 
-      metaTx = await sellerCoreSDK.relayMetaTransaction({
-        functionName,
-        functionSignature,
-        nonce,
-        sigR: r,
-        sigS: s,
-        sigV: v
-      });
+      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
 
       metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();

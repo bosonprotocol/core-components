@@ -59,6 +59,10 @@ export const MOCK_ERC1155_ADDRESS =
   getDefaultConfig("local").contracts.testErc1155 ||
   "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
+export const MOCK_FORWARDER_ADDRESS =
+  getDefaultConfig("local").contracts.forwarder ||
+  "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+
 export const metadata = {
   name: "name",
   description: "description",

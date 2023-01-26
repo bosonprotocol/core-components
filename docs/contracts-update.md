@@ -56,6 +56,17 @@ Additionally, we need to change the image tag in our e2e docker-compose file.
       - "8545:8545"
 ```
 
+And also the image tag to the current date time:
+
+```diff
+  meta-tx-gateway:
+    build:
+      context: ../.
+      dockerfile: ./e2e/meta-tx-gateway/Dockerfile
++    image: meta-tx-gateway:20230124153900
+-    image: meta-tx-gateway:20220224153900
+```
+
 ### 4. Export ABIs
 
 Based on the new set of contracts, we can now export ABIs to the `@bosonprotocol/common` package:

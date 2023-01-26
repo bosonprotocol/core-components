@@ -44,6 +44,14 @@ export type BaseMetaTxArgs = {
   chainId: number;
 };
 
+export type BaseVoucherMetaTxArgs = {
+  web3Lib: Web3LibAdapter;
+  nonce: BigNumberish;
+  bosonVoucherAddress: string;
+  forwarderAddress: string;
+  chainId: number;
+};
+
 export type SignedMetaTx = {
   functionName: string;
   functionSignature: string;
@@ -90,6 +98,65 @@ export async function signMetaTx(
 
   return {
     functionName: args.functionName,
+    functionSignature: args.functionSignature,
+    ...signature
+  };
+}
+
+export async function signVoucherMetaTx(
+  args: BaseVoucherMetaTxArgs & {
+    functionSignature: string;
+  }
+): Promise<{
+  to: string;
+  functionSignature: string;
+  r: string;
+  s: string;
+  v: number;
+}> {
+  const forwardType = [
+    { name: "from", type: "address" },
+    { name: "to", type: "address" },
+    { name: "nonce", type: "uint256" },
+    { name: "data", type: "bytes" }
+  ];
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    ForwardRequest: forwardType
+  };
+
+  const signerAddress = await args.web3Lib.getSignerAddress();
+  const chainId = await args.web3Lib.getChainId();
+
+  const message = {
+    from: signerAddress,
+    to: args.bosonVoucherAddress,
+    nonce: args.nonce,
+    data: args.functionSignature
+  };
+
+  const signature = await prepareDataSignatureParameters({
+    ...args,
+    verifyingContractAddress: args.forwarderAddress,
+    customSignatureType,
+    primaryType: "ForwardRequest",
+    message,
+    customDomainData: {
+      name: "MockForwarder",
+      version: "0.0.1",
+      chainId,
+      salt: undefined
+    }
+  });
+
+  return {
+    to: message.to,
     functionSignature: args.functionSignature,
     ...signature
   };
@@ -290,14 +357,13 @@ export async function signMetaTxReserveRange(
 }
 
 export async function signMetaTxPreMint(
-  args: BaseMetaTxArgs & {
+  args: BaseVoucherMetaTxArgs & {
     offerId: BigNumberish;
     amount: BigNumberish;
   }
 ) {
-  return signMetaTx({
+  return signVoucherMetaTx({
     ...args,
-    functionName: "preMint(uint256,uint256)",
     functionSignature: encodePreMint(args.offerId, args.amount)
   });
 }

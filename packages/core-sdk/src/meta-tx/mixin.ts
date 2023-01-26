@@ -154,7 +154,7 @@ export class MetaTxMixin extends BaseCoreSDK {
   public async signMetaTxPreMint(
     args: Omit<
       Parameters<typeof handler.signMetaTxPreMint>[0],
-      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+      "web3Lib" | "bosonVoucherAddress" | "chainId"
     >
   ) {
     const offerFromSubgraph = await getOfferById(
@@ -163,7 +163,7 @@ export class MetaTxMixin extends BaseCoreSDK {
     );
     return handler.signMetaTxPreMint({
       web3Lib: this._web3Lib,
-      metaTxHandlerAddress: offerFromSubgraph.seller.voucherCloneAddress,
+      bosonVoucherAddress: offerFromSubgraph.seller.voucherCloneAddress,
       chainId: this._chainId,
       ...args
     });
