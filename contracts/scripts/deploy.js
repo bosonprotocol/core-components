@@ -22,10 +22,6 @@ const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
 
-const {
-  upgradeClients
-} = require("../protocol-contracts/scripts/upgrade-clients.js");
-
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
   process.env.LENS_ADDRESS = addresses[0];
@@ -35,7 +31,6 @@ async function main() {
   process.env.FORWARDER_ADDRESS = forwarder.address;
   console.log(
     "deployed forwarder",
-    forwarder,
     "process.env.FORWARDER_ADDRESS",
     process.env.FORWARDER_ADDRESS
   );
