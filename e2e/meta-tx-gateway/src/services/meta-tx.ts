@@ -124,12 +124,12 @@ async function viaForwarder(
     string,
     number
   ];
-  console.log("body", body, { sigR, sigS, sigV, sigV16: sigV.toString(16) });
+
   const signature =
     "0x" + String(sigR).slice(2) + String(sigS).slice(2) + sigV.toString(16);
   const nonce = await forwarderContract.getNonce(userAddress);
   const forwardRequest = [userAddress, body.to, nonce, functionSignature];
-  console.log({ forwardRequest, signature });
+
   try {
     const tx: ContractTransaction = await forwarderContract.execute(
       forwardRequest,

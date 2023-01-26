@@ -19,7 +19,8 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13
+  seedWallet13,
+  MOCK_FORWARDER_ADDRESS
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -993,7 +994,7 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test.only("reserveRange and preMint with meta-tx", async () => {
+    test("reserveRange and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
@@ -1018,9 +1019,8 @@ describe("meta-tx", () => {
       let metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
-      console.log("now premint");
 
-      const forwarderAddress = "0x4826533B4897376654Bb4d4AD88B7faFD0C98528"; // TODO: it shouldnt be hardcoded here, extracted from deploy.js
+      const forwarderAddress = MOCK_FORWARDER_ADDRESS;
       const forwarderContract = new Contract(
         forwarderAddress,
         abis.ForwarderABI,
@@ -1029,7 +1029,7 @@ describe("meta-tx", () => {
       nonce = await forwarderContract.getNonce(sellerWallet.address);
 
       const amount = 10;
-      console.log({ offerId });
+
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,

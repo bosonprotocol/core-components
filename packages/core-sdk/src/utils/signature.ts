@@ -32,12 +32,12 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
       delete domainData[key];
     }
   });
-  console.log({ domainData });
+
   const signatureTypes = {
     EIP712Domain: domainType,
     ...args.customSignatureType
   };
-  console.log({ signatureTypes: JSON.stringify(signatureTypes) });
+
   const dataToSign = JSON.stringify({
     types: signatureTypes,
     domain: domainData,

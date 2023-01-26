@@ -158,11 +158,11 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
-      protocolDiamond: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      testErc20: "0x95401dc811bb5740090279Ba06cfA8fcF6113778", // Foreign20 contract
-      testErc721: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign721 contract
-      testErc1155: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign1155 contract
-      forwarder: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528" // MockForwarder contract
+      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
+      testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
+      testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
+      forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0" // MockForwarder contract
     },
     metaTx: {
       relayerUrl: "http://localhost:8888"

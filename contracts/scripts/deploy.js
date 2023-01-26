@@ -22,10 +22,23 @@ const {
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
 
+const {
+  upgradeClients
+} = require("../protocol-contracts/scripts/upgrade-clients.js");
+
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
   process.env.LENS_ADDRESS = addresses[0];
   process.env.ENS_ADDRESS = addresses[1];
+  const MockForwarder = await ethers.getContractFactory("MockForwarder");
+  const forwarder = await MockForwarder.deploy();
+  process.env.FORWARDER_ADDRESS = forwarder.address;
+  console.log(
+    "deployed forwarder",
+    forwarder,
+    "process.env.FORWARDER_ADDRESS",
+    process.env.FORWARDER_ADDRESS
+  );
   await deploySuite("localhost", undefined);
   const mockTokens = ["Foreign20", "Foreign721", "Foreign1155"];
   const deployedTokens = await deployMockTokens([...mockTokens]);
@@ -90,10 +103,6 @@ async function main() {
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
-  const MockForwarder = await ethers.getContractFactory("MockForwarder");
-
-  const forwarder = await MockForwarder.deploy();
-  console.log("deployed forwarder", forwarder);
 }
 
 main()
