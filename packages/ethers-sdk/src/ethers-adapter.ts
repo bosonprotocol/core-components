@@ -38,10 +38,6 @@ export class EthersAdapter implements Web3LibAdapter {
       : this._provider.getSigner();
   }
 
-  public getProvider() {
-    return this._provider;
-  }
-
   public async getSignerAddress() {
     return this._signer.getAddress();
   }

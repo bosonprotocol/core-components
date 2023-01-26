@@ -6,6 +6,7 @@ import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
 import { Contract } from "ethers";
+import { getNonce } from "../forwarder/handler";
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -162,15 +163,13 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAddress"
     >
   ) {
-    const provider = this._web3Lib.getProvider();
-    const signerAddress = this._web3Lib.getSignerAddress();
+    const signerAddress = await this._web3Lib.getSignerAddress();
     const forwarderAddress = this._contracts.forwarder;
-    const forwarderContract = new Contract(
-      forwarderAddress,
-      abis.ForwarderABI,
-      provider
-    );
-    const nonce = await forwarderContract.getNonce(signerAddress);
+    const nonce = await getNonce({
+      contractAddress: forwarderAddress,
+      user: signerAddress,
+      web3Lib: this._web3Lib
+    });
     const offerFromSubgraph = await getOfferById(
       this._subgraphUrl,
       args.offerId
