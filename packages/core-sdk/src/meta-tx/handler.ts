@@ -184,7 +184,7 @@ export async function signBiconomyVoucherMetaTx(
     from: string;
     to: string;
     token: string;
-    txGas: BigNumber;
+    txGas: BigNumberish;
     tokenGasPrice: string;
     batchId: BigNumberish;
     batchNonce: BigNumberish;
@@ -221,7 +221,7 @@ export async function signBiconomyVoucherMetaTx(
     from: signerAddress,
     to: args.bosonVoucherAddress,
     token: "0x0000000000000000000000000000000000000000",
-    txGas: BigNumber.from(5000),
+    txGas: 5000,
     tokenGasPrice: "0",
     batchId: args.batchId,
     batchNonce: args.nonce,
@@ -324,7 +324,8 @@ export async function relayBiconomyMetaTransaction(args: {
       metaTx.params.domainSeparator,
       metaTx.params.signature
     ],
-    from: metaTx.params.userAddress
+    from: metaTx.params.userAddress,
+    signatureType: "EIP712_SIGN"
   });
 
   return {
