@@ -46,7 +46,9 @@ export class NativeMetaTxMixin extends BaseCoreSDK {
     },
     overrides: Partial<{
       userAddress: string;
-      metaTxConfig: Partial<Omit<MetaTxConfig, "apiIds"> & { apiId: string }>;
+      metaTxConfig: Partial<
+        Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string }
+      >;
       metaTransactionMethod: string;
     }> = {}
   ): Promise<TransactionResponse> {

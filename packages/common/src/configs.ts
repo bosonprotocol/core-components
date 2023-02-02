@@ -1,3 +1,4 @@
+import { abis } from ".";
 import { EnvironmentType, Lens, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
@@ -99,7 +100,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
@@ -122,7 +124,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
@@ -145,7 +148,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
@@ -168,7 +172,8 @@ export const defaultConfigs: ProtocolConfig[] = [
       forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0" // MockForwarder contract
     },
     metaTx: {
-      relayerUrl: "http://localhost:8888"
+      relayerUrl: "http://localhost:8888",
+      forwarderAbi: abis.MockForwarderABI
     },
     lens: {
       LENS_HUB_CONTRACT: "0x5FbDB2315678afecb367f032d93F642f64180aa3",

@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "manifest": "ts-node ./scripts/render-manifest.ts",
+    "manifest": "ts-node -P ../../tsconfig.base.json ./scripts/render-manifest.ts",
     "manifest:local": "npm run manifest -- local && npm run codegen",
     "manifest:testing": "npm run manifest -- testing && npm run codegen",
     "manifest:staging": "npm run manifest -- staging && npm run codegen",

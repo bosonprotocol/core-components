@@ -4,17 +4,17 @@ import { isAddress } from "@ethersproject/address";
 
 export { validateMetadata } from "@bosonprotocol/metadata";
 
-const positiveIntTestArgs: [string, string, typeof isPositiveInt] = [
+const positiveIntTestArgs: [string, string, /*typeof isPositiveInt*/ any] = [
   "is-positive-int",
   "${path} has to be a positive integer",
   isPositiveInt
 ];
-const futureDateTestArgs: [string, string, typeof isFutureDate] = [
+const futureDateTestArgs: [string, string, /*typeof isFutureDate*/ any] = [
   "is-future-date",
   "${path} has to be a date in the future",
   isFutureDate
 ];
-const addressTestArgs: [string, string, typeof isAddress] = [
+const addressTestArgs: [string, string, /*typeof isAddress*/ any] = [
   "is-address",
   "${path} has to be a valid address",
   (value: string) => isAddress(value || "")
@@ -90,7 +90,7 @@ export const createOfferArgsSchema = object({
         .test(
           "not-zero",
           "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
-          isNotZero
+          isNotZero as any
         )
         .test(...futureDateTestArgs)
         .test(
@@ -114,7 +114,7 @@ export const createOfferArgsSchema = object({
       otherwise: string().test(
         "is-zero",
         "Exactly one of voucherRedeemableUntilDateInMS and voucherValidDurationInMShas must be non zero",
-        isZero
+        isZero as any
       )
     }),
   voucherValidDurationInMS: string()

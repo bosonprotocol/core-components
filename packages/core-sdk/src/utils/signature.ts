@@ -45,9 +45,9 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
     message: args.message
   });
 
-  const signer = await args.web3Lib.getSignerAddress();
+  const signerAddress = await args.web3Lib.getSignerAddress();
   const signature = await args.web3Lib.send("eth_signTypedData_v4", [
-    signer,
+    signerAddress,
     dataToSign
   ]);
 

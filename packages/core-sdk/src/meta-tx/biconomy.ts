@@ -13,6 +13,7 @@ export type RelayTransactionArgs = {
   to: string;
   params: unknown[];
   from: string;
+  signatureType?: string;
 };
 
 export type RelayOverrides = {

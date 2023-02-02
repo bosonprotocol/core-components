@@ -1,3 +1,5 @@
+import { abis } from "..";
+
 export type ContractAddresses = {
   protocolDiamond: string;
   testErc721?: string;
@@ -12,6 +14,7 @@ export type MetaTxConfig = {
   relayerUrl: string;
   apiKey: string;
   apiIds: Record<string, Record<string, string>>;
+  forwarderAbi: typeof abis.MockForwarderABI | typeof abis.BiconomyForwarderABI;
 };
 
 export type LensContracts = {

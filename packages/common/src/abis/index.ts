@@ -12,7 +12,8 @@ import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.js
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
-import ForwarderABI from "./MockForwarder.json";
+import MockForwarderABI from "./MockForwarder.json";
+import BiconomyForwarderABI from "./BiconomyForwarderABI.json";
 import NativeMetaTransactionABI from "./MockNativeMetaTransaction.json";
 import ProtocolDiamondABI from "./ProtocolDiamond.json";
 
@@ -29,7 +30,8 @@ export {
   IBosonOfferHandlerABI,
   IBosonOrchestrationHandlerABI,
   IBosonVoucherABI,
-  ForwarderABI,
+  MockForwarderABI,
+  BiconomyForwarderABI,
   NativeMetaTransactionABI,
   ProtocolDiamondABI
 };
