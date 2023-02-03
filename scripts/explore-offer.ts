@@ -20,6 +20,8 @@ import {
   NATIVE_TOKENS
 } from "../packages/core-sdk/src/utils/tokenInfoManager";
 import { buildInfuraHeaders } from "./utils/infura";
+import { CoreSDK } from "../packages/core-sdk/src";
+import { EthersAdapter } from "../packages/ethers-sdk/src";
 
 program
   .description("Explore an on-chain Offer.")
@@ -77,6 +79,22 @@ async function main() {
   if (opts.export) {
     exportOfferData(opts.export, offerData, agentId);
   }
+
+  const coreSDK = CoreSDK.fromDefaultConfig({
+    web3Lib: new EthersAdapter(
+      new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl)
+    ),
+    envName
+  });
+  const reservedRange = await coreSDK.getRangeByOfferId(offerId);
+  console.log({
+    reservedRange: {
+      start: reservedRange.start.toString(),
+      length: reservedRange.length.toString(),
+      minted: reservedRange.minted.toString(),
+      lastBurnedTokenId: reservedRange.lastBurnedTokenId.toString()
+    }
+  });
 }
 
 main()
