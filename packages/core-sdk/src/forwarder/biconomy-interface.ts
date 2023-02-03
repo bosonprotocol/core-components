@@ -15,7 +15,7 @@ export type ERC20ForwardRequest = {
   batchNonce: BigNumberish;
   deadline: number;
   data: string;
-}
+};
 
 export function encodeGetNonce(
   signerAddress: BigNumberish,
