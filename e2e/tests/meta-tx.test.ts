@@ -1,3 +1,4 @@
+import { abi } from "./../../packages/core-sdk/src/forwarder/mock-interface";
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber, constants, Contract } from "ethers";
@@ -1025,8 +1026,7 @@ describe("meta-tx", () => {
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
-          amount,
-          forwarderAbi: abis.MockForwarderABI
+          amount
         });
 
       metaTx = await sellerCoreSDK.relayNativeMetaTransaction(

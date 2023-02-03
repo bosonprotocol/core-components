@@ -188,6 +188,7 @@ export async function signBiconomyVoucherMetaTx(
   signature: string;
   domainSeparator: string;
   request: ERC20ForwardRequest;
+  functionSignature: string;
 }> {
   const customSignatureType = {
     EIP712Domain: [
@@ -287,7 +288,8 @@ export async function signBiconomyVoucherMetaTx(
     domainSeparator,
     request: message,
     ...signatureParams,
-    signature
+    signature,
+    functionSignature: args.functionSignature
   };
 }
 
