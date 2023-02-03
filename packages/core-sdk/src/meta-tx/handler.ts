@@ -178,6 +178,7 @@ export async function signBiconomyVoucherMetaTx(
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
+    txGas: BigNumberish;
   }
 ): Promise<{
   to: string;
@@ -217,7 +218,7 @@ export async function signBiconomyVoucherMetaTx(
     from: signerAddress,
     to: args.bosonVoucherAddress,
     token: "0x0000000000000000000000000000000000000000",
-    txGas: 5000,
+    txGas: args.txGas,
     tokenGasPrice: "0",
     batchId: args.batchId,
     batchNonce: args.nonce,
@@ -558,9 +559,11 @@ export async function signMetaTxPreMint(
       functionSignature: encodePreMint(args.offerId, args.amount)
     });
   }
+  const txGas = 200000; // ~165000 estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
-    functionSignature: encodePreMint(args.offerId, args.amount)
+    functionSignature: encodePreMint(args.offerId, args.amount),
+    txGas
   });
 }
 
