@@ -59,10 +59,10 @@ export function getSignatureParameters(signature: string) {
     throw new Error(`Value "${signature}" is not a valid hex string`);
   }
 
-  signature = signature.substring(2);
-  const r = "0x" + signature.substring(0, 64);
-  const s = "0x" + signature.substring(64, 128);
-  let v = parseInt(signature.substring(128, 130), 16);
+  const _signature = signature.substring(2);
+  const r = "0x" + _signature.substring(0, 64);
+  const s = "0x" + _signature.substring(64, 128);
+  let v = parseInt(_signature.substring(128, 130), 16);
 
   if (!isNaN(v) && v < 2) {
     // support Ledger signature
@@ -72,6 +72,7 @@ export function getSignatureParameters(signature: string) {
   return {
     r,
     s,
-    v
+    v,
+    signature
   };
 }

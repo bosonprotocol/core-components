@@ -162,6 +162,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "nonce"
       | "forwarderAddress"
       | "batchId"
+      | "forwarderAbi"
     >,
     overrides: Partial<{
       batchId: BigNumberish;
@@ -188,6 +189,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       nonce,
       forwarderAddress,
       batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi,
       ...args
     });
   }

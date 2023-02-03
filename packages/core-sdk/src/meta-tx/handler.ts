@@ -10,7 +10,8 @@ import {
   ConditionStruct,
   UpdateSellerArgs,
   OptInToSellerUpdateArgs,
-  defaultConfigs
+  defaultConfigs,
+  abis
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -42,6 +43,8 @@ import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
 import { encodePreMint } from "../voucher/interface";
 import { ethers } from "ethers";
+import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
+import { verifyEIP712 } from "../forwarder/handler";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -172,6 +175,9 @@ export async function signBiconomyVoucherMetaTx(
   args: BaseVoucherMetaTxArgs & {
     functionSignature: string;
     batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
   }
 ): Promise<{
   to: string;
@@ -180,17 +186,7 @@ export async function signBiconomyVoucherMetaTx(
   v: number;
   signature: string;
   domainSeparator: string;
-  request: {
-    from: string;
-    to: string;
-    token: string;
-    txGas: BigNumberish;
-    tokenGasPrice: string;
-    batchId: BigNumberish;
-    batchNonce: BigNumberish;
-    deadline: number;
-    data: string;
-  };
+  request: ERC20ForwardRequest;
 }> {
   const customSignatureType = {
     EIP712Domain: [
@@ -225,7 +221,7 @@ export async function signBiconomyVoucherMetaTx(
     tokenGasPrice: "0",
     batchId: args.batchId,
     batchNonce: args.nonce,
-    deadline: 1685334860, // TODO: change to -> Math.floor(Date.now() / 1000 + 3600),
+    deadline: Math.floor(Date.now() / 1000 + 3600),
     data: args.functionSignature
   };
 
@@ -252,11 +248,7 @@ export async function signBiconomyVoucherMetaTx(
       // salt: undefined
     }
   });
-  const signature =
-    "0x" +
-    String(signatureParams.r).slice(2) +
-    String(signatureParams.s).slice(2) +
-    signatureParams.v.toString(16);
+  const signature = signatureParams.signature;
   const getDomainSeparator = async () => {
     const domainData = biconomyForwarderDomainData;
     const domainSeparator = ethers.utils.keccak256(
@@ -276,6 +268,19 @@ export async function signBiconomyVoucherMetaTx(
     return domainSeparator;
   };
   const domainSeparator = await getDomainSeparator();
+  // verify signature
+  const signatureVerified = await verifyEIP712({
+    request: message,
+    contractAddress: args.forwarderAddress,
+    web3Lib: args.web3Lib,
+    domainSeparator,
+    forwarderAbi: args.forwarderAbi,
+    signature
+  });
+  if (!signatureVerified) {
+    throw `Signature is not verified`;
+  }
+
   return {
     to: message.to,
     domainSeparator,
@@ -293,17 +298,7 @@ export async function relayBiconomyMetaTransaction(args: {
     config: Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string };
     params: {
       userAddress: string;
-      request: {
-        from: BigNumberish;
-        to: BigNumberish;
-        token: BigNumberish;
-        txGas: BigNumberish;
-        tokenGasPrice: string;
-        batchId: BigNumberish;
-        batchNonce: BigNumberish;
-        deadline: number;
-        data: string;
-      };
+      request: ERC20ForwardRequest;
       domainSeparator: string;
       signature: string;
     };
@@ -548,6 +543,9 @@ export async function signMetaTxPreMint(
     offerId: BigNumberish;
     amount: BigNumberish;
     batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
   }
 ) {
   const localConfig = defaultConfigs.find(

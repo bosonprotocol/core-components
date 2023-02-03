@@ -1025,7 +1025,8 @@ describe("meta-tx", () => {
       const { to, r, s, v, functionSignature } =
         await sellerCoreSDK.signMetaTxPreMint({
           offerId,
-          amount
+          amount,
+          forwarderAbi: abis.MockForwarderABI
         });
 
       metaTx = await sellerCoreSDK.relayNativeMetaTransaction(

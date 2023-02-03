@@ -25,3 +25,33 @@ export async function getNonce(args: {
   const [nonce] = nonceResult;
   return String(nonce);
 }
+
+export async function verifyEIP712(args: {
+  contractAddress: string;
+  request: biconomyInterface.ERC20ForwardRequest;
+  domainSeparator: string;
+  web3Lib: Web3LibAdapter;
+  signature: string;
+  forwarderAbi: typeof abis.MockForwarderABI | typeof abis.BiconomyForwarderABI;
+}): Promise<boolean> {
+  const isMock = args.forwarderAbi === mockInterface.abi;
+  if (isMock) {
+    return true;
+  }
+  const data = biconomyInterface.encodeVerifyEIP712(
+    args.request,
+    args.domainSeparator,
+    args.signature
+  );
+  try {
+    const result = await args.web3Lib.call({
+      to: args.contractAddress,
+      data
+    });
+    const ret = biconomyInterface.decodeVerifyEIP712(result);
+    console.log({ ret });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
