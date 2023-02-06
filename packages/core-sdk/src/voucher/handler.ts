@@ -4,9 +4,11 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import {
   decodeGetAvailablePreMints,
   decodeGetRangeByOfferId,
+  decodeIsApprovedForAll,
   encodeBurnPremintedVouchers,
   encodeGetAvailablePreMints,
   encodeGetRangeByOfferId,
+  encodeIsApprovedForAll,
   encodePreMint,
   encodeTransferFrom
 } from "./interface";
@@ -76,4 +78,18 @@ export async function transferFrom(args: {
     to: args.contractAddress,
     data: encodeTransferFrom(args.from, args.to, args.tokenId)
   });
+}
+
+export async function isApprovedForAll(args: {
+  owner: string;
+  operator: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<boolean> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeIsApprovedForAll(args.owner, args.operator)
+  });
+  const [isApproved] = decodeIsApprovedForAll(result);
+  return isApproved;
 }

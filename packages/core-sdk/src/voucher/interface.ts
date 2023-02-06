@@ -20,6 +20,17 @@ export function decodeGetAvailablePreMints(result: string) {
   return bosonVoucherIface.decodeFunctionResult("getAvailablePreMints", result);
 }
 
+export function encodeIsApprovedForAll(owner: string, operator: string) {
+  return bosonVoucherIface.encodeFunctionData("isApprovedForAll", [
+    owner,
+    operator
+  ]);
+}
+
+export function decodeIsApprovedForAll(result: string) {
+  return bosonVoucherIface.decodeFunctionResult("isApprovedForAll", result);
+}
+
 export function encodeGetRangeByOfferId(offerId: BigNumberish) {
   return bosonVoucherIface.encodeFunctionData("getRangeByOfferId", [offerId]);
 }
@@ -30,6 +41,13 @@ export function decodeGetRangeByOfferId(result: string) {
 
 export function encodePreMint(offerId: BigNumberish, amount: BigNumberish) {
   return bosonVoucherIface.encodeFunctionData("preMint", [offerId, amount]);
+}
+
+export function encodeSetApprovalForAll(operator: string, approved: boolean) {
+  return bosonVoucherIface.encodeFunctionData("setApprovalForAll", [
+    operator,
+    approved
+  ]);
 }
 
 export function encodeTransferFrom(

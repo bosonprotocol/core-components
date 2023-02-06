@@ -1,10 +1,8 @@
-import { abi } from "./../../packages/core-sdk/src/forwarder/mock-interface";
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { Wallet, BigNumber, constants, Contract } from "ethers";
+import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
-import { abis } from "@bosonprotocol/common";
 
 import {
   initCoreSDKWithWallet,
@@ -20,8 +18,7 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13,
-  MOCK_FORWARDER_ADDRESS
+  seedWallet13
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";

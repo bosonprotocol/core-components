@@ -30,21 +30,18 @@ import {
   encodeReserveRange
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
-import {
-  Biconomy,
-  GetRetriedHashesData,
-  RelayTransactionArgs
-} from "./biconomy";
+import { Biconomy, GetRetriedHashesData } from "./biconomy";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
-import { encodePreMint } from "../voucher/interface";
+import { encodePreMint, encodeSetApprovalForAll } from "../voucher/interface";
 import { ethers } from "ethers";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { verifyEIP712 } from "../forwarder/handler";
+import { MockForwardRequest } from "../forwarder/mock-interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -67,6 +64,13 @@ export type SignedMetaTx = {
   r: string;
   s: string;
   v: number;
+};
+
+export type SignedVoucherMetaTx = Omit<SignedMetaTx, "functionName"> & {
+  to: string;
+  signature: string;
+  request: ERC20ForwardRequest | MockForwardRequest;
+  domainSeparator?: string;
 };
 
 export async function signMetaTx(
@@ -116,13 +120,7 @@ export async function signVoucherMetaTx(
   args: BaseVoucherMetaTxArgs & {
     functionSignature: string;
   }
-): Promise<{
-  to: string;
-  functionSignature: string;
-  r: string;
-  s: string;
-  v: number;
-}> {
+): Promise<SignedVoucherMetaTx> {
   const forwardType = [
     { name: "from", type: "address" },
     { name: "to", type: "address" },
@@ -167,6 +165,7 @@ export async function signVoucherMetaTx(
   return {
     to: message.to,
     functionSignature: args.functionSignature,
+    request: message,
     ...signature
   };
 }
@@ -180,16 +179,7 @@ export async function signBiconomyVoucherMetaTx(
       | typeof abis.BiconomyForwarderABI;
     txGas: BigNumberish;
   }
-): Promise<{
-  to: string;
-  r: string;
-  s: string;
-  v: number;
-  signature: string;
-  domainSeparator: string;
-  request: ERC20ForwardRequest;
-  functionSignature: string;
-}> {
+): Promise<SignedVoucherMetaTx> {
   const customSignatureType = {
     EIP712Domain: [
       { name: "name", type: "string" },
@@ -550,21 +540,54 @@ export async function signMetaTxPreMint(
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
   }
-) {
+): Promise<SignedVoucherMetaTx> {
   const localConfig = defaultConfigs.find(
     (config) => config.envName === "local"
   );
   const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodePreMint(args.offerId, args.amount);
   if (isLocal) {
     return signVoucherMetaTx({
       ...args,
-      functionSignature: encodePreMint(args.offerId, args.amount)
+      functionSignature
     });
   }
   const txGas = 200000; // ~165000 estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
-    functionSignature: encodePreMint(args.offerId, args.amount),
+    functionSignature,
+    txGas
+  });
+}
+
+export async function signMetaTxSetApprovalForAll(
+  args: BaseVoucherMetaTxArgs & {
+    operator: string;
+    approved: boolean;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+  }
+): Promise<SignedVoucherMetaTx> {
+  const localConfig = defaultConfigs.find(
+    (config) => config.envName === "local"
+  );
+  const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodeSetApprovalForAll(
+    args.operator,
+    args.approved
+  );
+  if (isLocal) {
+    return signVoucherMetaTx({
+      ...args,
+      functionSignature
+    });
+  }
+  const txGas = 200000; // ~165000 estimation on 2023/02/03
+  return signBiconomyVoucherMetaTx({
+    ...args,
+    functionSignature,
     txGas
   });
 }

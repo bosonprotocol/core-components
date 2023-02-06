@@ -84,7 +84,10 @@ export class Biconomy {
 
     const txResponse = (await response.json()) as RelayTransactionResponse;
     if (!txResponse.txHash) {
-      throw new ApiError(txResponse.flag, txResponse.log);
+      throw new ApiError(
+        txResponse.flag || (txResponse as any).code,
+        txResponse.log || (txResponse as any).message
+      );
     }
     return txResponse;
   }
