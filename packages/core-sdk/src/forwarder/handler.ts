@@ -36,6 +36,7 @@ export async function verifyEIP712(args: {
 }): Promise<boolean> {
   const isMock = args.forwarderAbi === mockInterface.abi;
   if (isMock) {
+    // TODO: call mockForwarder.verify(request, signature)
     return true;
   }
   const data = biconomyInterface.encodeVerifyEIP712(
