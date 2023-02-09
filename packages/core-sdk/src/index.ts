@@ -18,7 +18,9 @@ export {
   defaultConfigs,
   getDefaultConfig,
   EnvironmentType,
-  MetaTxConfig
+  MetaTxConfig,
+  ProtocolConfig,
+  abis
 } from "@bosonprotocol/common";
 
 export {
