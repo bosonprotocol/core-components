@@ -552,7 +552,7 @@ export async function signMetaTxPreMint(
       functionSignature
     });
   }
-  const txGas = 200000; // ~165000 estimation on 2023/02/03
+  const txGas = 200000 + BigNumber.from(args.amount).mul(2500).toNumber(); // ~(180000 + 2250*N) estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
@@ -584,7 +584,7 @@ export async function signMetaTxSetApprovalForAll(
       functionSignature
     });
   }
-  const txGas = 200000; // ~165000 estimation on 2023/02/03
+  const txGas = 100000; // ~70000 estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
