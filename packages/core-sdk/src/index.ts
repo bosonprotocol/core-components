@@ -11,6 +11,8 @@ export * as metaTx from "./meta-tx";
 export * as nativeMetaTx from "./native-meta-tx";
 export * as subgraph from "./subgraph";
 export * as groups from "./groups";
+export * as forwarder from "./forwarder";
+export * as voucher from "./voucher";
 
 export {
   defaultConfigs,

@@ -2,6 +2,7 @@ import { TransactionResponse } from "@bosonprotocol/common";
 import { Range } from "@bosonprotocol/common/src/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { handler } from ".";
+import { accounts } from "..";
 import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 
@@ -120,6 +121,26 @@ export class VoucherMixin extends BaseCoreSDK {
       contractAddress:
         overrides.contractAddress ||
         offerFromSubgraph.seller.voucherCloneAddress,
+      web3Lib: this._web3Lib
+    });
+  }
+
+  public async isApprovedForAll(
+    operator: string,
+    overrides: Partial<{
+      owner: string;
+      contractAddress: string;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    return handler.isApprovedForAll({
+      owner: overrides.owner || sellerAddress,
+      operator,
+      contractAddress: overrides.contractAddress || seller.voucherCloneAddress,
       web3Lib: this._web3Lib
     });
   }

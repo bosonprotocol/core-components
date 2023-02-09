@@ -114,7 +114,7 @@ async function viaForwarder(
   );
   const forwarderContract = new ethers.Contract(
     config.FORWARDER,
-    abis.ForwarderABI,
+    abis.MockForwarderABI,
     signer
   );
   const [userAddress, functionSignature, sigR, sigS, sigV] = body.params as [

@@ -1,12 +1,12 @@
-import { abis, MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
+import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
 import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
-import { Contract } from "ethers";
 import { getNonce } from "../forwarder/handler";
+import { accounts } from "..";
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -161,14 +161,22 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "chainId"
       | "nonce"
       | "forwarderAddress"
-    >
+      | "batchId"
+      | "forwarderAbi"
+    >,
+    overrides: Partial<{
+      batchId: BigNumberish;
+    }> = {}
   ) {
     const signerAddress = await this._web3Lib.getSignerAddress();
     const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
     const nonce = await getNonce({
       contractAddress: forwarderAddress,
       user: signerAddress,
-      web3Lib: this._web3Lib
+      web3Lib: this._web3Lib,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi
     });
     const offerFromSubgraph = await getOfferById(
       this._subgraphUrl,
@@ -180,7 +188,96 @@ export class MetaTxMixin extends BaseCoreSDK {
       chainId: this._chainId,
       nonce,
       forwarderAddress,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi,
       ...args
+    });
+  }
+
+  public async signMetaTxSetApprovalForAll(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxSetApprovalForAll>[0],
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
+      | "batchId"
+      | "forwarderAbi"
+    >,
+    overrides: Partial<{
+      batchId: BigNumberish;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
+    const nonce = await getNonce({
+      contractAddress: forwarderAddress,
+      user: sellerAddress,
+      web3Lib: this._web3Lib,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi
+    });
+
+    return handler.signMetaTxSetApprovalForAll({
+      web3Lib: this._web3Lib,
+      bosonVoucherAddress: seller.voucherCloneAddress,
+      chainId: this._chainId,
+      nonce,
+      forwarderAddress,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi,
+      ...args
+    });
+  }
+
+  public async relayBiconomyMetaTransaction(
+    contractAddress: string,
+    metaTxParams: {
+      request: Parameters<
+        typeof handler["relayBiconomyMetaTransaction"]
+      >[0]["metaTx"]["params"]["request"];
+      domainSeparator: Parameters<
+        typeof handler["relayBiconomyMetaTransaction"]
+      >[0]["metaTx"]["params"]["domainSeparator"];
+      signature: Parameters<
+        typeof handler["relayBiconomyMetaTransaction"]
+      >[0]["metaTx"]["params"]["signature"];
+    },
+    overrides: Partial<{
+      userAddress: string;
+      metaTxConfig: Partial<
+        Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string }
+      >;
+      metaTransactionMethod: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const { metaTxApiId, metaTxApiKey, metaTxRelayerUrl } =
+      this.assertAndGetMetaTxConfig({ ...overrides, contractAddress });
+
+    return handler.relayBiconomyMetaTransaction({
+      web3LibAdapter: this._web3Lib,
+      contractAddress,
+      chainId: this._chainId,
+      metaTx: {
+        config: {
+          relayerUrl: metaTxRelayerUrl,
+          apiId: metaTxApiId,
+          apiKey: metaTxApiKey
+        },
+        params: {
+          userAddress:
+            overrides.userAddress || (await this._web3Lib.getSignerAddress()),
+          request: metaTxParams.request,
+          domainSeparator: metaTxParams.domainSeparator,
+          signature: metaTxParams.signature
+        }
+      }
     });
   }
 
