@@ -112,6 +112,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   """
   PRODUCT_V1 specific fields
   """
+  disputeResolverId: BigInt!
   uuid: String! # Offer unique ID
   productUuid: String! # Product unique ID (unique for all variants of the same product)
   productVersion: Int! # Product version

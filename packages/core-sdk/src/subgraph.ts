@@ -3732,6 +3732,11 @@ export type ProductV1MetadataEntity = MetadataInterface & {
    */
   createdAt: Scalars["BigInt"];
   description: Scalars["String"];
+  /**
+   * PRODUCT_V1 specific fields
+   *
+   */
+  disputeResolverId: Scalars["BigInt"];
   exchangePolicy: ProductV1ExchangePolicy;
   exchangeToken: ExchangeToken;
   externalUrl: Scalars["String"];
@@ -3761,10 +3766,6 @@ export type ProductV1MetadataEntity = MetadataInterface & {
   shipping?: Maybe<ProductV1ShippingOption>;
   /** MetadataType.PRODUCT_V1 */
   type: MetadataType;
-  /**
-   * PRODUCT_V1 specific fields
-   *
-   */
   uuid: Scalars["String"];
   validFromDate: Scalars["BigInt"];
   validUntilDate: Scalars["BigInt"];
@@ -3866,6 +3867,14 @@ export type ProductV1MetadataEntity_Filter = {
   description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   description_starts_with?: InputMaybe<Scalars["String"]>;
   description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  disputeResolverId?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_gte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  disputeResolverId_lt?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_lte?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not?: InputMaybe<Scalars["BigInt"]>;
+  disputeResolverId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   exchangePolicy?: InputMaybe<Scalars["String"]>;
   exchangePolicy_?: InputMaybe<ProductV1ExchangePolicy_Filter>;
   exchangePolicy_contains?: InputMaybe<Scalars["String"]>;
@@ -4253,6 +4262,7 @@ export enum ProductV1MetadataEntity_OrderBy {
   Condition = "condition",
   CreatedAt = "createdAt",
   Description = "description",
+  DisputeResolverId = "disputeResolverId",
   ExchangePolicy = "exchangePolicy",
   ExchangeToken = "exchangeToken",
   ExternalUrl = "externalUrl",
