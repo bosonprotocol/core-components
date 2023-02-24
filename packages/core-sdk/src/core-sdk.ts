@@ -19,6 +19,9 @@ import { FundsMixin } from "./funds/mixin";
 import { ExchangesMixin } from "./exchanges/mixin";
 import { EventLogsMixin } from "./event-logs/mixin";
 import { VoucherMixin } from "./voucher/mixin";
+import { ERC20Mixin } from "./erc20/mixin";
+import { ERC721Mixin } from "./erc721/mixin";
+import { ERC1155Mixin } from "./erc1155/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -106,7 +109,10 @@ export interface CoreSDK
     GroupsMixin,
     OrchestrationMixin,
     EventLogsMixin,
-    VoucherMixin {}
+    VoucherMixin,
+    ERC20Mixin,
+    ERC721Mixin,
+    ERC1155Mixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -119,5 +125,8 @@ applyMixins(CoreSDK, [
   GroupsMixin,
   OrchestrationMixin,
   EventLogsMixin,
-  VoucherMixin
+  VoucherMixin,
+  ERC20Mixin,
+  ERC721Mixin,
+  ERC1155Mixin
 ]);
