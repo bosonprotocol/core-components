@@ -91,6 +91,16 @@ export class EthConnectAdapter implements Web3LibAdapter {
   }
 
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
+    if (rpcMethod === "eth_signTypedData_v4") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [signerAddress, dataToSign] = payload as [string, string];
+      const { types, domain, message: value } = JSON.parse(dataToSign);
+      delete types["EIP712Domain"];
+      return this._requestManager.sendAsync({
+        method: "_signTypedData",
+        params: [domain, types, value]
+      });
+    }
     return this._requestManager.sendAsync({
       method: rpcMethod,
       params: payload
