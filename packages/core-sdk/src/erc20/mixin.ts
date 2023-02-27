@@ -14,44 +14,44 @@ export class ERC20Mixin extends BaseCoreSDK {
   /*                           ERC20 related methods                          */
   /* -------------------------------------------------------------------------- */
   public async erc20Approve(
-    ...args: Parameters<typeof approve>
+    ...args: Omit<Parameters<typeof approve>, "web3Lib">
   ): Promise<ReturnType<typeof approve>> {
-    return approve(...args);
+    return approve({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20GetAllowance(
-    ...args: Parameters<typeof getAllowance>
+    ...args: Omit<Parameters<typeof getAllowance>, "web3Lib">
   ): Promise<ReturnType<typeof getAllowance>> {
-    return getAllowance(...args);
+    return getAllowance({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20GetDecimals(
-    ...args: Parameters<typeof getDecimals>
+    ...args: Omit<Parameters<typeof getDecimals>, "web3Lib">
   ): Promise<ReturnType<typeof getDecimals>> {
-    return getDecimals(...args);
+    return getDecimals({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20GetSymbol(
-    ...args: Parameters<typeof getSymbol>
+    ...args: Omit<Parameters<typeof getSymbol>, "web3Lib">
   ): Promise<ReturnType<typeof getSymbol>> {
-    return getSymbol(...args);
+    return getSymbol({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20GetName(
-    ...args: Parameters<typeof getName>
+    ...args: Omit<Parameters<typeof getName>, "web3Lib">
   ): Promise<ReturnType<typeof getName>> {
-    return getName(...args);
+    return getName({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20EnsureAllowance(
-    ...args: Parameters<typeof ensureAllowance>
+    ...args: Omit<Parameters<typeof ensureAllowance>, "web3Lib">
   ): Promise<ReturnType<typeof ensureAllowance>> {
-    return ensureAllowance(...args);
+    return ensureAllowance({ web3Lib: this._web3Lib, ...args[0] });
   }
 
   public async erc20BalanceOf(
-    ...args: Parameters<typeof balanceOf>
+    ...args: Omit<Parameters<typeof balanceOf>, "web3Lib">
   ): Promise<ReturnType<typeof balanceOf>> {
-    return balanceOf(...args);
+    return balanceOf({ web3Lib: this._web3Lib, ...args[0] });
   }
 }

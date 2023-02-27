@@ -6,8 +6,8 @@ export class ERC1155Mixin extends BaseCoreSDK {
   /*                           ERC1155 related methods                          */
   /* -------------------------------------------------------------------------- */
   public async erc1155BalanceOf(
-    ...args: Parameters<typeof balanceOf>
+    ...args: Omit<Parameters<typeof balanceOf>, "web3Lib">
   ): Promise<ReturnType<typeof balanceOf>> {
-    return balanceOf(...args);
+    return balanceOf({ web3Lib: this._web3Lib, ...args[0] });
   }
 }
