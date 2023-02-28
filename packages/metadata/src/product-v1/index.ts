@@ -7,6 +7,15 @@ export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
   {}
 );
 
+export type Media = {
+  url: string;
+  tag?: string;
+  name?: string;
+  type?: string;
+  width?: number;
+  height?: number;
+};
+
 export type ProductBase = {
   title: string;
   description: string;
@@ -18,14 +27,8 @@ export type ProductBase = {
   productionInformation_manufacturerPartNumber?: string;
   productionInformation_modelNumber?: string;
   productionInformation_materials?: string[];
-  visuals_images: {
-    url: string;
-    tag?: string;
-  }[];
-  visuals_videos?: {
-    url: string;
-    tag?: string;
-  }[];
+  visuals_images: Media[];
+  visuals_videos?: Media[];
   packaging_packageQuantity?: string;
   packaging_dimensions_length?: string;
   packaging_dimensions_width?: string;
@@ -56,10 +59,7 @@ type SellerMetadata = {
   description?: string;
   externalUrl?: string;
   tokenId?: string;
-  images?: {
-    url: string;
-    tag?: string;
-  }[];
+  images?: Media[];
   contactLinks: {
     url: string;
     tag: string;
@@ -97,6 +97,7 @@ export type ProductV1Metadata = {
   condition?: string;
   image: string;
   animationUrl?: string;
+  animationMetadata?: Partial<Pick<Media, "height" | "name" | "width">>;
   attributes: {
     trait_type: string;
     value: string;
