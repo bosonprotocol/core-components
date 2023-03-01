@@ -172,7 +172,7 @@ export type AnimationMetadata = {
   __typename?: "AnimationMetadata";
   height?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
-  name?: Maybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
   width?: Maybe<Scalars["Int"]>;
 };
 
@@ -195,14 +195,26 @@ export type AnimationMetadata_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  name?: InputMaybe<Scalars["Int"]>;
-  name_gt?: InputMaybe<Scalars["Int"]>;
-  name_gte?: InputMaybe<Scalars["Int"]>;
-  name_in?: InputMaybe<Array<Scalars["Int"]>>;
-  name_lt?: InputMaybe<Scalars["Int"]>;
-  name_lte?: InputMaybe<Scalars["Int"]>;
-  name_not?: InputMaybe<Scalars["Int"]>;
-  name_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   width?: InputMaybe<Scalars["Int"]>;
   width_gt?: InputMaybe<Scalars["Int"]>;
   width_gte?: InputMaybe<Scalars["Int"]>;
@@ -8652,6 +8664,9 @@ export type GetSellerByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -8659,6 +8674,9 @@ export type GetSellerByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -8675,6 +8693,9 @@ export type GetSellerByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -8719,6 +8740,9 @@ export type GetSellerByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -9160,6 +9184,9 @@ export type GetSellersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -9167,6 +9194,9 @@ export type GetSellersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -9183,6 +9213,9 @@ export type GetSellersQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -9227,6 +9260,9 @@ export type GetSellersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -9976,6 +10012,9 @@ export type GetDisputeResolverByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -9983,6 +10022,9 @@ export type GetDisputeResolverByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -9999,6 +10041,9 @@ export type GetDisputeResolverByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -10043,6 +10088,9 @@ export type GetDisputeResolverByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -10419,6 +10467,9 @@ export type GetDisputeResolversQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -10426,6 +10477,9 @@ export type GetDisputeResolversQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -10442,6 +10496,9 @@ export type GetDisputeResolversQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -10486,6 +10543,9 @@ export type GetDisputeResolversQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -10854,6 +10914,9 @@ export type SellerFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -10861,6 +10924,9 @@ export type SellerFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -10877,6 +10943,9 @@ export type SellerFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -10921,6 +10990,9 @@ export type SellerFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -11477,6 +11549,9 @@ export type DisputeResolverFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -11484,6 +11559,9 @@ export type DisputeResolverFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -11500,6 +11578,9 @@ export type DisputeResolverFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -11544,6 +11625,9 @@ export type DisputeResolverFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -12263,6 +12347,9 @@ export type GetExchangeTokenByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -12270,6 +12357,9 @@ export type GetExchangeTokenByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -12286,6 +12376,9 @@ export type GetExchangeTokenByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -12330,6 +12423,9 @@ export type GetExchangeTokenByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -12617,6 +12713,9 @@ export type GetExchangeTokensQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -12624,6 +12723,9 @@ export type GetExchangeTokensQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -12640,6 +12742,9 @@ export type GetExchangeTokensQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -12684,6 +12789,9 @@ export type GetExchangeTokensQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -12945,6 +13053,9 @@ export type ExchangeTokenFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -12952,6 +13063,9 @@ export type ExchangeTokenFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -12968,6 +13082,9 @@ export type ExchangeTokenFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -13012,6 +13129,9 @@ export type ExchangeTokenFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -13460,6 +13580,9 @@ export type GetExchangeByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -13467,6 +13590,9 @@ export type GetExchangeByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -13483,6 +13609,9 @@ export type GetExchangeByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -13527,6 +13656,9 @@ export type GetExchangeByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -13838,6 +13970,9 @@ export type GetExchangesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -13845,6 +13980,9 @@ export type GetExchangesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -13861,6 +13999,9 @@ export type GetExchangesQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -13905,6 +14046,9 @@ export type GetExchangesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -14202,6 +14346,9 @@ export type ExchangeFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -14209,6 +14356,9 @@ export type ExchangeFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -14225,6 +14375,9 @@ export type ExchangeFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -14269,6 +14422,9 @@ export type ExchangeFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -14713,6 +14869,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -14720,6 +14879,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -14736,6 +14898,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -14780,6 +14945,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15089,6 +15257,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -15096,6 +15267,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -15112,6 +15286,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -15156,6 +15333,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15451,6 +15631,9 @@ export type BaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -15458,6 +15641,9 @@ export type BaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -15474,6 +15660,9 @@ export type BaseMetadataEntityFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15518,6 +15707,9 @@ export type BaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -15812,6 +16004,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -15819,6 +16014,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -15835,6 +16033,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15879,6 +16080,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -16046,6 +16250,9 @@ export type GetProductV1ProductsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -16053,6 +16260,9 @@ export type GetProductV1ProductsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -16069,6 +16279,9 @@ export type GetProductV1ProductsQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -16391,6 +16604,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }>;
                 visuals_videos?: Array<{
                   __typename?: "ProductV1Media";
@@ -16398,6 +16614,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 productV1Seller?: {
                   __typename?: "ProductV1Seller";
@@ -16414,6 +16633,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     url: string;
                     tag?: string | null;
                     type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                    name?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "ProductV1SellerContactLink";
@@ -16458,6 +16680,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -16551,6 +16776,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -16558,6 +16786,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -16574,6 +16805,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -16896,6 +17130,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }>;
                 visuals_videos?: Array<{
                   __typename?: "ProductV1Media";
@@ -16903,6 +17140,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 productV1Seller?: {
                   __typename?: "ProductV1Seller";
@@ -16919,6 +17159,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     url: string;
                     tag?: string | null;
                     type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                    name?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "ProductV1SellerContactLink";
@@ -16963,6 +17206,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -17056,6 +17302,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -17063,6 +17312,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -17079,6 +17331,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -17157,7 +17412,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       id: string;
       width?: number | null;
       height?: number | null;
-      name?: number | null;
+      name?: string | null;
     } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
@@ -17415,6 +17670,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -17422,6 +17680,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -17438,6 +17699,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -17482,6 +17746,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -17620,6 +17887,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }>;
       visuals_videos?: Array<{
         __typename?: "ProductV1Media";
@@ -17627,6 +17897,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       productV1Seller?: {
         __typename?: "ProductV1Seller";
@@ -17643,6 +17916,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           url: string;
           tag?: string | null;
           type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
+          name?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "ProductV1SellerContactLink";
@@ -17687,6 +17963,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -17757,7 +18036,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       id: string;
       width?: number | null;
       height?: number | null;
-      name?: number | null;
+      name?: string | null;
     } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
@@ -18015,6 +18294,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -18022,6 +18304,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -18038,6 +18323,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -18082,6 +18370,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -18220,6 +18511,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }>;
       visuals_videos?: Array<{
         __typename?: "ProductV1Media";
@@ -18227,6 +18521,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       productV1Seller?: {
         __typename?: "ProductV1Seller";
@@ -18243,6 +18540,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           url: string;
           tag?: string | null;
           type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
+          name?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "ProductV1SellerContactLink";
@@ -18287,6 +18587,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -18347,7 +18650,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     id: string;
     width?: number | null;
     height?: number | null;
-    name?: number | null;
+    name?: string | null;
   } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
@@ -18601,6 +18904,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -18608,6 +18914,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -18624,6 +18933,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -18668,6 +18980,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -18806,6 +19121,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -18813,6 +19131,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -18829,6 +19150,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -18873,6 +19197,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -18932,7 +19259,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     id: string;
     width?: number | null;
     height?: number | null;
-    name?: number | null;
+    name?: string | null;
   } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
@@ -19186,6 +19513,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -19193,6 +19523,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -19209,6 +19542,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -19253,6 +19589,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -19391,6 +19730,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -19398,6 +19740,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -19414,6 +19759,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
+        name?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -19458,6 +19806,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -19497,7 +19848,7 @@ export type BaseAnimationMetadataFieldsFragment = {
   id: string;
   width?: number | null;
   height?: number | null;
-  name?: number | null;
+  name?: string | null;
 };
 
 export type BaseProductV1ProductFieldsFragment = {
@@ -19567,6 +19918,9 @@ export type BaseProductV1ProductFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -19574,6 +19928,9 @@ export type BaseProductV1ProductFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -19590,6 +19947,9 @@ export type BaseProductV1ProductFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -19901,6 +20261,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -19908,6 +20271,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -19924,6 +20290,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -19968,6 +20337,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -20061,6 +20433,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -20068,6 +20443,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -20084,6 +20462,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -20395,6 +20776,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -20402,6 +20786,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -20418,6 +20805,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                  name?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -20462,6 +20852,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -20555,6 +20948,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -20562,6 +20958,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -20578,6 +20977,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
+      name?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -20632,6 +21034,9 @@ export type BaseProductV1MediaFieldsFragment = {
   url: string;
   tag?: string | null;
   type: ProductV1MediaType;
+  width?: number | null;
+  height?: number | null;
+  name?: string | null;
 };
 
 export type BaseProductV1PersonalisationFieldsFragment = {
@@ -20662,6 +21067,9 @@ export type BaseProductV1SellerFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }> | null;
   contactLinks?: Array<{
     __typename?: "ProductV1SellerContactLink";
@@ -20753,6 +21161,9 @@ export type BaseProductV1ProductOverridesFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -20760,6 +21171,9 @@ export type BaseProductV1ProductOverridesFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
   }> | null;
 };
 
@@ -21021,6 +21435,9 @@ export type GetOfferByIdQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -21028,6 +21445,9 @@ export type GetOfferByIdQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -21044,6 +21464,9 @@ export type GetOfferByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -21088,6 +21511,9 @@ export type GetOfferByIdQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21401,6 +21827,9 @@ export type GetOffersQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -21408,6 +21837,9 @@ export type GetOffersQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -21424,6 +21856,9 @@ export type GetOffersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+                name?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -21468,6 +21903,9 @@ export type GetOffersQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21765,6 +22203,9 @@ export type OfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }>;
           visuals_videos?: Array<{
             __typename?: "ProductV1Media";
@@ -21772,6 +22213,9 @@ export type OfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }> | null;
           productV1Seller?: {
             __typename?: "ProductV1Seller";
@@ -21788,6 +22232,9 @@ export type OfferFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21832,6 +22279,9 @@ export type OfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "ProductV1SellerContactLink";
@@ -22078,6 +22528,9 @@ export type BaseOfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }>;
           visuals_videos?: Array<{
             __typename?: "ProductV1Media";
@@ -22085,6 +22538,9 @@ export type BaseOfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }> | null;
           productV1Seller?: {
             __typename?: "ProductV1Seller";
@@ -22101,6 +22557,9 @@ export type BaseOfferFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+              name?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -22145,6 +22604,9 @@ export type BaseOfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+            name?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "ProductV1SellerContactLink";
@@ -22330,6 +22792,9 @@ export const BaseProductV1MediaFieldsFragmentDoc = gql`
     url
     tag
     type
+    width
+    height
+    name
   }
 `;
 export const BaseProductV1SellerContactLinkFieldsFragmentDoc = gql`

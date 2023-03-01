@@ -40,7 +40,7 @@ interface MetadataInterface {
 type AnimationMetadata @entity {
   id: ID!
   height: Int
-  name: Int
+  name: String
   width: Int
 }
 
