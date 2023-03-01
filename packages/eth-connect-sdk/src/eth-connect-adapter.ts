@@ -27,7 +27,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
   constructor(
     requestManager: RequestManager,
     externalFeatures: ExternalFeatures,
-    requestManagerSigner?: RequestManager,
+    requestManagerSigner?: RequestManager
   ) {
     this._requestManager = requestManager;
     this._requestManagerSigner = requestManagerSigner || requestManager;
