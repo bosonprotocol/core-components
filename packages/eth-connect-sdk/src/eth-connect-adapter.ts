@@ -19,15 +19,18 @@ const TX_POLLING_DELAY = 2000;
  */
 export class EthConnectAdapter implements Web3LibAdapter {
   private _requestManager: RequestManager;
+  private _requestManagerSigner: RequestManager;
   private _externalFeatures: ExternalFeatures;
 
   private static receiptData = new Map<string, { from: string; to: string }>();
 
   constructor(
     requestManager: RequestManager,
-    externalFeatures: ExternalFeatures
+    externalFeatures: ExternalFeatures,
+    requestManagerSigner?: RequestManager
   ) {
     this._requestManager = requestManager;
+    this._requestManagerSigner = requestManagerSigner || requestManager;
     this._externalFeatures = externalFeatures;
   }
 
@@ -37,11 +40,12 @@ export class EthConnectAdapter implements Web3LibAdapter {
       return address;
     }
     // Note: usage of requestManager.eth_accounts is prohibited by DCL kernel
-    const [address] = await this._requestManager.eth_accounts();
+    const [address] = await this._requestManagerSigner.eth_accounts();
     return address;
   }
 
   public async getChainId(): Promise<number> {
+    // Use standard requestManager to get the chainId (allow the signer to be connected to another chain)
     const chainId = await this._requestManager.net_version();
     return parseInt(chainId);
   }
@@ -50,6 +54,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
     addressOrName: string,
     blockNumber?: string | number
   ): Promise<string> {
+    // Use standard requestManager to get the balance (allow the signer to be connected to another chain)
     const balance = await this._requestManager.eth_getBalance(
       addressOrName,
       (blockNumber || (await this._requestManager.eth_blockNumber())).toString()
@@ -62,7 +67,8 @@ export class EthConnectAdapter implements Web3LibAdapter {
   ): Promise<TransactionResponse> {
     const from = transactionRequest.from || (await this.getSignerAddress());
     const to = transactionRequest.to || "0x";
-    const txHash = await this._requestManager.eth_sendTransaction({
+    // Use requestManagerSigner to (sign and) send transaction
+    const txHash = await this._requestManagerSigner.eth_sendTransaction({
       from,
       to,
       data: transactionRequest.data || "0x",
@@ -80,6 +86,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
   }
 
   public async call(transactionRequest: TransactionRequest): Promise<string> {
+    // Use standard requestManager to fetch blockchain information
     const blockNumber = await this._requestManager.eth_blockNumber();
     return this._requestManager.eth_call(
       {
@@ -91,7 +98,8 @@ export class EthConnectAdapter implements Web3LibAdapter {
   }
 
   public async send(rpcMethod: string, payload: unknown[]): Promise<string> {
-    return this._requestManager.sendAsync({
+    // Use requestManagerSigner to (sign and) send transaction
+    return this._requestManagerSigner.sendAsync({
       method: rpcMethod,
       params: payload
     });
@@ -107,6 +115,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
       // Note: usage of requestManager.waitForCompletion is prohibited by DCL kernel (since 07-2021)
       let receipt = null;
       const account = await this.getSignerAddress();
+      // Use standard requestManager to fetch blockchain information
       const blockNumber = await this._requestManager.eth_blockNumber();
       const presumedNonce = await this._requestManager.eth_getTransactionCount(
         account,
@@ -142,6 +151,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
     const txObject = receiptData || EthConnectAdapter.receiptData.get(txHash);
     // Note: usage of requestManager.eth_getTransactionByHash is prohibited by DCL kernel
 
+    // Use standard requestManager to fetch blockchain information
     const txReceipt = await this._requestManager.eth_getTransactionReceipt(
       txHash
     );
