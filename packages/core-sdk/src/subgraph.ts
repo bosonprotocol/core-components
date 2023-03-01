@@ -168,8 +168,61 @@ export enum Account_OrderBy {
   Logs = "logs"
 }
 
+export type AnimationMetadata = {
+  __typename?: "AnimationMetadata";
+  height?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"];
+  name?: Maybe<Scalars["Int"]>;
+  width?: Maybe<Scalars["Int"]>;
+};
+
+export type AnimationMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["Int"]>;
+  name_gt?: InputMaybe<Scalars["Int"]>;
+  name_gte?: InputMaybe<Scalars["Int"]>;
+  name_in?: InputMaybe<Array<Scalars["Int"]>>;
+  name_lt?: InputMaybe<Scalars["Int"]>;
+  name_lte?: InputMaybe<Scalars["Int"]>;
+  name_not?: InputMaybe<Scalars["Int"]>;
+  name_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum AnimationMetadata_OrderBy {
+  Height = "height",
+  Id = "id",
+  Name = "name",
+  Width = "width"
+}
+
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -217,6 +270,27 @@ export type BaseMetadataEntityAttributesArgs = {
 export type BaseMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -514,6 +588,7 @@ export type BaseMetadataEntity_Filter = {
 };
 
 export enum BaseMetadataEntity_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -2306,6 +2381,7 @@ export enum MetadataAttribute_OrderBy {
 }
 
 export type MetadataInterface = {
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -2352,6 +2428,27 @@ export type MetadataInterfaceAttributesArgs = {
 export type MetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2649,6 +2746,7 @@ export type MetadataInterface_Filter = {
 };
 
 export enum MetadataInterface_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -3646,10 +3744,13 @@ export enum ProductV1ExchangePolicy_OrderBy {
 
 export type ProductV1Media = {
   __typename?: "ProductV1Media";
+  height?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
   type: ProductV1MediaType;
   url: Scalars["String"];
+  width?: Maybe<Scalars["Int"]>;
 };
 
 export enum ProductV1MediaType {
@@ -3660,6 +3761,14 @@ export enum ProductV1MediaType {
 export type ProductV1Media_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -3668,6 +3777,26 @@ export type ProductV1Media_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -3712,17 +3841,29 @@ export type ProductV1Media_Filter = {
   url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   url_starts_with?: InputMaybe<Scalars["String"]>;
   url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
 };
 
 export enum ProductV1Media_OrderBy {
+  Height = "height",
   Id = "id",
+  Name = "name",
   Tag = "tag",
   Type = "type",
-  Url = "url"
+  Url = "url",
+  Width = "width"
 }
 
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -3791,6 +3932,27 @@ export type ProductV1MetadataEntityVariationsArgs = {
 export type ProductV1MetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -4248,6 +4410,7 @@ export type ProductV1MetadataEntity_Filter = {
 };
 
 export enum ProductV1MetadataEntity_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -6591,6 +6754,7 @@ export type Query = {
   accountEventLog?: Maybe<AccountEventLog>;
   accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
+  animationMetadata: Array<AnimationMetadata>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
@@ -6700,6 +6864,16 @@ export type QueryAccountsArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Account_Filter>;
+};
+
+export type QueryAnimationMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AnimationMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AnimationMetadata_Filter>;
 };
 
 export type QueryBaseMetadataEntitiesArgs = {
@@ -7473,6 +7647,7 @@ export type Subscription = {
   accountEventLog?: Maybe<AccountEventLog>;
   accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
+  animationMetadata: Array<AnimationMetadata>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
@@ -7582,6 +7757,16 @@ export type SubscriptionAccountsArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Account_Filter>;
+};
+
+export type SubscriptionAnimationMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AnimationMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AnimationMetadata_Filter>;
 };
 
 export type SubscriptionBaseMetadataEntitiesArgs = {
@@ -16967,6 +17152,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     numberOfCommits: string;
     numberOfRedemptions: string;
     uuid: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      name?: number | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -17560,6 +17752,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     numberOfCommits: string;
     numberOfRedemptions: string;
     uuid: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      name?: number | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -18143,6 +18342,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
   numberOfCommits: string;
   numberOfRedemptions: string;
   uuid: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    name?: number | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -18721,6 +18927,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   numberOfCommits: string;
   numberOfRedemptions: string;
   uuid: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    name?: number | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -19277,6 +19490,14 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     sellerContactMethod: string;
     disputeResolverContactMethod: string;
   };
+};
+
+export type BaseAnimationMetadataFieldsFragment = {
+  __typename?: "AnimationMetadata";
+  id: string;
+  width?: number | null;
+  height?: number | null;
+  name?: number | null;
 };
 
 export type BaseProductV1ProductFieldsFragment = {
@@ -22647,6 +22868,14 @@ export const BaseMetadataEntityFieldsFragmentDoc = gql`
   }
   ${BaseBaseMetadataEntityFieldsFragmentDoc}
 `;
+export const BaseAnimationMetadataFieldsFragmentDoc = gql`
+  fragment BaseAnimationMetadataFields on AnimationMetadata {
+    id
+    width
+    height
+    name
+  }
+`;
 export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
     id
@@ -22654,6 +22883,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
@@ -22697,6 +22929,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
       ...BaseProductV1ExchangePolicyFields
     }
   }
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}

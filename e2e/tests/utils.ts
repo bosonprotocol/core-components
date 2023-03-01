@@ -68,6 +68,11 @@ export const metadata = {
   description: "description",
   externalUrl: "external-url.com",
   animationUrl: "animation-url.com",
+  animationMetadata: {
+    height: 720,
+    width: 404,
+    name: "name_compressed.mp4"
+  },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
