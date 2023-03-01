@@ -22980,6 +22980,9 @@ export const BaseOfferFieldsFragmentDoc = gql`
       description
       externalUrl
       animationUrl
+      animationMetadata {
+        ...BaseAnimationMetadataFields
+      }
       licenseUrl
       condition
       schemaUrl
