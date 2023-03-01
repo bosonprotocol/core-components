@@ -2,11 +2,10 @@ name: Deploy subgraph to testing env
 
 on:
   workflow_dispatch:
-    branches: [main]
+    branches: [main, fix-deploy-testing-subgraph]
   push:
     paths:
       - packages/subgraph/**
-  pull_request:
 
 jobs:
   deploy:
