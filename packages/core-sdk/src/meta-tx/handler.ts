@@ -38,7 +38,10 @@ import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
 import { encodePreMint, encodeSetApprovalForAll } from "../voucher/interface";
-import { ethers } from "ethers";
+import { hexZeroPad } from "@ethersproject/bytes";
+import { keccak256 } from "@ethersproject/keccak256";
+import { id } from "@ethersproject/hash";
+import { defaultAbiCoder } from "@ethersproject/abi";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
@@ -221,10 +224,7 @@ export async function signBiconomyVoucherMetaTx(
     name: "Biconomy Forwarder",
     version: "1",
     verifyingContract: args.forwarderAddress,
-    salt: ethers.utils.hexZeroPad(
-      ethers.BigNumber.from(chainId).toHexString(),
-      32
-    )
+    salt: hexZeroPad(BigNumber.from(chainId).toHexString(), 32)
   };
 
   const signatureParams = await prepareDataSignatureParameters({
@@ -243,15 +243,15 @@ export async function signBiconomyVoucherMetaTx(
   const signature = signatureParams.signature;
   const getDomainSeparator = async () => {
     const domainData = biconomyForwarderDomainData;
-    const domainSeparator = ethers.utils.keccak256(
-      ethers.utils.defaultAbiCoder.encode(
+    const domainSeparator = keccak256(
+      defaultAbiCoder.encode(
         ["bytes32", "bytes32", "bytes32", "address", "bytes32"],
         [
-          ethers.utils.id(
+          id(
             "EIP712Domain(string name,string version,address verifyingContract,bytes32 salt)"
           ),
-          ethers.utils.id(domainData.name),
-          ethers.utils.id(domainData.version),
+          id(domainData.name),
+          id(domainData.version),
           domainData.verifyingContract,
           domainData.salt
         ]
