@@ -1,6 +1,7 @@
 import { GraphQLClient } from "graphql-request";
 import * as Dom from "graphql-request/dist/types.dom";
 import { gql } from "graphql-request";
+import fetch from "node-fetch";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -22934,6 +22935,14 @@ export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
   }
   ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
 `;
+export const BaseAnimationMetadataFieldsFragmentDoc = gql`
+  fragment BaseAnimationMetadataFields on AnimationMetadata {
+    id
+    width
+    height
+    name
+  }
+`;
 export const BaseOfferFieldsFragmentDoc = gql`
   fragment BaseOfferFields on Offer {
     id
@@ -23018,6 +23027,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
       }
     }
   }
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
@@ -23335,14 +23345,6 @@ export const BaseMetadataEntityFieldsFragmentDoc = gql`
     ...BaseBaseMetadataEntityFields
   }
   ${BaseBaseMetadataEntityFieldsFragmentDoc}
-`;
-export const BaseAnimationMetadataFieldsFragmentDoc = gql`
-  fragment BaseAnimationMetadataFields on AnimationMetadata {
-    id
-    width
-    height
-    name
-  }
 `;
 export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
