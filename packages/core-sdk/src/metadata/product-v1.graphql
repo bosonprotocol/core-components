@@ -129,6 +129,9 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   description
   externalUrl
   animationUrl
+  animationMetadata {
+    ...BaseAnimationMetadataFields
+  }
   licenseUrl
   condition
   schemaUrl
@@ -171,6 +174,13 @@ fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
   exchangePolicy {
     ...BaseProductV1ExchangePolicyFields
   }
+}
+
+fragment BaseAnimationMetadataFields on AnimationMetadata {
+  id
+  width
+  height
+  name
 }
 
 fragment BaseProductV1ProductFields on ProductV1Product {
@@ -299,6 +309,9 @@ fragment BaseProductV1MediaFields on ProductV1Media {
   url
   tag
   type
+  width
+  height
+  name
 }
 
 fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {

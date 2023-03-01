@@ -14,6 +14,7 @@ import { saveProductV1Variations } from "./variation";
 import { saveProductV1Shipping } from "./shipping";
 import { saveProductV1ExchangePolicy } from "./exchange-policy";
 import { saveProductV1Variant } from "./variant";
+import { saveAnimationMetadata } from "../animationMetadata";
 
 export function saveProductV1Metadata(
   offer: Offer,
@@ -28,6 +29,9 @@ export function saveProductV1Metadata(
   const description = convertToString(metadataObj.get("description"));
   const externalUrl = convertToString(metadataObj.get("externalUrl"));
   const animationUrl = convertToString(metadataObj.get("animationUrl"));
+  const animationMetadata = convertToObject(
+    metadataObj.get("animationMetadata")
+  );
   const licenseUrl = convertToString(metadataObj.get("licenseUrl"));
   const condition = convertToString(metadataObj.get("condition"));
   const schemaUrl = convertToString(metadataObj.get("schemaUrl"));
@@ -35,6 +39,7 @@ export function saveProductV1Metadata(
   const attributes = convertToObjectArray(metadataObj.get("attributes"));
   const uuid = convertToString(metadataObj.get("uuid"));
 
+  const savedAnimationMetadataId = saveAnimationMetadata(animationMetadata);
   const savedMetadataAttributeIds = saveMetadataAttributes(attributes);
   const savedProductV1SellerId = saveProductV1Seller(
     convertToObject(metadataObj.get("seller")),
@@ -92,6 +97,7 @@ export function saveProductV1Metadata(
   productV1MetadataEntity.description = description;
   productV1MetadataEntity.externalUrl = externalUrl;
   productV1MetadataEntity.animationUrl = animationUrl;
+  productV1MetadataEntity.animationMetadata = savedAnimationMetadataId;
   productV1MetadataEntity.licenseUrl = licenseUrl;
   productV1MetadataEntity.schemaUrl = schemaUrl;
   productV1MetadataEntity.condition = condition;
