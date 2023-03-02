@@ -40,7 +40,7 @@ interface MetadataInterface {
 type AnimationMetadata @entity {
   id: ID!
   height: Int
-  name: String
+  type: String
   width: Int
 }
 
@@ -232,7 +232,6 @@ type ProductV1Media @entity {
   type: ProductV1MediaType!
   width: Int
   height: Int
-  name: String
 }
 
 type ProductV1Personalisation @entity {

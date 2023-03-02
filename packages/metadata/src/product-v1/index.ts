@@ -10,7 +10,6 @@ export const productV1MetadataSchema: SchemaOf<ProductV1Metadata> = buildYup(
 export type Media = {
   url: string;
   tag?: string;
-  name?: string;
   type?: string;
   width?: number;
   height?: number;
@@ -97,7 +96,7 @@ export type ProductV1Metadata = {
   condition?: string;
   image: string;
   animationUrl?: string;
-  animationMetadata?: Partial<Pick<Media, "height" | "name" | "width">>;
+  animationMetadata?: Partial<Pick<Media, "height" | "type" | "width">>;
   attributes: {
     trait_type: string;
     value: string;

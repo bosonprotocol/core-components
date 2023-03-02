@@ -180,7 +180,7 @@ fragment BaseAnimationMetadataFields on AnimationMetadata {
   id
   width
   height
-  name
+  type
 }
 
 fragment BaseProductV1ProductFields on ProductV1Product {
@@ -311,7 +311,6 @@ fragment BaseProductV1MediaFields on ProductV1Media {
   type
   width
   height
-  name
 }
 
 fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {
