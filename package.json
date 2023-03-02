@@ -35,7 +35,8 @@
     "update-seller": "ts-node -P tsconfig.base.json ./scripts/update-seller.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv",
-    "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts"
+    "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
+    "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts"
   },
   "repository": {
     "type": "git",
