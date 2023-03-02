@@ -1,3 +1,6 @@
+import { MetaTxConfig } from "@bosonprotocol/common";
+import fs from "fs";
+import { resolve } from "path";
 import { program } from "commander";
 import { Wallet, providers } from "ethers";
 import {
@@ -30,6 +33,7 @@ program
     "--sellerId <SELLER_ID>",
     "Id of the seller to complete all completable exchanges for"
   )
+  .option("--dryRun", "do not send the transaction")
   .parse(process.argv);
 
 async function main() {
@@ -39,16 +43,41 @@ async function main() {
   const envName = (opts.env as EnvironmentType) || "testing";
   const defaultConfig = getDefaultConfig(envName);
   const wallet = new Wallet(privateKey);
+  let metaTx: Partial<MetaTxConfig> | undefined = undefined;
+  if (opts.metaTx) {
+    //
+    // JSON file example:
+    // {
+    //   "apiKey": "<BICONOMY_API_KEY>>",
+    //   "apiIds": {
+    //     "<DIAMOND_ADDRESS>": {
+    //       "executeMetaTransaction": "<BICONOMY_API_ID>"
+    //     }
+    //   }
+    // }
+    // Where:
+    //  - <BICONOMY_API_KEY>: is the ApiKEy of the Biconomy Project
+    //  - <DIAMOND_ADDRESS>: in the Boson Protocol diamond contract address in the targeted environment
+    //  - <BICONOMY_API_ID> : is the ApiId for Boson Diamond "executeMetaTransaction" method
+    //
+    const rawMetaTx = fs.readFileSync(resolve(__dirname, opts.metaTx));
+    metaTx = JSON.parse(rawMetaTx.toString());
+  }
   const coreSDK = CoreSDK.fromDefaultConfig({
     web3Lib: new EthersAdapter(
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       wallet
     ),
-    envName
+    envName,
+    metaTx
   });
+  if (opts.metaTx && !coreSDK.isMetaTxConfigSet) {
+    throw `Invalid metaTx configuration:\n${JSON.stringify(metaTx)}`;
+  }
+
   const exchangeIds = opts.exchanges
     ? (opts.exchanges as string).split(",")
-    : [];
+    : [""];
 
   const exchanges = await coreSDK.getExchanges({
     exchangesFilter: {
@@ -69,7 +98,6 @@ async function main() {
     );
   }
   const now = Math.floor(Date.now() / 1000);
-  console.log("Now", now);
   const exchangesToComplete = exchanges.filter(
     (e) =>
       parseInt(e.redeemedDate as string) +
@@ -77,7 +105,9 @@ async function main() {
       now
   );
   console.log(
-    `Exchanges to complete:${exchangesToComplete.map(
+    `${
+      exchangesToComplete.length
+    } exchanges to complete:${exchangesToComplete.map(
       (e) =>
         `\n${e.id}:${e.state}:${new Date(
           1000 * parseInt(e.redeemedDate as string)
@@ -88,7 +118,6 @@ async function main() {
         ).toDateString()}`
     )}`
   );
-  console.log("Nb exchanges to complete:", exchangesToComplete.length);
   let nbCompleted = 0;
   while (nbCompleted < exchangesToComplete.length) {
     const exchangesToCompleteIds = exchangesToComplete
@@ -103,8 +132,32 @@ async function main() {
       .map((e) => e.id);
     console.log("Nb exchanges in batch:", exchangesToCompleteIds.length);
     nbCompleted += exchangesToCompleteIds.length;
-    const tx = await coreSDK.completeExchangeBatch(exchangesToCompleteIds);
-    console.log(`Transaction ${tx.hash} sent`);
+    if (opts.dryRun) {
+      continue;
+    }
+    let tx;
+    if (opts.metaTx && coreSDK.isMetaTxConfigSet) {
+      console.log(`Preparing meta-transaction...`);
+      const nonce = Date.now();
+      const { functionName, functionSignature, r, s, v } =
+        await coreSDK.signMetaTxCompleteExchangeBatch({
+          exchangeIds: exchangesToCompleteIds,
+          nonce
+        });
+      tx = await coreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        sigR: r,
+        sigS: s,
+        sigV: v,
+        nonce
+      });
+      console.log(`Meta-transaction ${tx.hash} sent`);
+    } else {
+      console.log(`Preparing transaction...`);
+      tx = await coreSDK.completeExchangeBatch(exchangesToCompleteIds);
+      console.log(`Transaction ${tx.hash} sent`);
+    }
     await tx.wait();
     console.log(`Transaction ${tx.hash} completed`);
   }
