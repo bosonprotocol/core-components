@@ -7,7 +7,7 @@
   "animationMetadata": {
     "height": 720,
     "width": 404,
-    "name": "Qmf4oVd8rE1d2YKpTgPpMr4AMYMM5Yryxxjga1UWWc3UnD_compressed.mp4"
+    "type": "video/mp4"
   },
   "description": "The future is here and it starts with a limited edition MetaFactory X Boson Protocol Hoodie... This unisex hoodie, in a metablack coloureway with reflective stripes, is made from a heavyweight French terry cotton. It has an adjustable hood and full colour interior, elasticated trims, reflective lining, and reflective back panels... Nothing says open metaverse more than this collab between MetaFactory and Boson Protocol. Limited Edition: Only 75 ever made.",
   "externalUrl": "https://app.bosonportal.io/#/offer-uuid/ecf2a6dc-555b-41b5-aca8-b7e29eebbb30",
@@ -37,8 +37,7 @@
         "tag": "product_image",
         "height": 2736,
         "width": 2310,
-        "type": "image/jpeg",
-        "name": "ant-tshirt-ant-blu-m.jpg"
+        "type": "image/jpeg"
       }
     ]
   },

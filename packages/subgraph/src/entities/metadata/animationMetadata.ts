@@ -5,10 +5,10 @@ import { convertToInt, convertToString } from "../../utils/json";
 
 export function getAnimationMetadataId(
   height: number,
-  name: string,
+  type: string,
   width: number
 ): string {
-  return `${height}-${name.toLowerCase()}-${width}`;
+  return `${height}-${type.toLowerCase()}-${width}`;
 }
 
 export function saveAnimationMetadata(
@@ -19,20 +19,25 @@ export function saveAnimationMetadata(
   }
 
   const height = convertToInt(animationMetadata.get("height"));
-  const name = convertToString(animationMetadata.get("name"));
+  const type = convertToString(animationMetadata.get("type"));
   const width = convertToInt(animationMetadata.get("width"));
 
-  const animationMetadataId = getAnimationMetadataId(height, name, width);
+  const animationMetadataId = getAnimationMetadataId(height, type, width);
 
   let animationMetadataEntity = AnimationMetadata.load(animationMetadataId);
 
-  if (!animationMetadataEntity) {
+  if (animationMetadataEntity) {
+    animationMetadataEntity.height = height;
+    animationMetadataEntity.width = width;
+    animationMetadataEntity.type = type;
+  } else {
     animationMetadataEntity = new AnimationMetadata(animationMetadataId);
     animationMetadataEntity.height = height;
-    animationMetadataEntity.name = name;
+    animationMetadataEntity.type = type;
     animationMetadataEntity.width = width;
-    animationMetadataEntity.save();
   }
+
+  animationMetadataEntity.save();
 
   return animationMetadataId;
 }

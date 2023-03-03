@@ -71,7 +71,7 @@ export const metadata = {
   animationMetadata: {
     height: 720,
     width: 404,
-    name: "name_compressed.mp4"
+    type: "video/mp4"
   },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"

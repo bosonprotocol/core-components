@@ -19,21 +19,22 @@ export function saveProductV1Medias(
     const mediaTag = convertToString(mediaObject.get("tag"));
     const mediaHeight = convertToInt(mediaObject.get("height"));
     const mediaWidth = convertToInt(mediaObject.get("width"));
-    const mediaName = convertToString(mediaObject.get("name"));
     const mediaId = getMediaId(mediaUrl, mediaTag);
 
     let media = ProductV1Media.load(mediaId);
 
-    if (!media) {
+    if (media) {
+      media.height = mediaHeight;
+      media.width = mediaWidth;
+    } else {
       media = new ProductV1Media(mediaId);
       media.url = mediaUrl;
       media.tag = mediaTag;
       media.height = mediaHeight;
       media.width = mediaWidth;
-      media.name = mediaName;
       media.type = mediaType as string;
-      media.save();
     }
+    media.save();
 
     savedMedias.push(mediaId);
   }
