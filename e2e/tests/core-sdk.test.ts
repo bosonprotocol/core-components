@@ -5,7 +5,6 @@ import {
   ExchangeFieldsFragment
 } from "./../../packages/core-sdk/src/subgraph";
 import { utils, constants, BigNumber, BigNumberish } from "ethers";
-
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import {

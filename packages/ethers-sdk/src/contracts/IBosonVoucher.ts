@@ -17,20 +17,46 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
+export declare namespace IBosonVoucher {
+  export type RangeStruct = {
+    start: BigNumberish;
+    length: BigNumberish;
+    minted: BigNumberish;
+    lastBurnedTokenId: BigNumberish;
+  };
+
+  export type RangeStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    start: BigNumber;
+    length: BigNumber;
+    minted: BigNumber;
+    lastBurnedTokenId: BigNumber;
+  };
+}
+
 export interface IBosonVoucherInterface extends utils.Interface {
   contractName: "IBosonVoucher";
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "burnPremintedVouchers(uint256)": FunctionFragment;
     "burnVoucher(uint256)": FunctionFragment;
     "contractURI()": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getAvailablePreMints(uint256)": FunctionFragment;
+    "getRangeByOfferId(uint256)": FunctionFragment;
     "getRoyaltyPercentage()": FunctionFragment;
     "getSellerId()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "issueVoucher(uint256,address)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "preMint(uint256,uint256)": FunctionFragment;
+    "reserveRange(uint256,uint256,uint256)": FunctionFragment;
     "royaltyInfo(uint256,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
@@ -41,6 +67,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "tokenURI(uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "transferPremintedFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -48,6 +75,10 @@ export interface IBosonVoucherInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "burnPremintedVouchers",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "burnVoucher",
     values: [BigNumberish]
@@ -58,6 +89,14 @@ export interface IBosonVoucherInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAvailablePreMints",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRangeByOfferId",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -80,6 +119,14 @@ export interface IBosonVoucherInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "preMint",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reserveRange",
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "royaltyInfo",
@@ -118,9 +165,17 @@ export interface IBosonVoucherInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferPremintedFrom",
+    values: [string, string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "burnPremintedVouchers",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "burnVoucher",
     data: BytesLike
@@ -131,6 +186,14 @@ export interface IBosonVoucherInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAvailablePreMints",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRangeByOfferId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -151,6 +214,11 @@ export interface IBosonVoucherInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "preMint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "reserveRange",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "royaltyInfo",
     data: BytesLike
@@ -185,11 +253,16 @@ export interface IBosonVoucherInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferPremintedFrom",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
     "ContractURIChanged(string)": EventFragment;
+    "RangeReserved(uint256,tuple)": EventFragment;
     "RoyaltyPercentageChanged(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "VoucherInitialized(uint256,uint256,string)": EventFragment;
@@ -198,6 +271,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ContractURIChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RangeReserved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoyaltyPercentageChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherInitialized"): EventFragment;
@@ -224,6 +298,13 @@ export type ContractURIChangedEvent = TypedEvent<
 
 export type ContractURIChangedEventFilter =
   TypedEventFilter<ContractURIChangedEvent>;
+
+export type RangeReservedEvent = TypedEvent<
+  [BigNumber, IBosonVoucher.RangeStructOutput],
+  { offerId: BigNumber; range: IBosonVoucher.RangeStructOutput }
+>;
+
+export type RangeReservedEventFilter = TypedEventFilter<RangeReservedEvent>;
 
 export type RoyaltyPercentageChangedEvent = TypedEvent<
   [BigNumber],
@@ -287,6 +368,11 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { balance: BigNumber }>;
 
+    burnPremintedVouchers(
+      _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     burnVoucher(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -298,6 +384,20 @@ export interface IBosonVoucher extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { operator: string }>;
+
+    getAvailablePreMints(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { count: BigNumber }>;
+
+    getRangeByOfferId(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [IBosonVoucher.RangeStructOutput] & {
+        range: IBosonVoucher.RangeStructOutput;
+      }
+    >;
 
     getRoyaltyPercentage(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -321,6 +421,19 @@ export interface IBosonVoucher extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { owner: string }>;
+
+    preMint(
+      _offerId: BigNumberish,
+      _amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    reserveRange(
+      _offerId: BigNumberish,
+      _start: BigNumberish,
+      _length: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     royaltyInfo(
       _tokenId: BigNumberish,
@@ -384,6 +497,15 @@ export interface IBosonVoucher extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   approve(
@@ -393,6 +515,11 @@ export interface IBosonVoucher extends BaseContract {
   ): Promise<ContractTransaction>;
 
   balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  burnPremintedVouchers(
+    _offerId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   burnVoucher(
     _exchangeId: BigNumberish,
@@ -405,6 +532,16 @@ export interface IBosonVoucher extends BaseContract {
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  getAvailablePreMints(
+    _offerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getRangeByOfferId(
+    _offerId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<IBosonVoucher.RangeStructOutput>;
 
   getRoyaltyPercentage(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -425,6 +562,19 @@ export interface IBosonVoucher extends BaseContract {
   name(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  preMint(
+    _offerId: BigNumberish,
+    _amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  reserveRange(
+    _offerId: BigNumberish,
+    _start: BigNumberish,
+    _length: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   royaltyInfo(
     _tokenId: BigNumberish,
@@ -486,6 +636,15 @@ export interface IBosonVoucher extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  transferPremintedFrom(
+    _from: string,
+    _to: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    _data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     approve(
       to: string,
@@ -494,6 +653,11 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<void>;
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    burnPremintedVouchers(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     burnVoucher(
       _exchangeId: BigNumberish,
@@ -506,6 +670,16 @@ export interface IBosonVoucher extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getAvailablePreMints(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getRangeByOfferId(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<IBosonVoucher.RangeStructOutput>;
 
     getRoyaltyPercentage(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -526,6 +700,19 @@ export interface IBosonVoucher extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    preMint(
+      _offerId: BigNumberish,
+      _amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    reserveRange(
+      _offerId: BigNumberish,
+      _start: BigNumberish,
+      _length: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     royaltyInfo(
       _tokenId: BigNumberish,
@@ -586,6 +773,15 @@ export interface IBosonVoucher extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -615,6 +811,15 @@ export interface IBosonVoucher extends BaseContract {
       contractURI?: null
     ): ContractURIChangedEventFilter;
     ContractURIChanged(contractURI?: null): ContractURIChangedEventFilter;
+
+    "RangeReserved(uint256,tuple)"(
+      offerId?: BigNumberish | null,
+      range?: null
+    ): RangeReservedEventFilter;
+    RangeReserved(
+      offerId?: BigNumberish | null,
+      range?: null
+    ): RangeReservedEventFilter;
 
     "RoyaltyPercentageChanged(uint256)"(
       royaltyPercentage?: null
@@ -655,6 +860,11 @@ export interface IBosonVoucher extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    burnPremintedVouchers(
+      _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     burnVoucher(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -664,6 +874,16 @@ export interface IBosonVoucher extends BaseContract {
 
     getApproved(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAvailablePreMints(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getRangeByOfferId(
+      _offerId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -688,6 +908,19 @@ export interface IBosonVoucher extends BaseContract {
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    preMint(
+      _offerId: BigNumberish,
+      _amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    reserveRange(
+      _offerId: BigNumberish,
+      _start: BigNumberish,
+      _length: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     royaltyInfo(
@@ -750,6 +983,15 @@ export interface IBosonVoucher extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -764,6 +1006,11 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    burnPremintedVouchers(
+      _offerId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     burnVoucher(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -773,6 +1020,16 @@ export interface IBosonVoucher extends BaseContract {
 
     getApproved(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAvailablePreMints(
+      _offerId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getRangeByOfferId(
+      _offerId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -799,6 +1056,19 @@ export interface IBosonVoucher extends BaseContract {
     ownerOf(
       tokenId: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    preMint(
+      _offerId: BigNumberish,
+      _amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    reserveRange(
+      _offerId: BigNumberish,
+      _start: BigNumberish,
+      _length: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     royaltyInfo(
@@ -859,6 +1129,15 @@ export interface IBosonVoucher extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferPremintedFrom(
+      _from: string,
+      _to: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      _data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

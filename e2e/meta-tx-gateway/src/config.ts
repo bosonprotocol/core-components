@@ -69,6 +69,7 @@ export type Config = {
   ERC20: string;
   PRIVATE_KEY: string;
   ACCOUNT: string;
+  FORWARDER: string;
 };
 
 let config: Config;
@@ -98,7 +99,8 @@ export function getConfig(): Config {
       PROTOCOL: defaultConfig.contracts.protocolDiamond,
       ERC20: defaultConfig.contracts.testErc20,
       PRIVATE_KEY: wallet.privateKey,
-      ACCOUNT: wallet.address
+      ACCOUNT: wallet.address,
+      FORWARDER: defaultConfig.contracts.forwarder
     };
   }
   return config;

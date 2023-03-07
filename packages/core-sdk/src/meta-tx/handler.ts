@@ -9,7 +9,9 @@ import {
   CreateGroupArgs,
   ConditionStruct,
   UpdateSellerArgs,
-  OptInToSellerUpdateArgs
+  OptInToSellerUpdateArgs,
+  defaultConfigs,
+  abis
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
@@ -24,7 +26,8 @@ import { bosonExchangeHandlerIface } from "../exchanges/interface";
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
-  encodeCreateOfferBatch
+  encodeCreateOfferBatch,
+  encodeReserveRange
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
 import { Biconomy, GetRetriedHashesData } from "./biconomy";
@@ -34,11 +37,27 @@ import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
+import { encodePreMint, encodeSetApprovalForAll } from "../voucher/interface";
+import { hexZeroPad } from "@ethersproject/bytes";
+import { keccak256 } from "@ethersproject/keccak256";
+import { id } from "@ethersproject/hash";
+import { defaultAbiCoder } from "@ethersproject/abi";
+import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
+import { verifyEIP712 } from "../forwarder/handler";
+import { MockForwardRequest } from "../forwarder/mock-interface";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
   nonce: BigNumberish;
   metaTxHandlerAddress: string;
+  chainId: number;
+};
+
+export type BaseVoucherMetaTxArgs = {
+  web3Lib: Web3LibAdapter;
+  nonce: BigNumberish;
+  bosonVoucherAddress: string;
+  forwarderAddress: string;
   chainId: number;
 };
 
@@ -48,6 +67,13 @@ export type SignedMetaTx = {
   r: string;
   s: string;
   v: number;
+};
+
+export type SignedVoucherMetaTx = Omit<SignedMetaTx, "functionName"> & {
+  to: string;
+  signature: string;
+  request: ERC20ForwardRequest | MockForwardRequest;
+  domainSeparator?: string;
 };
 
 export async function signMetaTx(
@@ -90,6 +116,224 @@ export async function signMetaTx(
     functionName: args.functionName,
     functionSignature: args.functionSignature,
     ...signature
+  };
+}
+
+export async function signVoucherMetaTx(
+  args: BaseVoucherMetaTxArgs & {
+    functionSignature: string;
+  }
+): Promise<SignedVoucherMetaTx> {
+  const forwardType = [
+    { name: "from", type: "address" },
+    { name: "to", type: "address" },
+    { name: "nonce", type: "uint256" },
+    { name: "data", type: "bytes" }
+  ];
+
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      { name: "chainId", type: "uint256" },
+      { name: "verifyingContract", type: "address" }
+    ],
+    ForwardRequest: forwardType
+  };
+
+  const signerAddress = await args.web3Lib.getSignerAddress();
+  const chainId = await args.web3Lib.getChainId();
+
+  const message = {
+    from: signerAddress,
+    to: args.bosonVoucherAddress,
+    nonce: args.nonce,
+    data: args.functionSignature
+  };
+
+  const signature = await prepareDataSignatureParameters({
+    ...args,
+    verifyingContractAddress: args.forwarderAddress,
+    customSignatureType,
+    primaryType: "ForwardRequest",
+    message,
+    customDomainData: {
+      name: "MockForwarder",
+      version: "0.0.1",
+      chainId,
+      salt: undefined
+    }
+  });
+
+  return {
+    to: message.to,
+    functionSignature: args.functionSignature,
+    request: message,
+    ...signature
+  };
+}
+
+export async function signBiconomyVoucherMetaTx(
+  args: BaseVoucherMetaTxArgs & {
+    functionSignature: string;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+    txGas: BigNumberish;
+  }
+): Promise<SignedVoucherMetaTx> {
+  const customSignatureType = {
+    EIP712Domain: [
+      { name: "name", type: "string" },
+      { name: "version", type: "string" },
+      // { name: "chainId", type: "uint256" },
+      // { name: "verifyingContract", type: "address" }
+      { name: "verifyingContract", type: "address" },
+      { name: "salt", type: "bytes32" }
+    ],
+    ERC20ForwardRequest: [
+      { name: "from", type: "address" },
+      { name: "to", type: "address" },
+      { name: "token", type: "address" },
+      { name: "txGas", type: "uint256" },
+      { name: "tokenGasPrice", type: "uint256" },
+      { name: "batchId", type: "uint256" },
+      { name: "batchNonce", type: "uint256" },
+      { name: "deadline", type: "uint256" },
+      { name: "data", type: "bytes" }
+    ]
+  };
+
+  const signerAddress = await args.web3Lib.getSignerAddress();
+  const chainId = await args.web3Lib.getChainId();
+
+  const message = {
+    from: signerAddress,
+    to: args.bosonVoucherAddress,
+    token: "0x0000000000000000000000000000000000000000",
+    txGas: args.txGas,
+    tokenGasPrice: "0",
+    batchId: args.batchId,
+    batchNonce: args.nonce,
+    deadline: Math.floor(Date.now() / 1000 + 3600),
+    data: args.functionSignature
+  };
+
+  const biconomyForwarderDomainData = {
+    name: "Biconomy Forwarder",
+    version: "1",
+    verifyingContract: args.forwarderAddress,
+    salt: hexZeroPad(BigNumber.from(chainId).toHexString(), 32)
+  };
+
+  const signatureParams = await prepareDataSignatureParameters({
+    ...args,
+    chainId,
+    verifyingContractAddress: args.forwarderAddress,
+    customSignatureType,
+    primaryType: "ERC20ForwardRequest",
+    message,
+    customDomainData: {
+      ...biconomyForwarderDomainData
+      // chainId
+      // salt: undefined
+    }
+  });
+  const signature = signatureParams.signature;
+  const getDomainSeparator = async () => {
+    const domainData = biconomyForwarderDomainData;
+    const domainSeparator = keccak256(
+      defaultAbiCoder.encode(
+        ["bytes32", "bytes32", "bytes32", "address", "bytes32"],
+        [
+          id(
+            "EIP712Domain(string name,string version,address verifyingContract,bytes32 salt)"
+          ),
+          id(domainData.name),
+          id(domainData.version),
+          domainData.verifyingContract,
+          domainData.salt
+        ]
+      )
+    );
+    return domainSeparator;
+  };
+  const domainSeparator = await getDomainSeparator();
+  // verify signature
+  const signatureVerified = await verifyEIP712({
+    request: message,
+    contractAddress: args.forwarderAddress,
+    web3Lib: args.web3Lib,
+    domainSeparator,
+    forwarderAbi: args.forwarderAbi,
+    signature
+  });
+  if (!signatureVerified) {
+    throw `Signature is not verified`;
+  }
+
+  return {
+    to: message.to,
+    domainSeparator,
+    request: message,
+    ...signatureParams,
+    signature,
+    functionSignature: args.functionSignature
+  };
+}
+
+export async function relayBiconomyMetaTransaction(args: {
+  web3LibAdapter: Web3LibAdapter;
+  chainId: number;
+  contractAddress: string;
+  metaTx: {
+    config: Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string };
+    params: {
+      userAddress: string;
+      request: ERC20ForwardRequest;
+      domainSeparator: string;
+      signature: string;
+    };
+  };
+}): Promise<TransactionResponse> {
+  const { chainId, contractAddress, metaTx } = args;
+
+  const biconomy = new Biconomy(
+    metaTx.config.relayerUrl,
+    metaTx.config.apiKey,
+    metaTx.config.apiId
+  );
+
+  const relayTxResponse = await biconomy.relayTransaction({
+    to: contractAddress,
+    params: [
+      metaTx.params.request,
+      metaTx.params.domainSeparator,
+      metaTx.params.signature
+    ],
+    from: metaTx.params.userAddress,
+    signatureType: "EIP712_SIGN"
+  });
+
+  return {
+    wait: async () => {
+      const waitResponse = await biconomy.wait({
+        networkId: chainId,
+        transactionHash: relayTxResponse.txHash
+      });
+
+      const txHash = waitResponse.data.newHash;
+      const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
+      return {
+        to: txReceipt?.to || contractAddress,
+        from: txReceipt?.from || metaTx.params.userAddress,
+        transactionHash: txHash,
+        logs: txReceipt?.logs || [],
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice)
+      };
+    },
+    hash: relayTxResponse.txHash
   };
 }
 
@@ -271,6 +515,80 @@ export async function signMetaTxCreateGroup(
     functionName:
       "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256))",
     functionSignature: encodeCreateGroup(args.createGroupArgs)
+  });
+}
+
+export async function signMetaTxReserveRange(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    length: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "reserveRange(uint256,uint256)",
+    functionSignature: encodeReserveRange(args.offerId, args.length)
+  });
+}
+
+export async function signMetaTxPreMint(
+  args: BaseVoucherMetaTxArgs & {
+    offerId: BigNumberish;
+    amount: BigNumberish;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+  }
+): Promise<SignedVoucherMetaTx> {
+  const localConfig = defaultConfigs.find(
+    (config) => config.envName === "local"
+  );
+  const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodePreMint(args.offerId, args.amount);
+  if (isLocal) {
+    return signVoucherMetaTx({
+      ...args,
+      functionSignature
+    });
+  }
+  const txGas = 200000 + BigNumber.from(args.amount).mul(2500).toNumber(); // ~(180000 + 2250*N) estimation on 2023/02/03
+  return signBiconomyVoucherMetaTx({
+    ...args,
+    functionSignature,
+    txGas
+  });
+}
+
+export async function signMetaTxSetApprovalForAll(
+  args: BaseVoucherMetaTxArgs & {
+    operator: string;
+    approved: boolean;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+  }
+): Promise<SignedVoucherMetaTx> {
+  const localConfig = defaultConfigs.find(
+    (config) => config.envName === "local"
+  );
+  const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodeSetApprovalForAll(
+    args.operator,
+    args.approved
+  );
+  if (isLocal) {
+    return signVoucherMetaTx({
+      ...args,
+      functionSignature
+    });
+  }
+  const txGas = 100000; // ~70000 estimation on 2023/02/03
+  return signBiconomyVoucherMetaTx({
+    ...args,
+    functionSignature,
+    txGas
   });
 }
 
@@ -659,7 +977,7 @@ export async function relayMetaTransaction(args: {
   chainId: number;
   contractAddress: string;
   metaTx: {
-    config: Omit<MetaTxConfig, "apiIds"> & { apiId: string };
+    config: Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string };
     params: {
       userAddress: string;
       functionName: string;

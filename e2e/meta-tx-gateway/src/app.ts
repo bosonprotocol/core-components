@@ -50,6 +50,7 @@ export function startApp(): Server {
     logger.info(`ChainId: ${config.CHAIN_ID}`);
     logger.info(`RpcNode: ${config.RPC_NODE}`);
     logger.info(`Account: ${config.ACCOUNT}`);
+    logger.info(`Forwarder: ${config.FORWARDER}`);
     try {
       logger.info(`Account Balance: ${(await wallet.getBalance()).toString()}`);
     } catch (e) {

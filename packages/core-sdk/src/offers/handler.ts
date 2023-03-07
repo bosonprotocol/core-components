@@ -8,7 +8,8 @@ import {
 import {
   bosonOfferHandlerIface,
   encodeCreateOffer,
-  encodeCreateOfferBatch
+  encodeCreateOfferBatch,
+  encodeReserveRange
 } from "./interface";
 import { getOfferById, getOffers } from "./subgraph";
 import { storeMetadataOnTheGraph } from "./storage";
@@ -64,6 +65,29 @@ export async function createOfferBatch(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateOfferBatch(args.offersToCreate)
+  });
+}
+
+export async function reserveRange(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  length: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
+  const signerAddress = await args.web3Lib.getSignerAddress();
+
+  checkIfOfferReservable(
+    args.offerId,
+    args.length,
+    signerAddress,
+    offerFromSubgraph
+  );
+
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeReserveRange(args.offerId, args.length)
   });
 }
 
@@ -141,5 +165,22 @@ function checkIfOfferVoidable(
     throw new Error(
       `Signer with address "${signerAddress}" is not the operator "${offerFromSubgraph.seller.operator}" of offer with id "${offerId}"`
     );
+  }
+}
+
+function checkIfOfferReservable(
+  offerId: BigNumberish,
+  length: BigNumberish,
+  signerAddress: string,
+  offerFromSubgraph?: OfferFieldsFragment
+) {
+  checkIfOfferVoidable(offerId, signerAddress, offerFromSubgraph);
+
+  if (!length) {
+    throw new Error(`Range length is zero`);
+  }
+
+  if (offerFromSubgraph.quantityAvailable < length) {
+    throw new Error(`Range length is too large`);
   }
 }

@@ -1,3 +1,4 @@
+import { abis } from ".";
 import { EnvironmentType, Lens, ProtocolConfig } from "./types";
 
 const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
@@ -95,10 +96,12 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
-      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21"
+      protocolDiamond: "0x785a225EBAC1b600cA3170C6c7fA3488A203Fc21",
+      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
@@ -117,10 +120,12 @@ export const defaultConfigs: ProtocolConfig[] = [
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
       // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
-      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB"
+      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB",
+      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
@@ -139,10 +144,12 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5"
+      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+      forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
     },
     metaTx: {
-      relayerUrl: "https://api.biconomy.io"
+      relayerUrl: "https://api.biconomy.io",
+      forwarderAbi: abis.BiconomyForwarderABI
     },
     lens: {
       ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
@@ -158,16 +165,18 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "http://127.0.0.1:5001",
     ipfsMetadataUrl: "http://127.0.0.1:5001",
     contracts: {
-      protocolDiamond: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
-      testErc20: "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575", // Foreign20 contract
-      testErc721: "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90", // Foreign721 contract
-      testErc1155: "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1" // Foreign1155 contract
+      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
+      testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
+      testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
+      forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0" // MockForwarder contract
     },
     metaTx: {
-      relayerUrl: "http://localhost:8888"
+      relayerUrl: "http://localhost:8888",
+      forwarderAbi: abis.MockForwarderABI
     },
     lens: {
-      LENS_HUB_CONTRACT: "0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3",
+      LENS_HUB_CONTRACT: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
     }
   }

@@ -6,7 +6,6 @@
 
 <a href="">![](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square)</a>
 <a href="https://discord.com/invite/QSdtKRaap6">![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)</a>
-<a href="https://twitter.com/BosonProtocol">![](https://img.shields.io/twitter/follow/BosonProtocol?style=social)</a>
 
 <a href="https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml">[![Build Status](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml/badge.svg)](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml)</a>
 [![codecov](https://codecov.io/gh/bosonprotocol/core-components/branch/main/graph/badge.svg?token=FLAIl8Zov2)](https://codecov.io/gh/bosonprotocol/core-components)
@@ -39,3 +38,9 @@ The core components can be found in the [`packages`](/packages) folder of this m
 | [`metadata`](/packages/metadata/README.md)                 | ![](https://img.shields.io/npm/v/@bosonprotocol/metadata?style=flat-square&color=02c987)        | Package which contains supported metadata types and tools.                                                                                                                                                                                 |
 | [`react-kit`](/packages/react-kit/README.md)               | ![](https://img.shields.io/npm/v/@bosonprotocol/react-kit?style=flat-square&color=02c987)       | React toolkit with smart components and hooks.                                                                                                                                                                                             |
 | [`subgraph`](/packages/subgraph/README.md)                 | ![](https://img.shields.io/badge/The%20Graph-Hosted-blueviolet?style=flat-square)               | Schemas and mappings of the [Boson Protocol subgraph](https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon) on [The Graph](https://thegraph.com/en/).                                                                             |
+
+## Contributing
+
+We welcome contributions! The ultimate goal is for all of the Boson Protocol repositories to be fully owned by the community and contributors. Issues, pull requests, suggestions, and any sort of involvement are more than welcome.
+
+By being in this community, you agree to the [Code of Conduct](/docs/code-of-conduct.md). Take a look at it, if you haven't already.

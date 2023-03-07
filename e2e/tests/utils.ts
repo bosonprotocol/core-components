@@ -32,7 +32,10 @@ import {
   ACCOUNT_9,
   ACCOUNT_10,
   ACCOUNT_11,
-  ACCOUNT_12
+  ACCOUNT_12,
+  ACCOUNT_13,
+  ACCOUNT_14,
+  ACCOUNT_15
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -56,11 +59,20 @@ export const MOCK_ERC1155_ADDRESS =
   getDefaultConfig("local").contracts.testErc1155 ||
   "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
+export const MOCK_FORWARDER_ADDRESS =
+  getDefaultConfig("local").contracts.forwarder ||
+  "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+
 export const metadata = {
   name: "name",
   description: "description",
   externalUrl: "external-url.com",
   animationUrl: "animation-url.com",
+  animationMetadata: {
+    height: 720,
+    width: 404,
+    type: "video/mp4"
+  },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
@@ -82,10 +94,14 @@ export const seedWallet7 = new Wallet(ACCOUNT_7.privateKey, provider);
 export const seedWallet8 = new Wallet(ACCOUNT_8.privateKey, provider);
 export const seedWallet9 = new Wallet(ACCOUNT_9.privateKey, provider);
 export const seedWallet11 = new Wallet(ACCOUNT_11.privateKey, provider);
+export const seedWallet13 = new Wallet(ACCOUNT_13.privateKey, provider);
 // seedWallets used by native-meta-tx test
 export const seedWallet12 = new Wallet(ACCOUNT_12.privateKey, provider);
 // seedWallets used by productV1 test
 export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
+// seedWallets used by core-sdk-premint test
+export const seedWallet14 = new Wallet(ACCOUNT_14.privateKey, provider);
+export const seedWallet15 = new Wallet(ACCOUNT_15.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -261,29 +277,20 @@ export async function ensureMintedERC1155(
 export async function createDisputeResolver(
   drWallet: Wallet,
   protocolWallet: Wallet,
-  disputeResolverToCreate: accounts.CreateDisputeResolverArgs,
-  options: Partial<{
-    activate: boolean;
-  }> = {}
+  disputeResolverToCreate: accounts.CreateDisputeResolverArgs
 ) {
   const drCoreSDK = initCoreSDKWithWallet(drWallet);
   const protocolAdminCoreSDK = initCoreSDKWithWallet(protocolWallet);
-
   const receipt = await (
     await drCoreSDK.createDisputeResolver(disputeResolverToCreate)
   ).wait();
+
   const disputeResolverId = drCoreSDK.getDisputeResolverIdFromLogs(
     receipt.logs
   );
 
   if (!disputeResolverId) {
     throw new Error("Failed to create dispute resolver");
-  }
-
-  if (options.activate && disputeResolverId) {
-    await (
-      await protocolAdminCoreSDK.activateDisputeResolver(disputeResolverId)
-    ).wait();
   }
 
   await waitForGraphNodeIndexing();
@@ -402,9 +409,11 @@ export async function createSellerAndOfferWithCondition(
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
-
+  if (createdOfferId === null) {
+    throw new Error("Failed to create offer with condition");
+  }
   await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
 }
@@ -432,7 +441,10 @@ export async function createSeller(
   );
 
   await waitForGraphNodeIndexing();
-  const seller = await coreSDK.getSellerById(createdSellerId as string);
+  if (createdSellerId === null) {
+    throw new Error("Failed to create seller");
+  }
+  const seller = await coreSDK.getSellerById(createdSellerId);
 
   return seller;
 }
@@ -503,9 +515,11 @@ export async function createSellerAndOffer(
   const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(
     createOfferTxReceipt.logs
   );
-
+  if (createdOfferId === null) {
+    throw new Error("Failed to create offer");
+  }
   await waitForGraphNodeIndexing();
-  const offer = await coreSDK.getOfferById(createdOfferId as string);
+  const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
 }
@@ -522,7 +536,6 @@ export async function mintLensToken(
     MOCK_NFT_AUTH_721_ABI,
     provider
   );
-
   // find a tokenId that is not minted yet
   let tokenId = Date.now();
   let ownerOf = "NOT_ZERO_ADDRESS";
@@ -537,7 +550,7 @@ export async function mintLensToken(
 
   // Mint the token in the mocked LENS contract for the future seller
   const tx = await lensContract.connect(wallet).mint(to, tokenId);
-  tx.wait();
+  await tx.wait();
 
   return tokenId;
 }

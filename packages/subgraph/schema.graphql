@@ -12,6 +12,7 @@ interface MetadataInterface {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -36,6 +37,13 @@ interface MetadataInterface {
   numberOfRedemptions: BigInt!
 }
 
+type AnimationMetadata @entity {
+  id: ID!
+  height: Int
+  type: String
+  width: Int
+}
+
 type MetadataAttribute @entity {
   id: ID!
   traitType: String!
@@ -52,6 +60,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -86,6 +95,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -220,6 +230,8 @@ type ProductV1Media @entity {
   url: String!
   tag: String
   type: ProductV1MediaType!
+  width: Int
+  height: Int
 }
 
 type ProductV1Personalisation @entity {

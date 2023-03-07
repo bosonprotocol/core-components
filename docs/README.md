@@ -6,8 +6,7 @@
 
 ## Guides
 
-- [Use with `ethers` and `IPFS`](./guides/use-with-ethers-ipfs.md)
-- [Use with `react`](./guides/use-with-react.md)
+The following sections details how to use the Core Components and How to Contribute to our project. 
 
 <!-- ## API docs
 
@@ -22,3 +21,4 @@
 - [Monorepo tools](./monorepo-tools.md)
 - [Pull requests](./pull-requests.md)
 - [Releases](./releases.md)
+- [Code of Conduct](/docs/code-of-conduct.md)

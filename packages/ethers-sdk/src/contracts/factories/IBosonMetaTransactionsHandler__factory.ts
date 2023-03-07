@@ -14,6 +14,31 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "bytes32[]",
+        name: "functionNameHashes",
+        type: "bytes32[]",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "isAllowlisted",
+        type: "bool",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "FunctionsAllowlisted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "userAddress",
@@ -93,6 +118,44 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "_functionName",
+        type: "string",
+      },
+    ],
+    name: "isFunctionAllowlisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isAllowlisted",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_functionNameHash",
+        type: "bytes32",
+      },
+    ],
+    name: "isFunctionAllowlisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isAllowlisted",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "_associatedAddress",
         type: "address",
@@ -112,6 +175,24 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32[]",
+        name: "_functionNameHashes",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "bool",
+        name: "_isAllowlisted",
+        type: "bool",
+      },
+    ],
+    name: "setAllowlistedFunctions",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ];

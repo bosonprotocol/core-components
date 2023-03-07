@@ -9,7 +9,6 @@ import {
   encodeCreateSeller,
   encodeUpdateSeller,
   encodeCreateDisputeResolver,
-  encodeActivateDisputeResolver,
   encodeAddFeesToDisputeResolver,
   encodeAddSellersToAllowList,
   encodeRemoveFeesFromDisputeResolver,
@@ -73,17 +72,6 @@ export async function createDisputeResolver(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateDisputeResolver(args.disputeResolverToCreate)
-  });
-}
-
-export async function activateDisputeResolver(args: {
-  disputeResolverId: BigNumberish;
-  contractAddress: string;
-  web3Lib: Web3LibAdapter;
-}) {
-  return args.web3Lib.sendTransaction({
-    to: args.contractAddress,
-    data: encodeActivateDisputeResolver(args.disputeResolverId)
   });
 }
 

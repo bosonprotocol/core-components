@@ -25,7 +25,18 @@ const accountsFromEnv = process.env.DEPLOYER_PK
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.9",
+  solidity: {
+    version: "0.8.9",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+        details: {
+          yul: true
+        }
+      }
+    }
+  },
   networks: {
     hardhat: {
       allowUnlimitedContractSize: true,
@@ -84,7 +95,8 @@ module.exports = {
       "IBosonDisputeHandler",
       "IBosonVoucher",
       "MockNativeMetaTransaction",
-      "IBosonGroupHandler"
+      "IBosonGroupHandler",
+      "MockForwarder"
     ]
   }
 };

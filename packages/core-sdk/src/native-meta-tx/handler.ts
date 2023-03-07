@@ -144,7 +144,7 @@ export async function relayNativeMetaTransaction(args: {
   chainId: number;
   contractAddress: string;
   metaTx: {
-    config: Omit<MetaTxConfig, "apiIds"> & { apiId: string };
+    config: Omit<MetaTxConfig, "apiIds" | "forwarderAbi"> & { apiId: string };
     params: {
       userAddress: string;
       functionSignature: BytesLike;

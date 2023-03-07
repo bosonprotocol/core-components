@@ -246,6 +246,28 @@ export class OfferMixin extends BaseCoreSDK {
     );
   }
 
+  /**
+   * Reserves a range of vouchers to be associated with an offer
+   * @param offerId -  Offer ID
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async reserveRange(
+    offerId: BigNumberish,
+    length: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.reserveRange({
+      offerId,
+      length,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      web3Lib: this._web3Lib
+    });
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                   ERC20 / Exchange Token related methods                   */
   /* -------------------------------------------------------------------------- */

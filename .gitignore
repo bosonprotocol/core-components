@@ -12,6 +12,7 @@ build/**
 dist/**
 .next/**
 generated
+*.log
 
 # yarn
 .pnp.*

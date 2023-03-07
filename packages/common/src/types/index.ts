@@ -3,6 +3,7 @@ export * from "./configs";
 export * from "./offers";
 export * from "./accounts";
 export * from "./groups";
+export * from "./vouchers";
 
 import {
   AnyMetadata as _AnyMetadata,

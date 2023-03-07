@@ -18,6 +18,10 @@ import { OfferMixin } from "./offers/mixin";
 import { FundsMixin } from "./funds/mixin";
 import { ExchangesMixin } from "./exchanges/mixin";
 import { EventLogsMixin } from "./event-logs/mixin";
+import { VoucherMixin } from "./voucher/mixin";
+import { ERC20Mixin } from "./erc20/mixin";
+import { ERC721Mixin } from "./erc721/mixin";
+import { ERC1155Mixin } from "./erc1155/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -56,7 +60,8 @@ export class CoreSDK extends BaseCoreSDK {
         ...defaultConfig.metaTx,
         ...args.metaTx
       },
-      lensContracts: defaultConfig.lens
+      lensContracts: defaultConfig.lens,
+      contracts: defaultConfig.contracts
     });
   }
 
@@ -103,7 +108,11 @@ export interface CoreSDK
     NativeMetaTxMixin,
     GroupsMixin,
     OrchestrationMixin,
-    EventLogsMixin {}
+    EventLogsMixin,
+    VoucherMixin,
+    ERC20Mixin,
+    ERC721Mixin,
+    ERC1155Mixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -115,5 +124,9 @@ applyMixins(CoreSDK, [
   NativeMetaTxMixin,
   GroupsMixin,
   OrchestrationMixin,
-  EventLogsMixin
+  EventLogsMixin,
+  VoucherMixin,
+  ERC20Mixin,
+  ERC721Mixin,
+  ERC1155Mixin
 ]);

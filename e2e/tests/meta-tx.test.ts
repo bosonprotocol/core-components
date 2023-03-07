@@ -1,7 +1,6 @@
 import { ZERO_ADDRESS } from "./../../packages/core-sdk/tests/mocks";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber, constants } from "ethers";
-
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
 
@@ -18,7 +17,8 @@ import {
   seedWallet11,
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
-  initCoreSDKWithFundedWallet
+  initCoreSDKWithFundedWallet,
+  seedWallet13
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -60,17 +60,27 @@ describe("meta-tx", () => {
       if (existingSeller) {
         // Change all addresses used by the seller to be able to create another one with the original address
         // Useful when repeating the test suite on the same contracts
-        const randomWallet = Wallet.createRandom();
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
-          admin: randomWallet.address,
-          operator: randomWallet.address,
-          clerk: randomWallet.address,
-          treasury: randomWallet.address,
+          admin: seedWallet13.address,
+          operator: seedWallet13.address,
+          clerk: seedWallet13.address,
+          treasury: seedWallet13.address,
           authTokenId: "0",
           authTokenType: 0
         });
         await updateTx.wait();
+        const randomSellerCoreSDK = initCoreSDKWithWallet(seedWallet13);
+        const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
+          id: existingSeller.id,
+          fieldsToUpdate: {
+            admin: true,
+            operator: true,
+            clerk: true,
+            authToken: true
+          }
+        });
+        await optinTx.wait();
       }
 
       // Random seller signs meta tx
@@ -976,6 +986,58 @@ describe("meta-tx", () => {
         sigV: v
       });
       const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
+    test("reserveRange and preMint with meta-tx", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const length = 10;
+      const offerId = createdOffer.id;
+      const nonce = Date.now();
+
+      const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
+        offerId,
+        length,
+        nonce
+      });
+
+      let metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName: metaReserveRange.functionName,
+        functionSignature: metaReserveRange.functionSignature,
+        nonce,
+        sigR: metaReserveRange.r,
+        sigS: metaReserveRange.s,
+        sigV: metaReserveRange.v
+      });
+
+      let metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const amount = 10;
+
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxPreMint({
+          offerId,
+          amount
+        });
+
+      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });

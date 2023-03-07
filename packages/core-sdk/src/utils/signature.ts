@@ -27,6 +27,11 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
     salt: hexZeroPad(BigNumber.from(args.chainId).toHexString(), 32),
     ...args.customDomainData
   };
+  Object.keys(domainData).forEach((key) => {
+    if (domainData[key] === undefined) {
+      delete domainData[key];
+    }
+  });
 
   const signatureTypes = {
     EIP712Domain: domainType,
@@ -40,9 +45,9 @@ export async function prepareDataSignatureParameters(args: SignatureArgs) {
     message: args.message
   });
 
-  const signer = await args.web3Lib.getSignerAddress();
+  const signerAddress = await args.web3Lib.getSignerAddress();
   const signature = await args.web3Lib.send("eth_signTypedData_v4", [
-    signer,
+    signerAddress,
     dataToSign
   ]);
 
@@ -54,10 +59,10 @@ export function getSignatureParameters(signature: string) {
     throw new Error(`Value "${signature}" is not a valid hex string`);
   }
 
-  signature = signature.substring(2);
-  const r = "0x" + signature.substring(0, 64);
-  const s = "0x" + signature.substring(64, 128);
-  let v = parseInt(signature.substring(128, 130), 16);
+  const _signature = signature.substring(2);
+  const r = "0x" + _signature.substring(0, 64);
+  const s = "0x" + _signature.substring(64, 128);
+  let v = parseInt(_signature.substring(128, 130), 16);
 
   if (!isNaN(v) && v < 2) {
     // support Ledger signature
@@ -67,6 +72,7 @@ export function getSignatureParameters(signature: string) {
   return {
     r,
     s,
-    v
+    v,
+    signature
   };
 }
