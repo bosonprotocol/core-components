@@ -14,6 +14,8 @@ import { EthersAdapter } from "../packages/ethers-sdk/src";
 // TODO: read real value in the diamond (IBosonConfigHandler::getMaxExchangesPerBatch())
 const MAX_EXCHANGES_PER_BATCH = 140;
 
+const MAX_EXCHANGES_PER_SELLER = 1000;
+
 program
   .description("Complete one or several exchanges.")
   .argument(
@@ -46,15 +48,7 @@ async function main() {
   let metaTx: Partial<MetaTxConfig> | undefined = undefined;
   if (opts.metaTx) {
     //
-    // JSON file example:
-    // {
-    //   "apiKey": "<BICONOMY_API_KEY>>",
-    //   "apiIds": {
-    //     "<DIAMOND_ADDRESS>": {
-    //       "executeMetaTransaction": "<BICONOMY_API_ID>"
-    //     }
-    //   }
-    // }
+    // JSON file example: see ./metaTx.example.json
     // Where:
     //  - <BICONOMY_API_KEY>: is the ApiKEy of the Biconomy Project
     //  - <DIAMOND_ADDRESS>: in the Boson Protocol diamond contract address in the targeted environment
@@ -85,17 +79,18 @@ async function main() {
       id_in: exchangeIds
     }
   });
+  let limitReached = false;
   if (opts.sellerId) {
-    exchanges.push(
-      ...(await coreSDK.getExchanges({
-        exchangesFirst: 1000,
-        exchangesFilter: {
-          seller: opts.sellerId as string,
-          state_in: [ExchangeState.Redeemed],
-          id_not_in: exchangeIds
-        }
-      }))
-    );
+    const sellerExchanges = await coreSDK.getExchanges({
+      exchangesFirst: MAX_EXCHANGES_PER_SELLER,
+      exchangesFilter: {
+        seller: opts.sellerId as string,
+        state_in: [ExchangeState.Redeemed],
+        id_not_in: exchangeIds
+      }
+    });
+    limitReached = sellerExchanges.length === MAX_EXCHANGES_PER_SELLER;
+    exchanges.push(...sellerExchanges);
   }
   const now = Math.floor(Date.now() / 1000);
   const exchangesToComplete = exchanges.filter(
@@ -118,6 +113,12 @@ async function main() {
         ).toDateString()}`
     )}`
   );
+  if (limitReached) {
+    console.warn(
+      `WARNING: Reached limit of ${MAX_EXCHANGES_PER_SELLER} exchanges for seller ${opts.sellerId}.\n` +
+        `The script needs to be called again to complete all exchanges for this seller`
+    );
+  }
   let nbCompleted = 0;
   while (nbCompleted < exchangesToComplete.length) {
     const exchangesToCompleteIds = exchangesToComplete

@@ -1,0 +1,8 @@
+{
+  "apiKey": "<BICONOMY_API_KEY>>",
+  "apiIds": {
+    "<DIAMOND_ADDRESS>": {
+      "executeMetaTransaction": "<BICONOMY_API_ID>"
+    }
+  }
+}
