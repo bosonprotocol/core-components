@@ -374,6 +374,9 @@ type Offer @entity {
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
   condition: ConditionEntity
 
+  "Range"
+  range: RangeEntity
+
   "Stats"
   numberOfCommits: BigInt!
   numberOfRedemptions: BigInt!
@@ -579,6 +582,8 @@ enum EventType {
   "OfferHandler events"
   OFFER_CREATED
   OFFER_VOIDED
+  OFFER_EXTENDED
+  OFFER_RANGE_RESERVED
   "ExchangeHandler events"
   BUYER_COMMITTED
   VOUCHER_EXTENDED
@@ -678,4 +683,14 @@ type ConditionEntity @entity {
   tokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
+}
+
+"""
+Offer Ranges
+"""
+type RangeEntity @entity {
+  id: ID! # rangeId
+  start: BigInt!
+  end: BigInt!
+  owner: Bytes!
 }

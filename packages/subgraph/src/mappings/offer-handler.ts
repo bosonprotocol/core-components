@@ -1,9 +1,11 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
   OfferCreated,
-  OfferVoided
+  OfferVoided,
+  OfferExtended,
+  RangeReserved
 } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
-import { Offer } from "../../generated/schema";
+import { Offer, RangeEntity } from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
 import { saveExchangeToken } from "../entities/token";
@@ -95,6 +97,59 @@ export function handleOfferVoidedEvent(event: OfferVoided): void {
       event.transaction.hash.toHexString(),
       event.logIndex,
       "OFFER_VOIDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offer.sellerId.toString(),
+      offerId.toString()
+    );
+  }
+}
+
+export function handleOfferExtendedEvent(event: OfferExtended): void {
+  const offerId = event.params.offerId;
+
+  const offer = Offer.load(offerId.toString());
+
+  if (offer) {
+    offer.validUntilDate = event.params.validUntilDate;
+    offer.save();
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_EXTENDED",
+      event.block.timestamp,
+      event.params.executedBy,
+      offer.sellerId.toString(),
+      offerId.toString()
+    );
+  }
+}
+
+export function handleRangeReservedEvent(event: RangeReserved): void {
+  const offerId = event.params.offerId;
+
+  const offer = Offer.load(offerId.toString());
+
+  if (offer) {
+    const rangeId = offerId.toString() + "-range";
+    let rangeEntity = RangeEntity.load(rangeId);
+
+    if (!rangeEntity) {
+      rangeEntity = new RangeEntity(rangeId);
+    }
+    rangeEntity.start = event.params.startExchangeId;
+    rangeEntity.end = event.params.endExchangeId;
+    // TODO: rangeEntity.owner = event.patams.owner; requires v2.2.0
+    rangeEntity.save();
+
+    offer.range = rangeId;
+
+    offer.save();
+
+    saveOfferEventLog(
+      event.transaction.hash.toHexString(),
+      event.logIndex,
+      "OFFER_RANGE_RESERVED",
       event.block.timestamp,
       event.params.executedBy,
       offer.sellerId.toString(),
