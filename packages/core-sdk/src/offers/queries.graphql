@@ -128,4 +128,14 @@ fragment BaseOfferFields on Offer {
       }
     }
   }
+  range {
+    ...BaseRangeFields
+  }
+}
+
+fragment BaseRangeFields on RangeEntity {
+  id
+  start
+  end
+  owner
 }
