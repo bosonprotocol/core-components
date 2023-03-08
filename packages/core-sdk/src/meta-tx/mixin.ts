@@ -341,6 +341,44 @@ export class MetaTxMixin extends BaseCoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `extendOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExtendOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxExtendOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `extendOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExtendOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxExtendOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `completeExchangeBatch` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.

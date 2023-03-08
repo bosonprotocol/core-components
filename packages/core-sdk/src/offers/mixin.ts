@@ -188,6 +188,55 @@ export class OfferMixin extends BaseCoreSDK {
   }
 
   /**
+   * Extends an existing offer by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `operator`.
+   * @param offerId - ID of offer to void.
+   * @param validUntil - new validity date.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async extendOffer(
+    offerId: BigNumberish,
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.extendOffer({
+      offerId,
+      validUntil,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
+   * Extends a batch of existing offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `operator` of all
+   * provided offers.
+   * @param offerIds - IDs of offers to void.
+   * @param validUntil - new validity date.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async extendOfferBatch(
+    offerIds: BigNumberish[],
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.extendOfferBatch({
+      offerIds,
+      validUntil,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
    * Returns offer from subgraph.
    * @param offerId - ID of offer.
    * @param queryVars - Optional query variables to skip, order or filter.

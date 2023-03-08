@@ -460,6 +460,38 @@ export async function signMetaTxVoidOfferBatch(
   });
 }
 
+export async function signMetaTxExtendOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    validUntil: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "extendOffer(uint256,uint256)",
+    functionSignature: bosonOfferHandlerIface.encodeFunctionData(
+      "extendOffer",
+      [args.offerId, args.validUntil]
+    )
+  });
+}
+
+export async function signMetaTxExtendOfferBatch(
+  args: BaseMetaTxArgs & {
+    offerIds: BigNumberish[];
+    validUntil: BigNumberish;
+  }
+) {
+  return signMetaTx({
+    ...args,
+    functionName: "extendOfferBatch(uint256[],uint256)",
+    functionSignature: bosonOfferHandlerIface.encodeFunctionData(
+      "extendOfferBatch",
+      [args.offerIds, args.validUntil]
+    )
+  });
+}
+
 export async function signMetaTxCompleteExchangeBatch(
   args: BaseMetaTxArgs & {
     exchangeIds: BigNumberish[];

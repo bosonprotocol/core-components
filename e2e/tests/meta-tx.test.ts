@@ -495,6 +495,75 @@ describe("meta-tx", () => {
     });
   });
 
+  describe("#signMetaTxExtendOffer()", () => {
+    test("extend created offer", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const nonce = Date.now();
+
+      const newValidUntil = BigNumber.from(createdOffer.validUntilDate).add(
+        1000
+      );
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxExtendOffer({
+          offerId: createdOffer.id,
+          validUntil: newValidUntil,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxExtendOfferBatch()", () => {
+    test("extend created offers", async () => {
+      const createdOffer1 = await createOffer(sellerCoreSDK);
+      const createdOffer2 = await createOffer(sellerCoreSDK);
+
+      const nonce = Date.now();
+
+      const newValidUntil = BigNumber.from(createdOffer1.validUntilDate).add(
+        1000
+      );
+
+      // Seller signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await sellerCoreSDK.signMetaTxExtendOfferBatch({
+          offerIds: [createdOffer1.id, createdOffer2.id],
+          validUntil: newValidUntil,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of seller
+      const metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
   describe("#signMetaTxCommitToOffer()", () => {
     test("non-native exchange token offer", async () => {
       const nonce = Date.now();
