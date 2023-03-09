@@ -39,6 +39,9 @@ fragment BaseBaseMetadataEntityFields on BaseMetadataEntity {
   description
   externalUrl
   animationUrl
+  animationMetadata {
+    ...BaseAnimationMetadataFields
+  }
   licenseUrl
   condition
   schemaUrl
