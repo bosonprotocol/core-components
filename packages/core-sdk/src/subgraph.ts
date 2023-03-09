@@ -1601,6 +1601,8 @@ export enum EventType {
   FundsWithdrawn = "FUNDS_WITHDRAWN",
   /** OfferHandler events */
   OfferCreated = "OFFER_CREATED",
+  OfferExtended = "OFFER_EXTENDED",
+  OfferRangeReserved = "OFFER_RANGE_RESERVED",
   OfferVoided = "OFFER_VOIDED",
   /** AccountHandler events */
   SellerCreated = "SELLER_CREATED",
@@ -2816,6 +2818,8 @@ export type Offer = {
   protocolFee: Scalars["BigInt"];
   quantityAvailable: Scalars["BigInt"];
   quantityInitial: Scalars["BigInt"];
+  /** Range */
+  range?: Maybe<RangeEntity>;
   resolutionPeriodDuration: Scalars["BigInt"];
   seller: Seller;
   sellerDeposit: Scalars["BigInt"];
@@ -3207,6 +3211,27 @@ export type Offer_Filter = {
   quantityInitial_lte?: InputMaybe<Scalars["BigInt"]>;
   quantityInitial_not?: InputMaybe<Scalars["BigInt"]>;
   quantityInitial_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  range?: InputMaybe<Scalars["String"]>;
+  range_?: InputMaybe<RangeEntity_Filter>;
+  range_contains?: InputMaybe<Scalars["String"]>;
+  range_contains_nocase?: InputMaybe<Scalars["String"]>;
+  range_ends_with?: InputMaybe<Scalars["String"]>;
+  range_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_gt?: InputMaybe<Scalars["String"]>;
+  range_gte?: InputMaybe<Scalars["String"]>;
+  range_in?: InputMaybe<Array<Scalars["String"]>>;
+  range_lt?: InputMaybe<Scalars["String"]>;
+  range_lte?: InputMaybe<Scalars["String"]>;
+  range_not?: InputMaybe<Scalars["String"]>;
+  range_not_contains?: InputMaybe<Scalars["String"]>;
+  range_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  range_not_ends_with?: InputMaybe<Scalars["String"]>;
+  range_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  range_not_starts_with?: InputMaybe<Scalars["String"]>;
+  range_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_starts_with?: InputMaybe<Scalars["String"]>;
+  range_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   resolutionPeriodDuration?: InputMaybe<Scalars["BigInt"]>;
   resolutionPeriodDuration_gt?: InputMaybe<Scalars["BigInt"]>;
   resolutionPeriodDuration_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3328,6 +3353,7 @@ export enum Offer_OrderBy {
   ProtocolFee = "protocolFee",
   QuantityAvailable = "quantityAvailable",
   QuantityInitial = "quantityInitial",
+  Range = "range",
   ResolutionPeriodDuration = "resolutionPeriodDuration",
   Seller = "seller",
   SellerDeposit = "sellerDeposit",
@@ -6816,6 +6842,8 @@ export type Query = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  rangeEntities: Array<RangeEntity>;
+  rangeEntity?: Maybe<RangeEntity>;
   seller?: Maybe<Seller>;
   sellers: Array<Seller>;
 };
@@ -7436,6 +7464,22 @@ export type QueryProductV1VariationsArgs = {
   where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
+export type QueryRangeEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RangeEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RangeEntity_Filter>;
+};
+
+export type QueryRangeEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type QuerySellerArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -7451,6 +7495,60 @@ export type QuerySellersArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Seller_Filter>;
 };
+
+/**
+ * Offer Ranges
+ *
+ */
+export type RangeEntity = {
+  __typename?: "RangeEntity";
+  end: Scalars["BigInt"];
+  id: Scalars["ID"];
+  owner: Scalars["Bytes"];
+  start: Scalars["BigInt"];
+};
+
+export type RangeEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  end?: InputMaybe<Scalars["BigInt"]>;
+  end_gt?: InputMaybe<Scalars["BigInt"]>;
+  end_gte?: InputMaybe<Scalars["BigInt"]>;
+  end_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  end_lt?: InputMaybe<Scalars["BigInt"]>;
+  end_lte?: InputMaybe<Scalars["BigInt"]>;
+  end_not?: InputMaybe<Scalars["BigInt"]>;
+  end_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  owner?: InputMaybe<Scalars["Bytes"]>;
+  owner_contains?: InputMaybe<Scalars["Bytes"]>;
+  owner_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  owner_not?: InputMaybe<Scalars["Bytes"]>;
+  owner_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  owner_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  start?: InputMaybe<Scalars["BigInt"]>;
+  start_gt?: InputMaybe<Scalars["BigInt"]>;
+  start_gte?: InputMaybe<Scalars["BigInt"]>;
+  start_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  start_lt?: InputMaybe<Scalars["BigInt"]>;
+  start_lte?: InputMaybe<Scalars["BigInt"]>;
+  start_not?: InputMaybe<Scalars["BigInt"]>;
+  start_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+};
+
+export enum RangeEntity_OrderBy {
+  End = "end",
+  Id = "id",
+  Owner = "owner",
+  Start = "start"
+}
 
 export type Seller = Account & {
   __typename?: "Seller";
@@ -7709,6 +7807,8 @@ export type Subscription = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  rangeEntities: Array<RangeEntity>;
+  rangeEntity?: Maybe<RangeEntity>;
   seller?: Maybe<Seller>;
   sellers: Array<Seller>;
 };
@@ -8329,6 +8429,22 @@ export type SubscriptionProductV1VariationsArgs = {
   where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
+export type SubscriptionRangeEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RangeEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RangeEntity_Filter>;
+};
+
+export type SubscriptionRangeEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
 export type SubscriptionSellerArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
@@ -8547,6 +8663,13 @@ export type GetSellerByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -8763,8 +8886,22 @@ export type GetSellerByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -9063,6 +9200,13 @@ export type GetSellersQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -9279,8 +9423,22 @@ export type GetSellersQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -9887,6 +10045,13 @@ export type GetDisputeResolverByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -10103,8 +10268,22 @@ export type GetDisputeResolverByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -10338,6 +10517,13 @@ export type GetDisputeResolversQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -10554,8 +10740,22 @@ export type GetDisputeResolversQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -10785,6 +10985,13 @@ export type SellerFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -10997,8 +11204,22 @@ export type SellerFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   exchanges?: Array<{
     __typename?: "Exchange";
@@ -11416,6 +11637,13 @@ export type DisputeResolverFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -11628,8 +11856,22 @@ export type DisputeResolverFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   logs?: Array<
     | {
@@ -12206,6 +12448,13 @@ export type GetExchangeTokenByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -12422,8 +12671,22 @@ export type GetExchangeTokenByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -12568,6 +12831,13 @@ export type GetExchangeTokensQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -12784,8 +13054,22 @@ export type GetExchangeTokensQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -12908,6 +13192,13 @@ export type ExchangeTokenFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -13120,8 +13411,22 @@ export type ExchangeTokenFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   funds?: Array<{
     __typename?: "FundsEntity";
@@ -13427,6 +13732,13 @@ export type GetExchangeByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -13643,8 +13955,22 @@ export type GetExchangeByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     dispute?: {
       __typename?: "Dispute";
@@ -13813,6 +14139,13 @@ export type GetExchangesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -14029,8 +14362,22 @@ export type GetExchangesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     dispute?: {
       __typename?: "Dispute";
@@ -14189,6 +14536,13 @@ export type ExchangeFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -14401,8 +14755,22 @@ export type ExchangeFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   dispute?: {
     __typename?: "Dispute";
@@ -14593,6 +14961,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     quantityAvailable: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -14704,6 +15079,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -14920,8 +15302,22 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -14977,6 +15373,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     quantityAvailable: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -15088,6 +15491,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -15304,8 +15714,22 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -15351,6 +15775,13 @@ export type BaseMetadataEntityFieldsFragment = {
   quantityAvailable: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -15462,6 +15893,13 @@ export type BaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -15674,8 +16112,22 @@ export type BaseMetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -15720,6 +16172,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   quantityAvailable: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -15831,6 +16290,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -16043,8 +16509,22 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -16420,6 +16900,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
@@ -16636,8 +17123,22 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   deliveryTime: string;
                 }> | null;
               } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
       };
       variations?: Array<{
         __typename?: "ProductV1Variation";
@@ -16939,6 +17440,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
@@ -17155,8 +17663,22 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   deliveryTime: string;
                 }> | null;
               } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
       };
       variations?: Array<{
         __typename?: "ProductV1Variation";
@@ -17472,6 +17994,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -17688,8 +18217,22 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -18088,6 +18631,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -18304,8 +18854,22 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
@@ -18694,6 +19258,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -18906,8 +19477,22 @@ export type ProductV1MetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -19295,6 +19880,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -19507,8 +20099,22 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
@@ -20028,6 +20634,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -20244,8 +20857,22 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -20536,6 +21163,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -20752,8 +21386,22 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -21188,6 +21836,13 @@ export type GetOfferByIdQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -21400,8 +22055,22 @@ export type GetOfferByIdQueryQuery = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   } | null;
 };
 
@@ -21576,6 +22245,13 @@ export type GetOffersQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -21788,8 +22464,22 @@ export type GetOffersQueryQuery = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
 };
 
@@ -21948,6 +22638,13 @@ export type OfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
@@ -22160,8 +22857,22 @@ export type OfferFieldsFragment = {
             deliveryTime: string;
           }> | null;
         } | null;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | null;
+  range?: {
+    __typename?: "RangeEntity";
+    id: string;
+    start: string;
+    end: string;
+    owner: string;
+  } | null;
 };
 
 export type BaseOfferFieldsFragment = {
@@ -22269,6 +22980,13 @@ export type BaseOfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
@@ -22481,8 +23199,30 @@ export type BaseOfferFieldsFragment = {
             deliveryTime: string;
           }> | null;
         } | null;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | null;
+  range?: {
+    __typename?: "RangeEntity";
+    id: string;
+    start: string;
+    end: string;
+    owner: string;
+  } | null;
+};
+
+export type BaseRangeFieldsFragment = {
+  __typename?: "RangeEntity";
+  id: string;
+  start: string;
+  end: string;
+  owner: string;
 };
 
 export const BaseSellerFieldsFragmentDoc = gql`
@@ -22582,6 +23322,14 @@ export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
     escalationResponsePeriod
     feeAmount
     buyerEscalationDeposit
+  }
+`;
+export const BaseAnimationMetadataFieldsFragmentDoc = gql`
+  fragment BaseAnimationMetadataFields on AnimationMetadata {
+    id
+    width
+    height
+    type
   }
 `;
 export const BaseProductV1BrandFieldsFragmentDoc = gql`
@@ -22761,12 +23509,12 @@ export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
   }
   ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
 `;
-export const BaseAnimationMetadataFieldsFragmentDoc = gql`
-  fragment BaseAnimationMetadataFields on AnimationMetadata {
+export const BaseRangeFieldsFragmentDoc = gql`
+  fragment BaseRangeFields on RangeEntity {
     id
-    width
-    height
-    type
+    start
+    end
+    owner
   }
 `;
 export const BaseOfferFieldsFragmentDoc = gql`
@@ -22852,18 +23600,22 @@ export const BaseOfferFieldsFragmentDoc = gql`
         }
       }
     }
+    range {
+      ...BaseRangeFields
+    }
   }
-  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseProductV1ProductFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
   ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
   ${BaseProductV1ShippingOptionFieldsFragmentDoc}
+  ${BaseRangeFieldsFragmentDoc}
 `;
 export const BaseDisputeFieldsFragmentDoc = gql`
   fragment BaseDisputeFields on Dispute {
@@ -23135,6 +23887,9 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
@@ -23162,6 +23917,7 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     numberOfCommits
     numberOfRedemptions
   }
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
@@ -23172,7 +23928,6 @@ export const BaseMetadataEntityFieldsFragmentDoc = gql`
   }
   ${BaseBaseMetadataEntityFieldsFragmentDoc}
 `;
-
 export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
   fragment BaseProductV1MetadataEntityFields on ProductV1MetadataEntity {
     id

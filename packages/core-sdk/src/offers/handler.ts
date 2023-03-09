@@ -145,6 +145,38 @@ export async function voidOfferBatch(args: {
   });
 }
 
+export async function extendOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: bosonOfferHandlerIface.encodeFunctionData("extendOffer", [
+      args.offerId,
+      args.validUntil
+    ])
+  });
+}
+
+export async function extendOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: bosonOfferHandlerIface.encodeFunctionData("extendOfferBatch", [
+      args.offerIds,
+      args.validUntil
+    ])
+  });
+}
+
 function checkIfOfferVoidable(
   offerId: BigNumberish,
   signerAddress: string,

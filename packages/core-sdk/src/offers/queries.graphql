@@ -94,6 +94,9 @@ fragment BaseOfferFields on Offer {
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
@@ -128,4 +131,14 @@ fragment BaseOfferFields on Offer {
       }
     }
   }
+  range {
+    ...BaseRangeFields
+  }
+}
+
+fragment BaseRangeFields on RangeEntity {
+  id
+  start
+  end
+  owner
 }

@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { parseEther } from "@ethersproject/units";
 
 import {
@@ -36,6 +37,17 @@ describe("core-sdk-premint", () => {
     const resultRange = await coreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
+    await waitForGraphNodeIndexing();
+    const offer = await coreSDK.getOfferById(offerId);
+    expect(offer.range).toBeTruthy();
+    expect(BigNumber.from(offer.range?.start).eq(resultRange.start)).toBe(true);
+    expect(String(offer.range?.end)).toEqual(
+      BigNumber.from(resultRange.start)
+        .add(resultRange.length)
+        .sub(1)
+        .toString()
+    );
+
     const preMinted = 2;
     await (await coreSDK.preMint(offerId, preMinted)).wait();
 
@@ -64,6 +76,17 @@ describe("core-sdk-premint", () => {
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
+
+    await waitForGraphNodeIndexing();
+    const offer = await sellerCoreSDK.getOfferById(offerId);
+    expect(offer.range).toBeTruthy();
+    expect(BigNumber.from(offer.range?.start).eq(resultRange.start)).toBe(true);
+    expect(String(offer.range?.end)).toEqual(
+      BigNumber.from(resultRange.start)
+        .add(resultRange.length)
+        .sub(1)
+        .toString()
+    );
 
     await (
       await sellerCoreSDK.depositFunds(createdOffer.seller.id, parseEther("5"))
@@ -101,6 +124,17 @@ describe("core-sdk-premint", () => {
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
+
+    await waitForGraphNodeIndexing();
+    const offer = await sellerCoreSDK.getOfferById(offerId);
+    expect(offer.range).toBeTruthy();
+    expect(BigNumber.from(offer.range?.start).eq(resultRange.start)).toBe(true);
+    expect(String(offer.range?.end)).toEqual(
+      BigNumber.from(resultRange.start)
+        .add(resultRange.length)
+        .sub(1)
+        .toString()
+    );
 
     await (
       await sellerCoreSDK.depositFunds(createdOffer.seller.id, parseEther("5"))
@@ -151,6 +185,19 @@ describe("core-sdk-premint", () => {
 
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
+
+      await waitForGraphNodeIndexing();
+      const offer = await coreSDK.getOfferById(offerId);
+      expect(offer.range).toBeTruthy();
+      expect(BigNumber.from(offer.range?.start).eq(resultRange.start)).toBe(
+        true
+      );
+      expect(String(offer.range?.end)).toEqual(
+        BigNumber.from(resultRange.start)
+          .add(resultRange.length)
+          .sub(1)
+          .toString()
+      );
 
       const preMinted = 2;
       await (await coreSDK.preMint(offerId, preMinted)).wait();

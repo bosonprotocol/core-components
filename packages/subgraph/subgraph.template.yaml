@@ -35,6 +35,10 @@ dataSources:
           handler: handleOfferCreatedEvent
         - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferVoidedEvent
+        - event: OfferExtended(indexed uint256,indexed uint256,uint256,indexed address)
+          handler: handleOfferExtendedEvent
+        - event: RangeReserved(indexed uint256,indexed uint256,uint256,uint256,indexed address)
+          handler: handleRangeReservedEvent
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
     name: BosonAccountHandler
