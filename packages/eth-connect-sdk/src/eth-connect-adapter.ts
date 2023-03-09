@@ -81,6 +81,7 @@ export class EthConnectAdapter implements Web3LibAdapter {
     EthConnectAdapter.receiptData.set(txHash, receiptData);
     return {
       hash: txHash,
+      nonce: transactionRequest.nonce,
       wait: async (confirmations?: number) => this._wait(txHash, receiptData)
     };
   }
