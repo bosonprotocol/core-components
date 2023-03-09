@@ -304,13 +304,19 @@ export class OfferMixin extends BaseCoreSDK {
   public async reserveRange(
     offerId: BigNumberish,
     length: BigNumberish,
+    to: "seller" | "contract",
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const offer = await this.getOfferById(offerId);
     return offers.handler.reserveRange({
       offerId,
       length,
+      to:
+        to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.operator,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib

@@ -139,7 +139,7 @@ export function handleRangeReservedEvent(event: RangeReserved): void {
     }
     rangeEntity.start = event.params.startExchangeId;
     rangeEntity.end = event.params.endExchangeId;
-    // TODO: rangeEntity.owner = event.patams.owner; requires v2.2.0
+    rangeEntity.owner = event.params.owner;
     rangeEntity.save();
 
     offer.range = rangeId;

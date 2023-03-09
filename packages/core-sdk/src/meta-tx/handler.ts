@@ -554,12 +554,13 @@ export async function signMetaTxReserveRange(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     length: BigNumberish;
+    to: string;
   }
 ) {
   return signMetaTx({
     ...args,
     functionName: "reserveRange(uint256,uint256)",
-    functionSignature: encodeReserveRange(args.offerId, args.length)
+    functionSignature: encodeReserveRange(args.offerId, args.length, args.to)
   });
 }
 

@@ -73,6 +73,7 @@ export async function reserveRange(args: {
   subgraphUrl: string;
   offerId: BigNumberish;
   length: BigNumberish;
+  to: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
   const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
@@ -87,7 +88,7 @@ export async function reserveRange(args: {
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeReserveRange(args.offerId, args.length)
+    data: encodeReserveRange(args.offerId, args.length, args.to)
   });
 }
 

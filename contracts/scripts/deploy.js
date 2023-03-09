@@ -68,7 +68,7 @@ async function main() {
       {
         id: "1",
         escalationResponsePeriod: oneMonth.toString(),
-        operator: disputeResolver,
+        assistant: disputeResolver,
         admin: disputeResolver,
         clerk: disputeResolver,
         treasury: disputeResolver,
