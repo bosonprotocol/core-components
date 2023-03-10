@@ -1,4 +1,4 @@
-import { BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from "@ethersproject/bignumber";
 import { Interface } from "@ethersproject/abi";
 import { seaportAbi } from "./abi";
 
