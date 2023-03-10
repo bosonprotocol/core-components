@@ -1061,7 +1061,7 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test("reserveRange and preMint with meta-tx", async () => {
+    test("reserveRange for seller and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
@@ -1088,6 +1088,10 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
+      const balanceBefore = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: sellerAddress
+      });
       const amount = 10;
 
       const { to, r, s, v, functionSignature } =
@@ -1110,6 +1114,79 @@ describe("meta-tx", () => {
       metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      // check the seller assistant now owns the preminted vouchers
+      const balanceAfter = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: sellerAddress
+      });
+      expect(
+        BigNumber.from(balanceAfter).sub(balanceBefore).toNumber()
+      ).toEqual(amount);
+    });
+
+    test("reserveRange for contract and preMint with meta-tx", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const length = 10;
+      const offerId = createdOffer.id;
+      const nonce = Date.now();
+
+      const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
+        offerId,
+        length,
+        to: "contract",
+        nonce
+      });
+
+      let metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName: metaReserveRange.functionName,
+        functionSignature: metaReserveRange.functionSignature,
+        nonce,
+        sigR: metaReserveRange.r,
+        sigS: metaReserveRange.s,
+        sigV: metaReserveRange.v
+      });
+
+      let metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const balanceBefore = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: createdOffer.seller.voucherCloneAddress
+      });
+      const amount = 10;
+
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxPreMint({
+          offerId,
+          amount
+        });
+
+      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      // check the contract now owns the preminted vouchers
+      const balanceAfter = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: createdOffer.seller.voucherCloneAddress
+      });
+      expect(
+        BigNumber.from(balanceAfter).sub(balanceBefore).toNumber()
+      ).toEqual(amount);
     });
   });
 });
