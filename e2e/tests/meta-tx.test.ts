@@ -1071,6 +1071,7 @@ describe("meta-tx", () => {
       const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
         offerId,
         length,
+        to: "seller",
         nonce
       });
 

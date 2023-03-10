@@ -142,14 +142,20 @@ export class MetaTxMixin extends BaseCoreSDK {
   public async signMetaTxReserveRange(
     args: Omit<
       Parameters<typeof handler.signMetaTxReserveRange>[0],
-      "web3Lib" | "metaTxHandlerAddress" | "chainId"
-    >
+      "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
+    > & { to: "seller" | "contract" }
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
     return handler.signMetaTxReserveRange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      to:
+        args.to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.assistant
     });
   }
 

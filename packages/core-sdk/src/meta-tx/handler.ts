@@ -559,7 +559,7 @@ export async function signMetaTxReserveRange(
 ) {
   return signMetaTx({
     ...args,
-    functionName: "reserveRange(uint256,uint256)",
+    functionName: "reserveRange(uint256,uint256,address)",
     functionSignature: encodeReserveRange(args.offerId, args.length, args.to)
   });
 }

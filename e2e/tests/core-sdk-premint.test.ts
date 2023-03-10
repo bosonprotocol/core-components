@@ -32,7 +32,7 @@ describe("core-sdk-premint", () => {
 
     const offerId = createdOffer.id;
     const range = 10;
-    await (await coreSDK.reserveRange(offerId, range)).wait();
+    await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const resultRange = await coreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
@@ -69,7 +69,7 @@ describe("core-sdk-premint", () => {
     const offerId = createdOffer.id;
 
     const range = 10;
-    await (await sellerCoreSDK.reserveRange(offerId, range)).wait();
+    await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
     await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
@@ -117,7 +117,7 @@ describe("core-sdk-premint", () => {
     const offerId = createdOffer.id;
 
     const range = 10;
-    await (await sellerCoreSDK.reserveRange(offerId, range)).wait();
+    await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
     await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
@@ -181,7 +181,7 @@ describe("core-sdk-premint", () => {
 
       const offerId = createdOffer.id;
       const range = 10;
-      await (await coreSDK.reserveRange(offerId, range)).wait();
+      await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
 
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
