@@ -3,6 +3,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { encodeValidate } from "../../packages/core-sdk/src/seaport/handler";
 
 import {
   initCoreSDKWithWallet,
@@ -18,7 +19,9 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13
+  seedWallet13,
+  createSeaportOrder,
+  MOCK_SEAPORT_ADDRESS
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -1187,6 +1190,98 @@ describe("meta-tx", () => {
       expect(
         BigNumber.from(balanceAfter).sub(balanceBefore).toNumber()
       ).toEqual(amount);
+    });
+
+    test("can approve preminted tokens for contract", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const openseaConduit = Wallet.createRandom().address;
+      const isApprovedForAllBefore = await sellerCoreSDK.isApprovedForAll(
+        openseaConduit,
+        { owner: createdOffer.seller.voucherCloneAddress }
+      );
+      expect(isApprovedForAllBefore).toEqual(false);
+
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxSetApprovalForAllToContract({
+          operator: openseaConduit,
+          approved: true
+        });
+
+      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const isApprovedForAllAfter = await sellerCoreSDK.isApprovedForAll(
+        openseaConduit,
+        { owner: createdOffer.seller.voucherCloneAddress }
+      );
+      expect(isApprovedForAllAfter).toEqual(true);
+    });
+
+    test("can call seaport via voucher contract to validate listing preminted tokens", async () => {
+      // Create an offer
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const range = 10;
+      const offerId = createdOffer.id;
+
+      // Reserve range
+      await (
+        await sellerCoreSDK.reserveRange(offerId, range, "contract")
+      ).wait();
+      const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
+
+      // Premint vouchers
+      const amount = 10;
+      await (await sellerCoreSDK.preMint(offerId, amount)).wait();
+
+      // Find the first tokenId
+      const tokenId = resultRange.start.toString();
+
+      // Create the seaport order
+      const openseaConduit = Wallet.createRandom().address;
+      const order = createSeaportOrder({
+        offerer: createdOffer.seller.voucherCloneAddress,
+        token: createdOffer.seller.voucherCloneAddress,
+        tokenId,
+        openseaTreasury: openseaConduit
+      });
+
+      // Note: when using the real seaport contract, be sure the preminted tokens are approved for openseaConduit
+
+      // Call seaport validate method via seller voucher
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxCallExternalContract({
+          to: MOCK_SEAPORT_ADDRESS,
+          data: encodeValidate([order])
+        });
+
+      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });
   });
 });
