@@ -21,6 +21,7 @@ const {
   deployAndMintMockNFTAuthTokens,
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
+const { deployMockSeaport } = require("./deploy-mockSeaport");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -98,6 +99,8 @@ async function main() {
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
+  const mockSeaport = await deployMockSeaport();
+  console.log(`✅ Mock Seaport has been deployed at ${mockSeaport.address}`);
 }
 
 main()

@@ -6,6 +6,7 @@ export type ContractAddresses = {
   testErc20?: string;
   testErc1155?: string;
   forwarder: string;
+  seaport?: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";
