@@ -17,7 +17,6 @@ import {
 import {
   SellerCreated,
   SellerCreatedSellerStruct,
-  SellerUpdated,
   BuyerCreated,
   BuyerCreatedBuyerStruct
 } from "../generated/BosonAccountHandler/IBosonAccountHandler";
@@ -32,6 +31,7 @@ import {
   createMockedFunction
 } from "matchstick-as/assembly/index";
 import { ethereum, Address } from "@graphprotocol/graph-ts";
+import { SellerUpdated } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 
 export function createOfferCreatedEvent(
   offerId: i32,
