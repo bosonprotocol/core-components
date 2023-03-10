@@ -63,7 +63,7 @@ describe("meta-tx", () => {
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
           admin: seedWallet13.address,
-          operator: seedWallet13.address,
+          assistant: seedWallet13.address,
           clerk: seedWallet13.address,
           treasury: seedWallet13.address,
           authTokenId: "0",
@@ -75,7 +75,7 @@ describe("meta-tx", () => {
           id: existingSeller.id,
           fieldsToUpdate: {
             admin: true,
-            operator: true,
+            assistant: true,
             clerk: true,
             authToken: true
           }
@@ -87,7 +87,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await newSellerCoreSDK.signMetaTxCreateSeller({
           createSellerArgs: {
-            operator: newSellerWallet.address,
+            assistant: newSellerWallet.address,
             treasury: newSellerWallet.address,
             admin: newSellerWallet.address,
             clerk: newSellerWallet.address,
@@ -132,7 +132,7 @@ describe("meta-tx", () => {
         await sellerCoreSDK.signMetaTxUpdateSeller({
           updateSellerArgs: {
             id: seller.id,
-            operator: randomWallet.address,
+            assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
             clerk: randomWallet.address,
@@ -180,7 +180,7 @@ describe("meta-tx", () => {
         await seller1CoreSDK.signMetaTxUpdateSeller({
           updateSellerArgs: {
             id: seller1.id,
-            operator: randomWallet.address,
+            assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
             clerk: randomWallet.address,

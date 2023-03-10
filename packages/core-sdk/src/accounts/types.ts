@@ -18,7 +18,7 @@ export {
 
 export type CreateDisputeResolverArgs = {
   escalationResponsePeriodInMS: number;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;

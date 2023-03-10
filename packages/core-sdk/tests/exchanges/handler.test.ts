@@ -145,7 +145,7 @@ describe("#completeExchange()", () => {
     ).rejects.toThrow(/not exist/);
   });
 
-  test("throw if signer not buyer or operator", async () => {
+  test("throw if signer not buyer or assistant", async () => {
     interceptSubgraph().reply(200, {
       data: {
         exchange: mockRawExchangeFromSubgraph()
@@ -159,7 +159,7 @@ describe("#completeExchange()", () => {
         exchangeId: 1,
         web3Lib: new MockWeb3LibAdapter()
       })
-    ).rejects.toThrow(/buyer.*or operator.*/);
+    ).rejects.toThrow(/buyer.*or assistant.*/);
   });
 
   test("dont throw an error if fulfillment period not elapsed - if we're both buyer and seller", async () => {

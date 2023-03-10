@@ -83,7 +83,7 @@ export class ExchangesMixin extends BaseCoreSDK {
 
   /**
    * Revokes an existing voucher by calling the `ExchangeHandlerContract`.
-   * Callable by seller `operator`.
+   * Callable by seller `assistant`.
    * @param exchangeId - ID of exchange to revoke.
    * @returns Transaction response.
    */
@@ -134,7 +134,7 @@ export class ExchangesMixin extends BaseCoreSDK {
 
   /**
    * Completes an existing voucher by calling the `ExchangeHandlerContract`.
-   * Callable by buyer or seller operator.
+   * Callable by buyer or seller assistant.
    * @param exchangeId - ID of exchange to complete.
    * @returns Transaction response.
    */
@@ -151,7 +151,7 @@ export class ExchangesMixin extends BaseCoreSDK {
 
   /**
    * Completes a batch of existing vouchers by calling the `ExchangeHandlerContract`.
-   * Callable by buyer or seller operator.
+   * Callable by buyer or seller assistant.
    * @param exchangeIds - IDs of exchange to complete.
    * @returns Transaction response.
    */

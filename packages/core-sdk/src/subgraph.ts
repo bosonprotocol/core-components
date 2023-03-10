@@ -1032,6 +1032,7 @@ export type DisputeResolver = Account & {
   __typename?: "DisputeResolver";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
+  assistant: Scalars["Bytes"];
   clerk: Scalars["Bytes"];
   escalationResponsePeriod: Scalars["BigInt"];
   fees: Array<DisputeResolverFee>;
@@ -1040,7 +1041,6 @@ export type DisputeResolver = Account & {
   logs: Array<EventLog>;
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
-  operator: Scalars["Bytes"];
   pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
   sellerAllowList: Array<Scalars["BigInt"]>;
   treasury: Scalars["Bytes"];
@@ -1177,6 +1177,12 @@ export type DisputeResolver_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1228,12 +1234,6 @@ export type DisputeResolver_Filter = {
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   pendingDisputeResolver_?: InputMaybe<PendingDisputeResolver_Filter>;
   sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
@@ -1252,6 +1252,7 @@ export type DisputeResolver_Filter = {
 export enum DisputeResolver_OrderBy {
   Active = "active",
   Admin = "admin",
+  Assistant = "assistant",
   Clerk = "clerk",
   EscalationResponsePeriod = "escalationResponsePeriod",
   Fees = "fees",
@@ -1260,7 +1261,6 @@ export enum DisputeResolver_OrderBy {
   Logs = "logs",
   MetadataUri = "metadataUri",
   Offers = "offers",
-  Operator = "operator",
   PendingDisputeResolver = "pendingDisputeResolver",
   SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
@@ -3376,10 +3376,10 @@ export enum OrderDirection {
 export type PendingDisputeResolver = {
   __typename?: "PendingDisputeResolver";
   admin?: Maybe<Scalars["Bytes"]>;
+  assistant?: Maybe<Scalars["Bytes"]>;
   clerk?: Maybe<Scalars["Bytes"]>;
   disputeResolver: DisputeResolver;
   id: Scalars["ID"];
-  operator?: Maybe<Scalars["Bytes"]>;
 };
 
 export type PendingDisputeResolver_Filter = {
@@ -3391,6 +3391,12 @@ export type PendingDisputeResolver_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -3426,30 +3432,24 @@ export type PendingDisputeResolver_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
 };
 
 export enum PendingDisputeResolver_OrderBy {
   Admin = "admin",
+  Assistant = "assistant",
   Clerk = "clerk",
   DisputeResolver = "disputeResolver",
-  Id = "id",
-  Operator = "operator"
+  Id = "id"
 }
 
 export type PendingSeller = {
   __typename?: "PendingSeller";
   admin?: Maybe<Scalars["Bytes"]>;
+  assistant?: Maybe<Scalars["Bytes"]>;
   authTokenId?: Maybe<Scalars["BigInt"]>;
   authTokenType?: Maybe<Scalars["Int"]>;
   clerk?: Maybe<Scalars["Bytes"]>;
   id: Scalars["ID"];
-  operator?: Maybe<Scalars["Bytes"]>;
   seller: Seller;
 };
 
@@ -3462,6 +3462,12 @@ export type PendingSeller_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   authTokenId?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3492,12 +3498,6 @@ export type PendingSeller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
@@ -3523,11 +3523,11 @@ export type PendingSeller_Filter = {
 
 export enum PendingSeller_OrderBy {
   Admin = "admin",
+  Assistant = "assistant",
   AuthTokenId = "authTokenId",
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
   Id = "id",
-  Operator = "operator",
   Seller = "seller"
 }
 
@@ -7554,6 +7554,7 @@ export type Seller = Account & {
   __typename?: "Seller";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
+  assistant: Scalars["Bytes"];
   authTokenId: Scalars["BigInt"];
   authTokenType: Scalars["Int"];
   clerk: Scalars["Bytes"];
@@ -7563,7 +7564,6 @@ export type Seller = Account & {
   id: Scalars["ID"];
   logs: Array<EventLog>;
   offers: Array<Offer>;
-  operator: Scalars["Bytes"];
   pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
   royaltyPercentage: Scalars["BigInt"];
@@ -7617,6 +7617,12 @@ export type Seller_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   authTokenId?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -7670,12 +7676,6 @@ export type Seller_Filter = {
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
   offers_?: InputMaybe<Offer_Filter>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -7710,6 +7710,7 @@ export type Seller_Filter = {
 export enum Seller_OrderBy {
   Active = "active",
   Admin = "admin",
+  Assistant = "assistant",
   AuthTokenId = "authTokenId",
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
@@ -7719,7 +7720,6 @@ export enum Seller_OrderBy {
   Id = "id",
   Logs = "logs",
   Offers = "offers",
-  Operator = "operator",
   PendingSeller = "pendingSeller",
   RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
@@ -8526,7 +8526,7 @@ export type GetSellerByIdQueryQuery = {
   seller?: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -8538,7 +8538,7 @@ export type GetSellerByIdQueryQuery = {
     royaltyPercentage: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
       authTokenId?: string | null;
@@ -8597,7 +8597,7 @@ export type GetSellerByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -8623,7 +8623,7 @@ export type GetSellerByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -8804,7 +8804,7 @@ export type GetSellerByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -8850,7 +8850,7 @@ export type GetSellerByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -8941,7 +8941,7 @@ export type GetSellerByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9063,7 +9063,7 @@ export type GetSellersQueryQuery = {
   sellers: Array<{
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -9075,7 +9075,7 @@ export type GetSellersQueryQuery = {
     royaltyPercentage: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
       authTokenId?: string | null;
@@ -9134,7 +9134,7 @@ export type GetSellersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9160,7 +9160,7 @@ export type GetSellersQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -9341,7 +9341,7 @@ export type GetSellersQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -9387,7 +9387,7 @@ export type GetSellersQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -9478,7 +9478,7 @@ export type GetSellersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9644,7 +9644,7 @@ export type GetBuyerByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9820,7 +9820,7 @@ export type GetBuyersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9930,13 +9930,13 @@ export type GetDisputeResolverByIdQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
     pendingDisputeResolver?: {
       __typename?: "PendingDisputeResolver";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
     } | null;
@@ -9979,7 +9979,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -10005,7 +10005,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -10186,7 +10186,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -10232,7 +10232,7 @@ export type GetDisputeResolverByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -10402,13 +10402,13 @@ export type GetDisputeResolversQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
     pendingDisputeResolver?: {
       __typename?: "PendingDisputeResolver";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
     } | null;
@@ -10451,7 +10451,7 @@ export type GetDisputeResolversQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -10477,7 +10477,7 @@ export type GetDisputeResolversQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -10658,7 +10658,7 @@ export type GetDisputeResolversQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -10704,7 +10704,7 @@ export type GetDisputeResolversQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -10848,7 +10848,7 @@ export type GetDisputeResolversQueryQuery = {
 export type SellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -10860,7 +10860,7 @@ export type SellerFieldsFragment = {
   royaltyPercentage: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
-    operator?: string | null;
+    assistant?: string | null;
     admin?: string | null;
     clerk?: string | null;
     authTokenId?: string | null;
@@ -10919,7 +10919,7 @@ export type SellerFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -10945,7 +10945,7 @@ export type SellerFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -11122,7 +11122,7 @@ export type SellerFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -11168,7 +11168,7 @@ export type SellerFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -11259,7 +11259,7 @@ export type SellerFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11346,7 +11346,7 @@ export type SellerFieldsFragment = {
 export type BaseSellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -11360,7 +11360,7 @@ export type BaseSellerFieldsFragment = {
 
 export type PendingSellerFieldsFragment = {
   __typename?: "PendingSeller";
-  operator?: string | null;
+  assistant?: string | null;
   admin?: string | null;
   clerk?: string | null;
   authTokenId?: string | null;
@@ -11424,7 +11424,7 @@ export type BuyerFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11522,13 +11522,13 @@ export type DisputeResolverFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
-  operator: string;
+  assistant: string;
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
   pendingDisputeResolver?: {
     __typename?: "PendingDisputeResolver";
-    operator?: string | null;
+    assistant?: string | null;
     admin?: string | null;
     clerk?: string | null;
   } | null;
@@ -11571,7 +11571,7 @@ export type DisputeResolverFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11597,7 +11597,7 @@ export type DisputeResolverFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -11774,7 +11774,7 @@ export type DisputeResolverFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -11820,7 +11820,7 @@ export type DisputeResolverFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -11967,7 +11967,7 @@ export type BaseDisputeResolverFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
-  operator: string;
+  assistant: string;
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
@@ -11990,7 +11990,7 @@ export type BaseDisputeResolverFieldsFragment = {
 
 export type PendingDisputeResolverFieldsFragment = {
   __typename?: "PendingDisputeResolver";
-  operator?: string | null;
+  assistant?: string | null;
   admin?: string | null;
   clerk?: string | null;
 };
@@ -12084,7 +12084,7 @@ export type GetDisputeByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -12099,7 +12099,7 @@ export type GetDisputeByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -12181,7 +12181,7 @@ export type GetDisputesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -12196,7 +12196,7 @@ export type GetDisputesQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -12268,7 +12268,7 @@ export type DisputeFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -12283,7 +12283,7 @@ export type DisputeFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -12382,7 +12382,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -12408,7 +12408,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -12589,7 +12589,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -12635,7 +12635,7 @@ export type GetExchangeTokenByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -12765,7 +12765,7 @@ export type GetExchangeTokensQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -12791,7 +12791,7 @@ export type GetExchangeTokensQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -12972,7 +12972,7 @@ export type GetExchangeTokensQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -13018,7 +13018,7 @@ export type GetExchangeTokensQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -13126,7 +13126,7 @@ export type ExchangeTokenFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -13152,7 +13152,7 @@ export type ExchangeTokenFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -13329,7 +13329,7 @@ export type ExchangeTokenFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -13375,7 +13375,7 @@ export type ExchangeTokenFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -13666,7 +13666,7 @@ export type GetExchangeByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -13692,7 +13692,7 @@ export type GetExchangeByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -13873,7 +13873,7 @@ export type GetExchangeByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -13919,7 +13919,7 @@ export type GetExchangeByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -13996,7 +13996,7 @@ export type GetExchangeByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -14073,7 +14073,7 @@ export type GetExchangesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -14099,7 +14099,7 @@ export type GetExchangesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -14280,7 +14280,7 @@ export type GetExchangesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -14326,7 +14326,7 @@ export type GetExchangesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -14403,7 +14403,7 @@ export type GetExchangesQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -14470,7 +14470,7 @@ export type ExchangeFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -14496,7 +14496,7 @@ export type ExchangeFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -14673,7 +14673,7 @@ export type ExchangeFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -14719,7 +14719,7 @@ export type ExchangeFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -14791,7 +14791,7 @@ export type ExchangeFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -14837,7 +14837,7 @@ export type BaseExchangeFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -15013,7 +15013,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -15039,7 +15039,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -15220,7 +15220,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -15266,7 +15266,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -15322,7 +15322,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15425,7 +15425,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -15451,7 +15451,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -15632,7 +15632,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -15678,7 +15678,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -15734,7 +15734,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15827,7 +15827,7 @@ export type BaseMetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15853,7 +15853,7 @@ export type BaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -16030,7 +16030,7 @@ export type BaseMetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -16076,7 +16076,7 @@ export type BaseMetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -16132,7 +16132,7 @@ export type BaseMetadataEntityFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -16224,7 +16224,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -16250,7 +16250,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -16427,7 +16427,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -16473,7 +16473,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -16529,7 +16529,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -16683,7 +16683,7 @@ export type GetProductV1ProductsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -16809,7 +16809,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -16834,7 +16834,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -16860,7 +16860,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           admin: string;
           clerk: string;
           treasury: string;
-          operator: string;
+          assistant: string;
           metadataUri: string;
           active: boolean;
           sellerAllowList: Array<string>;
@@ -17041,7 +17041,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   seller: {
                     __typename?: "Seller";
                     id: string;
-                    operator: string;
+                    assistant: string;
                     admin: string;
                     clerk: string;
                     treasury: string;
@@ -17087,7 +17087,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -17223,7 +17223,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17349,7 +17349,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -17374,7 +17374,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -17400,7 +17400,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           admin: string;
           clerk: string;
           treasury: string;
-          operator: string;
+          assistant: string;
           metadataUri: string;
           active: boolean;
           sellerAllowList: Array<string>;
@@ -17581,7 +17581,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   seller: {
                     __typename?: "Seller";
                     id: string;
-                    operator: string;
+                    assistant: string;
                     admin: string;
                     clerk: string;
                     treasury: string;
@@ -17627,7 +17627,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -17763,7 +17763,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17903,7 +17903,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -17928,7 +17928,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17954,7 +17954,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -18135,7 +18135,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -18181,7 +18181,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -18237,7 +18237,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -18362,7 +18362,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -18408,7 +18408,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18540,7 +18540,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -18565,7 +18565,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18591,7 +18591,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -18772,7 +18772,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -18818,7 +18818,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -18874,7 +18874,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -18999,7 +18999,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -19045,7 +19045,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19167,7 +19167,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19192,7 +19192,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19218,7 +19218,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -19395,7 +19395,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -19441,7 +19441,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -19497,7 +19497,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -19622,7 +19622,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19668,7 +19668,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19789,7 +19789,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19814,7 +19814,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19840,7 +19840,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -20017,7 +20017,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -20063,7 +20063,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -20119,7 +20119,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -20244,7 +20244,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -20290,7 +20290,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -20428,7 +20428,7 @@ export type BaseProductV1ProductFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -20543,7 +20543,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -20568,7 +20568,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -20594,7 +20594,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -20775,7 +20775,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -20821,7 +20821,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -20957,7 +20957,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -21072,7 +21072,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -21097,7 +21097,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -21123,7 +21123,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -21304,7 +21304,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -21350,7 +21350,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -21486,7 +21486,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -21574,7 +21574,7 @@ export type BaseProductV1SellerFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -21745,7 +21745,7 @@ export type GetOfferByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -21770,7 +21770,7 @@ export type GetOfferByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -21796,7 +21796,7 @@ export type GetOfferByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -21973,7 +21973,7 @@ export type GetOfferByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -22019,7 +22019,7 @@ export type GetOfferByIdQueryQuery = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -22154,7 +22154,7 @@ export type GetOffersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -22179,7 +22179,7 @@ export type GetOffersQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -22205,7 +22205,7 @@ export type GetOffersQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -22382,7 +22382,7 @@ export type GetOffersQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -22428,7 +22428,7 @@ export type GetOffersQueryQuery = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -22547,7 +22547,7 @@ export type OfferFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -22572,7 +22572,7 @@ export type OfferFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -22598,7 +22598,7 @@ export type OfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
@@ -22775,7 +22775,7 @@ export type OfferFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -22821,7 +22821,7 @@ export type OfferFieldsFragment = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -22914,7 +22914,7 @@ export type BaseOfferFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -22940,7 +22940,7 @@ export type BaseOfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
@@ -23117,7 +23117,7 @@ export type BaseOfferFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -23163,7 +23163,7 @@ export type BaseOfferFieldsFragment = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -23228,7 +23228,7 @@ export type BaseRangeFieldsFragment = {
 export const BaseSellerFieldsFragmentDoc = gql`
   fragment BaseSellerFields on Seller {
     id
-    operator
+    assistant
     admin
     clerk
     treasury
@@ -23242,7 +23242,7 @@ export const BaseSellerFieldsFragmentDoc = gql`
 `;
 export const PendingSellerFieldsFragmentDoc = gql`
   fragment PendingSellerFields on PendingSeller {
-    operator
+    assistant
     admin
     clerk
     authTokenId
@@ -23305,7 +23305,7 @@ export const BaseDisputeResolverFieldsFragmentDoc = gql`
     admin
     clerk
     treasury
-    operator
+    assistant
     metadataUri
     active
     sellerAllowList
@@ -23791,7 +23791,7 @@ export const BuyerFieldsFragmentDoc = gql`
 `;
 export const PendingDisputeResolverFieldsFragmentDoc = gql`
   fragment PendingDisputeResolverFields on PendingDisputeResolver {
-    operator
+    assistant
     admin
     clerk
   }

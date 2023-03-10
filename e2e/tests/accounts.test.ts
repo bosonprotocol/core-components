@@ -44,7 +44,7 @@ describe("CoreSDK - accounts", () => {
         fundedWallet,
         protocolAdminWallet,
         {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -58,7 +58,7 @@ describe("CoreSDK - accounts", () => {
       expect(disputeResolver.active).toBeTruthy();
       expect(disputeResolver.admin).toBe(disputeResolverAddress);
       expect(disputeResolver.clerk).toBe(disputeResolverAddress);
-      expect(disputeResolver.operator).toBe(disputeResolverAddress);
+      expect(disputeResolver.assistant).toBe(disputeResolverAddress);
       expect(disputeResolver.treasury).toBe(disputeResolverAddress);
       expect(disputeResolver.metadataUri).toBe(metadataUri);
       expect(disputeResolver.sellerAllowList.length).toBe(0);
@@ -76,7 +76,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -90,7 +90,7 @@ describe("CoreSDK - accounts", () => {
         await initCoreSDKWithFundedWallet(seedWallet3);
       await (
         await coreSDK.updateDisputeResolver(disputeResolverBeforeUpdate.id, {
-          operator: randomWallet.address,
+          assistant: randomWallet.address,
           metadataUri: "ipfs://changed",
           escalationResponsePeriodInMS: 123_000
         })
@@ -103,8 +103,8 @@ describe("CoreSDK - accounts", () => {
 
       expect(disputeResolverAfterUpdate.metadataUri).toBe("ipfs://changed");
       expect(disputeResolverAfterUpdate.escalationResponsePeriod).toBe("123");
-      expect(disputeResolverAfterUpdate.operator).toBe(
-        disputeResolverBeforeUpdate.operator
+      expect(disputeResolverAfterUpdate.assistant).toBe(
+        disputeResolverBeforeUpdate.assistant
       );
       expect(disputeResolverAfterUpdate.clerk).toBe(
         disputeResolverBeforeUpdate.clerk
@@ -113,16 +113,16 @@ describe("CoreSDK - accounts", () => {
         disputeResolverBeforeUpdate.treasury
       );
 
-      // check the pending updates lists the operator address
+      // check the pending updates lists the assistant address
       expect(disputeResolverAfterUpdate.pendingDisputeResolver).toBeTruthy();
       expect(
-        disputeResolverAfterUpdate.pendingDisputeResolver?.operator
+        disputeResolverAfterUpdate.pendingDisputeResolver?.assistant
       ).toEqual(randomWallet.address.toLowerCase());
 
       const txOptIn = await coreSDK2.optInToDisputeResolverUpdate({
         id: disputeResolverBeforeUpdate.id,
         fieldsToUpdate: {
-          operator: true
+          assistant: true
         }
       });
       await txOptIn.wait();
@@ -130,11 +130,11 @@ describe("CoreSDK - accounts", () => {
       const disputeResolverAfterOptIn = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
       );
-      expect(disputeResolverAfterOptIn.operator).toBe(
+      expect(disputeResolverAfterOptIn.assistant).toBe(
         randomWallet.address.toLowerCase()
       );
       expect(
-        disputeResolverAfterOptIn.pendingDisputeResolver?.operator
+        disputeResolverAfterOptIn.pendingDisputeResolver?.assistant
       ).toEqual(ZERO_ADDRESS);
     });
 
@@ -148,7 +148,7 @@ describe("CoreSDK - accounts", () => {
         fundedWallet,
         protocolAdminWallet,
         {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -205,7 +205,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -243,7 +243,7 @@ describe("CoreSDK - accounts", () => {
         fundedWallet,
         protocolAdminWallet,
         {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -278,7 +278,7 @@ describe("CoreSDK - accounts", () => {
 
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
-          operator: disputeResolverAddress,
+          assistant: disputeResolverAddress,
           clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
@@ -313,7 +313,7 @@ describe("CoreSDK - accounts", () => {
 
       const seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.admin).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
@@ -335,7 +335,7 @@ describe("CoreSDK - accounts", () => {
         seller,
         {
           admin: randomWallet.address,
-          operator: randomWallet.address,
+          assistant: randomWallet.address,
           clerk: randomWallet.address,
           treasury: randomWallet.address
         },
@@ -344,7 +344,7 @@ describe("CoreSDK - accounts", () => {
             coreSDK: coreSDK2,
             fieldsToUpdate: {
               admin: true,
-              operator: true,
+              assistant: true,
               clerk: true
             }
           }
@@ -352,7 +352,7 @@ describe("CoreSDK - accounts", () => {
       );
 
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
       expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
       expect(seller.admin).toEqual(randomWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
@@ -377,14 +377,14 @@ describe("CoreSDK - accounts", () => {
       });
 
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.admin).toEqual(ZERO_ADDRESS);
       expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);
       expect(seller.authTokenType).toEqual(tokenType);
     });
-    test("update seller - assign an auth token and change operator/clerk addresses", async () => {
+    test("update seller - assign an auth token and change assistant/clerk addresses", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
       );
@@ -402,7 +402,7 @@ describe("CoreSDK - accounts", () => {
         seller,
         {
           admin: ZERO_ADDRESS,
-          operator: randomWallet.address,
+          assistant: randomWallet.address,
           clerk: randomWallet.address,
           authTokenType: tokenType,
           authTokenId: tokenId.toString()
@@ -411,7 +411,7 @@ describe("CoreSDK - accounts", () => {
           {
             coreSDK: coreSDK2,
             fieldsToUpdate: {
-              operator: true,
+              assistant: true,
               clerk: true
             }
           }
@@ -419,14 +419,14 @@ describe("CoreSDK - accounts", () => {
       );
 
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
       expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.admin).toEqual(ZERO_ADDRESS);
       expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);
       expect(seller.authTokenType).toEqual(tokenType);
     });
-    test("update seller - update with another operator address, then update back the operator to the admin address", async () => {
+    test("update seller - update with another assistant address, then update back the assistant to the admin address", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
       );
@@ -437,11 +437,11 @@ describe("CoreSDK - accounts", () => {
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(seedWallet3);
       seller = await updateSeller(coreSDK, seller, {
-        operator: randomWallet.address
+        assistant: randomWallet.address
       });
-      // check the pending updates lists the operator address
+      // check the pending updates lists the assistant address
       expect(seller.pendingSeller).toBeTruthy();
-      expect(seller.pendingSeller?.operator).toEqual(
+      expect(seller.pendingSeller?.assistant).toEqual(
         randomWallet.address.toLowerCase()
       );
 
@@ -449,23 +449,23 @@ describe("CoreSDK - accounts", () => {
       const optInTx = await coreSDK2.optInToSellerUpdate({
         id: seller.id,
         fieldsToUpdate: {
-          operator: true
+          assistant: true
         }
       });
       await optInTx.wait();
       await waitForGraphNodeIndexing();
       seller = await coreSDK.getSellerById(seller.id as string);
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(randomWallet.address.toLowerCase());
-      expect(seller.pendingSeller?.operator).toEqual(ZERO_ADDRESS);
+      expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.pendingSeller?.assistant).toEqual(ZERO_ADDRESS);
 
       seller = await updateSeller(coreSDK, seller, {
-        operator: fundedWallet.address
+        assistant: fundedWallet.address
       });
 
       expect(seller).toBeTruthy();
-      expect(seller.operator).toEqual(fundedWallet.address.toLowerCase());
-      expect(seller.pendingSeller?.operator).toEqual(ZERO_ADDRESS);
+      expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.pendingSeller?.assistant).toEqual(ZERO_ADDRESS);
     });
   });
 });

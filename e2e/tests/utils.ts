@@ -208,7 +208,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
-      operator: sellerAddress,
+      assistant: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
@@ -394,7 +394,7 @@ export async function createSellerAndOfferWithCondition(
 
   const createOfferTxResponse = await coreSDK.createSellerAndOfferWithCondition(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,
@@ -430,7 +430,7 @@ export async function createSeller(
 ) {
   const contractUri = "ipfs://0123456789abcdef";
   const createSellerTxResponse = await coreSDK.createSeller({
-    operator: sellerAddress,
+    assistant: sellerAddress,
     admin: sellerAddress,
     clerk: sellerAddress,
     treasury: sellerAddress,
@@ -461,7 +461,7 @@ export async function updateSeller(
   optInSequence: {
     coreSDK: CoreSDK;
     fieldsToUpdate: {
-      operator?: boolean;
+      assistant?: boolean;
       clerk?: boolean;
       admin?: boolean;
       authToken?: boolean;
@@ -501,7 +501,7 @@ export async function createSellerAndOffer(
 
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,

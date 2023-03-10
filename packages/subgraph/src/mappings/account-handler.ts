@@ -47,7 +47,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   }
 
   seller.sellerId = event.params.sellerId;
-  seller.operator = sellerFromEvent.assistant;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
@@ -81,7 +81,7 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
     seller = new Seller(sellerId);
   }
 
-  seller.operator = sellerFromEvent.assistant;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
@@ -120,7 +120,7 @@ export function handleSellerUpdatePendingEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingSeller.operator = pendingSellerFromEvent.assistant;
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
   pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
@@ -143,7 +143,7 @@ export function handleSellerUpdateAppliedEvent(
     seller = new Seller(sellerId);
   }
 
-  seller.operator = sellerFromEvent.assistant;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
@@ -158,7 +158,7 @@ export function handleSellerUpdateAppliedEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingSeller.operator = pendingSellerFromEvent.assistant;
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
   pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
@@ -254,7 +254,7 @@ export function handleDisputeResolverUpdatePendingEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.assistant;
+  pendingDisputeResolver.assistant = pendingDisputeResolverFromEvent.assistant;
   pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
   pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
   pendingDisputeResolver.save();
@@ -276,7 +276,7 @@ export function handleDisputeResolverUpdateAppliedEvent(
 
   disputeResolver.escalationResponsePeriod =
     disputeResolverFromEvent.escalationResponsePeriod;
-  disputeResolver.operator = disputeResolverFromEvent.assistant;
+  disputeResolver.assistant = disputeResolverFromEvent.assistant;
   disputeResolver.admin = disputeResolverFromEvent.admin;
   disputeResolver.clerk = disputeResolverFromEvent.clerk;
   disputeResolver.treasury = disputeResolverFromEvent.treasury;
@@ -296,7 +296,7 @@ export function handleDisputeResolverUpdateAppliedEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.assistant;
+  pendingDisputeResolver.assistant = pendingDisputeResolverFromEvent.assistant;
   pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
   pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
   pendingDisputeResolver.save();

@@ -58,7 +58,7 @@ describe("core-sdk", () => {
       expect(createdOffer).toBeTruthy();
       expect(createdOffer.metadata).toMatchObject(metadata);
       expect(createdOffer.seller).toBeTruthy();
-      expect(createdOffer.seller.operator.toLowerCase()).toBe(
+      expect(createdOffer.seller.assistant.toLowerCase()).toBe(
         fundedWallet.address.toLowerCase()
       );
       expect(createdOffer.disputeResolver.fees.length > 0).toBeTruthy();

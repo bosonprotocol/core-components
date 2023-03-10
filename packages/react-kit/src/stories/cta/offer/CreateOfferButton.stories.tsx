@@ -32,7 +32,7 @@ Simple.args = {
   envName: "testing",
   hasSellerAccount: true,
   sellerInfo: {
-    operator: "",
+    assistant: "",
     admin: "",
     clerk: "",
     treasury: "",
@@ -108,7 +108,7 @@ WithStep.args = {
   envName: "testing",
   hasSellerAccount: true,
   sellerInfo: {
-    operator: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
+    assistant: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     admin: "0x0000000000000000000000000000000000000000",
     clerk: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     treasury: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",

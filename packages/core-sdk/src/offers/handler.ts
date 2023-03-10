@@ -192,11 +192,11 @@ function checkIfOfferVoidable(
   }
 
   if (
-    offerFromSubgraph.seller.operator.toLowerCase() !==
+    offerFromSubgraph.seller.assistant.toLowerCase() !==
     signerAddress.toLowerCase()
   ) {
     throw new Error(
-      `Signer with address "${signerAddress}" is not the operator "${offerFromSubgraph.seller.operator}" of offer with id "${offerId}"`
+      `Signer with address "${signerAddress}" is not the assistant "${offerFromSubgraph.seller.assistant}" of offer with id "${offerId}"`
     );
   }
 }

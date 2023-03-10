@@ -10,7 +10,7 @@ program
   .description("Create a Seller.")
   .argument(
     "<SELLER_PRIVATE_KEY>",
-    "Private key of the Seller account (operator role)."
+    "Private key of the Seller account (assistant role)."
   )
   .option("-d, --data <SELLER_DATA>", "JSON file with the Seller parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
@@ -31,7 +31,7 @@ async function main() {
     sellerDataJson = JSON.parse(rawData.toString());
   } else {
     sellerDataJson = {
-      operator: sellerWallet.address,
+      assistant: sellerWallet.address,
       admin: sellerWallet.address,
       clerk: sellerWallet.address,
       treasury: sellerWallet.address,

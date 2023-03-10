@@ -62,7 +62,7 @@ export function getAndSaveDisputeResolver(
 
   disputeResolver.escalationResponsePeriod =
     disputeResolverFromContract.escalationResponsePeriod;
-  disputeResolver.operator = disputeResolverFromContract.assistant;
+  disputeResolver.assistant = disputeResolverFromContract.assistant;
   disputeResolver.admin = disputeResolverFromContract.admin;
   disputeResolver.clerk = disputeResolverFromContract.clerk;
   disputeResolver.treasury = disputeResolverFromContract.treasury;
