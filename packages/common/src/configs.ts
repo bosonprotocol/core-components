@@ -170,7 +170,7 @@ export const defaultConfigs: ProtocolConfig[] = [
       testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
       testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
       forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
-      seaport: "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf" // MockSeaport contract
+      seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
     },
     metaTx: {
       relayerUrl: "http://localhost:8888",

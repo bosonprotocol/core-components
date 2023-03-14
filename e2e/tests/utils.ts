@@ -68,7 +68,7 @@ export const MOCK_FORWARDER_ADDRESS =
 
 export const MOCK_SEAPORT_ADDRESS =
   getDefaultConfig("local").contracts.seaport ||
-  "0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf";
+  "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
 
 export const metadata = {
   name: "name",
