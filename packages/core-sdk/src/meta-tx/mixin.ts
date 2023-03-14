@@ -254,7 +254,8 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAbi"
     >,
     overrides: Partial<{
-      batchId: BigNumberish;
+      batchId?: BigNumberish;
+      txGas?: number;
     }> = {}
   ) {
     const sellerAddress = await this._web3Lib.getSignerAddress();
@@ -272,16 +273,21 @@ export class MetaTxMixin extends BaseCoreSDK {
       forwarderAbi: this._metaTxConfig.forwarderAbi
     });
 
-    return handler.signMetaTxSetApprovalForAllToContract({
-      web3Lib: this._web3Lib,
-      bosonVoucherAddress: seller.voucherCloneAddress,
-      chainId: this._chainId,
-      nonce,
-      forwarderAddress,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi,
-      ...args
-    });
+    return handler.signMetaTxSetApprovalForAllToContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        nonce,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
   }
 
   public async signMetaTxCallExternalContract(
@@ -296,7 +302,8 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAbi"
     >,
     overrides: Partial<{
-      batchId: BigNumberish;
+      batchId?: BigNumberish;
+      txGas?: number;
     }> = {}
   ) {
     const sellerAddress = await this._web3Lib.getSignerAddress();
@@ -314,16 +321,21 @@ export class MetaTxMixin extends BaseCoreSDK {
       forwarderAbi: this._metaTxConfig.forwarderAbi
     });
 
-    return handler.signMetaTxCallExternalContract({
-      web3Lib: this._web3Lib,
-      bosonVoucherAddress: seller.voucherCloneAddress,
-      chainId: this._chainId,
-      nonce,
-      forwarderAddress,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi,
-      ...args
-    });
+    return handler.signMetaTxCallExternalContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        nonce,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
   }
 
   public async relayBiconomyMetaTransaction(

@@ -638,7 +638,10 @@ export async function signMetaTxSetApprovalForAllToContract(
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
-  }
+  },
+  overrides: {
+    txGas?: number;
+  } = {}
 ): Promise<SignedVoucherMetaTx> {
   const localConfig = defaultConfigs.find(
     (config) => config.envName === "local"
@@ -654,7 +657,7 @@ export async function signMetaTxSetApprovalForAllToContract(
       functionSignature
     });
   }
-  const txGas = 100000; // TODO: estimate the gas needed
+  const txGas = overrides.txGas || 100000; // TODO: estimate the gas needed
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
