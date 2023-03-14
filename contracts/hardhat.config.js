@@ -61,6 +61,7 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS, async (_, { config }) => {
       ]
     }
   );
+  console.log("Add submodulesContracts:", submodulesContracts);
   return [...contracts, ...submodulesContracts].map(path.normalize);
 });
 
