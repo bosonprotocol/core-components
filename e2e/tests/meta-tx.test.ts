@@ -63,17 +63,18 @@ describe("meta-tx", () => {
       if (existingSeller) {
         // Change all addresses used by the seller to be able to create another one with the original address
         // Useful when repeating the test suite on the same contracts
+        const { coreSDK: randomSellerCoreSDK, fundedWallet: randomWallet } =
+          await initCoreSDKWithFundedWallet(sellerWallet);
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
-          admin: seedWallet13.address,
-          assistant: seedWallet13.address,
-          clerk: seedWallet13.address,
-          treasury: seedWallet13.address,
+          admin: randomWallet.address,
+          assistant: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address,
           authTokenId: "0",
           authTokenType: 0
         });
         await updateTx.wait();
-        const randomSellerCoreSDK = initCoreSDKWithWallet(seedWallet13);
         const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
           id: existingSeller.id,
           fieldsToUpdate: {
