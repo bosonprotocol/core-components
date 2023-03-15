@@ -16,7 +16,9 @@ export const theme = {
       orange: "#FC6838",
       lime: "#B6F952",
       torquise: "#06F7D5",
-      border: "#5560720f"
+      border: "#5560720f",
+      arsenic: "#3a364f",
+      primaryBgColor: "#FFFFFF"
     }
   },
   mobile: "768px",
