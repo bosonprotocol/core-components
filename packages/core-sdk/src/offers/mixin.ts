@@ -146,7 +146,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Voids an existing offer by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator`.
+   * This transaction only succeeds if the connected signer is the `assistant`.
    * @param offerId - ID of offer to void.
    * @param overrides - Optional overrides.
    * @returns Transaction response.
@@ -167,7 +167,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Voids a batch of existing offers by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator` of all
+   * This transaction only succeeds if the connected signer is the `assistant` of all
    * provided offers.
    * @param offerIds - IDs of offers to void.
    * @param overrides - Optional overrides.
@@ -189,7 +189,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Extends an existing offer by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator`.
+   * This transaction only succeeds if the connected signer is the `assistant`.
    * @param offerId - ID of offer to void.
    * @param validUntil - new validity date.
    * @param overrides - Optional overrides.
@@ -213,7 +213,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Extends a batch of existing offers by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator` of all
+   * This transaction only succeeds if the connected signer is the `assistant` of all
    * provided offers.
    * @param offerIds - IDs of offers to void.
    * @param validUntil - new validity date.
@@ -304,13 +304,19 @@ export class OfferMixin extends BaseCoreSDK {
   public async reserveRange(
     offerId: BigNumberish,
     length: BigNumberish,
+    to: "seller" | "contract",
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const offer = await this.getOfferById(offerId);
     return offers.handler.reserveRange({
       offerId,
       length,
+      to:
+        to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.assistant,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib

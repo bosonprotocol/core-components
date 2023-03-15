@@ -244,81 +244,6 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "sellerId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "operator",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "admin",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "clerk",
-            type: "address",
-          },
-          {
-            internalType: "address payable",
-            name: "treasury",
-            type: "address",
-          },
-          {
-            internalType: "bool",
-            name: "active",
-            type: "bool",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.Seller",
-        name: "seller",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-          {
-            internalType: "enum BosonTypes.AuthTokenType",
-            name: "tokenType",
-            type: "uint8",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.AuthToken",
-        name: "authToken",
-        type: "tuple",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "SellerUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
         name: "disputeResolverId",
         type: "uint256",
       },
@@ -336,141 +261,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "admin",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "clerk",
-            type: "address",
-          },
-          {
-            internalType: "address payable",
-            name: "treasury",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "metadataUri",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "active",
-            type: "bool",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.DisputeResolver",
-        name: "disputeResolver",
-        type: "tuple",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "DisputeResolverUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "disputeResolverId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "escalationResponsePeriod",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "operator",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "admin",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "clerk",
-            type: "address",
-          },
-          {
-            internalType: "address payable",
-            name: "treasury",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "metadataUri",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "active",
-            type: "bool",
-          },
-        ],
-        indexed: false,
-        internalType: "struct BosonTypes.DisputeResolver",
-        name: "disputeResolver",
-        type: "tuple",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executedBy",
-        type: "address",
-      },
-    ],
-    name: "DisputeResolverActivated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "disputeResolverId",
-        type: "uint256",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "escalationResponsePeriod",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -633,7 +424,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -681,7 +472,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -748,7 +539,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -810,7 +601,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -891,7 +682,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -929,7 +720,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1022,7 +813,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1237,7 +1028,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1314,7 +1105,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1498,7 +1289,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1591,7 +1382,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1692,7 +1483,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1765,7 +1556,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1850,7 +1641,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -2052,7 +1843,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -2102,7 +1893,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {

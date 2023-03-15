@@ -34,17 +34,17 @@ export class AccountsMixin extends BaseCoreSDK {
 
   /**
    * Returns seller entity from subgraph.
-   * @param operator - Operator address of seller entity to query for.
+   * @param assistant - Assistant address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByOperator(
-    operator: string,
+  public async getSellerByAssistant(
+    assistant: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByOperator(
+    return accounts.subgraph.getSellerByAssistant(
       this._subgraphUrl,
-      operator,
+      assistant,
       queryVars
     );
   }
@@ -101,7 +101,7 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Returns seller entity from subgraph. Matches `operator`, `clerk`, `admin` or `treasury`.
+   * Returns seller entity from subgraph. Matches `assistant`, `clerk`, `admin` or `treasury`.
    * @param address - Address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
@@ -318,7 +318,8 @@ export class AccountsMixin extends BaseCoreSDK {
       await this._web3Lib.getSignerAddress()
     ).toLowerCase();
     const fieldsToUpdate = {
-      operator: currentAccount === pendingSellerUpdate.operator?.toLowerCase(),
+      assistant:
+        currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
       clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
       admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
       authToken:
@@ -327,7 +328,7 @@ export class AccountsMixin extends BaseCoreSDK {
         pendingSellerUpdate.tokenType !== AuthTokenType.NONE
     };
     if (
-      fieldsToUpdate.operator ||
+      fieldsToUpdate.assistant ||
       fieldsToUpdate.clerk ||
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
@@ -335,8 +336,8 @@ export class AccountsMixin extends BaseCoreSDK {
       return this.optInToSellerUpdate({
         id: sellerUpdates.id,
         fieldsToUpdate: {
-          operator:
-            currentAccount === pendingSellerUpdate.operator.toLowerCase(),
+          assistant:
+            currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
           clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
           admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
           authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
@@ -414,7 +415,7 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Created exchange id.
    */
   public getPendingSellerUpdateFromLogs(logs: Log[]): {
-    operator: string;
+    assistant: string;
     clerk: string;
     admin: string;
     tokenType: number;
@@ -424,7 +425,7 @@ export class AccountsMixin extends BaseCoreSDK {
     // SellerUpdatePending or SellerUpdateApplied events
     const valuesFromLogs = getValuesFromLogsExt<
       | {
-          operator: string;
+          assistant: string;
           clerk: string;
           admin: string;
         }
@@ -440,7 +441,7 @@ export class AccountsMixin extends BaseCoreSDK {
     });
     const pendingSellerStruct = (
       valuesFromLogs["pendingSeller"] as {
-        operator: string;
+        assistant: string;
         clerk: string;
         admin: string;
       }[]
@@ -452,7 +453,7 @@ export class AccountsMixin extends BaseCoreSDK {
       }[]
     )?.[0];
     return {
-      operator: pendingSellerStruct?.operator,
+      assistant: pendingSellerStruct?.assistant,
       admin: pendingSellerStruct?.admin,
       clerk: pendingSellerStruct?.clerk,
       tokenId: pendingAuthTokenStruct?.tokenId,

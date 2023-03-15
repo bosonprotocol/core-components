@@ -280,6 +280,12 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
@@ -814,6 +820,11 @@ const _abi = [
         internalType: "uint256",
         name: "_length",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
     ],
     name: "reserveRange",

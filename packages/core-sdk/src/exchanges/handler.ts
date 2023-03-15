@@ -123,7 +123,7 @@ export async function revokeVoucher(
 
   assertExchange(args.exchangeId, exchange);
   assertExchangeState(exchange, ExchangeState.Committed);
-  assertSignerIsOperator(signerAddress, exchange);
+  assertSignerIsAssistant(signerAddress, exchange);
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -218,13 +218,13 @@ function assertExchangeState(
   }
 }
 
-function assertSignerIsOperator(
+function assertSignerIsAssistant(
   signer: string,
   exchange: ExchangeFieldsFragment
 ) {
-  if (exchange.seller.operator.toLowerCase() !== signer.toLowerCase()) {
+  if (exchange.seller.assistant.toLowerCase() !== signer.toLowerCase()) {
     throw new Error(
-      `Signer ${signer} is not the operator ${exchange.seller.operator}`
+      `Signer ${signer} is not the assistant ${exchange.seller.assistant}`
     );
   }
 }
@@ -237,24 +237,24 @@ function assertSignerIsBuyer(signer: string, exchange: ExchangeFieldsFragment) {
   }
 }
 
-function assertSignerIsBuyerOrOperator(
+function assertSignerIsBuyerOrAssistant(
   signer: string,
   exchange: ExchangeFieldsFragment
 ) {
   const { seller, buyer } = exchange;
   const buyerAddress = buyer.wallet;
-  const operatorAddress = seller.operator;
-  const isSignerOperator =
-    signer.toLowerCase() === operatorAddress.toLowerCase();
+  const assistantAddress = seller.assistant;
+  const isSignerAssistant =
+    signer.toLowerCase() === assistantAddress.toLowerCase();
   const isSignerBuyer = signer.toLowerCase() === buyerAddress.toLowerCase();
 
-  if (!isSignerOperator && !isSignerBuyer) {
+  if (!isSignerAssistant && !isSignerBuyer) {
     throw new Error(
-      `Signer ${signer} is required to be the buyer ${buyerAddress} or operator ${operatorAddress}`
+      `Signer ${signer} is required to be the buyer ${buyerAddress} or assistant ${assistantAddress}`
     );
   }
 
-  return { isSignerBuyer, isSignerOperator };
+  return { isSignerBuyer, isSignerAssistant };
 }
 
 function assertCompletableExchange(
@@ -264,12 +264,12 @@ function assertCompletableExchange(
 ) {
   assertExchange(exchangeId, exchange);
 
-  const { isSignerOperator, isSignerBuyer } = assertSignerIsBuyerOrOperator(
+  const { isSignerAssistant, isSignerBuyer } = assertSignerIsBuyerOrAssistant(
     signer,
     exchange
   );
 
-  if (isSignerOperator && !isSignerBuyer) {
+  if (isSignerAssistant && !isSignerBuyer) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
     const didDisputePeriodElapse =

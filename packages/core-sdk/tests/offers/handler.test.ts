@@ -99,7 +99,7 @@ describe("#voidOffer()", () => {
         offer: mockRawOfferFromSubgraph({
           seller: {
             id: "1",
-            operator: sellerAddress,
+            assistant: sellerAddress,
             admin: sellerAddress,
             clerk: sellerAddress,
             treasury: sellerAddress,
@@ -123,7 +123,7 @@ describe("#voidOffer()", () => {
           getSignerAddress: signerAddress
         })
       })
-    ).rejects.toThrow(/not the operator/);
+    ).rejects.toThrow(/not the assistant/);
   });
 
   test("return tx response", async () => {
@@ -132,7 +132,7 @@ describe("#voidOffer()", () => {
         offer: mockRawOfferFromSubgraph({
           seller: {
             id: "1",
-            operator: ADDRESS,
+            assistant: ADDRESS,
             admin: ADDRESS,
             clerk: ADDRESS,
             treasury: ADDRESS,
@@ -211,7 +211,7 @@ describe("#voidOfferBatch()", () => {
             id: "1",
             seller: {
               id: "1",
-              operator: sellerAddress,
+              assistant: sellerAddress,
               admin: sellerAddress,
               clerk: sellerAddress,
               treasury: sellerAddress,
@@ -236,7 +236,7 @@ describe("#voidOfferBatch()", () => {
           getSignerAddress: signerAddress
         })
       })
-    ).rejects.toThrow(/not the operator/);
+    ).rejects.toThrow(/not the assistant/);
   });
 
   test("return tx response", async () => {
@@ -247,7 +247,7 @@ describe("#voidOfferBatch()", () => {
             id: "1",
             seller: {
               id: "1",
-              operator: ADDRESS,
+              assistant: ADDRESS,
               admin: ADDRESS,
               clerk: ADDRESS,
               treasury: ADDRESS,

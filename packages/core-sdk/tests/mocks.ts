@@ -32,7 +32,7 @@ export function mockRawSellerFromSubgraph(
     id: "1",
     admin: ZERO_ADDRESS,
     clerk: ZERO_ADDRESS,
-    operator: ZERO_ADDRESS,
+    assistant: ZERO_ADDRESS,
     treasury: ZERO_ADDRESS,
     authTokenId: "0",
     authTokenType: 0,
@@ -90,7 +90,7 @@ export function mockRawOfferFromSubgraph(
     numberOfRedemptions: "0",
     seller: {
       id: "1",
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,
@@ -140,7 +140,7 @@ export function mockRawOfferFromSubgraph(
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       // TODO: replace with valid uri
       metadataUri: "ipfs://dispute-resolver-uri",
       active: true,
@@ -175,7 +175,7 @@ export function mockRawExchangeFromSubgraph(
     },
     seller: {
       id: "3",
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,

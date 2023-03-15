@@ -1,9 +1,11 @@
-import { BigNumber } from "ethers";
+import { BigNumber, Wallet } from "ethers";
 import { parseEther } from "@ethersproject/units";
 
 import {
+  createSeaportOrder,
   createSellerAndOffer,
   initCoreSDKWithFundedWallet,
+  MOCK_SEAPORT_ADDRESS,
   seedWallet14,
   seedWallet15,
   waitForGraphNodeIndexing
@@ -32,7 +34,7 @@ describe("core-sdk-premint", () => {
 
     const offerId = createdOffer.id;
     const range = 10;
-    await (await coreSDK.reserveRange(offerId, range)).wait();
+    await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const resultRange = await coreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
@@ -69,7 +71,7 @@ describe("core-sdk-premint", () => {
     const offerId = createdOffer.id;
 
     const range = 10;
-    await (await sellerCoreSDK.reserveRange(offerId, range)).wait();
+    await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
     await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
@@ -117,7 +119,7 @@ describe("core-sdk-premint", () => {
     const offerId = createdOffer.id;
 
     const range = 10;
-    await (await sellerCoreSDK.reserveRange(offerId, range)).wait();
+    await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
     await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
@@ -181,7 +183,7 @@ describe("core-sdk-premint", () => {
 
       const offerId = createdOffer.id;
       const range = 10;
-      await (await coreSDK.reserveRange(offerId, range)).wait();
+      await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
 
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
@@ -209,5 +211,110 @@ describe("core-sdk-premint", () => {
       const count = await coreSDK.getAvailablePreMints(offerId);
       expect(Number(count.toString())).toBe(0);
     });
+  });
+  test("can approve preminted tokens for contract", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+
+    expect(createdOffer).toBeTruthy();
+    expect(createdOffer.seller).toBeTruthy();
+
+    const openseaConduit = Wallet.createRandom().address;
+    const isApprovedForAllBefore = await coreSDK.isApprovedForAll(
+      openseaConduit,
+      { owner: createdOffer.seller.voucherCloneAddress }
+    );
+    expect(isApprovedForAllBefore).toEqual(false);
+
+    const txApproval = await coreSDK.setApprovalForAllToContract(
+      openseaConduit,
+      true
+    );
+    await txApproval.wait();
+
+    const isApprovedForAllAfter = await coreSDK.isApprovedForAll(
+      openseaConduit,
+      { owner: createdOffer.seller.voucherCloneAddress }
+    );
+    expect(isApprovedForAllAfter).toEqual(true);
+  });
+  test("can call seaport via voucher contract to validate listing preminted tokens", async () => {
+    const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+      seedWallet
+    );
+
+    const createdOffer = await createSellerAndOffer(
+      coreSDK,
+      fundedWallet.address
+    );
+
+    expect(createdOffer).toBeTruthy();
+    expect(createdOffer.seller).toBeTruthy();
+
+    const voucherBalanceBefore = await coreSDK.erc721BalanceOf({
+      owner: createdOffer.seller.voucherCloneAddress,
+      contractAddress: createdOffer.seller.voucherCloneAddress
+    });
+
+    const offerId = createdOffer.id;
+    const range = 10;
+    await (await coreSDK.reserveRange(offerId, range, "contract")).wait();
+
+    const resultRange = await coreSDK.getRangeByOfferId(offerId);
+
+    const preMinted = 2;
+    await (await coreSDK.preMint(offerId, preMinted)).wait();
+
+    const voucherBalanceAfter = await coreSDK.erc721BalanceOf({
+      owner: createdOffer.seller.voucherCloneAddress,
+      contractAddress: createdOffer.seller.voucherCloneAddress
+    });
+    expect(
+      BigNumber.from(voucherBalanceAfter).sub(voucherBalanceBefore).toNumber()
+    ).toEqual(preMinted);
+
+    const tokenId = resultRange.start.toString();
+    const owner = await coreSDK.erc721OwnerOf({
+      tokenId,
+      contractAddress: createdOffer.seller.voucherCloneAddress
+    });
+    expect(owner.toLowerCase()).toEqual(
+      createdOffer.seller.voucherCloneAddress.toLowerCase()
+    );
+
+    const openseaConduit = Wallet.createRandom().address;
+    const isApprovedForAllBefore = await coreSDK.isApprovedForAll(
+      openseaConduit,
+      { owner: createdOffer.seller.voucherCloneAddress }
+    );
+    expect(isApprovedForAllBefore).toEqual(false);
+
+    const order = createSeaportOrder({
+      offerer: createdOffer.seller.voucherCloneAddress,
+      token: createdOffer.seller.voucherCloneAddress,
+      tokenId,
+      openseaTreasury: openseaConduit
+    });
+
+    const txValidate = await coreSDK.validateSeaportOrders(
+      openseaConduit,
+      MOCK_SEAPORT_ADDRESS,
+      [order]
+    );
+    expect(txValidate).toBeTruthy();
+    const txValidateResult = await txValidate.wait();
+    expect(txValidateResult).toBeTruthy();
+
+    const isApprovedForAllAfter = await coreSDK.isApprovedForAll(
+      openseaConduit,
+      { owner: createdOffer.seller.voucherCloneAddress }
+    );
+    expect(isApprovedForAllAfter).toEqual(true);
   });
 });

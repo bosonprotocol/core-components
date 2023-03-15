@@ -1,6 +1,6 @@
 type Seller = {
   id: string;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -19,10 +19,10 @@ export type SellerData = {
 };
 
 function sellerFromStruct(struct: Array<any>): Seller {
-  const [id, operator, admin, clerk, treasury, active] = struct;
+  const [id, assistant, admin, clerk, treasury, active] = struct;
   return {
     id: id.toString(),
-    operator,
+    assistant,
     admin,
     clerk,
     treasury,

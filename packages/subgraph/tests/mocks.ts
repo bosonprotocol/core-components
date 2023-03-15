@@ -17,7 +17,6 @@ import {
 import {
   SellerCreated,
   SellerCreatedSellerStruct,
-  SellerUpdated,
   BuyerCreated,
   BuyerCreatedBuyerStruct
 } from "../generated/BosonAccountHandler/IBosonAccountHandler";
@@ -32,6 +31,7 @@ import {
   createMockedFunction
 } from "matchstick-as/assembly/index";
 import { ethereum, Address } from "@graphprotocol/graph-ts";
+import { SellerUpdated } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 
 export function createOfferCreatedEvent(
   offerId: i32,
@@ -309,7 +309,7 @@ export function createVoucherExtendedEvent(
 
 export function createSellerCreatedEvent(
   sellerId: i32,
-  operator: string,
+  assistant: string,
   admin: string,
   clerk: string,
   treasury: string,
@@ -328,7 +328,7 @@ export function createSellerCreatedEvent(
   const sellerParam = new ethereum.EventParam(
     "seller",
     ethereum.Value.fromTuple(
-      createSellerStruct(sellerId, operator, admin, clerk, treasury, false)
+      createSellerStruct(sellerId, assistant, admin, clerk, treasury, false)
     )
   );
   const voucherCloneAddressParam = new ethereum.EventParam(
@@ -355,7 +355,7 @@ export function createSellerCreatedEvent(
 
 export function createSellerUpdatedEvent(
   sellerId: i32,
-  operator: string,
+  assistant: string,
   admin: string,
   clerk: string,
   treasury: string,
@@ -374,7 +374,7 @@ export function createSellerUpdatedEvent(
   const sellerParam = new ethereum.EventParam(
     "seller",
     ethereum.Value.fromTuple(
-      createSellerStruct(sellerId, operator, admin, clerk, treasury, active)
+      createSellerStruct(sellerId, assistant, admin, clerk, treasury, active)
     )
   );
   const authTokenParam = new ethereum.EventParam(
@@ -648,7 +648,7 @@ export function createDisputeResolutionTermsStruct(
 
 export function createSellerStruct(
   sellerId: i32,
-  operator: string,
+  assistant: string,
   admin: string,
   clerk: string,
   treasury: string,
@@ -656,7 +656,7 @@ export function createSellerStruct(
 ): SellerCreatedSellerStruct {
   const tuple = new SellerCreatedSellerStruct();
   tuple.push(ethereum.Value.fromI32(sellerId));
-  tuple.push(ethereum.Value.fromAddress(Address.fromString(operator)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(assistant)));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(admin)));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(clerk)));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(treasury)));

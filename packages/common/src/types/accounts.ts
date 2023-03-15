@@ -1,7 +1,7 @@
 import { BigNumberish } from "@ethersproject/bignumber";
 
 export type CreateSellerArgs = {
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -18,7 +18,7 @@ export type UpdateSellerArgs = { id: BigNumberish } & Omit<
 
 export const SellerUpdateFields = {
   admin: 0,
-  operator: 1,
+  assistant: 1,
   clerk: 2,
   authToken: 3
 };
@@ -27,7 +27,7 @@ export type OptInToSellerUpdateArgs = {
   id: BigNumberish;
   fieldsToUpdate: {
     admin?: boolean;
-    operator?: boolean;
+    assistant?: boolean;
     clerk?: boolean;
     authToken?: boolean;
   };
@@ -35,7 +35,7 @@ export type OptInToSellerUpdateArgs = {
 
 export const DisputeResolverUpdateFields = {
   admin: 0,
-  operator: 1,
+  assistant: 1,
   clerk: 2
 };
 
@@ -43,7 +43,7 @@ export type OptInToDisputeResolverUpdateArgs = {
   id: BigNumberish;
   fieldsToUpdate: {
     admin?: boolean;
-    operator?: boolean;
+    assistant?: boolean;
     clerk?: boolean;
   };
 };
@@ -57,7 +57,7 @@ export const AuthTokenType = {
 
 export type SellerStruct = {
   id: BigNumberish;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -80,7 +80,7 @@ export type VoucherInitValuesStruct = {
 export type DisputeResolverStruct = {
   id: BigNumberish;
   escalationResponsePeriod: BigNumberish;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;

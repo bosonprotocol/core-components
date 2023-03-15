@@ -21,6 +21,7 @@ const {
   deployAndMintMockNFTAuthTokens,
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
+const { deploySeaport } = require("./deploy-seaport");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -68,7 +69,7 @@ async function main() {
       {
         id: "1",
         escalationResponsePeriod: oneMonth.toString(),
-        operator: disputeResolver,
+        assistant: disputeResolver,
         admin: disputeResolver,
         clerk: disputeResolver,
         treasury: disputeResolver,
@@ -97,6 +98,10 @@ async function main() {
   const disputeResolverId = event.args.disputeResolverId;
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
+  );
+  const mockSeaport = await deploySeaport();
+  console.log(
+    `✅ Seaport Contract has been deployed at ${mockSeaport.address}`
   );
 }
 

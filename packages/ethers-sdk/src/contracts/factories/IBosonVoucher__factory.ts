@@ -101,6 +101,11 @@ const _abi = [
             name: "lastBurnedTokenId",
             type: "uint256",
           },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
         ],
         indexed: false,
         internalType: "struct IBosonVoucher.Range",
@@ -238,6 +243,24 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "callExternalContract",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "contractURI",
     outputs: [
@@ -319,6 +342,11 @@ const _abi = [
             internalType: "uint256",
             name: "lastBurnedTokenId",
             type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
           },
         ],
         internalType: "struct IBosonVoucher.Range",
@@ -464,6 +492,11 @@ const _abi = [
         name: "_length",
         type: "uint256",
       },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
     ],
     name: "reserveRange",
     outputs: [],
@@ -564,6 +597,24 @@ const _abi = [
       },
     ],
     name: "setApprovalForAll",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_operator",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "_approved",
+        type: "bool",
+      },
+    ],
+    name: "setApprovalForAllToContract",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -710,6 +761,19 @@ const _abi = [
       },
     ],
     name: "transferPremintedFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "_tokenList",
+        type: "address[]",
+      },
+    ],
+    name: "withdrawToProtocol",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

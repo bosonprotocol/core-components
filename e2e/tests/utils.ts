@@ -1,8 +1,9 @@
+import { AddressZero } from "@ethersproject/constants";
 import {
   ConditionStruct,
   CreateSellerArgs,
   TransactionResponse
-} from "@bosonprotocol/common";
+} from "../../packages/common/src/index";
 import {
   providers,
   Wallet,
@@ -64,6 +65,10 @@ export const MOCK_ERC1155_ADDRESS =
 export const MOCK_FORWARDER_ADDRESS =
   getDefaultConfig("local").contracts.forwarder ||
   "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+
+export const MOCK_SEAPORT_ADDRESS =
+  getDefaultConfig("local").contracts.seaport ||
+  "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
 
 export const metadata = {
   name: "name",
@@ -208,7 +213,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
-      operator: sellerAddress,
+      assistant: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
@@ -394,7 +399,7 @@ export async function createSellerAndOfferWithCondition(
 
   const createOfferTxResponse = await coreSDK.createSellerAndOfferWithCondition(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,
@@ -430,7 +435,7 @@ export async function createSeller(
 ) {
   const contractUri = "ipfs://0123456789abcdef";
   const createSellerTxResponse = await coreSDK.createSeller({
-    operator: sellerAddress,
+    assistant: sellerAddress,
     admin: sellerAddress,
     clerk: sellerAddress,
     treasury: sellerAddress,
@@ -461,7 +466,7 @@ export async function updateSeller(
   optInSequence: {
     coreSDK: CoreSDK;
     fieldsToUpdate: {
-      operator?: boolean;
+      assistant?: boolean;
       clerk?: boolean;
       admin?: boolean;
       authToken?: boolean;
@@ -501,7 +506,7 @@ export async function createSellerAndOffer(
 
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,
@@ -558,4 +563,58 @@ export async function mintLensToken(
   await tx.wait();
 
   return tokenId;
+}
+
+export function createSeaportOrder(args: {
+  offerer: string;
+  token: string;
+  tokenId: string;
+  openseaTreasury: string;
+}) {
+  const offers = [
+    {
+      itemType: 2,
+      token: args.token,
+      identifierOrCriteria: args.tokenId,
+      startAmount: "1",
+      endAmount: "1"
+    }
+  ];
+  const considerations = [
+    {
+      itemType: 0,
+      token: AddressZero,
+      identifierOrCriteria: 0,
+      startAmount: "97500000000000000",
+      endAmount: "97500000000000000",
+      recipient: args.offerer
+    },
+    {
+      itemType: 0,
+      token: AddressZero,
+      identifierOrCriteria: 0,
+      startAmount: "2500000000000000",
+      endAmount: "2500000000000000",
+      recipient: args.openseaTreasury
+    }
+  ];
+  return {
+    parameters: {
+      offerer: args.offerer,
+      zone: AddressZero,
+      offer: offers,
+      consideration: considerations,
+      orderType: 0,
+      startTime: "1675770013",
+      endTime: "1678735278",
+      zoneHash:
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      salt: "0x000000001af963065187d481",
+      conduitKey:
+        "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+      totalOriginalConsiderationItems: considerations.length,
+      counter: 0
+    },
+    signature: "0x" // no signature required if the transaction is sent by the offerer
+  };
 }

@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: "true"
+          submodules: "recursive"
           token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
       - uses: actions/setup-node@v3
         with:

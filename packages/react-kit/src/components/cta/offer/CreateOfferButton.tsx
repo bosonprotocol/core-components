@@ -12,7 +12,7 @@ import { offers } from "@bosonprotocol/core-sdk";
 type Props = {
   hasSellerAccount: boolean;
   sellerInfo?: {
-    operator: string;
+    assistant: string;
     admin: string;
     treasury: string;
     clerk: string;

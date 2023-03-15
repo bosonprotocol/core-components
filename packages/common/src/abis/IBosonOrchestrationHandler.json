@@ -303,7 +303,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -466,7 +466,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -514,7 +514,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -581,7 +581,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -1067,6 +1067,12 @@
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "executedBy",
@@ -1094,7 +1100,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -1175,7 +1181,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -1213,7 +1219,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -1306,7 +1312,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -2320,6 +2326,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "_groupId",
         "type": "uint256"
@@ -2452,6 +2463,11 @@
         "internalType": "uint256",
         "name": "_reservedRangeLength",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "components": [
@@ -2625,6 +2641,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
         "components": [
           {
             "internalType": "enum BosonTypes.EvaluationMethod",
@@ -2791,6 +2812,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
         "components": [
           {
             "internalType": "enum BosonTypes.EvaluationMethod",
@@ -2891,7 +2917,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -3086,7 +3112,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -3323,7 +3349,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -3555,7 +3581,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -3829,7 +3855,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -3972,6 +3998,11 @@
         "internalType": "uint256",
         "name": "_reservedRangeLength",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "components": [
@@ -4029,7 +4060,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -4172,6 +4203,11 @@
         "internalType": "uint256",
         "name": "_reservedRangeLength",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "components": [
@@ -4271,7 +4307,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -4414,6 +4450,11 @@
         "internalType": "uint256",
         "name": "_reservedRangeLength",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "components": [
@@ -4508,7 +4549,7 @@
           },
           {
             "internalType": "address",
-            "name": "operator",
+            "name": "assistant",
             "type": "address"
           },
           {
@@ -4651,6 +4692,11 @@
         "internalType": "uint256",
         "name": "_reservedRangeLength",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "components": [

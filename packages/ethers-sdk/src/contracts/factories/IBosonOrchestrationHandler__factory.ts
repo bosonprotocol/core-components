@@ -314,7 +314,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -477,7 +477,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -525,7 +525,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -592,7 +592,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1078,6 +1078,12 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "executedBy",
@@ -1105,7 +1111,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1186,7 +1192,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1224,7 +1230,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -1317,7 +1323,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -2331,6 +2337,11 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_groupId",
         type: "uint256",
@@ -2463,6 +2474,11 @@ const _abi = [
         internalType: "uint256",
         name: "_reservedRangeLength",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
       {
         components: [
@@ -2636,6 +2652,11 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
         components: [
           {
             internalType: "enum BosonTypes.EvaluationMethod",
@@ -2802,6 +2823,11 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
         components: [
           {
             internalType: "enum BosonTypes.EvaluationMethod",
@@ -2902,7 +2928,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -3097,7 +3123,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -3334,7 +3360,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -3566,7 +3592,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -3840,7 +3866,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -3983,6 +4009,11 @@ const _abi = [
         internalType: "uint256",
         name: "_reservedRangeLength",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
       {
         components: [
@@ -4040,7 +4071,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -4183,6 +4214,11 @@ const _abi = [
         internalType: "uint256",
         name: "_reservedRangeLength",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
       {
         components: [
@@ -4282,7 +4318,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -4425,6 +4461,11 @@ const _abi = [
         internalType: "uint256",
         name: "_reservedRangeLength",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
       {
         components: [
@@ -4519,7 +4560,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "operator",
+            name: "assistant",
             type: "address",
           },
           {
@@ -4662,6 +4703,11 @@ const _abi = [
         internalType: "uint256",
         name: "_reservedRangeLength",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
       {
         components: [
