@@ -17,7 +17,7 @@
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.8",
     "glob": "^9.1.0",
-    "hardhat": "^2.9.7",
+    "hardhat": "^2.13.0",
     "hardhat-abi-exporter": "^2.9.0"
   }
 }
