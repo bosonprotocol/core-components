@@ -18,7 +18,7 @@ export enum eItemType {
   ERC721 = 2,
   ERC1155 = 3,
   ERC721_WITH_CRITERIA = 4,
-  ERC1155_WITH_CRITERIA
+  ERC1155_WITH_CRITERIA = 5
 }
 
 type OfferItem = {

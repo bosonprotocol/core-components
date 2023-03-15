@@ -106,6 +106,8 @@ dataSources:
         - Seller
         - DisputeResolver
       abis:
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
         - name: IBosonAccountHandlerLegacy
           file: ../common/src/abis/IBosonAccountHandlerLegacy.json
       eventHandlers:
