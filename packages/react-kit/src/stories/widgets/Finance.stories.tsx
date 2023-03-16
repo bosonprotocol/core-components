@@ -1,10 +1,8 @@
-import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 import React from "react";
-
-import { Currencies } from "../../components/currencyDisplay/CurrencyDisplay";
+import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import FinanceWidget from "../../components/widgets/finance/FinanceWidget";
-import { ProgressStatus } from "../../lib/progress/progressStatus";
+import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Finance",
@@ -13,7 +11,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof FinanceWidget> = (args) => (
-  <FinanceWidget {...args} />
+  <CtaButtonWrapper>
+    <FinanceWidget {...args} />
+  </CtaButtonWrapper>
 );
 
 const wrapper = (Story: Story) => (
