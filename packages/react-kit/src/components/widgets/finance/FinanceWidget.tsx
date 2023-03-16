@@ -1,4 +1,3 @@
-import "./FinanceWidget.css";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
