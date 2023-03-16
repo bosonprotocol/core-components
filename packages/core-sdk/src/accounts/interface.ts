@@ -163,7 +163,7 @@ export function updateSellerArgsToStruct(args: UpdateSellerArgs) {
 }
 
 function argsToSellerStruct(args: {
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;

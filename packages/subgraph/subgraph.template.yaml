@@ -37,7 +37,7 @@ dataSources:
           handler: handleOfferVoidedEvent
         - event: OfferExtended(indexed uint256,indexed uint256,uint256,indexed address)
           handler: handleOfferExtendedEvent
-        - event: RangeReserved(indexed uint256,indexed uint256,uint256,uint256,indexed address)
+        - event: RangeReserved(indexed uint256,indexed uint256,uint256,uint256,address,indexed address)
           handler: handleRangeReservedEvent
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
@@ -70,8 +70,6 @@ dataSources:
       eventHandlers:
         - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),address,(uint256,uint8),indexed address)
           handler: handleSellerCreatedEvent
-        - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
-          handler: handleSellerUpdatedEvent
         - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
           handler: handleSellerUpdatePendingEvent
         - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
@@ -80,14 +78,10 @@ dataSources:
           handler: handleBuyerCreatedEvent
         - event: DisputeResolverCreated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[],indexed address)
           handler: handleDisputeResolverCreatedEvent
-        - event: DisputeResolverUpdated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
-          handler: handleDisputeResolverUpdatedEvent
         - event: DisputeResolverUpdatePending(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverUpdatePendingEvent
         - event: DisputeResolverUpdateApplied(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),(uint256,uint256,address,address,address,address,string,bool),indexed address)
           handler: handleDisputeResolverUpdateAppliedEvent
-        - event: DisputeResolverActivated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
-          handler: handleDisputeResolverActivatedEvent
         - event: DisputeResolverFeesAdded(indexed uint256,(address,string,uint256)[],indexed address)
           handler: handleDisputeResolverFeesAddedEvent
         - event: DisputeResolverFeesRemoved(indexed uint256,address[],indexed address)
@@ -96,6 +90,33 @@ dataSources:
           handler: handleAllowedSellersAddedEvent
         - event: AllowedSellersRemoved(indexed uint256,uint256[],indexed address)
           handler: handleAllowedSellersRemovedEvent
+      file: ./src/mappings/account-handler.ts
+  - kind: ethereum/contract
+    name: BosonAccountHandlerLegacy
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonAccountHandlerLegacy
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Seller
+        - DisputeResolver
+      abis:
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
+        - name: IBosonAccountHandlerLegacy
+          file: ../common/src/abis/IBosonAccountHandlerLegacy.json
+      eventHandlers:
+        - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
+          handler: handleSellerUpdatedEvent
+        - event: DisputeResolverUpdated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverUpdatedEvent
+        - event: DisputeResolverActivated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
+          handler: handleDisputeResolverActivatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
     name: BosonExchangeHandler

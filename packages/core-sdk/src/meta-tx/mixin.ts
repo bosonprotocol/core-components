@@ -142,14 +142,20 @@ export class MetaTxMixin extends BaseCoreSDK {
   public async signMetaTxReserveRange(
     args: Omit<
       Parameters<typeof handler.signMetaTxReserveRange>[0],
-      "web3Lib" | "metaTxHandlerAddress" | "chainId"
-    >
+      "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
+    > & { to: "seller" | "contract" }
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
     return handler.signMetaTxReserveRange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      to:
+        args.to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.assistant
     });
   }
 
@@ -234,6 +240,102 @@ export class MetaTxMixin extends BaseCoreSDK {
       forwarderAbi: this._metaTxConfig.forwarderAbi,
       ...args
     });
+  }
+
+  public async signMetaTxSetApprovalForAllToContract(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxSetApprovalForAllToContract>[0],
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
+      | "batchId"
+      | "forwarderAbi"
+    >,
+    overrides: Partial<{
+      batchId?: BigNumberish;
+      txGas?: number;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
+    const nonce = await getNonce({
+      contractAddress: forwarderAddress,
+      user: sellerAddress,
+      web3Lib: this._web3Lib,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi
+    });
+
+    return handler.signMetaTxSetApprovalForAllToContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        nonce,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
+  }
+
+  public async signMetaTxCallExternalContract(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCallExternalContract>[0],
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
+      | "batchId"
+      | "forwarderAbi"
+    >,
+    overrides: Partial<{
+      batchId?: BigNumberish;
+      txGas?: number;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
+    const nonce = await getNonce({
+      contractAddress: forwarderAddress,
+      user: sellerAddress,
+      web3Lib: this._web3Lib,
+      batchId,
+      forwarderAbi: this._metaTxConfig.forwarderAbi
+    });
+
+    return handler.signMetaTxCallExternalContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        nonce,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
   }
 
   public async relayBiconomyMetaTransaction(

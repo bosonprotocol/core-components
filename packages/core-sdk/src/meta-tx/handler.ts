@@ -37,7 +37,12 @@ import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
 import { bosonDisputeHandlerIface } from "../disputes/interface";
 import { encodeCreateGroup } from "../groups/interface";
 import { encodeCreateOfferWithCondition } from "../orchestration/interface";
-import { encodePreMint, encodeSetApprovalForAll } from "../voucher/interface";
+import {
+  encodeCallExternalContract,
+  encodePreMint,
+  encodeSetApprovalForAll,
+  encodeSetApprovalForAllToContract
+} from "../voucher/interface";
 import { hexZeroPad } from "@ethersproject/bytes";
 import { keccak256 } from "@ethersproject/keccak256";
 import { id } from "@ethersproject/hash";
@@ -554,12 +559,13 @@ export async function signMetaTxReserveRange(
   args: BaseMetaTxArgs & {
     offerId: BigNumberish;
     length: BigNumberish;
+    to: string;
   }
 ) {
   return signMetaTx({
     ...args,
-    functionName: "reserveRange(uint256,uint256)",
-    functionSignature: encodeReserveRange(args.offerId, args.length)
+    functionName: "reserveRange(uint256,uint256,address)",
+    functionSignature: encodeReserveRange(args.offerId, args.length, args.to)
   });
 }
 
@@ -617,6 +623,73 @@ export async function signMetaTxSetApprovalForAll(
     });
   }
   const txGas = 100000; // ~70000 estimation on 2023/02/03
+  return signBiconomyVoucherMetaTx({
+    ...args,
+    functionSignature,
+    txGas
+  });
+}
+
+export async function signMetaTxSetApprovalForAllToContract(
+  args: BaseVoucherMetaTxArgs & {
+    operator: string;
+    approved: boolean;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+  },
+  overrides: {
+    txGas?: number;
+  } = {}
+): Promise<SignedVoucherMetaTx> {
+  const localConfig = defaultConfigs.find(
+    (config) => config.envName === "local"
+  );
+  const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodeSetApprovalForAllToContract(
+    args.operator,
+    args.approved
+  );
+  if (isLocal) {
+    return signVoucherMetaTx({
+      ...args,
+      functionSignature
+    });
+  }
+  const txGas = overrides.txGas || 100000; // TODO: estimate the gas needed
+  return signBiconomyVoucherMetaTx({
+    ...args,
+    functionSignature,
+    txGas
+  });
+}
+
+export async function signMetaTxCallExternalContract(
+  args: BaseVoucherMetaTxArgs & {
+    to: string;
+    data: string;
+    batchId: BigNumberish;
+    forwarderAbi:
+      | typeof abis.MockForwarderABI
+      | typeof abis.BiconomyForwarderABI;
+  },
+  overrides: {
+    txGas?: number;
+  } = {}
+): Promise<SignedVoucherMetaTx> {
+  const localConfig = defaultConfigs.find(
+    (config) => config.envName === "local"
+  );
+  const isLocal = localConfig.chainId === args.chainId;
+  const functionSignature = encodeCallExternalContract(args.to, args.data);
+  if (isLocal) {
+    return signVoucherMetaTx({
+      ...args,
+      functionSignature
+    });
+  }
+  const txGas = overrides.txGas || 500000; // TODO: estimate the gas needed
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,

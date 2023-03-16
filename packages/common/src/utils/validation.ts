@@ -142,7 +142,7 @@ export const createOfferArgsSchema = object({
 });
 
 export const createSellerArgsSchema = object({
-  operator: string()
+  assistant: string()
     .required()
     .test(...addressTestArgs),
   admin: string()

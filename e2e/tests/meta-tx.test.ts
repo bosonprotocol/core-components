@@ -3,6 +3,7 @@ import { BigNumberish } from "@ethersproject/bignumber";
 import { Wallet, BigNumber, constants } from "ethers";
 import { OfferFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
+import { encodeValidate } from "../../packages/core-sdk/src/seaport/handler";
 
 import {
   initCoreSDKWithWallet,
@@ -18,7 +19,9 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13
+  seedWallet13,
+  createSeaportOrder,
+  MOCK_SEAPORT_ADDRESS
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -60,22 +63,23 @@ describe("meta-tx", () => {
       if (existingSeller) {
         // Change all addresses used by the seller to be able to create another one with the original address
         // Useful when repeating the test suite on the same contracts
+        const { coreSDK: randomSellerCoreSDK, fundedWallet: randomWallet } =
+          await initCoreSDKWithFundedWallet(sellerWallet);
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
-          admin: seedWallet13.address,
-          operator: seedWallet13.address,
-          clerk: seedWallet13.address,
-          treasury: seedWallet13.address,
+          admin: randomWallet.address,
+          assistant: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address,
           authTokenId: "0",
           authTokenType: 0
         });
         await updateTx.wait();
-        const randomSellerCoreSDK = initCoreSDKWithWallet(seedWallet13);
         const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
           id: existingSeller.id,
           fieldsToUpdate: {
             admin: true,
-            operator: true,
+            assistant: true,
             clerk: true,
             authToken: true
           }
@@ -87,7 +91,7 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await newSellerCoreSDK.signMetaTxCreateSeller({
           createSellerArgs: {
-            operator: newSellerWallet.address,
+            assistant: newSellerWallet.address,
             treasury: newSellerWallet.address,
             admin: newSellerWallet.address,
             clerk: newSellerWallet.address,
@@ -132,7 +136,7 @@ describe("meta-tx", () => {
         await sellerCoreSDK.signMetaTxUpdateSeller({
           updateSellerArgs: {
             id: seller.id,
-            operator: randomWallet.address,
+            assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
             clerk: randomWallet.address,
@@ -180,7 +184,7 @@ describe("meta-tx", () => {
         await seller1CoreSDK.signMetaTxUpdateSeller({
           updateSellerArgs: {
             id: seller1.id,
-            operator: randomWallet.address,
+            assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
             clerk: randomWallet.address,
@@ -1061,7 +1065,7 @@ describe("meta-tx", () => {
   });
 
   describe("#signMetaTxReserveRange() & #signMetaTxPreMint()", () => {
-    test("reserveRange and preMint with meta-tx", async () => {
+    test("reserveRange for seller and preMint with meta-tx", async () => {
       const createdOffer = await createOffer(sellerCoreSDK);
 
       const length = 10;
@@ -1071,6 +1075,7 @@ describe("meta-tx", () => {
       const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
         offerId,
         length,
+        to: "seller",
         nonce
       });
 
@@ -1087,6 +1092,10 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
+      const balanceBefore = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: sellerAddress
+      });
       const amount = 10;
 
       const { to, r, s, v, functionSignature } =
@@ -1107,6 +1116,171 @@ describe("meta-tx", () => {
       );
 
       metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      // check the seller assistant now owns the preminted vouchers
+      const balanceAfter = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: sellerAddress
+      });
+      expect(
+        BigNumber.from(balanceAfter).sub(balanceBefore).toNumber()
+      ).toEqual(amount);
+    });
+
+    test("reserveRange for contract and preMint with meta-tx", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const length = 10;
+      const offerId = createdOffer.id;
+      const nonce = Date.now();
+
+      const metaReserveRange = await sellerCoreSDK.signMetaTxReserveRange({
+        offerId,
+        length,
+        to: "contract",
+        nonce
+      });
+
+      let metaTx = await sellerCoreSDK.relayMetaTransaction({
+        functionName: metaReserveRange.functionName,
+        functionSignature: metaReserveRange.functionSignature,
+        nonce,
+        sigR: metaReserveRange.r,
+        sigS: metaReserveRange.s,
+        sigV: metaReserveRange.v
+      });
+
+      let metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const balanceBefore = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: createdOffer.seller.voucherCloneAddress
+      });
+      const amount = 10;
+
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxPreMint({
+          offerId,
+          amount
+        });
+
+      metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      // check the contract now owns the preminted vouchers
+      const balanceAfter = await sellerCoreSDK.erc721BalanceOf({
+        contractAddress: createdOffer.seller.voucherCloneAddress,
+        owner: createdOffer.seller.voucherCloneAddress
+      });
+      expect(
+        BigNumber.from(balanceAfter).sub(balanceBefore).toNumber()
+      ).toEqual(amount);
+    });
+
+    test("can approve preminted tokens for contract", async () => {
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const openseaConduit = Wallet.createRandom().address;
+      const isApprovedForAllBefore = await sellerCoreSDK.isApprovedForAll(
+        openseaConduit,
+        { owner: createdOffer.seller.voucherCloneAddress }
+      );
+      expect(isApprovedForAllBefore).toEqual(false);
+
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxSetApprovalForAllToContract({
+          operator: openseaConduit,
+          approved: true
+        });
+
+      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+
+      const isApprovedForAllAfter = await sellerCoreSDK.isApprovedForAll(
+        openseaConduit,
+        { owner: createdOffer.seller.voucherCloneAddress }
+      );
+      expect(isApprovedForAllAfter).toEqual(true);
+    });
+
+    test("can call seaport via voucher contract to validate listing preminted tokens", async () => {
+      // Create an offer
+      const createdOffer = await createOffer(sellerCoreSDK);
+
+      const range = 10;
+      const offerId = createdOffer.id;
+
+      // Reserve range
+      await (
+        await sellerCoreSDK.reserveRange(offerId, range, "contract")
+      ).wait();
+      const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
+
+      // Premint vouchers
+      const amount = 10;
+      await (await sellerCoreSDK.preMint(offerId, amount)).wait();
+
+      // Find the first tokenId
+      const tokenId = resultRange.start.toString();
+
+      // Create the seaport order
+      const openseaConduit = Wallet.createRandom().address;
+      const order = createSeaportOrder({
+        offerer: createdOffer.seller.voucherCloneAddress,
+        token: createdOffer.seller.voucherCloneAddress,
+        tokenId,
+        openseaTreasury: openseaConduit
+      });
+
+      // Note: when using the real seaport contract, be sure the preminted tokens are approved for openseaConduit
+
+      // Call seaport validate method via seller voucher
+      const { to, r, s, v, functionSignature } =
+        await sellerCoreSDK.signMetaTxCallExternalContract({
+          to: MOCK_SEAPORT_ADDRESS,
+          data: encodeValidate([order])
+        });
+
+      const metaTx = await sellerCoreSDK.relayNativeMetaTransaction(
+        to,
+        {
+          functionSignature,
+          sigR: r,
+          sigS: s,
+          sigV: v
+        },
+        { metaTxConfig: { apiId: "dummy" } }
+      );
+
+      const metaTxReceipt = await metaTx.wait();
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
     });

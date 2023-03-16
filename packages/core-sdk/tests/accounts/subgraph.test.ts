@@ -41,9 +41,9 @@ describe("#getSellerByAddress()", () => {
     expect(rawSeller).toBeUndefined();
   });
 
-  test("return seller if address is operator", async () => {
+  test("return seller if address is assistant", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
-      operator: ADDRESS
+      assistant: ADDRESS
     });
     interceptSubgraph()
       .times(1)
@@ -139,7 +139,7 @@ describe("#getSellerByAddress()", () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
       admin: ADDRESS,
       clerk: ADDRESS,
-      operator: ADDRESS,
+      assistant: ADDRESS,
       treasury: ADDRESS,
       authTokenId: tokenId,
       authTokenType: 1

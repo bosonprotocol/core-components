@@ -14,7 +14,7 @@ program
   .argument("<PROTOCOL_ADMIN_PK>", "Private key of account with ADMIN role.")
   .argument(
     "<DR_ADMIN_PK>",
-    "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and operator."
+    "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and assistant."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .option(
@@ -45,7 +45,7 @@ async function main() {
   const escalationResponsePeriodInMS =
     opts.escalationResponsePeriod || 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
   const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
-  const operator = disputeResolverAdminWallet.address;
+  const assistant = disputeResolverAdminWallet.address;
   const clerk = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
@@ -86,7 +86,7 @@ async function main() {
   const txResponse1 = await coreSDKDRAdmin.createDisputeResolver({
     escalationResponsePeriodInMS,
     admin: disputeResolverAdminWallet.address,
-    operator,
+    assistant,
     clerk,
     treasury,
     metadataUri,

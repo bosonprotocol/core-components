@@ -99,7 +99,7 @@ describe("#renderContractualAgreementForOffer()", () => {
 describe("getSellersByAddress()", () => {
   test("shall fail if search address is ZERO_ADDRESS", async () => {
     const mockedRawSellerFromSubgraph = mockRawSellerFromSubgraph({
-      operator: ADDRESS
+      assistant: ADDRESS
     });
     interceptSubgraph().reply(200, {
       data: {

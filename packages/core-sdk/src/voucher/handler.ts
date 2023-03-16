@@ -6,11 +6,14 @@ import {
   decodeGetRangeByOfferId,
   decodeIsApprovedForAll,
   encodeBurnPremintedVouchers,
+  encodeCallExternalContract,
   encodeGetAvailablePreMints,
   encodeGetRangeByOfferId,
   encodeIsApprovedForAll,
   encodePreMint,
-  encodeTransferFrom
+  encodeSetApprovalForAllToContract,
+  encodeTransferFrom,
+  encodeWithdrawToProtocol
 } from "./interface";
 
 export async function burnPremintedVouchers(args: {
@@ -92,4 +95,39 @@ export async function isApprovedForAll(args: {
   });
   const [isApproved] = decodeIsApprovedForAll(result);
   return isApproved;
+}
+
+export async function callExternalContract(args: {
+  to: string;
+  data: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCallExternalContract(args.to, args.data)
+  });
+}
+
+export async function setApprovalForAllToContract(args: {
+  operator: string;
+  approved: boolean;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeSetApprovalForAllToContract(args.operator, args.approved)
+  });
+}
+
+export async function withdrawToProtocol(args: {
+  tokenList: string[];
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeWithdrawToProtocol(args.tokenList)
+  });
 }

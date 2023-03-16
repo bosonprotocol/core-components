@@ -10,7 +10,7 @@ program
   .description("Create an Offer.")
   .argument(
     "<SELLER_PRIVATE_KEY>",
-    "Private key of the Seller account (operator role)."
+    "Private key of the Seller account (assistant role)."
   )
   .argument("<OFFER_DATA>", "JSON file with the Offer parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")

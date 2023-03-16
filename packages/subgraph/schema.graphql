@@ -425,7 +425,7 @@ interface Account {
 
 type PendingSeller @entity {
   id: ID!
-  operator: Bytes
+  assistant: Bytes
   admin: Bytes
   clerk: Bytes
   authTokenId: BigInt
@@ -438,7 +438,7 @@ type Seller implements Account @entity {
   sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
   exchanges: [Exchange!]! @derivedFrom(field: "seller")
-  operator: Bytes!
+  assistant: Bytes!
   admin: Bytes!
   clerk: Bytes!
   treasury: Bytes!
@@ -465,7 +465,7 @@ type Buyer implements Account @entity {
 
 type PendingDisputeResolver @entity {
   id: ID!
-  operator: Bytes
+  assistant: Bytes
   admin: Bytes
   clerk: Bytes
   disputeResolver: DisputeResolver!
@@ -477,7 +477,7 @@ type DisputeResolver implements Account @entity {
   admin: Bytes!
   clerk: Bytes!
   treasury: Bytes!
-  operator: Bytes!
+  assistant: Bytes!
   metadataUri: String!
   fees: [DisputeResolverFee!]!
   sellerAllowList: [BigInt!]!

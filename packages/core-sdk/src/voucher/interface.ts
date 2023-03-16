@@ -61,3 +61,26 @@ export function encodeTransferFrom(
     tokenId
   ]);
 }
+
+export function encodeCallExternalContract(to: string, data: string) {
+  return bosonVoucherIface.encodeFunctionData("callExternalContract", [
+    to,
+    data
+  ]);
+}
+
+export function encodeSetApprovalForAllToContract(
+  operator: string,
+  approved: boolean
+) {
+  return bosonVoucherIface.encodeFunctionData("setApprovalForAllToContract", [
+    operator,
+    approved
+  ]);
+}
+
+export function encodeWithdrawToProtocol(tokenList: string[]) {
+  return bosonVoucherIface.encodeFunctionData("withdrawToProtocol", [
+    tokenList
+  ]);
+}

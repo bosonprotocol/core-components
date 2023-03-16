@@ -21,7 +21,7 @@ program
   .option("--admin <ADMIN>", "New admin address")
   .option("--treasury <TREASURY>", "New treasury address")
   .option("--clerk <CLERK>", "New clerk address")
-  .option("--operator <OPERATOR>", "New operator address")
+  .option("--assistant <ASSISTANT>", "New assistant address")
   .option("--authTokenId <AUTH_TOKEN_ID>", "New Auth Token Id")
   .option("--authTokenType <AUTH_TOKEN_TYPE>", "New Auth Token Type")
   .option(
@@ -56,7 +56,7 @@ async function main() {
       sdk: CoreSDK;
       fields: {
         admin: boolean;
-        operator: boolean;
+        assistant: boolean;
         clerk: boolean;
         authToken: boolean;
       };
@@ -65,7 +65,7 @@ async function main() {
   if (opts.privateKeys) {
     const defaultFields = {
       admin: false,
-      operator: false,
+      assistant: false,
       clerk: false,
       authToken: false
     };
@@ -100,8 +100,8 @@ async function main() {
 
   sellerDataJson = {
     id: opts.id || sellerDataJson.id,
-    operator:
-      opts.operator || sellerDataJson.operator || sellerData.seller.operator,
+    assistant:
+      opts.assistant || sellerDataJson.assistant || sellerData.seller.assistant,
     admin: opts.admin || sellerDataJson.admin || sellerData.seller.admin,
     clerk: opts.clerk || sellerDataJson.clerk || sellerData.seller.clerk,
     treasury:
@@ -117,7 +117,7 @@ async function main() {
   };
 
   let modif = false;
-  for (const key of ["operator", "clerk", "treasury", "admin"]) {
+  for (const key of ["assistant", "clerk", "treasury", "admin"]) {
     if (sellerDataJson[key] !== sellerData.seller[key]) {
       modif = true;
       break;
@@ -151,7 +151,7 @@ async function main() {
   );
   let updateComplete = true;
   console.log(`Pending Seller Updates: ${JSON.stringify(pendingSellerUpdate)}`);
-  for (const key of ["operator", "clerk", "admin", "tokenType"]) {
+  for (const key of ["assistant", "clerk", "admin", "tokenType"]) {
     if (pendingSellerUpdate[key] && pendingSellerUpdate[key] !== AddressZero) {
       const address = pendingSellerUpdate[key].toLowerCase();
       if (optInSigners.has(address)) {
@@ -168,7 +168,7 @@ async function main() {
   for (const [account, optInSigner] of optInSigners.entries()) {
     if (
       optInSigner.fields.admin ||
-      optInSigner.fields.operator ||
+      optInSigner.fields.assistant ||
       optInSigner.fields.clerk ||
       optInSigner.fields.authToken
     ) {

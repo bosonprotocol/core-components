@@ -40,7 +40,7 @@ test("handle SellerCreatedEvent", () => {
   handleSellerCreatedEvent(sellerCreatedEvent);
 
   assert.fieldEquals("Seller", "1", "id", "1");
-  assert.fieldEquals("Seller", "1", "operator", sellerAddress.toLowerCase());
+  assert.fieldEquals("Seller", "1", "assistant", sellerAddress.toLowerCase());
   assert.fieldEquals("Seller", "1", "active", "true");
   assert.fieldEquals("Seller", "1", "authTokenId", "0");
   assert.fieldEquals("Seller", "1", "authTokenType", "0");

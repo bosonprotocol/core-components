@@ -235,7 +235,7 @@ fragment SellerFields on Seller {
 
 fragment BaseSellerFields on Seller {
   id
-  operator
+  assistant
   admin
   clerk
   treasury
@@ -248,7 +248,7 @@ fragment BaseSellerFields on Seller {
 }
 
 fragment PendingSellerFields on PendingSeller {
-  operator
+  assistant
   admin
   clerk
   authTokenId
@@ -323,7 +323,7 @@ fragment BaseDisputeResolverFields on DisputeResolver {
   admin
   clerk
   treasury
-  operator
+  assistant
   metadataUri
   active
   sellerAllowList
@@ -333,7 +333,7 @@ fragment BaseDisputeResolverFields on DisputeResolver {
 }
 
 fragment PendingDisputeResolverFields on PendingDisputeResolver {
-  operator
+  assistant
   admin
   clerk
 }
