@@ -32,5 +32,6 @@ export * from "./components/cta/dispute/EscalateDisputeButton";
 export * from "./components/cta/dispute/RefuseDisputeButton";
 export * from "./components/cta/dispute/DecideDisputeButton";
 export * from "./components/cta/dispute/ExpireEscalationDisputeButton";
+export * from "./components/widgets/index";
 export * as hooks from "./hooks";
 export * from "./theme";
