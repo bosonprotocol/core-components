@@ -89,7 +89,7 @@ type FinanceWidgetProps = {
   sellerId: string;
   defaultTokensList: string;
 };
-export default function FinanceWidget({
+export function FinanceWidget({
   envName,
   sellerId,
   defaultTokensList
@@ -112,3 +112,5 @@ export default function FinanceWidget({
     </EnvironmentProvider>
   );
 }
+
+export default FinanceWidget;
