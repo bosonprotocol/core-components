@@ -65,6 +65,10 @@ export class CoreSDK extends BaseCoreSDK {
     });
   }
 
+  public get subgraphUrl() {
+    return this._subgraphUrl;
+  }
+
   public get metaTxConfig() {
     return this._metaTxConfig;
   }
