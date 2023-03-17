@@ -89,7 +89,7 @@ function initCoreSdk(config: CoreSdkConfig) {
     metadataStorageUrl;
   const metaTx = config.metaTx || defaultConfig.metaTx;
 
-  return new CoreSDK({
+  const instance = new CoreSDK({
     web3Lib: new EthersAdapter(connectedProvider),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
@@ -110,6 +110,8 @@ function initCoreSdk(config: CoreSdkConfig) {
     metaTx,
     lensContracts: config.lensContracts || defaultConfig.lens
   });
+  Object.setPrototypeOf(instance, CoreSDK.prototype);
+  return instance;
 }
 
 function createDefaultProvider(jsonRpcUrl: string): Provider {
