@@ -204,7 +204,7 @@ export type Props = {
     isActive: boolean;
     isAdmin: boolean;
     isClerk: boolean;
-    isOperator: boolean;
+    isAssistant: boolean;
     isTreasury: boolean;
   };
 };
