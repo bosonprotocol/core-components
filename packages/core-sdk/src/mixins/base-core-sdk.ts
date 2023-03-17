@@ -80,14 +80,6 @@ export class BaseCoreSDK {
       contractAddress
     };
   }
-
-  get subgraphUrl() {
-    return this._subgraphUrl;
-  }
-
-  get metaTxConfig() {
-    return this._metaTxConfig;
-  }
 }
 
 // Doc: https://www.typescriptlang.org/docs/handbook/mixins.html#alternative-pattern
