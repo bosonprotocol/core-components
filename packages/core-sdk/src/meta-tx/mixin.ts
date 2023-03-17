@@ -165,25 +165,17 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "web3Lib"
       | "bosonVoucherAddress"
       | "chainId"
-      | "nonce"
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId: BigNumberish;
     }> = {}
   ) {
-    const signerAddress = await this._web3Lib.getSignerAddress();
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: signerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
     const offerFromSubgraph = await getOfferById(
       this._subgraphUrl,
       args.offerId
@@ -192,10 +184,10 @@ export class MetaTxMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib,
       bosonVoucherAddress: offerFromSubgraph.seller.voucherCloneAddress,
       chainId: this._chainId,
-      nonce,
       forwarderAddress,
       batchId,
       forwarderAbi: this._metaTxConfig.forwarderAbi,
+      relayerUrl: this._metaTxConfig.relayerUrl,
       ...args
     });
   }
@@ -210,6 +202,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId: BigNumberish;
@@ -222,22 +215,15 @@ export class MetaTxMixin extends BaseCoreSDK {
     );
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: sellerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
 
     return handler.signMetaTxSetApprovalForAll({
       web3Lib: this._web3Lib,
       bosonVoucherAddress: seller.voucherCloneAddress,
       chainId: this._chainId,
-      nonce,
       forwarderAddress,
       batchId,
       forwarderAbi: this._metaTxConfig.forwarderAbi,
+      relayerUrl: this._metaTxConfig.relayerUrl,
       ...args
     });
   }
@@ -252,6 +238,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId?: BigNumberish;
@@ -265,23 +252,16 @@ export class MetaTxMixin extends BaseCoreSDK {
     );
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: sellerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
 
     return handler.signMetaTxSetApprovalForAllToContract(
       {
         web3Lib: this._web3Lib,
         bosonVoucherAddress: seller.voucherCloneAddress,
         chainId: this._chainId,
-        nonce,
         forwarderAddress,
         batchId,
         forwarderAbi: this._metaTxConfig.forwarderAbi,
+        relayerUrl: this._metaTxConfig.relayerUrl,
         ...args
       },
       {
@@ -300,6 +280,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId?: BigNumberish;
@@ -313,23 +294,16 @@ export class MetaTxMixin extends BaseCoreSDK {
     );
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: sellerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
 
     return handler.signMetaTxCallExternalContract(
       {
         web3Lib: this._web3Lib,
         bosonVoucherAddress: seller.voucherCloneAddress,
         chainId: this._chainId,
-        nonce,
         forwarderAddress,
         batchId,
         forwarderAbi: this._metaTxConfig.forwarderAbi,
+        relayerUrl: this._metaTxConfig.relayerUrl,
         ...args
       },
       {
