@@ -5,11 +5,15 @@ import {
   decodeGetAvailablePreMints,
   decodeGetRangeByOfferId,
   decodeIsApprovedForAll,
+  decodeIsTrustedForwarder,
+  decodeOwner,
   encodeBurnPremintedVouchers,
   encodeCallExternalContract,
   encodeGetAvailablePreMints,
   encodeGetRangeByOfferId,
   encodeIsApprovedForAll,
+  encodeIsTrustedForwarder,
+  encodeOwner,
   encodePreMint,
   encodeSetApprovalForAllToContract,
   encodeTransferFrom,
@@ -25,6 +29,29 @@ export async function burnPremintedVouchers(args: {
     to: args.contractAddress,
     data: encodeBurnPremintedVouchers(args.offerId)
   });
+}
+
+export async function owner(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeOwner()
+  });
+  return decodeOwner(result);
+}
+
+export async function isTrustedForwarder(args: {
+  forwarder: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<boolean> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeIsTrustedForwarder(args.forwarder)
+  });
+  return decodeIsTrustedForwarder(result);
 }
 
 export async function getAvailablePreMints(args: {

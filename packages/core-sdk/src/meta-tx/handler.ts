@@ -30,7 +30,11 @@ import {
   encodeReserveRange
 } from "../offers/interface";
 import { prepareDataSignatureParameters } from "../utils/signature";
-import { Biconomy, GetRetriedHashesData } from "./biconomy";
+import {
+  Biconomy,
+  ForwarderDomainData,
+  GetRetriedHashesData
+} from "./biconomy";
 import { isAddress } from "@ethersproject/address";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeDepositFunds, encodeWithdrawFunds } from "../funds/interface";
@@ -48,8 +52,9 @@ import { keccak256 } from "@ethersproject/keccak256";
 import { id } from "@ethersproject/hash";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
-import { verifyEIP712 } from "../forwarder/handler";
+import { getNonce, verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
+import { isTrustedForwarder, owner } from "../voucher/handler";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -60,9 +65,7 @@ export type BaseMetaTxArgs = {
 
 export type BaseVoucherMetaTxArgs = {
   web3Lib: Web3LibAdapter;
-  nonce: BigNumberish;
   bosonVoucherAddress: string;
-  forwarderAddress: string;
   chainId: number;
 };
 
@@ -126,7 +129,9 @@ export async function signMetaTx(
 
 export async function signVoucherMetaTx(
   args: BaseVoucherMetaTxArgs & {
+    forwarderAbi: typeof abis.MockForwarderABI;
     functionSignature: string;
+    forwarderAddress: string;
   }
 ): Promise<SignedVoucherMetaTx> {
   const forwardType = [
@@ -148,11 +153,17 @@ export async function signVoucherMetaTx(
 
   const signerAddress = await args.web3Lib.getSignerAddress();
   const chainId = await args.web3Lib.getChainId();
+  const nonce = await getNonce({
+    contractAddress: args.forwarderAddress,
+    user: signerAddress,
+    web3Lib: args.web3Lib,
+    forwarderAbi: args.forwarderAbi
+  });
 
   const message = {
     from: signerAddress,
     to: args.bosonVoucherAddress,
-    nonce: args.nonce,
+    nonce,
     data: args.functionSignature
   };
 
@@ -186,6 +197,7 @@ export async function signBiconomyVoucherMetaTx(
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
     txGas: BigNumberish;
+    relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
   const customSignatureType = {
@@ -213,6 +225,43 @@ export async function signBiconomyVoucherMetaTx(
   const signerAddress = await args.web3Lib.getSignerAddress();
   const chainId = await args.web3Lib.getChainId();
 
+  // Check which forwarder needs to be used for the contract
+  const biconomyForwarderDomainDetails = await new Biconomy(
+    args.relayerUrl
+  ).getForwarderDomainDetails({ chainId });
+
+  const biconomyForwarderDomainData = await new Promise<
+    ForwarderDomainData | undefined
+    // eslint-disable-next-line no-async-promise-executor
+  >(async (resolve, reject) => {
+    try {
+      for (const bFDD of Object.values(biconomyForwarderDomainDetails)) {
+        const ret = await isTrustedForwarder({
+          forwarder: bFDD.verifyingContract,
+          contractAddress: args.bosonVoucherAddress,
+          web3Lib: args.web3Lib
+        });
+        if (ret) {
+          resolve(bFDD);
+        }
+      }
+      resolve(undefined);
+    } catch (e) {
+      reject(e);
+    }
+  });
+  if (!biconomyForwarderDomainData) {
+    throw `Unable to find the trusted forwarder for BosonVoucher contract ${args.bosonVoucherAddress}`;
+  }
+
+  const nonce = await getNonce({
+    contractAddress: biconomyForwarderDomainData.verifyingContract,
+    user: signerAddress,
+    web3Lib: args.web3Lib,
+    batchId: args.batchId,
+    forwarderAbi: args.forwarderAbi
+  });
+
   const message = {
     from: signerAddress,
     to: args.bosonVoucherAddress,
@@ -220,22 +269,15 @@ export async function signBiconomyVoucherMetaTx(
     txGas: args.txGas,
     tokenGasPrice: "0",
     batchId: args.batchId,
-    batchNonce: args.nonce,
+    batchNonce: nonce,
     deadline: Math.floor(Date.now() / 1000 + 3600),
     data: args.functionSignature
-  };
-
-  const biconomyForwarderDomainData = {
-    name: "Biconomy Forwarder",
-    version: "1",
-    verifyingContract: args.forwarderAddress,
-    salt: hexZeroPad(BigNumber.from(chainId).toHexString(), 32)
   };
 
   const signatureParams = await prepareDataSignatureParameters({
     ...args,
     chainId,
-    verifyingContractAddress: args.forwarderAddress,
+    verifyingContractAddress: biconomyForwarderDomainData.verifyingContract,
     customSignatureType,
     primaryType: "ERC20ForwardRequest",
     message,
@@ -268,7 +310,7 @@ export async function signBiconomyVoucherMetaTx(
   // verify signature
   const signatureVerified = await verifyEIP712({
     request: message,
-    contractAddress: args.forwarderAddress,
+    contractAddress: biconomyForwarderDomainData.verifyingContract,
     web3Lib: args.web3Lib,
     domainSeparator,
     forwarderAbi: args.forwarderAbi,
@@ -573,10 +615,12 @@ export async function signMetaTxPreMint(
   args: BaseVoucherMetaTxArgs & {
     offerId: BigNumberish;
     amount: BigNumberish;
-    batchId: BigNumberish;
+    batchId?: BigNumberish;
+    forwarderAddress?: string;
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
+    relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
   const localConfig = defaultConfigs.find(
@@ -587,13 +631,17 @@ export async function signMetaTxPreMint(
   if (isLocal) {
     return signVoucherMetaTx({
       ...args,
-      functionSignature
+      forwarderAddress: args.forwarderAddress,
+      functionSignature,
+      forwarderAbi: args.forwarderAbi as typeof abis.MockForwarderABI
     });
   }
   const txGas = 200000 + BigNumber.from(args.amount).mul(2500).toNumber(); // ~(180000 + 2250*N) estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
+    forwarderAbi: args.forwarderAbi as typeof abis.BiconomyForwarderABI,
+    batchId: args.batchId || "0",
     txGas
   });
 }
@@ -602,10 +650,12 @@ export async function signMetaTxSetApprovalForAll(
   args: BaseVoucherMetaTxArgs & {
     operator: string;
     approved: boolean;
-    batchId: BigNumberish;
+    batchId?: BigNumberish;
+    forwarderAddress?: string;
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
+    relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
   const localConfig = defaultConfigs.find(
@@ -619,13 +669,17 @@ export async function signMetaTxSetApprovalForAll(
   if (isLocal) {
     return signVoucherMetaTx({
       ...args,
-      functionSignature
+      forwarderAddress: args.forwarderAddress,
+      functionSignature,
+      forwarderAbi: args.forwarderAbi as typeof abis.MockForwarderABI
     });
   }
   const txGas = 100000; // ~70000 estimation on 2023/02/03
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
+    forwarderAbi: args.forwarderAbi as typeof abis.BiconomyForwarderABI,
+    batchId: args.batchId || "0",
     txGas
   });
 }
@@ -634,10 +688,12 @@ export async function signMetaTxSetApprovalForAllToContract(
   args: BaseVoucherMetaTxArgs & {
     operator: string;
     approved: boolean;
-    batchId: BigNumberish;
+    batchId?: BigNumberish;
+    forwarderAddress?: string;
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
+    relayerUrl: string;
   },
   overrides: {
     txGas?: number;
@@ -654,13 +710,17 @@ export async function signMetaTxSetApprovalForAllToContract(
   if (isLocal) {
     return signVoucherMetaTx({
       ...args,
-      functionSignature
+      forwarderAddress: args.forwarderAddress,
+      functionSignature,
+      forwarderAbi: args.forwarderAbi as typeof abis.MockForwarderABI
     });
   }
   const txGas = overrides.txGas || 100000; // TODO: estimate the gas needed
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
+    forwarderAbi: args.forwarderAbi as typeof abis.BiconomyForwarderABI,
+    batchId: args.batchId || "0",
     txGas
   });
 }
@@ -669,10 +729,12 @@ export async function signMetaTxCallExternalContract(
   args: BaseVoucherMetaTxArgs & {
     to: string;
     data: string;
-    batchId: BigNumberish;
+    batchId?: BigNumberish;
+    forwarderAddress?: string;
     forwarderAbi:
       | typeof abis.MockForwarderABI
       | typeof abis.BiconomyForwarderABI;
+    relayerUrl: string;
   },
   overrides: {
     txGas?: number;
@@ -686,13 +748,17 @@ export async function signMetaTxCallExternalContract(
   if (isLocal) {
     return signVoucherMetaTx({
       ...args,
-      functionSignature
+      forwarderAddress: args.forwarderAddress,
+      functionSignature,
+      forwarderAbi: args.forwarderAbi as typeof abis.MockForwarderABI
     });
   }
   const txGas = overrides.txGas || 500000; // TODO: estimate the gas needed
   return signBiconomyVoucherMetaTx({
     ...args,
     functionSignature,
+    forwarderAbi: args.forwarderAbi as typeof abis.BiconomyForwarderABI,
+    batchId: args.batchId || "0",
     txGas
   });
 }
