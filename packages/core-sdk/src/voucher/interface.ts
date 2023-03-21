@@ -85,6 +85,10 @@ export function encodeWithdrawToProtocol(tokenList: string[]) {
   ]);
 }
 
+export function encodeSetContractURI(contractURI: string) {
+  return bosonVoucherIface.encodeFunctionData("setContractURI", [contractURI]);
+}
+
 const ownableIface = new Interface([
   {
     inputs: [],
