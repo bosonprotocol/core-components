@@ -251,3 +251,24 @@ dataSources:
         - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
           handler: handleGroupUpdatedEvent
       file: ./src/mappings/group-handler.ts
+templates:
+  - name: BosonVoucher
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: IBosonVoucher
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Seller
+      abis:
+        - name: IBosonAccountHandler
+          file: ../common/src/abis/IBosonAccountHandler.json
+        - name: IBosonVoucher
+          file: ../common/src/abis/IBosonVoucher.json
+      eventHandlers:
+        - event: ContractURIChanged(string)
+          handler: handleContractURIChanged
+      file: ./src/mappings/boson-voucher.ts

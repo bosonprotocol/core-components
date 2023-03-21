@@ -16,6 +16,7 @@ import {
   encodeOwner,
   encodePreMint,
   encodeSetApprovalForAllToContract,
+  encodeSetContractURI,
   encodeTransferFrom,
   encodeWithdrawToProtocol
 } from "./interface";
@@ -122,6 +123,17 @@ export async function isApprovedForAll(args: {
   });
   const [isApproved] = decodeIsApprovedForAll(result);
   return isApproved;
+}
+
+export async function setContractURI(args: {
+  contractURI: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return await args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeSetContractURI(args.contractURI)
+  });
 }
 
 export async function callExternalContract(args: {

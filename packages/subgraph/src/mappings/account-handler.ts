@@ -24,7 +24,7 @@ import {
   DisputeResolver,
   PendingDisputeResolver
 } from "../../generated/schema";
-
+import { BosonVoucher } from "../../generated/templates";
 import {
   getAndSaveDisputeResolver,
   getAndSaveDisputeResolverFees
@@ -67,6 +67,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
     event.params.executedBy,
     sellerId
   );
+  BosonVoucher.create(event.params.voucherCloneAddress);
 }
 
 // Keep handleSellerUpdatedEvent for compatibility with v2.0.0
