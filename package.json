@@ -36,7 +36,8 @@
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv",
     "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
-    "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts"
+    "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts",
+    "update-contract-uri": "ts-node -P tsconfig.base.json ./scripts/change-contract-uri.ts"
   },
   "repository": {
     "type": "git",
