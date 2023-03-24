@@ -38,16 +38,15 @@ export function MyItems({ onBackClick, onNextClick }: Props) {
         disputed: true
       }}
     >
-      <Grid flexDirection="column">
+      <>
         <Grid justifyContent="flex-end" gap="2rem" margin="0 0 2rem 0">
           <Checkbox name="committed" text="Committed" />
           <Checkbox name="redeemed" text="Redemed" />
           <Checkbox name="disputed" text="Disputed" />
         </Grid>
-        <div>
-          <ExchangesWithData buyerId={buyerId} />
-        </div>
-      </Grid>
+
+        <ExchangesWithData buyerId={buyerId} />
+      </>
     </Formik>
   );
 }
