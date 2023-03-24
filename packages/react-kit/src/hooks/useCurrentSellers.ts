@@ -1,4 +1,4 @@
-import { subgraph } from "@bosonprotocol/core-sdk";
+import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
@@ -16,6 +16,53 @@ interface Props {
   lensTokenId?: string;
 }
 
+const getSellersByIds =
+  (coreSDK: CoreSDK) => (sellerIds: string[], isSellerId: boolean) => {
+    const resultSellerByIds = useQuery(
+      ["seller-by-ids", { sellerIds }],
+       async() => {
+        const result = await fetchSubgraph<{
+          sellers: {
+            authTokenId: string;
+            authTokenType: number;
+            admin: string;
+            clerk: string;
+            treasury: string;
+            assistant: string;
+            id: string;
+            voucherCloneAddress: string;
+            active: boolean;
+            sellerId: string;
+          }[];
+        }>(
+          coreSDK.subgraphUrl,
+          gql`
+            query GetSellerBySellerId($sellerIds: [String]) {
+              sellers(where: { sellerId_in: $sellerIds }) {
+                authTokenId
+                authTokenType
+                admin
+                clerk
+                treasury
+                assistant
+                id
+                voucherCloneAddress
+                active
+                sellerId
+              }
+            }
+          `,
+          { sellerIds }
+        );
+        return result.sellers;
+      },
+      {
+        enabled: isSellerId
+      }
+    );
+    return resultSellerByIds;
+  };
+
 /**
  * This hook returns the current seller or sellers in a list. It will return more than one
  * seller if you have more than one Lens profile and you had sent your Lens NFT that
@@ -29,6 +76,7 @@ export function useCurrentSellers({
   lensTokenId
 }: Props = {}) {
   const coreSDK = useCoreSDKWithContext();
+  const fetchSellers = getSellersByIds(coreSDK);
   const { address: loggedInUserAddress } = useAccount();
   const sellerAddress =
     address || sellerId || lensTokenId || loggedInUserAddress || null;
@@ -90,37 +138,19 @@ export function useCurrentSellers({
     }
   );
   const enableResultById = !!sellerAddress && sellerAddressType === "SELLER_ID";
+  const { data: sellers } = fetchSellers(
+    typeof sellerAddress === "string" ? [sellerAddress] : [],
+    enableResultById
+  );
+
   const resultById = useQuery(
     ["current-seller-data-by-id", { sellerId: sellerAddress }],
     async () => {
-      const result = await fetchSubgraph<{
-        sellers: {
-          sellerId: string;
-          admin: string;
-          clerk: string;
-          assistant: string;
-          treasury: string;
-        }[];
-      }>(
-        coreSDK.subgraphUrl,
-        gql`
-          query GetSellerById($sellerId: String) {
-            sellers(where: { sellerId: $sellerId }) {
-              sellerId
-              admin
-              clerk
-              assistant
-              treasury
-            }
-          }
-        `,
-        { sellerId: sellerAddress }
-      );
       const allProps = {
-        admin: result?.sellers[0]?.admin || null,
-        clerk: result?.sellers[0]?.clerk || null,
-        assistant: result?.sellers[0]?.assistant || null,
-        treasury: result?.sellers[0]?.treasury || null
+        admin: sellers?.[0]?.admin || null,
+        clerk: sellers?.[0]?.clerk || null,
+        assistant: sellers?.[0]?.assistant || null,
+        treasury: sellers?.[0]?.treasury || null
       };
       return Object.fromEntries(
         Object.entries(allProps).filter(([, value]) => value !== null)
@@ -199,42 +229,14 @@ export function useCurrentSellers({
       ? [resultByLensId?.data.sellerId]
       : [];
   const enableSellerById = !!sellerIdsToQuery?.length;
+  const { data: sellers2 } = fetchSellers(
+    sellerIdsToQuery,
+    enableSellerById
+  );
   const sellerById = useQuery(
     ["current-seller-by-id", { sellerIds: sellerIdsToQuery }],
     async () => {
-      const result = await fetchSubgraph<{
-        sellers: {
-          authTokenId: string;
-          authTokenType: number;
-          admin: string;
-          clerk: string;
-          treasury: string;
-          assistant: string;
-          id: string;
-          voucherCloneAddress: string;
-          active: boolean;
-        }[];
-      }>(
-        coreSDK.subgraphUrl,
-        gql`
-          query GetSellerBySellerId($sellerIds: [String]) {
-            sellers(where: { sellerId_in: $sellerIds }) {
-              authTokenId
-              authTokenType
-              admin
-              clerk
-              treasury
-              assistant
-              id
-              voucherCloneAddress
-              active
-            }
-          }
-        `,
-        { sellerIds: sellerIdsToQuery }
-      );
-
-      const currentSeller = result?.sellers?.[0] || null;
+      const currentSeller = sellers2?.[0] || null;
 
       const currentSellerRoles = {
         admin: currentSeller?.admin || null,
