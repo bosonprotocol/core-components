@@ -25,7 +25,9 @@ interface Props {
   first?: number;
   skip?: number;
 }
-
+export type ExtendedExchange = NonNullable<
+  ReturnType<typeof useExchanges>["data"]
+>[number];
 const OFFERS_PER_PAGE = 1000;
 export function useExchanges(
   props: Props,

@@ -1,50 +1,13 @@
 import React from "react";
-import { useExchanges } from "../../../../../hooks/useExchanges";
-import { Spinner } from "../../../../ui/loading/Spinner";
+import { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import Exchange from "./Exchange";
-import { LoadingWrapper, ProductGridContainer } from "./ProfilePage.styles";
-import { Exchange as IExchange } from "../../../../../types/exchange";
-import { Exchange_OrderBy, OrderDirection } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
+import { ProductGridContainer } from "./ProfilePage.styles";
 interface Props {
-  buyerId: string;
+  refetch: () => void;
+  exchanges: ExtendedExchange[];
 }
 
-const orderProps = {
-  orderBy: Exchange_OrderBy.CommittedDate,
-  orderDirection: OrderDirection.Desc
-} as const;
-
-export default function Exchanges({ buyerId }: Props) {
-  const {
-    data: exchangesSeller,
-    isLoading,
-    isError,
-    refetch
-  } = useExchanges(
-    { ...orderProps, disputed: null, buyerId },
-    { enabled: !!buyerId }
-  );
-
-  if (isLoading) {
-    return (
-      <LoadingWrapper>
-        <Spinner size={42} />
-      </LoadingWrapper>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div data-testid="errorExchanges">
-        There has been an error, please try again later...
-      </div>
-    );
-  }
-
-  if (!exchangesSeller?.length) {
-    return <div>There are no exchanges</div>;
-  }
-
+export default function Exchanges({ refetch, exchanges }: Props) {
   return (
     <ProductGridContainer
       itemsPerRow={{
@@ -55,13 +18,13 @@ export default function Exchanges({ buyerId }: Props) {
         xl: 3
       }}
     >
-      {exchangesSeller?.map((exchange) => {
+      {exchanges?.map((exchange) => {
         return (
           <Exchange
             key={exchange.id}
-            {...exchange}
-            exchange={exchange as IExchange}
-            reload={refetch}
+            offer={exchange.offer}
+            exchange={exchange}
+            refetch={refetch}
           />
         );
       })}

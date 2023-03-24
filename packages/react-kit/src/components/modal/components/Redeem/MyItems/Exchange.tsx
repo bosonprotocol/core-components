@@ -1,7 +1,6 @@
 import React from "react";
 import { CameraSlash } from "phosphor-react";
 import { useMemo } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAccount } from "wagmi";
 
@@ -12,14 +11,11 @@ import {
   ExchangeCardStatus
 } from "../../../../exchangeCard/ExchangeCard";
 import { Currencies } from "../../../../currencyDisplay/CurrencyDisplay";
-import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
-import { Offer } from "../../../../../types/offer";
-import { Exchange as IExchange } from "../../../../../types/exchange";
+import { exchanges } from "@bosonprotocol/core-sdk";
 import { theme } from "../../../../../theme";
 import { useCurrentSellers } from "../../../../../hooks/useCurrentSellers";
 import { getLensProfilePictureUrl } from "../../../../../lib/lens/profile";
 import { calcPrice } from "../../../../../lib/price/prices";
-import { useModal } from "../../../useModal";
 import { useIpfsContext } from "../../../../ipfs/IpfsContext";
 import {
   getFallbackImageUrl,
@@ -27,14 +23,15 @@ import {
   getLensImageUrl
 } from "../../../../../lib/images/images";
 import { useHandleText } from "../../../../../hooks/useHandleText";
+import { ExtendedExchange } from "../../../../../hooks/useExchanges";
 
 const colors = theme.colors.light;
 
 interface Props {
-  offer: Offer;
-  exchange: IExchange;
+  offer: ExtendedExchange["offer"];
+  exchange: ExtendedExchange;
   isPrivateProfile?: boolean;
-  reload?: () => void;
+  refetch?: () => void;
 }
 
 const ExchangeCardWrapper = styled.div`
@@ -53,7 +50,7 @@ const ExchangeCardWrapper = styled.div`
   }
 `;
 
-export default function Exchange({ offer, exchange, reload }: Props) {
+export default function Exchange({ offer, exchange, refetch }: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
     sellerId: offer?.seller?.id
   });
@@ -61,9 +58,10 @@ export default function Exchange({ offer, exchange, reload }: Props) {
   const [lens] = lensProfiles;
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
 
-  const { showModal, modalTypes } = useModal();
+  // const { showModal, modalTypes } = useModal();
   // const navigate = useNavigate();
-  const imageSrc = getImageUrl(offer.metadata.imageUrl, ipfsGateway, {
+  const offerImageUrl = offer.metadata?.imageUrl || "";
+  const imageSrc = getImageUrl(offerImageUrl, ipfsGateway, {
     height: 500
   });
   const { address } = useAccount();
@@ -72,8 +70,7 @@ export default function Exchange({ offer, exchange, reload }: Props) {
   const handleText = useHandleText(offer);
 
   const status = useMemo(
-    () =>
-      exchanges.getExchangeState(exchange as subgraph.ExchangeFieldsFragment),
+    () => exchanges.getExchangeState(exchange),
     [exchange]
   );
 
@@ -166,7 +163,7 @@ export default function Exchange({ offer, exchange, reload }: Props) {
           //     buyerId: exchange?.buyer.id || "",
           //     sellerId: exchange?.seller.id || "",
           //     sellerAddress: exchange?.seller.assistant || "",
-          //     reload
+          //     refetch
           //   },
           //   "s"
           // );
@@ -180,7 +177,7 @@ export default function Exchange({ offer, exchange, reload }: Props) {
           //   title: "Cancel exchange",
           //   exchange,
           //   BASE_MODAL_DATA,
-          //   reload
+          //   refetch
           // });
           console.log("cancel");
         };
