@@ -4,13 +4,14 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import Exchange from "./Exchange";
 import { LoadingWrapper, ProductGridContainer } from "./ProfilePage.styles";
 import { Exchange as IExchange } from "../../../../../types/exchange";
+import { Exchange_OrderBy, OrderDirection } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 interface Props {
   buyerId: string;
 }
 
 const orderProps = {
-  orderBy: "committedDate",
-  orderDirection: "desc"
+  orderBy: Exchange_OrderBy.CommittedDate,
+  orderDirection: OrderDirection.Desc
 } as const;
 
 export default function Exchanges({ buyerId }: Props) {

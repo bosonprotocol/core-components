@@ -34,6 +34,7 @@ module.exports = {
         Buffer: ["buffer", "Buffer"]
       })
     );
+    // TODO: remove this code so that ESLintWebpackPlugin is enabled again. Without this, the build did not succeed to eslint useGetLensProfiles -> packages/react-kit/src/lib/lens/generated.ts
     const indexOfEsLint = config.plugins.findIndex((plugin) => {
       return plugin.key === "ESLintWebpackPlugin";
     });

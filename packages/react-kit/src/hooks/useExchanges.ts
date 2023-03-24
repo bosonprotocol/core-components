@@ -1,4 +1,9 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
+import {
+  Exchange_Filter,
+  Exchange_OrderBy,
+  OrderDirection
+} from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useQuery } from "react-query";
 import { Offer } from "../types/offer";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
@@ -14,8 +19,8 @@ interface Props {
   state?: subgraph.ExchangeState;
   id?: string;
   id_in?: string[];
-  orderBy?: string | null | undefined;
-  orderDirection?: string | null | undefined;
+  orderBy?: Exchange_OrderBy | null | undefined;
+  orderDirection?: OrderDirection | null | undefined;
   offerId?: string;
   first?: number;
   skip?: number;
@@ -32,20 +37,31 @@ export function useExchanges(
   return useQuery(
     ["exchanges", props],
     async () => {
+      const filter: Exchange_Filter = {
+        id: props.id,
+        state: props.state,
+        id_in: props.id_in,
+        seller: props.sellerId,
+        buyer: props.buyerId,
+        ...([true, false].includes(props.disputed as boolean) && {
+          disputed: props.disputed
+        }),
+        offer: props.offerId
+      };
       const data = await coreSDK.getExchanges({
-        exchangesFilter: {
-          ...props
-        },
-        exchangesFirst: OFFERS_PER_PAGE
+        exchangesFilter: filter,
+        exchangesFirst: OFFERS_PER_PAGE,
+        exchangesOrderBy: props.orderBy,
+        exchangesOrderDirection: props.orderDirection
       });
       let loop = data?.length === OFFERS_PER_PAGE;
       let productsSkip = OFFERS_PER_PAGE;
       while (loop) {
         const dataToAdd = await coreSDK.getExchanges({
-          exchangesFilter: {
-            ...props
-          },
+          exchangesFilter: filter,
           exchangesFirst: OFFERS_PER_PAGE,
+          exchangesOrderBy: props.orderBy,
+          exchangesOrderDirection: props.orderDirection,
           exchangesSkip: productsSkip
         });
         data.push(...dataToAdd);

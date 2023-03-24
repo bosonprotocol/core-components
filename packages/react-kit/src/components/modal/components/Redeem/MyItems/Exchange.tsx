@@ -62,7 +62,7 @@ export default function Exchange({ offer, exchange, reload }: Props) {
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
 
   const { showModal, modalTypes } = useModal();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const imageSrc = getImageUrl(offer.metadata.imageUrl, ipfsGateway, {
     height: 500
   });
