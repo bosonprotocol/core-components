@@ -34,19 +34,23 @@ export function MyItems({ onBackClick, onNextClick }: Props) {
       }}
       initialValues={{
         committed: true,
-        redeemed: true,
-        disputed: true
+        redeemed: false,
+        disputed: false
       }}
     >
-      <>
-        <Grid justifyContent="flex-end" gap="2rem" margin="0 0 2rem 0">
-          <Checkbox name="committed" text="Committed" />
-          <Checkbox name="redeemed" text="Redemed" />
-          <Checkbox name="disputed" text="Disputed" />
-        </Grid>
+      {({ values }) => {
+        return (
+          <>
+            <Grid justifyContent="flex-end" gap="2rem" margin="0 0 2rem 0">
+              <Checkbox name="committed" text="Committed" />
+              <Checkbox name="redeemed" text="Redeemed" />
+              <Checkbox name="disputed" text="Disputed" />
+            </Grid>
 
-        <ExchangesWithData buyerId={buyerId} />
-      </>
+            <ExchangesWithData buyerId={buyerId} {...values} />
+          </>
+        );
+      }}
     </Formik>
   );
 }

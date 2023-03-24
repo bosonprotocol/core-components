@@ -13,7 +13,7 @@ export type Disputes = subgraph.DisputeFieldsFragment & {
 };
 
 interface Props {
-  disputed: boolean | null;
+  disputed?: boolean | null;
   sellerId?: string;
   buyerId?: string;
   state?: subgraph.ExchangeState;
