@@ -7,9 +7,9 @@ import { useCallback, useMemo } from "react";
 import { Props } from "./Finance";
 import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { saveItemInStorage } from "./storage/useLocalStorage";
-import { getDateTimestamp } from "./dates/dates";
 import { SellerExchangeProps } from "./useSellerDeposit";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { getDateTimestamp } from "../../../lib/dates/getDateTimestamp";
 dayjs.extend(isBetween);
 
 export default function useOffersBacked({

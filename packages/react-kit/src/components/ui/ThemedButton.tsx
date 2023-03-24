@@ -6,7 +6,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "./styles";
 import Typography from "./Typography";
 import { theme } from "../../theme";
-import Loading from "./Loading";
+import Loading from "./loading/Loading";
 
 const colors = theme.colors.light;
 

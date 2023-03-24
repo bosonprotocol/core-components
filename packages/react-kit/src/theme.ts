@@ -18,7 +18,11 @@ export const theme = {
       torquise: "#06F7D5",
       border: "#5560720f",
       arsenic: "#3a364f",
-      primaryBgColor: "#FFFFFF"
+      primaryBgColor: "#FFFFFF",
+      darkOrange: "darkorange",
+      froly: "#F46A6A",
+      bosonSkyBlue: "#51BEFA",
+      navy: "#222539"
     }
   },
   mobile: "768px",

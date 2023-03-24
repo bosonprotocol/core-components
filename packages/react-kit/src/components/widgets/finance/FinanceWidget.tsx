@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import useOffersBacked from "./useOffersBacked";
-import Loading from "../../ui/Loading";
+import Loading from "../../ui/loading/Loading";
 import Finance, { Props } from "./Finance";
 import { useSellerRoles } from "./useSellerRoles";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";

@@ -23,12 +23,8 @@ import Typography from "../../ui/Typography";
 import { theme } from "../../../theme";
 import { Button, ButtonSize } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
-import Loading from "../../ui/Loading";
-import {
-  EnvironmentType,
-  MetaTxConfig,
-  subgraph
-} from "@bosonprotocol/core-sdk";
+import Loading from "../../ui/loading/Loading";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import {
   Currencies,
   CurrencyDisplay

@@ -3,7 +3,8 @@ import {
   MetadataStorage,
   MetaTxConfig,
   LensContracts,
-  ContractAddresses
+  ContractAddresses,
+  Lens
 } from "@bosonprotocol/common";
 import { TokenInfoManager } from "../utils/tokenInfoManager";
 
@@ -18,7 +19,7 @@ export class BaseCoreSDK {
   protected _tokenInfoManager: TokenInfoManager;
 
   protected _metaTxConfig?: Partial<MetaTxConfig>;
-  protected _lensContracts?: LensContracts;
+  protected _lens?: Lens;
   protected _contracts?: ContractAddresses;
 
   /**
@@ -33,7 +34,7 @@ export class BaseCoreSDK {
     theGraphStorage?: MetadataStorage;
     chainId: number;
     metaTx?: Partial<MetaTxConfig>;
-    lensContracts?: LensContracts;
+    lens?: Lens;
     contracts?: ContractAddresses;
   }) {
     this._web3Lib = opts.web3Lib;
@@ -43,7 +44,7 @@ export class BaseCoreSDK {
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
     this._metaTxConfig = opts.metaTx;
-    this._lensContracts = opts.lensContracts;
+    this._lens = opts.lens;
     this._contracts = opts.contracts;
   }
 

@@ -7,11 +7,10 @@ import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 import { ModalType, Store } from "./ModalContext";
 import Typography from "../ui/Typography";
-import { breakpoint } from "../styles/breakpoint";
 import ThemedButton from "../ui/ThemedButton";
-const zIndex = {
-  Modal: 2000
-};
+import { breakpoint } from "../../lib/ui/breakpoint";
+import { zIndex } from "../ui/zIndex";
+
 const colors = theme.colors.light;
 const Root = styled.div`
   position: fixed;
@@ -189,6 +188,10 @@ const Header = styled(Typography)<{ $title?: string }>`
   gap: 0.5rem;
 `;
 
+const FooterWrapper = styled.div`
+  border-top: 2px solid ${colors.border};
+`;
+
 const HeaderWithTitle = styled(Header)`
   height: 4.25rem;
 `;
@@ -236,6 +239,7 @@ interface Props {
   noCloseIcon?: boolean;
   modalType: ModalType;
   headerComponent?: ReactNode;
+  footerComponent?: ReactNode;
   size: NonNullable<Store["modalSize"]>;
   maxWidths: Store["modalMaxWidth"];
   theme: NonNullable<Store["theme"]>;
@@ -247,6 +251,7 @@ export default function Modal({
   hideModal,
   title = "",
   headerComponent: HeaderComponent,
+  footerComponent: FooterComponent,
   size,
   maxWidths,
   theme,
@@ -288,6 +293,7 @@ export default function Modal({
         <Content $size={size} $modalType={modalType}>
           {children}
         </Content>
+        {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>
       <RootBG
         onClick={() => {

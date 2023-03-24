@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { theme } from "../../../../../theme";
 
 import Grid from "../../../../ui/Grid";
-import Loading from "../../../../ui/Loading";
+import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
 import { useModal } from "../../../useModal";
 const colors = theme.colors.light;

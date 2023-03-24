@@ -31,9 +31,12 @@ export const getWagmiClient = (envName: EnvironmentType) => {
       wallets: [wallet.metaMask({ chains }), wallet.walletConnect({ chains })]
     }
   ]);
-  return createClient({
-    autoConnect: true,
-    connectors,
-    provider
-  });
+  return {
+    wagmiClient: createClient({
+      autoConnect: true,
+      connectors,
+      provider
+    }),
+    chains
+  };
 };

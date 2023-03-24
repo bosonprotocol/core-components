@@ -60,9 +60,17 @@ export class CoreSDK extends BaseCoreSDK {
         ...defaultConfig.metaTx,
         ...args.metaTx
       },
-      lensContracts: defaultConfig.lens,
+      lens: defaultConfig.lens,
       contracts: defaultConfig.contracts
     });
+  }
+
+  public get lens() {
+    return this._lens;
+  }
+
+  public get contracts() {
+    return this._contracts;
   }
 
   public get subgraphUrl() {

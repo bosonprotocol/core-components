@@ -63,6 +63,7 @@ export default function FinanceWithdraw({
 
   const { data: signer } = useSigner();
   const { address } = useAccount();
+  // TODO: comment out?
   // const addPendingTransaction = useAddPendingTransaction();
 
   const { data: dataBalance, refetch } = useBalance(
@@ -169,6 +170,13 @@ export default function FinanceWithdraw({
               action: "Finance withdraw",
               txHash: hash
             });
+            // TODO: comment out?
+            // addPendingTransaction({
+            //   type: subgraph.EventType.FundsWithdrawn,
+            //   hash: hash,
+            //   isMetaTx: isMetaTx,
+            //   accountType: "Account"
+            // });
           }}
           onSuccess={async () => {
             await poll(

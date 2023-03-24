@@ -13,6 +13,7 @@ export type ModalProps = {
   noCloseIcon?: boolean;
   [x: string]: any;
   headerComponent?: ReactNode;
+  footerComponent?: ReactNode;
   hideModal?: () => void;
   closable?: boolean;
 };
