@@ -5,7 +5,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAccount } from "wagmi";
 
-import mockedAvatar from "../../assets/frame.png";
+import mockedAvatar from "../../../../../assets/frame.png";
 
 import {
   ExchangeCard,
