@@ -22,7 +22,9 @@ export const theme = {
       darkOrange: "darkorange",
       froly: "#F46A6A",
       bosonSkyBlue: "#51BEFA",
-      navy: "#222539"
+      navy: "#222539",
+      grey2: "#D3D5DB",
+      grey: "grey"
     }
   },
   mobile: "768px",

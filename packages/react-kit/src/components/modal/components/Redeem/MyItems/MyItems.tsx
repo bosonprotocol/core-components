@@ -1,21 +1,43 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
 import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
+import Typography from "../../../../ui/Typography";
+import ConnectButton from "../../../../wallet/ConnectButton";
+import { useModal } from "../../../useModal";
 import Exchanges from "./Exchanges";
 import { WithExchangesData } from "./WithExchangesData";
+import { ReactComponent } from "../../../../../assets/logo.svg";
+import { Exchange } from "../../../../../types/exchange";
+
 type Props = {
   onBackClick: () => void;
-  onNextClick: () => void;
+  onExchangeCardClick: (exchange: Exchange) => void;
   isValid: boolean;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
 
-export function MyItems({ onBackClick, onNextClick }: Props) {
+export function MyItems({ onBackClick, onExchangeCardClick }: Props) {
+  const { showModal } = useModal();
+  useEffect(() => {
+    showModal("REDEEM", {
+      headerComponent: (
+        <Grid>
+          <Typography tag="h3">Redeem your item</Typography>
+          <ConnectButton />
+        </Grid>
+      ),
+      footerComponent: (
+        <Grid justifyContent="center" padding="1.5rem 0">
+          <ReactComponent height="24px" />
+        </Grid>
+      )
+    });
+  }, []);
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
     wallet: address
@@ -47,7 +69,11 @@ export function MyItems({ onBackClick, onNextClick }: Props) {
               <Checkbox name="disputed" text="Disputed" />
             </Grid>
 
-            <ExchangesWithData buyerId={buyerId} {...values} />
+            <ExchangesWithData
+              buyerId={buyerId}
+              {...values}
+              onCardClick={onExchangeCardClick}
+            />
           </>
         );
       }}

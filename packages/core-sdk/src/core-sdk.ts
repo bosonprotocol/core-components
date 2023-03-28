@@ -85,6 +85,10 @@ export class CoreSDK extends BaseCoreSDK {
     return this.checkMetaTxConfigSet();
   }
 
+  public get getTxExplorerUrl() {
+    return this._getTxExplorerUrl;
+  }
+
   public checkMetaTxConfigSet(
     args: {
       contractAddress?: string;

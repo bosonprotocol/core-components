@@ -9,18 +9,23 @@ import {
   OrderDirection
 } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import Loading from "../../../../ui/loading/Loading";
+import { Exchange } from "../../../../../types/exchange";
 
 const orderProps = {
   orderBy: Exchange_OrderBy.CommittedDate,
   orderDirection: OrderDirection.Desc
 } as const;
 
-interface WrappedComponentProps {
+interface CommonProps {
+  onCardClick: (exchange: Exchange) => void;
+}
+
+interface WrappedComponentProps extends CommonProps {
   exchanges: ExtendedExchange[];
   refetch: () => void;
 }
 
-interface WithExchangesProps {
+interface WithExchangesProps extends CommonProps {
   buyerId: string;
   committed: boolean;
   redeemed: boolean;
@@ -65,9 +70,9 @@ export function WithExchangesData(
     }, [committedExchanges, disputedExchanges, redeemedExchanges]);
 
     if (
-      committedExchanges.isLoading ||
-      disputedExchanges.isLoading ||
-      redeemedExchanges.isLoading
+      committedExchanges.isFetching ||
+      disputedExchanges.isFetching ||
+      redeemedExchanges.isFetching
     ) {
       return <Loading />;
     }
@@ -85,7 +90,7 @@ export function WithExchangesData(
     }
 
     if (!allExchanges?.length) {
-      return <div>There are no exchanges</div>;
+      return <div>No exchanges</div>;
     }
 
     return (

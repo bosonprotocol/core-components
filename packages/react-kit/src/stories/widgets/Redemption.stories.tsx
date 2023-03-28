@@ -27,7 +27,12 @@ export const Redemption: ComponentStory<typeof RedemptionWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
-  envName: "testing"
+  envName: "testing",
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrency: {
+    symbol: "USD",
+    ticker: "$"
+  }
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

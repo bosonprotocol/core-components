@@ -1,90 +1,99 @@
-import React, { ReactNode } from "react";
-import styled, { css, IntrinsicElementsKeys } from "styled-components";
+import React from "react";
 import { theme } from "../../theme";
-
+import { Exchange } from "../../types/exchange";
+import { useConfigContext } from "../config/ConfigContext";
+import DetailTable from "../modal/components/Redeem/ExchangeView/detail/DetailTable";
+import Grid from "../ui/Grid";
+import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";
 
 const colors = theme.colors.light;
 
-const InfoTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  > p {
-    margin: 0;
-  }
-`;
-const InfoList = styled.ul<{ withCustomMarker?: boolean }>`
-  margin: 0 0 0 1.5rem;
-  padding: 0;
-  line-height: 1.063rem;
-  ${({ withCustomMarker }) =>
-    withCustomMarker &&
-    css`
-      margin: unset;
-      li {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-    `}
-`;
-const InfoListItem = styled.li`
-  margin: 0;
-  padding: 0;
-
-  p {
-    margin: 0;
-    color: ${colors.darkGrey};
-  }
-`;
-
-interface Props {
-  policyIcon?: ReactNode;
-  titleTag?: IntrinsicElementsKeys;
-  bulletPointIcon?: ReactNode;
-  minimumDisputeResolutionPeriodDays?: number;
-  minimumDisputePeriodInDays?: number;
+export interface FairExchangePolicyProps {
+  exchange: Exchange;
+  onContractualAgreementClick: () => void;
+  onLicenseAgreementClick: () => void;
 }
 
 export default function FairExchangePolicy({
-  policyIcon,
-  titleTag = "p",
-  bulletPointIcon,
-  minimumDisputeResolutionPeriodDays = 15,
-  minimumDisputePeriodInDays = 30
-}: Props) {
+  exchange,
+  onContractualAgreementClick,
+  onLicenseAgreementClick
+}: FairExchangePolicyProps) {
+  const { minimumDisputePeriodInDays, minimumDisputeResolutionPeriodDays } =
+    useConfigContext();
   return (
     <>
-      <InfoTitleWrapper>
-        <Typography tag={titleTag} data-title>
-          Fair exchange policy
-        </Typography>
-        {policyIcon}
-      </InfoTitleWrapper>
-      <InfoList withCustomMarker={!!bulletPointIcon}>
-        <InfoListItem>
-          {bulletPointIcon}
-          <Typography tag="p">
-            Min. {minimumDisputePeriodInDays} days to raise a dispute
-          </Typography>
-        </InfoListItem>
-        <InfoListItem>
-          {bulletPointIcon}
-          <Typography tag="p">
-            Min. {minimumDisputeResolutionPeriodDays} days to resolve a dispute
-          </Typography>
-        </InfoListItem>
-        <InfoListItem>
-          {bulletPointIcon}
-          <Typography tag="p">Fair buyer and seller obligations</Typography>
-        </InfoListItem>
-        <InfoListItem>
-          {bulletPointIcon}
-          <Typography tag="p">Standard evidence requirements</Typography>
-        </InfoListItem>
-      </InfoList>
+      <Typography tag="h3" data-title $fontSize="1.5rem" marginTop="0">
+        Fair exchange policy
+      </Typography>
+      <Typography
+        $fontSize="1.25rem"
+        color={colors.darkGrey}
+        margin="0 0 2rem 0"
+      >
+        Boson Exchange Policies combine protocol variables and the underlying
+        contractual agreement of an exchange into a standardized policy,
+        ensuring fair terms and protection for both buyer and seller.
+      </Typography>
+      <DetailTable
+        align
+        data={[
+          {
+            name: "Policy name",
+            value: (
+              <Grid justifyContent="flex-end">
+                <Typography>Fair Exchange Policy v1.0</Typography>
+              </Grid>
+            )
+          },
+          {
+            name: "Dispute Period",
+            value: (
+              <Grid justifyContent="flex-end">
+                <Typography>Min. {minimumDisputePeriodInDays} days</Typography>
+              </Grid>
+            )
+          },
+          {
+            name: "Escalation Period",
+            value: (
+              <Grid justifyContent="flex-end">
+                <Typography>
+                  Min. {minimumDisputeResolutionPeriodDays} days
+                </Typography>
+              </Grid>
+            )
+          },
+          {
+            name: "Redeemable NFT Terms",
+            value: (
+              <Grid justifyContent="flex-end">
+                <ThemedButton
+                  theme="blankOutline"
+                  onClick={() => onLicenseAgreementClick()}
+                >
+                  License Agreement v1
+                </ThemedButton>
+              </Grid>
+            )
+          },
+          {
+            name: "Buyer & Seller Agreement",
+            value: (
+              <Grid justifyContent="flex-end">
+                <ThemedButton
+                  theme="blankOutline"
+                  onClick={() => onContractualAgreementClick()}
+                >
+                  Commerce Agreement v1
+                </ThemedButton>
+              </Grid>
+            )
+          }
+        ]}
+        inheritColor={false}
+      />
     </>
   );
 }

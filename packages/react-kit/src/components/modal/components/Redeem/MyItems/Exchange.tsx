@@ -24,6 +24,7 @@ import {
 } from "../../../../../lib/images/images";
 import { useHandleText } from "../../../../../hooks/useHandleText";
 import { ExtendedExchange } from "../../../../../hooks/useExchanges";
+import { Exchange as IExchange } from "../../../../../types/exchange";
 
 const colors = theme.colors.light;
 
@@ -32,6 +33,7 @@ interface Props {
   exchange: ExtendedExchange;
   isPrivateProfile?: boolean;
   refetch?: () => void;
+  onCardClick: (exchange: IExchange) => void;
 }
 
 const ExchangeCardWrapper = styled.div`
@@ -50,7 +52,12 @@ const ExchangeCardWrapper = styled.div`
   }
 `;
 
-export default function Exchange({ offer, exchange, refetch }: Props) {
+export default function Exchange({
+  offer,
+  exchange,
+  refetch,
+  onCardClick
+}: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
     sellerId: offer?.seller?.id
   });
@@ -85,7 +92,7 @@ export default function Exchange({ offer, exchange, refetch }: Props) {
     //     [UrlParameters.exchangeId]: exchange.id
     //   })
     // });
-    console.log("card click");
+    onCardClick(exchange);
   };
 
   const handleOnAvatarClick = () => {
