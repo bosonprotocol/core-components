@@ -2,89 +2,69 @@ import { Form, Formik, FormikProps } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import * as Yup from "yup";
-import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
-import ConnectButton from "../../../wallet/ConnectButton";
-
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { ExchangeView } from "./ExchangeView/ExchangeView";
 import { MyItems } from "./MyItems/MyItems";
-import RedeemForm from "./RedeemForm/RedeemForm";
-import { FormModel } from "./RedeemModalFormModel";
+import { FormModel, FormType } from "./RedeemModalFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
-import { ReactComponent } from "../../../../assets/logo.svg";
-import { useModal } from "../../useModal";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
+import { ConfirmationView } from "./Confirmation/ConfirmationView";
+import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
+import RedeemFormView from "./RedeemForm/RedeemFormView";
+import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
+import { ExchangeFullDescriptionView } from "./ExchangeFullDescriptionView/ExchangeFullDescriptionView";
 
-const validationSchemaPerStep = [
-  Yup.object({}),
-  Yup.object({
-    [FormModel.formFields.name.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.name.requiredErrorMessage),
-    [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.streetNameAndNumber.requiredErrorMessage),
-    [FormModel.formFields.city.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.city.requiredErrorMessage),
-    [FormModel.formFields.state.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.state.requiredErrorMessage),
-    [FormModel.formFields.zip.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.zip.requiredErrorMessage),
-    [FormModel.formFields.country.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.country.requiredErrorMessage),
-    [FormModel.formFields.email.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.email.requiredErrorMessage)
-      .email(FormModel.formFields.email.mustBeEmail),
-    [FormModel.formFields.phone.name]: Yup.string()
-      .trim()
-      .required(FormModel.formFields.phone.requiredErrorMessage)
-  }),
-  Yup.object({}),
-  Yup.object({})
-];
+const validationSchema = Yup.object({
+  [FormModel.formFields.name.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.name.requiredErrorMessage),
+  [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.streetNameAndNumber.requiredErrorMessage),
+  [FormModel.formFields.city.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.city.requiredErrorMessage),
+  [FormModel.formFields.state.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.state.requiredErrorMessage),
+  [FormModel.formFields.zip.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.zip.requiredErrorMessage),
+  [FormModel.formFields.country.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.country.requiredErrorMessage),
+  [FormModel.formFields.email.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.email.requiredErrorMessage)
+    .email(FormModel.formFields.email.mustBeEmail),
+  [FormModel.formFields.phone.name]: Yup.string()
+    .trim()
+    .required(FormModel.formFields.phone.requiredErrorMessage)
+});
 
 enum ActiveStep {
   STEPS_OVERVIEW,
   MY_ITEMS,
   EXCHANGE_VIEW,
+  PURCHASE_OVERVIEW,
   REDEEM_FORM,
   REDEEM_FORM_CONFIRMATION,
   REDEEM_SUCESS,
   EXCHANGE_POLICY,
   CONTRACTUAL_AGREEMENT,
-  LICENSE_AGREEMENT
+  LICENSE_AGREEMENT,
+  EXCHANGE_FULL_DESCRIPTION
 }
 
 export default function RedeemModal() {
-  const { showModal } = useModal();
-  useEffect(() => {
-    showModal("REDEEM", {
-      headerComponent: (
-        <Grid>
-          <Typography tag="h3">Redeem your item</Typography>
-          <ConnectButton />
-        </Grid>
-      ),
-      footerComponent: (
-        <Grid justifyContent="center" padding="1.5rem 0">
-          <ReactComponent height="24px" />
-        </Grid>
-      )
-    });
-  }, []);
-  const [exchange, setExchange] = useState<Exchange | null>(null);
-  const [{ previousStep, currentStep }, setStep] = useState<{
+  const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
   }>({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
+  const [exchange, setExchange] = useState<Exchange | null>(null);
+
   const setActiveStep = (newCurrentStep: ActiveStep) => {
     setStep((prev) => ({
       previousStep: [...prev.previousStep, prev.currentStep],
@@ -104,9 +84,7 @@ export default function RedeemModal() {
       };
     });
   };
-  const validationSchema = validationSchemaPerStep[currentStep];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const formRef = useRef<FormikProps<any> | null>(null);
+  const formRef = useRef<FormikProps<FormType> | null>(null);
 
   useEffect(() => {
     // TODO: this should not be necessary as validateOnMount should handle that
@@ -120,7 +98,7 @@ export default function RedeemModal() {
   }
   return (
     <>
-      <Formik
+      <Formik<FormType>
         innerRef={formRef}
         validationSchema={validationSchema}
         onSubmit={() => {}} // eslint-disable-line @typescript-eslint/no-empty-function
@@ -136,19 +114,17 @@ export default function RedeemModal() {
         }}
         validateOnMount
       >
-        {(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          props: FormikProps<any>
-        ) => {
+        {({ errors }) => {
           const isRedeemFormOK =
-            !props.errors[FormModel.formFields.name.name] &&
-            !props.errors[FormModel.formFields.streetNameAndNumber.name] &&
-            !props.errors[FormModel.formFields.city.name] &&
-            !props.errors[FormModel.formFields.state.name] &&
-            !props.errors[FormModel.formFields.zip.name] &&
-            !props.errors[FormModel.formFields.country.name] &&
-            !props.errors[FormModel.formFields.email.name] &&
-            !props.errors[FormModel.formFields.phone.name];
+            !errors[FormModel.formFields.name.name] &&
+            !errors[FormModel.formFields.streetNameAndNumber.name] &&
+            !errors[FormModel.formFields.city.name] &&
+            !errors[FormModel.formFields.state.name] &&
+            !errors[FormModel.formFields.zip.name] &&
+            !errors[FormModel.formFields.country.name] &&
+            !errors[FormModel.formFields.email.name] &&
+            !errors[FormModel.formFields.phone.name];
+
           return (
             <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
@@ -157,8 +133,11 @@ export default function RedeemModal() {
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
-                  onBackClick={() => setActiveStep(ActiveStep.STEPS_OVERVIEW)}
                   onExchangeCardClick={(exchange) => {
+                    setActiveStep(ActiveStep.EXCHANGE_VIEW);
+                    setExchange(exchange);
+                  }}
+                  onRedeemClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
                   }}
@@ -166,18 +145,33 @@ export default function RedeemModal() {
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
-                  onBackClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
+                  onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
                   onExchangePolicyClick={() =>
                     setActiveStep(ActiveStep.EXCHANGE_POLICY)
                   }
+                  onPurchaseOverview={() =>
+                    setActiveStep(ActiveStep.PURCHASE_OVERVIEW)
+                  }
+                  onViewFullDescription={() =>
+                    setActiveStep(ActiveStep.EXCHANGE_FULL_DESCRIPTION)
+                  }
                   isValid={isRedeemFormOK}
                   exchangeId={exchange?.id || ""}
                 />
+              ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
+                <ExchangeFullDescriptionView
+                  onBackClick={goToPreviousStep}
+                  exchange={exchange}
+                />
+              ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
+                <PurchaseOverviewView onBackClick={goToPreviousStep} />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
-                <RedeemForm
-                  onBackClick={() => setActiveStep(ActiveStep.STEPS_OVERVIEW)}
-                  onNextClick={() => setActiveStep(ActiveStep.EXCHANGE_VIEW)}
+                <RedeemFormView
+                  onBackClick={goToPreviousStep}
+                  onNextClick={() =>
+                    setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
+                  }
                   isValid={isRedeemFormOK}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
@@ -202,20 +196,21 @@ export default function RedeemModal() {
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (
-                // <Confirmation
-                //   exchangeId={exchangeId}
-                //   offerName={offerName}
-                //   offerId={offerId}
-                //   buyerId={buyerId}
-                //   sellerId={sellerId}
-                //   sellerAddress={sellerAddress}
-                //   onBackClick={() => setActiveStep(1)}
-                //   reload={reload}
-                //   setIsLoading={setIsLoading}
-                // />
-                <p>confirmation</p>
+                <ConfirmationView
+                  onBackClick={goToPreviousStep}
+                  onNextClick={() => setActiveStep(ActiveStep.REDEEM_SUCESS)}
+                  exchange={exchange}
+                />
+              ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
+                <RedeemSuccess
+                  onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
+                  onExchangePolicyClick={() =>
+                    setActiveStep(ActiveStep.EXCHANGE_POLICY)
+                  }
+                  exchangeId={exchange?.id || ""}
+                />
               ) : (
-                <p>success</p>
+                <p>Wrong step...something went wrong</p>
               )}
             </Form>
           );

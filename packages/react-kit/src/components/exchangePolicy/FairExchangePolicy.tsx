@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { theme } from "../../theme";
 import { Exchange } from "../../types/exchange";
 import { useConfigContext } from "../config/ConfigContext";
@@ -8,6 +9,10 @@ import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";
 
 const colors = theme.colors.light;
+const NoPaddingButton = styled(ThemedButton)`
+  padding: 0 !important;
+  border-color: transparent !important;
+`;
 
 export interface FairExchangePolicyProps {
   exchange: Exchange;
@@ -69,12 +74,13 @@ export default function FairExchangePolicy({
             name: "Redeemable NFT Terms",
             value: (
               <Grid justifyContent="flex-end">
-                <ThemedButton
+                <NoPaddingButton
                   theme="blankOutline"
                   onClick={() => onLicenseAgreementClick()}
+                  className="no-padding"
                 >
                   License Agreement v1
-                </ThemedButton>
+                </NoPaddingButton>
               </Grid>
             )
           },
@@ -82,12 +88,13 @@ export default function FairExchangePolicy({
             name: "Buyer & Seller Agreement",
             value: (
               <Grid justifyContent="flex-end">
-                <ThemedButton
+                <NoPaddingButton
                   theme="blankOutline"
                   onClick={() => onContractualAgreementClick()}
+                  className="no-padding"
                 >
                   Commerce Agreement v1
-                </ThemedButton>
+                </NoPaddingButton>
               </Grid>
             )
           }

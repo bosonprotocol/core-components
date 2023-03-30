@@ -31,9 +31,8 @@ const colors = theme.colors.light;
 interface Props {
   offer: ExtendedExchange["offer"];
   exchange: ExtendedExchange;
-  isPrivateProfile?: boolean;
-  refetch?: () => void;
   onCardClick: (exchange: IExchange) => void;
+  onRedeemClick: (exchange: IExchange) => void;
 }
 
 const ExchangeCardWrapper = styled.div`
@@ -55,7 +54,7 @@ const ExchangeCardWrapper = styled.div`
 export default function Exchange({
   offer,
   exchange,
-  refetch,
+  onRedeemClick,
   onCardClick
 }: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
@@ -174,7 +173,7 @@ export default function Exchange({
           //   },
           //   "s"
           // );
-          console.log("redeem");
+          onRedeemClick(exchange);
         };
         const handleCancel = () => {
           if (!exchange) {

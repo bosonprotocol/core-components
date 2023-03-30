@@ -9,6 +9,8 @@ import { Button, ButtonSize } from "../buttons/Button";
 import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
+import { useDisconnect } from "wagmi";
+import { Wallet } from "phosphor-react";
 
 const MetaMaskLogo = styled.img`
   height: 15px;
@@ -24,11 +26,13 @@ const ENSAvatar = styled.img`
 interface Props {
   navigationBarPosition?: string;
   showAddress?: boolean;
+  showChangeWallet?: boolean;
 }
 
 export default function ConnectButton({
   navigationBarPosition = "",
   showAddress = true,
+  showChangeWallet,
   ...rest
 }: Props) {
   const { isLteXS } = useBreakpoints();
@@ -121,6 +125,26 @@ export default function ConnectButton({
                     ...(width && { width })
                   }}
                 >
+                  {showChangeWallet && (
+                    <Wallet
+                      style={{ cursor: "pointer", height: "100%" }}
+                      size={32}
+                      onClick={async () => {
+                        try {
+                          await window.ethereum?.request({
+                            method: "wallet_requestPermissions",
+                            params: [
+                              {
+                                eth_accounts: {}
+                              }
+                            ]
+                          });
+                        } catch (error) {
+                          console.error(error);
+                        }
+                      }}
+                    />
+                  )}
                   <ThemedButton
                     onClick={openAccountModal}
                     theme="outline"

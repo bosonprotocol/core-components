@@ -35,24 +35,6 @@ export const Label = styled.div<{ $background: string; $color: string }>`
     text-transform: uppercase;
   }
 `;
-export const CommitStepWrapper = styled.div`
-  overflow: hidden;
-  margin: 1rem 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-content: space-between;
-
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  grid-row-gap: 1rem;
-  grid-column-gap: 1rem;
-  ${breakpoint.m} {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  svg {
-    fill: var(--secondary);
-  }
-`;
 
 export const CommitStep = styled.div`
   position: relative;
@@ -550,10 +532,10 @@ const miniButton = css`
   }
 `;
 export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
-  position: absolute;
+  /* position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
+  right: 0; */
   z-index: ${zIndex.OfferStatus};
   border: 2px solid ${colors.border};
   ${miniButton}

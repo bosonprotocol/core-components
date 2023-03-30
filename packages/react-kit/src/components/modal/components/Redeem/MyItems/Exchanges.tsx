@@ -4,12 +4,16 @@ import { Exchange as IExchange } from "../../../../../types/exchange";
 import Exchange from "./Exchange";
 import { ProductGridContainer } from "./ProfilePage.styles";
 interface Props {
-  refetch: () => void;
   onCardClick: (exchange: IExchange) => void;
+  onRedeemClick: (exchange: IExchange) => void;
   exchanges: ExtendedExchange[];
 }
 
-export default function Exchanges({ refetch, exchanges, onCardClick }: Props) {
+export default function Exchanges({
+  onRedeemClick,
+  exchanges,
+  onCardClick
+}: Props) {
   return (
     <ProductGridContainer
       itemsPerRow={{
@@ -26,7 +30,7 @@ export default function Exchanges({ refetch, exchanges, onCardClick }: Props) {
             key={exchange.id}
             offer={exchange.offer}
             exchange={exchange}
-            refetch={refetch}
+            onRedeemClick={onRedeemClick}
             onCardClick={onCardClick}
           />
         );

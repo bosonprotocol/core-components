@@ -4,11 +4,29 @@ import styled from "styled-components";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import Grid from "../../../../ui/Grid";
-import { CommitStepWrapper, CommitStep } from "./style";
+import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
 
 const colors = theme.colors.light;
+const CommitStepWrapper = styled.div`
+  overflow: hidden;
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: space-between;
 
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-row-gap: 1rem;
+  grid-column-gap: 1rem;
+  ${breakpoint.m} {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  svg {
+    fill: var(--secondary);
+  }
+`;
 const StyledCommitStepWrapper = styled(CommitStepWrapper)`
   [data-testid="step-title"] {
     font-size: 1rem;

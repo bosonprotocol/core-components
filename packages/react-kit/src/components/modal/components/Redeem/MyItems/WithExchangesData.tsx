@@ -18,26 +18,33 @@ const orderProps = {
 
 interface CommonProps {
   onCardClick: (exchange: Exchange) => void;
+  onRedeemClick: (exchange: Exchange) => void;
 }
 
 interface WrappedComponentProps extends CommonProps {
   exchanges: ExtendedExchange[];
   refetch: () => void;
 }
-
-interface WithExchangesProps extends CommonProps {
-  buyerId: string;
+export interface ExchangesStates {
   committed: boolean;
   redeemed: boolean;
   disputed: boolean;
+  completed: boolean;
+}
+interface WithExchangesProps extends CommonProps, ExchangesStates {
+  buyerId: string;
 }
 export function WithExchangesData(
   WrappedComponent: React.ComponentType<WrappedComponentProps>
 ) {
   const ComponentWithExchangesData = (props: WithExchangesProps) => {
-    const { buyerId, committed, redeemed, disputed } = props;
+    const { buyerId, committed, redeemed, disputed, completed } = props;
     const committedExchanges = useExchanges(
       { ...orderProps, state: ExchangeState.Committed, buyerId },
+      { enabled: !!buyerId && committed }
+    );
+    const cancelledExchanges = useExchanges(
+      { ...orderProps, state: ExchangeState.Cancelled, buyerId },
       { enabled: !!buyerId && committed }
     );
     const disputedExchanges = useExchanges(
@@ -48,39 +55,60 @@ export function WithExchangesData(
       { ...orderProps, state: ExchangeState.Redeemed, buyerId },
       { enabled: !!buyerId && redeemed }
     );
+    const completedExchanges = useExchanges(
+      { ...orderProps, state: ExchangeState.Completed, buyerId },
+      { enabled: !!buyerId && completed }
+    );
 
     const allExchanges = useMemo(() => {
       return [
         ...(committed ? committedExchanges.data || [] : []),
+        ...(committed ? cancelledExchanges.data || [] : []),
         ...(disputed ? disputedExchanges.data || [] : []),
-        ...(redeemed ? redeemedExchanges.data || [] : [])
+        ...(redeemed ? redeemedExchanges.data || [] : []),
+        ...(completed ? completedExchanges.data || [] : [])
       ];
     }, [
       committedExchanges.data,
+      cancelledExchanges.data,
       committed,
       disputedExchanges.data,
       disputed,
       redeemedExchanges.data,
-      redeemed
+      redeemed,
+      completed,
+      completedExchanges.data
     ]);
     const refetch = useCallback(() => {
       committedExchanges.refetch();
+      cancelledExchanges.refetch();
       disputedExchanges.refetch();
       redeemedExchanges.refetch();
-    }, [committedExchanges, disputedExchanges, redeemedExchanges]);
+      completedExchanges.refetch();
+    }, [
+      committedExchanges,
+      cancelledExchanges,
+      disputedExchanges,
+      redeemedExchanges,
+      completedExchanges
+    ]);
 
     if (
       committedExchanges.isFetching ||
+      cancelledExchanges.isFetching ||
       disputedExchanges.isFetching ||
-      redeemedExchanges.isFetching
+      redeemedExchanges.isFetching ||
+      completedExchanges.isFetching
     ) {
       return <Loading />;
     }
 
     if (
       committedExchanges.isError ||
+      cancelledExchanges.isError ||
       disputedExchanges.isError ||
-      redeemedExchanges.isError
+      redeemedExchanges.isError ||
+      completedExchanges.isError
     ) {
       return (
         <div data-testid="errorExchanges">

@@ -7,7 +7,6 @@ import ModalProvider from "../../modal/ModalProvider";
 import { useModal } from "../../modal/useModal";
 import GlobalStyle from "../../styles/GlobalStyle";
 import Grid from "../../ui/Grid";
-import { ReactComponent } from "../../../assets/logo.svg";
 import Typography from "../../ui/Typography";
 import ConnectButton from "../../wallet/ConnectButton";
 import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
@@ -15,6 +14,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ConfigProvider } from "../../config/ConfigProvider";
 import { ConfigProviderProps } from "../../config/ConfigContext";
 import { getIpfsHeaders } from "../../../hooks/ipfs/getIpfsHeaders";
+import ChatProvider from "../../chat/ChatProvider/ChatProvider";
+import { BosonFooter } from "../../modal/components/Redeem/BosonFooter";
 
 function Redemption({ trigger: Trigger, ...rest }: Props) {
   const { showModal } = useModal();
@@ -23,14 +24,10 @@ function Redemption({ trigger: Trigger, ...rest }: Props) {
       headerComponent: (
         <Grid>
           <Typography tag="h3">Redeem your item</Typography>
-          <ConnectButton />
+          <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: (
-        <Grid justifyContent="center" padding="1.5rem 0">
-          <ReactComponent height="24px" />
-        </Grid>
-      )
+      footerComponent: <BosonFooter />
     });
   }, []);
   if (Trigger) {
@@ -85,6 +82,7 @@ export function RedemptionWidget(props: WidgetProps) {
       <GlobalStyle />
       <ConfigProvider
         dateFormat={props.dateFormat || "YYYY/MM/DD"}
+        shortDateFormat={props.shortDateFormat || "MMM DD, YYYY"}
         defaultCurrency={props.defaultCurrency}
         minimumDisputePeriodInDays={props.minimumDisputePeriodInDays || 30}
         minimumDisputeResolutionPeriodDays={
@@ -99,20 +97,22 @@ export function RedemptionWidget(props: WidgetProps) {
           "ipfs://QmUxAXqM6smDYj7TvS9oDe5kRoAVmkqcyWCKEeNsD6JA97"
         }
       >
-        <WalletConnectionProvider envName={props.envName}>
-          <QueryClientProvider client={queryClient}>
-            <IpfsProvider
-              ipfsMetadataStorageUrl={props.ipfsMetadataStorageUrl}
-              ipfsMetadataStorageHeaders={ipfsMetadataStorageHeaders}
-              ipfsGateway={ipfsGateWay}
-              ipfsImageGateway={props.ipfsImageGateway || ipfsGateWay}
-            >
-              <ModalProvider>
-                <Redemption {...props} />
-              </ModalProvider>
-            </IpfsProvider>
-          </QueryClientProvider>
-        </WalletConnectionProvider>
+        <QueryClientProvider client={queryClient}>
+          <WalletConnectionProvider envName={props.envName}>
+            <ChatProvider>
+              <IpfsProvider
+                ipfsMetadataStorageUrl={props.ipfsMetadataStorageUrl}
+                ipfsMetadataStorageHeaders={ipfsMetadataStorageHeaders}
+                ipfsGateway={ipfsGateWay}
+                ipfsImageGateway={props.ipfsImageGateway || ipfsGateWay}
+              >
+                <ModalProvider>
+                  <Redemption {...props} />
+                </ModalProvider>
+              </IpfsProvider>
+            </ChatProvider>
+          </WalletConnectionProvider>
+        </QueryClientProvider>
       </ConfigProvider>
     </EnvironmentProvider>
   );

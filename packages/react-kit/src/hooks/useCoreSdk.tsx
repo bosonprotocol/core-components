@@ -108,7 +108,8 @@ function initCoreSdk(config: CoreSdkConfig) {
     }),
     chainId: defaultConfig.chainId,
     metaTx,
-    lens: config.lensContracts || defaultConfig.lens
+    lens: config.lensContracts || defaultConfig.lens,
+    contracts: defaultConfig.contracts
   });
   Object.setPrototypeOf(instance, CoreSDK.prototype);
   return instance;

@@ -43,3 +43,5 @@ export const FormModel = {
     }
   }
 } as const;
+
+export type FormType = Record<keyof typeof FormModel["formFields"], string>;

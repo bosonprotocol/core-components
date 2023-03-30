@@ -9,6 +9,7 @@ import { useModal } from "../../../useModal";
 import { ReactComponent } from "../../../../../assets/logo.svg";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
+import { BosonFooter } from "../BosonFooter";
 
 interface Props {
   onBackClick: () => void;
@@ -28,21 +29,19 @@ export function ExchangePolicy({
   useEffect(() => {
     showModal("REDEEM", {
       headerComponent: (
-        <Grid>
+        <Grid gap="1rem">
           <ArrowLeft
             onClick={onBackClick}
             size={32}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", flexShrink: 0 }}
           />
-          <Typography tag="h3">{exchangeName}</Typography>
-          <ConnectButton />
+          <Typography tag="h3" style={{ flex: "1 1" }}>
+            {exchangeName}
+          </Typography>
+          <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: (
-        <Grid justifyContent="center" padding="1.5rem 0">
-          <ReactComponent height="24px" />
-        </Grid>
-      )
+      footerComponent: <BosonFooter />
     });
   }, [exchangeName]);
   if (!exchange) {

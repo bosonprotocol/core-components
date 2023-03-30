@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-empty-function: "off" */
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import { subgraph } from "@bosonprotocol/core-sdk";
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, CSSProperties, ReactNode } from "react";
 
 import { MODAL_COMPONENTS, MODAL_TYPES } from "./ModalComponents";
 
@@ -14,6 +14,7 @@ export type ModalProps = {
   [x: string]: any;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
+  contentStyle?: CSSProperties;
   hideModal?: () => void;
   closable?: boolean;
 };

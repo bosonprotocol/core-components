@@ -40,31 +40,28 @@ const StyledRedeemButton = styled(ThemedButton)``;
 interface Props {
   exchangeId: string;
   offerName: string;
-  offerId: string;
   buyerId: string;
   sellerId: string;
   sellerAddress: string;
   onBackClick: () => void;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
-  reload?: () => void;
+  onSuccess?: () => void;
 }
 
 export default function Confirmation({
   onBackClick,
   exchangeId,
   offerName,
-  offerId,
   buyerId,
   sellerId,
   sellerAddress,
-  reload,
+  onSuccess,
   setIsLoading: setLoading
 }: Props) {
   const { envName } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   // const addPendingTransaction = useAddPendingTransaction(); // TODO: check
-  const { showModal, hideModal } = useModal();
   const { bosonXmtp } = useChatContext();
   const [chatError, setChatError] = useState<Error | null>(null);
   const [redeemError, setRedeemError] = useState<Error | null>(null);
@@ -215,25 +212,25 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               setRedeemError(error);
               setIsLoading(false);
               setLoading?.(false);
-              const hasUserRejectedTx =
-                "code" in error &&
-                (error as unknown as { code: string }).code ===
-                  "ACTION_REJECTED";
-              if (hasUserRejectedTx) {
-                showModal("CONFIRMATION_FAILED");
-              }
+              // const hasUserRejectedTx =
+              //   "code" in error &&
+              //   (error as unknown as { code: string }).code ===
+              //     "ACTION_REJECTED";
+              // if (hasUserRejectedTx) {
+              //   showModal("CONFIRMATION_FAILED");
+              // }
             }}
             onPendingSignature={async () => {
               setRedeemError(null);
               setIsLoading(true);
               setLoading?.(true);
-              showModal("WAITING_FOR_CONFIRMATION");
+              // showModal("WAITING_FOR_CONFIRMATION");
             }}
             onPendingTransaction={(hash, isMetaTx) => {
-              showModal("TRANSACTION_SUBMITTED", {
-                action: "Redeem",
-                txHash: hash
-              });
+              // showModal("TRANSACTION_SUBMITTED", {
+              //   action: "Redeem",
+              //   txHash: hash
+              // });
               // TODO: check
               // addPendingTransaction({
               //   type: subgraph.EventType.VoucherRedeemed,
@@ -262,28 +259,13 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               );
               setIsLoading(false);
               setLoading?.(false);
-              hideModal();
               toast((t) => (
                 <SuccessTransactionToast
                   t={t}
                   action={`Redeemed exchange: ${offerName}`}
-                  onViewDetails={() => {
-                    showModal("REDEEM_SUCCESS", {
-                      title: "Congratulations!",
-                      name: nameField.value,
-                      streetNameAndNumber: streetNameAndNumberField.value,
-                      city: cityField.value,
-                      state: stateField.value,
-                      zip: zipField.value,
-                      country: countryField.value,
-                      email: emailField.value,
-                      phone: phoneField.value
-                    });
-                  }}
                 />
               ));
-
-              reload?.();
+              onSuccess?.();
             }}
             web3Provider={signer?.provider as Provider}
             metaTx={coreSDK.metaTxConfig}

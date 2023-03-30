@@ -5,15 +5,15 @@ import ConnectButton from "../../../../wallet/ConnectButton";
 import { useModal } from "../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
-import License from "../../../../license/License";
 import { BosonFooter } from "../BosonFooter";
+import { ExchangeFullDescription } from "./ExchangeFullDescription";
 
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
 }
 
-export function LicenseAgreementView({ onBackClick, exchange }: Props) {
+export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -24,18 +24,18 @@ export function LicenseAgreementView({ onBackClick, exchange }: Props) {
             size={32}
             style={{ cursor: "pointer" }}
           />
-          <Typography tag="h3">License Agreement</Typography>
+          <Typography tag="h3">
+            {exchange?.offer.metadata.name || ""}
+          </Typography>
           <ConnectButton showChangeWallet />
         </Grid>
       ),
       footerComponent: <BosonFooter />
     });
-  }, []);
+  }, [exchange]);
   if (!exchange) {
     return <p>Exchange could not be retrieved</p>;
   }
-  const { offer } = exchange;
-  const offerId = offer.id;
 
-  return <License offerId={offerId} offerData={offer} />;
+  return <ExchangeFullDescription exchange={exchange} />;
 }

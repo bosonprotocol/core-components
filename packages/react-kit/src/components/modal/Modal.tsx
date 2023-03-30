@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { X } from "phosphor-react";
 import { ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -240,6 +240,7 @@ interface Props {
   modalType: ModalType;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
+  contentStyle?: CSSProperties;
   size: NonNullable<Store["modalSize"]>;
   maxWidths: Store["modalMaxWidth"];
   theme: NonNullable<Store["theme"]>;
@@ -255,6 +256,7 @@ export default function Modal({
   size,
   maxWidths,
   theme,
+  contentStyle,
   closable = true,
   modalType
 }: Props) {
@@ -290,7 +292,7 @@ export default function Modal({
             )}
           </HeaderWithTitle>
         )}
-        <Content $size={size} $modalType={modalType}>
+        <Content $size={size} $modalType={modalType} style={contentStyle}>
           {children}
         </Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}

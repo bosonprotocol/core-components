@@ -1,26 +1,64 @@
-import React from "react";
+import { House } from "phosphor-react";
+import React, { useEffect } from "react";
+import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
+import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
+import { VariantV1 } from "../../../../../types/variants";
+import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
+import Typography from "../../../../ui/Typography";
+import Video from "../../../../ui/Video";
+import ConnectButton from "../../../../wallet/ConnectButton";
+import { useModal } from "../../../useModal";
+import DetailOpenSea from "./detail/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
+import VariationSelects from "./VariationSelects";
+import DetailSlider from "./detail/DetailSlider";
+import { isTruthy } from "../../../../../types/helpers";
+import GridContainer from "../../../../ui/GridContainer";
+import { BosonFooter } from "../BosonFooter";
+import { theme } from "../../../../../theme";
+import { SellerAndDescription } from "./detail/SellerAndDescription";
+
+const colors = theme.colors.light;
+
+const ImageWrapper = styled.div`
+  position: relative;
+  max-width: 35rem !important;
+  min-width: 50%;
+  width: -webkit-fill-available;
+`;
+
 type Props = {
-  onBackClick: () => void;
+  onHouseClick: () => void;
   onNextClick: () => void;
   onExchangePolicyClick: () => void;
+  onPurchaseOverview: () => void;
+  onViewFullDescription: () => void;
   exchangeId: string;
   isValid: boolean;
 };
 
+const SLIDER_OPTIONS = {
+  type: "carousel" as const,
+  startAt: 0,
+  gap: 20,
+  perView: 1
+};
+
 export function ExchangeView({
-  onBackClick,
+  onHouseClick,
   onNextClick,
   onExchangePolicyClick,
+  onPurchaseOverview,
+  onViewFullDescription,
   exchangeId
 }: Props) {
   const {
     data: exchanges,
     isError,
-    isLoading,
+    isFetching,
     refetch: reload
   } = useExchanges(
     {
@@ -33,6 +71,39 @@ export function ExchangeView({
   );
   const exchange = exchanges?.[0];
   const offer = exchange?.offer;
+  const metadata = offer?.metadata;
+  const variations = metadata?.variations;
+  const hasVariations = !!variations?.length;
+  const { showModal } = useModal();
+  useEffect(() => {
+    if (!offer) {
+      return;
+    }
+    showModal("REDEEM", {
+      headerComponent: (
+        <Grid gap="1rem">
+          <House
+            onClick={onHouseClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
+          <Typography tag="h3" style={{ flex: "1 1" }}>
+            {offer.metadata.name}
+          </Typography>
+          <ConnectButton showChangeWallet />
+        </Grid>
+      ),
+      footerComponent: <BosonFooter />,
+      contentStyle: {
+        background: colors.lightGrey
+      }
+    });
+  }, [offer]);
+
+  const variant = {
+    offer,
+    variations
+  };
   const { data: sellers } = useSellers(
     {
       id: offer?.seller.id,
@@ -43,9 +114,6 @@ export function ExchangeView({
     }
   );
 
-  if (!offer) {
-    return <div data-testid="notFound">This exchange does not exist</div>;
-  }
   const sellerAvailableDeposit = sellers?.[0]?.funds?.find(
     (fund) => fund.token.address === offer?.exchangeToken.address
   )?.availableAmount;
@@ -54,10 +122,12 @@ export function ExchangeView({
     offerRequiredDeposit > 0
       ? Number(sellerAvailableDeposit) >= offerRequiredDeposit
       : true;
-  if (isLoading) {
+  if (isFetching) {
     return <Loading />;
   }
-
+  if (!offer) {
+    return <div data-testid="notFound">This exchange does not exist</div>;
+  }
   if (isError || !exchangeId) {
     return (
       <div data-testid="errorExchange">
@@ -65,17 +135,78 @@ export function ExchangeView({
       </div>
     );
   }
-
+  const { offerImg, animationUrl, images } = getOfferDetails(offer);
+  const allImages = Array.from(new Set([offerImg, ...images])).filter(isTruthy);
+  // TODO: what if there is animationUrl and images?
+  // const animationUrl = anim
+  //   ? anim
+  //   : "https://bosonprotocol.infura-ipfs.io/ipfs/Qmb1D1pgns4sasxD9Fv4PPwvyrJLbFzczdQJP2aJQz9Y5T";
   return (
-    <>
-      <DetailView
-        hasSellerEnoughFunds={hasSellerEnoughFunds}
-        offer={offer}
-        exchange={exchange}
-        reload={reload}
-        onExchangePolicyClick={onExchangePolicyClick}
-        onBackClick={onBackClick}
-      />
-    </>
+    <GridContainer
+      itemsPerRow={{
+        xs: 1,
+        s: 2,
+        m: 2,
+        l: 2,
+        xl: 2
+      }}
+    >
+      <Grid flexDirection="column" alignItems="center">
+        <ImageWrapper>
+          <DetailOpenSea exchange={exchange} />
+          {animationUrl ? (
+            <Video
+              src={animationUrl}
+              dataTestId="offerAnimationUrl"
+              videoProps={{ muted: true, loop: true, autoPlay: true }}
+              componentWhileLoading={() => (
+                <>
+                  {allImages.length > 0 && (
+                    <DetailSlider
+                      images={allImages}
+                      sliderOptions={SLIDER_OPTIONS}
+                    />
+                  )}
+                </>
+              )}
+            />
+          ) : (
+            <>
+              {allImages.length > 0 && (
+                <DetailSlider
+                  images={allImages}
+                  sliderOptions={SLIDER_OPTIONS}
+                />
+              )}
+            </>
+          )}
+
+          <SellerAndDescription
+            exchange={exchange}
+            onViewFullDescription={onViewFullDescription}
+          />
+        </ImageWrapper>
+      </Grid>
+      <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
+        {hasVariations && (
+          <div style={{ width: "100%" }}>
+            <VariationSelects
+              selectedVariant={variant as VariantV1}
+              variants={[variant] as VariantV1[]}
+              disabled
+            />
+          </div>
+        )}
+        <DetailView
+          hasSellerEnoughFunds={hasSellerEnoughFunds}
+          offer={offer}
+          exchange={exchange}
+          reload={reload}
+          onExchangePolicyClick={onExchangePolicyClick}
+          onRedeem={onNextClick}
+          onPurchaseOverview={onPurchaseOverview}
+        />
+      </Grid>
+    </GridContainer>
   );
 }

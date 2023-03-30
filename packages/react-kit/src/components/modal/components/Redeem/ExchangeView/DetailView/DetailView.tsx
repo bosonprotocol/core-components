@@ -1,13 +1,7 @@
 import dayjs from "dayjs";
 import { BigNumber, ethers } from "ethers";
-import {
-  ArrowRight,
-  ArrowSquareOut,
-  Check,
-  House,
-  Question
-} from "phosphor-react";
-import React, { useEffect, useMemo, useState } from "react";
+import { ArrowRight, ArrowSquareOut, Check, Question } from "phosphor-react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useAccount, useBalance } from "wagmi";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
@@ -16,7 +10,6 @@ import { Exchange } from "../../../../../../types/exchange";
 import Typography from "../../../../../ui/Typography";
 import { Button, ButtonSize } from "../../../../../buttons/Button";
 import { breakpoint } from "../../../../../../lib/ui/breakpoint";
-import { useModal } from "../../../../useModal";
 import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
 import { getItemFromStorage } from "../../../../../widgets/finance/storage/useLocalStorage";
 import { theme } from "../../../../../../theme";
@@ -48,8 +41,6 @@ import DetailTable from "../detail/DetailTable";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
-import ConnectButton from "../../../../../wallet/ConnectButton";
-import { ReactComponent } from "../../../../../../assets/logo.svg";
 
 const colors = theme.colors.light;
 
@@ -102,7 +93,8 @@ interface IDetailWidget {
   reload?: () => void;
   hasMultipleVariants?: boolean;
   onExchangePolicyClick: () => void;
-  onBackClick: () => void;
+  onRedeem: () => void;
+  onPurchaseOverview: () => void;
 }
 
 const getOfferDetailData = (
@@ -290,29 +282,9 @@ const DetailView: React.FC<IDetailWidget> = ({
   hasMultipleVariants,
   reload,
   onExchangePolicyClick,
-  onBackClick
+  onPurchaseOverview,
+  onRedeem
 }) => {
-  const { showModal, hideModal, modalTypes } = useModal();
-  useEffect(() => {
-    showModal("REDEEM", {
-      headerComponent: (
-        <Grid>
-          <House
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer" }}
-          />
-          <Typography tag="h3">{offer.metadata.name}</Typography>
-          <ConnectButton />
-        </Grid>
-      ),
-      footerComponent: (
-        <Grid justifyContent="center" padding="1.5rem 0">
-          <ReactComponent height="24px" />
-        </Grid>
-      )
-    });
-  }, []);
   const { isLteXS } = useBreakpoints();
   const config = useConfigContext();
   const { commitProxyAddress, openseaLinkToOriginalMainnetCollection } = config;
@@ -350,8 +322,6 @@ const DetailView: React.FC<IDetailWidget> = ({
     [exchanges.ExtendedExchangeState.Expired].includes(
       exchangeStatus as unknown as exchanges.ExtendedExchangeState
     );
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isBuyerInsufficientFunds = useMemo(
     () => dataBalance?.value.lt(BigNumber.from(offer.price)),
@@ -402,11 +372,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   const totalHours = voucherRedeemableUntilDate.diff(nowDate, "hours");
   const redeemableDays = Math.floor(totalHours / 24);
   const redeemableHours = totalHours - redeemableDays * 24;
-
-  const whatIsRedeem = () => {
-    // showModal(modalTypes.WHAT_IS_REDEEM, { title: "Commit and Redeem" });
-    console.log("what is redeem"); // TODO: change
-  };
 
   const isChainUnsupported = getItemFromStorage("isChainUnsupported", false);
 
@@ -539,28 +504,25 @@ const DetailView: React.FC<IDetailWidget> = ({
                 variant="primaryFill"
                 size={ButtonSize.Large}
                 disabled={
-                  isChainUnsupported ||
-                  isLoading ||
-                  isOffer ||
-                  isPreview ||
-                  !isBuyer
+                  isChainUnsupported || isOffer || isPreview || !isBuyer
                 }
                 onClick={() => {
-                  showModal(
-                    modalTypes.REDEEM,
-                    {
-                      title: "Redeem your item",
-                      offerName: offer.metadata.name,
-                      offerId: offer.id,
-                      exchangeId: exchange?.id || "",
-                      buyerId: exchange?.buyer.id || "",
-                      sellerId: exchange?.seller.id || "",
-                      sellerAddress: exchange?.seller.assistant || "",
-                      setIsLoading: setIsLoading,
-                      reload
-                    },
-                    "s"
-                  );
+                  // showModal(
+                  //   modalTypes.REDEEM,
+                  //   {
+                  //     title: "Redeem your item",
+                  //     offerName: offer.metadata.name,
+                  //     offerId: offer.id,
+                  //     exchangeId: exchange?.id || "",
+                  //     buyerId: exchange?.buyer.id || "",
+                  //     sellerId: exchange?.seller.id || "",
+                  //     sellerAddress: exchange?.seller.assistant || "",
+                  //     setIsLoading: setIsLoading,
+                  //     reload
+                  //   },
+                  //   "s"
+                  // );
+                  onRedeem();
                 }}
               >
                 <span>Redeem</span>
@@ -588,7 +550,7 @@ const DetailView: React.FC<IDetailWidget> = ({
           {isBeforeRedeem ? (
             <CommitAndRedeemButton
               tag="p"
-              onClick={whatIsRedeem}
+              onClick={onPurchaseOverview}
               style={{ fontSize: "0.75rem", marginTop: 0 }}
             >
               How it works?

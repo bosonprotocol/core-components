@@ -4,25 +4,6 @@ import { theme } from "../../../../../theme";
 
 const colors = theme.colors.light;
 
-export const CommitStepWrapper = styled.div`
-  overflow: hidden;
-  margin: 1rem 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-content: space-between;
-
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  grid-row-gap: 1rem;
-  grid-column-gap: 1rem;
-  ${breakpoint.m} {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  svg {
-    fill: var(--secondary);
-  }
-`;
-
 export const CommitStep = styled.div`
   position: relative;
   padding: 1rem;

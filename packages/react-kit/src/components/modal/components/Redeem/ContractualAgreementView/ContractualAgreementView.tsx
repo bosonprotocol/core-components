@@ -3,10 +3,10 @@ import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import { useModal } from "../../../useModal";
-import { ReactComponent } from "../../../../../assets/logo.svg";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
+import { BosonFooter } from "../BosonFooter";
 
 interface Props {
   onBackClick: () => void;
@@ -25,14 +25,10 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
             style={{ cursor: "pointer" }}
           />
           <Typography tag="h3">Contractual Agreement</Typography>
-          <ConnectButton />
+          <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: (
-        <Grid justifyContent="center" padding="1.5rem 0">
-          <ReactComponent height="24px" />
-        </Grid>
-      )
+      footerComponent: <BosonFooter />
     });
   }, []);
   if (!exchange) {

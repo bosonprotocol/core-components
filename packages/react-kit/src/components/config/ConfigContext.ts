@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 
 export type ConfigProviderProps = {
   dateFormat: string;
+  shortDateFormat: string;
   defaultCurrency: {
     ticker: "USD" | string;
     symbol: "$" | string;
