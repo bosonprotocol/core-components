@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
-import { ExchangeView } from "./ExchangeView/ExchangeView";
+import { ExchangeView } from "./exchangeView/ExchangeView";
 import { MyItems } from "./MyItems/MyItems";
 import { FormModel, FormType } from "./RedeemModalFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
@@ -11,10 +11,12 @@ import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
 import { ConfirmationView } from "./Confirmation/ConfirmationView";
-import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
+import { RedeemSuccess } from "./exchangeView/RedeemSuccess";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
 import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
-import { ExchangeFullDescriptionView } from "./ExchangeFullDescriptionView/ExchangeFullDescriptionView";
+import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
+import { CancellationView } from "./exchangeView/cancellation/CancellationView";
+import { ExpireVoucherView } from "./exchangeView/expireVoucher/ExpireVoucherView";
 
 const validationSchema = Yup.object({
   [FormModel.formFields.name.name]: Yup.string()
@@ -55,7 +57,9 @@ enum ActiveStep {
   EXCHANGE_POLICY,
   CONTRACTUAL_AGREEMENT,
   LICENSE_AGREEMENT,
-  EXCHANGE_FULL_DESCRIPTION
+  EXCHANGE_FULL_DESCRIPTION,
+  CANCELLATION_VIEW,
+  EXPIRE_VOUCHER_VIEW
 }
 
 export default function RedeemModal() {
@@ -141,7 +145,13 @@ export default function RedeemModal() {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
                   }}
+                  onCancelExchange={() =>
+                    setActiveStep(ActiveStep.CANCELLATION_VIEW)
+                  }
                   isValid={isRedeemFormOK}
+                  onRaiseDisputeClick={() => {
+                    // TODO:
+                  }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
@@ -156,11 +166,30 @@ export default function RedeemModal() {
                   onViewFullDescription={() =>
                     setActiveStep(ActiveStep.EXCHANGE_FULL_DESCRIPTION)
                   }
+                  onCancelExchange={() =>
+                    setActiveStep(ActiveStep.CANCELLATION_VIEW)
+                  }
+                  onExpireVoucherClick={() =>
+                    setActiveStep(ActiveStep.EXPIRE_VOUCHER_VIEW)
+                  }
                   isValid={isRedeemFormOK}
                   exchangeId={exchange?.id || ""}
+                  onRaiseDisputeClick={() => {
+                    // TODO:
+                  }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
                 <ExchangeFullDescriptionView
+                  onBackClick={goToPreviousStep}
+                  exchange={exchange}
+                />
+              ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
+                <ExpireVoucherView
+                  onBackClick={goToPreviousStep}
+                  exchange={exchange}
+                />
+              ) : currentStep === ActiveStep.CANCELLATION_VIEW ? (
+                <CancellationView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                 />

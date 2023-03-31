@@ -6,7 +6,6 @@ import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import { useModal } from "../../../useModal";
-import { ReactComponent } from "../../../../../assets/logo.svg";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import { BosonFooter } from "../BosonFooter";

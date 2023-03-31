@@ -20,12 +20,19 @@ const colors = theme.colors.light;
 type Props = {
   onExchangeCardClick: (exchange: Exchange) => void;
   onRedeemClick: (exchange: Exchange) => void;
+  onCancelExchange: (exchange: Exchange) => void;
+  onRaiseDisputeClick: (exchange: Exchange) => void;
   isValid: boolean;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
 
-export function MyItems({ onRedeemClick, onExchangeCardClick }: Props) {
+export function MyItems({
+  onRedeemClick,
+  onExchangeCardClick,
+  onCancelExchange,
+  onRaiseDisputeClick
+}: Props) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -88,6 +95,8 @@ export function MyItems({ onRedeemClick, onExchangeCardClick }: Props) {
               {...values}
               onCardClick={onExchangeCardClick}
               onRedeemClick={onRedeemClick}
+              onCancelExchangeClick={onCancelExchange}
+              onRaiseDisputeClick={onRaiseDisputeClick}
             />
           </>
         );

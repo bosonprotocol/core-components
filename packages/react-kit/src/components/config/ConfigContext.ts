@@ -17,6 +17,7 @@ export type ConfigProviderProps = {
   withOwnProducts?: "all" | "mine" | "custom";
   buyerSellerAgreementTemplate: string;
   licenseTemplate: string;
+  contactSellerForExchangeUrl: string;
 };
 
 export const Context = createContext<ConfigProviderProps | null>(null);

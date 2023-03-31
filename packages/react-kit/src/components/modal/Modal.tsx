@@ -19,6 +19,10 @@ const Root = styled.div`
   left: 0;
   right: 0;
   z-index: ${zIndex.Modal};
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const RootBG = styled.div`
@@ -207,29 +211,6 @@ const Content = styled.div<{
   $size: Props["size"];
 }>`
   padding: 2rem;
-  ${({ $size }) =>
-    $size === "fullscreen"
-      ? `
-  max-height: calc(100vh - 4.25rem);
-
-  ${breakpoint.s} {
-    max-height: calc(100vh - 4.25rem);
-  }
-  ${breakpoint.m} {
-    max-height: calc(100vh - 4.25rem);
-  }
-  `
-      : `
-  max-height: calc(100vh - 4.25rem);
-
-  ${breakpoint.s} {
-    max-height: calc(100vh - 4rem - 4.25rem);
-  }
-  ${breakpoint.m} {
-    max-height: calc(100vh - 8rem - 4.25rem);
-  }
-  `};
-  overflow: auto;
 `;
 
 interface Props {

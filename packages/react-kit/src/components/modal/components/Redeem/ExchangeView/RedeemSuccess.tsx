@@ -55,8 +55,7 @@ export function RedeemSuccess({ onClickDone, exchangeId }: Props) {
     isFetching
   } = useExchanges(
     {
-      id: exchangeId,
-      disputed: null
+      id: exchangeId
     },
     {
       enabled: !!exchangeId

@@ -17,21 +17,7 @@ interface Props {
 }
 
 export const useIsSellerInCuractionList = (sellerID: string) => {
-  const curationLists = useCurationLists();
-
-  if (curationLists?.enableCurationLists && sellerID !== "") {
-    if (
-      (curationLists?.sellerCurationList || [])?.length > 0 &&
-      (curationLists?.sellerCurationList || [])?.indexOf(sellerID as string) >
-        -1
-    ) {
-      return true;
-    }
-  } else if (!curationLists?.enableCurationLists) {
-    return true;
-  }
-
-  return false;
+  return useSellerCurationListFn()(sellerID);
 };
 
 export const useSellerCurationListFn = () => {

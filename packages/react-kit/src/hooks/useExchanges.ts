@@ -12,18 +12,9 @@ export type Disputes = subgraph.DisputeFieldsFragment & {
   exchange: { offer: Offer } & subgraph.ExchangeFieldsFragment;
 };
 
-interface Props {
-  disputed?: boolean | null;
-  sellerId?: string;
-  buyerId?: string;
-  state?: subgraph.ExchangeState;
-  id?: string;
-  id_in?: string[];
+interface Props extends Exchange_Filter {
   orderBy?: Exchange_OrderBy | null | undefined;
   orderDirection?: OrderDirection | null | undefined;
-  offerId?: string;
-  first?: number;
-  skip?: number;
 }
 export type ExtendedExchange = NonNullable<
   ReturnType<typeof useExchanges>["data"]
@@ -39,22 +30,15 @@ export function useExchanges(
   return useQuery(
     ["exchanges", props],
     async () => {
+      const { orderBy, orderDirection, ...exchangeFilter } = props;
       const filter: Exchange_Filter = {
-        id: props.id,
-        state: props.state,
-        id_in: props.id_in,
-        seller: props.sellerId,
-        buyer: props.buyerId,
-        ...([true, false].includes(props.disputed as boolean) && {
-          disputed: props.disputed
-        }),
-        offer: props.offerId
+        ...exchangeFilter
       };
       const data = await coreSDK.getExchanges({
         exchangesFilter: filter,
         exchangesFirst: OFFERS_PER_PAGE,
-        exchangesOrderBy: props.orderBy,
-        exchangesOrderDirection: props.orderDirection
+        exchangesOrderBy: orderBy,
+        exchangesOrderDirection: orderDirection
       });
       let loop = data?.length === OFFERS_PER_PAGE;
       let productsSkip = OFFERS_PER_PAGE;
@@ -62,8 +46,8 @@ export function useExchanges(
         const dataToAdd = await coreSDK.getExchanges({
           exchangesFilter: filter,
           exchangesFirst: OFFERS_PER_PAGE,
-          exchangesOrderBy: props.orderBy,
-          exchangesOrderDirection: props.orderDirection,
+          exchangesOrderBy: orderBy,
+          exchangesOrderDirection: orderDirection,
           exchangesSkip: productsSkip
         });
         data.push(...dataToAdd);

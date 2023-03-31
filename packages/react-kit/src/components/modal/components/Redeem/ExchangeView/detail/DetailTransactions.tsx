@@ -78,36 +78,38 @@ export default function DetailTransactions({
   }, [timesteps, currency, price, to]);
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <Typography tag="h3">{title || "Exchange History"}</Typography>
-      <Transactions>
-        <thead>
-          <tr>
-            {HEADER.map((name: string, index: number) => (
-              <th key={`transaction_th_${index}`}>{name}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {allRows?.map((row, index) => {
-            if (row) {
-              const date = dayjs(
-                getDateTimestamp(row.timestamp.toString())
-              ).format(`YY.MM.DD, HH:mm`);
+      <div style={{ overflowX: "auto" }}>
+        <Transactions>
+          <thead>
+            <tr>
+              {HEADER.map((name: string, index: number) => (
+                <th key={`transaction_th_${index}`}>{name}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {allRows?.map((row, index) => {
+              if (row) {
+                const date = dayjs(
+                  getDateTimestamp(row.timestamp.toString())
+                ).format(`YY.MM.DD, HH:mm`);
 
-              return (
-                <tr key={`transaction_tr_${index}`}>
-                  <td>{row.event}</td>
-                  <td>{row.from}</td>
-                  <td>{row.to}</td>
-                  <td>{row.price ? `${row.price} ${row.currency}` : "-"}</td>
-                  <td>{date}</td>
-                </tr>
-              );
-            }
-          })}
-        </tbody>
-      </Transactions>
+                return (
+                  <tr key={`transaction_tr_${index}`}>
+                    <td>{row.event}</td>
+                    <td>{row.from}</td>
+                    <td>{row.to}</td>
+                    <td>{row.price ? `${row.price} ${row.currency}` : "-"}</td>
+                    <td>{date}</td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </Transactions>
+      </div>
     </div>
   );
 }

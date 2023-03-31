@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { useModal } from "../../../useModal";
+import Grid from "../../../../../ui/Grid";
+import Typography from "../../../../../ui/Typography";
+import ConnectButton from "../../../../../wallet/ConnectButton";
+import { useModal } from "../../../../useModal";
 import { ArrowLeft } from "phosphor-react";
-import { Exchange } from "../../../../../types/exchange";
-import { BosonFooter } from "../BosonFooter";
+import { Exchange } from "../../../../../../types/exchange";
+import { BosonFooter } from "../../BosonFooter";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 
 interface Props {

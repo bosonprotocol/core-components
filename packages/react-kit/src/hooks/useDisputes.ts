@@ -1,4 +1,4 @@
-import { subgraph } from "@bosonprotocol/react-kit";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { useQuery } from "react-query";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
 

@@ -1,13 +1,12 @@
 import React from "react";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { theme } from "../../../../../theme";
-import { Exchange } from "../../../../../types/exchange";
-import Grid from "../../../../ui/Grid";
-import GridContainer from "../../../../ui/GridContainer";
-import Typography from "../../../../ui/Typography";
-import { DetailGrid } from "../ExchangeView/detail/Detail.style";
-import DetailTable from "../ExchangeView/detail/DetailTable";
-import DetailTransactions from "../ExchangeView/detail/DetailTransactions";
+import { getOfferDetails } from "../../../../../../lib/offer/getOfferDetails";
+import { theme } from "../../../../../../theme";
+import { Exchange } from "../../../../../../types/exchange";
+import Grid from "../../../../../ui/Grid";
+import GridContainer from "../../../../../ui/GridContainer";
+import Typography from "../../../../../ui/Typography";
+import DetailTable from "../detail/DetailTable";
+import DetailTransactions from "../detail/DetailTransactions";
 
 const colors = theme.colors.light;
 

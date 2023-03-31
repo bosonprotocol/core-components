@@ -18,8 +18,7 @@ const formatShortDate = (date: string, shortDateFormat: string) => {
 export default function useTransactionHistory({ exchangeId, tense }: Props) {
   const { shortDateFormat } = useConfigContext();
   const { data: exchanges = [] } = useExchanges({
-    id: exchangeId,
-    disputed: null
+    id: exchangeId
   });
   const { data: disputes = [] } = useDisputes({
     disputesFilter: {

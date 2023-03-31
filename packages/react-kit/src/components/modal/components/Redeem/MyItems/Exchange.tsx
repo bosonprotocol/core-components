@@ -33,6 +33,8 @@ interface Props {
   exchange: ExtendedExchange;
   onCardClick: (exchange: IExchange) => void;
   onRedeemClick: (exchange: IExchange) => void;
+  onCancelExchangeClick: (exchange: IExchange) => void;
+  onRaiseDisputeClick: (exchange: IExchange) => void;
 }
 
 const ExchangeCardWrapper = styled.div`
@@ -55,7 +57,9 @@ export default function Exchange({
   offer,
   exchange,
   onRedeemClick,
-  onCardClick
+  onCardClick,
+  onCancelExchangeClick,
+  onRaiseDisputeClick
 }: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
     sellerId: offer?.seller?.id
@@ -64,8 +68,6 @@ export default function Exchange({
   const [lens] = lensProfiles;
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
 
-  // const { showModal, modalTypes } = useModal();
-  // const navigate = useNavigate();
   const offerImageUrl = offer.metadata?.imageUrl || "";
   const imageSrc = getImageUrl(offerImageUrl, ipfsGateway, {
     height: 500
@@ -86,61 +88,18 @@ export default function Exchange({
   );
 
   const handleOnCardClick = () => {
-    // navigate({
-    //   pathname: generatePath(BosonRoutes.Exchange, {
-    //     [UrlParameters.exchangeId]: exchange.id
-    //   })
-    // });
     onCardClick(exchange);
   };
 
   const handleOnAvatarClick = () => {
-    // navigate({
-    //   pathname: generatePath(BosonRoutes.SellerPage, {
-    //     [UrlParameters.sellerId]: offer.seller.id
-    //   })
-    // });
     console.log("avatar click");
   };
-
-  // const convertedPrice = useConvertedPrice({
-  //   value: offer.price,
-  //   decimals: offer.exchangeToken.decimals,
-  //   symbol: offer.exchangeToken.symbol
-  // });
-
-  // const OFFER_DETAIL_DATA_MODAL = useMemo(
-  //   () => getOfferDetailData(offer, convertedPrice, true),
-  //   [offer, convertedPrice]
-  // );
-
-  // const BASE_MODAL_DATA = useMemo(
-  //   () => ({
-  //     data: OFFER_DETAIL_DATA_MODAL,
-  //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  //     exchange: exchange!,
-  //     animationUrl: offer.metadata.animationUrl || "",
-  //     image: offer.metadata.imageUrl,
-  //     name: offer.metadata.name
-  //   }),
-  //   [
-  //     OFFER_DETAIL_DATA_MODAL,
-  //     exchange,
-  //     offer.metadata.imageUrl,
-  //     offer.metadata.name,
-  //     offer.metadata.animationUrl
-  //   ]
-  // );
 
   const createSpecificCardConfig = () => {
     switch (status) {
       case "REDEEMED": {
         const handleDispute = () => {
-          // showModal(modalTypes.RAISE_DISPUTE, {
-          //   title: "Raise a problem",
-          //   exchangeId: exchange?.id || ""
-          // });
-          console.log("raise dispute");
+          onRaiseDisputeClick(exchange);
         };
         return {
           status: "REDEEMED" as Extract<ExchangeCardStatus, "REDEEMED">,
@@ -159,33 +118,13 @@ export default function Exchange({
         };
       case "COMMITTED": {
         const handleRedeem = () => {
-          // showModal(
-          //   modalTypes.REDEEM,
-          //   {
-          //     title: "Redeem your item",
-          //     exchangeId: exchange?.id || "",
-          //     offerName: offer.metadata.name,
-          //     offerId: offer.id,
-          //     buyerId: exchange?.buyer.id || "",
-          //     sellerId: exchange?.seller.id || "",
-          //     sellerAddress: exchange?.seller.assistant || "",
-          //     refetch
-          //   },
-          //   "s"
-          // );
           onRedeemClick(exchange);
         };
         const handleCancel = () => {
           if (!exchange) {
             return;
           }
-          // showModal(modalTypes.CANCEL_EXCHANGE, {
-          //   title: "Cancel exchange",
-          //   exchange,
-          //   BASE_MODAL_DATA,
-          //   refetch
-          // });
-          console.log("cancel");
+          onCancelExchangeClick(exchange);
         };
         return {
           status: "COMMITTED" as Extract<ExchangeCardStatus, "COMMITTED">,

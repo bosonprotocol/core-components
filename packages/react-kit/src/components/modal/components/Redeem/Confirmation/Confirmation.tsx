@@ -19,7 +19,10 @@ import { theme } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
-import { RedeemButton } from "../../../../cta/exchange/RedeemButton";
+import {
+  RedeemButton,
+  IRedeemButton
+} from "../../../../cta/exchange/RedeemButton";
 import { useEnvContext } from "../../../../environment/EnvironmentContext";
 import SimpleError from "../../../../error/SimpleError";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
@@ -27,7 +30,6 @@ import Grid from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
-import { useModal } from "../../../useModal";
 import { FormModel } from "../RedeemModalFormModel";
 const colors = theme.colors.light;
 
@@ -37,7 +39,11 @@ const StyledGrid = styled(Grid)`
 
 const StyledRedeemButton = styled(ThemedButton)``;
 
-interface Props {
+interface Props
+  extends Pick<
+    IRedeemButton,
+    "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
+  > {
   exchangeId: string;
   offerName: string;
   buyerId: string;
@@ -45,7 +51,6 @@ interface Props {
   sellerAddress: string;
   onBackClick: () => void;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
-  onSuccess?: () => void;
 }
 
 export default function Confirmation({
@@ -56,12 +61,14 @@ export default function Confirmation({
   sellerId,
   sellerAddress,
   onSuccess,
+  onError,
+  onPendingSignature,
+  onPendingTransaction,
   setIsLoading: setLoading
 }: Props) {
   const { envName } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
-  // const addPendingTransaction = useAddPendingTransaction(); // TODO: check
   const { bosonXmtp } = useChatContext();
   const [chatError, setChatError] = useState<Error | null>(null);
   const [redeemError, setRedeemError] = useState<Error | null>(null);
@@ -207,45 +214,25 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
             disabled={isLoading || !isInitializationValid}
             exchangeId={exchangeId}
             envName={envName}
-            onError={(error) => {
+            onError={(...args) => {
+              const [error] = args;
               console.error("Error while redeeming", error);
               setRedeemError(error);
               setIsLoading(false);
               setLoading?.(false);
-              // const hasUserRejectedTx =
-              //   "code" in error &&
-              //   (error as unknown as { code: string }).code ===
-              //     "ACTION_REJECTED";
-              // if (hasUserRejectedTx) {
-              //   showModal("CONFIRMATION_FAILED");
-              // }
+              onError?.(...args);
             }}
-            onPendingSignature={async () => {
+            onPendingSignature={(...args) => {
               setRedeemError(null);
               setIsLoading(true);
               setLoading?.(true);
-              // showModal("WAITING_FOR_CONFIRMATION");
+              onPendingSignature?.(...args);
             }}
-            onPendingTransaction={(hash, isMetaTx) => {
-              // showModal("TRANSACTION_SUBMITTED", {
-              //   action: "Redeem",
-              //   txHash: hash
-              // });
-              // TODO: check
-              // addPendingTransaction({
-              //   type: subgraph.EventType.VoucherRedeemed,
-              //   hash,
-              //   isMetaTx,
-              //   accountType: "Buyer",
-              //   exchange: {
-              //     id: exchangeId,
-              //     offer: {
-              //       id: offerId
-              //     }
-              //   }
-              // });
+            onPendingTransaction={(...args) => {
+              onPendingTransaction?.(...args);
             }}
-            onSuccess={async (_, { exchangeId }) => {
+            onSuccess={async (...args) => {
+              const [, { exchangeId }] = args;
               let createdExchange: subgraph.ExchangeFieldsFragment;
               await poll(
                 async () => {
@@ -265,7 +252,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                   action={`Redeemed exchange: ${offerName}`}
                 />
               ));
-              onSuccess?.();
+              onSuccess?.(...args);
             }}
             web3Provider={signer?.provider as Provider}
             metaTx={coreSDK.metaTxConfig}

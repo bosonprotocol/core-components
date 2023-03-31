@@ -29,10 +29,9 @@ export const Redemption: ComponentStory<typeof RedemptionWidget> =
 Redemption.args = {
   envName: "testing",
   dateFormat: "YYYY/MM/DD",
-  defaultCurrency: {
-    symbol: "USD",
-    ticker: "$"
-  }
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}"
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

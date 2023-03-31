@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { BigNumber, ethers } from "ethers";
 import { ArrowRight, ArrowSquareOut, Check, Question } from "phosphor-react";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useAccount, useBalance } from "wagmi";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
@@ -23,7 +23,7 @@ import {
   CommitAndRedeemButton,
   ContactSellerButton,
   RaiseProblemButton,
-  RedeemLeftButton,
+  ActionMessage,
   StyledCancelButton,
   Widget,
   WidgetUpperGrid
@@ -84,19 +84,6 @@ const RedeemButton = styled(Button)`
   }
 `;
 
-interface IDetailWidget {
-  pageType?: "exchange" | "offer";
-  offer: Offer;
-  exchange?: Exchange;
-  hasSellerEnoughFunds: boolean;
-  isPreview?: boolean;
-  reload?: () => void;
-  hasMultipleVariants?: boolean;
-  onExchangePolicyClick: () => void;
-  onRedeem: () => void;
-  onPurchaseOverview: () => void;
-}
-
 const getOfferDetailData = (
   config: ReturnType<typeof useConfigContext>,
   displayFloat: ReturnType<typeof useDisplayFloat>,
@@ -123,7 +110,7 @@ const getOfferDetailData = (
 
   // if offer is in creation, offer.id does not exist
   const handleShowExchangePolicy = () => {
-    const offerData = offer.id ? undefined : offer;
+    // const offerData = offer.id ? undefined : offer;
     // showModal(modalTypes.EXCHANGE_POLICY_DETAILS, {
     //   title: "Exchange Policy Details",
     //   offerId: offer.id,
@@ -246,7 +233,7 @@ const getOfferDetailData = (
         </>
       ),
       value: (
-        <Typography tag="p">
+        <Typography tag="p" style={{ wordBreak: "break-word" }}>
           Fair Exchange Policy{" "}
           <ArrowSquareOut
             size={20}
@@ -273,6 +260,21 @@ const NOT_REDEEMED_YET = [
   exchanges.ExtendedExchangeState.NotRedeemableYet
 ];
 
+interface IDetailWidget {
+  pageType?: "exchange" | "offer";
+  offer: Offer;
+  exchange?: Exchange;
+  hasSellerEnoughFunds: boolean;
+  isPreview?: boolean;
+  onCancelExchange: () => void;
+  hasMultipleVariants?: boolean;
+  onExchangePolicyClick: () => void;
+  onRedeem: () => void;
+  onPurchaseOverview: () => void;
+  onExpireVoucherClick: () => void;
+  onRaiseDisputeClick: () => void;
+}
+
 const DetailView: React.FC<IDetailWidget> = ({
   pageType,
   offer,
@@ -280,22 +282,26 @@ const DetailView: React.FC<IDetailWidget> = ({
   hasSellerEnoughFunds,
   isPreview = false,
   hasMultipleVariants,
-  reload,
+  onCancelExchange,
   onExchangePolicyClick,
+  onExpireVoucherClick,
   onPurchaseOverview,
+  onRaiseDisputeClick,
   onRedeem
 }) => {
   const { isLteXS } = useBreakpoints();
   const config = useConfigContext();
-  const { commitProxyAddress, openseaLinkToOriginalMainnetCollection } = config;
+  const {
+    commitProxyAddress,
+    openseaLinkToOriginalMainnetCollection,
+    contactSellerForExchangeUrl
+  } = config;
   const displayFloat = useDisplayFloat();
   const { address } = useAccount();
   const isBuyer = exchange?.buyer.wallet === address?.toLowerCase();
   const isOffer = pageType === "offer";
   const isExchange = pageType === "exchange";
-  const exchangeStatus = exchange
-    ? exchanges.getExchangeState(exchange as subgraph.ExchangeFieldsFragment)
-    : null;
+  const exchangeStatus = exchange ? exchanges.getExchangeState(exchange) : null;
 
   const disabledRedeemText =
     exchangeStatus === exchanges.ExtendedExchangeState.NotRedeemableYet
@@ -379,12 +385,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     if (!exchange) {
       return;
     }
-    // showModal(modalTypes.CANCEL_EXCHANGE, {
-    //   title: "Cancel exchange",
-    //   exchange,
-    //   BASE_MODAL_DATA
-    // });
-    console.log("cancel exchange"); // TODO: change
+    onCancelExchange();
   };
 
   const isOfferEmpty = quantity < 1;
@@ -437,41 +438,37 @@ const DetailView: React.FC<IDetailWidget> = ({
     <>
       <Widget>
         {isExchange && isToRedeem && (
-          <RedeemLeftButton>
+          <ActionMessage>
             {redeemableDays > 0
               ? `${redeemableDays} days left to Redeem`
               : `${redeemableHours} hours left to Redeem`}
-          </RedeemLeftButton>
+          </ActionMessage>
         )}
         <div>
           {isExchange && isExchangeExpired && (
-            <Grid
-              alignItems="center"
-              justifyContent="space-between"
-              style={{ margin: "-1rem 0 1rem 0", cursor: "pointer" }}
-              onClick={() => {
-                if (exchange) {
-                  // showModal(
-                  //   modalTypes.EXPIRE_VOUCHER_MODAL,
-                  //   {
-                  //     title: "Expire Voucher",
-                  //     exchange
-                  //   },
-                  //   "auto"
-                  // );
-                  console.log("expire voucher"); // TODO: change
-                }
-              }}
-            >
-              <Typography
-                tag="p"
-                style={{ color: colors.darkGrey, margin: 0 }}
-                $fontSize="0.75rem"
+            <ActionMessage>
+              <Grid
+                alignItems="center"
+                justifyContent="space-between"
+                style={{
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  if (exchange) {
+                    onExpireVoucherClick();
+                  }
+                }}
               >
-                You can withdraw your funds here
-              </Typography>
-              <ArrowRight size={18} color={colors.darkGrey} />
-            </Grid>
+                <Typography
+                  tag="p"
+                  style={{ color: colors.darkGrey, margin: 0 }}
+                  $fontSize="0.75rem"
+                >
+                  You can withdraw your funds here
+                </Typography>
+                <ArrowRight size={18} color={colors.darkGrey} />
+              </Grid>
+            </ActionMessage>
           )}
           <WidgetUpperGrid
             style={{ paddingBottom: !isExchange || isLteXS ? "0.5rem" : "0" }}
@@ -507,21 +504,6 @@ const DetailView: React.FC<IDetailWidget> = ({
                   isChainUnsupported || isOffer || isPreview || !isBuyer
                 }
                 onClick={() => {
-                  // showModal(
-                  //   modalTypes.REDEEM,
-                  //   {
-                  //     title: "Redeem your item",
-                  //     offerName: offer.metadata.name,
-                  //     offerId: offer.id,
-                  //     exchangeId: exchange?.id || "",
-                  //     buyerId: exchange?.buyer.id || "",
-                  //     sellerId: exchange?.seller.id || "",
-                  //     sellerAddress: exchange?.seller.assistant || "",
-                  //     setIsLoading: setIsLoading,
-                  //     reload
-                  //   },
-                  //   "s"
-                  // );
                   onRedeem();
                 }}
               >
@@ -575,7 +557,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             isConditionMet={isConditionMet}
           />
         )}
-        <div style={{ paddingTop: "2rem" }}>
+        <div style={{ paddingTop: "2rem", paddingBottom: "2rem" }}>
           <DetailTable
             align
             noBorder
@@ -589,17 +571,20 @@ const DetailView: React.FC<IDetailWidget> = ({
             <Grid as="section">
               <ContactSellerButton
                 onClick={() => {
-                  // navigate({
-                  //   pathname: `${BosonRoutes.Chat}/${exchange?.id || ""}`
-                  // })
-                  console.log("contact seller"); // TODO: change
+                  const contactSellerForExchangeUrlWithId =
+                    contactSellerForExchangeUrl.replace(
+                      "{id}",
+                      exchange?.id || ""
+                    );
+                  window.open(contactSellerForExchangeUrlWithId, "_blank");
                 }}
                 theme="blank"
                 style={{ fontSize: "0.875rem" }}
-                disabled={isChainUnsupported || !isBuyer}
+                disabled={
+                  isChainUnsupported || !isBuyer || !contactSellerForExchangeUrl
+                }
               >
                 Contact seller
-                <Question size={18} />
               </ContactSellerButton>
               {isBeforeRedeem ? (
                 <>
@@ -619,7 +604,6 @@ const DetailView: React.FC<IDetailWidget> = ({
                       disabled={isChainUnsupported || !isBuyer}
                     >
                       Cancel
-                      <Question size={18} />
                     </StyledCancelButton>
                   )}
                 </>
@@ -628,11 +612,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                   {!exchange?.disputed && (
                     <RaiseProblemButton
                       onClick={() => {
-                        // showModal(modalTypes.RAISE_DISPUTE, {
-                        //   title: "Raise a problem",
-                        //   exchangeId: exchange?.id || ""
-                        // });
-                        console.log("raise dispute"); // TODO: change
+                        onRaiseDisputeClick();
                       }}
                       theme="blank"
                       style={{ fontSize: "0.875rem" }}

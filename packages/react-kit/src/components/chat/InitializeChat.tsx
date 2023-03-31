@@ -20,9 +20,9 @@ const Info = styled(Grid)`
 `;
 
 const Icon = styled(ChatDots)`
-  fill: var(--secondary);
+  fill: var(--accent);
   path {
-    stroke: var(--secondary);
+    stroke: var(--accent);
   }
 `;
 

@@ -10,6 +10,7 @@ import {
 } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import Loading from "../../../../ui/loading/Loading";
 import { Exchange } from "../../../../../types/exchange";
+import { useCurationLists } from "../../../../../hooks/useCurationLists";
 
 const orderProps = {
   orderBy: Exchange_OrderBy.CommittedDate,
@@ -19,6 +20,8 @@ const orderProps = {
 interface CommonProps {
   onCardClick: (exchange: Exchange) => void;
   onRedeemClick: (exchange: Exchange) => void;
+  onCancelExchangeClick: (exchange: Exchange) => void;
+  onRaiseDisputeClick: (exchange: Exchange) => void;
 }
 
 interface WrappedComponentProps extends CommonProps {
@@ -39,24 +42,66 @@ export function WithExchangesData(
 ) {
   const ComponentWithExchangesData = (props: WithExchangesProps) => {
     const { buyerId, committed, redeemed, disputed, completed } = props;
+    const { enableCurationLists, offerCurationList, sellerCurationList } =
+      useCurationLists();
     const committedExchanges = useExchanges(
-      { ...orderProps, state: ExchangeState.Committed, buyerId },
+      {
+        ...orderProps,
+        state: ExchangeState.Committed,
+        buyer: buyerId,
+        ...(enableCurationLists && {
+          offer_in: offerCurationList,
+          seller_in: sellerCurationList
+        })
+      },
       { enabled: !!buyerId && committed }
     );
     const cancelledExchanges = useExchanges(
-      { ...orderProps, state: ExchangeState.Cancelled, buyerId },
+      {
+        ...orderProps,
+        state: ExchangeState.Cancelled,
+        buyer: buyerId,
+        ...(enableCurationLists && {
+          offer_in: offerCurationList,
+          seller_in: sellerCurationList
+        })
+      },
       { enabled: !!buyerId && committed }
     );
     const disputedExchanges = useExchanges(
-      { ...orderProps, state: ExchangeState.Disputed, buyerId },
+      {
+        ...orderProps,
+        state: ExchangeState.Disputed,
+        buyer: buyerId,
+        ...(enableCurationLists && {
+          offer_in: offerCurationList,
+          seller_in: sellerCurationList
+        })
+      },
       { enabled: !!buyerId && disputed }
     );
     const redeemedExchanges = useExchanges(
-      { ...orderProps, state: ExchangeState.Redeemed, buyerId },
+      {
+        ...orderProps,
+        state: ExchangeState.Redeemed,
+        buyer: buyerId,
+        ...(enableCurationLists && {
+          offer_in: offerCurationList,
+          seller_in: sellerCurationList
+        })
+      },
       { enabled: !!buyerId && redeemed }
     );
     const completedExchanges = useExchanges(
-      { ...orderProps, state: ExchangeState.Completed, buyerId },
+      {
+        ...orderProps,
+        state: ExchangeState.Completed,
+        buyer: buyerId,
+        ...(enableCurationLists && {
+          offer_in: offerCurationList,
+          seller_in: sellerCurationList
+        })
+      },
       { enabled: !!buyerId && completed }
     );
 

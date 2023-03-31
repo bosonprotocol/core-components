@@ -8,15 +8,15 @@ import InitializeChat from "./InitializeChat";
 import Typography from "../ui/Typography";
 
 const CheckIcon = styled(CheckCircle)`
-  color: var(--secondary);
+  color: var(--primary);
   path {
-    stroke: var(--secondary);
+    stroke: var(--primary);
   }
 `;
 const ChatDotsIcon = styled(ChatDots)`
-  fill: var(--secondary);
+  fill: var(--accent);
   path {
-    stroke: var(--secondary);
+    stroke: var(--accent);
   }
 `;
 
@@ -39,11 +39,11 @@ export default function InitializeChatWithSuccess() {
             <Grid justifyContent="flex-start" gap="1rem">
               <ChatDotsIcon size={24} />
               <Typography>
-                You succesfully initialized your chat client
+                You successfully initialized your chat client
               </Typography>
             </Grid>
             <div>
-              <CheckIcon />
+              <CheckIcon size={24} />
             </div>
           </Grid>
         </div>

@@ -220,6 +220,9 @@ export const GlideWrapper = styled.div`
 
 export const GlideSlide = styled.div`
   overflow: hidden;
+  .glide__slide--active {
+    align-self: center;
+  }
 `;
 
 const tableBorder = css`
@@ -316,7 +319,7 @@ export const Table = styled.table<{
               font-weight: 600;
               > p, > p > small {
                 font-weight: 600;
-                white-space: pre;
+                white-space: pre-wrap;
               }
           }
         }
@@ -496,13 +499,8 @@ export const Widget = styled.div`
   background: ${colors.white};
   font-family: "Plus Jakarta Sans";
   > div {
-    padding: 0 2rem;
-    &:first-of-type {
-      padding-top: 2rem;
-    }
-    &:last-of-type {
-      padding-bottom: 2rem;
-    }
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   box-shadow: 0px 4.318px 107.946px rgba(21, 30, 52, 0.1);
@@ -519,7 +517,6 @@ const miniButton = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 2rem;
   background: ${colors.white};
   color: ${colors.blue};
 
@@ -532,12 +529,9 @@ const miniButton = css`
   }
 `;
 export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
-  /* position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0; */
   z-index: ${zIndex.OfferStatus};
   border: 2px solid ${colors.border};
+  padding: 1rem;
   ${miniButton}
 
   ${({ $disabled }) =>
@@ -551,23 +545,16 @@ export const OpenSeaButton = styled.a<{ $disabled: boolean }>`
     `}
 `;
 
-export const RedeemLeftButton = styled.button`
-  position: absolute;
-  top: -2rem;
-  left: 0;
-  right: 0;
+export const ActionMessage = styled.div`
   border-width: 0;
   border-bottom: 2px solid ${colors.border};
   z-index: ${zIndex.OfferStatus};
-
-  cursor: pointer;
-  transition: all 150ms ease-in-out;
-  &:hover {
-    background: ${colors.lightGrey};
-  }
-
-  ${miniButton}
-  color: ${colors.black};
+  /* padding: 1rem 2rem; */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: ${colors.darkGrey};
+  font-size: 0.75rem;
+  font-weight: 600;
 `;
 
 export const CommitAndRedeemButton = styled(Typography)`
@@ -602,7 +589,7 @@ export const RaiseProblemButton = styled(ThemedButton)`
 `;
 export const StyledCancelButton = RaiseProblemButton;
 export const ContactSellerButton = styled(RaiseProblemButton)`
-  color: ${colors.secondary};
+  color: ${colors.accent};
 `;
 
 export const Break = styled.span`

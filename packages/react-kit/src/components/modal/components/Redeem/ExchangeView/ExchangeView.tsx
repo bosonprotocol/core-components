@@ -1,5 +1,5 @@
 import { House } from "phosphor-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
@@ -8,7 +8,6 @@ import { VariantV1 } from "../../../../../types/variants";
 import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
-import Video from "../../../../ui/Video";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import { useModal } from "../../../useModal";
 import DetailOpenSea from "./detail/DetailOpenSea";
@@ -33,9 +32,12 @@ const ImageWrapper = styled.div`
 type Props = {
   onHouseClick: () => void;
   onNextClick: () => void;
+  onCancelExchange: () => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;
+  onExpireVoucherClick: () => void;
+  onRaiseDisputeClick: () => void;
   exchangeId: string;
   isValid: boolean;
 };
@@ -50,20 +52,21 @@ const SLIDER_OPTIONS = {
 export function ExchangeView({
   onHouseClick,
   onNextClick,
+  onCancelExchange,
   onExchangePolicyClick,
   onPurchaseOverview,
   onViewFullDescription,
+  onExpireVoucherClick,
+  onRaiseDisputeClick,
   exchangeId
 }: Props) {
   const {
     data: exchanges,
     isError,
-    isFetching,
-    refetch: reload
+    isFetching
   } = useExchanges(
     {
-      id: exchangeId,
-      disputed: null
+      id: exchangeId
     },
     {
       enabled: !!exchangeId
@@ -122,6 +125,14 @@ export function ExchangeView({
     offerRequiredDeposit > 0
       ? Number(sellerAvailableDeposit) >= offerRequiredDeposit
       : true;
+  const { offerImg, animationUrl, images } = offer
+    ? getOfferDetails(offer)
+    : ({} as ReturnType<typeof getOfferDetails>);
+  const allImages = useMemo(() => {
+    return Array.from(new Set([offerImg || "", ...(images || [])])).filter(
+      isTruthy
+    );
+  }, [offerImg, images]);
   if (isFetching) {
     return <Loading />;
   }
@@ -135,12 +146,7 @@ export function ExchangeView({
       </div>
     );
   }
-  const { offerImg, animationUrl, images } = getOfferDetails(offer);
-  const allImages = Array.from(new Set([offerImg, ...images])).filter(isTruthy);
-  // TODO: what if there is animationUrl and images?
-  // const animationUrl = anim
-  //   ? anim
-  //   : "https://bosonprotocol.infura-ipfs.io/ipfs/Qmb1D1pgns4sasxD9Fv4PPwvyrJLbFzczdQJP2aJQz9Y5T";
+
   return (
     <GridContainer
       itemsPerRow={{
@@ -154,32 +160,16 @@ export function ExchangeView({
       <Grid flexDirection="column" alignItems="center">
         <ImageWrapper>
           <DetailOpenSea exchange={exchange} />
-          {animationUrl ? (
-            <Video
-              src={animationUrl}
-              dataTestId="offerAnimationUrl"
-              videoProps={{ muted: true, loop: true, autoPlay: true }}
-              componentWhileLoading={() => (
-                <>
-                  {allImages.length > 0 && (
-                    <DetailSlider
-                      images={allImages}
-                      sliderOptions={SLIDER_OPTIONS}
-                    />
-                  )}
-                </>
-              )}
-            />
-          ) : (
-            <>
-              {allImages.length > 0 && (
-                <DetailSlider
-                  images={allImages}
-                  sliderOptions={SLIDER_OPTIONS}
-                />
-              )}
-            </>
-          )}
+
+          <>
+            {(allImages.length > 0 || animationUrl) && (
+              <DetailSlider
+                animationUrl={animationUrl}
+                images={allImages}
+                sliderOptions={SLIDER_OPTIONS}
+              />
+            )}
+          </>
 
           <SellerAndDescription
             exchange={exchange}
@@ -201,10 +191,15 @@ export function ExchangeView({
           hasSellerEnoughFunds={hasSellerEnoughFunds}
           offer={offer}
           exchange={exchange}
-          reload={reload}
+          onCancelExchange={onCancelExchange}
           onExchangePolicyClick={onExchangePolicyClick}
           onRedeem={onNextClick}
           onPurchaseOverview={onPurchaseOverview}
+          onExpireVoucherClick={onExpireVoucherClick}
+          onRaiseDisputeClick={onRaiseDisputeClick}
+          pageType="exchange"
+          hasMultipleVariants={false}
+          isPreview={false}
         />
       </Grid>
     </GridContainer>

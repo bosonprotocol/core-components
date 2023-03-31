@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 import { Exchange } from "../../types/exchange";
 import { useConfigContext } from "../config/ConfigContext";
-import DetailTable from "../modal/components/Redeem/ExchangeView/detail/DetailTable";
+import DetailTable from "../modal/components/Redeem/exchangeView/detail/DetailTable";
 import Grid from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";
@@ -47,7 +47,7 @@ export default function FairExchangePolicy({
           {
             name: "Policy name",
             value: (
-              <Grid justifyContent="flex-end">
+              <Grid justifyContent="flex-end" style={{ textAlign: "right" }}>
                 <Typography>Fair Exchange Policy v1.0</Typography>
               </Grid>
             )
@@ -55,7 +55,7 @@ export default function FairExchangePolicy({
           {
             name: "Dispute Period",
             value: (
-              <Grid justifyContent="flex-end">
+              <Grid justifyContent="flex-end" style={{ textAlign: "right" }}>
                 <Typography>Min. {minimumDisputePeriodInDays} days</Typography>
               </Grid>
             )
@@ -63,7 +63,7 @@ export default function FairExchangePolicy({
           {
             name: "Escalation Period",
             value: (
-              <Grid justifyContent="flex-end">
+              <Grid justifyContent="flex-end" style={{ textAlign: "right" }}>
                 <Typography>
                   Min. {minimumDisputeResolutionPeriodDays} days
                 </Typography>
@@ -73,7 +73,7 @@ export default function FairExchangePolicy({
           {
             name: "Redeemable NFT Terms",
             value: (
-              <Grid justifyContent="flex-end">
+              <Grid justifyContent="flex-end" style={{ textAlign: "right" }}>
                 <NoPaddingButton
                   theme="blankOutline"
                   onClick={() => onLicenseAgreementClick()}
@@ -87,7 +87,7 @@ export default function FairExchangePolicy({
           {
             name: "Buyer & Seller Agreement",
             value: (
-              <Grid justifyContent="flex-end">
+              <Grid justifyContent="flex-end" style={{ textAlign: "right" }}>
                 <NoPaddingButton
                   theme="blankOutline"
                   onClick={() => onContractualAgreementClick()}

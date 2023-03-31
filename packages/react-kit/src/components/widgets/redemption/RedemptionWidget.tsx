@@ -56,10 +56,12 @@ type WidgetProps = Props &
       "ipfsGateway" | "ipfsImageGateway" | "ipfsMetadataStorageUrl"
     >
   > &
-  ConfigProviderProps & {
+  Omit<ConfigProviderProps, "defaultCurrency"> & {
     envName: EnvironmentType;
     ipfsProjectId: string;
     ipfsProjectSecret: string;
+    defaultCurrencyTicker: string;
+    defaultCurrencySymbol: string;
   };
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,7 +85,10 @@ export function RedemptionWidget(props: WidgetProps) {
       <ConfigProvider
         dateFormat={props.dateFormat || "YYYY/MM/DD"}
         shortDateFormat={props.shortDateFormat || "MMM DD, YYYY"}
-        defaultCurrency={props.defaultCurrency}
+        defaultCurrency={{
+          ticker: props.defaultCurrencyTicker,
+          symbol: props.defaultCurrencySymbol
+        }}
         minimumDisputePeriodInDays={props.minimumDisputePeriodInDays || 30}
         minimumDisputeResolutionPeriodDays={
           props.minimumDisputeResolutionPeriodDays || 15
@@ -96,6 +101,15 @@ export function RedemptionWidget(props: WidgetProps) {
           props.licenseTemplate ||
           "ipfs://QmUxAXqM6smDYj7TvS9oDe5kRoAVmkqcyWCKEeNsD6JA97"
         }
+        contactSellerForExchangeUrl={props.contactSellerForExchangeUrl}
+        commitProxyAddress={props.commitProxyAddress}
+        enableCurationLists={props.enableCurationLists}
+        offerCurationList={props.offerCurationList}
+        openseaLinkToOriginalMainnetCollection={
+          props.openseaLinkToOriginalMainnetCollection
+        }
+        sellerCurationList={props.sellerCurationList}
+        withOwnProducts={props.withOwnProducts}
       >
         <QueryClientProvider client={queryClient}>
           <WalletConnectionProvider envName={props.envName}>
