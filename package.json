@@ -31,12 +31,14 @@
     "ipfs-upload": "ts-node -P tsconfig.base.json ./scripts/upload-to-ipfs.ts",
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
     "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
+    "create-offer-batch": "ts-node -P tsconfig.base.json ./scripts/create-offer-batch.ts",
     "create-seller": "ts-node -P tsconfig.base.json ./scripts/create-seller.ts",
     "update-seller": "ts-node -P tsconfig.base.json ./scripts/update-seller.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv",
     "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
-    "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts"
+    "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts",
+    "update-contract-uri": "ts-node -P tsconfig.base.json ./scripts/change-contract-uri.ts"
   },
   "repository": {
     "type": "git",

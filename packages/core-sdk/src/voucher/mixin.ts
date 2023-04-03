@@ -166,6 +166,24 @@ export class VoucherMixin extends BaseCoreSDK {
     });
   }
 
+  public async setContractURI(
+    contractURI: string,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    return handler.setContractURI({
+      contractURI,
+      contractAddress: overrides.contractAddress || seller.voucherCloneAddress,
+      web3Lib: this._web3Lib
+    });
+  }
+
   public async validateSeaportOrders(
     openseaConduit: string,
     seaportContract: string,

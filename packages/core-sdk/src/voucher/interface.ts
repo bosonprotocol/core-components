@@ -84,3 +84,68 @@ export function encodeWithdrawToProtocol(tokenList: string[]) {
     tokenList
   ]);
 }
+
+export function encodeSetContractURI(contractURI: string) {
+  return bosonVoucherIface.encodeFunctionData("setContractURI", [contractURI]);
+}
+
+const ownableIface = new Interface([
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  }
+]);
+
+export function encodeOwner() {
+  return ownableIface.encodeFunctionData("owner");
+}
+
+export function decodeOwner(result: string): string {
+  const [owner] = ownableIface.decodeFunctionResult("owner", result);
+  return owner;
+}
+
+const eRC2771ContextIface = new Interface([
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address"
+      }
+    ],
+    name: "isTrustedForwarder",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  }
+]);
+
+export function encodeIsTrustedForwarder(forwarder: string) {
+  return eRC2771ContextIface.encodeFunctionData("isTrustedForwarder", [
+    forwarder
+  ]);
+}
+
+export function decodeIsTrustedForwarder(result: string): boolean {
+  const [isTrustedForwarder] = eRC2771ContextIface.decodeFunctionResult(
+    "isTrustedForwarder",
+    result
+  );
+  return isTrustedForwarder;
+}

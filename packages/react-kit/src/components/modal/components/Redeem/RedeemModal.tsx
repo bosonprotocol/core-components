@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
-import { ExchangeView, ExchangeViewProps } from "./exchangeView/ExchangeView";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
 import { FormModel, FormType } from "./RedeemModalFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
@@ -14,18 +13,20 @@ import {
   ConfirmationView,
   ConfirmationViewProps
 } from "./Confirmation/ConfirmationView";
-import { RedeemSuccess } from "./exchangeView/RedeemSuccess";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
 import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
-import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
-import {
-  CancellationView,
-  CancellationViewProps
-} from "./exchangeView/cancellation/CancellationView";
+
+import { RedeemSuccess } from "./exchangeView/RedeemSuccess";
 import {
   ExpireVoucherView,
   ExpireVoucherViewProps
 } from "./exchangeView/expireVoucher/ExpireVoucherView";
+import { ExchangeView, ExchangeViewProps } from "./exchangeView/ExchangeView";
+import {
+  CancellationView,
+  CancellationViewProps
+} from "./exchangeView/cancellation/CancellationView";
+import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
 
 const validationSchema = Yup.object({
   [FormModel.formFields.name.name]: Yup.string()

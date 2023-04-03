@@ -5,13 +5,18 @@ import {
   decodeGetAvailablePreMints,
   decodeGetRangeByOfferId,
   decodeIsApprovedForAll,
+  decodeIsTrustedForwarder,
+  decodeOwner,
   encodeBurnPremintedVouchers,
   encodeCallExternalContract,
   encodeGetAvailablePreMints,
   encodeGetRangeByOfferId,
   encodeIsApprovedForAll,
+  encodeIsTrustedForwarder,
+  encodeOwner,
   encodePreMint,
   encodeSetApprovalForAllToContract,
+  encodeSetContractURI,
   encodeTransferFrom,
   encodeWithdrawToProtocol
 } from "./interface";
@@ -25,6 +30,29 @@ export async function burnPremintedVouchers(args: {
     to: args.contractAddress,
     data: encodeBurnPremintedVouchers(args.offerId)
   });
+}
+
+export async function owner(args: {
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeOwner()
+  });
+  return decodeOwner(result);
+}
+
+export async function isTrustedForwarder(args: {
+  forwarder: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<boolean> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeIsTrustedForwarder(args.forwarder)
+  });
+  return decodeIsTrustedForwarder(result);
 }
 
 export async function getAvailablePreMints(args: {
@@ -95,6 +123,17 @@ export async function isApprovedForAll(args: {
   });
   const [isApproved] = decodeIsApprovedForAll(result);
   return isApproved;
+}
+
+export async function setContractURI(args: {
+  contractURI: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return await args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeSetContractURI(args.contractURI)
+  });
 }
 
 export async function callExternalContract(args: {
