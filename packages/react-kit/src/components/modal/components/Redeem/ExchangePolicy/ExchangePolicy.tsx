@@ -42,6 +42,7 @@ export function ExchangePolicy({
       ),
       footerComponent: <BosonFooter />
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchangeName]);
   if (!exchange) {
     return <p>Exchange could not be retrieved</p>;

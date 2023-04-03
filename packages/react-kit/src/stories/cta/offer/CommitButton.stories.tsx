@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { CommitButton } from "../../../components/cta/offer/CommitButton";

@@ -1,6 +1,5 @@
 import React from "react";
 import { Image as AccountImage } from "@davatar/react";
-import { generatePath } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { useAccount } from "wagmi";
 

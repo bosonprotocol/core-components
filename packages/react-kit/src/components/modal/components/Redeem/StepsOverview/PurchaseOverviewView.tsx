@@ -25,6 +25,7 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
       ),
       footerComponent: <BosonFooter />
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <PurchaseOverview />;
 }

@@ -59,6 +59,7 @@ export function RedeemSuccess({
         background: colors.lightGrey
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { redeemCallbackUrl } = useConfigContext();
   const {

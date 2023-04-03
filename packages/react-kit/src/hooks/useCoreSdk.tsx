@@ -71,6 +71,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
   useEffect(() => {
     const newCoreSdk = initCoreSdk(config);
     setCoreSdk(newCoreSdk);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.web3Provider, config.envName]);
 
   return coreSdk;

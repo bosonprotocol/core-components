@@ -90,22 +90,20 @@ export default function DetailTransactions({
             </tr>
           </thead>
           <tbody>
-            {allRows?.map((row, index) => {
-              if (row) {
-                const date = dayjs(
-                  getDateTimestamp(row.timestamp.toString())
-                ).format(`YY.MM.DD, HH:mm`);
+            {allRows.map((row, index) => {
+              const date = dayjs(
+                getDateTimestamp(row.timestamp.toString())
+              ).format(`YY.MM.DD, HH:mm`);
 
-                return (
-                  <tr key={`transaction_tr_${index}`}>
-                    <td>{row.event}</td>
-                    <td>{row.from}</td>
-                    <td>{row.to}</td>
-                    <td>{row.price ? `${row.price} ${row.currency}` : "-"}</td>
-                    <td>{date}</td>
-                  </tr>
-                );
-              }
+              return (
+                <tr key={`transaction_tr_${index}`}>
+                  <td>{row.event}</td>
+                  <td>{row.from}</td>
+                  <td>{row.to}</td>
+                  <td>{row.price ? `${row.price} ${row.currency}` : "-"}</td>
+                  <td>{date}</td>
+                </tr>
+              );
             })}
           </tbody>
         </Transactions>

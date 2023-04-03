@@ -49,6 +49,7 @@ export function MyItems({
         background: colors.lightGrey
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({

@@ -32,6 +32,7 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
       ),
       footerComponent: <BosonFooter />
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchange]);
   if (!exchange) {
     return <p>Exchange could not be retrieved</p>;

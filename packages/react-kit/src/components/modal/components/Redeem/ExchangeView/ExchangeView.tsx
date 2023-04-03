@@ -101,6 +101,7 @@ export function ExchangeView({
         background: colors.lightGrey
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offer]);
 
   const variant = {

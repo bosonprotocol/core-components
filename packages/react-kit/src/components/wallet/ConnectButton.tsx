@@ -9,7 +9,6 @@ import { Button, ButtonSize } from "../buttons/Button";
 import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
-import { useDisconnect } from "wagmi";
 import { Wallet } from "phosphor-react";
 
 const MetaMaskLogo = styled.img`

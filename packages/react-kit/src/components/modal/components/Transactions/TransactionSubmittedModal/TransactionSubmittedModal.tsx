@@ -5,11 +5,10 @@ import styled from "styled-components";
 
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import { GenericModalProps, ModalProps } from "../../../ModalContext";
+import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
-import { useConfigContext } from "../../../../config/ConfigContext";
 import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
 
 const colors = theme.colors.light;

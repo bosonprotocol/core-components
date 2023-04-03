@@ -246,6 +246,7 @@ const getOfferDetailData = (
     {
       name: DetailDisputeResolver.name,
       info: DetailDisputeResolver.info,
+      // eslint-disable-next-line react/jsx-pascal-case
       value: <DetailDisputeResolver.value />
     }
   ];

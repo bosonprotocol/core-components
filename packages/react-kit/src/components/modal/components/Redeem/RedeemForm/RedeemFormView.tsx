@@ -32,6 +32,7 @@ export default function RedeemFormView({
       ),
       footerComponent: <BosonFooter />
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { isLteXS } = useBreakpoints();
   return (

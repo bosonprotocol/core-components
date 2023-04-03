@@ -46,6 +46,7 @@ function Redemption({
       ),
       footerComponent: <BosonFooter />
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalProps]);
   if (Trigger) {
     return <Trigger onClick={onClick} />;
