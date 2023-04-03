@@ -580,6 +580,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                   window.open(contactSellerForExchangeUrlWithId, "_blank");
                 }}
                 theme="blank"
+                type="button"
                 style={{ fontSize: "0.875rem" }}
                 disabled={
                   isChainUnsupported || !isBuyer || !contactSellerForExchangeUrl
@@ -601,6 +602,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                     <StyledCancelButton
                       onClick={handleCancel}
                       theme="blank"
+                      type="button"
                       style={{ fontSize: "0.875rem" }}
                       disabled={isChainUnsupported || !isBuyer}
                     >
@@ -615,6 +617,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                       onClick={() => {
                         onRaiseDisputeClick();
                       }}
+                      type="button"
                       theme="blank"
                       style={{ fontSize: "0.875rem" }}
                       disabled={exchange?.state !== "REDEEMED" || !isBuyer}

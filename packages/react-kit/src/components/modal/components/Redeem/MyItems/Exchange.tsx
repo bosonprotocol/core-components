@@ -109,8 +109,9 @@ export default function Exchange({
           disputeButtonConfig: {
             onClick: handleDispute,
             variant: "secondaryInverted" as const,
-            showBorder: false
-          }
+            showBorder: false,
+            type: "button"
+          } as const
         };
       }
       case "CANCELLED":
@@ -133,11 +134,13 @@ export default function Exchange({
           isCTAVisible: isBuyer,
           bottomText: handleText,
           redeemButtonConfig: {
-            onClick: handleRedeem
-          },
+            onClick: handleRedeem,
+            type: "button"
+          } as const,
           cancelButtonConfig: {
-            onClick: handleCancel
-          }
+            onClick: handleCancel,
+            type: "button"
+          } as const
         };
       }
       default:
