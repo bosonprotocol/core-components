@@ -29,7 +29,7 @@ const ImageWrapper = styled.div`
   width: -webkit-fill-available;
 `;
 
-type Props = {
+export type ExchangeViewProps = {
   onHouseClick: () => void;
   onNextClick: () => void;
   onCancelExchange: () => void;
@@ -59,7 +59,7 @@ export function ExchangeView({
   onExpireVoucherClick,
   onRaiseDisputeClick,
   exchangeId
-}: Props) {
+}: ExchangeViewProps) {
   const {
     data: exchanges,
     isError,

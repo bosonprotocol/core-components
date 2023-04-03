@@ -24,16 +24,16 @@ export function useHandleText(offer: Offer, dateFormat = "YYYY/MM/DD") {
             getDateTimestamp(variant.validFromDate)
           ) || [0])
         )
-      : offer?.validFromDate;
-    const latestValidFromDate = hasVariants
+      : getDateTimestamp(offer?.validFromDate);
+    const latestValidUntilDate = hasVariants
       ? Math.max(
           ...(validVariants.map((variant) =>
             getDateTimestamp(variant.validUntilDate)
           ) || [0])
         )
-      : offer?.validFromDate;
+      : getDateTimestamp(offer?.validUntilDate);
     const release = dayjs(earliestValidFromDate);
-    const expiry = dayjs(latestValidFromDate);
+    const expiry = dayjs(latestValidUntilDate);
 
     return {
       current,

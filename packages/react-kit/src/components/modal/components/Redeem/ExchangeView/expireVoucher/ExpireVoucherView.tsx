@@ -6,16 +6,18 @@ import { useModal } from "../../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { BosonFooter } from "../../BosonFooter";
-import ExpireVoucher from "./ExpireVoucher";
+import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 
-interface ExpireVoucherViewProps {
-  onBackClick: () => void;
+export interface ExpireVoucherViewProps {
+  onBackClick: ExpireVoucherProps["onBackClick"];
+  onSuccess: ExpireVoucherProps["onSuccess"];
   exchange: Exchange | null;
 }
 
 export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   exchange,
-  onBackClick
+  onBackClick,
+  onSuccess
 }) => {
   const { showModal } = useModal();
   useEffect(() => {
@@ -23,7 +25,7 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
       headerComponent: (
         <Grid>
           <ArrowLeft
-            onClick={onBackClick}
+            onClick={() => onBackClick()}
             size={32}
             style={{ cursor: "pointer" }}
           />
@@ -41,7 +43,7 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
     <ExpireVoucher
       exchange={exchange}
       onBackClick={onBackClick}
-      onSuccess={onBackClick}
+      onSuccess={onSuccess}
     />
   );
 };

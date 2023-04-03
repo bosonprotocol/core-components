@@ -1,9 +1,11 @@
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import { Info as InfoComponent } from "phosphor-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useSigner } from "wagmi";
+import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
 import { useDisplayFloat } from "../../../../../../lib/price/prices";
@@ -24,7 +26,7 @@ import DetailTable from "../detail/DetailTable";
 
 const colors = theme.colors.light;
 
-interface Props
+export interface CancelExchangeProps
   extends Pick<
     ICancelButton,
     "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
@@ -83,15 +85,15 @@ export function CancelExchange({
   onError,
   onPendingSignature,
   onPendingTransaction
-}: Props) {
+}: CancelExchangeProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cancelError, setCancelError] = useState<Error | null>(null);
   const { offer } = exchange;
 
   const displayFloat = useDisplayFloat();
   const coreSDK = useCoreSDKWithContext();
-  // TODO:
-  // const addPendingTransaction = useAddPendingTransaction();
+
+  const addPendingTransaction = useAddPendingTransactionWithContext();
   const { data: signer } = useSigner();
   const { envName } = useEnvContext();
   const { currency, price, penalty, refund } = useRefundData(
@@ -186,7 +188,17 @@ export function CancelExchange({
               onPendingSignature?.(...args);
             }}
             onPendingTransaction={(...args) => {
+              const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
+              addPendingTransaction({
+                type: subgraph.EventType.VoucherCanceled,
+                hash,
+                isMetaTx,
+                accountType: "Buyer",
+                exchange: {
+                  id: exchange.id
+                }
+              });
             }}
             onSuccess={async (...args) => {
               const [, { exchangeId }] = args;

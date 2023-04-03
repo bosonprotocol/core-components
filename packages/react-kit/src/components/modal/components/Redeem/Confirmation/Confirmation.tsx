@@ -6,12 +6,13 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import * as Sentry from "@sentry/browser";
 import { utils } from "ethers";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import { Warning } from "phosphor-react";
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useSigner } from "wagmi";
+import { useAddPendingTransactionWithContext } from "../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
 
@@ -19,6 +20,7 @@ import { theme } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
+import { useConfigContext } from "../../../../config/ConfigContext";
 import {
   RedeemButton,
   IRedeemButton
@@ -30,7 +32,7 @@ import Grid from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
-import { FormModel } from "../RedeemModalFormModel";
+import { FormModel, FormType } from "../RedeemModalFormModel";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -39,12 +41,13 @@ const StyledGrid = styled(Grid)`
 
 const StyledRedeemButton = styled(ThemedButton)``;
 
-interface Props
+export interface ConfirmationProps
   extends Pick<
     IRedeemButton,
     "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
   > {
   exchangeId: string;
+  offerId: string;
   offerName: string;
   buyerId: string;
   sellerId: string;
@@ -56,6 +59,7 @@ interface Props
 export default function Confirmation({
   onBackClick,
   exchangeId,
+  offerId,
   offerName,
   buyerId,
   sellerId,
@@ -65,8 +69,9 @@ export default function Confirmation({
   onPendingSignature,
   onPendingTransaction,
   setIsLoading: setLoading
-}: Props) {
+}: ConfirmationProps) {
   const { envName } = useEnvContext();
+  const { redeemCallbackUrl } = useConfigContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -74,30 +79,55 @@ export default function Confirmation({
   const [redeemError, setRedeemError] = useState<Error | null>(null);
   const { chatInitializationStatus } = useChatStatus();
   const showSuccessInitialization =
-    chatInitializationStatus === "INITIALIZED" && bosonXmtp;
+    chatInitializationStatus === "INITIALIZED" &&
+    bosonXmtp &&
+    !redeemCallbackUrl;
   const isInitializationValid =
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { data: signer } = useSigner();
+  const { values } = useFormikContext<FormType>();
   const [nameField] = useField(FormModel.formFields.name.name);
   const [streetNameAndNumberField] = useField(
     FormModel.formFields.streetNameAndNumber.name
   );
+  const addPendingTransaction = useAddPendingTransactionWithContext();
   const [cityField] = useField(FormModel.formFields.city.name);
   const [stateField] = useField(FormModel.formFields.state.name);
   const [zipField] = useField(FormModel.formFields.zip.name);
   const [countryField] = useField(FormModel.formFields.country.name);
   const [emailField] = useField(FormModel.formFields.email.name);
   const [phoneField] = useField(FormModel.formFields.phone.name);
+  const callRedeemCallback = async () => {
+    if (!redeemCallbackUrl) {
+      throw new Error(
+        "[callredeemCallbackUrl] redeemCallbackUrl is not defined"
+      );
+    }
+    await fetch(redeemCallbackUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        deliveryDetails: values,
+        exchangeId,
+        buyerId,
+        sellerId,
+        sellerAddress,
+        buyerAddress: await signer?.getAddress()
+      })
+    });
+  };
   const handleRedeem = async () => {
     try {
-      await sendDeliveryDetailsToChat();
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const child = redeemRef.current!.children[0] ?? null;
+      if (redeemCallbackUrl) {
+        await callRedeemCallback();
+      } else {
+        await sendDeliveryDetailsToChat();
+      }
+      setChatError(null);
+      const child =
+        (redeemRef.current?.firstChild as HTMLButtonElement) ?? null;
       if (child) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         child.click();
       }
     } catch (error) {
@@ -105,7 +135,11 @@ export default function Confirmation({
         extra: {
           action: "redeem",
           location: "redeem-modal",
-          exchangeId
+          exchangeId,
+          buyerId,
+          sellerId,
+          sellerAddress,
+          buyerAddress: await signer?.getAddress()
         }
       });
       console.error(
@@ -116,6 +150,7 @@ export default function Confirmation({
       throw error;
     }
   };
+
   const sendDeliveryDetailsToChat = async () => {
     const value = `DELIVERY ADDRESS:
 
@@ -141,7 +176,6 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
       version
     } as const;
     const destinationAddress = utils.getAddress(sellerAddress);
-    setChatError(null);
     await bosonXmtp?.encodeAndSendMessage(newMessage, destinationAddress);
   };
 
@@ -176,7 +210,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           </ThemedButton>
         </Grid>
       </Grid>
-      <InitializeChatWithSuccess />
+      {!redeemCallbackUrl && <InitializeChatWithSuccess />}
       {showSuccessInitialization && (
         <div>
           <StyledGrid
@@ -197,7 +231,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
         <StyledRedeemButton
           type="button"
           onClick={() => handleRedeem()}
-          disabled={isLoading || !isInitializationValid}
+          disabled={isLoading || (!isInitializationValid && !redeemCallbackUrl)}
         >
           <Grid gap="0.5rem">
             Confirm address and redeem
@@ -211,7 +245,9 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           }}
         >
           <RedeemButton
-            disabled={isLoading || !isInitializationValid}
+            disabled={
+              isLoading || (!isInitializationValid && !redeemCallbackUrl)
+            }
             exchangeId={exchangeId}
             envName={envName}
             onError={(...args) => {
@@ -229,7 +265,20 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               onPendingSignature?.(...args);
             }}
             onPendingTransaction={(...args) => {
+              const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
+              addPendingTransaction({
+                type: subgraph.EventType.VoucherRedeemed,
+                hash,
+                isMetaTx,
+                accountType: "Buyer",
+                exchange: {
+                  id: exchangeId,
+                  offer: {
+                    id: offerId
+                  }
+                }
+              });
             }}
             onSuccess={async (...args) => {
               const [, { exchangeId }] = args;

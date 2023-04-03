@@ -111,7 +111,7 @@ export default function ModalProvider({ children }: Props) {
     updateProps,
     showModal,
     hideModal
-  };
+  } as ModalContextType;
 
   return (
     <ModalContext.Provider value={value}>

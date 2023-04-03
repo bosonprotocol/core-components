@@ -8,6 +8,7 @@ interface Props {
   onRedeemClick: (exchange: IExchange) => void;
   onCancelExchangeClick: (exchange: IExchange) => void;
   onRaiseDisputeClick: (exchange: IExchange) => void;
+  onAvatarClick: (exchange: IExchange) => void;
   exchanges: ExtendedExchange[];
 }
 
@@ -16,7 +17,8 @@ export default function Exchanges({
   exchanges,
   onCancelExchangeClick,
   onRaiseDisputeClick,
-  onCardClick
+  onCardClick,
+  onAvatarClick
 }: Props) {
   return (
     <ProductGridContainer
@@ -38,6 +40,7 @@ export default function Exchanges({
             onCardClick={onCardClick}
             onCancelExchangeClick={onCancelExchangeClick}
             onRaiseDisputeClick={onRaiseDisputeClick}
+            onAvatarClick={onAvatarClick}
           />
         );
       })}

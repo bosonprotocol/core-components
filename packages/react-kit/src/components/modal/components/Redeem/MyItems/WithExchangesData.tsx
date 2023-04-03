@@ -22,6 +22,7 @@ interface CommonProps {
   onRedeemClick: (exchange: Exchange) => void;
   onCancelExchangeClick: (exchange: Exchange) => void;
   onRaiseDisputeClick: (exchange: Exchange) => void;
+  onAvatarClick: (exchange: Exchange) => void;
 }
 
 interface WrappedComponentProps extends CommonProps {

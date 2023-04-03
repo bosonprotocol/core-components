@@ -35,6 +35,7 @@ interface Props {
   onRedeemClick: (exchange: IExchange) => void;
   onCancelExchangeClick: (exchange: IExchange) => void;
   onRaiseDisputeClick: (exchange: IExchange) => void;
+  onAvatarClick: (exchange: IExchange) => void;
 }
 
 const ExchangeCardWrapper = styled.div`
@@ -59,7 +60,8 @@ export default function Exchange({
   onRedeemClick,
   onCardClick,
   onCancelExchangeClick,
-  onRaiseDisputeClick
+  onRaiseDisputeClick,
+  onAvatarClick
 }: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
     sellerId: offer?.seller?.id
@@ -92,7 +94,7 @@ export default function Exchange({
   };
 
   const handleOnAvatarClick = () => {
-    console.log("avatar click");
+    onAvatarClick(exchange);
   };
 
   const createSpecificCardConfig = () => {

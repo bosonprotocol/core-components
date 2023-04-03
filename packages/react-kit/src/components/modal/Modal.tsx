@@ -217,8 +217,6 @@ interface Props {
   children: React.ReactNode;
   hideModal: (data?: unknown | undefined | null) => void;
   title?: string;
-  noCloseIcon?: boolean;
-  modalType: ModalType;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;
@@ -226,6 +224,7 @@ interface Props {
   maxWidths: Store["modalMaxWidth"];
   theme: NonNullable<Store["theme"]>;
   closable?: boolean;
+  modalType: ModalType;
 }
 
 export default function Modal({

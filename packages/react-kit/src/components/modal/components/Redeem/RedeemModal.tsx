@@ -3,20 +3,29 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
-import { ExchangeView } from "./exchangeView/ExchangeView";
-import { MyItems } from "./MyItems/MyItems";
+import { ExchangeView, ExchangeViewProps } from "./exchangeView/ExchangeView";
+import { MyItems, MyItemsProps } from "./MyItems/MyItems";
 import { FormModel, FormType } from "./RedeemModalFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
-import { ConfirmationView } from "./Confirmation/ConfirmationView";
+import {
+  ConfirmationView,
+  ConfirmationViewProps
+} from "./Confirmation/ConfirmationView";
 import { RedeemSuccess } from "./exchangeView/RedeemSuccess";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
 import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
 import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
-import { CancellationView } from "./exchangeView/cancellation/CancellationView";
-import { ExpireVoucherView } from "./exchangeView/expireVoucher/ExpireVoucherView";
+import {
+  CancellationView,
+  CancellationViewProps
+} from "./exchangeView/cancellation/CancellationView";
+import {
+  ExpireVoucherView,
+  ExpireVoucherViewProps
+} from "./exchangeView/expireVoucher/ExpireVoucherView";
 
 const validationSchema = Yup.object({
   [FormModel.formFields.name.name]: Yup.string()
@@ -62,7 +71,38 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
-export default function RedeemModal() {
+type RedeemModalProps = {
+  myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
+  myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
+  myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
+  myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
+  myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
+  exchangeViewOnExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
+  exchangeViewOnPurchaseOverview?: ExchangeViewProps["onPurchaseOverview"];
+  exchangeViewOnViewFullDescription?: ExchangeViewProps["onViewFullDescription"];
+  exchangeViewOnCancelExchange?: ExchangeViewProps["onCancelExchange"];
+  exchangeViewOnExpireVoucherClick?: ExchangeViewProps["onExpireVoucherClick"];
+  exchangeViewOnRaiseDisputeClick?: ExchangeViewProps["onRaiseDisputeClick"];
+  expireVoucherViewOnSuccess?: ExpireVoucherViewProps["onSuccess"];
+  cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
+  confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
+};
+export default function RedeemModal({
+  myItemsOnExchangeCardClick,
+  myItemsOnRedeemClick,
+  myItemsOnCancelExchange,
+  myItemsOnRaiseDisputeClick,
+  myItemsOnAvatarClick,
+  exchangeViewOnExchangePolicyClick,
+  exchangeViewOnPurchaseOverview,
+  exchangeViewOnViewFullDescription,
+  exchangeViewOnCancelExchange,
+  exchangeViewOnExpireVoucherClick,
+  exchangeViewOnRaiseDisputeClick,
+  expireVoucherViewOnSuccess,
+  cancellationViewOnSuccess,
+  confirmationViewOnSuccess
+}: RedeemModalProps) {
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
@@ -140,42 +180,56 @@ export default function RedeemModal() {
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
+                    myItemsOnExchangeCardClick?.(exchange);
                   }}
                   onRedeemClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
+                    myItemsOnRedeemClick?.(exchange);
                   }}
-                  onCancelExchange={() =>
-                    setActiveStep(ActiveStep.CANCELLATION_VIEW)
-                  }
+                  onCancelExchange={(exchange) => {
+                    setActiveStep(ActiveStep.CANCELLATION_VIEW);
+                    setExchange(exchange);
+                    myItemsOnCancelExchange?.(exchange);
+                  }}
                   isValid={isRedeemFormOK}
-                  onRaiseDisputeClick={() => {
-                    // TODO:
+                  onRaiseDisputeClick={(exchange) => {
+                    setExchange(exchange);
+                    myItemsOnRaiseDisputeClick?.(exchange);
+                  }}
+                  onAvatarClick={(exchange) => {
+                    setExchange(exchange);
+                    myItemsOnAvatarClick?.(exchange);
                   }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
-                  onExchangePolicyClick={() =>
-                    setActiveStep(ActiveStep.EXCHANGE_POLICY)
-                  }
-                  onPurchaseOverview={() =>
-                    setActiveStep(ActiveStep.PURCHASE_OVERVIEW)
-                  }
-                  onViewFullDescription={() =>
-                    setActiveStep(ActiveStep.EXCHANGE_FULL_DESCRIPTION)
-                  }
-                  onCancelExchange={() =>
-                    setActiveStep(ActiveStep.CANCELLATION_VIEW)
-                  }
-                  onExpireVoucherClick={() =>
-                    setActiveStep(ActiveStep.EXPIRE_VOUCHER_VIEW)
-                  }
+                  onExchangePolicyClick={() => {
+                    setActiveStep(ActiveStep.EXCHANGE_POLICY);
+                    exchangeViewOnExchangePolicyClick?.();
+                  }}
+                  onPurchaseOverview={() => {
+                    setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
+                    exchangeViewOnPurchaseOverview?.();
+                  }}
+                  onViewFullDescription={() => {
+                    setActiveStep(ActiveStep.EXCHANGE_FULL_DESCRIPTION);
+                    exchangeViewOnViewFullDescription?.();
+                  }}
+                  onCancelExchange={() => {
+                    setActiveStep(ActiveStep.CANCELLATION_VIEW);
+                    exchangeViewOnCancelExchange?.();
+                  }}
+                  onExpireVoucherClick={() => {
+                    setActiveStep(ActiveStep.EXPIRE_VOUCHER_VIEW);
+                    exchangeViewOnExpireVoucherClick?.();
+                  }}
                   isValid={isRedeemFormOK}
                   exchangeId={exchange?.id || ""}
                   onRaiseDisputeClick={() => {
-                    // TODO:
+                    exchangeViewOnRaiseDisputeClick?.();
                   }}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
@@ -187,11 +241,19 @@ export default function RedeemModal() {
                 <ExpireVoucherView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
+                  onSuccess={(...args) => {
+                    goToPreviousStep();
+                    expireVoucherViewOnSuccess?.(...args);
+                  }}
                 />
               ) : currentStep === ActiveStep.CANCELLATION_VIEW ? (
                 <CancellationView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
+                  onSuccess={(...args) => {
+                    goToPreviousStep();
+                    cancellationViewOnSuccess?.(...args);
+                  }}
                 />
               ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
                 <PurchaseOverviewView onBackClick={goToPreviousStep} />
@@ -227,11 +289,15 @@ export default function RedeemModal() {
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (
                 <ConfirmationView
                   onBackClick={goToPreviousStep}
-                  onNextClick={() => setActiveStep(ActiveStep.REDEEM_SUCESS)}
+                  onSuccess={(...args) => {
+                    setActiveStep(ActiveStep.REDEEM_SUCESS);
+                    confirmationViewOnSuccess?.(...args);
+                  }}
                   exchange={exchange}
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess
+                  onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onExchangePolicyClick={() =>
                     setActiveStep(ActiveStep.EXCHANGE_POLICY)

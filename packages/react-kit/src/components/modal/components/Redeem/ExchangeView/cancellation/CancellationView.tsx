@@ -6,11 +6,12 @@ import Typography from "../../../../../ui/Typography";
 import ConnectButton from "../../../../../wallet/ConnectButton";
 import { useModal } from "../../../../useModal";
 import { BosonFooter } from "../../BosonFooter";
-import { CancelExchange } from "./CancelExchange";
+import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 
-interface CancellationViewProps {
+export interface CancellationViewProps {
   exchange: Exchange | null;
-  onBackClick: () => void;
+  onBackClick: CancelExchangeProps["onBackClick"];
+  onSuccess: CancelExchangeProps["onSuccess"];
 }
 
 export const CancellationView: React.FC<CancellationViewProps> = ({

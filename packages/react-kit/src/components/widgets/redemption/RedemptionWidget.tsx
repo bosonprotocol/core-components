@@ -1,10 +1,11 @@
 import { EnvironmentType } from "@bosonprotocol/core-sdk";
 import React, { ComponentType, useCallback } from "react";
-import { Button } from "../../buttons/Button";
+import { ButtonProps, Button } from "../../buttons/Button";
 import { EnvironmentProvider } from "../../environment/EnvironmentProvider";
 import { IpfsProvider, IpfsProviderProps } from "../../ipfs/IpfsProvider";
 import ModalProvider from "../../modal/ModalProvider";
 import { useModal } from "../../modal/useModal";
+import { GenericModalProps } from "../../modal/ModalContext";
 import GlobalStyle from "../../styles/GlobalStyle";
 import Grid from "../../ui/Grid";
 import Typography from "../../ui/Typography";
@@ -16,11 +17,27 @@ import { ConfigProviderProps } from "../../config/ConfigContext";
 import { getIpfsHeaders } from "../../../hooks/ipfs/getIpfsHeaders";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import { BosonFooter } from "../../modal/components/Redeem/BosonFooter";
+import { ExtendedOmit } from "../../../types/helpers";
 
-function Redemption({ trigger: Trigger, ...rest }: Props) {
+type RedemptionProps = {
+  buttonProps?: Omit<ButtonProps, "onClick">;
+  trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
+  modalProps?: NonNullable<
+    ExtendedOmit<
+      GenericModalProps<"REDEEM">,
+      "headerComponent" | "footerComponent" | "title"
+    >
+  >;
+};
+function Redemption({
+  trigger: Trigger,
+  modalProps,
+  buttonProps
+}: RedemptionProps) {
   const { showModal } = useModal();
   const onClick = useCallback(() => {
     showModal("REDEEM", {
+      ...modalProps,
       headerComponent: (
         <Grid>
           <Typography tag="h3">Redeem your item</Typography>
@@ -29,23 +46,18 @@ function Redemption({ trigger: Trigger, ...rest }: Props) {
       ),
       footerComponent: <BosonFooter />
     });
-  }, []);
+  }, [modalProps]);
   if (Trigger) {
     return <Trigger onClick={onClick} />;
   }
   return (
-    <Button {...rest} onClick={onClick}>
+    <Button {...buttonProps} onClick={onClick}>
       Redeem
     </Button>
   );
 }
 
-type Props = {
-  trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-  [x: string]: unknown;
-};
-
-type WidgetProps = Props &
+type WidgetProps = RedemptionProps &
   Omit<
     IpfsProviderProps,
     "ipfsGateway" | "ipfsImageGateway" | "ipfsMetadataStorageHeaders"
@@ -110,6 +122,7 @@ export function RedemptionWidget(props: WidgetProps) {
         }
         sellerCurationList={props.sellerCurationList}
         withOwnProducts={props.withOwnProducts}
+        redeemCallbackUrl={props.redeemCallbackUrl}
       >
         <QueryClientProvider client={queryClient}>
           <WalletConnectionProvider envName={props.envName}>

@@ -18,6 +18,8 @@ export type ConfigProviderProps = {
   buyerSellerAgreementTemplate: string;
   licenseTemplate: string;
   contactSellerForExchangeUrl: string;
+  redeemCallbackUrl?: string;
+  usePendingTransactions?: boolean;
 };
 
 export const Context = createContext<ConfigProviderProps | null>(null);

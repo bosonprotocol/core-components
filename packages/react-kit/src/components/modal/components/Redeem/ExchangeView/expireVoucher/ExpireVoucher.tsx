@@ -1,7 +1,9 @@
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSigner } from "wagmi";
+import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
 import { useDisplayFloat } from "../../../../../../lib/price/prices";
@@ -51,7 +53,7 @@ const Line = styled.hr`
   margin: 1rem 0;
 `;
 
-interface Props
+export interface ExpireVoucherProps
   extends Pick<
     IExpireButton,
     "onSuccess" | "onError" | "onPendingSignature" | "onPendingTransaction"
@@ -66,11 +68,12 @@ export default function ExpireVoucher({
   onPendingSignature,
   onPendingTransaction,
   onSuccess
-}: Props) {
+}: ExpireVoucherProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [expireError, setExpireError] = useState<Error | null>(null);
   const { envName } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
+  const addPendingTransaction = useAddPendingTransactionWithContext();
   const { data: signer } = useSigner();
   const displayFloat = useDisplayFloat();
 
@@ -202,7 +205,17 @@ export default function ExpireVoucher({
               onPendingSignature?.(...args);
             }}
             onPendingTransaction={(...args) => {
+              const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
+              addPendingTransaction({
+                type: subgraph.EventType.VoucherExpired,
+                hash,
+                isMetaTx,
+                accountType: "Buyer",
+                exchange: {
+                  id: exchange.id
+                }
+              });
             }}
             onSuccess={async (...args) => {
               const [, { exchangeId }] = args;

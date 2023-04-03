@@ -17,11 +17,12 @@ import GridContainer from "../../../../ui/GridContainer";
 
 const colors = theme.colors.light;
 
-type Props = {
+export type MyItemsProps = {
   onExchangeCardClick: (exchange: Exchange) => void;
   onRedeemClick: (exchange: Exchange) => void;
   onCancelExchange: (exchange: Exchange) => void;
   onRaiseDisputeClick: (exchange: Exchange) => void;
+  onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
 };
 
@@ -31,8 +32,9 @@ export function MyItems({
   onRedeemClick,
   onExchangeCardClick,
   onCancelExchange,
-  onRaiseDisputeClick
-}: Props) {
+  onRaiseDisputeClick,
+  onAvatarClick
+}: MyItemsProps) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -97,6 +99,7 @@ export function MyItems({
               onRedeemClick={onRedeemClick}
               onCancelExchangeClick={onCancelExchange}
               onRaiseDisputeClick={onRaiseDisputeClick}
+              onAvatarClick={onAvatarClick}
             />
           </>
         );

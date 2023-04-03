@@ -1,7 +1,6 @@
 import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { useCoreSDKWithContext } from "../../hooks/useCoreSdkWithContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { useChatContext } from "./ChatProvider/ChatContext";
 import { getChatEnvName } from "./ChatProvider/const";

@@ -48,7 +48,7 @@
     "react-dom": "17 - 18"
   },
   "scripts": {
-    "lint": "eslint --ignore-path ../../.gitignore --ext .jsx,.tsx .",
+    "lint": "eslint --ignore-path ../../.gitignore --ext .jsx,.tsx . --fix",
     "eject": "react-scripts eject",
     "clean": "rimraf build coverage .turbo node_modules",
     "storybook": "start-storybook -p 6006 -s public",
