@@ -39,6 +39,7 @@
     "styled-components": "^5.3.5",
     "tippy.js": "^6.3.7",
     "use-async-effect": "^2.2.5",
+    "utility-types": "^3.10.0",
     "wagmi": "^0.6.8",
     "yup": "^0.32.11"
   },

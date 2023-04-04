@@ -1,11 +1,13 @@
 import { createContext, useContext } from "react";
 
-export const Context = createContext<{
+export type IpfsContextProps = {
   ipfsMetadataStorageUrl: string;
   ipfsMetadataStorageHeaders: Record<string, string> | Headers;
   ipfsGateway: string;
   ipfsImageGateway: string;
-} | null>(null);
+};
+
+export const Context = createContext<IpfsContextProps | null>(null);
 
 export const useIpfsContext = () => {
   const contextValue = useContext(Context);

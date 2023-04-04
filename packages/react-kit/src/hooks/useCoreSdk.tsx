@@ -91,6 +91,7 @@ function initCoreSdk(config: CoreSdkConfig) {
   const metaTx = config.metaTx || defaultConfig.metaTx;
 
   const instance = new CoreSDK({
+    ...defaultConfig,
     web3Lib: new EthersAdapter(connectedProvider),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
@@ -109,8 +110,7 @@ function initCoreSdk(config: CoreSdkConfig) {
     }),
     chainId: defaultConfig.chainId,
     metaTx,
-    lens: config.lensContracts || defaultConfig.lens,
-    contracts: defaultConfig.contracts
+    lens: config.lensContracts || defaultConfig.lens
   });
   Object.setPrototypeOf(instance, CoreSDK.prototype);
   return instance;

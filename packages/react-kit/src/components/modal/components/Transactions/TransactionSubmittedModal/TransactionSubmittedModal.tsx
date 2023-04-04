@@ -55,7 +55,7 @@ export default function TransactionSubmittedModal({ action, txHash }: Props) {
         {action} transaction submitted
       </Typography>
       <a
-        href={coreSDK.getTxExplorerUrl(txHash)}
+        href={coreSDK.getTxExplorerUrl?.(txHash)}
         target="_blank"
         rel="noreferrer"
       >

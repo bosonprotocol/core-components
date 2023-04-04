@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export type ConfigProviderProps = {
+export type ConfigContextProps = {
   dateFormat: string;
   shortDateFormat: string;
   defaultCurrency: {
@@ -22,7 +22,7 @@ export type ConfigProviderProps = {
   usePendingTransactions?: boolean;
 };
 
-export const Context = createContext<ConfigProviderProps | null>(null);
+export const Context = createContext<ConfigContextProps | null>(null);
 
 export const useConfigContext = () => {
   const contextValue = useContext(Context);
