@@ -1,19 +1,32 @@
 import React, { ReactNode } from "react";
+import { isTruthy } from "../../types/helpers";
 import { Context, ConfigContextProps } from "./ConfigContext";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  "defaultCurrency"
+  "defaultCurrency" | "sellerCurationList" | "offerCurationList"
 > & {
   children: ReactNode;
   defaultCurrencyTicker: string;
   defaultCurrencySymbol: string;
+  sellerCurationListBetweenCommas?: string;
+  offerCurationListBetweenCommas?: string;
 };
 export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
+  const sellerCurationList = rest.sellerCurationListBetweenCommas
+    ?.split(",")
+    .map((item) => item.trim())
+    .filter(isTruthy);
+  const offerCurationList = rest.offerCurationListBetweenCommas
+    ?.split(",")
+    .map((item) => item.trim())
+    .filter(isTruthy);
   return (
     <Context.Provider
       value={{
         ...rest,
+        sellerCurationList,
+        offerCurationList,
         defaultCurrency: {
           ticker: rest.defaultCurrencyTicker,
           symbol: rest.defaultCurrencySymbol
