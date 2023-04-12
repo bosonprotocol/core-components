@@ -20,7 +20,7 @@ const getSellersByIds =
   (coreSDK: CoreSDK) => (sellerIds: string[], isSellerId: boolean) => {
     const resultSellerByIds = useQuery(
       ["seller-by-ids", { sellerIds }],
-       async() => {
+      async () => {
         const result = await fetchSubgraph<{
           sellers: {
             authTokenId: string;
@@ -229,10 +229,7 @@ export function useCurrentSellers({
       ? [resultByLensId?.data.sellerId]
       : [];
   const enableSellerById = !!sellerIdsToQuery?.length;
-  const { data: sellers2 } = fetchSellers(
-    sellerIdsToQuery,
-    enableSellerById
-  );
+  const { data: sellers2 } = fetchSellers(sellerIdsToQuery, enableSellerById);
   const sellerById = useQuery(
     ["current-seller-by-id", { sellerIds: sellerIdsToQuery }],
     async () => {
