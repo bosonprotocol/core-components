@@ -140,6 +140,7 @@ export function handleRangeReservedEvent(event: RangeReserved): void {
     rangeEntity.start = event.params.startExchangeId;
     rangeEntity.end = event.params.endExchangeId;
     rangeEntity.owner = event.params.owner;
+    rangeEntity.minted = 0;
     rangeEntity.save();
 
     offer.range = rangeId;

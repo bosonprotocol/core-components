@@ -4,7 +4,7 @@ import {
   IBosonVoucher,
   Transfer
 } from "../../generated/BosonAccountHandler/IBosonVoucher";
-import { Seller } from "../../generated/schema";
+import { RangeEntity, Seller } from "../../generated/schema";
 
 export function handleContractURIChanged(event: ContractURIChanged): void {
   const newContractURI = event.params.contractURI;
@@ -27,19 +27,8 @@ export function handlePreMint(event: Transfer): void {
   }
 
   const bosonVoucherContract = IBosonVoucher.bind(event.address);
-  const sellerId = bosonVoucherContract.getSellerId().toString();
-  let seller = Seller.load(sellerId);
-  if (!seller) {
-    seller = new Seller(sellerId);
-  }
-  let rangeEntity = RangeEntity.load(rangeId);
+  const sellerId = bosonVoucherContract.().toString();
 
-  if (!rangeEntity) {
-    rangeEntity = new RangeEntity(rangeId);
-  }
-  rangeEntity.start = event.params.startExchangeId;
-  rangeEntity.end = event.params.endExchangeId;
-  rangeEntity.owner = event.params.owner;
-  rangeEntity.minted = 0;
+  rangeEntity.minted++;
   rangeEntity.save();
 }
