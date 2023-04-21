@@ -5,7 +5,7 @@
 <div align="center">
 
 <a href="">![](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square)</a>
-<a href="https://discord.com/invite/QSdtKRaap6">![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)</a>
+<a href="https://discord.com/invite/bosonprotocol">![](https://img.shields.io/badge/Chat%20on-Discord-%235766f2?style=flat-square)</a>
 
 <a href="https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml">[![Build Status](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml/badge.svg)](https://github.com/bosonprotocol/core-components/actions/workflows/ci.yaml)</a>
 [![codecov](https://codecov.io/gh/bosonprotocol/core-components/branch/main/graph/badge.svg?token=FLAIl8Zov2)](https://codecov.io/gh/bosonprotocol/core-components)
@@ -41,6 +41,12 @@ The core components can be found in the [`packages`](/packages) folder of this m
 
 ## Contributing
 
-We welcome contributions! The ultimate goal is for all of the Boson Protocol repositories to be fully owned by the community and contributors. Issues, pull requests, suggestions, and any sort of involvement are more than welcome.
+We welcome contributions! Until now, Boson Protocol has been largely worked on by a small dedicated team. However, the ultimate goal is for all of the Boson Protocol repositories to be fully owned by the community and contributors. Issues, pull requests, suggestions, and any sort of involvement are more than welcome.
+
+If you have noticed a bug, please report it via our [Bug Bounty program](https://immunefi.com/bounty/bosonprotocol/).
+
+Questions and feedback are always welcome, we will use them to improve our offering.
+
+All PRs must pass all tests before being merged.
 
 By being in this community, you agree to the [Code of Conduct](/docs/code-of-conduct.md). Take a look at it, if you haven't already.
