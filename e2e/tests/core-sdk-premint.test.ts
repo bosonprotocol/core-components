@@ -12,6 +12,7 @@ import {
 } from "./utils";
 
 import { ExchangeState } from "../../packages/core-sdk/src/subgraph";
+import { Range } from "@bosonprotocol/common/src";
 
 jest.setTimeout(60_000);
 
@@ -86,9 +87,11 @@ describe("core-sdk-premint", () => {
     await (
       await sellerCoreSDK.depositFunds(createdOffer.seller.id, parseEther("5"))
     ).wait();
-    const exchangeId = resultRange.start;
+    const tokenId = resultRange.start;
+    const exchangeId = getExchangeIdFromRange(resultRange);
+
     await (
-      await sellerCoreSDK.transferFrom(offerId, buyerWallet.address, exchangeId)
+      await sellerCoreSDK.transferFrom(offerId, buyerWallet.address, tokenId)
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
     await waitForGraphNodeIndexing();
@@ -127,12 +130,13 @@ describe("core-sdk-premint", () => {
     await (
       await sellerCoreSDK.depositFunds(createdOffer.seller.id, parseEther("5"))
     ).wait();
-    const exchangeId = resultRange.start;
+    const tokenId = resultRange.start;
+    const exchangeId = getExchangeIdFromRange(resultRange);
     await (
       await sellerCoreSDK.transferFrom(
         offerId,
         fundedBuyerWallet.address,
-        exchangeId
+        tokenId
       )
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
@@ -295,3 +299,12 @@ describe("core-sdk-premint", () => {
     expect(isApprovedForAllAfter).toEqual(true);
   });
 });
+function getExchangeIdFromRange(range: Range): number {
+  return parseInt(
+    BigNumber.from(range.start)
+      .toHexString()
+      .substring("0x".length)
+      .substring(16),
+    16
+  );
+}
