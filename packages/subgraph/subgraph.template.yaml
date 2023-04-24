@@ -271,4 +271,6 @@ templates:
       eventHandlers:
         - event: ContractURIChanged(string)
           handler: handleContractURIChanged
+        - event: VouchersPreMinted(indexed uint256,uint256,uint256)
+          handler: handlePreMint
       file: ./src/mappings/boson-voucher.ts

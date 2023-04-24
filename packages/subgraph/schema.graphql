@@ -693,4 +693,5 @@ type RangeEntity @entity {
   start: BigInt!
   end: BigInt!
   owner: Bytes!
+  minted: BigInt!
 }
