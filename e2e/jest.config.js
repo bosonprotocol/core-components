@@ -5,6 +5,7 @@ module.exports = {
   ...baseConfig,
   rootDir: "..",
   roots: ["<rootDir>/e2e/tests"],
+  coverageDirectory: "e2e/coverage",
   collectCoverageFrom: [
     "<rootDir>/packages/**/*.{ts,js,jsx,tsx}",
     "!<rootDir>/packages/react-kit/**",
