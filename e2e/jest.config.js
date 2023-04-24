@@ -4,6 +4,7 @@ const baseConfig = require("../jest.config.sdk");
 module.exports = {
   ...baseConfig,
   rootDir: "..",
+  roots: ["<rootDir>/e2e/tests"],
   collectCoverageFrom: [
     "<rootDir>/packages/**/*.{ts,js,jsx,tsx}",
     "!<rootDir>/packages/react-kit/**",
