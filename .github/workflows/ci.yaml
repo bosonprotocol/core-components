@@ -109,6 +109,12 @@ jobs:
         continue-on-error: true
       - name: Run e2e tests
         run: npm run e2e:suite
+      - name: Upload metadata package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./e2e/coverage/coverage-final.json
+          flags: e2e
 
   job-summary:
     name: Create Job Summary
