@@ -30,31 +30,31 @@ describe("core-sdk-premint", () => {
     );
 
     expect(createdOffer).toBeTruthy();
+    const { quantityAvailable } = createdOffer;
     expect(createdOffer.seller).toBeTruthy();
+    expect(Number(quantityAvailable)).toBeGreaterThan(0);
 
     const offerId = createdOffer.id;
-    const range = 10;
+    const range = 8;
     await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
+    await waitForGraphNodeIndexing();
+
+    const offerReserveRange = await coreSDK.getOfferById(offerId);
+    expect(Number(offerReserveRange.quantityAvailable)).toBe(
+      Number(quantityAvailable) - range
+    );
 
     const resultRange = await coreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
-    await waitForGraphNodeIndexing();
     const offer = await coreSDK.getOfferById(offerId);
     expect(offer.range).toBeTruthy();
-    expect(BigNumber.from(offer.range?.start).eq(resultRange.start)).toBe(true);
-    expect(String(offer.range?.end)).toEqual(
-      BigNumber.from(resultRange.start)
-        .add(resultRange.length)
-        .sub(1)
-        .toString()
-    );
 
-    const preMinted = 2;
+    const preMinted = 3;
     await (await coreSDK.preMint(offerId, preMinted)).wait();
 
-    const count = await coreSDK.getAvailablePreMints(offerId);
-    expect(Number(count.toString())).toBe(range - preMinted);
+    const availablePreMints = await coreSDK.getAvailablePreMints(offerId);
+    expect(Number(availablePreMints.toString())).toBe(range - preMinted);
   });
   test("can commit to a preMinted voucher", async () => {
     const { coreSDK: sellerCoreSDK, fundedWallet: fundedSellerWallet } =

@@ -125,13 +125,18 @@ export function handleOfferExtendedEvent(event: OfferExtended): void {
   }
 }
 
+export function getRangeId(offerId: string): string {
+  const rangeId = offerId.toString() + "-range";
+  return rangeId;
+}
+
 export function handleRangeReservedEvent(event: RangeReserved): void {
   const offerId = event.params.offerId;
 
   const offer = Offer.load(offerId.toString());
 
   if (offer) {
-    const rangeId = offerId.toString() + "-range";
+    const rangeId = getRangeId(offerId.toString());
     let rangeEntity = RangeEntity.load(rangeId);
 
     if (!rangeEntity) {
@@ -140,9 +145,13 @@ export function handleRangeReservedEvent(event: RangeReserved): void {
     rangeEntity.start = event.params.startExchangeId;
     rangeEntity.end = event.params.endExchangeId;
     rangeEntity.owner = event.params.owner;
-    rangeEntity.minted = 0;
+    rangeEntity.minted = BigInt.zero();
     rangeEntity.save();
 
+    const rangeLength = rangeEntity.end
+      .minus(rangeEntity.start)
+      .plus(BigInt.fromI32(1));
+    offer.quantityAvailable = offer.quantityAvailable.minus(rangeLength);
     offer.range = rangeId;
 
     offer.save();

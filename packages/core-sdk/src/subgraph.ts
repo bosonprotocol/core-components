@@ -7504,6 +7504,7 @@ export type RangeEntity = {
   __typename?: "RangeEntity";
   end: Scalars["BigInt"];
   id: Scalars["ID"];
+  minted: Scalars["BigInt"];
   owner: Scalars["Bytes"];
   start: Scalars["BigInt"];
 };
@@ -7527,6 +7528,14 @@ export type RangeEntity_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  minted?: InputMaybe<Scalars["BigInt"]>;
+  minted_gt?: InputMaybe<Scalars["BigInt"]>;
+  minted_gte?: InputMaybe<Scalars["BigInt"]>;
+  minted_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minted_lt?: InputMaybe<Scalars["BigInt"]>;
+  minted_lte?: InputMaybe<Scalars["BigInt"]>;
+  minted_not?: InputMaybe<Scalars["BigInt"]>;
+  minted_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   owner?: InputMaybe<Scalars["Bytes"]>;
   owner_contains?: InputMaybe<Scalars["Bytes"]>;
   owner_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -7546,6 +7555,7 @@ export type RangeEntity_Filter = {
 export enum RangeEntity_OrderBy {
   End = "end",
   Id = "id",
+  Minted = "minted",
   Owner = "owner",
   Start = "start"
 }

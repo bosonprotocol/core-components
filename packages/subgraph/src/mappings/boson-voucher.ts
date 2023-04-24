@@ -2,9 +2,10 @@ import { Address } from "@graphprotocol/graph-ts";
 import {
   ContractURIChanged,
   IBosonVoucher,
-  Transfer
+  VouchersPreMinted
 } from "../../generated/BosonAccountHandler/IBosonVoucher";
-import { RangeEntity, Seller } from "../../generated/schema";
+import { Offer, RangeEntity, Seller } from "../../generated/schema";
+import { getRangeId } from "./offer-handler";
 
 export function handleContractURIChanged(event: ContractURIChanged): void {
   const newContractURI = event.params.contractURI;
@@ -19,16 +20,19 @@ export function handleContractURIChanged(event: ContractURIChanged): void {
   seller.save();
 }
 
-export function handlePreMint(event: Transfer): void {
-  const { from, to, tokenId } = event.params;
-  const isPreMint = from === Address.zero() && to !== Address.zero();
-  if (!isPreMint) {
-    return;
+export function handlePreMint(event: VouchersPreMinted): void {
+  const offerId = event.params.offerId;
+  const startId = event.params.startId;
+  const endId = event.params.endId;
+
+  const offerIdStr = offerId.toString();
+  const rangeId = getRangeId(offerIdStr);
+
+  let rangeEntity = RangeEntity.load(rangeId);
+  if (!rangeEntity) {
+    rangeEntity = new RangeEntity(rangeId);
   }
-
-  const bosonVoucherContract = IBosonVoucher.bind(event.address);
-  const sellerId = bosonVoucherContract.().toString();
-
-  rangeEntity.minted++;
+  const preminted = endId.minus(startId);
+  rangeEntity.minted = rangeEntity.minted.plus(preminted);
   rangeEntity.save();
 }
