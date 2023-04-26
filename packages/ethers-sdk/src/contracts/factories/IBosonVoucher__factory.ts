@@ -180,6 +180,31 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "startId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+    ],
+    name: "VouchersPreMinted",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -233,7 +258,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_exchangeId",
+        name: "_tokenId",
         type: "uint256",
       },
     ],
@@ -411,7 +436,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_exchangeId",
+        name: "_tokenId",
         type: "uint256",
       },
       {
@@ -436,6 +461,40 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "onERC721Received",
+    outputs: [
+      {
+        internalType: "bytes4",
+        name: "",
+        type: "bytes4",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -728,39 +787,6 @@ const _abi = [
       },
     ],
     name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "_data",
-        type: "bytes",
-      },
-    ],
-    name: "transferPremintedFrom",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

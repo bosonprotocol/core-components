@@ -94,6 +94,7 @@ export declare namespace BosonTypes {
     clerk: string;
     treasury: string;
     active: boolean;
+    metadataUri: string;
   };
 
   export type SellerStructOutput = [
@@ -102,7 +103,8 @@ export declare namespace BosonTypes {
     string,
     string,
     string,
-    boolean
+    boolean,
+    string
   ] & {
     id: BigNumber;
     assistant: string;
@@ -110,6 +112,7 @@ export declare namespace BosonTypes {
     clerk: string;
     treasury: string;
     active: boolean;
+    metadataUri: string;
   };
 
   export type AuthTokenStruct = {
@@ -142,7 +145,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "createAgent((uint256,uint256,address,bool))": FunctionFragment;
     "createBuyer((uint256,address,bool))": FunctionFragment;
     "createDisputeResolver((uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[])": FunctionFragment;
-    "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint256))": FunctionFragment;
+    "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256))": FunctionFragment;
     "getAgent(uint256)": FunctionFragment;
     "getBuyer(uint256)": FunctionFragment;
     "getDisputeResolver(uint256)": FunctionFragment;
@@ -158,7 +161,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "updateAgent((uint256,uint256,address,bool))": FunctionFragment;
     "updateBuyer((uint256,address,bool))": FunctionFragment;
     "updateDisputeResolver((uint256,uint256,address,address,address,address,string,bool))": FunctionFragment;
-    "updateSeller((uint256,address,address,address,address,bool),(uint256,uint8))": FunctionFragment;
+    "updateSeller((uint256,address,address,address,address,bool,string),(uint256,uint8))": FunctionFragment;
   };
 
   encodeFunctionData(

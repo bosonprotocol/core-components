@@ -612,6 +612,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "indexed": false,
@@ -693,6 +698,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "indexed": false,
@@ -731,6 +741,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "indexed": false,
@@ -824,6 +839,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "indexed": false,
@@ -1116,6 +1136,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "internalType": "struct BosonTypes.Seller",
@@ -1494,6 +1519,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "internalType": "struct BosonTypes.Seller",
@@ -1567,6 +1597,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "internalType": "struct BosonTypes.Seller",
@@ -1652,6 +1687,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "internalType": "struct BosonTypes.Seller",
@@ -1904,6 +1944,11 @@
             "internalType": "bool",
             "name": "active",
             "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataUri",
+            "type": "string"
           }
         ],
         "internalType": "struct BosonTypes.Seller",

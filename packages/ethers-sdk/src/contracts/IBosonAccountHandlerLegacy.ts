@@ -79,15 +79,80 @@ export interface IBosonAccountHandlerLegacyInterface extends utils.Interface {
   functions: {};
 
   events: {
+    "SellerUpdateApplied(uint256,tuple,tuple,tuple,tuple,address)": EventFragment;
+    "SellerCreated(uint256,tuple,address,tuple,address)": EventFragment;
+    "SellerUpdatePending(uint256,tuple,tuple,address)": EventFragment;
     "SellerUpdated(uint256,tuple,tuple,address)": EventFragment;
     "DisputeResolverUpdated(uint256,tuple,address)": EventFragment;
     "DisputeResolverActivated(uint256,tuple,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "SellerUpdateApplied"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SellerCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SellerUpdatePending"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellerUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisputeResolverActivated"): EventFragment;
 }
+
+export type SellerUpdateAppliedEvent = TypedEvent<
+  [
+    BigNumber,
+    BosonTypes.SellerStructOutput,
+    BosonTypes.SellerStructOutput,
+    BosonTypes.AuthTokenStructOutput,
+    BosonTypes.AuthTokenStructOutput,
+    string
+  ],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    pendingSeller: BosonTypes.SellerStructOutput;
+    authToken: BosonTypes.AuthTokenStructOutput;
+    pendingAuthToken: BosonTypes.AuthTokenStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type SellerUpdateAppliedEventFilter =
+  TypedEventFilter<SellerUpdateAppliedEvent>;
+
+export type SellerCreatedEvent = TypedEvent<
+  [
+    BigNumber,
+    BosonTypes.SellerStructOutput,
+    string,
+    BosonTypes.AuthTokenStructOutput,
+    string
+  ],
+  {
+    sellerId: BigNumber;
+    seller: BosonTypes.SellerStructOutput;
+    voucherCloneAddress: string;
+    authToken: BosonTypes.AuthTokenStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type SellerCreatedEventFilter = TypedEventFilter<SellerCreatedEvent>;
+
+export type SellerUpdatePendingEvent = TypedEvent<
+  [
+    BigNumber,
+    BosonTypes.SellerStructOutput,
+    BosonTypes.AuthTokenStructOutput,
+    string
+  ],
+  {
+    sellerId: BigNumber;
+    pendingSeller: BosonTypes.SellerStructOutput;
+    pendingAuthToken: BosonTypes.AuthTokenStructOutput;
+    executedBy: string;
+  }
+>;
+
+export type SellerUpdatePendingEventFilter =
+  TypedEventFilter<SellerUpdatePendingEvent>;
 
 export type SellerUpdatedEvent = TypedEvent<
   [
@@ -162,6 +227,51 @@ export interface IBosonAccountHandlerLegacy extends BaseContract {
   callStatic: {};
 
   filters: {
+    "SellerUpdateApplied(uint256,tuple,tuple,tuple,tuple,address)"(
+      sellerId?: BigNumberish | null,
+      seller?: null,
+      pendingSeller?: null,
+      authToken?: null,
+      pendingAuthToken?: null,
+      executedBy?: string | null
+    ): SellerUpdateAppliedEventFilter;
+    SellerUpdateApplied(
+      sellerId?: BigNumberish | null,
+      seller?: null,
+      pendingSeller?: null,
+      authToken?: null,
+      pendingAuthToken?: null,
+      executedBy?: string | null
+    ): SellerUpdateAppliedEventFilter;
+
+    "SellerCreated(uint256,tuple,address,tuple,address)"(
+      sellerId?: BigNumberish | null,
+      seller?: null,
+      voucherCloneAddress?: null,
+      authToken?: null,
+      executedBy?: string | null
+    ): SellerCreatedEventFilter;
+    SellerCreated(
+      sellerId?: BigNumberish | null,
+      seller?: null,
+      voucherCloneAddress?: null,
+      authToken?: null,
+      executedBy?: string | null
+    ): SellerCreatedEventFilter;
+
+    "SellerUpdatePending(uint256,tuple,tuple,address)"(
+      sellerId?: BigNumberish | null,
+      pendingSeller?: null,
+      pendingAuthToken?: null,
+      executedBy?: string | null
+    ): SellerUpdatePendingEventFilter;
+    SellerUpdatePending(
+      sellerId?: BigNumberish | null,
+      pendingSeller?: null,
+      pendingAuthToken?: null,
+      executedBy?: string | null
+    ): SellerUpdatePendingEventFilter;
+
     "SellerUpdated(uint256,tuple,tuple,address)"(
       sellerId?: BigNumberish | null,
       seller?: null,

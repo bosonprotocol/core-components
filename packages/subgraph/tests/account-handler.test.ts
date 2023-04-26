@@ -7,13 +7,15 @@ import {
 import {
   handleSellerCreatedEvent,
   handleSellerUpdatedEvent,
-  handleBuyerCreatedEvent
+  handleBuyerCreatedEvent,
+  handleSellerCreatedEventWithoutMetadataUri
 } from "../src/mappings/account-handler";
 import {
   createSellerCreatedEvent,
   createSellerUpdatedEvent,
   createBuyerCreatedEvent,
-  mockBosonVoucherContractCalls
+  mockBosonVoucherContractCalls,
+  createSellerCreatedEventLegacy
 } from "./mocks";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
@@ -21,6 +23,35 @@ const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 
 beforeEach(() => {
   clearStore();
+});
+
+test("handle legacy SellerCreatedEvent", () => {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
+  const sellerCreatedEvent = createSellerCreatedEventLegacy(
+    1,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    voucherCloneAddress,
+    0,
+    0,
+    sellerAddress
+  );
+
+  handleSellerCreatedEventWithoutMetadataUri(sellerCreatedEvent);
+
+  assert.fieldEquals("Seller", "1", "id", "1");
+  assert.fieldEquals("Seller", "1", "assistant", sellerAddress.toLowerCase());
+  assert.fieldEquals("Seller", "1", "active", "true");
+  assert.fieldEquals("Seller", "1", "authTokenId", "0");
+  assert.fieldEquals("Seller", "1", "authTokenType", "0");
+  assert.fieldEquals(
+    "Seller",
+    "1",
+    "voucherCloneAddress",
+    voucherCloneAddress.toLowerCase()
+  );
 });
 
 test("handle SellerCreatedEvent", () => {
@@ -34,7 +65,8 @@ test("handle SellerCreatedEvent", () => {
     voucherCloneAddress,
     0,
     0,
-    sellerAddress
+    sellerAddress,
+    "ipfs://"
   );
 
   handleSellerCreatedEvent(sellerCreatedEvent);
@@ -50,6 +82,7 @@ test("handle SellerCreatedEvent", () => {
     "voucherCloneAddress",
     voucherCloneAddress.toLowerCase()
   );
+  assert.fieldEquals("Seller", "1", "metadataUri", "ipfs://");
 });
 
 test("handle SellerUpdatedEvent", () => {
