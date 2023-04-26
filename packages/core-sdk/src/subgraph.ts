@@ -8612,6 +8612,7 @@ export type GetSellerByIdQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -8683,6 +8684,7 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8891,6 +8893,7 @@ export type GetSellerByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -8938,6 +8941,7 @@ export type GetSellerByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -9029,6 +9033,7 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9151,6 +9156,7 @@ export type GetSellersQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -9222,6 +9228,7 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -9430,6 +9437,7 @@ export type GetSellersQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -9477,6 +9485,7 @@ export type GetSellersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -9568,6 +9577,7 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9734,6 +9744,7 @@ export type GetBuyerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9910,6 +9921,7 @@ export type GetBuyersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -10069,6 +10081,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10277,6 +10290,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -10324,6 +10338,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -10543,6 +10558,7 @@ export type GetDisputeResolversQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10751,6 +10767,7 @@ export type GetDisputeResolversQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -10798,6 +10815,7 @@ export type GetDisputeResolversQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -10942,6 +10960,7 @@ export type SellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
     assistant?: string | null;
@@ -11013,6 +11032,7 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11217,6 +11237,7 @@ export type SellerFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -11264,6 +11285,7 @@ export type SellerFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -11355,6 +11377,7 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   logs?: Array<
@@ -11442,6 +11465,7 @@ export type BaseSellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
 };
 
 export type PendingSellerFieldsFragment = {
@@ -11520,6 +11544,7 @@ export type BuyerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   logs?: Array<
@@ -11667,6 +11692,7 @@ export type DisputeResolverFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11871,6 +11897,7 @@ export type DisputeResolverFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -11918,6 +11945,7 @@ export type DisputeResolverFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -12182,6 +12210,7 @@ export type GetDisputeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     seller: {
@@ -12197,6 +12226,7 @@ export type GetDisputeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12279,6 +12309,7 @@ export type GetDisputesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     seller: {
@@ -12294,6 +12325,7 @@ export type GetDisputesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12366,6 +12398,7 @@ export type DisputeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   seller: {
@@ -12381,6 +12414,7 @@ export type DisputeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
@@ -12480,6 +12514,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12688,6 +12723,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -12735,6 +12771,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -12865,6 +12902,7 @@ export type GetExchangeTokensQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13073,6 +13111,7 @@ export type GetExchangeTokensQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -13120,6 +13159,7 @@ export type GetExchangeTokensQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -13228,6 +13268,7 @@ export type ExchangeTokenFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13432,6 +13473,7 @@ export type ExchangeTokenFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -13479,6 +13521,7 @@ export type ExchangeTokenFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -13770,6 +13813,7 @@ export type GetExchangeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13978,6 +14022,7 @@ export type GetExchangeByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -14025,6 +14070,7 @@ export type GetExchangeByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -14102,6 +14148,7 @@ export type GetExchangeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -14179,6 +14226,7 @@ export type GetExchangesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14387,6 +14435,7 @@ export type GetExchangesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -14434,6 +14483,7 @@ export type GetExchangesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -14511,6 +14561,7 @@ export type GetExchangesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
 };
@@ -14578,6 +14629,7 @@ export type ExchangeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14782,6 +14834,7 @@ export type ExchangeFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -14829,6 +14882,7 @@ export type ExchangeFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -14901,6 +14955,7 @@ export type ExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -14947,6 +15002,7 @@ export type BaseExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -15123,6 +15179,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15331,6 +15388,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -15378,6 +15436,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -15434,6 +15493,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15537,6 +15597,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15745,6 +15806,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -15792,6 +15854,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -15848,6 +15911,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15941,6 +16005,7 @@ export type BaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16145,6 +16210,7 @@ export type BaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -16192,6 +16258,7 @@ export type BaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -16248,6 +16315,7 @@ export type BaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16340,6 +16408,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16544,6 +16613,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -16591,6 +16661,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -16647,6 +16718,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16802,6 +16874,7 @@ export type GetProductV1ProductsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -16928,6 +17001,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         }>;
         condition?: {
@@ -16953,6 +17027,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17161,6 +17236,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
                   };
                 } | null;
               };
@@ -17208,6 +17284,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               };
               exchangePolicy: {
@@ -17345,6 +17422,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -17471,6 +17549,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         }>;
         condition?: {
@@ -17496,6 +17575,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17704,6 +17784,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
                   };
                 } | null;
               };
@@ -17751,6 +17832,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               };
               exchangePolicy: {
@@ -17888,6 +17970,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -18028,6 +18111,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -18053,6 +18137,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18261,6 +18346,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -18308,6 +18394,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -18364,6 +18451,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18490,6 +18578,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       } | null;
     };
@@ -18537,6 +18626,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     exchangePolicy: {
@@ -18669,6 +18759,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -18694,6 +18785,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18902,6 +18994,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -18949,6 +19042,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -19005,6 +19099,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19131,6 +19226,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       } | null;
     };
@@ -19178,6 +19274,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     exchangePolicy: {
@@ -19300,6 +19397,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -19325,6 +19423,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19529,6 +19628,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -19576,6 +19676,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -19632,6 +19733,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -19758,6 +19860,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   };
@@ -19805,6 +19908,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   exchangePolicy: {
@@ -19926,6 +20030,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -19951,6 +20056,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -20155,6 +20261,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -20202,6 +20309,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -20258,6 +20366,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -20384,6 +20493,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   };
@@ -20431,6 +20541,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   exchangePolicy: {
@@ -20570,6 +20681,7 @@ export type BaseProductV1ProductFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -20685,6 +20797,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -20710,6 +20823,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -20918,6 +21032,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -20965,6 +21080,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -21102,6 +21218,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -21217,6 +21334,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -21242,6 +21360,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -21450,6 +21569,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -21497,6 +21617,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -21634,6 +21755,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -21723,6 +21845,7 @@ export type BaseProductV1SellerFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -21894,6 +22017,7 @@ export type GetOfferByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -21919,6 +22043,7 @@ export type GetOfferByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22123,6 +22248,7 @@ export type GetOfferByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -22170,6 +22296,7 @@ export type GetOfferByIdQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -22305,6 +22432,7 @@ export type GetOffersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -22330,6 +22458,7 @@ export type GetOffersQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22534,6 +22663,7 @@ export type GetOffersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -22581,6 +22711,7 @@ export type GetOffersQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -22700,6 +22831,7 @@ export type OfferFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   condition?: {
@@ -22725,6 +22857,7 @@ export type OfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -22929,6 +23062,7 @@ export type OfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           } | null;
         };
@@ -22976,6 +23110,7 @@ export type OfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         };
         exchangePolicy: {
@@ -23069,6 +23204,7 @@ export type BaseOfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -23273,6 +23409,7 @@ export type BaseOfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           } | null;
         };
@@ -23320,6 +23457,7 @@ export type BaseOfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         };
         exchangePolicy: {
@@ -23385,6 +23523,7 @@ export const BaseSellerFieldsFragmentDoc = gql`
     active
     contractURI
     royaltyPercentage
+    metadataUri
   }
 `;
 export const PendingSellerFieldsFragmentDoc = gql`

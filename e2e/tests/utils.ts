@@ -224,7 +224,8 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       contractUri: "ipfs://seller-contract",
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: "ipfs://metadataUri"
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
@@ -409,7 +410,8 @@ export async function createSellerAndOfferWithCondition(
       contractUri: metadataUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: "ipfs://metadataUri"
     },
     mockCreateOfferArgs({
       metadataHash,
@@ -446,6 +448,7 @@ export async function createSeller(
     royaltyPercentage: "0",
     authTokenId: "0",
     authTokenType: 0,
+    metadataUri: "ipfs://metadataUri",
     ...sellerParams
   });
   const createSellerTxReceipt = await createSellerTxResponse.wait();
@@ -516,7 +519,8 @@ export async function createSellerAndOffer(
       contractUri: metadataUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: "ipfs://metadataUri"
     },
     mockCreateOfferArgs({
       metadataHash,
