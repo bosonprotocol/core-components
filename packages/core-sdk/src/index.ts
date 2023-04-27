@@ -27,6 +27,7 @@ export {
 export {
   MetadataType,
   AnyMetadata,
+  OfferOrSellerMetadata,
   validateMetadata,
   base,
   productV1

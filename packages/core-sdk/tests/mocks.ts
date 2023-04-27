@@ -44,6 +44,7 @@ export function mockRawSellerFromSubgraph(
     offers: [],
     exchanges: [],
     metadataUri: "ipfs://metadataUri",
+    metadataHash: "metadataHash",
     ...overrides
   };
 }
@@ -102,6 +103,7 @@ export function mockRawOfferFromSubgraph(
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
       metadataUri: "ipfs://metadataUri",
+      metadataHash: "metadataHash",
       ...seller
     },
     exchangeToken: {
@@ -188,6 +190,7 @@ export function mockRawExchangeFromSubgraph(
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
       metadataUri: "ipfs://metadataUri",
+      metadataHash: "metadataHash",
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),

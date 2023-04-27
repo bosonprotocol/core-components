@@ -10,6 +10,7 @@ export type CreateSellerArgs = {
   authTokenId: BigNumberish;
   authTokenType: number;
   metadataUri: string;
+  metadataHash: string;
 };
 
 export type UpdateSellerArgs = { id: BigNumberish } & Omit<

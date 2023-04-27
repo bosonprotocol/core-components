@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["SELLER"]
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "legalTradingName": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Media"
+      }
+    },
+    "contactLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "tag"]
+      }
+    },
+    "contactPreference": {
+      "type": "string"
+    },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "tag"]
+      }
+    }
+  },
+  "required": ["type", "name", "description", "legalTradingName", "kind", "website", "contactLinks", "contactPreference", "socialLinks"]
+}

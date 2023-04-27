@@ -2306,6 +2306,11 @@ export enum FundsEventLog_OrderBy {
   Type = "type"
 }
 
+export enum MediaType {
+  Image = "IMAGE",
+  Video = "VIDEO"
+}
+
 export type MetadataAttribute = {
   __typename?: "MetadataAttribute";
   displayType: Scalars["String"];
@@ -6889,6 +6894,13 @@ export type Query = {
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
   seller?: Maybe<Seller>;
+  sellerContactLink?: Maybe<SellerContactLink>;
+  sellerContactLinks: Array<SellerContactLink>;
+  sellerMetadata: Array<SellerMetadata>;
+  sellerMetadataMedia?: Maybe<SellerMetadataMedia>;
+  sellerMetadataMedias: Array<SellerMetadataMedia>;
+  sellerSocialLink?: Maybe<SellerSocialLink>;
+  sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
 };
 
@@ -7530,6 +7542,64 @@ export type QuerySellerArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type QuerySellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type QuerySellerMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadata_Filter>;
+};
+
+export type QuerySellerMetadataMediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerMetadataMediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type QuerySellerSocialLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerSocialLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerSocialLink_Filter>;
+};
+
 export type QuerySellersArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -7617,6 +7687,8 @@ export type Seller = Account & {
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
   logs: Array<EventLog>;
+  metadata?: Maybe<SellerMetadata>;
+  metadataHash: Scalars["String"];
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   pendingSeller?: Maybe<PendingSeller>;
@@ -7658,6 +7730,435 @@ export type SellerOffersArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<Offer_Filter>;
 };
+
+export type SellerContactLink = {
+  __typename?: "SellerContactLink";
+  id: Scalars["ID"];
+  tag: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export type SellerContactLink_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerContactLink_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Url = "url"
+}
+
+export type SellerMetadata = {
+  __typename?: "SellerMetadata";
+  contactLinks?: Maybe<Array<SellerContactLink>>;
+  contactPreference: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  images?: Maybe<Array<SellerMetadataMedia>>;
+  legalTradingName: Scalars["String"];
+  name: Scalars["String"];
+  socialLinks?: Maybe<Array<SellerSocialLink>>;
+  type: Scalars["String"];
+  website: Scalars["String"];
+};
+
+export type SellerMetadataContactLinksArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type SellerMetadataImagesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type SellerMetadataSocialLinksArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerSocialLink_Filter>;
+};
+
+export type SellerMetadataMedia = {
+  __typename?: "SellerMetadataMedia";
+  height?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"];
+  tag?: Maybe<Scalars["String"]>;
+  type: MediaType;
+  url: Scalars["String"];
+  width?: Maybe<Scalars["Int"]>;
+};
+
+export type SellerMetadataMedia_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<MediaType>;
+  type_in?: InputMaybe<Array<MediaType>>;
+  type_not?: InputMaybe<MediaType>;
+  type_not_in?: InputMaybe<Array<MediaType>>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum SellerMetadataMedia_OrderBy {
+  Height = "height",
+  Id = "id",
+  Tag = "tag",
+  Type = "type",
+  Url = "url",
+  Width = "width"
+}
+
+export type SellerMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  contactLinks?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_?: InputMaybe<SellerContactLink_Filter>;
+  contactLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_gt?: InputMaybe<Scalars["String"]>;
+  contactPreference_gte?: InputMaybe<Scalars["String"]>;
+  contactPreference_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_lt?: InputMaybe<Scalars["String"]>;
+  contactPreference_lte?: InputMaybe<Scalars["String"]>;
+  contactPreference_not?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_not_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  images?: InputMaybe<Array<Scalars["String"]>>;
+  images_?: InputMaybe<SellerMetadataMedia_Filter>;
+  images_contains?: InputMaybe<Array<Scalars["String"]>>;
+  images_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  images_not?: InputMaybe<Array<Scalars["String"]>>;
+  images_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  images_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  legalTradingName?: InputMaybe<Scalars["String"]>;
+  legalTradingName_contains?: InputMaybe<Scalars["String"]>;
+  legalTradingName_contains_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_ends_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_gt?: InputMaybe<Scalars["String"]>;
+  legalTradingName_gte?: InputMaybe<Scalars["String"]>;
+  legalTradingName_in?: InputMaybe<Array<Scalars["String"]>>;
+  legalTradingName_lt?: InputMaybe<Scalars["String"]>;
+  legalTradingName_lte?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_contains?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_ends_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  legalTradingName_not_starts_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_starts_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  socialLinks?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_?: InputMaybe<SellerSocialLink_Filter>;
+  socialLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  type?: InputMaybe<Scalars["String"]>;
+  type_contains?: InputMaybe<Scalars["String"]>;
+  type_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_ends_with?: InputMaybe<Scalars["String"]>;
+  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_gt?: InputMaybe<Scalars["String"]>;
+  type_gte?: InputMaybe<Scalars["String"]>;
+  type_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_lt?: InputMaybe<Scalars["String"]>;
+  type_lte?: InputMaybe<Scalars["String"]>;
+  type_not?: InputMaybe<Scalars["String"]>;
+  type_not_contains?: InputMaybe<Scalars["String"]>;
+  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_not_starts_with?: InputMaybe<Scalars["String"]>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_starts_with?: InputMaybe<Scalars["String"]>;
+  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  website?: InputMaybe<Scalars["String"]>;
+  website_contains?: InputMaybe<Scalars["String"]>;
+  website_contains_nocase?: InputMaybe<Scalars["String"]>;
+  website_ends_with?: InputMaybe<Scalars["String"]>;
+  website_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_gt?: InputMaybe<Scalars["String"]>;
+  website_gte?: InputMaybe<Scalars["String"]>;
+  website_in?: InputMaybe<Array<Scalars["String"]>>;
+  website_lt?: InputMaybe<Scalars["String"]>;
+  website_lte?: InputMaybe<Scalars["String"]>;
+  website_not?: InputMaybe<Scalars["String"]>;
+  website_not_contains?: InputMaybe<Scalars["String"]>;
+  website_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  website_not_ends_with?: InputMaybe<Scalars["String"]>;
+  website_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  website_not_starts_with?: InputMaybe<Scalars["String"]>;
+  website_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_starts_with?: InputMaybe<Scalars["String"]>;
+  website_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerMetadata_OrderBy {
+  ContactLinks = "contactLinks",
+  ContactPreference = "contactPreference",
+  Description = "description",
+  Id = "id",
+  Images = "images",
+  LegalTradingName = "legalTradingName",
+  Name = "name",
+  SocialLinks = "socialLinks",
+  Type = "type",
+  Website = "website"
+}
+
+export type SellerSocialLink = {
+  __typename?: "SellerSocialLink";
+  id: Scalars["ID"];
+  tag: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export type SellerSocialLink_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerSocialLink_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Url = "url"
+}
 
 export type Seller_Filter = {
   /** Filter for the block changed event. */
@@ -7730,6 +8231,27 @@ export type Seller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadata?: InputMaybe<Scalars["String"]>;
+  metadataHash?: InputMaybe<Scalars["String"]>;
+  metadataHash_contains?: InputMaybe<Scalars["String"]>;
+  metadataHash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_gt?: InputMaybe<Scalars["String"]>;
+  metadataHash_gte?: InputMaybe<Scalars["String"]>;
+  metadataHash_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataHash_lt?: InputMaybe<Scalars["String"]>;
+  metadataHash_lte?: InputMaybe<Scalars["String"]>;
+  metadataHash_not?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataHash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataHash_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataHash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri?: InputMaybe<Scalars["String"]>;
   metadataUri_contains?: InputMaybe<Scalars["String"]>;
   metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7750,6 +8272,26 @@ export type Seller_Filter = {
   metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_?: InputMaybe<SellerMetadata_Filter>;
+  metadata_contains?: InputMaybe<Scalars["String"]>;
+  metadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_gt?: InputMaybe<Scalars["String"]>;
+  metadata_gte?: InputMaybe<Scalars["String"]>;
+  metadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_lt?: InputMaybe<Scalars["String"]>;
+  metadata_lte?: InputMaybe<Scalars["String"]>;
+  metadata_not?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
@@ -7794,6 +8336,8 @@ export enum Seller_OrderBy {
   Funds = "funds",
   Id = "id",
   Logs = "logs",
+  Metadata = "metadata",
+  MetadataHash = "metadataHash",
   MetadataUri = "metadataUri",
   Offers = "offers",
   PendingSeller = "pendingSeller",
@@ -7886,6 +8430,13 @@ export type Subscription = {
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
   seller?: Maybe<Seller>;
+  sellerContactLink?: Maybe<SellerContactLink>;
+  sellerContactLinks: Array<SellerContactLink>;
+  sellerMetadata: Array<SellerMetadata>;
+  sellerMetadataMedia?: Maybe<SellerMetadataMedia>;
+  sellerMetadataMedias: Array<SellerMetadataMedia>;
+  sellerSocialLink?: Maybe<SellerSocialLink>;
+  sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
 };
 
@@ -8527,6 +9078,64 @@ export type SubscriptionSellerArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
+export type SubscriptionSellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type SubscriptionSellerMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadata_Filter>;
+};
+
+export type SubscriptionSellerMetadataMediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerMetadataMediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type SubscriptionSellerSocialLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerSocialLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerSocialLink_Filter>;
+};
+
 export type SubscriptionSellersArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -8613,6 +9222,7 @@ export type GetSellerByIdQueryQuery = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -8685,6 +9295,38 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8894,6 +9536,38 @@ export type GetSellerByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -8942,6 +9616,38 @@ export type GetSellerByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -9034,6 +9740,38 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9106,6 +9844,37 @@ export type GetSellerByIdQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   } | null;
 };
 
@@ -9157,6 +9926,7 @@ export type GetSellersQueryQuery = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -9229,6 +9999,38 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -9438,6 +10240,38 @@ export type GetSellersQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -9486,6 +10320,38 @@ export type GetSellersQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -9578,6 +10444,38 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9650,6 +10548,37 @@ export type GetSellersQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   }>;
 };
 
@@ -9745,6 +10674,38 @@ export type GetBuyerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9922,6 +10883,38 @@ export type GetBuyersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -10082,6 +11075,38 @@ export type GetDisputeResolverByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10291,6 +11316,38 @@ export type GetDisputeResolverByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -10339,6 +11396,38 @@ export type GetDisputeResolverByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -10559,6 +11648,38 @@ export type GetDisputeResolversQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10768,6 +11889,38 @@ export type GetDisputeResolversQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -10816,6 +11969,38 @@ export type GetDisputeResolversQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -10961,6 +12146,7 @@ export type SellerFieldsFragment = {
   contractURI: string;
   royaltyPercentage: string;
   metadataUri: string;
+  metadataHash: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
     assistant?: string | null;
@@ -11033,6 +12219,38 @@ export type SellerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11238,6 +12456,38 @@ export type SellerFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -11286,6 +12536,38 @@ export type SellerFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -11378,6 +12660,38 @@ export type SellerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   }>;
   logs?: Array<
@@ -11450,6 +12764,61 @@ export type SellerFieldsFragment = {
           | { __typename?: "Seller"; id: string };
       }
   >;
+  metadata?: {
+    __typename?: "SellerMetadata";
+    id: string;
+    name: string;
+    description: string;
+    legalTradingName: string;
+    type: string;
+    website: string;
+    contactPreference: string;
+    images?: Array<{
+      __typename?: "SellerMetadataMedia";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: MediaType;
+      width?: number | null;
+      height?: number | null;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    socialLinks?: Array<{
+      __typename?: "SellerSocialLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+  } | null;
+};
+
+export type SellerMetadataMediaFieldsFragment = {
+  __typename?: "SellerMetadataMedia";
+  id: string;
+  url: string;
+  tag?: string | null;
+  type: MediaType;
+  width?: number | null;
+  height?: number | null;
+};
+
+export type SellerContactLinkFieldsFragment = {
+  __typename?: "SellerContactLink";
+  id: string;
+  url: string;
+  tag: string;
+};
+
+export type SellerSocialLinkFieldsFragment = {
+  __typename?: "SellerSocialLink";
+  id: string;
+  url: string;
+  tag: string;
 };
 
 export type BaseSellerFieldsFragment = {
@@ -11466,6 +12835,38 @@ export type BaseSellerFieldsFragment = {
   contractURI: string;
   royaltyPercentage: string;
   metadataUri: string;
+  metadataHash: string;
+  metadata?: {
+    __typename?: "SellerMetadata";
+    id: string;
+    name: string;
+    description: string;
+    legalTradingName: string;
+    type: string;
+    website: string;
+    contactPreference: string;
+    images?: Array<{
+      __typename?: "SellerMetadataMedia";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: MediaType;
+      width?: number | null;
+      height?: number | null;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    socialLinks?: Array<{
+      __typename?: "SellerSocialLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+  } | null;
 };
 
 export type PendingSellerFieldsFragment = {
@@ -11545,6 +12946,38 @@ export type BuyerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   }>;
   logs?: Array<
@@ -11693,6 +13126,38 @@ export type DisputeResolverFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11898,6 +13363,38 @@ export type DisputeResolverFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -11946,6 +13443,38 @@ export type DisputeResolverFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -12211,6 +13740,38 @@ export type GetDisputeByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     };
     seller: {
@@ -12227,6 +13788,38 @@ export type GetDisputeByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12310,6 +13903,38 @@ export type GetDisputesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     };
     seller: {
@@ -12326,6 +13951,38 @@ export type GetDisputesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12399,6 +14056,38 @@ export type DisputeFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   };
   seller: {
@@ -12415,6 +14104,38 @@ export type DisputeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
@@ -12515,6 +14236,38 @@ export type GetExchangeTokenByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12724,6 +14477,38 @@ export type GetExchangeTokenByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -12772,6 +14557,38 @@ export type GetExchangeTokenByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -12903,6 +14720,38 @@ export type GetExchangeTokensQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13112,6 +14961,38 @@ export type GetExchangeTokensQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -13160,6 +15041,38 @@ export type GetExchangeTokensQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -13269,6 +15182,38 @@ export type ExchangeTokenFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13474,6 +15419,38 @@ export type ExchangeTokenFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -13522,6 +15499,38 @@ export type ExchangeTokenFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -13814,6 +15823,38 @@ export type GetExchangeByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14023,6 +16064,38 @@ export type GetExchangeByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -14071,6 +16144,38 @@ export type GetExchangeByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -14149,6 +16254,38 @@ export type GetExchangeByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   } | null;
 };
@@ -14227,6 +16364,38 @@ export type GetExchangesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14436,6 +16605,38 @@ export type GetExchangesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -14484,6 +16685,38 @@ export type GetExchangesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -14562,6 +16795,38 @@ export type GetExchangesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   }>;
 };
@@ -14630,6 +16895,38 @@ export type ExchangeFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14835,6 +17132,38 @@ export type ExchangeFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -14883,6 +17212,38 @@ export type ExchangeFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -14956,6 +17317,38 @@ export type ExchangeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
 };
 
@@ -15003,6 +17396,38 @@ export type BaseExchangeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
 };
 
@@ -15180,6 +17605,38 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15389,6 +17846,38 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -15437,6 +17926,38 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -15494,6 +18015,38 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15598,6 +18151,38 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15807,6 +18392,38 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -15855,6 +18472,38 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -15912,6 +18561,38 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16006,6 +18687,38 @@ export type BaseMetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16211,6 +18924,38 @@ export type BaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -16259,6 +19004,38 @@ export type BaseMetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -16316,6 +19093,38 @@ export type BaseMetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16409,6 +19218,38 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16614,6 +19455,38 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -16662,6 +19535,38 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -16719,6 +19624,38 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16875,6 +19812,38 @@ export type GetProductV1ProductsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     } | null;
   }>;
@@ -17002,6 +19971,38 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
+            metadataHash: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              name: string;
+              description: string;
+              legalTradingName: string;
+              type: string;
+              website: string;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+            } | null;
           };
         }>;
         condition?: {
@@ -17028,6 +20029,38 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17237,6 +20270,38 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     royaltyPercentage: string;
                     metadataUri: string;
+                    metadataHash: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      name: string;
+                      description: string;
+                      legalTradingName: string;
+                      type: string;
+                      website: string;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                    } | null;
                   };
                 } | null;
               };
@@ -17285,6 +20350,38 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               };
               exchangePolicy: {
@@ -17423,6 +20520,38 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     } | null;
   }>;
@@ -17550,6 +20679,38 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
+            metadataHash: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              name: string;
+              description: string;
+              legalTradingName: string;
+              type: string;
+              website: string;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+            } | null;
           };
         }>;
         condition?: {
@@ -17576,6 +20737,38 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17785,6 +20978,38 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     royaltyPercentage: string;
                     metadataUri: string;
+                    metadataHash: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      name: string;
+                      description: string;
+                      legalTradingName: string;
+                      type: string;
+                      website: string;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: MediaType;
+                        width?: number | null;
+                        height?: number | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                    } | null;
                   };
                 } | null;
               };
@@ -17833,6 +21058,38 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               };
               exchangePolicy: {
@@ -17971,6 +21228,38 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     } | null;
   }>;
@@ -18112,6 +21401,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -18138,6 +21459,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18347,6 +21700,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -18395,6 +21780,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -18452,6 +21869,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18579,6 +22028,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       } | null;
     };
@@ -18627,6 +22108,38 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     };
     exchangePolicy: {
@@ -18760,6 +22273,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -18786,6 +22331,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18995,6 +22572,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -19043,6 +22652,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -19100,6 +22741,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19227,6 +22900,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       } | null;
     };
@@ -19275,6 +22980,38 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     };
     exchangePolicy: {
@@ -19398,6 +23135,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -19424,6 +23193,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19629,6 +23430,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -19677,6 +23510,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -19734,6 +23599,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -19861,6 +23758,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     } | null;
   };
@@ -19909,6 +23838,38 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   };
   exchangePolicy: {
@@ -20031,6 +23992,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -20057,6 +24050,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -20262,6 +24287,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -20310,6 +24367,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -20367,6 +24456,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -20494,6 +24615,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     } | null;
   };
@@ -20542,6 +24695,38 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   };
   exchangePolicy: {
@@ -20682,6 +24867,38 @@ export type BaseProductV1ProductFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   } | null;
 };
@@ -20798,6 +25015,38 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -20824,6 +25073,38 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -21033,6 +25314,38 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -21081,6 +25394,38 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -21219,6 +25564,38 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   } | null;
 };
@@ -21335,6 +25712,38 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
+          metadataHash: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            name: string;
+            description: string;
+            legalTradingName: string;
+            type: string;
+            website: string;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -21361,6 +25770,38 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -21570,6 +26011,38 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
+                  metadataHash: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    name: string;
+                    description: string;
+                    legalTradingName: string;
+                    type: string;
+                    website: string;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: MediaType;
+                      width?: number | null;
+                      height?: number | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                  } | null;
                 };
               } | null;
             };
@@ -21618,6 +26091,38 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -21756,6 +26261,38 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   } | null;
 };
@@ -21846,6 +26383,38 @@ export type BaseProductV1SellerFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
 };
 
@@ -22018,6 +26587,38 @@ export type GetOfferByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -22044,6 +26645,38 @@ export type GetOfferByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22249,6 +26882,38 @@ export type GetOfferByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -22297,6 +26962,38 @@ export type GetOfferByIdQueryQuery = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -22433,6 +27130,38 @@ export type GetOffersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
+        metadataHash: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          name: string;
+          description: string;
+          legalTradingName: string;
+          type: string;
+          website: string;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -22459,6 +27188,38 @@ export type GetOffersQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22664,6 +27425,38 @@ export type GetOffersQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
+                metadataHash: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  name: string;
+                  description: string;
+                  legalTradingName: string;
+                  type: string;
+                  website: string;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: MediaType;
+                    width?: number | null;
+                    height?: number | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                } | null;
               };
             } | null;
           };
@@ -22712,6 +27505,38 @@ export type GetOffersQueryQuery = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -22832,6 +27657,38 @@ export type OfferFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
+      metadataHash: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        name: string;
+        description: string;
+        legalTradingName: string;
+        type: string;
+        website: string;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: MediaType;
+          width?: number | null;
+          height?: number | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+      } | null;
     };
   }>;
   condition?: {
@@ -22858,6 +27715,38 @@ export type OfferFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -23063,6 +27952,38 @@ export type OfferFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           } | null;
         };
@@ -23111,6 +28032,38 @@ export type OfferFieldsFragment = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
+            metadataHash: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              name: string;
+              description: string;
+              legalTradingName: string;
+              type: string;
+              website: string;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+            } | null;
           };
         };
         exchangePolicy: {
@@ -23205,6 +28158,38 @@ export type BaseOfferFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
+    metadataHash: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      name: string;
+      description: string;
+      legalTradingName: string;
+      type: string;
+      website: string;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: MediaType;
+        width?: number | null;
+        height?: number | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -23410,6 +28395,38 @@ export type BaseOfferFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
+              metadataHash: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                name: string;
+                description: string;
+                legalTradingName: string;
+                type: string;
+                website: string;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+              } | null;
             };
           } | null;
         };
@@ -23458,6 +28475,38 @@ export type BaseOfferFieldsFragment = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
+            metadataHash: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              name: string;
+              description: string;
+              legalTradingName: string;
+              type: string;
+              website: string;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+            } | null;
           };
         };
         exchangePolicy: {
@@ -23510,6 +28559,30 @@ export type BaseRangeFieldsFragment = {
   owner: string;
 };
 
+export const SellerMetadataMediaFieldsFragmentDoc = gql`
+  fragment SellerMetadataMediaFields on SellerMetadataMedia {
+    id
+    url
+    tag
+    type
+    width
+    height
+  }
+`;
+export const SellerContactLinkFieldsFragmentDoc = gql`
+  fragment SellerContactLinkFields on SellerContactLink {
+    id
+    url
+    tag
+  }
+`;
+export const SellerSocialLinkFieldsFragmentDoc = gql`
+  fragment SellerSocialLinkFields on SellerSocialLink {
+    id
+    url
+    tag
+  }
+`;
 export const BaseSellerFieldsFragmentDoc = gql`
   fragment BaseSellerFields on Seller {
     id
@@ -23524,7 +28597,29 @@ export const BaseSellerFieldsFragmentDoc = gql`
     contractURI
     royaltyPercentage
     metadataUri
+    metadataHash
+    metadata {
+      id
+      name
+      description
+      legalTradingName
+      type
+      website
+      images {
+        ...SellerMetadataMediaFields
+      }
+      contactLinks {
+        ...SellerContactLinkFields
+      }
+      contactPreference
+      socialLinks {
+        ...SellerSocialLinkFields
+      }
+    }
   }
+  ${SellerMetadataMediaFieldsFragmentDoc}
+  ${SellerContactLinkFieldsFragmentDoc}
+  ${SellerSocialLinkFieldsFragmentDoc}
 `;
 export const PendingSellerFieldsFragmentDoc = gql`
   fragment PendingSellerFields on PendingSeller {

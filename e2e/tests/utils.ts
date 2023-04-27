@@ -48,6 +48,7 @@ import {
   MOCK_NFT_AUTH_721_ABI
 } from "./mockAbis";
 import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
+import { SellerMetadata } from "@bosonprotocol/metadata/src/seller";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
@@ -83,6 +84,36 @@ export const metadata = {
   },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
+};
+export const sellerMetadata = {
+  name: "sellerMetadataName",
+  description: "description",
+  legalTradingName: "legalTradingName",
+  type: "lens",
+  website: "website",
+  images: [
+    {
+      id: "img-1",
+      url: "url",
+      tag: "tag",
+      type: "IMAGE",
+      width: 505,
+      height: 393
+    }
+  ],
+  contactLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ],
+  contactPreference: "xmtp",
+  socialLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ]
 };
 export const sellerFundsDepositInEth = "5";
 
@@ -392,12 +423,18 @@ export async function createSellerAndOfferWithCondition(
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
     metadata?: Partial<BaseMetadata>;
+    sellerMetadata?: Partial<SellerMetadata>;
   } = {}
 ) {
-  const metadataHash = await coreSDK.storeMetadata({
+  const contractHash = await coreSDK.storeMetadata({
     ...metadata,
     type: "BASE",
     ...overrides.metadata
+  });
+  const contractUri = "ipfs://" + contractHash;
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
   });
   const metadataUri = "ipfs://" + metadataHash;
 
@@ -407,15 +444,16 @@ export async function createSellerAndOfferWithCondition(
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,
-      contractUri: metadataUri,
+      contractUri: contractUri,
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: "ipfs://metadataUri"
+      metadataUri: metadataUri,
+      metadataHash
     },
     mockCreateOfferArgs({
-      metadataHash,
-      metadataUri,
+      metadataHash: contractHash,
+      metadataUri: contractUri,
       ...overrides.offerParams
     }),
     condition
@@ -436,8 +474,16 @@ export async function createSellerAndOfferWithCondition(
 export async function createSeller(
   coreSDK: CoreSDK,
   sellerAddress: string,
-  sellerParams?: Partial<CreateSellerArgs>
+  overrides: {
+    sellerParams?: Partial<CreateSellerArgs>;
+    sellerMetadata?: Partial<SellerMetadata>;
+  } = {}
 ) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
   const contractUri = "ipfs://0123456789abcdef";
   const createSellerTxResponse = await coreSDK.createSeller({
     assistant: sellerAddress,
@@ -448,8 +494,9 @@ export async function createSeller(
     royaltyPercentage: "0",
     authTokenId: "0",
     authTokenType: 0,
-    metadataUri: "ipfs://metadataUri",
-    ...sellerParams
+    metadataUri,
+    metadataHash,
+    ...overrides.sellerParams
   });
   const createSellerTxReceipt = await createSellerTxResponse.wait();
   const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
