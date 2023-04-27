@@ -3450,6 +3450,7 @@ export type PendingSeller = {
   authTokenType?: Maybe<Scalars["Int"]>;
   clerk?: Maybe<Scalars["Bytes"]>;
   id: Scalars["ID"];
+  metadataUri: Scalars["String"];
   seller: Seller;
 };
 
@@ -3498,6 +3499,26 @@ export type PendingSeller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
@@ -3528,6 +3549,7 @@ export enum PendingSeller_OrderBy {
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
   Id = "id",
+  MetadataUri = "metadataUri",
   Seller = "seller"
 }
 
@@ -6153,6 +6175,7 @@ export enum ProductV1Section_OrderBy {
 export type ProductV1Seller = {
   __typename?: "ProductV1Seller";
   contactLinks?: Maybe<Array<ProductV1SellerContactLink>>;
+  contactPreference?: Maybe<Scalars["String"]>;
   defaultVersion: Scalars["Int"];
   description?: Maybe<Scalars["String"]>;
   externalUrl?: Maybe<Scalars["String"]>;
@@ -6260,6 +6283,26 @@ export type ProductV1Seller_Filter = {
   contactLinks_not?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_gt?: InputMaybe<Scalars["String"]>;
+  contactPreference_gte?: InputMaybe<Scalars["String"]>;
+  contactPreference_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_lt?: InputMaybe<Scalars["String"]>;
+  contactPreference_lte?: InputMaybe<Scalars["String"]>;
+  contactPreference_not?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_not_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   defaultVersion?: InputMaybe<Scalars["Int"]>;
   defaultVersion_gt?: InputMaybe<Scalars["Int"]>;
   defaultVersion_gte?: InputMaybe<Scalars["Int"]>;
@@ -6408,6 +6451,7 @@ export type ProductV1Seller_Filter = {
 
 export enum ProductV1Seller_OrderBy {
   ContactLinks = "contactLinks",
+  ContactPreference = "contactPreference",
   DefaultVersion = "defaultVersion",
   Description = "description",
   ExternalUrl = "externalUrl",
@@ -7573,6 +7617,7 @@ export type Seller = Account & {
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
   logs: Array<EventLog>;
+  metadataUri: Scalars["String"];
   offers: Array<Offer>;
   pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
@@ -7685,6 +7730,26 @@ export type Seller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
@@ -7729,6 +7794,7 @@ export enum Seller_OrderBy {
   Funds = "funds",
   Id = "id",
   Logs = "logs",
+  MetadataUri = "metadataUri",
   Offers = "offers",
   PendingSeller = "pendingSeller",
   RoyaltyPercentage = "royaltyPercentage",
@@ -8546,6 +8612,7 @@ export type GetSellerByIdQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -8617,6 +8684,7 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8796,6 +8864,7 @@ export type GetSellerByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -8824,6 +8893,7 @@ export type GetSellerByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -8842,6 +8912,7 @@ export type GetSellerByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -8870,6 +8941,7 @@ export type GetSellerByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -8961,6 +9033,7 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9083,6 +9156,7 @@ export type GetSellersQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -9154,6 +9228,7 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -9333,6 +9408,7 @@ export type GetSellersQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -9361,6 +9437,7 @@ export type GetSellersQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -9379,6 +9456,7 @@ export type GetSellersQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -9407,6 +9485,7 @@ export type GetSellersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -9498,6 +9577,7 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9664,6 +9744,7 @@ export type GetBuyerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9840,6 +9921,7 @@ export type GetBuyersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     logs?: Array<
@@ -9999,6 +10081,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10178,6 +10261,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -10206,6 +10290,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -10224,6 +10309,7 @@ export type GetDisputeResolverByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -10252,6 +10338,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -10471,6 +10558,7 @@ export type GetDisputeResolversQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10650,6 +10738,7 @@ export type GetDisputeResolversQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -10678,6 +10767,7 @@ export type GetDisputeResolversQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -10696,6 +10786,7 @@ export type GetDisputeResolversQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -10724,6 +10815,7 @@ export type GetDisputeResolversQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -10868,6 +10960,7 @@ export type SellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
     assistant?: string | null;
@@ -10939,6 +11032,7 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11114,6 +11208,7 @@ export type SellerFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -11142,6 +11237,7 @@ export type SellerFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -11160,6 +11256,7 @@ export type SellerFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -11188,6 +11285,7 @@ export type SellerFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -11279,6 +11377,7 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   logs?: Array<
@@ -11366,6 +11465,7 @@ export type BaseSellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
 };
 
 export type PendingSellerFieldsFragment = {
@@ -11444,6 +11544,7 @@ export type BuyerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   logs?: Array<
@@ -11591,6 +11692,7 @@ export type DisputeResolverFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11766,6 +11868,7 @@ export type DisputeResolverFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -11794,6 +11897,7 @@ export type DisputeResolverFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -11812,6 +11916,7 @@ export type DisputeResolverFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -11840,6 +11945,7 @@ export type DisputeResolverFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -12104,6 +12210,7 @@ export type GetDisputeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     seller: {
@@ -12119,6 +12226,7 @@ export type GetDisputeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12201,6 +12309,7 @@ export type GetDisputesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     seller: {
@@ -12216,6 +12325,7 @@ export type GetDisputesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     buyer: {
       __typename?: "Buyer";
@@ -12288,6 +12398,7 @@ export type DisputeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   seller: {
@@ -12303,6 +12414,7 @@ export type DisputeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
@@ -12402,6 +12514,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12581,6 +12694,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -12609,6 +12723,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -12627,6 +12742,7 @@ export type GetExchangeTokenByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -12655,6 +12771,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -12785,6 +12902,7 @@ export type GetExchangeTokensQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12964,6 +13082,7 @@ export type GetExchangeTokensQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -12992,6 +13111,7 @@ export type GetExchangeTokensQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -13010,6 +13130,7 @@ export type GetExchangeTokensQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -13038,6 +13159,7 @@ export type GetExchangeTokensQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -13146,6 +13268,7 @@ export type ExchangeTokenFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13321,6 +13444,7 @@ export type ExchangeTokenFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -13349,6 +13473,7 @@ export type ExchangeTokenFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -13367,6 +13492,7 @@ export type ExchangeTokenFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -13395,6 +13521,7 @@ export type ExchangeTokenFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -13686,6 +13813,7 @@ export type GetExchangeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13865,6 +13993,7 @@ export type GetExchangeByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -13893,6 +14022,7 @@ export type GetExchangeByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -13911,6 +14041,7 @@ export type GetExchangeByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -13939,6 +14070,7 @@ export type GetExchangeByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -14016,6 +14148,7 @@ export type GetExchangeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -14093,6 +14226,7 @@ export type GetExchangesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14272,6 +14406,7 @@ export type GetExchangesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -14300,6 +14435,7 @@ export type GetExchangesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -14318,6 +14454,7 @@ export type GetExchangesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -14346,6 +14483,7 @@ export type GetExchangesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -14423,6 +14561,7 @@ export type GetExchangesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
 };
@@ -14490,6 +14629,7 @@ export type ExchangeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14665,6 +14805,7 @@ export type ExchangeFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -14693,6 +14834,7 @@ export type ExchangeFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -14711,6 +14853,7 @@ export type ExchangeFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -14739,6 +14882,7 @@ export type ExchangeFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -14811,6 +14955,7 @@ export type ExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -14857,6 +15002,7 @@ export type BaseExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -15033,6 +15179,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15212,6 +15359,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -15240,6 +15388,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -15258,6 +15407,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -15286,6 +15436,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -15342,6 +15493,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15445,6 +15597,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -15624,6 +15777,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -15652,6 +15806,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -15670,6 +15825,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -15698,6 +15854,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -15754,6 +15911,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15847,6 +16005,7 @@ export type BaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16022,6 +16181,7 @@ export type BaseMetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -16050,6 +16210,7 @@ export type BaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -16068,6 +16229,7 @@ export type BaseMetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -16096,6 +16258,7 @@ export type BaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -16152,6 +16315,7 @@ export type BaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16244,6 +16408,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16419,6 +16584,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -16447,6 +16613,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -16465,6 +16632,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -16493,6 +16661,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -16549,6 +16718,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -16675,6 +16845,7 @@ export type GetProductV1ProductsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -16703,6 +16874,7 @@ export type GetProductV1ProductsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -16829,6 +17001,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         }>;
         condition?: {
@@ -16854,6 +17027,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17033,6 +17207,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   externalUrl?: string | null;
                   tokenId?: string | null;
                   sellerId?: string | null;
+                  contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
                     id: string;
@@ -17061,6 +17236,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
                   };
                 } | null;
               };
@@ -17079,6 +17255,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -17107,6 +17284,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               };
               exchangePolicy: {
@@ -17215,6 +17393,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -17243,6 +17422,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -17369,6 +17549,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         }>;
         condition?: {
@@ -17394,6 +17575,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -17573,6 +17755,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   externalUrl?: string | null;
                   tokenId?: string | null;
                   sellerId?: string | null;
+                  contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
                     id: string;
@@ -17601,6 +17784,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
                   };
                 } | null;
               };
@@ -17619,6 +17803,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -17647,6 +17832,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               };
               exchangePolicy: {
@@ -17755,6 +17941,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -17783,6 +17970,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   }>;
@@ -17923,6 +18111,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -17948,6 +18137,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18127,6 +18317,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -18155,6 +18346,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -18173,6 +18365,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -18201,6 +18394,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -18257,6 +18451,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18354,6 +18549,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         externalUrl?: string | null;
         tokenId?: string | null;
         sellerId?: string | null;
+        contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
           id: string;
@@ -18382,6 +18578,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       } | null;
     };
@@ -18400,6 +18597,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -18428,6 +18626,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     exchangePolicy: {
@@ -18560,6 +18759,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -18585,6 +18785,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18764,6 +18965,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -18792,6 +18994,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -18810,6 +19013,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -18838,6 +19042,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -18894,6 +19099,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18991,6 +19197,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         externalUrl?: string | null;
         tokenId?: string | null;
         sellerId?: string | null;
+        contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
           id: string;
@@ -19019,6 +19226,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       } | null;
     };
@@ -19037,6 +19245,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -19065,6 +19274,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     };
     exchangePolicy: {
@@ -19187,6 +19397,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -19212,6 +19423,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19387,6 +19599,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -19415,6 +19628,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -19433,6 +19647,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -19461,6 +19676,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -19517,6 +19733,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -19614,6 +19831,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -19642,6 +19860,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   };
@@ -19660,6 +19879,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
@@ -19688,6 +19908,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   exchangePolicy: {
@@ -19809,6 +20030,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -19834,6 +20056,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -20009,6 +20232,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -20037,6 +20261,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -20055,6 +20280,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -20083,6 +20309,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -20139,6 +20366,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -20236,6 +20464,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
@@ -20264,6 +20493,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     } | null;
   };
@@ -20282,6 +20512,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
@@ -20310,6 +20541,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   };
   exchangePolicy: {
@@ -20420,6 +20652,7 @@ export type BaseProductV1ProductFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
@@ -20448,6 +20681,7 @@ export type BaseProductV1ProductFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -20563,6 +20797,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -20588,6 +20823,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -20767,6 +21003,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -20795,6 +21032,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -20813,6 +21051,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -20841,6 +21080,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -20949,6 +21189,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
@@ -20977,6 +21218,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -21092,6 +21334,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
         };
       }>;
       condition?: {
@@ -21117,6 +21360,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -21296,6 +21540,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
@@ -21324,6 +21569,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
                 };
               } | null;
             };
@@ -21342,6 +21588,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -21370,6 +21617,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             };
             exchangePolicy: {
@@ -21478,6 +21726,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
@@ -21506,6 +21755,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   } | null;
 };
@@ -21566,6 +21816,7 @@ export type BaseProductV1SellerFieldsFragment = {
   externalUrl?: string | null;
   tokenId?: string | null;
   sellerId?: string | null;
+  contactPreference?: string | null;
   images?: Array<{
     __typename?: "ProductV1Media";
     id: string;
@@ -21594,6 +21845,7 @@ export type BaseProductV1SellerFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
 };
 
@@ -21765,6 +22017,7 @@ export type GetOfferByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -21790,6 +22043,7 @@ export type GetOfferByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -21965,6 +22219,7 @@ export type GetOfferByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -21993,6 +22248,7 @@ export type GetOfferByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -22011,6 +22267,7 @@ export type GetOfferByIdQueryQuery = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -22039,6 +22296,7 @@ export type GetOfferByIdQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -22174,6 +22432,7 @@ export type GetOffersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
       };
     }>;
     condition?: {
@@ -22199,6 +22458,7 @@ export type GetOffersQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22374,6 +22634,7 @@ export type GetOffersQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
@@ -22402,6 +22663,7 @@ export type GetOffersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
               };
             } | null;
           };
@@ -22420,6 +22682,7 @@ export type GetOffersQueryQuery = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -22448,6 +22711,7 @@ export type GetOffersQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           };
           exchangePolicy: {
@@ -22567,6 +22831,7 @@ export type OfferFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
     };
   }>;
   condition?: {
@@ -22592,6 +22857,7 @@ export type OfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -22767,6 +23033,7 @@ export type OfferFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -22795,6 +23062,7 @@ export type OfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           } | null;
         };
@@ -22813,6 +23081,7 @@ export type OfferFieldsFragment = {
           externalUrl?: string | null;
           tokenId?: string | null;
           sellerId?: string | null;
+          contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
             id: string;
@@ -22841,6 +23110,7 @@ export type OfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         };
         exchangePolicy: {
@@ -22934,6 +23204,7 @@ export type BaseOfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -23109,6 +23380,7 @@ export type BaseOfferFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
@@ -23137,6 +23409,7 @@ export type BaseOfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
             };
           } | null;
         };
@@ -23155,6 +23428,7 @@ export type BaseOfferFieldsFragment = {
           externalUrl?: string | null;
           tokenId?: string | null;
           sellerId?: string | null;
+          contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
             id: string;
@@ -23183,6 +23457,7 @@ export type BaseOfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
           };
         };
         exchangePolicy: {
@@ -23248,6 +23523,7 @@ export const BaseSellerFieldsFragmentDoc = gql`
     active
     contractURI
     royaltyPercentage
+    metadataUri
   }
 `;
 export const PendingSellerFieldsFragmentDoc = gql`
@@ -23404,6 +23680,7 @@ export const BaseProductV1SellerFieldsFragmentDoc = gql`
     contactLinks {
       ...BaseProductV1SellerContactLinkFields
     }
+    contactPreference
     seller {
       ...BaseSellerFields
     }

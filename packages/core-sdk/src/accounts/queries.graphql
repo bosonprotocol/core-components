@@ -245,6 +245,7 @@ fragment BaseSellerFields on Seller {
   active
   contractURI
   royaltyPercentage
+  metadataUri
 }
 
 fragment PendingSellerFields on PendingSeller {

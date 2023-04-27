@@ -108,7 +108,8 @@ describe("#voidOffer()", () => {
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
             royaltyPercentage: "0",
-            contractURI: "ipfs://seller-contract-uri"
+            contractURI: "ipfs://seller-contract-uri",
+            metadataUri: "ipfs://metadataUri"
           }
         })
       }
@@ -141,7 +142,8 @@ describe("#voidOffer()", () => {
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
             royaltyPercentage: "0",
-            contractURI: "ipfs://seller-contract-uri"
+            contractURI: "ipfs://seller-contract-uri",
+            metadataUri: "ipfs://metadataUri"
           }
         })
       }
@@ -220,7 +222,8 @@ describe("#voidOfferBatch()", () => {
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
               royaltyPercentage: "0",
-              contractURI: "ipfs://seller-contract-uri"
+              contractURI: "ipfs://seller-contract-uri",
+              metadataUri: "ipfs://metadataUri"
             }
           })
         ]
@@ -256,7 +259,8 @@ describe("#voidOfferBatch()", () => {
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
               royaltyPercentage: "0",
-              contractURI: "ipfs://seller-contract-uri"
+              contractURI: "ipfs://seller-contract-uri",
+              metadataUri: "ipfs://metadataUri"
             }
           })
         ]

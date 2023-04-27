@@ -24,6 +24,7 @@ import {
 } from "./utils";
 import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
 import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
+import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
 
 jest.setTimeout(120_000);
 
@@ -226,6 +227,24 @@ describe("ProductV1 e2e tests", () => {
     expect(render).toEqual(
       `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
     );
+  });
+
+  test("Create an offer and check that metadata.seller.contactPreference is set", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const template =
+      "Hello World!! {{sellerTradingName}} {{disputeResolverContactMethod}} {{sellerContactMethod}} {{returnPeriodInDays}}";
+    const metadata = mockProductV1Metadata(template);
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer).toBeTruthy();
+    expect(
+      (offer?.metadata as ProductV1MetadataEntity)?.productV1Seller
+        .contactPreference
+    ).toBe("xmtp");
   });
 });
 

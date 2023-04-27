@@ -261,6 +261,7 @@ type ProductV1Seller @entity {
   sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
+  contactPreference: String
   """
   Refs
   """
@@ -431,6 +432,7 @@ type PendingSeller @entity {
   authTokenId: BigInt
   authTokenType: Int
   seller: Seller!
+  metadataUri: String!
 }
 
 type Seller implements Account @entity {
@@ -452,6 +454,7 @@ type Seller implements Account @entity {
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
   royaltyPercentage: BigInt!
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
+  metadataUri: String!
 }
 
 type Buyer implements Account @entity {

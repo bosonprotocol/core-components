@@ -72,7 +72,8 @@ describe("meta-tx", () => {
           clerk: randomWallet.address,
           treasury: randomWallet.address,
           authTokenId: "0",
-          authTokenType: 0
+          authTokenType: 0,
+          metadataUri: "ipfs://metadataUri"
         });
         await updateTx.wait();
         const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
@@ -99,7 +100,8 @@ describe("meta-tx", () => {
             contractUri: "ipfs://seller-contract",
             royaltyPercentage: "0",
             authTokenId: "0",
-            authTokenType: 0
+            authTokenType: 0,
+            metadataUri: "ipfs://metadataUri"
           },
           nonce
         });
@@ -141,7 +143,8 @@ describe("meta-tx", () => {
             admin: randomWallet.address,
             clerk: randomWallet.address,
             authTokenId: "0",
-            authTokenType: 0
+            authTokenType: 0,
+            metadataUri: "ipfs://metadataUri"
           },
           nonce
         });
@@ -189,7 +192,8 @@ describe("meta-tx", () => {
             admin: randomWallet.address,
             clerk: randomWallet.address,
             authTokenId: "0",
-            authTokenType: 0
+            authTokenType: 0,
+            metadataUri: "ipfs://metadataUri"
           },
           nonce
         });

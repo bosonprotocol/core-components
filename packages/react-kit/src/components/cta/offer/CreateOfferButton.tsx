@@ -20,6 +20,7 @@ type Props = {
     royaltyPercentage: string;
     authTokenId: string;
     authTokenType: number;
+    metadataUri: string;
   };
   isMultiVariant: boolean;
   offersToCreate: offers.CreateOfferArgs[];

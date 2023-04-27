@@ -467,5 +467,20 @@ describe("CoreSDK - accounts", () => {
       expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.pendingSeller?.assistant).toEqual(ZERO_ADDRESS);
     });
+    test("update seller - update with another metadataUri", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      expect(seller.metadataUri).toBeTruthy();
+      const updatedMetadataUri = "ipfs://newMetadataUri";
+
+      seller = await updateSeller(coreSDK, seller, {
+        metadataUri: updatedMetadataUri
+      });
+      expect(seller.metadataUri).toBe(updatedMetadataUri);
+    });
   });
 });

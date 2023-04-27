@@ -35,6 +35,7 @@ export function saveProductV1Seller(
   const images = convertToObjectArray(sellerObj.get("images"));
   const savedImageIds = saveProductV1Medias(images, "IMAGE");
   const contactLinks = convertToObjectArray(sellerObj.get("contactLinks"));
+  const contactPreference = convertToString(sellerObj.get("contactPreference"));
   const savedContactLinkIds = saveProductV1SellerContactLink(contactLinks);
 
   const productV1SellerId = getProductV1SellerId(sellerAccountId);
@@ -53,6 +54,7 @@ export function saveProductV1Seller(
   productV1Seller.sellerId = sellerAccountId;
   productV1Seller.images = savedImageIds;
   productV1Seller.contactLinks = savedContactLinkIds;
+  productV1Seller.contactPreference = contactPreference;
   productV1Seller.seller = sellerAccountId;
 
   productV1Seller.save();
