@@ -20,7 +20,6 @@ export type SellerMetadata = {
   name: string;
   description: string;
   legalTradingName: string;
-  kind: string;
   website: string;
   images?: Media[];
   contactLinks: {

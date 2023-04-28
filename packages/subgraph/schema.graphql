@@ -74,7 +74,6 @@ type SellerMetadata @entity {
   name: String!
   description: String!
   legalTradingName: String!
-  kind: String!
   website: String!
   images: [SellerMetadataMedia!]
   contactLinks: [SellerContactLink!]
