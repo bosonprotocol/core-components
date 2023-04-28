@@ -14,9 +14,6 @@
     "legalTradingName": {
       "type": "string"
     },
-    "kind": {
-      "type": "string"
-    },
     "website": {
       "type": "string"
     },
@@ -79,5 +76,5 @@
       }
     }
   },
-  "required": ["type", "name", "description", "legalTradingName", "kind", "website", "contactLinks", "contactPreference", "socialLinks"]
+  "required": ["type", "name", "description", "legalTradingName", "website", "contactLinks", "contactPreference", "socialLinks"]
 }

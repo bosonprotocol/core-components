@@ -90,7 +90,6 @@ export const sellerMetadata = {
   description: "description",
   legalTradingName: "legalTradingName",
   type: "SELLER" as const,
-  kind: "lens",
   website: "website",
   images: [
     {
