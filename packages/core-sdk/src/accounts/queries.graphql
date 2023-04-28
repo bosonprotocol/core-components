@@ -267,13 +267,14 @@ fragment BaseSellerFields on Seller {
   contractURI
   royaltyPercentage
   metadataUri
-  metadataHash
   metadata {
     id
+    createdAt
     name
     description
     legalTradingName
     type
+    kind
     website
     images {
       ...SellerMetadataMediaFields

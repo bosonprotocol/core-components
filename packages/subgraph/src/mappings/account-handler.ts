@@ -31,6 +31,9 @@ import {
   getAndSaveDisputeResolverFees
 } from "../entities/dispute-resolution";
 import { saveAccountEventLog } from "../entities/event-log";
+import { saveSellerMetadata } from "../entities/metadata/handler";
+import { getSellerMetadataEntityId } from "../entities/metadata/seller";
+import { parseIpfsHash } from "../utils/ipfs";
 
 export function handleSellerCreatedEventWithoutMetadataUri(
   event: SellerCreatedLegacy
@@ -100,8 +103,10 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.contractURI = bosonVoucherContract.contractURI();
   seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.metadataUri = sellerFromEvent.metadataUri || "";
+  seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
 
+  saveSellerMetadata(seller, event.block.timestamp);
   saveAccountEventLog(
     event.transaction.hash.toHexString(),
     event.logIndex,
@@ -197,7 +202,10 @@ export function handleSellerUpdateAppliedEvent(
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = sellerFromEvent.active;
   seller.metadataUri = sellerFromEvent.metadataUri || "";
+  seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
+  saveSellerMetadata(seller, event.block.timestamp);
+
   let pendingSeller = PendingSeller.load(seller.id);
   if (!pendingSeller) {
     pendingSeller = new PendingSeller(seller.id);

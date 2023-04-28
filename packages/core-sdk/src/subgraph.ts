@@ -7688,7 +7688,6 @@ export type Seller = Account & {
   id: Scalars["ID"];
   logs: Array<EventLog>;
   metadata?: Maybe<SellerMetadata>;
-  metadataHash: Scalars["String"];
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
   pendingSeller?: Maybe<PendingSeller>;
@@ -7801,13 +7800,15 @@ export type SellerMetadata = {
   __typename?: "SellerMetadata";
   contactLinks?: Maybe<Array<SellerContactLink>>;
   contactPreference: Scalars["String"];
+  createdAt: Scalars["BigInt"];
   description: Scalars["String"];
   id: Scalars["ID"];
   images?: Maybe<Array<SellerMetadataMedia>>;
+  kind: Scalars["String"];
   legalTradingName: Scalars["String"];
   name: Scalars["String"];
   socialLinks?: Maybe<Array<SellerSocialLink>>;
-  type: Scalars["String"];
+  type: SellerMetadataType;
   website: Scalars["String"];
 };
 
@@ -7927,6 +7928,10 @@ export enum SellerMetadataMedia_OrderBy {
   Width = "width"
 }
 
+export enum SellerMetadataType {
+  Seller = "SELLER"
+}
+
 export type SellerMetadata_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -7957,6 +7962,14 @@ export type SellerMetadata_Filter = {
   contactPreference_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   contactPreference_starts_with?: InputMaybe<Scalars["String"]>;
   contactPreference_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  createdAt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  createdAt_lt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_lte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   description?: InputMaybe<Scalars["String"]>;
   description_contains?: InputMaybe<Scalars["String"]>;
   description_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7992,6 +8005,26 @@ export type SellerMetadata_Filter = {
   images_not?: InputMaybe<Array<Scalars["String"]>>;
   images_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   images_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  kind?: InputMaybe<Scalars["String"]>;
+  kind_contains?: InputMaybe<Scalars["String"]>;
+  kind_contains_nocase?: InputMaybe<Scalars["String"]>;
+  kind_ends_with?: InputMaybe<Scalars["String"]>;
+  kind_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_gt?: InputMaybe<Scalars["String"]>;
+  kind_gte?: InputMaybe<Scalars["String"]>;
+  kind_in?: InputMaybe<Array<Scalars["String"]>>;
+  kind_lt?: InputMaybe<Scalars["String"]>;
+  kind_lte?: InputMaybe<Scalars["String"]>;
+  kind_not?: InputMaybe<Scalars["String"]>;
+  kind_not_contains?: InputMaybe<Scalars["String"]>;
+  kind_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  kind_not_ends_with?: InputMaybe<Scalars["String"]>;
+  kind_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  kind_not_starts_with?: InputMaybe<Scalars["String"]>;
+  kind_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_starts_with?: InputMaybe<Scalars["String"]>;
+  kind_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   legalTradingName?: InputMaybe<Scalars["String"]>;
   legalTradingName_contains?: InputMaybe<Scalars["String"]>;
   legalTradingName_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8039,26 +8072,10 @@ export type SellerMetadata_Filter = {
   socialLinks_not?: InputMaybe<Array<Scalars["String"]>>;
   socialLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   socialLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
-  type?: InputMaybe<Scalars["String"]>;
-  type_contains?: InputMaybe<Scalars["String"]>;
-  type_contains_nocase?: InputMaybe<Scalars["String"]>;
-  type_ends_with?: InputMaybe<Scalars["String"]>;
-  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  type_gt?: InputMaybe<Scalars["String"]>;
-  type_gte?: InputMaybe<Scalars["String"]>;
-  type_in?: InputMaybe<Array<Scalars["String"]>>;
-  type_lt?: InputMaybe<Scalars["String"]>;
-  type_lte?: InputMaybe<Scalars["String"]>;
-  type_not?: InputMaybe<Scalars["String"]>;
-  type_not_contains?: InputMaybe<Scalars["String"]>;
-  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  type_not_ends_with?: InputMaybe<Scalars["String"]>;
-  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  type_not_starts_with?: InputMaybe<Scalars["String"]>;
-  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  type_starts_with?: InputMaybe<Scalars["String"]>;
-  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<SellerMetadataType>;
+  type_in?: InputMaybe<Array<SellerMetadataType>>;
+  type_not?: InputMaybe<SellerMetadataType>;
+  type_not_in?: InputMaybe<Array<SellerMetadataType>>;
   website?: InputMaybe<Scalars["String"]>;
   website_contains?: InputMaybe<Scalars["String"]>;
   website_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8084,9 +8101,11 @@ export type SellerMetadata_Filter = {
 export enum SellerMetadata_OrderBy {
   ContactLinks = "contactLinks",
   ContactPreference = "contactPreference",
+  CreatedAt = "createdAt",
   Description = "description",
   Id = "id",
   Images = "images",
+  Kind = "kind",
   LegalTradingName = "legalTradingName",
   Name = "name",
   SocialLinks = "socialLinks",
@@ -8232,26 +8251,6 @@ export type Seller_Filter = {
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
   metadata?: InputMaybe<Scalars["String"]>;
-  metadataHash?: InputMaybe<Scalars["String"]>;
-  metadataHash_contains?: InputMaybe<Scalars["String"]>;
-  metadataHash_contains_nocase?: InputMaybe<Scalars["String"]>;
-  metadataHash_ends_with?: InputMaybe<Scalars["String"]>;
-  metadataHash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  metadataHash_gt?: InputMaybe<Scalars["String"]>;
-  metadataHash_gte?: InputMaybe<Scalars["String"]>;
-  metadataHash_in?: InputMaybe<Array<Scalars["String"]>>;
-  metadataHash_lt?: InputMaybe<Scalars["String"]>;
-  metadataHash_lte?: InputMaybe<Scalars["String"]>;
-  metadataHash_not?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_contains?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_ends_with?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_in?: InputMaybe<Array<Scalars["String"]>>;
-  metadataHash_not_starts_with?: InputMaybe<Scalars["String"]>;
-  metadataHash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  metadataHash_starts_with?: InputMaybe<Scalars["String"]>;
-  metadataHash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   metadataUri?: InputMaybe<Scalars["String"]>;
   metadataUri_contains?: InputMaybe<Scalars["String"]>;
   metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8337,7 +8336,6 @@ export enum Seller_OrderBy {
   Id = "id",
   Logs = "logs",
   Metadata = "metadata",
-  MetadataHash = "metadataHash",
   MetadataUri = "metadataUri",
   Offers = "offers",
   PendingSeller = "pendingSeller",
@@ -9222,7 +9220,6 @@ export type GetSellerByIdQueryQuery = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -9295,14 +9292,15 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -9536,14 +9534,15 @@ export type GetSellerByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -9616,14 +9615,15 @@ export type GetSellerByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -9740,14 +9740,15 @@ export type GetSellerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -9847,10 +9848,12 @@ export type GetSellerByIdQueryQuery = {
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -9926,7 +9929,6 @@ export type GetSellersQueryQuery = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
       assistant?: string | null;
@@ -9999,14 +10001,15 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -10240,14 +10243,15 @@ export type GetSellersQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -10320,14 +10324,15 @@ export type GetSellersQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -10444,14 +10449,15 @@ export type GetSellersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -10551,10 +10557,12 @@ export type GetSellersQueryQuery = {
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -10674,14 +10682,15 @@ export type GetBuyerByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -10883,14 +10892,15 @@ export type GetBuyersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -11075,14 +11085,15 @@ export type GetDisputeResolverByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -11316,14 +11327,15 @@ export type GetDisputeResolverByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -11396,14 +11408,15 @@ export type GetDisputeResolverByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -11648,14 +11661,15 @@ export type GetDisputeResolversQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -11889,14 +11903,15 @@ export type GetDisputeResolversQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -11969,14 +11984,15 @@ export type GetDisputeResolversQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -12146,7 +12162,6 @@ export type SellerFieldsFragment = {
   contractURI: string;
   royaltyPercentage: string;
   metadataUri: string;
-  metadataHash: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
     assistant?: string | null;
@@ -12219,14 +12234,15 @@ export type SellerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -12456,14 +12472,15 @@ export type SellerFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -12536,14 +12553,15 @@ export type SellerFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -12660,14 +12678,15 @@ export type SellerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -12767,10 +12786,12 @@ export type SellerFieldsFragment = {
   metadata?: {
     __typename?: "SellerMetadata";
     id: string;
+    createdAt: string;
     name: string;
     description: string;
     legalTradingName: string;
-    type: string;
+    type: SellerMetadataType;
+    kind: string;
     website: string;
     contactPreference: string;
     images?: Array<{
@@ -12835,14 +12856,15 @@ export type BaseSellerFieldsFragment = {
   contractURI: string;
   royaltyPercentage: string;
   metadataUri: string;
-  metadataHash: string;
   metadata?: {
     __typename?: "SellerMetadata";
     id: string;
+    createdAt: string;
     name: string;
     description: string;
     legalTradingName: string;
-    type: string;
+    type: SellerMetadataType;
+    kind: string;
     website: string;
     contactPreference: string;
     images?: Array<{
@@ -12946,14 +12968,15 @@ export type BuyerFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -13126,14 +13149,15 @@ export type DisputeResolverFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -13363,14 +13387,15 @@ export type DisputeResolverFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -13443,14 +13468,15 @@ export type DisputeResolverFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -13740,14 +13766,15 @@ export type GetDisputeByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -13788,14 +13815,15 @@ export type GetDisputeByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -13903,14 +13931,15 @@ export type GetDisputesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -13951,14 +13980,15 @@ export type GetDisputesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -14056,14 +14086,15 @@ export type DisputeFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -14104,14 +14135,15 @@ export type DisputeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -14236,14 +14268,15 @@ export type GetExchangeTokenByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -14477,14 +14510,15 @@ export type GetExchangeTokenByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -14557,14 +14591,15 @@ export type GetExchangeTokenByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -14720,14 +14755,15 @@ export type GetExchangeTokensQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -14961,14 +14997,15 @@ export type GetExchangeTokensQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -15041,14 +15078,15 @@ export type GetExchangeTokensQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -15182,14 +15220,15 @@ export type ExchangeTokenFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -15419,14 +15458,15 @@ export type ExchangeTokenFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -15499,14 +15539,15 @@ export type ExchangeTokenFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -15823,14 +15864,15 @@ export type GetExchangeByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -16064,14 +16106,15 @@ export type GetExchangeByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -16144,14 +16187,15 @@ export type GetExchangeByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -16254,14 +16298,15 @@ export type GetExchangeByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -16364,14 +16409,15 @@ export type GetExchangesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -16605,14 +16651,15 @@ export type GetExchangesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -16685,14 +16732,15 @@ export type GetExchangesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -16795,14 +16843,15 @@ export type GetExchangesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -16895,14 +16944,15 @@ export type ExchangeFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -17132,14 +17182,15 @@ export type ExchangeFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -17212,14 +17263,15 @@ export type ExchangeFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -17317,14 +17369,15 @@ export type ExchangeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -17396,14 +17449,15 @@ export type BaseExchangeFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -17605,14 +17659,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -17846,14 +17901,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -17926,14 +17982,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -18015,14 +18072,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -18151,14 +18209,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -18392,14 +18451,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -18472,14 +18532,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -18561,14 +18622,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -18687,14 +18749,15 @@ export type BaseMetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -18924,14 +18987,15 @@ export type BaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -19004,14 +19068,15 @@ export type BaseMetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -19093,14 +19158,15 @@ export type BaseMetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -19218,14 +19284,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -19455,14 +19522,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -19535,14 +19603,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -19624,14 +19693,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -19812,14 +19882,15 @@ export type GetProductV1ProductsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -19971,14 +20042,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
-            metadataHash: string;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
+              createdAt: string;
               name: string;
               description: string;
               legalTradingName: string;
-              type: string;
+              type: SellerMetadataType;
+              kind: string;
               website: string;
               contactPreference: string;
               images?: Array<{
@@ -20029,14 +20101,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -20270,14 +20343,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     contractURI: string;
                     royaltyPercentage: string;
                     metadataUri: string;
-                    metadataHash: string;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
+                      createdAt: string;
                       name: string;
                       description: string;
                       legalTradingName: string;
-                      type: string;
+                      type: SellerMetadataType;
+                      kind: string;
                       website: string;
                       contactPreference: string;
                       images?: Array<{
@@ -20350,14 +20424,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -20520,14 +20595,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -20679,14 +20755,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
-            metadataHash: string;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
+              createdAt: string;
               name: string;
               description: string;
               legalTradingName: string;
-              type: string;
+              type: SellerMetadataType;
+              kind: string;
               website: string;
               contactPreference: string;
               images?: Array<{
@@ -20737,14 +20814,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -20978,14 +21056,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     contractURI: string;
                     royaltyPercentage: string;
                     metadataUri: string;
-                    metadataHash: string;
                     metadata?: {
                       __typename?: "SellerMetadata";
                       id: string;
+                      createdAt: string;
                       name: string;
                       description: string;
                       legalTradingName: string;
-                      type: string;
+                      type: SellerMetadataType;
+                      kind: string;
                       website: string;
                       contactPreference: string;
                       images?: Array<{
@@ -21058,14 +21137,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -21228,14 +21308,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -21401,14 +21482,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -21459,14 +21541,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -21700,14 +21783,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -21780,14 +21864,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -21869,14 +21954,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -22028,14 +22114,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -22108,14 +22195,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -22273,14 +22361,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -22331,14 +22420,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -22572,14 +22662,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -22652,14 +22743,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -22741,14 +22833,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -22900,14 +22993,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -22980,14 +23074,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -23135,14 +23230,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -23193,14 +23289,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -23430,14 +23527,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -23510,14 +23608,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -23599,14 +23698,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -23758,14 +23858,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -23838,14 +23939,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -23992,14 +24094,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -24050,14 +24153,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -24287,14 +24391,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -24367,14 +24472,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -24456,14 +24562,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -24615,14 +24722,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -24695,14 +24803,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -24867,14 +24976,15 @@ export type BaseProductV1ProductFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -25015,14 +25125,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -25073,14 +25184,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -25314,14 +25426,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -25394,14 +25507,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -25564,14 +25678,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -25712,14 +25827,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           contractURI: string;
           royaltyPercentage: string;
           metadataUri: string;
-          metadataHash: string;
           metadata?: {
             __typename?: "SellerMetadata";
             id: string;
+            createdAt: string;
             name: string;
             description: string;
             legalTradingName: string;
-            type: string;
+            type: SellerMetadataType;
+            kind: string;
             website: string;
             contactPreference: string;
             images?: Array<{
@@ -25770,14 +25886,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -26011,14 +26128,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   contractURI: string;
                   royaltyPercentage: string;
                   metadataUri: string;
-                  metadataHash: string;
                   metadata?: {
                     __typename?: "SellerMetadata";
                     id: string;
+                    createdAt: string;
                     name: string;
                     description: string;
                     legalTradingName: string;
-                    type: string;
+                    type: SellerMetadataType;
+                    kind: string;
                     website: string;
                     contactPreference: string;
                     images?: Array<{
@@ -26091,14 +26209,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -26261,14 +26380,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -26383,14 +26503,15 @@ export type BaseProductV1SellerFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -26587,14 +26708,15 @@ export type GetOfferByIdQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -26645,14 +26767,15 @@ export type GetOfferByIdQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -26882,14 +27005,15 @@ export type GetOfferByIdQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -26962,14 +27086,15 @@ export type GetOfferByIdQueryQuery = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -27130,14 +27255,15 @@ export type GetOffersQueryQuery = {
         contractURI: string;
         royaltyPercentage: string;
         metadataUri: string;
-        metadataHash: string;
         metadata?: {
           __typename?: "SellerMetadata";
           id: string;
+          createdAt: string;
           name: string;
           description: string;
           legalTradingName: string;
-          type: string;
+          type: SellerMetadataType;
+          kind: string;
           website: string;
           contactPreference: string;
           images?: Array<{
@@ -27188,14 +27314,15 @@ export type GetOffersQueryQuery = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -27425,14 +27552,15 @@ export type GetOffersQueryQuery = {
                 contractURI: string;
                 royaltyPercentage: string;
                 metadataUri: string;
-                metadataHash: string;
                 metadata?: {
                   __typename?: "SellerMetadata";
                   id: string;
+                  createdAt: string;
                   name: string;
                   description: string;
                   legalTradingName: string;
-                  type: string;
+                  type: SellerMetadataType;
+                  kind: string;
                   website: string;
                   contactPreference: string;
                   images?: Array<{
@@ -27505,14 +27633,15 @@ export type GetOffersQueryQuery = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -27657,14 +27786,15 @@ export type OfferFieldsFragment = {
       contractURI: string;
       royaltyPercentage: string;
       metadataUri: string;
-      metadataHash: string;
       metadata?: {
         __typename?: "SellerMetadata";
         id: string;
+        createdAt: string;
         name: string;
         description: string;
         legalTradingName: string;
-        type: string;
+        type: SellerMetadataType;
+        kind: string;
         website: string;
         contactPreference: string;
         images?: Array<{
@@ -27715,14 +27845,15 @@ export type OfferFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -27952,14 +28083,15 @@ export type OfferFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -28032,14 +28164,15 @@ export type OfferFieldsFragment = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
-            metadataHash: string;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
+              createdAt: string;
               name: string;
               description: string;
               legalTradingName: string;
-              type: string;
+              type: SellerMetadataType;
+              kind: string;
               website: string;
               contactPreference: string;
               images?: Array<{
@@ -28158,14 +28291,15 @@ export type BaseOfferFieldsFragment = {
     contractURI: string;
     royaltyPercentage: string;
     metadataUri: string;
-    metadataHash: string;
     metadata?: {
       __typename?: "SellerMetadata";
       id: string;
+      createdAt: string;
       name: string;
       description: string;
       legalTradingName: string;
-      type: string;
+      type: SellerMetadataType;
+      kind: string;
       website: string;
       contactPreference: string;
       images?: Array<{
@@ -28395,14 +28529,15 @@ export type BaseOfferFieldsFragment = {
               contractURI: string;
               royaltyPercentage: string;
               metadataUri: string;
-              metadataHash: string;
               metadata?: {
                 __typename?: "SellerMetadata";
                 id: string;
+                createdAt: string;
                 name: string;
                 description: string;
                 legalTradingName: string;
-                type: string;
+                type: SellerMetadataType;
+                kind: string;
                 website: string;
                 contactPreference: string;
                 images?: Array<{
@@ -28475,14 +28610,15 @@ export type BaseOfferFieldsFragment = {
             contractURI: string;
             royaltyPercentage: string;
             metadataUri: string;
-            metadataHash: string;
             metadata?: {
               __typename?: "SellerMetadata";
               id: string;
+              createdAt: string;
               name: string;
               description: string;
               legalTradingName: string;
-              type: string;
+              type: SellerMetadataType;
+              kind: string;
               website: string;
               contactPreference: string;
               images?: Array<{
@@ -28597,13 +28733,14 @@ export const BaseSellerFieldsFragmentDoc = gql`
     contractURI
     royaltyPercentage
     metadataUri
-    metadataHash
     metadata {
       id
+      createdAt
       name
       description
       legalTradingName
       type
+      kind
       website
       images {
         ...SellerMetadataMediaFields

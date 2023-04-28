@@ -320,7 +320,7 @@ describe("CoreSDK - accounts", () => {
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
-      expect(seller.metadata?.name).toEqual(sellerMetadata.name);
+      expect(seller.metadata).toMatchObject(sellerMetadata);
     });
     test("update seller - replace all addresses", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(

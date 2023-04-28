@@ -94,7 +94,6 @@ export const sellerMetadata = {
   website: "website",
   images: [
     {
-      id: "img-1",
       url: "url",
       tag: "tag",
       type: "IMAGE" as const,
@@ -257,8 +256,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: "ipfs://metadataUri",
-      metadataHash: "metadataHash"
+      metadataUri: "ipfs://metadataUri"
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
@@ -450,8 +448,7 @@ export async function createSellerAndOfferWithCondition(
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: metadataUri,
-      metadataHash
+      metadataUri: metadataUri
     },
     mockCreateOfferArgs({
       metadataHash: contractHash,
@@ -497,7 +494,6 @@ export async function createSeller(
     authTokenId: "0",
     authTokenType: 0,
     metadataUri,
-    metadataHash,
     ...overrides.sellerParams
   });
   const createSellerTxReceipt = await createSellerTxResponse.wait();
@@ -569,8 +565,7 @@ export async function createSellerAndOffer(
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: "ipfs://metadataUri",
-      metadataHash: "metadataHash"
+      metadataUri: "ipfs://metadataUri"
     },
     mockCreateOfferArgs({
       metadataHash,

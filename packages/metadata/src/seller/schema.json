@@ -23,7 +23,26 @@
     "images": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/Media"
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["IMAGE", "VIDEO"]
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": ["url", "type"]
       }
     },
     "contactLinks": {

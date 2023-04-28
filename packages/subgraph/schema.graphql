@@ -63,8 +63,14 @@ type SellerMetadataMedia @entity {
   height: Int
 }
 
+enum SellerMetadataType {
+  SELLER
+}
+
 type SellerMetadata @entity {
   id: ID!
+  type: SellerMetadataType!
+  createdAt: BigInt!
   name: String!
   description: String!
   legalTradingName: String!
@@ -494,7 +500,6 @@ type Seller implements Account @entity {
   royaltyPercentage: BigInt!
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
   metadataUri: String!
-  metadataHash: String!
   metadata: SellerMetadata
 }
 
