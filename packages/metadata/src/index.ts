@@ -1,19 +1,23 @@
 import * as base from "./base";
 import * as productV1 from "./product-v1";
+import * as seller from "./seller";
 
 export type AnyMetadata = base.BaseMetadata | productV1.ProductV1Metadata;
 
+export type OfferOrSellerMetadata = AnyMetadata | seller.SellerMetadata;
+
 export enum MetadataType {
   BASE = "BASE",
-  PRODUCT_V1 = "PRODUCT_V1"
+  PRODUCT_V1 = "PRODUCT_V1",
+  SELLER = "SELLER"
 }
 
 export interface MetadataStorage {
-  getMetadata(metadataUri: string): Promise<AnyMetadata>;
-  storeMetadata(metadata: AnyMetadata): Promise<string>;
+  getMetadata(metadataUri: string): Promise<OfferOrSellerMetadata>;
+  storeMetadata(metadata: OfferOrSellerMetadata): Promise<string>;
 }
 
-function validateMetadata(metadata: AnyMetadata) {
+function validateMetadata(metadata: OfferOrSellerMetadata) {
   // eslint-disable-next-line no-useless-catch
   try {
     switch (metadata.type) {
@@ -24,6 +28,11 @@ function validateMetadata(metadata: AnyMetadata) {
         return true;
       case MetadataType.PRODUCT_V1:
         productV1.productV1MetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.SELLER:
+        seller.sellerMetadataSchema.validateSync(metadata, {
           abortEarly: false
         });
         return true;

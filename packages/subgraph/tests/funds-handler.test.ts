@@ -2,7 +2,8 @@ import {
   beforeEach,
   test,
   assert,
-  clearStore
+  clearStore,
+  mockIpfsFile
 } from "matchstick-as/assembly/index";
 import {
   handleFundsDepositedEvent,
@@ -30,6 +31,7 @@ const exchangeId = 3;
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const tokenAddress = "0x0000000000000000000000000000000000000000";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
+const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 
 beforeEach(() => {
   clearStore();
@@ -108,6 +110,7 @@ test("handle legacy FundsEncumberedEvent", () => {
 
 test("handle FundsEncumberedEvent", () => {
   mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 1);
+  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
   handleSellerCreatedEvent(
     createSellerCreatedEvent(
       sellerId,
@@ -119,7 +122,7 @@ test("handle FundsEncumberedEvent", () => {
       0,
       0,
       sellerAddress,
-      "ipfs://"
+      "ipfs://" + sellerMetadataHash
     )
   );
   const fundsDepositedEvent = createFundsDepositedEvent(

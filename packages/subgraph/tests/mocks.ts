@@ -33,7 +33,8 @@ import {
 import { ethereum, Address } from "@graphprotocol/graph-ts";
 import {
   SellerUpdated,
-  SellerCreated as SellerCreatedLegacy
+  SellerCreated as SellerCreatedLegacy,
+  SellerCreatedSellerStruct as SellerCreatedLegacySellerStruct
 } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 
 export function createOfferCreatedEvent(
@@ -331,7 +332,14 @@ export function createSellerCreatedEventLegacy(
   const sellerParam = new ethereum.EventParam(
     "seller",
     ethereum.Value.fromTuple(
-      createSellerStruct(sellerId, assistant, admin, clerk, treasury, false, "")
+      createLegacySellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        false
+      )
     )
   );
   const voucherCloneAddressParam = new ethereum.EventParam(
@@ -709,6 +717,24 @@ export function createDisputeResolutionTermsStruct(
   tuple.push(ethereum.Value.fromI32(escalationResponsePeriod));
   tuple.push(ethereum.Value.fromI32(feeAmount));
   tuple.push(ethereum.Value.fromI32(buyerEscalationDeposit));
+  return tuple;
+}
+
+export function createLegacySellerStruct(
+  sellerId: i32,
+  assistant: string,
+  admin: string,
+  clerk: string,
+  treasury: string,
+  active: boolean
+): SellerCreatedLegacySellerStruct {
+  const tuple = new SellerCreatedLegacySellerStruct();
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(assistant)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(admin)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(clerk)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(treasury)));
+  tuple.push(ethereum.Value.fromBoolean(active));
   return tuple;
 }
 

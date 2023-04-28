@@ -37,6 +37,51 @@ interface MetadataInterface {
   numberOfRedemptions: BigInt!
 }
 
+type SellerContactLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+type SellerSocialLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+type SellerMetadataMedia @entity {
+  id: ID!
+  url: String!
+  tag: String
+  type: MediaType!
+  width: Int
+  height: Int
+}
+
+enum SellerMetadataType {
+  SELLER
+}
+
+type SellerMetadata @entity {
+  id: ID!
+  type: SellerMetadataType!
+  createdAt: BigInt!
+  name: String!
+  description: String!
+  legalTradingName: String!
+  kind: String!
+  website: String!
+  images: [SellerMetadataMedia!]
+  contactLinks: [SellerContactLink!]
+  contactPreference: String!
+  socialLinks: [SellerSocialLink!]
+}
+
 type AnimationMetadata @entity {
   id: ID!
   height: Int
@@ -455,6 +500,7 @@ type Seller implements Account @entity {
   royaltyPercentage: BigInt!
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
   metadataUri: String!
+  metadata: SellerMetadata
 }
 
 type Buyer implements Account @entity {

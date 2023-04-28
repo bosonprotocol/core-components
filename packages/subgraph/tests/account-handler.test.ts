@@ -2,7 +2,8 @@ import {
   beforeEach,
   test,
   assert,
-  clearStore
+  clearStore,
+  mockIpfsFile
 } from "matchstick-as/assembly/index";
 import {
   handleSellerCreatedEvent,
@@ -20,6 +21,7 @@ import {
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
+const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 
 beforeEach(() => {
   clearStore();
@@ -56,6 +58,7 @@ test("handle legacy SellerCreatedEvent", () => {
 
 test("handle SellerCreatedEvent", () => {
   mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
+  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
   const sellerCreatedEvent = createSellerCreatedEvent(
     1,
     sellerAddress,
@@ -66,7 +69,7 @@ test("handle SellerCreatedEvent", () => {
     0,
     0,
     sellerAddress,
-    "ipfs://"
+    "ipfs://" + sellerMetadataHash
   );
 
   handleSellerCreatedEvent(sellerCreatedEvent);
@@ -82,7 +85,12 @@ test("handle SellerCreatedEvent", () => {
     "voucherCloneAddress",
     voucherCloneAddress.toLowerCase()
   );
-  assert.fieldEquals("Seller", "1", "metadataUri", "ipfs://");
+  assert.fieldEquals(
+    "Seller",
+    "1",
+    "metadataUri",
+    "ipfs://" + sellerMetadataHash
+  );
 });
 
 test("handle SellerUpdatedEvent", () => {
