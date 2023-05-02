@@ -22,7 +22,7 @@ const envNameToConfig: Record<
   },
   testing: {
     network: "mumbai",
-    startBlock: 34813285 // mumbai, NOT block num when protocol is deployed (manual override)
+    startBlock: 34813285 // mumbai, block num when protocol is deployed (manual override)
   },
   staging: {
     network: "mumbai",
