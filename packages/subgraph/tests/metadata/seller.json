@@ -12,7 +12,7 @@
     }
   ],
   "kind": "lens",
-  "legalTradingName": "legalTradingName",
+  "legalTradingName": "",
   "name": "sellerMetadataName",
   "socialLinks": [{ "url": "url", "tag": "tag" }],
   "type": "SELLER",
