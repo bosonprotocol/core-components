@@ -11,7 +11,6 @@ import {
 
 program
   .description("Creates and activates a dispute resolver.")
-  .argument("<PROTOCOL_ADMIN_PK>", "Private key of account with ADMIN role.")
   .argument(
     "<DR_ADMIN_PK>",
     "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and assistant."
@@ -35,11 +34,11 @@ program
     "-s, --sellers <...SELLERS>",
     "Comma-separated list of allowed seller IDs."
   )
+  .option("--dryRun", "Simulation. Do not send the transaction.")
   .parse(process.argv);
 
 async function main() {
-  const [protocolAdminPrivateKey, disputeResolverAdminPrivateKey] =
-    program.args;
+  const [disputeResolverAdminPrivateKey] = program.args;
 
   const opts = program.opts();
   const escalationResponsePeriodInMS =
@@ -71,18 +70,14 @@ async function main() {
     ),
     envName
   });
-  const protocolAdminWallet = new Wallet(protocolAdminPrivateKey);
-  const coreSDKProtocolAdmin = CoreSDK.fromDefaultConfig({
-    web3Lib: new EthersAdapter(
-      new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
-      protocolAdminWallet
-    ),
-    envName
-  });
 
   console.log(
-    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId}...`
+    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId} (protocol address: ${defaultConfig.contracts.protocolDiamond})...`
   );
+  if (opts.dryRun) {
+    console.log("Done (dry run).");
+    return;
+  }
   const txResponse1 = await coreSDKDRAdmin.createDisputeResolver({
     escalationResponsePeriodInMS,
     admin: disputeResolverAdminWallet.address,
