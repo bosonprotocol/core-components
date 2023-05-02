@@ -274,6 +274,7 @@ fragment BaseSellerFields on Seller {
     description
     legalTradingName
     type
+    kind
     website
     images {
       ...SellerMetadataMediaFields

@@ -21,6 +21,7 @@ export function saveInnerSellerMetadata(
   const name = convertToString(metadataObj.get("name"));
   const description = convertToString(metadataObj.get("description"));
   const legalTradingName = convertToString(metadataObj.get("legalTradingName"));
+  const kind = convertToString(metadataObj.get("kind"));
   const website = convertToString(metadataObj.get("website"));
   const images = convertToObjectArray(metadataObj.get("images"));
   const imagesId = saveSellerMedias(images, "IMAGE");
@@ -41,6 +42,7 @@ export function saveInnerSellerMetadata(
   sellerMetadata.name = name;
   sellerMetadata.description = description;
   sellerMetadata.legalTradingName = legalTradingName;
+  sellerMetadata.kind = kind;
   sellerMetadata.website = website;
   sellerMetadata.images = imagesId;
   sellerMetadata.contactLinks = contactLinksId;
