@@ -33,7 +33,6 @@ import {
 import { saveAccountEventLog } from "../entities/event-log";
 import { saveSellerMetadata } from "../entities/metadata/handler";
 import { getSellerMetadataEntityId } from "../entities/metadata/seller";
-import { parseIpfsHash } from "../utils/ipfs";
 
 export function handleSellerCreatedEventWithoutMetadataUri(
   event: SellerCreatedLegacy

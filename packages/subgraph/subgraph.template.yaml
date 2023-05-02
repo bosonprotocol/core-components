@@ -110,6 +110,8 @@ dataSources:
           file: ../common/src/abis/IBosonAccountHandler.json
         - name: IBosonAccountHandlerLegacy
           file: ../common/src/abis/IBosonAccountHandlerLegacy.json
+        - name: IBosonVoucher
+          file: ../common/src/abis/IBosonVoucher.json
       eventHandlers:
         - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
           handler: handleSellerUpdateAppliedEvent
