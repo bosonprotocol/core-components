@@ -11,6 +11,7 @@
       "height": 393
     }
   ],
+  "kind": "lens",
   "legalTradingName": "legalTradingName",
   "name": "sellerMetadataName",
   "socialLinks": [{ "url": "url", "tag": "tag" }],
