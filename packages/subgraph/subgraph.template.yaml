@@ -114,9 +114,9 @@ dataSources:
           file: ../common/src/abis/IBosonVoucher.json
       eventHandlers:
         - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
-          handler: handleSellerUpdateAppliedEvent
+          handler: handleSellerUpdateAppliedEventLegacy
         - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
-          handler: handleSellerUpdatePendingEvent
+          handler: handleSellerUpdatePendingEventLegacy
         - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),address,(uint256,uint8),indexed address)
           handler: handleSellerCreatedEventWithoutMetadataUri
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
