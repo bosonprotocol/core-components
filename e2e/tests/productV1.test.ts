@@ -32,23 +32,32 @@ const seedWallet = seedWallet10; // be sure the seedWallet is not used by anothe
 
 const MAX_INT32 = Math.pow(2, 31) - 1;
 
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 function mockProductV1Metadata(
   template: string,
-  productUuid: string = productV1.buildUuid()
+  productUuid: string = productV1.buildUuid(),
+  overrides: DeepPartial<productV1.ProductV1Metadata> = {} as DeepPartial<productV1.ProductV1Metadata>
 ): productV1.ProductV1Metadata {
   return {
     ...productV1ValidMinimalOffer,
+    ...overrides,
     product: {
       ...productV1ValidMinimalOffer.product,
+      ...overrides.product,
       uuid: productUuid
     },
     uuid: productV1.buildUuid(),
     type: MetadataType.PRODUCT_V1,
     exchangePolicy: {
       ...productV1ValidMinimalOffer.exchangePolicy,
+      ...overrides.exchangePolicy,
       template
     }
-  };
+  } as productV1.ProductV1Metadata;
 }
 
 function serializeVariant(variant: productV1.ProductV1Variant): string {
@@ -226,6 +235,26 @@ describe("ProductV1 e2e tests", () => {
     );
     expect(render).toEqual(
       `Hello World!! ${metadata.seller.name} ${metadata.exchangePolicy.disputeResolverContactMethod} ${metadata.exchangePolicy.sellerContactMethod} ${metadata.shipping.returnPeriod}`
+    );
+  });
+  test("create offer - expect fail as visuals_images url is too large", async () => {
+    const coreSDK = initCoreSDKWithWallet(seedWallet);
+
+    const metadata = mockProductV1Metadata("", undefined, {
+      product: {
+        visuals_images: [
+          {
+            url: new Array(10000).join(","),
+            tag: "tag",
+            type: "IMAGE" as const,
+            width: 505,
+            height: 393
+          }
+        ]
+      }
+    });
+    await expect(createOfferArgs(coreSDK, metadata)).rejects.toThrowError(
+      "Key product.visuals_images.0.url of metadata exceeds 2048 characters"
     );
   });
 
