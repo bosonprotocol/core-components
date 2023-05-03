@@ -7805,7 +7805,7 @@ export type SellerMetadata = {
   id: Scalars["ID"];
   images?: Maybe<Array<SellerMetadataMedia>>;
   kind: Scalars["String"];
-  legalTradingName: Scalars["String"];
+  legalTradingName?: Maybe<Scalars["String"]>;
   name: Scalars["String"];
   socialLinks?: Maybe<Array<SellerSocialLink>>;
   type: SellerMetadataType;
@@ -9298,7 +9298,7 @@ export type GetSellerByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -9540,7 +9540,7 @@ export type GetSellerByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -9621,7 +9621,7 @@ export type GetSellerByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -9746,7 +9746,7 @@ export type GetSellerByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -9851,7 +9851,7 @@ export type GetSellerByIdQueryQuery = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -10007,7 +10007,7 @@ export type GetSellersQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -10249,7 +10249,7 @@ export type GetSellersQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -10330,7 +10330,7 @@ export type GetSellersQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -10455,7 +10455,7 @@ export type GetSellersQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -10560,7 +10560,7 @@ export type GetSellersQueryQuery = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -10688,7 +10688,7 @@ export type GetBuyerByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -10898,7 +10898,7 @@ export type GetBuyersQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -11091,7 +11091,7 @@ export type GetDisputeResolverByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -11333,7 +11333,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -11414,7 +11414,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -11667,7 +11667,7 @@ export type GetDisputeResolversQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -11909,7 +11909,7 @@ export type GetDisputeResolversQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -11990,7 +11990,7 @@ export type GetDisputeResolversQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -12240,7 +12240,7 @@ export type SellerFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -12478,7 +12478,7 @@ export type SellerFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -12559,7 +12559,7 @@ export type SellerFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -12684,7 +12684,7 @@ export type SellerFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -12789,7 +12789,7 @@ export type SellerFieldsFragment = {
     createdAt: string;
     name: string;
     description: string;
-    legalTradingName: string;
+    legalTradingName?: string | null;
     type: SellerMetadataType;
     kind: string;
     website: string;
@@ -12862,7 +12862,7 @@ export type BaseSellerFieldsFragment = {
     createdAt: string;
     name: string;
     description: string;
-    legalTradingName: string;
+    legalTradingName?: string | null;
     type: SellerMetadataType;
     kind: string;
     website: string;
@@ -12974,7 +12974,7 @@ export type BuyerFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -13155,7 +13155,7 @@ export type DisputeResolverFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -13393,7 +13393,7 @@ export type DisputeResolverFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -13474,7 +13474,7 @@ export type DisputeResolverFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -13772,7 +13772,7 @@ export type GetDisputeByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -13821,7 +13821,7 @@ export type GetDisputeByIdQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -13937,7 +13937,7 @@ export type GetDisputesQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -13986,7 +13986,7 @@ export type GetDisputesQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -14092,7 +14092,7 @@ export type DisputeFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -14141,7 +14141,7 @@ export type DisputeFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -14274,7 +14274,7 @@ export type GetExchangeTokenByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -14516,7 +14516,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -14597,7 +14597,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -14761,7 +14761,7 @@ export type GetExchangeTokensQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -15003,7 +15003,7 @@ export type GetExchangeTokensQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -15084,7 +15084,7 @@ export type GetExchangeTokensQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -15226,7 +15226,7 @@ export type ExchangeTokenFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -15464,7 +15464,7 @@ export type ExchangeTokenFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -15545,7 +15545,7 @@ export type ExchangeTokenFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -15870,7 +15870,7 @@ export type GetExchangeByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -16112,7 +16112,7 @@ export type GetExchangeByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -16193,7 +16193,7 @@ export type GetExchangeByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -16304,7 +16304,7 @@ export type GetExchangeByIdQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -16415,7 +16415,7 @@ export type GetExchangesQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -16657,7 +16657,7 @@ export type GetExchangesQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -16738,7 +16738,7 @@ export type GetExchangesQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -16849,7 +16849,7 @@ export type GetExchangesQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -16950,7 +16950,7 @@ export type ExchangeFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -17188,7 +17188,7 @@ export type ExchangeFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -17269,7 +17269,7 @@ export type ExchangeFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -17375,7 +17375,7 @@ export type ExchangeFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -17455,7 +17455,7 @@ export type BaseExchangeFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -17665,7 +17665,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -17907,7 +17907,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -17988,7 +17988,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -18078,7 +18078,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -18215,7 +18215,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -18457,7 +18457,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -18538,7 +18538,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -18628,7 +18628,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -18755,7 +18755,7 @@ export type BaseMetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -18993,7 +18993,7 @@ export type BaseMetadataEntityFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -19074,7 +19074,7 @@ export type BaseMetadataEntityFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -19164,7 +19164,7 @@ export type BaseMetadataEntityFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -19290,7 +19290,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -19528,7 +19528,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -19609,7 +19609,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -19699,7 +19699,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -19888,7 +19888,7 @@ export type GetProductV1ProductsQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -20048,7 +20048,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               createdAt: string;
               name: string;
               description: string;
-              legalTradingName: string;
+              legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
               website: string;
@@ -20107,7 +20107,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -20349,7 +20349,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       createdAt: string;
                       name: string;
                       description: string;
-                      legalTradingName: string;
+                      legalTradingName?: string | null;
                       type: SellerMetadataType;
                       kind: string;
                       website: string;
@@ -20430,7 +20430,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -20601,7 +20601,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -20761,7 +20761,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               createdAt: string;
               name: string;
               description: string;
-              legalTradingName: string;
+              legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
               website: string;
@@ -20820,7 +20820,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -21062,7 +21062,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       createdAt: string;
                       name: string;
                       description: string;
-                      legalTradingName: string;
+                      legalTradingName?: string | null;
                       type: SellerMetadataType;
                       kind: string;
                       website: string;
@@ -21143,7 +21143,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -21314,7 +21314,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -21488,7 +21488,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -21547,7 +21547,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -21789,7 +21789,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -21870,7 +21870,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -21960,7 +21960,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -22120,7 +22120,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -22201,7 +22201,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -22367,7 +22367,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -22426,7 +22426,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -22668,7 +22668,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -22749,7 +22749,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -22839,7 +22839,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -22999,7 +22999,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -23080,7 +23080,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -23236,7 +23236,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -23295,7 +23295,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -23533,7 +23533,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -23614,7 +23614,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -23704,7 +23704,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -23864,7 +23864,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -23945,7 +23945,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -24100,7 +24100,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -24159,7 +24159,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -24397,7 +24397,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -24478,7 +24478,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -24568,7 +24568,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -24728,7 +24728,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -24809,7 +24809,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -24982,7 +24982,7 @@ export type BaseProductV1ProductFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -25131,7 +25131,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -25190,7 +25190,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -25432,7 +25432,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -25513,7 +25513,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -25684,7 +25684,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -25833,7 +25833,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             createdAt: string;
             name: string;
             description: string;
-            legalTradingName: string;
+            legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
             website: string;
@@ -25892,7 +25892,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -26134,7 +26134,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     createdAt: string;
                     name: string;
                     description: string;
-                    legalTradingName: string;
+                    legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
                     website: string;
@@ -26215,7 +26215,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -26386,7 +26386,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -26509,7 +26509,7 @@ export type BaseProductV1SellerFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -26714,7 +26714,7 @@ export type GetOfferByIdQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -26773,7 +26773,7 @@ export type GetOfferByIdQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -27011,7 +27011,7 @@ export type GetOfferByIdQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -27092,7 +27092,7 @@ export type GetOfferByIdQueryQuery = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -27261,7 +27261,7 @@ export type GetOffersQueryQuery = {
           createdAt: string;
           name: string;
           description: string;
-          legalTradingName: string;
+          legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
           website: string;
@@ -27320,7 +27320,7 @@ export type GetOffersQueryQuery = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -27558,7 +27558,7 @@ export type GetOffersQueryQuery = {
                   createdAt: string;
                   name: string;
                   description: string;
-                  legalTradingName: string;
+                  legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
                   website: string;
@@ -27639,7 +27639,7 @@ export type GetOffersQueryQuery = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -27792,7 +27792,7 @@ export type OfferFieldsFragment = {
         createdAt: string;
         name: string;
         description: string;
-        legalTradingName: string;
+        legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
         website: string;
@@ -27851,7 +27851,7 @@ export type OfferFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -28089,7 +28089,7 @@ export type OfferFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -28170,7 +28170,7 @@ export type OfferFieldsFragment = {
               createdAt: string;
               name: string;
               description: string;
-              legalTradingName: string;
+              legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
               website: string;
@@ -28297,7 +28297,7 @@ export type BaseOfferFieldsFragment = {
       createdAt: string;
       name: string;
       description: string;
-      legalTradingName: string;
+      legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
       website: string;
@@ -28535,7 +28535,7 @@ export type BaseOfferFieldsFragment = {
                 createdAt: string;
                 name: string;
                 description: string;
-                legalTradingName: string;
+                legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
                 website: string;
@@ -28616,7 +28616,7 @@ export type BaseOfferFieldsFragment = {
               createdAt: string;
               name: string;
               description: string;
-              legalTradingName: string;
+              legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
               website: string;

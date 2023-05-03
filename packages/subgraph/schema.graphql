@@ -73,7 +73,7 @@ type SellerMetadata @entity {
   createdAt: BigInt!
   name: String!
   description: String!
-  legalTradingName: String!
+  legalTradingName: String
   kind: String!
   website: String!
   images: [SellerMetadataMedia!]
