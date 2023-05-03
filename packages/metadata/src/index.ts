@@ -17,9 +17,41 @@ export interface MetadataStorage {
   storeMetadata(metadata: OfferOrSellerMetadata): Promise<string>;
 }
 
+const limit = 2048;
+function validateIpfsLimits(
+  metadata: Record<string, unknown>
+): string | undefined {
+  for (const key in metadata) {
+    const value = metadata[key];
+
+    if (typeof value === "object" && value !== null) {
+      // Recursively check nested objects/arrays
+      const nestedKey = validateIpfsLimits(value as Record<string, unknown>);
+      if (nestedKey !== undefined) {
+        return `${key}.${nestedKey}`;
+      }
+    } else {
+      // Check the string representation of primitive values
+      const stringValue = value?.toString();
+      if (stringValue && stringValue.length > limit) {
+        return Array.isArray(metadata)
+          ? `${key}.[${metadata.indexOf(value)}]`
+          : key;
+      }
+    }
+  }
+
+  return undefined;
+}
+
 function validateMetadata(metadata: OfferOrSellerMetadata) {
-  // eslint-disable-next-line no-useless-catch
   try {
+    const firstKeyThatExceedsIpfsLimit = validateIpfsLimits(metadata);
+    if (firstKeyThatExceedsIpfsLimit) {
+      throw new Error(
+        `Key ${firstKeyThatExceedsIpfsLimit} of metadata exceeds ${limit} characters`
+      );
+    }
     switch (metadata.type) {
       case MetadataType.BASE:
         base.baseMetadataSchema.validateSync(metadata, {

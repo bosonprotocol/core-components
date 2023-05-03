@@ -322,6 +322,29 @@ describe("CoreSDK - accounts", () => {
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
       expect(seller.metadata).toMatchObject(sellerMetadata);
     });
+    test("create seller - expect fail as image url is too large", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      await expect(
+        createSeller(coreSDK, fundedWallet.address, {
+          sellerMetadata: {
+            images: [
+              {
+                url: new Array(10000).join(","),
+                tag: "tag",
+                type: "IMAGE" as const,
+                width: 505,
+                height: 393
+              }
+            ]
+          }
+        })
+      ).rejects.toThrowError(
+        "Key images.0.url of metadata exceeds 2048 characters"
+      );
+    });
     test("update seller - replace all addresses", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
