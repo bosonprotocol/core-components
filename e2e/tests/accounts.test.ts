@@ -322,6 +322,26 @@ describe("CoreSDK - accounts", () => {
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
       expect(seller.metadata).toMatchObject(sellerMetadata);
     });
+    test("create seller and then update metadata", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      expect(seller.metadata).toMatchObject(sellerMetadata);
+      const newMetadata = {
+        type: "SELLER" as const,
+        kind: "regular",
+        contactPreference: "email"
+      };
+      const metadataHash = await coreSDK.storeMetadata(newMetadata);
+      const metadataUri = "ipfs://" + metadataHash;
+      const updatedSeller = await updateSeller(coreSDK, seller, {
+        metadataUri
+      });
+      expect(updatedSeller.metadata).toMatchObject(newMetadata);
+    });
     test("create seller - expect fail as image url is too large", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3

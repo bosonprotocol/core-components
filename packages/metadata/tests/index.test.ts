@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { validateMetadata, AnyMetadata, productV1 } from "../src/index";
 import productV1ValidFullOffer from "./product-v1/valid/fullOffer.json";
 import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
+import cloneDeep from "clone-deep";
 
 const productMissingArguments = [
   {
@@ -305,8 +307,10 @@ describe("#validateMetadata()", () => {
     });
 
     test("throw for too long value", () => {
-      const metadata =
-        productV1ValidFullOffer as unknown as productV1.ProductV1Metadata;
+      const metadata = cloneDeep(
+        productV1ValidFullOffer as unknown as productV1.ProductV1Metadata
+      );
+
       const imageIndex = metadata.product.visuals_images.length;
       metadata.product.visuals_images.push({
         url: new Array(10000).join(",")

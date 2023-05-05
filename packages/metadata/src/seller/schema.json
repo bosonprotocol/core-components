@@ -79,5 +79,5 @@
       }
     }
   },
-  "required": ["type", "name", "description", "kind", "website", "contactLinks", "contactPreference", "socialLinks"]
+  "required": ["type", "kind", "contactPreference"]
 }
