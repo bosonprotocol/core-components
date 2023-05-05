@@ -71,11 +71,11 @@ type SellerMetadata @entity {
   id: ID!
   type: SellerMetadataType!
   createdAt: BigInt!
-  name: String!
-  description: String!
+  name: String
+  description: String
   legalTradingName: String
   kind: String!
-  website: String!
+  website: String
   images: [SellerMetadataMedia!]
   contactLinks: [SellerContactLink!]
   contactPreference: String!

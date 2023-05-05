@@ -7801,15 +7801,15 @@ export type SellerMetadata = {
   contactLinks?: Maybe<Array<SellerContactLink>>;
   contactPreference: Scalars["String"];
   createdAt: Scalars["BigInt"];
-  description: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   images?: Maybe<Array<SellerMetadataMedia>>;
   kind: Scalars["String"];
   legalTradingName?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
   socialLinks?: Maybe<Array<SellerSocialLink>>;
   type: SellerMetadataType;
-  website: Scalars["String"];
+  website?: Maybe<Scalars["String"]>;
 };
 
 export type SellerMetadataContactLinksArgs = {
@@ -9296,12 +9296,12 @@ export type GetSellerByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -9538,12 +9538,12 @@ export type GetSellerByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -9619,12 +9619,12 @@ export type GetSellerByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -9744,12 +9744,12 @@ export type GetSellerByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -9849,12 +9849,12 @@ export type GetSellerByIdQueryQuery = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -10005,12 +10005,12 @@ export type GetSellersQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -10247,12 +10247,12 @@ export type GetSellersQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -10328,12 +10328,12 @@ export type GetSellersQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -10453,12 +10453,12 @@ export type GetSellersQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -10558,12 +10558,12 @@ export type GetSellersQueryQuery = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -10686,12 +10686,12 @@ export type GetBuyerByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -10896,12 +10896,12 @@ export type GetBuyersQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -11089,12 +11089,12 @@ export type GetDisputeResolverByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -11331,12 +11331,12 @@ export type GetDisputeResolverByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -11412,12 +11412,12 @@ export type GetDisputeResolverByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -11665,12 +11665,12 @@ export type GetDisputeResolversQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -11907,12 +11907,12 @@ export type GetDisputeResolversQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -11988,12 +11988,12 @@ export type GetDisputeResolversQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -12238,12 +12238,12 @@ export type SellerFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -12476,12 +12476,12 @@ export type SellerFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -12557,12 +12557,12 @@ export type SellerFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -12682,12 +12682,12 @@ export type SellerFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -12787,12 +12787,12 @@ export type SellerFieldsFragment = {
     __typename?: "SellerMetadata";
     id: string;
     createdAt: string;
-    name: string;
-    description: string;
+    name?: string | null;
+    description?: string | null;
     legalTradingName?: string | null;
     type: SellerMetadataType;
     kind: string;
-    website: string;
+    website?: string | null;
     contactPreference: string;
     images?: Array<{
       __typename?: "SellerMetadataMedia";
@@ -12860,12 +12860,12 @@ export type BaseSellerFieldsFragment = {
     __typename?: "SellerMetadata";
     id: string;
     createdAt: string;
-    name: string;
-    description: string;
+    name?: string | null;
+    description?: string | null;
     legalTradingName?: string | null;
     type: SellerMetadataType;
     kind: string;
-    website: string;
+    website?: string | null;
     contactPreference: string;
     images?: Array<{
       __typename?: "SellerMetadataMedia";
@@ -12972,12 +12972,12 @@ export type BuyerFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -13153,12 +13153,12 @@ export type DisputeResolverFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -13391,12 +13391,12 @@ export type DisputeResolverFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -13472,12 +13472,12 @@ export type DisputeResolverFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -13770,12 +13770,12 @@ export type GetDisputeByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -13819,12 +13819,12 @@ export type GetDisputeByIdQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -13935,12 +13935,12 @@ export type GetDisputesQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -13984,12 +13984,12 @@ export type GetDisputesQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -14090,12 +14090,12 @@ export type DisputeFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -14139,12 +14139,12 @@ export type DisputeFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -14272,12 +14272,12 @@ export type GetExchangeTokenByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -14514,12 +14514,12 @@ export type GetExchangeTokenByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -14595,12 +14595,12 @@ export type GetExchangeTokenByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -14759,12 +14759,12 @@ export type GetExchangeTokensQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -15001,12 +15001,12 @@ export type GetExchangeTokensQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -15082,12 +15082,12 @@ export type GetExchangeTokensQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -15224,12 +15224,12 @@ export type ExchangeTokenFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -15462,12 +15462,12 @@ export type ExchangeTokenFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -15543,12 +15543,12 @@ export type ExchangeTokenFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -15868,12 +15868,12 @@ export type GetExchangeByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -16110,12 +16110,12 @@ export type GetExchangeByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -16191,12 +16191,12 @@ export type GetExchangeByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -16302,12 +16302,12 @@ export type GetExchangeByIdQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -16413,12 +16413,12 @@ export type GetExchangesQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -16655,12 +16655,12 @@ export type GetExchangesQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -16736,12 +16736,12 @@ export type GetExchangesQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -16847,12 +16847,12 @@ export type GetExchangesQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -16948,12 +16948,12 @@ export type ExchangeFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -17186,12 +17186,12 @@ export type ExchangeFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -17267,12 +17267,12 @@ export type ExchangeFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -17373,12 +17373,12 @@ export type ExchangeFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -17453,12 +17453,12 @@ export type BaseExchangeFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -17663,12 +17663,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -17905,12 +17905,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -17986,12 +17986,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -18076,12 +18076,12 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -18213,12 +18213,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -18455,12 +18455,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -18536,12 +18536,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -18626,12 +18626,12 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -18753,12 +18753,12 @@ export type BaseMetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -18991,12 +18991,12 @@ export type BaseMetadataEntityFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -19072,12 +19072,12 @@ export type BaseMetadataEntityFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -19162,12 +19162,12 @@ export type BaseMetadataEntityFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -19288,12 +19288,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -19526,12 +19526,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -19607,12 +19607,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -19697,12 +19697,12 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -19886,12 +19886,12 @@ export type GetProductV1ProductsQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -20046,12 +20046,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               __typename?: "SellerMetadata";
               id: string;
               createdAt: string;
-              name: string;
-              description: string;
+              name?: string | null;
+              description?: string | null;
               legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
-              website: string;
+              website?: string | null;
               contactPreference: string;
               images?: Array<{
                 __typename?: "SellerMetadataMedia";
@@ -20105,12 +20105,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -20347,12 +20347,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       __typename?: "SellerMetadata";
                       id: string;
                       createdAt: string;
-                      name: string;
-                      description: string;
+                      name?: string | null;
+                      description?: string | null;
                       legalTradingName?: string | null;
                       type: SellerMetadataType;
                       kind: string;
-                      website: string;
+                      website?: string | null;
                       contactPreference: string;
                       images?: Array<{
                         __typename?: "SellerMetadataMedia";
@@ -20428,12 +20428,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -20599,12 +20599,12 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -20759,12 +20759,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               __typename?: "SellerMetadata";
               id: string;
               createdAt: string;
-              name: string;
-              description: string;
+              name?: string | null;
+              description?: string | null;
               legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
-              website: string;
+              website?: string | null;
               contactPreference: string;
               images?: Array<{
                 __typename?: "SellerMetadataMedia";
@@ -20818,12 +20818,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -21060,12 +21060,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       __typename?: "SellerMetadata";
                       id: string;
                       createdAt: string;
-                      name: string;
-                      description: string;
+                      name?: string | null;
+                      description?: string | null;
                       legalTradingName?: string | null;
                       type: SellerMetadataType;
                       kind: string;
-                      website: string;
+                      website?: string | null;
                       contactPreference: string;
                       images?: Array<{
                         __typename?: "SellerMetadataMedia";
@@ -21141,12 +21141,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -21312,12 +21312,12 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -21486,12 +21486,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -21545,12 +21545,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -21787,12 +21787,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -21868,12 +21868,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -21958,12 +21958,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -22118,12 +22118,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -22199,12 +22199,12 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -22365,12 +22365,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -22424,12 +22424,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -22666,12 +22666,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -22747,12 +22747,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -22837,12 +22837,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -22997,12 +22997,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -23078,12 +23078,12 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -23234,12 +23234,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -23293,12 +23293,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -23531,12 +23531,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -23612,12 +23612,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -23702,12 +23702,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -23862,12 +23862,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -23943,12 +23943,12 @@ export type ProductV1MetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -24098,12 +24098,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -24157,12 +24157,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -24395,12 +24395,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -24476,12 +24476,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -24566,12 +24566,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -24726,12 +24726,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -24807,12 +24807,12 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -24980,12 +24980,12 @@ export type BaseProductV1ProductFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -25129,12 +25129,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -25188,12 +25188,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -25430,12 +25430,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -25511,12 +25511,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -25682,12 +25682,12 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -25831,12 +25831,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             __typename?: "SellerMetadata";
             id: string;
             createdAt: string;
-            name: string;
-            description: string;
+            name?: string | null;
+            description?: string | null;
             legalTradingName?: string | null;
             type: SellerMetadataType;
             kind: string;
-            website: string;
+            website?: string | null;
             contactPreference: string;
             images?: Array<{
               __typename?: "SellerMetadataMedia";
@@ -25890,12 +25890,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -26132,12 +26132,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     __typename?: "SellerMetadata";
                     id: string;
                     createdAt: string;
-                    name: string;
-                    description: string;
+                    name?: string | null;
+                    description?: string | null;
                     legalTradingName?: string | null;
                     type: SellerMetadataType;
                     kind: string;
-                    website: string;
+                    website?: string | null;
                     contactPreference: string;
                     images?: Array<{
                       __typename?: "SellerMetadataMedia";
@@ -26213,12 +26213,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -26384,12 +26384,12 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -26507,12 +26507,12 @@ export type BaseProductV1SellerFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -26712,12 +26712,12 @@ export type GetOfferByIdQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -26771,12 +26771,12 @@ export type GetOfferByIdQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -27009,12 +27009,12 @@ export type GetOfferByIdQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -27090,12 +27090,12 @@ export type GetOfferByIdQueryQuery = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -27259,12 +27259,12 @@ export type GetOffersQueryQuery = {
           __typename?: "SellerMetadata";
           id: string;
           createdAt: string;
-          name: string;
-          description: string;
+          name?: string | null;
+          description?: string | null;
           legalTradingName?: string | null;
           type: SellerMetadataType;
           kind: string;
-          website: string;
+          website?: string | null;
           contactPreference: string;
           images?: Array<{
             __typename?: "SellerMetadataMedia";
@@ -27318,12 +27318,12 @@ export type GetOffersQueryQuery = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -27556,12 +27556,12 @@ export type GetOffersQueryQuery = {
                   __typename?: "SellerMetadata";
                   id: string;
                   createdAt: string;
-                  name: string;
-                  description: string;
+                  name?: string | null;
+                  description?: string | null;
                   legalTradingName?: string | null;
                   type: SellerMetadataType;
                   kind: string;
-                  website: string;
+                  website?: string | null;
                   contactPreference: string;
                   images?: Array<{
                     __typename?: "SellerMetadataMedia";
@@ -27637,12 +27637,12 @@ export type GetOffersQueryQuery = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -27790,12 +27790,12 @@ export type OfferFieldsFragment = {
         __typename?: "SellerMetadata";
         id: string;
         createdAt: string;
-        name: string;
-        description: string;
+        name?: string | null;
+        description?: string | null;
         legalTradingName?: string | null;
         type: SellerMetadataType;
         kind: string;
-        website: string;
+        website?: string | null;
         contactPreference: string;
         images?: Array<{
           __typename?: "SellerMetadataMedia";
@@ -27849,12 +27849,12 @@ export type OfferFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -28087,12 +28087,12 @@ export type OfferFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -28168,12 +28168,12 @@ export type OfferFieldsFragment = {
               __typename?: "SellerMetadata";
               id: string;
               createdAt: string;
-              name: string;
-              description: string;
+              name?: string | null;
+              description?: string | null;
               legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
-              website: string;
+              website?: string | null;
               contactPreference: string;
               images?: Array<{
                 __typename?: "SellerMetadataMedia";
@@ -28295,12 +28295,12 @@ export type BaseOfferFieldsFragment = {
       __typename?: "SellerMetadata";
       id: string;
       createdAt: string;
-      name: string;
-      description: string;
+      name?: string | null;
+      description?: string | null;
       legalTradingName?: string | null;
       type: SellerMetadataType;
       kind: string;
-      website: string;
+      website?: string | null;
       contactPreference: string;
       images?: Array<{
         __typename?: "SellerMetadataMedia";
@@ -28533,12 +28533,12 @@ export type BaseOfferFieldsFragment = {
                 __typename?: "SellerMetadata";
                 id: string;
                 createdAt: string;
-                name: string;
-                description: string;
+                name?: string | null;
+                description?: string | null;
                 legalTradingName?: string | null;
                 type: SellerMetadataType;
                 kind: string;
-                website: string;
+                website?: string | null;
                 contactPreference: string;
                 images?: Array<{
                   __typename?: "SellerMetadataMedia";
@@ -28614,12 +28614,12 @@ export type BaseOfferFieldsFragment = {
               __typename?: "SellerMetadata";
               id: string;
               createdAt: string;
-              name: string;
-              description: string;
+              name?: string | null;
+              description?: string | null;
               legalTradingName?: string | null;
               type: SellerMetadataType;
               kind: string;
-              website: string;
+              website?: string | null;
               contactPreference: string;
               images?: Array<{
                 __typename?: "SellerMetadataMedia";

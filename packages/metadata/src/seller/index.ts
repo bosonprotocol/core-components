@@ -17,18 +17,18 @@ export type Media = {
 
 export type SellerMetadata = {
   type: "SELLER";
-  name: string;
-  description: string;
-  legalTradingName: string;
+  name?: string;
+  description?: string;
+  legalTradingName?: string;
   kind: string;
-  website: string;
+  website?: string;
   images?: Media[];
-  contactLinks: {
+  contactLinks?: {
     url: string;
     tag: string;
   }[];
   contactPreference: string;
-  socialLinks: {
+  socialLinks?: {
     url: string;
     tag: string;
   }[];
