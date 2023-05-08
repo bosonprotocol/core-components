@@ -5,6 +5,7 @@ type Seller = {
   clerk: string;
   treasury: string;
   active: boolean;
+  metadataUri: string;
 };
 
 type AuthToken = {
@@ -19,14 +20,15 @@ export type SellerData = {
 };
 
 function sellerFromStruct(struct: Array<any>): Seller {
-  const [id, assistant, admin, clerk, treasury, active] = struct;
+  const [id, assistant, admin, clerk, treasury, active, metadataUri] = struct;
   return {
     id: id.toString(),
     assistant,
     admin,
     clerk,
     treasury,
-    active
+    active,
+    metadataUri
   };
 }
 

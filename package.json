@@ -34,6 +34,7 @@
     "create-offer-batch": "ts-node -P tsconfig.base.json ./scripts/create-offer-batch.ts",
     "create-seller": "ts-node -P tsconfig.base.json ./scripts/create-seller.ts",
     "update-seller": "ts-node -P tsconfig.base.json ./scripts/update-seller.ts",
+    "view-sellers": "ts-node -P tsconfig.base.json ./scripts/view-sellers.ts",
     "abi-signatures": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts",
     "abi-signatures:export": "ts-node -P tsconfig.base.json ./scripts/abi-signatures.ts --csv scripts/abi-signatures.csv",
     "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
