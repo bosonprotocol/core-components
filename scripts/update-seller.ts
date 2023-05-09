@@ -24,6 +24,7 @@ program
   .option("--assistant <ASSISTANT>", "New assistant address")
   .option("--authTokenId <AUTH_TOKEN_ID>", "New Auth Token Id")
   .option("--authTokenType <AUTH_TOKEN_TYPE>", "New Auth Token Type")
+  .option("--metadataUri <METADATA_URI>", "New metadata URI")
   .option(
     "--privateKeys <PRIVATE_KEYS>",
     "Comma-separated list of private keys used for opting in the update"
@@ -113,7 +114,11 @@ async function main() {
     authTokenType:
       opts.authTokenType ||
       sellerDataJson.authTokenType ||
-      sellerData.authToken.tokenType
+      sellerData.authToken.tokenType,
+    metadataUri:
+      opts.metadataUri ||
+      sellerDataJson.metadataUri ||
+      sellerData.seller.metadataUri
   };
 
   let modif = false;
@@ -126,7 +131,8 @@ async function main() {
   modif =
     modif ||
     sellerDataJson.authTokenId !== sellerData.authToken.tokenId ||
-    sellerDataJson.authTokenType !== sellerData.authToken.tokenType;
+    sellerDataJson.authTokenType !== sellerData.authToken.tokenType ||
+    sellerDataJson.metadataUri !== sellerData.seller.metadataUri;
 
   if (!modif) {
     throw `No updated value specified`;
