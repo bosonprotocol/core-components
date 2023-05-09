@@ -544,6 +544,52 @@ export async function updateSeller(
   return updatedSeller;
 }
 
+export async function updateSellerMetaTx(
+  coreSDK: CoreSDK,
+  seller: SellerFieldsFragment,
+  sellerParams: Partial<CreateSellerArgs>,
+  optInSequence: {
+    coreSDK: CoreSDK;
+    fieldsToUpdate: {
+      assistant?: boolean;
+      clerk?: boolean;
+      admin?: boolean;
+      authToken?: boolean;
+    };
+  }[] = []
+) {
+  const updatedSellerTxResponse = await coreSDK.signMetaTxUpdateSellerAndOptIn({
+    ...seller,
+    ...sellerParams
+  });
+  await updatedSellerTxResponse.wait();
+  const optInTxs: TransactionResponse[] = [];
+  for (const optIn of optInSequence) {
+    const nonce = Date.now();
+    const optInMetaTx = await optIn.coreSDK.signMetaTxOptInToSellerUpdate({
+      optInToSellerUpdateArgs: {
+        id: seller.id,
+        fieldsToUpdate: optIn.fieldsToUpdate
+      },
+      nonce
+    });
+    optInTxs.push(
+      await optIn.coreSDK.relayMetaTransaction({
+        functionName: optInMetaTx.functionName,
+        functionSignature: optInMetaTx.functionSignature,
+        sigR: optInMetaTx.r,
+        sigS: optInMetaTx.s,
+        sigV: optInMetaTx.v,
+        nonce
+      })
+    );
+  }
+  await Promise.all(optInTxs.map((tx) => tx.wait()));
+  await waitForGraphNodeIndexing();
+  const updatedSeller = await coreSDK.getSellerById(seller.id as string);
+  return updatedSeller;
+}
+
 export async function createSellerAndOffer(
   coreSDK: CoreSDK,
   sellerAddress: string,
