@@ -185,6 +185,7 @@ describe("meta-tx", () => {
 
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(sellerWallet);
+      const metadataUri = "ipfs://metadataUri";
       seller = await updateSellerMetaTx(
         coreSDK,
         seller,
@@ -192,7 +193,8 @@ describe("meta-tx", () => {
           admin: randomWallet.address,
           assistant: randomWallet.address,
           clerk: randomWallet.address,
-          treasury: randomWallet.address
+          treasury: randomWallet.address,
+          metadataUri
         },
         [
           {
@@ -205,7 +207,6 @@ describe("meta-tx", () => {
           }
         ]
       );
-
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
       expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
@@ -213,6 +214,7 @@ describe("meta-tx", () => {
       expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
+      expect(seller.metadataUri).toEqual(metadataUri);
     });
   });
 
