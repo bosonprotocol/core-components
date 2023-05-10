@@ -1,12 +1,17 @@
-import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  MetaTxConfig,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
 import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
-import { getNonce } from "../forwarder/handler";
 import { accounts } from "..";
+import { AccountsMixin } from "../accounts/mixin";
+import { SellerFieldsFragment } from "../subgraph";
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -76,6 +81,88 @@ export class MetaTxMixin extends BaseCoreSDK {
       chainId: this._chainId,
       ...args
     });
+  }
+
+  public async signMetaTxUpdateSellerAndOptIn(
+    sellerUpdates: accounts.UpdateSellerArgs
+  ): Promise<TransactionResponse> {
+    let nonce = Date.now();
+    const updateMetaTx = await this.signMetaTxUpdateSeller({
+      updateSellerArgs: sellerUpdates,
+      nonce
+    });
+    const updateTx = await this.relayMetaTransaction({
+      functionName: updateMetaTx.functionName,
+      functionSignature: updateMetaTx.functionSignature,
+      sigR: updateMetaTx.r,
+      sigS: updateMetaTx.s,
+      sigV: updateMetaTx.v,
+      nonce
+    });
+    await updateTx.wait();
+    let seller: SellerFieldsFragment | undefined;
+    let count = 200;
+    while ((!seller || !seller.pendingSeller) && count-- > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      type getSellerById = typeof AccountsMixin.prototype.getSellerById;
+      seller = await (this["getSellerById"] as getSellerById)(sellerUpdates.id);
+    }
+    if (!seller) {
+      throw new Error(
+        "[signMetaTxUpdateSellerAndOptIn] seller could not be retrieved in time"
+      );
+    }
+    const pendingSellerUpdate = seller.pendingSeller;
+    if (!pendingSellerUpdate) {
+      throw new Error(
+        "[signMetaTxUpdateSellerAndOptIn] seller.pendingSeller could not be retrieved in time"
+      );
+    }
+    // Find all updates that can be opted in by the current account
+    const currentAccount = (
+      await this._web3Lib.getSignerAddress()
+    ).toLowerCase();
+    const fieldsToUpdate = {
+      assistant:
+        currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
+      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
+      admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
+      authToken:
+        pendingSellerUpdate.authTokenType !== undefined &&
+        pendingSellerUpdate.authTokenType !== null &&
+        pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
+    };
+    if (
+      fieldsToUpdate.assistant ||
+      fieldsToUpdate.clerk ||
+      fieldsToUpdate.admin ||
+      fieldsToUpdate.authToken
+    ) {
+      nonce = Date.now();
+      const optInMetaTx = await this.signMetaTxOptInToSellerUpdate({
+        optInToSellerUpdateArgs: {
+          id: sellerUpdates.id,
+          fieldsToUpdate: {
+            assistant:
+              currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
+            clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+            admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+            authToken: pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
+          }
+        },
+        nonce
+      });
+      return this.relayMetaTransaction({
+        functionName: optInMetaTx.functionName,
+        functionSignature: optInMetaTx.functionSignature,
+        sigR: optInMetaTx.r,
+        sigS: optInMetaTx.s,
+        sigV: optInMetaTx.v,
+        nonce
+      });
+    }
+    // If there is nothing to optIn from the current account, then return the response from updateSeller
+    return updateTx;
   }
 
   /**

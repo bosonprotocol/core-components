@@ -21,11 +21,14 @@ import {
   initCoreSDKWithFundedWallet,
   seedWallet13,
   createSeaportOrder,
-  MOCK_SEAPORT_ADDRESS
+  MOCK_SEAPORT_ADDRESS,
+  createSeller,
+  updateSellerMetaTx
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
+import { AuthTokenType } from "@bosonprotocol/common";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
@@ -168,6 +171,50 @@ describe("meta-tx", () => {
       expect(existingSeller.pendingSeller?.admin).toBe(
         randomWallet.address.toLowerCase()
       );
+    });
+  });
+
+  describe("#signMetaTxUpdateSellerAndOptIn", () => {
+    test("update seller - replace all addresses", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        sellerWallet
+      );
+
+      let seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+
+      const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
+        await initCoreSDKWithFundedWallet(sellerWallet);
+      const metadataUri = "ipfs://metadataUri";
+      seller = await updateSellerMetaTx(
+        coreSDK,
+        seller,
+        {
+          admin: randomWallet.address,
+          assistant: randomWallet.address,
+          clerk: randomWallet.address,
+          treasury: randomWallet.address,
+          metadataUri
+        },
+        [
+          {
+            coreSDK: coreSDK2,
+            fieldsToUpdate: {
+              admin: true,
+              assistant: true,
+              clerk: true
+            }
+          }
+        ]
+      );
+      expect(seller).toBeTruthy();
+      expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.admin).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
+      expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
+      expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
+      expect(seller.metadataUri).toEqual(metadataUri);
     });
   });
 
@@ -1295,6 +1342,11 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   const sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   const [seller] = sellers;
+  if (!seller) {
+    throw new Error(
+      `[createOfferAndDepositFunds] something went wrong while retrieveing seller using address=${sellerAddress}`
+    );
+  }
   // Store metadata
   const metadataHash = await sellerCoreSDK.storeMetadata({
     ...metadata,
