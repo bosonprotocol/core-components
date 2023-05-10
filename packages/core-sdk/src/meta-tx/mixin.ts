@@ -102,7 +102,7 @@ export class MetaTxMixin extends BaseCoreSDK {
     await updateTx.wait();
     let seller: SellerFieldsFragment | undefined;
     let count = 200;
-    while (!seller && count-- > 0) {
+    while ((!seller || !seller.pendingSeller) && count-- > 0) {
       await new Promise((resolve) => setTimeout(resolve, 300));
       type getSellerById = typeof AccountsMixin.prototype.getSellerById;
       seller = await (this["getSellerById"] as getSellerById)(sellerUpdates.id);
