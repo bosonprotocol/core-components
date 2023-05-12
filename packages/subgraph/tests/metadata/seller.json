@@ -6,7 +6,7 @@
     {
       "url": "url",
       "tag": "tag",
-      "type": "IMAGE",
+      "type": "image/jpeg",
       "width": 505,
       "height": 393
     }

@@ -49,16 +49,12 @@ type SellerSocialLink @entity {
   tag: String!
 }
 
-enum MediaType {
-  IMAGE
-  VIDEO
-}
 
 type SellerMetadataMedia @entity {
   id: ID!
   url: String!
   tag: String
-  type: MediaType!
+  type: String!
   width: Int
   height: Int
 }

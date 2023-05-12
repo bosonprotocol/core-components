@@ -24,7 +24,7 @@ export function saveInnerSellerMetadata(
   const kind = convertToString(metadataObj.get("kind"));
   const website = convertToString(metadataObj.get("website"));
   const images = convertToObjectArray(metadataObj.get("images"));
-  const imagesId = saveSellerMedias(images, "IMAGE");
+  const imagesId = saveSellerMedias(images);
   const contactLinks = convertToObjectArray(metadataObj.get("contactLinks"));
   const contactLinksId = saveContactLinks(contactLinks);
   const contactPreference = convertToString(
