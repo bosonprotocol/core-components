@@ -85,8 +85,6 @@ export const metadata = {
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
-const sellerMetadataUri =
-  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 export const sellerMetadata = {
   name: "sellerMetadataName",
   description: "description",
@@ -246,6 +244,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
+  const sellerMetadataUri = await getSellerMetadataUri(sellerCoreSDK);
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
@@ -592,6 +591,14 @@ export async function updateSellerMetaTx(
   return updatedSeller;
 }
 
+export async function getSellerMetadataUri(coreSDK: CoreSDK) {
+  const sellerMetadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata
+  });
+  const sellerMetadataUri = "ipfs://" + sellerMetadataHash;
+  return sellerMetadataUri;
+}
+
 export async function createSellerAndOffer(
   coreSDK: CoreSDK,
   sellerAddress: string,
@@ -602,7 +609,7 @@ export async function createSellerAndOffer(
     type: "BASE"
   });
   const metadataUri = "ipfs://" + metadataHash;
-
+  const sellerMetadataUri = await getSellerMetadataUri(coreSDK);
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
       assistant: sellerAddress,
