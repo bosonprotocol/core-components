@@ -16,6 +16,8 @@ jobs:
           node-version: "16"
           cache: "npm"
       - run: npm ci
+      - id: build
+        run: npm run build -- --cache-dir=".turbo"
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
       - name: Deploy subgraph
