@@ -387,8 +387,15 @@ export async function relayBiconomyMetaTransaction(args: {
 export async function signMetaTxCreateSeller(
   args: BaseMetaTxArgs & {
     createSellerArgs: CreateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createSellerArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return signMetaTx({
     ...args,
     functionName:
@@ -400,8 +407,15 @@ export async function signMetaTxCreateSeller(
 export async function signMetaTxUpdateSeller(
   args: BaseMetaTxArgs & {
     updateSellerArgs: UpdateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.updateSellerArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return signMetaTx({
     ...args,
     functionName:
