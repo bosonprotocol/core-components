@@ -38,6 +38,7 @@ const newSellerWallet = seedWallet11;
 
 const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
 const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
+const metadataUri = "ipfs://QmeR6xQdL5BgDmvGfH4L2ccXx3SQe6vw9PEQd2jFf7aoPu";
 
 jest.setTimeout(60_000);
 
@@ -76,7 +77,7 @@ describe("meta-tx", () => {
           treasury: randomWallet.address,
           authTokenId: "0",
           authTokenType: 0,
-          metadataUri: "ipfs://metadataUri"
+          metadataUri
         });
         await updateTx.wait();
         const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
@@ -104,7 +105,7 @@ describe("meta-tx", () => {
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });
@@ -147,7 +148,7 @@ describe("meta-tx", () => {
             clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });
@@ -185,7 +186,6 @@ describe("meta-tx", () => {
 
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(sellerWallet);
-      const metadataUri = "ipfs://metadataUri";
       seller = await updateSellerMetaTx(
         coreSDK,
         seller,
@@ -240,7 +240,7 @@ describe("meta-tx", () => {
             clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });

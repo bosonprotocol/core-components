@@ -85,6 +85,8 @@ export const metadata = {
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
+const sellerMetadataUri =
+  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 export const sellerMetadata = {
   name: "sellerMetadataName",
   description: "description",
@@ -256,7 +258,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: "ipfs://metadataUri"
+      metadataUri: sellerMetadataUri
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
@@ -611,7 +613,7 @@ export async function createSellerAndOffer(
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
-      metadataUri: "ipfs://metadataUri"
+      metadataUri: sellerMetadataUri
     },
     mockCreateOfferArgs({
       metadataHash,
