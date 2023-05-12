@@ -26,6 +26,7 @@ export function saveSellerMedias(
     if (media) {
       media.height = mediaHeight;
       media.width = mediaWidth;
+      media.type = mediaType;
     } else {
       media = new SellerMetadataMedia(mediaId);
       media.url = mediaUrl;
