@@ -1,6 +1,8 @@
 name: Deploy subgraph to staging env
 
 on:
+  workflow_dispatch:
+    branches: [main]
   release:
     types: [published]
 
