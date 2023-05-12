@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    if: startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
     runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
