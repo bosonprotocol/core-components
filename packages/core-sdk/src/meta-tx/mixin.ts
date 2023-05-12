@@ -89,7 +89,9 @@ export class MetaTxMixin extends BaseCoreSDK {
     let nonce = Date.now();
     const updateMetaTx = await this.signMetaTxUpdateSeller({
       updateSellerArgs: sellerUpdates,
-      nonce
+      nonce,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage
     });
     const updateTx = await this.relayMetaTransaction({
       functionName: updateMetaTx.functionName,

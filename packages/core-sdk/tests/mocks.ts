@@ -14,6 +14,8 @@ export const DAY_IN_MIN = 24 * 60;
 export const DAY_IN_SEC = DAY_IN_MIN * 60;
 export const DAY_IN_MS = DAY_IN_SEC * 1000;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+const sellerMetadataUri =
+  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 
 export function interceptSubgraph(operationName?: string) {
   return nock(SUBGRAPH_URL).post("", (body) => {
@@ -43,7 +45,7 @@ export function mockRawSellerFromSubgraph(
     funds: [],
     offers: [],
     exchanges: [],
-    metadataUri: "ipfs://metadataUri",
+    metadataUri: sellerMetadataUri,
     ...overrides
   };
 }
@@ -101,7 +103,7 @@ export function mockRawOfferFromSubgraph(
       active: true,
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
-      metadataUri: "ipfs://metadataUri",
+      metadataUri: sellerMetadataUri,
       ...seller
     },
     exchangeToken: {
@@ -187,7 +189,7 @@ export function mockRawExchangeFromSubgraph(
       active: true,
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
-      metadataUri: "ipfs://metadataUri",
+      metadataUri: sellerMetadataUri,
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),

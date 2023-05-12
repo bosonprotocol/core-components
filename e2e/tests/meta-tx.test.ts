@@ -23,7 +23,8 @@ import {
   createSeaportOrder,
   MOCK_SEAPORT_ADDRESS,
   createSeller,
-  updateSellerMetaTx
+  updateSellerMetaTx,
+  getSellerMetadataUri
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -68,6 +69,7 @@ describe("meta-tx", () => {
         // Useful when repeating the test suite on the same contracts
         const { coreSDK: randomSellerCoreSDK, fundedWallet: randomWallet } =
           await initCoreSDKWithFundedWallet(sellerWallet);
+        const metadataUri = await getSellerMetadataUri(randomSellerCoreSDK);
         const updateTx = await newSellerCoreSDK.updateSeller({
           id: existingSeller.id,
           admin: randomWallet.address,
@@ -76,7 +78,7 @@ describe("meta-tx", () => {
           treasury: randomWallet.address,
           authTokenId: "0",
           authTokenType: 0,
-          metadataUri: "ipfs://metadataUri"
+          metadataUri
         });
         await updateTx.wait();
         const optinTx = await randomSellerCoreSDK.optInToSellerUpdate({
@@ -90,6 +92,7 @@ describe("meta-tx", () => {
         });
         await optinTx.wait();
       }
+      const metadataUri = await getSellerMetadataUri(newSellerCoreSDK);
 
       // Random seller signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -104,7 +107,7 @@ describe("meta-tx", () => {
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });
@@ -135,6 +138,7 @@ describe("meta-tx", () => {
       expect(seller).toBeTruthy();
 
       const randomWallet = Wallet.createRandom();
+      const metadataUri = await getSellerMetadataUri(sellerCoreSDK);
 
       // Random seller signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -147,7 +151,7 @@ describe("meta-tx", () => {
             clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });
@@ -185,7 +189,8 @@ describe("meta-tx", () => {
 
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(sellerWallet);
-      const metadataUri = "ipfs://metadataUri";
+      const metadataUri = await getSellerMetadataUri(coreSDK2);
+
       seller = await updateSellerMetaTx(
         coreSDK,
         seller,
@@ -229,6 +234,8 @@ describe("meta-tx", () => {
       let nonce = Date.now();
       const randomWallet = Wallet.createRandom();
       const randomCoreSDK = initCoreSDKWithWallet(randomWallet);
+      const metadataUri = await getSellerMetadataUri(seller1CoreSDK);
+
       // set seller address from seller 1 to random address
       const updateSellerResultRandom =
         await seller1CoreSDK.signMetaTxUpdateSeller({
@@ -240,7 +247,7 @@ describe("meta-tx", () => {
             clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri: "ipfs://metadataUri"
+            metadataUri
           },
           nonce
         });

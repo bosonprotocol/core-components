@@ -225,6 +225,8 @@ export class AccountsMixin extends BaseCoreSDK {
     return accounts.handler.createSeller({
       sellerToCreate,
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
@@ -270,6 +272,8 @@ export class AccountsMixin extends BaseCoreSDK {
     return accounts.handler.updateSeller({
       sellerUpdates,
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }

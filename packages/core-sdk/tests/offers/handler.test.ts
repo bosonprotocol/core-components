@@ -14,7 +14,8 @@ import {
   SUBGRAPH_URL,
   mockRawOfferFromSubgraph
 } from "../mocks";
-
+const sellerMetadataUri =
+  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 describe("#createOffer()", () => {
   test("throw for invalid args", () => {
     expect(() =>
@@ -109,7 +110,7 @@ describe("#voidOffer()", () => {
             active: true,
             royaltyPercentage: "0",
             contractURI: "ipfs://seller-contract-uri",
-            metadataUri: "ipfs://metadataUri"
+            metadataUri: sellerMetadataUri
           }
         })
       }
@@ -143,7 +144,7 @@ describe("#voidOffer()", () => {
             active: true,
             royaltyPercentage: "0",
             contractURI: "ipfs://seller-contract-uri",
-            metadataUri: "ipfs://metadataUri"
+            metadataUri: sellerMetadataUri
           }
         })
       }
@@ -223,7 +224,7 @@ describe("#voidOfferBatch()", () => {
               active: true,
               royaltyPercentage: "0",
               contractURI: "ipfs://seller-contract-uri",
-              metadataUri: "ipfs://metadataUri"
+              metadataUri: sellerMetadataUri
             }
           })
         ]
@@ -260,7 +261,7 @@ describe("#voidOfferBatch()", () => {
               active: true,
               royaltyPercentage: "0",
               contractURI: "ipfs://seller-contract-uri",
-              metadataUri: "ipfs://metadataUri"
+              metadataUri: sellerMetadataUri
             }
           })
         ]

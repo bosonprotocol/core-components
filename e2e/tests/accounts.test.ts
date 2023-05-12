@@ -17,7 +17,8 @@ import {
   createSeller,
   updateSeller,
   mintLensToken,
-  sellerMetadata
+  sellerMetadata,
+  getSellerMetadataUri
 } from "./utils";
 import { AuthTokenType } from "@bosonprotocol/common";
 
@@ -517,10 +518,14 @@ describe("CoreSDK - accounts", () => {
         seedWallet3
       );
 
-      let seller = await createSeller(coreSDK, fundedWallet.address);
+      let seller = await createSeller(coreSDK, fundedWallet.address, {
+        sellerMetadata: {
+          description: sellerMetadata.description + "a"
+        }
+      });
       expect(seller).toBeTruthy();
       expect(seller.metadataUri).toBeTruthy();
-      const updatedMetadataUri = "ipfs://newMetadataUri";
+      const updatedMetadataUri = await getSellerMetadataUri(coreSDK);
 
       seller = await updateSeller(coreSDK, seller, {
         metadataUri: updatedMetadataUri
