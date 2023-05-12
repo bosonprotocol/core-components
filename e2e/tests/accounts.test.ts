@@ -518,7 +518,11 @@ describe("CoreSDK - accounts", () => {
         seedWallet3
       );
 
-      let seller = await createSeller(coreSDK, fundedWallet.address);
+      let seller = await createSeller(coreSDK, fundedWallet.address, {
+        sellerMetadata: {
+          description: sellerMetadata.description + "a"
+        }
+      });
       expect(seller).toBeTruthy();
       expect(seller.metadataUri).toBeTruthy();
       const updatedMetadataUri = await getSellerMetadataUri(coreSDK);
