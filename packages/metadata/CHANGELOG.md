@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.8.1...@bosonprotocol/metadata@1.9.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* images metadata ([#447](https://github.com/bosonprotocol/core-components/issues/447)) ([7e43708](https://github.com/bosonprotocol/core-components/commit/7e437080e0ef1a2af6629702be70111a9dfc3915))
+* seller metadata images type ([#495](https://github.com/bosonprotocol/core-components/issues/495)) ([1e4fd5e](https://github.com/bosonprotocol/core-components/commit/1e4fd5e4e2b9d4d49057a363e4618e61c2cd33f8))
+
+
+### Features
+
+* add extra validation call to check that there is no metadata fi… ([#486](https://github.com/bosonprotocol/core-components/issues/486)) ([30889a9](https://github.com/bosonprotocol/core-components/commit/30889a95124c7856cec4b344daa589aaef9e005e))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* add width, height, type and name to images in metadata ([#438](https://github.com/bosonprotocol/core-components/issues/438)) ([f95953f](https://github.com/bosonprotocol/core-components/commit/f95953f402f1d9992c3492e825d622b34f4e6bc2))
+* make seller.metadata name, description and website optional ([#488](https://github.com/bosonprotocol/core-components/issues/488)) ([5b51c44](https://github.com/bosonprotocol/core-components/commit/5b51c4464f42fd6b5a84ca78104fb2f7f7e9f15c))
+* remove seller metadata kind field ([#480](https://github.com/bosonprotocol/core-components/issues/480)) ([175b47e](https://github.com/bosonprotocol/core-components/commit/175b47e72315732b9020ab39ea88c66428d74ec5))
+* store seller metadata uri in the graph ipfs node ([#494](https://github.com/bosonprotocol/core-components/issues/494)) ([f873143](https://github.com/bosonprotocol/core-components/commit/f873143687c0e83513895d04540cac26892867fc))
+
+
+
+
+
 ## [1.8.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.8.0...@bosonprotocol/metadata@1.8.1) (2022-12-01)
 
 

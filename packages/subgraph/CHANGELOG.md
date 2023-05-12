@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.22.1...@bosonprotocol/subgraph@1.23.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* images metadata ([#447](https://github.com/bosonprotocol/core-components/issues/447)) ([7e43708](https://github.com/bosonprotocol/core-components/commit/7e437080e0ef1a2af6629702be70111a9dfc3915))
+* override media type in seller images ([#496](https://github.com/bosonprotocol/core-components/issues/496)) ([b7b54c3](https://github.com/bosonprotocol/core-components/commit/b7b54c3c341671a3daf796303777de128336904f))
+* seller metadata images type ([#495](https://github.com/bosonprotocol/core-components/issues/495)) ([1e4fd5e](https://github.com/bosonprotocol/core-components/commit/1e4fd5e4e2b9d4d49057a363e4618e61c2cd33f8))
+* subgraph 2.2.0 ([#453](https://github.com/bosonprotocol/core-components/issues/453)) ([b5a2518](https://github.com/bosonprotocol/core-components/commit/b5a2518af35b24019b95f9b5757bf0654d2e0aa5))
+
+
+### Features
+
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* add offer range in subgraph ([#449](https://github.com/bosonprotocol/core-components/issues/449)) ([c39c153](https://github.com/bosonprotocol/core-components/commit/c39c1531ea9873694d1ad709cb8bb1e5ef6524ac))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* add width, height, type and name to images in metadata ([#438](https://github.com/bosonprotocol/core-components/issues/438)) ([f95953f](https://github.com/bosonprotocol/core-components/commit/f95953f402f1d9992c3492e825d622b34f4e6bc2))
+* make seller.metadata name, description and website optional ([#488](https://github.com/bosonprotocol/core-components/issues/488)) ([5b51c44](https://github.com/bosonprotocol/core-components/commit/5b51c4464f42fd6b5a84ca78104fb2f7f7e9f15c))
+* remove seller metadata kind field ([#480](https://github.com/bosonprotocol/core-components/issues/480)) ([175b47e](https://github.com/bosonprotocol/core-components/commit/175b47e72315732b9020ab39ea88c66428d74ec5))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* update set contract uri of the seller ([#462](https://github.com/bosonprotocol/core-components/issues/462)) ([82833ed](https://github.com/bosonprotocol/core-components/commit/82833ed0e7f70182f4552a83f6e9595fb8d2c429))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+### Reverts
+
+* Revert "ci: fix deploy subgraph pipeline (#443)" (#444) ([de4d4da](https://github.com/bosonprotocol/core-components/commit/de4d4daa86f5de66da6f6990ff12533ba6c6b144)), closes [#443](https://github.com/bosonprotocol/core-components/issues/443) [#444](https://github.com/bosonprotocol/core-components/issues/444)
+
+
+
+
+
 ## [1.22.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.22.0...@bosonprotocol/subgraph@1.22.1) (2022-11-22)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.1...@bosonprotocol/react-kit@0.17.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* attempt to fix core-sdk prototype ([#457](https://github.com/bosonprotocol/core-components/issues/457)) ([68c6631](https://github.com/bosonprotocol/core-components/commit/68c66319ab9f60c8d88ed48daeba3d05b4fbb7ab))
+* build ([#455](https://github.com/bosonprotocol/core-components/issues/455)) ([bcab586](https://github.com/bosonprotocol/core-components/commit/bcab5869a4a4752912afb1006bc2383f68df93b4))
+
+
+### Features
+
+* add finance widget to react kit ([#452](https://github.com/bosonprotocol/core-components/issues/452)) ([4740742](https://github.com/bosonprotocol/core-components/commit/474074234fadcf9c3cae5e821c2694e5eafa521e))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 ## [0.16.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.0...@bosonprotocol/react-kit@0.16.1) (2022-12-23)
 
 

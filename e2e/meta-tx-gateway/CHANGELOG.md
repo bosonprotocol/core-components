@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.2.4...meta-tx-gateway@1.3.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+
+
+### Features
+
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+
+
+
+
+
 ## [1.2.4](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.2.3...meta-tx-gateway@1.2.4) (2022-12-01)
 
 **Note:** Version bump only for package meta-tx-gateway

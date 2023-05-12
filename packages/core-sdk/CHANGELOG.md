@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.24.0...@bosonprotocol/core-sdk@1.25.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* dcl loading issue ([#439](https://github.com/bosonprotocol/core-components/issues/439)) ([0021e9f](https://github.com/bosonprotocol/core-components/commit/0021e9fef27b8bffbbbf7b681a6659c2618b5640))
+* images metadata ([#447](https://github.com/bosonprotocol/core-components/issues/447)) ([7e43708](https://github.com/bosonprotocol/core-components/commit/7e437080e0ef1a2af6629702be70111a9dfc3915))
+* omit erc mixins ([#437](https://github.com/bosonprotocol/core-components/issues/437)) ([5315c52](https://github.com/bosonprotocol/core-components/commit/5315c520af7a5a71a9f35c8f409e885a29d2032b))
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+* seller metadata images type ([#495](https://github.com/bosonprotocol/core-components/issues/495)) ([1e4fd5e](https://github.com/bosonprotocol/core-components/commit/1e4fd5e4e2b9d4d49057a363e4618e61c2cd33f8))
+* subgraph 2.2.0 ([#453](https://github.com/bosonprotocol/core-components/issues/453)) ([b5a2518](https://github.com/bosonprotocol/core-components/commit/b5a2518af35b24019b95f9b5757bf0654d2e0aa5))
+
+
+### Features
+
+* adapt biconomy relaying with forwarder ([#458](https://github.com/bosonprotocol/core-components/issues/458)) ([a567fc5](https://github.com/bosonprotocol/core-components/commit/a567fc5fa305746f3757f635206156251d695b98))
+* add erc xxx mixins ([#435](https://github.com/bosonprotocol/core-components/issues/435)) ([5f6db24](https://github.com/bosonprotocol/core-components/commit/5f6db24f05e8e9af59766792e3b4ecffdfe71406))
+* add finance widget to react kit ([#452](https://github.com/bosonprotocol/core-components/issues/452)) ([4740742](https://github.com/bosonprotocol/core-components/commit/474074234fadcf9c3cae5e821c2694e5eafa521e))
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* add offer range in subgraph ([#449](https://github.com/bosonprotocol/core-components/issues/449)) ([c39c153](https://github.com/bosonprotocol/core-components/commit/c39c1531ea9873694d1ad709cb8bb1e5ef6524ac))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* add signMetaTxUpdateSellerAndOptIn ([#493](https://github.com/bosonprotocol/core-components/issues/493)) ([f908574](https://github.com/bosonprotocol/core-components/commit/f908574986a3ecb4f14aa92ea8526049dfe55cb2))
+* add width, height, type and name to images in metadata ([#438](https://github.com/bosonprotocol/core-components/issues/438)) ([f95953f](https://github.com/bosonprotocol/core-components/commit/f95953f402f1d9992c3492e825d622b34f4e6bc2))
+* make seller.metadata name, description and website optional ([#488](https://github.com/bosonprotocol/core-components/issues/488)) ([5b51c44](https://github.com/bosonprotocol/core-components/commit/5b51c4464f42fd6b5a84ca78104fb2f7f7e9f15c))
+* omit web3lib erc mixins ([#436](https://github.com/bosonprotocol/core-components/issues/436)) ([23fcdd8](https://github.com/bosonprotocol/core-components/commit/23fcdd818d3191cff5f18566f5eab9abd65026de))
+* remove seller metadata kind field ([#480](https://github.com/bosonprotocol/core-components/issues/480)) ([175b47e](https://github.com/bosonprotocol/core-components/commit/175b47e72315732b9020ab39ea88c66428d74ec5))
+* store seller metadata uri in the graph ipfs node ([#494](https://github.com/bosonprotocol/core-components/issues/494)) ([f873143](https://github.com/bosonprotocol/core-components/commit/f873143687c0e83513895d04540cac26892867fc))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* update set contract uri of the seller ([#462](https://github.com/bosonprotocol/core-components/issues/462)) ([82833ed](https://github.com/bosonprotocol/core-components/commit/82833ed0e7f70182f4552a83f6e9595fb8d2c429))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 # [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.2...@bosonprotocol/core-sdk@1.24.0) (2022-12-23)
 
 
