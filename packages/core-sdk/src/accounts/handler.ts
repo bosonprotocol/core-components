@@ -52,7 +52,14 @@ export async function updateSeller(args: {
   sellerUpdates: UpdateSellerArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  metadataStorage: MetadataStorage;
+  theGraphStorage: MetadataStorage;
 }): Promise<TransactionResponse> {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.sellerUpdates.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeUpdateSeller(args.sellerUpdates)

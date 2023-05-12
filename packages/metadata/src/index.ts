@@ -17,7 +17,7 @@ export interface MetadataStorage {
   storeMetadata(metadata: OfferOrSellerMetadata): Promise<string>;
 }
 
-const limit = 2048;
+export const METADATA_LENGTH_LIMIT = 2048;
 function validateIpfsLimits(
   metadata: Record<string, unknown>
 ): string | undefined {
@@ -33,7 +33,7 @@ function validateIpfsLimits(
     } else {
       // Check the string representation of primitive values
       const stringValue = value?.toString();
-      if (stringValue && stringValue.length > limit) {
+      if (stringValue && stringValue.length > METADATA_LENGTH_LIMIT) {
         return Array.isArray(metadata)
           ? `${key}.[${metadata.indexOf(value)}]`
           : key;
@@ -49,7 +49,7 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
     const firstKeyThatExceedsIpfsLimit = validateIpfsLimits(metadata);
     if (firstKeyThatExceedsIpfsLimit) {
       throw new Error(
-        `Key ${firstKeyThatExceedsIpfsLimit} of metadata exceeds ${limit} characters`
+        `Key ${firstKeyThatExceedsIpfsLimit} of metadata exceeds ${METADATA_LENGTH_LIMIT} characters`
       );
     }
     switch (metadata.type) {
