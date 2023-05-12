@@ -2306,11 +2306,6 @@ export enum FundsEventLog_OrderBy {
   Type = "type"
 }
 
-export enum MediaType {
-  Image = "IMAGE",
-  Video = "VIDEO"
-}
-
 export type MetadataAttribute = {
   __typename?: "MetadataAttribute";
   displayType: Scalars["String"];
@@ -7841,7 +7836,7 @@ export type SellerMetadataMedia = {
   height?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
   tag?: Maybe<Scalars["String"]>;
-  type: MediaType;
+  type: Scalars["String"];
   url: Scalars["String"];
   width?: Maybe<Scalars["Int"]>;
 };
@@ -7885,10 +7880,26 @@ export type SellerMetadataMedia_Filter = {
   tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tag_starts_with?: InputMaybe<Scalars["String"]>;
   tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  type?: InputMaybe<MediaType>;
-  type_in?: InputMaybe<Array<MediaType>>;
-  type_not?: InputMaybe<MediaType>;
-  type_not_in?: InputMaybe<Array<MediaType>>;
+  type?: InputMaybe<Scalars["String"]>;
+  type_contains?: InputMaybe<Scalars["String"]>;
+  type_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_ends_with?: InputMaybe<Scalars["String"]>;
+  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_gt?: InputMaybe<Scalars["String"]>;
+  type_gte?: InputMaybe<Scalars["String"]>;
+  type_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_lt?: InputMaybe<Scalars["String"]>;
+  type_lte?: InputMaybe<Scalars["String"]>;
+  type_not?: InputMaybe<Scalars["String"]>;
+  type_not_contains?: InputMaybe<Scalars["String"]>;
+  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_not_starts_with?: InputMaybe<Scalars["String"]>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_starts_with?: InputMaybe<Scalars["String"]>;
+  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   url?: InputMaybe<Scalars["String"]>;
   url_contains?: InputMaybe<Scalars["String"]>;
   url_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -9308,7 +9319,7 @@ export type GetSellerByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -9550,7 +9561,7 @@ export type GetSellerByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -9631,7 +9642,7 @@ export type GetSellerByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -9756,7 +9767,7 @@ export type GetSellerByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -9861,7 +9872,7 @@ export type GetSellerByIdQueryQuery = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -10017,7 +10028,7 @@ export type GetSellersQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -10259,7 +10270,7 @@ export type GetSellersQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -10340,7 +10351,7 @@ export type GetSellersQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -10465,7 +10476,7 @@ export type GetSellersQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -10570,7 +10581,7 @@ export type GetSellersQueryQuery = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -10698,7 +10709,7 @@ export type GetBuyerByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -10908,7 +10919,7 @@ export type GetBuyersQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -11101,7 +11112,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -11343,7 +11354,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -11424,7 +11435,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -11677,7 +11688,7 @@ export type GetDisputeResolversQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -11919,7 +11930,7 @@ export type GetDisputeResolversQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -12000,7 +12011,7 @@ export type GetDisputeResolversQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -12250,7 +12261,7 @@ export type SellerFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -12488,7 +12499,7 @@ export type SellerFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -12569,7 +12580,7 @@ export type SellerFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -12694,7 +12705,7 @@ export type SellerFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -12799,7 +12810,7 @@ export type SellerFieldsFragment = {
       id: string;
       url: string;
       tag?: string | null;
-      type: MediaType;
+      type: string;
       width?: number | null;
       height?: number | null;
     }> | null;
@@ -12823,7 +12834,7 @@ export type SellerMetadataMediaFieldsFragment = {
   id: string;
   url: string;
   tag?: string | null;
-  type: MediaType;
+  type: string;
   width?: number | null;
   height?: number | null;
 };
@@ -12872,7 +12883,7 @@ export type BaseSellerFieldsFragment = {
       id: string;
       url: string;
       tag?: string | null;
-      type: MediaType;
+      type: string;
       width?: number | null;
       height?: number | null;
     }> | null;
@@ -12984,7 +12995,7 @@ export type BuyerFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -13165,7 +13176,7 @@ export type DisputeResolverFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -13403,7 +13414,7 @@ export type DisputeResolverFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -13484,7 +13495,7 @@ export type DisputeResolverFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -13782,7 +13793,7 @@ export type GetDisputeByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -13831,7 +13842,7 @@ export type GetDisputeByIdQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -13947,7 +13958,7 @@ export type GetDisputesQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -13996,7 +14007,7 @@ export type GetDisputesQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -14102,7 +14113,7 @@ export type DisputeFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -14151,7 +14162,7 @@ export type DisputeFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -14284,7 +14295,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -14526,7 +14537,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -14607,7 +14618,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -14771,7 +14782,7 @@ export type GetExchangeTokensQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -15013,7 +15024,7 @@ export type GetExchangeTokensQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -15094,7 +15105,7 @@ export type GetExchangeTokensQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -15236,7 +15247,7 @@ export type ExchangeTokenFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -15474,7 +15485,7 @@ export type ExchangeTokenFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -15555,7 +15566,7 @@ export type ExchangeTokenFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -15880,7 +15891,7 @@ export type GetExchangeByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -16122,7 +16133,7 @@ export type GetExchangeByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -16203,7 +16214,7 @@ export type GetExchangeByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -16314,7 +16325,7 @@ export type GetExchangeByIdQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -16425,7 +16436,7 @@ export type GetExchangesQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -16667,7 +16678,7 @@ export type GetExchangesQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -16748,7 +16759,7 @@ export type GetExchangesQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -16859,7 +16870,7 @@ export type GetExchangesQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -16960,7 +16971,7 @@ export type ExchangeFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -17198,7 +17209,7 @@ export type ExchangeFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -17279,7 +17290,7 @@ export type ExchangeFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -17385,7 +17396,7 @@ export type ExchangeFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -17465,7 +17476,7 @@ export type BaseExchangeFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -17675,7 +17686,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -17917,7 +17928,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -17998,7 +18009,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -18088,7 +18099,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -18225,7 +18236,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -18467,7 +18478,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -18548,7 +18559,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -18638,7 +18649,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -18765,7 +18776,7 @@ export type BaseMetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -19003,7 +19014,7 @@ export type BaseMetadataEntityFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -19084,7 +19095,7 @@ export type BaseMetadataEntityFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -19174,7 +19185,7 @@ export type BaseMetadataEntityFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -19300,7 +19311,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -19538,7 +19549,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -19619,7 +19630,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -19709,7 +19720,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -19898,7 +19909,7 @@ export type GetProductV1ProductsQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -20058,7 +20069,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 id: string;
                 url: string;
                 tag?: string | null;
-                type: MediaType;
+                type: string;
                 width?: number | null;
                 height?: number | null;
               }> | null;
@@ -20117,7 +20128,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -20359,7 +20370,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         id: string;
                         url: string;
                         tag?: string | null;
-                        type: MediaType;
+                        type: string;
                         width?: number | null;
                         height?: number | null;
                       }> | null;
@@ -20440,7 +20451,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -20611,7 +20622,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -20771,7 +20782,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 id: string;
                 url: string;
                 tag?: string | null;
-                type: MediaType;
+                type: string;
                 width?: number | null;
                 height?: number | null;
               }> | null;
@@ -20830,7 +20841,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -21072,7 +21083,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         id: string;
                         url: string;
                         tag?: string | null;
-                        type: MediaType;
+                        type: string;
                         width?: number | null;
                         height?: number | null;
                       }> | null;
@@ -21153,7 +21164,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -21324,7 +21335,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -21498,7 +21509,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -21557,7 +21568,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -21799,7 +21810,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -21880,7 +21891,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -21970,7 +21981,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -22130,7 +22141,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -22211,7 +22222,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -22377,7 +22388,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -22436,7 +22447,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -22678,7 +22689,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -22759,7 +22770,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -22849,7 +22860,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -23009,7 +23020,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -23090,7 +23101,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -23246,7 +23257,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -23305,7 +23316,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -23543,7 +23554,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -23624,7 +23635,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -23714,7 +23725,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -23874,7 +23885,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -23955,7 +23966,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -24110,7 +24121,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -24169,7 +24180,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -24407,7 +24418,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -24488,7 +24499,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -24578,7 +24589,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -24738,7 +24749,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -24819,7 +24830,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -24992,7 +25003,7 @@ export type BaseProductV1ProductFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -25141,7 +25152,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -25200,7 +25211,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -25442,7 +25453,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -25523,7 +25534,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -25694,7 +25705,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -25843,7 +25854,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               id: string;
               url: string;
               tag?: string | null;
-              type: MediaType;
+              type: string;
               width?: number | null;
               height?: number | null;
             }> | null;
@@ -25902,7 +25913,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -26144,7 +26155,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       id: string;
                       url: string;
                       tag?: string | null;
-                      type: MediaType;
+                      type: string;
                       width?: number | null;
                       height?: number | null;
                     }> | null;
@@ -26225,7 +26236,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -26396,7 +26407,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -26519,7 +26530,7 @@ export type BaseProductV1SellerFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -26724,7 +26735,7 @@ export type GetOfferByIdQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -26783,7 +26794,7 @@ export type GetOfferByIdQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -27021,7 +27032,7 @@ export type GetOfferByIdQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -27102,7 +27113,7 @@ export type GetOfferByIdQueryQuery = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -27271,7 +27282,7 @@ export type GetOffersQueryQuery = {
             id: string;
             url: string;
             tag?: string | null;
-            type: MediaType;
+            type: string;
             width?: number | null;
             height?: number | null;
           }> | null;
@@ -27330,7 +27341,7 @@ export type GetOffersQueryQuery = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -27568,7 +27579,7 @@ export type GetOffersQueryQuery = {
                     id: string;
                     url: string;
                     tag?: string | null;
-                    type: MediaType;
+                    type: string;
                     width?: number | null;
                     height?: number | null;
                   }> | null;
@@ -27649,7 +27660,7 @@ export type GetOffersQueryQuery = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -27802,7 +27813,7 @@ export type OfferFieldsFragment = {
           id: string;
           url: string;
           tag?: string | null;
-          type: MediaType;
+          type: string;
           width?: number | null;
           height?: number | null;
         }> | null;
@@ -27861,7 +27872,7 @@ export type OfferFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -28099,7 +28110,7 @@ export type OfferFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -28180,7 +28191,7 @@ export type OfferFieldsFragment = {
                 id: string;
                 url: string;
                 tag?: string | null;
-                type: MediaType;
+                type: string;
                 width?: number | null;
                 height?: number | null;
               }> | null;
@@ -28307,7 +28318,7 @@ export type BaseOfferFieldsFragment = {
         id: string;
         url: string;
         tag?: string | null;
-        type: MediaType;
+        type: string;
         width?: number | null;
         height?: number | null;
       }> | null;
@@ -28545,7 +28556,7 @@ export type BaseOfferFieldsFragment = {
                   id: string;
                   url: string;
                   tag?: string | null;
-                  type: MediaType;
+                  type: string;
                   width?: number | null;
                   height?: number | null;
                 }> | null;
@@ -28626,7 +28637,7 @@ export type BaseOfferFieldsFragment = {
                 id: string;
                 url: string;
                 tag?: string | null;
-                type: MediaType;
+                type: string;
                 width?: number | null;
                 height?: number | null;
               }> | null;

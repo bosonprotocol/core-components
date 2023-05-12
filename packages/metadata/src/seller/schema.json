@@ -32,8 +32,7 @@
             "type": "string"
           },
           "type": {
-            "type": "string",
-            "enum": ["IMAGE", "VIDEO"]
+            "type": "string"
           },
           "width": {
             "type": "number"

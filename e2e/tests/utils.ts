@@ -96,7 +96,7 @@ export const sellerMetadata = {
     {
       url: "url",
       tag: "tag",
-      type: "IMAGE" as const,
+      type: "image/jpeg",
       width: 505,
       height: 393
     }

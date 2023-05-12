@@ -333,7 +333,7 @@ describe("CoreSDK - accounts", () => {
       const newMetadata = {
         type: "SELLER" as const,
         kind: "regular",
-        contactPreference: "email"
+        contactPreference: "xmtp_and_email"
       };
       const metadataHash = await coreSDK.storeMetadata(newMetadata);
       const metadataUri = "ipfs://" + metadataHash;

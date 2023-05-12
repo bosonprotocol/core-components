@@ -8,8 +8,7 @@ export function getMediaId(mediaUrl: string, mediaTag: string): string {
 }
 
 export function saveSellerMedias(
-  medias: Array<TypedMap<string, JSONValue>>,
-  mediaType: string
+  medias: Array<TypedMap<string, JSONValue>>
 ): string[] {
   const savedMedias: string[] = [];
 
@@ -19,6 +18,7 @@ export function saveSellerMedias(
     const mediaTag = convertToString(mediaObject.get("tag"));
     const mediaHeight = convertToInt(mediaObject.get("height"));
     const mediaWidth = convertToInt(mediaObject.get("width"));
+    const mediaType = convertToString(mediaObject.get("type"));
     const mediaId = getMediaId(mediaUrl, mediaTag);
 
     let media = SellerMetadataMedia.load(mediaId);
@@ -32,7 +32,7 @@ export function saveSellerMedias(
       media.tag = mediaTag;
       media.height = mediaHeight;
       media.width = mediaWidth;
-      media.type = mediaType as string;
+      media.type = mediaType;
     }
     media.save();
 
