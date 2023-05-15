@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
@@ -27,34 +27,9 @@ import {
   CancellationViewProps
 } from "./exchangeView/cancellation/CancellationView";
 import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
-
-const validationSchema = Yup.object({
-  [FormModel.formFields.name.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.name.requiredErrorMessage),
-  [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.streetNameAndNumber.requiredErrorMessage),
-  [FormModel.formFields.city.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.city.requiredErrorMessage),
-  [FormModel.formFields.state.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.state.requiredErrorMessage),
-  [FormModel.formFields.zip.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.zip.requiredErrorMessage),
-  [FormModel.formFields.country.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.country.requiredErrorMessage),
-  [FormModel.formFields.email.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.email.requiredErrorMessage)
-    .email(FormModel.formFields.email.mustBeEmail),
-  [FormModel.formFields.phone.name]: Yup.string()
-    .trim()
-    .required(FormModel.formFields.phone.requiredErrorMessage)
-});
+import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
+import { Loading } from "../../../Loading";
+import { ContactPreference } from "./const";
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -104,11 +79,51 @@ export default function RedeemModal({
   cancellationViewOnSuccess,
   confirmationViewOnSuccess
 }: RedeemModalProps) {
+  const [exchange, setExchange] = useState<Exchange | null>(null);
+  const { sellers, isLoading } = useCurrentSellers();
+  const seller = sellers?.[0];
+  const emailPreference =
+    seller?.metadata?.contactPreference === ContactPreference.XMTP_AND_EMAIL ||
+    exchange?.offer?.metadata?.productV1Seller?.contactPreference ===
+      ContactPreference.XMTP_AND_EMAIL;
+  const validationSchema = useMemo(() => {
+    return Yup.object({
+      [FormModel.formFields.name.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.name.requiredErrorMessage),
+      [FormModel.formFields.streetNameAndNumber.name]: Yup.string()
+        .trim()
+        .required(
+          FormModel.formFields.streetNameAndNumber.requiredErrorMessage
+        ),
+      [FormModel.formFields.city.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.city.requiredErrorMessage),
+      [FormModel.formFields.state.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.state.requiredErrorMessage),
+      [FormModel.formFields.zip.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.zip.requiredErrorMessage),
+      [FormModel.formFields.country.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.country.requiredErrorMessage),
+      [FormModel.formFields.email.name]: emailPreference
+        ? Yup.string()
+            .trim()
+            .required(FormModel.formFields.email.requiredErrorMessage)
+            .email(FormModel.formFields.email.mustBeEmail)
+        : Yup.string().trim().email(FormModel.formFields.email.mustBeEmail),
+      [FormModel.formFields.phone.name]: Yup.string()
+        .trim()
+        .required(FormModel.formFields.phone.requiredErrorMessage)
+    });
+  }, [emailPreference]);
+  type FormType = Yup.InferType<typeof validationSchema>;
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
   }>({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
-  const [exchange, setExchange] = useState<Exchange | null>(null);
 
   const setActiveStep = (newCurrentStep: ActiveStep) => {
     setStep((prev) => ({
@@ -140,6 +155,9 @@ export default function RedeemModal({
   const { address } = useAccount();
   if (!address) {
     return <p>Please connect your wallet</p>;
+  }
+  if (isLoading) {
+    return <Loading />;
   }
   return (
     <>

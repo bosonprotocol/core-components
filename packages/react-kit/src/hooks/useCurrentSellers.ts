@@ -9,6 +9,7 @@ import { getLensTokenIdDecimal, getLensTokenIdHex } from "../lib/lens/profile";
 import { fetchSubgraph } from "../lib/subgraph/subgraph";
 import useGetLensProfiles from "./lens/useGetLensProfiles";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 
 interface Props {
   address?: string;
@@ -33,6 +34,7 @@ const getSellersByIds =
             voucherCloneAddress: string;
             active: boolean;
             sellerId: string;
+            metadata: SellerFieldsFragment["metadata"];
           }[];
         }>(
           coreSDK.subgraphUrl,
@@ -49,6 +51,35 @@ const getSellersByIds =
                 voucherCloneAddress
                 active
                 sellerId
+                metadata {
+                  id
+                  type
+                  createdAt
+                  name
+                  description
+                  legalTradingName
+                  kind
+                  website
+                  images {
+                    id
+                    url
+                    tag
+                    type
+                    width
+                    height
+                  }
+                  contactLinks {
+                    id
+                    url
+                    tag
+                  }
+                  contactPreference
+                  socialLinks {
+                    id
+                    url
+                    tag
+                  }
+                }
               }
             }
           `,
@@ -229,9 +260,12 @@ export function useCurrentSellers({
       ? [resultByLensId?.data.sellerId]
       : [];
   const enableSellerById = !!sellerIdsToQuery?.length;
-  const { data: sellers2 } = fetchSellers(sellerIdsToQuery, enableSellerById);
+  const { data: sellers2, refetch: refetchFetchSellers } = fetchSellers(
+    sellerIdsToQuery,
+    enableSellerById
+  );
   const sellerById = useQuery(
-    ["current-seller-by-id", { sellerIds: sellerIdsToQuery }],
+    ["current-seller-by-id", { sellerIds: sellerIdsToQuery, sellers2 }],
     async () => {
       const currentSeller = sellers2?.[0] || null;
 
@@ -342,11 +376,12 @@ export function useCurrentSellers({
     sellers: sellerValues,
     lens,
     refetch: async () => {
-      enableResultByAddress && (await resultByAddress.refetch());
-      enableResultById && (await resultById.refetch());
-      enableResultLensId && (await resultByLensId.refetch());
-      enableSellerById && (await sellerById.refetch());
-      enableResultLens && (await resultLens.refetch());
+      enableResultByAddress && resultByAddress.refetch();
+      enableResultById && resultById.refetch();
+      enableResultLensId && resultByLensId.refetch();
+      enableSellerById && refetchFetchSellers();
+      enableSellerById && sellerById.refetch();
+      enableResultLens && resultLens.refetch();
     }
   };
 }
