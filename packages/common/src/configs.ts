@@ -119,8 +119,8 @@ export const defaultConfigs: ProtocolConfig[] = [
     theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
     ipfsMetadataUrl: "https://ipfs.infura.io:5001",
     contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/8be49ba4ff83e80542e4a89bf674b0799f1ee913
-      protocolDiamond: "0x5099CA7839e1580bD0C12FC5FECfA45147886BeB",
+      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e7668625ef01ce53ee14667b960e858bc33726fb
+      protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
       forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
     },
     metaTx: {
