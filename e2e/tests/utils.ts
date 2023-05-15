@@ -48,6 +48,7 @@ import {
   MOCK_NFT_AUTH_721_ABI
 } from "./mockAbis";
 import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
+import { SellerMetadata } from "@bosonprotocol/metadata/src/seller";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
@@ -83,6 +84,36 @@ export const metadata = {
   },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
+};
+export const sellerMetadata = {
+  name: "sellerMetadataName",
+  description: "description",
+  legalTradingName: "legalTradingName",
+  type: "SELLER" as const,
+  kind: "lens",
+  website: "website",
+  images: [
+    {
+      url: "url",
+      tag: "tag",
+      type: "image/jpeg",
+      width: 505,
+      height: 393
+    }
+  ],
+  contactLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ],
+  contactPreference: "xmtp",
+  socialLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ]
 };
 export const sellerFundsDepositInEth = "5";
 
@@ -213,6 +244,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
+  const sellerMetadataUri = await getSellerMetadataUri(sellerCoreSDK);
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
@@ -224,7 +256,8 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       contractUri: "ipfs://seller-contract",
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
@@ -391,12 +424,18 @@ export async function createSellerAndOfferWithCondition(
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
     metadata?: Partial<BaseMetadata>;
+    sellerMetadata?: Partial<SellerMetadata>;
   } = {}
 ) {
-  const metadataHash = await coreSDK.storeMetadata({
+  const contractHash = await coreSDK.storeMetadata({
     ...metadata,
     type: "BASE",
     ...overrides.metadata
+  });
+  const contractUri = "ipfs://" + contractHash;
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
   });
   const metadataUri = "ipfs://" + metadataHash;
 
@@ -406,14 +445,15 @@ export async function createSellerAndOfferWithCondition(
       admin: sellerAddress,
       clerk: sellerAddress,
       treasury: sellerAddress,
-      contractUri: metadataUri,
+      contractUri: contractUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: metadataUri
     },
     mockCreateOfferArgs({
-      metadataHash,
-      metadataUri,
+      metadataHash: contractHash,
+      metadataUri: contractUri,
       ...overrides.offerParams
     }),
     condition
@@ -434,8 +474,16 @@ export async function createSellerAndOfferWithCondition(
 export async function createSeller(
   coreSDK: CoreSDK,
   sellerAddress: string,
-  sellerParams?: Partial<CreateSellerArgs>
+  overrides: {
+    sellerParams?: Partial<CreateSellerArgs>;
+    sellerMetadata?: Partial<SellerMetadata>;
+  } = {}
 ) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
   const contractUri = "ipfs://0123456789abcdef";
   const createSellerTxResponse = await coreSDK.createSeller({
     assistant: sellerAddress,
@@ -446,7 +494,8 @@ export async function createSeller(
     royaltyPercentage: "0",
     authTokenId: "0",
     authTokenType: 0,
-    ...sellerParams
+    metadataUri,
+    ...overrides.sellerParams
   });
   const createSellerTxReceipt = await createSellerTxResponse.wait();
   const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
@@ -496,6 +545,60 @@ export async function updateSeller(
   return updatedSeller;
 }
 
+export async function updateSellerMetaTx(
+  coreSDK: CoreSDK,
+  seller: SellerFieldsFragment,
+  sellerParams: Partial<CreateSellerArgs>,
+  optInSequence: {
+    coreSDK: CoreSDK;
+    fieldsToUpdate: {
+      assistant?: boolean;
+      clerk?: boolean;
+      admin?: boolean;
+      authToken?: boolean;
+    };
+  }[] = []
+) {
+  const updatedSellerTxResponse = await coreSDK.signMetaTxUpdateSellerAndOptIn({
+    ...seller,
+    ...sellerParams
+  });
+  await updatedSellerTxResponse.wait();
+  const optInTxs: TransactionResponse[] = [];
+  for (const optIn of optInSequence) {
+    const nonce = Date.now();
+    const optInMetaTx = await optIn.coreSDK.signMetaTxOptInToSellerUpdate({
+      optInToSellerUpdateArgs: {
+        id: seller.id,
+        fieldsToUpdate: optIn.fieldsToUpdate
+      },
+      nonce
+    });
+    optInTxs.push(
+      await optIn.coreSDK.relayMetaTransaction({
+        functionName: optInMetaTx.functionName,
+        functionSignature: optInMetaTx.functionSignature,
+        sigR: optInMetaTx.r,
+        sigS: optInMetaTx.s,
+        sigV: optInMetaTx.v,
+        nonce
+      })
+    );
+  }
+  await Promise.all(optInTxs.map((tx) => tx.wait()));
+  await waitForGraphNodeIndexing();
+  const updatedSeller = await coreSDK.getSellerById(seller.id as string);
+  return updatedSeller;
+}
+
+export async function getSellerMetadataUri(coreSDK: CoreSDK) {
+  const sellerMetadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata
+  });
+  const sellerMetadataUri = "ipfs://" + sellerMetadataHash;
+  return sellerMetadataUri;
+}
+
 export async function createSellerAndOffer(
   coreSDK: CoreSDK,
   sellerAddress: string,
@@ -506,7 +609,7 @@ export async function createSellerAndOffer(
     type: "BASE"
   });
   const metadataUri = "ipfs://" + metadataHash;
-
+  const sellerMetadataUri = await getSellerMetadataUri(coreSDK);
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
       assistant: sellerAddress,
@@ -516,7 +619,8 @@ export async function createSellerAndOffer(
       contractUri: metadataUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
     },
     mockCreateOfferArgs({
       metadataHash,

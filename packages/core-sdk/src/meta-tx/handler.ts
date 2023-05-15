@@ -387,12 +387,19 @@ export async function relayBiconomyMetaTransaction(args: {
 export async function signMetaTxCreateSeller(
   args: BaseMetaTxArgs & {
     createSellerArgs: CreateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.createSellerArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return signMetaTx({
     ...args,
     functionName:
-      "createSeller((uint256,address,address,address,address,bool),(uint256,uint8),(string,uint256))",
+      "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256))",
     functionSignature: encodeCreateSeller(args.createSellerArgs)
   });
 }
@@ -400,12 +407,19 @@ export async function signMetaTxCreateSeller(
 export async function signMetaTxUpdateSeller(
   args: BaseMetaTxArgs & {
     updateSellerArgs: UpdateSellerArgs;
+    metadataStorage?: MetadataStorage;
+    theGraphStorage?: MetadataStorage;
   }
 ) {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.updateSellerArgs.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return signMetaTx({
     ...args,
     functionName:
-      "updateSeller((uint256,address,address,address,address,bool),(uint256,uint8))",
+      "updateSeller((uint256,address,address,address,address,bool,string),(uint256,uint8))",
     functionSignature: encodeUpdateSeller(args.updateSellerArgs)
   });
 }

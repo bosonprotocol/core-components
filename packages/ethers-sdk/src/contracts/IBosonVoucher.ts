@@ -59,6 +59,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "isApprovedForAll(address,address)": FunctionFragment;
     "issueVoucher(uint256,address)": FunctionFragment;
     "name()": FunctionFragment;
+    "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
     "preMint(uint256,uint256)": FunctionFragment;
     "reserveRange(uint256,uint256,uint256,address)": FunctionFragment;
@@ -73,7 +74,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "tokenURI(uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "transferPremintedFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "withdrawToProtocol(address[])": FunctionFragment;
   };
 
@@ -128,6 +128,10 @@ export interface IBosonVoucherInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "onERC721Received",
+    values: [string, string, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
   ): string;
@@ -181,10 +185,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferPremintedFrom",
-    values: [string, string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "withdrawToProtocol",
     values: [string[]]
   ): string;
@@ -236,6 +236,10 @@ export interface IBosonVoucherInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "onERC721Received",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "preMint", data: BytesLike): Result;
   decodeFunctionResult(
@@ -281,10 +285,6 @@ export interface IBosonVoucherInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferPremintedFrom",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "withdrawToProtocol",
     data: BytesLike
   ): Result;
@@ -297,6 +297,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
     "RoyaltyPercentageChanged(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "VoucherInitialized(uint256,uint256,string)": EventFragment;
+    "VouchersPreMinted(uint256,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
@@ -306,6 +307,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoyaltyPercentageChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "VoucherInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VouchersPreMinted"): EventFragment;
 }
 
 export type ApprovalEvent = TypedEvent<
@@ -360,6 +362,14 @@ export type VoucherInitializedEvent = TypedEvent<
 export type VoucherInitializedEventFilter =
   TypedEventFilter<VoucherInitializedEvent>;
 
+export type VouchersPreMintedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  { offerId: BigNumber; startId: BigNumber; endId: BigNumber }
+>;
+
+export type VouchersPreMintedEventFilter =
+  TypedEventFilter<VouchersPreMintedEvent>;
+
 export interface IBosonVoucher extends BaseContract {
   contractName: "IBosonVoucher";
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -405,7 +415,7 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<ContractTransaction>;
 
     burnVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -447,12 +457,20 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<[boolean]>;
 
     issueVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _buyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
+
+    onERC721Received(
+      operator: string,
+      from: string,
+      tokenId: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -542,15 +560,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    transferPremintedFrom(
-      _from: string,
-      _to: string,
-      _offerId: BigNumberish,
-      _tokenId: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     withdrawToProtocol(
       _tokenList: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -571,7 +580,7 @@ export interface IBosonVoucher extends BaseContract {
   ): Promise<ContractTransaction>;
 
   burnVoucher(
-    _exchangeId: BigNumberish,
+    _tokenId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -609,12 +618,20 @@ export interface IBosonVoucher extends BaseContract {
   ): Promise<boolean>;
 
   issueVoucher(
-    _exchangeId: BigNumberish,
+    _tokenId: BigNumberish,
     _buyer: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
+
+  onERC721Received(
+    operator: string,
+    from: string,
+    tokenId: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -698,15 +715,6 @@ export interface IBosonVoucher extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  transferPremintedFrom(
-    _from: string,
-    _to: string,
-    _offerId: BigNumberish,
-    _tokenId: BigNumberish,
-    _data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   withdrawToProtocol(
     _tokenList: string[],
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -727,7 +735,7 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<void>;
 
     burnVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -765,12 +773,20 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<boolean>;
 
     issueVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _buyer: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
+
+    onERC721Received(
+      operator: string,
+      from: string,
+      tokenId: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -854,15 +870,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    transferPremintedFrom(
-      _from: string,
-      _to: string,
-      _offerId: BigNumberish,
-      _tokenId: BigNumberish,
-      _data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     withdrawToProtocol(
       _tokenList: string[],
       overrides?: CallOverrides
@@ -934,6 +941,17 @@ export interface IBosonVoucher extends BaseContract {
       royaltyPercentage?: BigNumberish | null,
       contractURI?: string | null
     ): VoucherInitializedEventFilter;
+
+    "VouchersPreMinted(uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      startId?: null,
+      endId?: null
+    ): VouchersPreMintedEventFilter;
+    VouchersPreMinted(
+      offerId?: BigNumberish | null,
+      startId?: null,
+      endId?: null
+    ): VouchersPreMintedEventFilter;
   };
 
   estimateGas: {
@@ -951,7 +969,7 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<BigNumber>;
 
     burnVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -989,12 +1007,20 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<BigNumber>;
 
     issueVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _buyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    onERC721Received(
+      operator: string,
+      from: string,
+      tokenId: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -1082,15 +1108,6 @@ export interface IBosonVoucher extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    transferPremintedFrom(
-      _from: string,
-      _to: string,
-      _offerId: BigNumberish,
-      _tokenId: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     withdrawToProtocol(
       _tokenList: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1115,7 +1132,7 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     burnVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1155,12 +1172,20 @@ export interface IBosonVoucher extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     issueVoucher(
-      _exchangeId: BigNumberish,
+      _tokenId: BigNumberish,
       _buyer: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    onERC721Received(
+      operator: string,
+      from: string,
+      tokenId: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -1245,15 +1270,6 @@ export interface IBosonVoucher extends BaseContract {
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferPremintedFrom(
-      _from: string,
-      _to: string,
-      _offerId: BigNumberish,
-      _tokenId: BigNumberish,
-      _data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

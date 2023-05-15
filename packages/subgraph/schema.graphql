@@ -37,6 +37,47 @@ interface MetadataInterface {
   numberOfRedemptions: BigInt!
 }
 
+type SellerContactLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+type SellerSocialLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+
+type SellerMetadataMedia @entity {
+  id: ID!
+  url: String!
+  tag: String
+  type: String!
+  width: Int
+  height: Int
+}
+
+enum SellerMetadataType {
+  SELLER
+}
+
+type SellerMetadata @entity {
+  id: ID!
+  type: SellerMetadataType!
+  createdAt: BigInt!
+  name: String
+  description: String
+  legalTradingName: String
+  kind: String!
+  website: String
+  images: [SellerMetadataMedia!]
+  contactLinks: [SellerContactLink!]
+  contactPreference: String!
+  socialLinks: [SellerSocialLink!]
+}
+
 type AnimationMetadata @entity {
   id: ID!
   height: Int
@@ -261,6 +302,7 @@ type ProductV1Seller @entity {
   sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
+  contactPreference: String
   """
   Refs
   """
@@ -431,6 +473,7 @@ type PendingSeller @entity {
   authTokenId: BigInt
   authTokenType: Int
   seller: Seller!
+  metadataUri: String!
 }
 
 type Seller implements Account @entity {
@@ -452,6 +495,8 @@ type Seller implements Account @entity {
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
   royaltyPercentage: BigInt!
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
+  metadataUri: String!
+  metadata: SellerMetadata
 }
 
 type Buyer implements Account @entity {
@@ -693,4 +738,5 @@ type RangeEntity @entity {
   start: BigInt!
   end: BigInt!
   owner: Bytes!
+  minted: BigInt!
 }

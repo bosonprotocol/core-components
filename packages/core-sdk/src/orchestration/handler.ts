@@ -37,11 +37,16 @@ export async function createOfferAndSeller(args: {
     abortEarly: false
   });
 
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.offerToCreate.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -86,11 +91,16 @@ export async function createSellerAndOfferWithCondition(args: {
     abortEarly: false
   });
 
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.offerToCreate.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -173,11 +183,16 @@ export async function createSellerAndPremintedOffer(args: {
     abortEarly: false
   });
 
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.offerToCreate.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -203,11 +218,16 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
     abortEarly: false
   });
 
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.offerToCreate.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,

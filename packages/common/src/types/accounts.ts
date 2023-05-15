@@ -9,6 +9,7 @@ export type CreateSellerArgs = {
   royaltyPercentage: BigNumberish;
   authTokenId: BigNumberish;
   authTokenType: number;
+  metadataUri: string;
 };
 
 export type UpdateSellerArgs = { id: BigNumberish } & Omit<

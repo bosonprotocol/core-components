@@ -7,20 +7,11 @@ import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { offers } from "@bosonprotocol/core-sdk";
+import { offers, accounts } from "@bosonprotocol/core-sdk";
 
 type Props = {
   hasSellerAccount: boolean;
-  sellerInfo?: {
-    assistant: string;
-    admin: string;
-    treasury: string;
-    clerk: string;
-    contractUri: string;
-    royaltyPercentage: string;
-    authTokenId: string;
-    authTokenType: number;
-  };
+  sellerInfo?: accounts.CreateSellerArgs;
   isMultiVariant: boolean;
   offersToCreate: offers.CreateOfferArgs[];
 } & CtaButtonProps<{

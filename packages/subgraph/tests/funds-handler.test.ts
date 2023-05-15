@@ -2,7 +2,8 @@ import {
   beforeEach,
   test,
   assert,
-  clearStore
+  clearStore,
+  mockIpfsFile
 } from "matchstick-as/assembly/index";
 import {
   handleFundsDepositedEvent,
@@ -10,13 +11,17 @@ import {
   handleFundsEncumberedEvent,
   handleFundsReleasedEvent
 } from "../src/mappings/funds-handler";
-import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
+import {
+  handleSellerCreatedEvent,
+  handleSellerCreatedEventWithoutMetadataUri
+} from "../src/mappings/account-handler";
 import {
   createFundsDepositedEvent,
   createFundsEncumberedEvent,
   createFundsReleasedEvent,
   createFundsWithdrawnEvent,
   createSellerCreatedEvent,
+  createSellerCreatedEventLegacy,
   mockBosonVoucherContractCalls
 } from "./mocks";
 
@@ -26,6 +31,7 @@ const exchangeId = 3;
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const tokenAddress = "0x0000000000000000000000000000000000000000";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
+const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 
 beforeEach(() => {
   clearStore();
@@ -66,8 +72,45 @@ test("handle FundsReleasedEvent", () => {
   assert.fieldEquals("FundsEntity", fundsId, "accountId", buyerId.toString());
 });
 
+test("handle legacy FundsEncumberedEvent", () => {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 1);
+  handleSellerCreatedEventWithoutMetadataUri(
+    createSellerCreatedEventLegacy(
+      sellerId,
+      sellerAddress,
+      sellerAddress,
+      sellerAddress,
+      sellerAddress,
+      voucherCloneAddress,
+      0,
+      0,
+      sellerAddress
+    )
+  );
+  const fundsDepositedEvent = createFundsDepositedEvent(
+    sellerId,
+    sellerAddress,
+    tokenAddress,
+    100
+  );
+  handleFundsDepositedEvent(fundsDepositedEvent);
+
+  const fundsEncumberedEvent = createFundsEncumberedEvent(
+    sellerId,
+    tokenAddress,
+    10,
+    sellerAddress
+  );
+  handleFundsEncumberedEvent(fundsEncumberedEvent);
+
+  const fundsId = getFundsId(sellerId, tokenAddress);
+  assert.fieldEquals("FundsEntity", fundsId, "id", fundsId);
+  assert.fieldEquals("FundsEntity", fundsId, "availableAmount", "90");
+});
+
 test("handle FundsEncumberedEvent", () => {
   mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 1);
+  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
   handleSellerCreatedEvent(
     createSellerCreatedEvent(
       sellerId,
@@ -78,7 +121,8 @@ test("handle FundsEncumberedEvent", () => {
       voucherCloneAddress,
       0,
       0,
-      sellerAddress
+      sellerAddress,
+      "ipfs://" + sellerMetadataHash
     )
   );
   const fundsDepositedEvent = createFundsDepositedEvent(

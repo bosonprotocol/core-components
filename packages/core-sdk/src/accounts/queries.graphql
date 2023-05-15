@@ -233,6 +233,27 @@ fragment SellerFields on Seller {
   }
 }
 
+fragment SellerMetadataMediaFields on SellerMetadataMedia {
+  id
+  url
+  tag
+  type
+  width
+  height
+}
+
+fragment SellerContactLinkFields on SellerContactLink {
+  id
+  url
+  tag
+}
+
+fragment SellerSocialLinkFields on SellerSocialLink {
+  id
+  url
+  tag
+}
+
 fragment BaseSellerFields on Seller {
   id
   assistant
@@ -245,6 +266,27 @@ fragment BaseSellerFields on Seller {
   active
   contractURI
   royaltyPercentage
+  metadataUri
+  metadata {
+    id
+    createdAt
+    name
+    description
+    legalTradingName
+    type
+    kind
+    website
+    images {
+      ...SellerMetadataMediaFields
+    }
+    contactLinks {
+      ...SellerContactLinkFields
+    }
+    contactPreference
+    socialLinks {
+      ...SellerSocialLinkFields
+    }
+  }
 }
 
 fragment PendingSellerFields on PendingSeller {

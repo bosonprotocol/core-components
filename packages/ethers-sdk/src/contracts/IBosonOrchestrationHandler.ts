@@ -248,6 +248,7 @@ export declare namespace BosonTypes {
     clerk: string;
     treasury: string;
     active: boolean;
+    metadataUri: string;
   };
 
   export type SellerStructOutput = [
@@ -256,7 +257,8 @@ export declare namespace BosonTypes {
     string,
     string,
     string,
-    boolean
+    boolean,
+    string
   ] & {
     id: BigNumber;
     assistant: string;
@@ -264,6 +266,7 @@ export declare namespace BosonTypes {
     clerk: string;
     treasury: string;
     active: boolean;
+    metadataUri: string;
   };
 
   export type AuthTokenStruct = {
@@ -326,14 +329,14 @@ export interface IBosonOrchestrationHandlerInterface extends utils.Interface {
     "createPremintedOfferAndTwinWithBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256)": FunctionFragment;
     "createPremintedOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),uint256)": FunctionFragment;
     "createPremintedOfferWithConditionAndTwinAndBundle((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),uint256)": FunctionFragment;
-    "createSellerAndOffer((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndPremintedOffer((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferAndTwinWithBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferWithCondition((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
-    "createSellerAndPremintedOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndPremintedOffer((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferAndTwinWithBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferWithCondition((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
+    "createSellerAndPremintedOfferWithConditionAndTwinAndBundle((uint256,address,address,address,address,bool,string),(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,address,(uint8,uint8,address,uint256,uint256,uint256),(uint256,uint256,uint256,uint256,uint256,address,uint8),(uint256,uint8),(string,uint256),uint256)": FunctionFragment;
     "raiseAndEscalateDispute(uint256)": FunctionFragment;
   };
 

@@ -1,0 +1,21 @@
+{
+  "contactLinks": [{ "url": "url", "tag": "tag" }],
+  "contactPreference": "xmtp",
+  "description": "description",
+  "images": [
+    {
+      "url": "url",
+      "tag": "tag",
+      "type": "image/jpeg",
+      "width": 505,
+      "height": 393
+    }
+  ],
+  "kind": "lens",
+  "legalTradingName": "",
+  "name": "sellerMetadataName",
+  "socialLinks": [{ "url": "url", "tag": "tag" }],
+  "type": "SELLER",
+  "website": "website"
+}
+

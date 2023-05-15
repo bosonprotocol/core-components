@@ -167,6 +167,7 @@ function argsToSellerStruct(args: {
   admin: string;
   clerk: string;
   treasury: string;
+  metadataUri: string;
 }): Partial<SellerStruct> {
   return {
     // NOTE: It doesn't matter which values we set for `id` and `active` here

@@ -338,6 +338,7 @@ fragment BaseProductV1SellerFields on ProductV1Seller {
   contactLinks {
     ...BaseProductV1SellerContactLinkFields
   }
+  contactPreference
   seller {
     ...BaseSellerFields
   }

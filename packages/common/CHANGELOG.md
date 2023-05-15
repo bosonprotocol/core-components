@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.2...@bosonprotocol/common@1.21.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+
+
+### Features
+
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 ## [1.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.1...@bosonprotocol/common@1.20.2) (2022-12-01)
 
 **Note:** Version bump only for package @bosonprotocol/common

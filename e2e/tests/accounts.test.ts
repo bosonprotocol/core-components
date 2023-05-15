@@ -16,7 +16,9 @@ import {
   createFundedWallet,
   createSeller,
   updateSeller,
-  mintLensToken
+  mintLensToken,
+  sellerMetadata,
+  getSellerMetadataUri
 } from "./utils";
 import { AuthTokenType } from "@bosonprotocol/common";
 
@@ -319,6 +321,50 @@ describe("CoreSDK - accounts", () => {
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
       expect(seller.authTokenType).toEqual(AuthTokenType.NONE);
+      expect(seller.metadata).toMatchObject(sellerMetadata);
+    });
+    test("create seller and then update metadata", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      expect(seller.metadata).toMatchObject(sellerMetadata);
+      const newMetadata = {
+        type: "SELLER" as const,
+        kind: "regular",
+        contactPreference: "xmtp_and_email"
+      };
+      const metadataHash = await coreSDK.storeMetadata(newMetadata);
+      const metadataUri = "ipfs://" + metadataHash;
+      const updatedSeller = await updateSeller(coreSDK, seller, {
+        metadataUri
+      });
+      expect(updatedSeller.metadata).toMatchObject(newMetadata);
+    });
+    test("create seller - expect fail as image url is too large", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      await expect(
+        createSeller(coreSDK, fundedWallet.address, {
+          sellerMetadata: {
+            images: [
+              {
+                url: new Array(10000).join(","),
+                tag: "tag",
+                type: "IMAGE" as const,
+                width: 505,
+                height: 393
+              }
+            ]
+          }
+        })
+      ).rejects.toThrowError(
+        "Key images.0.url of metadata exceeds 2048 characters"
+      );
     });
     test("update seller - replace all addresses", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
@@ -466,6 +512,25 @@ describe("CoreSDK - accounts", () => {
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.pendingSeller?.assistant).toEqual(ZERO_ADDRESS);
+    });
+    test("update seller - update with another metadataUri", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      let seller = await createSeller(coreSDK, fundedWallet.address, {
+        sellerMetadata: {
+          description: sellerMetadata.description + "a"
+        }
+      });
+      expect(seller).toBeTruthy();
+      expect(seller.metadataUri).toBeTruthy();
+      const updatedMetadataUri = await getSellerMetadataUri(coreSDK);
+
+      seller = await updateSeller(coreSDK, seller, {
+        metadataUri: updatedMetadataUri
+      });
+      expect(seller.metadataUri).toBe(updatedMetadataUri);
     });
   });
 });

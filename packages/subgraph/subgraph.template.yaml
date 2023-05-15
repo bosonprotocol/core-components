@@ -68,11 +68,11 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),address,(uint256,uint8),indexed address)
+        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool,string),address,(uint256,uint8),indexed address)
           handler: handleSellerCreatedEvent
-        - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
+        - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool,string),(uint256,uint8),indexed address)
           handler: handleSellerUpdatePendingEvent
-        - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
+        - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool,string),(uint256,address,address,address,address,bool,string),(uint256,uint8),(uint256,uint8),indexed address)
           handler: handleSellerUpdateAppliedEvent
         - event: BuyerCreated(indexed uint256,(uint256,address,bool),indexed address)
           handler: handleBuyerCreatedEvent
@@ -110,7 +110,15 @@ dataSources:
           file: ../common/src/abis/IBosonAccountHandler.json
         - name: IBosonAccountHandlerLegacy
           file: ../common/src/abis/IBosonAccountHandlerLegacy.json
+        - name: IBosonVoucher
+          file: ../common/src/abis/IBosonVoucher.json
       eventHandlers:
+        - event: SellerUpdateApplied(indexed uint256,(uint256,address,address,address,address,bool),(uint256,address,address,address,address,bool),(uint256,uint8),(uint256,uint8),indexed address)
+          handler: handleSellerUpdateAppliedEventLegacy
+        - event: SellerUpdatePending(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
+          handler: handleSellerUpdatePendingEventLegacy
+        - event: SellerCreated(indexed uint256,(uint256,address,address,address,address,bool),address,(uint256,uint8),indexed address)
+          handler: handleSellerCreatedEventWithoutMetadataUri
         - event: SellerUpdated(indexed uint256,(uint256,address,address,address,address,bool),(uint256,uint8),indexed address)
           handler: handleSellerUpdatedEvent
         - event: DisputeResolverUpdated(indexed uint256,(uint256,uint256,address,address,address,address,string,bool),indexed address)
@@ -271,4 +279,6 @@ templates:
       eventHandlers:
         - event: ContractURIChanged(string)
           handler: handleContractURIChanged
+        - event: VouchersPreMinted(indexed uint256,uint256,uint256)
+          handler: handlePreMint
       file: ./src/mappings/boson-voucher.ts

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.4...@bosonprotocol/eth-connect-sdk@1.5.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* revert "feat: support eth_signTypedData_v4 in eth_connect adapter ([#4](https://github.com/bosonprotocol/core-components/issues/4)… ([#440](https://github.com/bosonprotocol/core-components/issues/440)) ([abec42b](https://github.com/bosonprotocol/core-components/commit/abec42b360bb994ed1f5588d8540e096aafb7fde)), closes [#434](https://github.com/bosonprotocol/core-components/issues/434)
+
+
+### Features
+
+* eth-connect-adapter - allow to set  different providers for sig… ([#442](https://github.com/bosonprotocol/core-components/issues/442)) ([c8f72f3](https://github.com/bosonprotocol/core-components/commit/c8f72f3f89b45474a799675da9036b9bf14d7903))
+* support eth_signTypedData_v4 in eth_connect adapter ([#434](https://github.com/bosonprotocol/core-components/issues/434)) ([a89c607](https://github.com/bosonprotocol/core-components/commit/a89c607b00ef09f37347ecd926116f18e5da7fb2))
+
+
+
+
+
 ## [1.4.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.3...@bosonprotocol/eth-connect-sdk@1.4.4) (2022-12-01)
 
 **Note:** Version bump only for package @bosonprotocol/eth-connect-sdk

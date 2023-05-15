@@ -63,6 +63,7 @@ type SellerMetadata = {
     url: string;
     tag: string;
   }[];
+  contactPreference?: string;
 };
 
 type ShippingMetadata = {

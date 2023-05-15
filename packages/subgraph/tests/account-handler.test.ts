@@ -2,30 +2,34 @@ import {
   beforeEach,
   test,
   assert,
-  clearStore
+  clearStore,
+  mockIpfsFile
 } from "matchstick-as/assembly/index";
 import {
   handleSellerCreatedEvent,
   handleSellerUpdatedEvent,
-  handleBuyerCreatedEvent
+  handleBuyerCreatedEvent,
+  handleSellerCreatedEventWithoutMetadataUri
 } from "../src/mappings/account-handler";
 import {
   createSellerCreatedEvent,
   createSellerUpdatedEvent,
   createBuyerCreatedEvent,
-  mockBosonVoucherContractCalls
+  mockBosonVoucherContractCalls,
+  createSellerCreatedEventLegacy
 } from "./mocks";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
+const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 
 beforeEach(() => {
   clearStore();
 });
 
-test("handle SellerCreatedEvent", () => {
+test("handle legacy SellerCreatedEvent", () => {
   mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
-  const sellerCreatedEvent = createSellerCreatedEvent(
+  const sellerCreatedEvent = createSellerCreatedEventLegacy(
     1,
     sellerAddress,
     sellerAddress,
@@ -35,6 +39,37 @@ test("handle SellerCreatedEvent", () => {
     0,
     0,
     sellerAddress
+  );
+
+  handleSellerCreatedEventWithoutMetadataUri(sellerCreatedEvent);
+
+  assert.fieldEquals("Seller", "1", "id", "1");
+  assert.fieldEquals("Seller", "1", "assistant", sellerAddress.toLowerCase());
+  assert.fieldEquals("Seller", "1", "active", "true");
+  assert.fieldEquals("Seller", "1", "authTokenId", "0");
+  assert.fieldEquals("Seller", "1", "authTokenType", "0");
+  assert.fieldEquals(
+    "Seller",
+    "1",
+    "voucherCloneAddress",
+    voucherCloneAddress.toLowerCase()
+  );
+});
+
+test("handle SellerCreatedEvent", () => {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
+  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
+  const sellerCreatedEvent = createSellerCreatedEvent(
+    1,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    voucherCloneAddress,
+    0,
+    0,
+    sellerAddress,
+    "ipfs://" + sellerMetadataHash
   );
 
   handleSellerCreatedEvent(sellerCreatedEvent);
@@ -49,6 +84,12 @@ test("handle SellerCreatedEvent", () => {
     "1",
     "voucherCloneAddress",
     voucherCloneAddress.toLowerCase()
+  );
+  assert.fieldEquals(
+    "Seller",
+    "1",
+    "metadataUri",
+    "ipfs://" + sellerMetadataHash
   );
 });
 

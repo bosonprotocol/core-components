@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import request, { rawRequest, RequestDocument } from "graphql-request";
-import { Headers } from "graphql-request/dist/types.dom";
+import { Headers } from "graphql-request/build/esm/types.dom";
 
 export async function fetchLens<T, V = Record<string, unknown>>(
   url: string,

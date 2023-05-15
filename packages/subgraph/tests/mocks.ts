@@ -31,7 +31,11 @@ import {
   createMockedFunction
 } from "matchstick-as/assembly/index";
 import { ethereum, Address } from "@graphprotocol/graph-ts";
-import { SellerUpdated } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
+import {
+  SellerUpdated,
+  SellerCreated as SellerCreatedLegacy,
+  SellerCreatedSellerStruct as SellerCreatedLegacySellerStruct
+} from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 
 export function createOfferCreatedEvent(
   offerId: i32,
@@ -61,7 +65,7 @@ export function createOfferCreatedEvent(
   executedBy: string
 ): OfferCreated {
   const offerCreatedEvent = changetype<OfferCreated>(newMockEvent());
-  offerCreatedEvent.parameters = new Array();
+  offerCreatedEvent.parameters = [];
 
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -152,7 +156,7 @@ export function createOfferVoidedEvent(
   executedBy: string
 ): OfferVoided {
   const offerVoidedEvent = changetype<OfferVoided>(newMockEvent());
-  offerVoidedEvent.parameters = new Array();
+  offerVoidedEvent.parameters = [];
 
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -223,7 +227,7 @@ export function createBuyerCommittedEvent(
   exchangeId: i32
 ): BuyerCommitted {
   const buyerCommittedEvent = changetype<BuyerCommitted>(newMockEvent());
-  buyerCommittedEvent.parameters = new Array();
+  buyerCommittedEvent.parameters = [];
 
   const voucherStruct = new BuyerCommittedVoucherStruct();
   voucherStruct.push(ethereum.Value.fromI32(0));
@@ -280,7 +284,7 @@ export function createVoucherExtendedEvent(
   executedBy: string
 ): VoucherExtended {
   const voucherExtendedEvent = changetype<VoucherExtended>(newMockEvent());
-  voucherExtendedEvent.parameters = new Array();
+  voucherExtendedEvent.parameters = [];
 
   const offerIdParam = new ethereum.EventParam(
     "offerId",
@@ -307,7 +311,7 @@ export function createVoucherExtendedEvent(
   return voucherExtendedEvent;
 }
 
-export function createSellerCreatedEvent(
+export function createSellerCreatedEventLegacy(
   sellerId: i32,
   assistant: string,
   admin: string,
@@ -317,9 +321,9 @@ export function createSellerCreatedEvent(
   authTokenId: i32,
   authTokenType: i8,
   executedBy: string
-): SellerCreated {
-  const sellerCreatedEvent = changetype<SellerCreated>(newMockEvent());
-  sellerCreatedEvent.parameters = new Array();
+): SellerCreatedLegacy {
+  const sellerCreatedEvent = changetype<SellerCreatedLegacy>(newMockEvent());
+  sellerCreatedEvent.parameters = [];
 
   const sellerIdParam = new ethereum.EventParam(
     "sellerId",
@@ -328,7 +332,69 @@ export function createSellerCreatedEvent(
   const sellerParam = new ethereum.EventParam(
     "seller",
     ethereum.Value.fromTuple(
-      createSellerStruct(sellerId, assistant, admin, clerk, treasury, false)
+      createLegacySellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        false
+      )
+    )
+  );
+  const voucherCloneAddressParam = new ethereum.EventParam(
+    "voucherCloneAddress",
+    ethereum.Value.fromAddress(Address.fromString(voucherCloneAddress))
+  );
+  const authTokenParam = new ethereum.EventParam(
+    "authToken",
+    ethereum.Value.fromTuple(createAuthToken(authTokenId, authTokenType))
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  sellerCreatedEvent.parameters.push(sellerIdParam);
+  sellerCreatedEvent.parameters.push(sellerParam);
+  sellerCreatedEvent.parameters.push(voucherCloneAddressParam);
+  sellerCreatedEvent.parameters.push(authTokenParam);
+  sellerCreatedEvent.parameters.push(executedByParam);
+
+  return sellerCreatedEvent;
+}
+
+export function createSellerCreatedEvent(
+  sellerId: i32,
+  assistant: string,
+  admin: string,
+  clerk: string,
+  treasury: string,
+  voucherCloneAddress: string,
+  authTokenId: i32,
+  authTokenType: i8,
+  executedBy: string,
+  metadataUri: string
+): SellerCreated {
+  const sellerCreatedEvent = changetype<SellerCreated>(newMockEvent());
+  sellerCreatedEvent.parameters = [];
+
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const sellerParam = new ethereum.EventParam(
+    "seller",
+    ethereum.Value.fromTuple(
+      createSellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        false,
+        metadataUri
+      )
     )
   );
   const voucherCloneAddressParam = new ethereum.EventParam(
@@ -365,7 +431,7 @@ export function createSellerUpdatedEvent(
   executedBy: string
 ): SellerUpdated {
   const sellerUpdatedEvent = changetype<SellerUpdated>(newMockEvent());
-  sellerUpdatedEvent.parameters = new Array();
+  sellerUpdatedEvent.parameters = [];
 
   const sellerIdParam = new ethereum.EventParam(
     "sellerId",
@@ -374,7 +440,15 @@ export function createSellerUpdatedEvent(
   const sellerParam = new ethereum.EventParam(
     "seller",
     ethereum.Value.fromTuple(
-      createSellerStruct(sellerId, assistant, admin, clerk, treasury, active)
+      createSellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        active,
+        ""
+      )
     )
   );
   const authTokenParam = new ethereum.EventParam(
@@ -400,7 +474,7 @@ export function createBuyerCreatedEvent(
   executedBy: string
 ): BuyerCreated {
   const buyerCreatedEvent = changetype<BuyerCreated>(newMockEvent());
-  buyerCreatedEvent.parameters = new Array();
+  buyerCreatedEvent.parameters = [];
 
   const buyerIdParam = new ethereum.EventParam(
     "buyerId",
@@ -429,7 +503,7 @@ export function createFundsDepositedEvent(
   amount: i32
 ): FundsDeposited {
   const fundsDepositedEvent = changetype<FundsDeposited>(newMockEvent());
-  fundsDepositedEvent.parameters = new Array();
+  fundsDepositedEvent.parameters = [];
 
   const sellerIdParam = new ethereum.EventParam(
     "sellerId",
@@ -463,7 +537,7 @@ export function createFundsEncumberedEvent(
   executedBy: string
 ): FundsEncumbered {
   const fundsEncumberedEvent = changetype<FundsEncumbered>(newMockEvent());
-  fundsEncumberedEvent.parameters = new Array();
+  fundsEncumberedEvent.parameters = [];
 
   const entityIdParam = new ethereum.EventParam(
     "entityId",
@@ -498,7 +572,7 @@ export function createFundsReleasedEvent(
   executedBy: string
 ): FundsReleased {
   const fundsReleasedEvent = changetype<FundsReleased>(newMockEvent());
-  fundsReleasedEvent.parameters = new Array();
+  fundsReleasedEvent.parameters = [];
 
   const exchangeIdParam = new ethereum.EventParam(
     "exchangeId",
@@ -538,7 +612,7 @@ export function createFundsWithdrawnEvent(
   executedBy: string
 ): FundsWithdrawn {
   const fundsWithdrawnEvent = changetype<FundsWithdrawn>(newMockEvent());
-  fundsWithdrawnEvent.parameters = new Array();
+  fundsWithdrawnEvent.parameters = [];
 
   const sellerIdParam = new ethereum.EventParam(
     "sellerId",
@@ -646,13 +720,32 @@ export function createDisputeResolutionTermsStruct(
   return tuple;
 }
 
-export function createSellerStruct(
+export function createLegacySellerStruct(
   sellerId: i32,
   assistant: string,
   admin: string,
   clerk: string,
   treasury: string,
   active: boolean
+): SellerCreatedLegacySellerStruct {
+  const tuple = new SellerCreatedLegacySellerStruct();
+  tuple.push(ethereum.Value.fromI32(sellerId));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(assistant)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(admin)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(clerk)));
+  tuple.push(ethereum.Value.fromAddress(Address.fromString(treasury)));
+  tuple.push(ethereum.Value.fromBoolean(active));
+  return tuple;
+}
+
+export function createSellerStruct(
+  sellerId: i32,
+  assistant: string,
+  admin: string,
+  clerk: string,
+  treasury: string,
+  active: boolean,
+  metadataUri: string
 ): SellerCreatedSellerStruct {
   const tuple = new SellerCreatedSellerStruct();
   tuple.push(ethereum.Value.fromI32(sellerId));
@@ -661,6 +754,7 @@ export function createSellerStruct(
   tuple.push(ethereum.Value.fromAddress(Address.fromString(clerk)));
   tuple.push(ethereum.Value.fromAddress(Address.fromString(treasury)));
   tuple.push(ethereum.Value.fromBoolean(active));
+  tuple.push(ethereum.Value.fromString(metadataUri));
   return tuple;
 }
 

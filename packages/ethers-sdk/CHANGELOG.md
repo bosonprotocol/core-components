@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.11.0...@bosonprotocol/ethers-sdk@1.12.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+
+
+### Features
+
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 # [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.3...@bosonprotocol/ethers-sdk@1.11.0) (2022-12-01)
 
 
