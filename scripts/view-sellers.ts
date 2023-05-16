@@ -5,8 +5,8 @@ import { abis } from "@bosonprotocol/common";
 import { extractSellerData } from "./utils/account";
 
 async function main() {
-  const envName = "testing";
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const envName: EnvironmentType = "staging";
+  const defaultConfig = getDefaultConfig(envName);
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 
   const accountAbi = abis.IBosonAccountHandlerABI;
@@ -15,7 +15,8 @@ async function main() {
     accountAbi,
     web3Provider
   );
-  const lastSellerId = 12;
+  console.log("environment: " + envName);
+  const lastSellerId = 100;
   for (let i = 1; i < lastSellerId; i++) {
     const sellerDataRaw = await accountHandler.getSeller(i);
     if (!sellerDataRaw.exists) {
