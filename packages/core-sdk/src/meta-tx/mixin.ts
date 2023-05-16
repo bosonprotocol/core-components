@@ -49,6 +49,8 @@ export class MetaTxMixin extends BaseCoreSDK {
   ) {
     return handler.signMetaTxCreateSeller({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
@@ -63,6 +65,8 @@ export class MetaTxMixin extends BaseCoreSDK {
   ) {
     return handler.signMetaTxUpdateSeller({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
