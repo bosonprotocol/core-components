@@ -42,7 +42,6 @@ export const createOfferArgsSchema = object({
   validFromDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
-    .test(...futureDateTestArgs)
     .test(
       "is-before-valid-until-date",
       "${path} has to be before validUntilDate",
