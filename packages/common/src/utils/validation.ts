@@ -67,7 +67,6 @@ export const createOfferArgsSchema = object({
   voucherRedeemableFromDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
-    .test(...futureDateTestArgs)
     .when("voucherRedeemableUntilDateInMS", {
       is: isNotZero,
       then: string().test(
