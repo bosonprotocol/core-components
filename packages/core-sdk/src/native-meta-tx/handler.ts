@@ -36,24 +36,19 @@ export async function getNonce(args: {
     );
     return String(nonce);
   } catch (e) {
-    // Check if the error means the 'getNonce()' function does not exists in the contract
-    if (
-      (e.message as string)?.match(
-        /Transaction reverted without a reason string/
-      )
-    ) {
-      // If so, call 'nonces()' instead (USDC case, for instance)
-      const result = await args.web3Lib.call({
-        to: args.contractAddress,
-        data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
-      });
-      const [nonce] = alternativeNonceIface.decodeFunctionResult(
-        "nonces",
-        result
-      );
-      return String(nonce);
-    }
-    throw e;
+    console.warn(
+      `Calling getNonce() for contract ${args.contractAddress} has failed. Try with 'nonces' instead`
+    );
+    // If so, call 'nonces()' instead (USDC case, for instance)
+    const result = await args.web3Lib.call({
+      to: args.contractAddress,
+      data: alternativeNonceIface.encodeFunctionData("nonces", [args.user])
+    });
+    const [nonce] = alternativeNonceIface.decodeFunctionResult(
+      "nonces",
+      result
+    );
+    return String(nonce);
   }
 }
 
