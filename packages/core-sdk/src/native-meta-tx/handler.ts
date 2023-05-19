@@ -110,7 +110,7 @@ export async function signNativeMetaTxApproveExchangeToken(args: {
       web3Lib: args.web3Lib
     }),
     version:
-      tokenSpecifics[args.chainId]?.[args.exchangeToken]?.ERC712_VERSION ||
+      tokenSpecifics(args.chainId, args.exchangeToken)?.ERC712_VERSION ||
       ERC712_VERSION
   };
   const nonce = await getNonce({
