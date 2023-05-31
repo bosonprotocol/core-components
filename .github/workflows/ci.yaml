@@ -35,42 +35,6 @@ jobs:
         run: npm run build -- --cache-dir=".turbo"
       - id: test
         run: npm run test -- --cache-dir=".turbo"
-      - name: Upload common package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/common/coverage/coverage-final.json
-          flags: unittests,common
-      - name: Upload core-sdk package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/core-sdk/coverage/coverage-final.json
-          flags: unittests,core-sdk
-      - name: Upload eth-connect-sdk package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/eth-connect-sdk/coverage/coverage-final.json
-          flags: unittests,eth-connect-sdk
-      - name: Upload ethers-sdk package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/ethers-sdk/coverage/coverage-final.json
-          flags: unittests,ethers-sdk
-      - name: Upload ipfs-storage package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/ipfs-storage/coverage/coverage-final.json
-          flags: unittests,ipfs-storage
-      - name: Upload metadata package coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/metadata/coverage/coverage-final.json
-          flags: unittests,metadata
 
   e2e-tests:
     name: Run e2e tests
@@ -107,8 +71,47 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
+      # Rerun the test to be able to publish all coverage reports in the same flow
+      - name: Run packages test
+        run: npm run test -- --cache-dir=".turbo"
       - name: Run e2e tests
         run: npm run e2e:suite
+      - name: Upload common package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/common/coverage/coverage-final.json
+          flags: unittests,common
+      - name: Upload core-sdk package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/core-sdk/coverage/coverage-final.json
+          flags: unittests,core-sdk
+      - name: Upload eth-connect-sdk package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/eth-connect-sdk/coverage/coverage-final.json
+          flags: unittests,eth-connect-sdk
+      - name: Upload ethers-sdk package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/ethers-sdk/coverage/coverage-final.json
+          flags: unittests,ethers-sdk
+      - name: Upload ipfs-storage package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/ipfs-storage/coverage/coverage-final.json
+          flags: unittests,ipfs-storage
+      - name: Upload metadata package coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/metadata/coverage/coverage-final.json
+          flags: unittests,metadata
       - name: Upload metadata package coverage
         uses: codecov/codecov-action@v2
         with:
