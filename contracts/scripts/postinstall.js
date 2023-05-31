@@ -9,7 +9,6 @@ const createLink = async (linkPath, target) => {
     await new Promise((r) => setTimeout(r, 200));
   }
   const parentDir = resolve(linkPath, "..");
-  console.log("parentDir", parentDir);
   if (!existsSync(parentDir)) {
     console.log(`Create parent dir ${parentDir}`);
     mkdirSync(parentDir);
@@ -18,47 +17,17 @@ const createLink = async (linkPath, target) => {
   symlinkSync(target, linkPath, "junction");
 };
 
-const protocolContracts = {
+const protocol = {
   target: `${resolve(
     __dirname,
     "..",
     "node_modules",
-    "@bosonprotocol/boson-protocol-contracts/contracts"
+    "@bosonprotocol/boson-protocol-contracts"
   )}`,
-  linkPath: `${resolve(__dirname, "..", "protocol-contracts/contracts")}`
+  linkPath: `${resolve(__dirname, "..", "protocol-contracts")}`
 };
 
-const protocolScripts = {
-  target: `${resolve(
-    __dirname,
-    "..",
-    "node_modules",
-    "@bosonprotocol/boson-protocol-contracts/scripts"
-  )}`,
-  linkPath: `${resolve(__dirname, "..", "protocol-contracts/scripts")}`
-};
-
-const protocolTests = {
-  target: `${resolve(
-    __dirname,
-    "..",
-    "node_modules",
-    "@bosonprotocol/boson-protocol-contracts/test"
-  )}`,
-  linkPath: `${resolve(__dirname, "..", "protocol-contracts/test")}`
-};
-
-const protocolAddresses = {
-  target: `${resolve(
-    __dirname,
-    "..",
-    "node_modules",
-    "@bosonprotocol/boson-protocol-contracts/addresses"
-  )}`,
-  linkPath: `${resolve(__dirname, "..", "protocol-contracts/addresses")}`
-};
-
-const seaportContracts = {
+const seaport = {
   target: `${resolve(__dirname, "..", "node_modules", "seaport")}`,
   linkPath: `${resolve(
     __dirname,
@@ -68,13 +37,7 @@ const seaportContracts = {
 };
 
 async function main() {
-  for (const entry of [
-    protocolContracts,
-    seaportContracts,
-    protocolScripts,
-    protocolTests,
-    protocolAddresses
-  ]) {
+  for (const entry of [protocol, seaport]) {
     await createLink(entry.linkPath, entry.target);
   }
 }
