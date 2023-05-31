@@ -112,7 +112,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/metadata/coverage/coverage-final.json
           flags: unittests,metadata
-      - name: Upload metadata package coverage
+      - name: Upload e2e tests coverage
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
