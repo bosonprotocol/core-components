@@ -1,3 +1,0 @@
-[submodule "contracts/protocol-contracts"]
-	path = contracts/protocol-contracts
-	url = https://github.com/bosonprotocol/boson-protocol-contracts.git
