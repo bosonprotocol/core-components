@@ -73,7 +73,7 @@ jobs:
         continue-on-error: true
       # Rerun the test to be able to publish all coverage reports in the same flow
       - name: Run packages test
-        run: npm run test -- --cache-dir=".turbo"
+        run: npm run test -- --force
       - name: Run e2e tests
         run: npm run e2e:suite
       - name: Upload common package coverage
