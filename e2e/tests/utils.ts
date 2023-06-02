@@ -113,6 +113,21 @@ export const sellerMetadata = {
       url: "url",
       tag: "tag"
     }
+  ],
+  saleChannels: [
+    {
+      tag: "DCL",
+      settingsUri: "file://dclsettings",
+      deployments: [
+        {
+          product: "Product_A",
+          status: "in-progress"
+        },
+        {
+          product: "Product_B"
+        }
+      ]
+    }
   ]
 };
 export const sellerFundsDepositInEth = "5";
