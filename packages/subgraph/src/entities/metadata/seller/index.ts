@@ -4,6 +4,7 @@ import { Seller, SellerMetadata } from "../../../../generated/schema";
 import { convertToObjectArray, convertToString } from "../../../utils/json";
 import { saveSellerMedias } from "./media";
 import { saveContactLinks, saveSocialLinks } from "./links";
+import { saveSaleChannels } from "./saleChannels";
 
 export function getSellerMetadataEntityId(id: string): string {
   return `${id}-seller-metadata`;
@@ -32,6 +33,8 @@ export function saveInnerSellerMetadata(
   );
   const socialLinks = convertToObjectArray(metadataObj.get("socialLinks"));
   const socialLinksId = saveSocialLinks(socialLinks);
+  const saleChannels = convertToObjectArray(metadataObj.get("saleChannels"));
+  const saleChannelsId = saveSaleChannels(sellerId, saleChannels);
 
   let sellerMetadata = SellerMetadata.load(metadataId);
 
@@ -48,6 +51,7 @@ export function saveInnerSellerMetadata(
   sellerMetadata.contactLinks = contactLinksId;
   sellerMetadata.contactPreference = contactPreference;
   sellerMetadata.socialLinks = socialLinksId;
+  sellerMetadata.saleChannels = saleChannelsId;
   sellerMetadata.type = "SELLER";
   sellerMetadata.save();
   return metadataId;

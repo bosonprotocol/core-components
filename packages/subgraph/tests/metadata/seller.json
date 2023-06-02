@@ -16,6 +16,21 @@
   "name": "sellerMetadataName",
   "socialLinks": [{ "url": "url", "tag": "tag" }],
   "type": "SELLER",
-  "website": "website"
+  "website": "website",
+  "saleChannels": [
+    {
+      "tag": "DCL",
+      "settingsUri": "file://dclsettings",
+      "deployments": [
+        {
+          "product": "Product_A",
+          "status": "in-progress"
+        },
+        {
+          "product": "Product_B"
+        }
+      ]
+    }
+  ]
 }
 

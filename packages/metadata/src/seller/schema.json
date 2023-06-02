@@ -76,6 +76,39 @@
         },
         "required": ["url", "tag"]
       }
+    },
+    "saleChannels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "settingsUrl": {
+            "type": "string"
+          },
+          "settingsEditor": {
+            "type": "string"
+          },
+          "deployments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": ["product"]
+            }
+          }
+        },
+        "required": ["tag"]
+      }
     }
   },
   "required": ["type", "kind", "contactPreference"]

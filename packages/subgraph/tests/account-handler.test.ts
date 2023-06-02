@@ -18,6 +18,13 @@ import {
   mockBosonVoucherContractCalls,
   createSellerCreatedEventLegacy
 } from "./mocks";
+import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
+import {
+  getSaleChannelDeploymentId,
+  getSaleChannelId
+} from "../src/entities/metadata/seller/saleChannels";
+import { SellerMetadata } from "../generated/schema";
+import { convertToStringArray } from "../src/utils/json";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
@@ -73,12 +80,18 @@ test("handle SellerCreatedEvent", () => {
   );
 
   handleSellerCreatedEvent(sellerCreatedEvent);
+  const sellerId = "1";
 
-  assert.fieldEquals("Seller", "1", "id", "1");
-  assert.fieldEquals("Seller", "1", "assistant", sellerAddress.toLowerCase());
-  assert.fieldEquals("Seller", "1", "active", "true");
-  assert.fieldEquals("Seller", "1", "authTokenId", "0");
-  assert.fieldEquals("Seller", "1", "authTokenType", "0");
+  assert.fieldEquals("Seller", sellerId, "id", sellerId);
+  assert.fieldEquals(
+    "Seller",
+    sellerId,
+    "assistant",
+    sellerAddress.toLowerCase()
+  );
+  assert.fieldEquals("Seller", sellerId, "active", "true");
+  assert.fieldEquals("Seller", sellerId, "authTokenId", "0");
+  assert.fieldEquals("Seller", sellerId, "authTokenType", "0");
   assert.fieldEquals(
     "Seller",
     "1",
@@ -90,6 +103,37 @@ test("handle SellerCreatedEvent", () => {
     "1",
     "metadataUri",
     "ipfs://" + sellerMetadataHash
+  );
+  const sellerMetadataId = getSellerMetadataEntityId(sellerId);
+  assert.fieldEquals("Seller", sellerId, "metadata", sellerMetadataId);
+  assert.fieldEquals("SellerMetadata", sellerMetadataId, "type", "SELLER");
+  const dclSaleChannelId = getSaleChannelId(sellerId, "DCL");
+  assert.fieldEquals("SaleChannel", dclSaleChannelId, "tag", "DCL");
+  assert.fieldEquals(
+    "SaleChannel",
+    dclSaleChannelId,
+    "settingsUri",
+    "file://dclsettings"
+  );
+  const deploymmentProductAId = getSaleChannelDeploymentId(
+    dclSaleChannelId,
+    "Product_A"
+  );
+  assert.fieldEquals(
+    "SaleChannelDeployment",
+    deploymmentProductAId,
+    "product",
+    "Product_A"
+  );
+  const deploymmentProductBId = getSaleChannelDeploymentId(
+    dclSaleChannelId,
+    "Product_B"
+  );
+  assert.fieldEquals(
+    "SaleChannelDeployment",
+    deploymmentProductBId,
+    "product",
+    "Product_B"
   );
 });
 
