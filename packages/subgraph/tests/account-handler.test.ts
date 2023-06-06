@@ -39,7 +39,7 @@ import { getProductId } from "../src/entities/metadata/product-v1/product";
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
-const sellerMetadataHash2 = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwKdjeuAto1";
+let hashCount = 0;
 
 beforeEach(() => {
   clearStore();
@@ -102,7 +102,8 @@ function updateSellerMetadata(
   sellerId: i32,
   sellerMetadataFilepath: string
 ): void {
-  mockIpfsFile(sellerMetadataHash2, sellerMetadataFilepath);
+  const uniqueHash = "123456789" + (123456789 * hashCount++).toString();
+  mockIpfsFile(uniqueHash, sellerMetadataFilepath);
   const sellerUpdatedEvent = createSellerUpdateAppliedEvent(
     sellerId,
     sellerAddress,
@@ -113,7 +114,7 @@ function updateSellerMetadata(
     0,
     0,
     sellerAddress,
-    "ipfs://" + sellerMetadataHash2
+    "ipfs://" + uniqueHash
   );
 
   handleSellerUpdateAppliedEvent(sellerUpdatedEvent);
@@ -155,34 +156,6 @@ test("handle SellerCreatedEvent", () => {
     "settingsUri",
     "file://dclsettings"
   );
-  const productAId = getProductId("Product_A", "1");
-  const deploymmentProductAId = getSalesChannelDeploymentId(
-    dclSalesChannelId,
-    productAId
-  );
-  assert.fieldEquals(
-    "SalesChannelDeployment",
-    deploymmentProductAId,
-    "product",
-    productAId
-  );
-  const productBId = getProductId("Product_B", "5");
-  const deploymmentProductBId = getSalesChannelDeploymentId(
-    dclSalesChannelId,
-    productBId
-  );
-  assert.fieldEquals(
-    "SalesChannelDeployment",
-    deploymmentProductBId,
-    "product",
-    productBId
-  );
-  assert.fieldEquals(
-    "SalesChannelDeployment",
-    deploymmentProductBId,
-    "link",
-    "https://play.decentraland.org/?position=-75%2C114"
-  );
 });
 
 test("handle SellerUpdatedEvent", () => {
@@ -219,10 +192,43 @@ test("handle BuyerCreatedEvent", () => {
 });
 
 test("add/remove product salesChannels", () => {
+  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
+
   // mock creation of ProductV1Product for Product_A and Product_B
   let productA = mockCreateProduct("Product_A", 1);
   let productB = mockCreateProduct("Product_B", 5);
-  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
+
+  // Update the seller to create salesChannel deployments on product_A and _B
+  updateSellerMetadata(1, "tests/metadata/seller-updated-1.json");
+
+  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
+  const deploymmentProductAId = getSalesChannelDeploymentId(
+    dclSalesChannelId,
+    productA.id
+  );
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    deploymmentProductAId,
+    "product",
+    productA.id
+  );
+  const deploymmentProductBId = getSalesChannelDeploymentId(
+    dclSalesChannelId,
+    productB.id
+  );
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    deploymmentProductBId,
+    "product",
+    productB.id
+  );
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    deploymmentProductBId,
+    "link",
+    "https://play.decentraland.org/?position=-75%2C114"
+  );
+
   // Reload productA and productB to get the updated data
   productA = ProductV1Product.load(productA.id) as ProductV1Product;
   productB = ProductV1Product.load(productB.id) as ProductV1Product;
@@ -268,8 +274,8 @@ test("add/remove product salesChannels", () => {
   assert.assertNotNull(product);
   assert.assertNull((product as ProductV1Product).salesChannels);
 
-  // Update the seller
-  updateSellerMetadata(1, "tests/metadata/seller-updated.json");
+  // Update the seller again
+  updateSellerMetadata(1, "tests/metadata/seller-updated-2.json");
   product = ProductV1Product.load(productId);
   assert.assertNotNull(product);
   assert.assertNotNull((product as ProductV1Product).salesChannels);

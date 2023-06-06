@@ -21,12 +21,25 @@
     {
       "tag": "DCL",
       "settingsUri": "file://dclsettings",
-      "deployments": []
+      "deployments": [
+        {
+          "product": {"uuid": "Product_A", "version": 1},
+          "status": "in-progress"
+        },
+        {
+          "product": {"uuid": "Product_B", "version": 5},
+          "link": "https://play.decentraland.org/?position=-75%2C114"
+        }
+      ]
     },
     {
       "tag": "Opensea",
       "settingsUri": "file://dclsettings",
-      "deployments": []
+      "deployments": [
+        {
+          "product": {"uuid": "Product_A", "version": 1}
+        }
+      ]
     }
   ]
 }
