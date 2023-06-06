@@ -1,5 +1,6 @@
 import { JSONValue, TypedMap, log } from "@graphprotocol/graph-ts";
 import {
+  ProductV1Product,
   SalesChannel,
   SalesChannelDeployment,
   SellerMetadata
@@ -66,22 +67,31 @@ function saveSalesChannelDeployments(
       );
     } else {
       const productId = getProductId(uuid, version.toString());
-      const status = convertToString(deployment.get("status"));
-      const link = convertToString(deployment.get("link"));
+      // Check the product exist, otherwise do not add the deployment
+      const existingProduct = ProductV1Product.load(productId);
+      if (!existingProduct) {
+        log.warning(
+          "Product with id '{}' does not exist. SalesChannel '{}' will be incomplete.",
+          [productId, salesChannelId]
+        );
+      } else {
+        const status = convertToString(deployment.get("status"));
+        const link = convertToString(deployment.get("link"));
 
-      const id = getSalesChannelDeploymentId(salesChannelId, productId);
-      let salesChannelDeployment = SalesChannelDeployment.load(id);
+        const id = getSalesChannelDeploymentId(salesChannelId, productId);
+        let salesChannelDeployment = SalesChannelDeployment.load(id);
 
-      if (!salesChannelDeployment) {
-        salesChannelDeployment = new SalesChannelDeployment(id);
-        salesChannelDeployment.product = productId;
+        if (!salesChannelDeployment) {
+          salesChannelDeployment = new SalesChannelDeployment(id);
+          salesChannelDeployment.product = productId;
+        }
+        addSalesChannelFromProductV1(productId, salesChannelId);
+        salesChannelDeployment.status = status;
+        salesChannelDeployment.link = link;
+        salesChannelDeployment.save();
+
+        savedDeployments.push(id);
       }
-      addSalesChannelFromProductV1(productId, salesChannelId);
-      salesChannelDeployment.status = status;
-      salesChannelDeployment.link = link;
-      salesChannelDeployment.save();
-
-      savedDeployments.push(id);
     }
   }
 

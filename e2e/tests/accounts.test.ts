@@ -343,6 +343,7 @@ describe("CoreSDK - accounts", () => {
       });
       expect(updatedSeller.metadata).toMatchObject(newMetadata);
     });
+    // TODO:  Add test updating metadata with salesChannels deployment for existing product(s)
     test("create seller - expect fail as image url is too large", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3

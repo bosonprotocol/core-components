@@ -17,6 +17,7 @@ import {
   getDefaultConfig,
   accounts
 } from "../../packages/core-sdk/src";
+import { base, seller } from "../../packages/metadata/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
@@ -47,8 +48,6 @@ import {
   MOCK_ERC721_ABI,
   MOCK_NFT_AUTH_721_ABI
 } from "./mockAbis";
-import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
-import { SellerMetadata } from "@bosonprotocol/metadata/src/seller";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
@@ -118,18 +117,8 @@ export const sellerMetadata = {
     {
       tag: "DCL",
       settingsUri: "file://dclsettings",
-      editorUri: "https://jsonformatter.org/json-editor",
-      deployments: [
-        {
-          product: { uuid: "Product_A", version: "1" },
-          status: "in-progress",
-          link: "https://play.decentraland.org/?realm=dg&position=-79%2C118"
-        },
-        {
-          product: { uuid: "Product_B", version: "1" },
-          link: "https://play.decentraland.org/?realm=dg&position=-79%2C118"
-        }
-      ]
+      settingsEditor: "https://jsonformatter.org/json-editor",
+      deployments: []
     }
   ]
 };
@@ -404,7 +393,7 @@ export async function createOfferWithCondition(
   condition: ConditionStruct,
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
-    metadata?: Partial<BaseMetadata>;
+    metadata?: Partial<base.BaseMetadata>;
   } = {}
 ) {
   const metadataHash = await coreSDK.storeMetadata({
@@ -441,8 +430,8 @@ export async function createSellerAndOfferWithCondition(
   condition: ConditionStruct,
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
-    metadata?: Partial<BaseMetadata>;
-    sellerMetadata?: Partial<SellerMetadata>;
+    metadata?: Partial<base.BaseMetadata>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
   } = {}
 ) {
   const contractHash = await coreSDK.storeMetadata({
@@ -494,7 +483,7 @@ export async function createSeller(
   sellerAddress: string,
   overrides: {
     sellerParams?: Partial<CreateSellerArgs>;
-    sellerMetadata?: Partial<SellerMetadata>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
   } = {}
 ) {
   const metadataHash = await coreSDK.storeMetadata({
