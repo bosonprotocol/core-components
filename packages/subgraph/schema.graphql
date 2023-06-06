@@ -65,8 +65,9 @@ enum SellerMetadataType {
 
 type SaleChannelDeployment @entity {
   id: ID!
-  product: String!
+  product: ProductV1Product!
   status: String
+  link: String
 }
 
 type SaleChannel @entity {
@@ -248,6 +249,7 @@ type ProductV1Product @entity {
   """
   productV1Seller: ProductV1Seller
   sellerId: BigInt!
+  saleChannels: [SaleChannel!]
   """
   PRODUCT_V1 specific fields
   """

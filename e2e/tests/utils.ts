@@ -118,13 +118,16 @@ export const sellerMetadata = {
     {
       tag: "DCL",
       settingsUri: "file://dclsettings",
+      editorUri: "https://jsonformatter.org/json-editor",
       deployments: [
         {
-          product: "Product_A",
-          status: "in-progress"
+          product: { uuid: "Product_A", version: "1" },
+          status: "in-progress",
+          link: "https://play.decentraland.org/?realm=dg&position=-79%2C118"
         },
         {
-          product: "Product_B"
+          product: { uuid: "Product_B", version: "1" },
+          link: "https://play.decentraland.org/?realm=dg&position=-79%2C118"
         }
       ]
     }

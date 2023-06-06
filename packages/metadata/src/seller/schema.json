@@ -97,9 +97,17 @@
               "type": "object",
               "properties": {
                 "product": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "uuid": { "type": "string" },
+                    "version": { "type": "number" },
+                  },
+                  "required": ["uuid", "version"]
                 },
                 "status": {
+                  "type": "string"
+                },
+                "link": {
                   "type": "string"
                 }
               },

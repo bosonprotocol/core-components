@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   ProductV1Product,
   ProductV1Brand,
@@ -561,4 +561,78 @@ function saveProductV1Sections(sections: string[]): string[] {
   }
 
   return savedSections;
+}
+
+export function removeSaleChannelFromProductV1(
+  productId: string,
+  saleChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSaleChannel(product, saleChannelId);
+    if (!removed) {
+      log.warning(
+        "saleChannel '{}' not found in product '{}' - Unable to remove",
+        [saleChannelId, productId]
+      );
+    }
+    product.save();
+  } else {
+    log.warning("Product '{}' not found. Unable to update saleChannels", [
+      productId
+    ]);
+  }
+}
+
+export function addSaleChannelFromProductV1(
+  productId: string,
+  saleChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSaleChannel(product, saleChannelId);
+    if (removed) {
+      log.warning("saleChannel '{}' already found in product '{}'", [
+        saleChannelId,
+        productId
+      ]);
+    }
+    let saleChannels: string[] = [];
+    if (product.saleChannels) {
+      saleChannels = product.saleChannels as string[];
+    }
+    saleChannels.push(saleChannelId);
+    product.saleChannels = saleChannels;
+
+    saleChannels = product.saleChannels as string[];
+    for (let i = 0; i < saleChannels.length; i++) {
+    }
+    product.save();
+  } else {
+    log.warning("Product '{}' not found. Unable to update saleChannels", [
+      productId
+    ]);
+  }
+}
+
+function removeSaleChannel(
+  product: ProductV1Product,
+  saleChannelId: string
+): boolean {
+  if (product.saleChannels) {
+    const saleChannels = product.saleChannels as string[];
+    const length = product.saleChannels ? saleChannels.length : 0;
+    const newSaleChannels: string[] = [];
+    for (let i = 0; i < length; i++) {
+      const oldSaleChannelId = saleChannels ? (saleChannels[i] as string) : "";
+      if (oldSaleChannelId != saleChannelId) {
+        newSaleChannels.push(oldSaleChannelId);
+      }
+    }
+    product.saleChannels = newSaleChannels;
+    return newSaleChannels.length < length;
+  }
+  return false;
 }

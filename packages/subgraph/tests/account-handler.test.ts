@@ -1,3 +1,4 @@
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   beforeEach,
   test,
@@ -9,26 +10,38 @@ import {
   handleSellerCreatedEvent,
   handleSellerUpdatedEvent,
   handleBuyerCreatedEvent,
-  handleSellerCreatedEventWithoutMetadataUri
+  handleSellerCreatedEventWithoutMetadataUri,
+  handleSellerUpdateAppliedEvent
 } from "../src/mappings/account-handler";
 import {
   createSellerCreatedEvent,
   createSellerUpdatedEvent,
   createBuyerCreatedEvent,
   mockBosonVoucherContractCalls,
-  createSellerCreatedEventLegacy
+  createSellerCreatedEventLegacy,
+  createSellerUpdateAppliedEvent,
+  mockCreateProduct
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
   getSaleChannelDeploymentId,
   getSaleChannelId
 } from "../src/entities/metadata/seller/saleChannels";
-import { SellerMetadata } from "../generated/schema";
+import {
+  Offer,
+  ProductV1Product,
+  SaleChannel,
+  SellerMetadata
+} from "../generated/schema";
 import { convertToStringArray } from "../src/utils/json";
+import { getMetadataEntityId } from "../src/entities/metadata/utils";
+import { saveMetadata } from "../src/entities/metadata/handler";
+import { getProductId } from "../src/entities/metadata/product-v1/product";
 
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
+const sellerMetadataHash2 = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwKdjeuAto1";
 
 beforeEach(() => {
   clearStore();
@@ -63,11 +76,15 @@ test("handle legacy SellerCreatedEvent", () => {
   );
 });
 
-test("handle SellerCreatedEvent", () => {
+function createSeller(
+  sellerId: i32,
+  sellerAddress: string,
+  sellerMetadataFilepath: string
+): string {
   mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
-  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
+  mockIpfsFile(sellerMetadataHash, sellerMetadataFilepath);
   const sellerCreatedEvent = createSellerCreatedEvent(
-    1,
+    sellerId,
     sellerAddress,
     sellerAddress,
     sellerAddress,
@@ -80,7 +97,32 @@ test("handle SellerCreatedEvent", () => {
   );
 
   handleSellerCreatedEvent(sellerCreatedEvent);
-  const sellerId = "1";
+  return sellerId.toString();
+}
+
+function updateSellerMetadata(
+  sellerId: i32,
+  sellerMetadataFilepath: string
+): void {
+  mockIpfsFile(sellerMetadataHash2, sellerMetadataFilepath);
+  const sellerUpdatedEvent = createSellerUpdateAppliedEvent(
+    sellerId,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    true,
+    0,
+    0,
+    sellerAddress,
+    "ipfs://" + sellerMetadataHash2
+  );
+
+  handleSellerUpdateAppliedEvent(sellerUpdatedEvent);
+}
+
+test("handle SellerCreatedEvent", () => {
+  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
 
   assert.fieldEquals("Seller", sellerId, "id", sellerId);
   assert.fieldEquals(
@@ -115,25 +157,33 @@ test("handle SellerCreatedEvent", () => {
     "settingsUri",
     "file://dclsettings"
   );
+  const productAId = getProductId("Product_A", "1");
   const deploymmentProductAId = getSaleChannelDeploymentId(
     dclSaleChannelId,
-    "Product_A"
+    productAId
   );
   assert.fieldEquals(
     "SaleChannelDeployment",
     deploymmentProductAId,
     "product",
-    "Product_A"
+    productAId
   );
+  const productBId = getProductId("Product_B", "5");
   const deploymmentProductBId = getSaleChannelDeploymentId(
     dclSaleChannelId,
-    "Product_B"
+    productBId
   );
   assert.fieldEquals(
     "SaleChannelDeployment",
     deploymmentProductBId,
     "product",
-    "Product_B"
+    productBId
+  );
+  assert.fieldEquals(
+    "SaleChannelDeployment",
+    deploymmentProductBId,
+    "link",
+    "https://play.decentraland.org/?position=-75%2C114"
   );
 });
 
@@ -168,4 +218,78 @@ test("handle BuyerCreatedEvent", () => {
 
   assert.fieldEquals("Buyer", "1", "wallet", sellerAddress.toLowerCase());
   assert.fieldEquals("Buyer", "1", "active", "true");
+});
+
+test("add/remove product saleChannels", () => {
+  // mock creation of ProductV1Product for Product_A and Product_B
+  let productA = mockCreateProduct("Product_A", 1);
+  let productB = mockCreateProduct("Product_B", 5);
+  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
+  // Reload productA and productB to get the updated data
+  productA = ProductV1Product.load(productA.id) as ProductV1Product;
+  productB = ProductV1Product.load(productB.id) as ProductV1Product;
+  assert.assertNotNull(productA);
+  assert.assertNotNull((productA as ProductV1Product).saleChannels);
+  assert.assertTrue(
+    ((productA as ProductV1Product).saleChannels as string[]).length === 2
+  );
+  assert.assertNotNull(productB);
+  assert.assertNotNull((productB as ProductV1Product).saleChannels);
+  assert.assertTrue(
+    ((productB as ProductV1Product).saleChannels as string[]).length === 1
+  );
+  const saleChannelProductBId = (
+    (productB as ProductV1Product).saleChannels as string[]
+  )[0];
+  assert.assertNotNull(saleChannelProductBId);
+  const saleChannelProductB = SaleChannel.load(saleChannelProductBId);
+  assert.assertNotNull(saleChannelProductB);
+  assert.assertNotNull((saleChannelProductB as SaleChannel).tag);
+  assert.assertTrue((saleChannelProductB as SaleChannel).tag == "DCL");
+
+  // mirrored values from `tests/metadata/product-v1-full.json`
+  const metadataUuid = "ecf2a6dc-555b-41b5-aca8-b7e29eebbb30";
+  const productUuid = "77593bb2-f797-11ec-b939-0242ac120002";
+  const productVersion = 1;
+
+  const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
+  mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
+
+  const offerId = 1;
+  const offer = new Offer(offerId.toString());
+  offer.quantityAvailable = BigInt.fromI32(1);
+  offer.metadataUri = metadataHash;
+  offer.metadataHash = metadataHash;
+  offer.save();
+
+  const metadataId = getMetadataEntityId(offerId.toString());
+  saveMetadata(offer, BigInt.fromI32(1651574093));
+  const productId = getProductId(productUuid, productVersion.toString());
+
+  let product = ProductV1Product.load(productId);
+  assert.assertNotNull(product);
+  assert.assertNull((product as ProductV1Product).saleChannels);
+
+  // Update the seller
+  updateSellerMetadata(1, "tests/metadata/seller-updated.json");
+  product = ProductV1Product.load(productId);
+  assert.assertNotNull(product);
+  assert.assertNotNull((product as ProductV1Product).saleChannels);
+  assert.assertTrue(
+    ((product as ProductV1Product).saleChannels as string[]).length === 1
+  );
+
+  // Reload productA and productB to get the updated data
+  productA = ProductV1Product.load(productA.id) as ProductV1Product;
+  assert.assertNotNull(productA);
+  assert.assertNotNull((productA as ProductV1Product).saleChannels);
+  assert.assertTrue(
+    ((productA as ProductV1Product).saleChannels as string[]).length === 0
+  );
+  productB = ProductV1Product.load(productB.id) as ProductV1Product;
+  assert.assertNotNull(productB);
+  assert.assertNotNull((productB as ProductV1Product).saleChannels);
+  assert.assertTrue(
+    ((productB as ProductV1Product).saleChannels as string[]).length === 1
+  );
 });

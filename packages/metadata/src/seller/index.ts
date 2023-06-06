@@ -37,8 +37,9 @@ export type SellerMetadata = {
     settingsUri?: string;
     settingsEditor?: string;
     deployments?: {
-      product: string;
+      product: { uuid: string; version: number };
       status?: string;
+      link?: string;
     }[];
   }[];
 };

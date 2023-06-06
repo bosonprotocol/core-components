@@ -30,12 +30,15 @@ import {
   newMockEvent,
   createMockedFunction
 } from "matchstick-as/assembly/index";
-import { ethereum, Address } from "@graphprotocol/graph-ts";
+import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts";
 import {
   SellerUpdated,
   SellerCreated as SellerCreatedLegacy,
   SellerCreatedSellerStruct as SellerCreatedLegacySellerStruct
 } from "../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
+import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
+import { getProductId } from "../src/entities/metadata/product-v1/product";
+import { ProductV1Media, ProductV1Product } from "../generated/schema";
 
 export function createOfferCreatedEvent(
   offerId: i32,
@@ -468,6 +471,78 @@ export function createSellerUpdatedEvent(
   return sellerUpdatedEvent;
 }
 
+export function createSellerUpdateAppliedEvent(
+  sellerId: i32,
+  assistant: string,
+  admin: string,
+  clerk: string,
+  treasury: string,
+  active: boolean,
+  authTokenId: i32,
+  authTokenType: i8,
+  executedBy: string,
+  metadataUri: string
+): SellerUpdateApplied {
+  const sellerUpdateAppliedEvent = changetype<SellerUpdateApplied>(
+    newMockEvent()
+  );
+  sellerUpdateAppliedEvent.parameters = [];
+
+  const sellerIdParam = new ethereum.EventParam(
+    "sellerId",
+    ethereum.Value.fromI32(sellerId)
+  );
+  const sellerParam = new ethereum.EventParam(
+    "seller",
+    ethereum.Value.fromTuple(
+      createSellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        active,
+        metadataUri
+      )
+    )
+  );
+  const pendingSellerParam = new ethereum.EventParam(
+    "pendingSeller",
+    ethereum.Value.fromTuple(
+      createSellerStruct(
+        sellerId,
+        assistant,
+        admin,
+        clerk,
+        treasury,
+        active,
+        metadataUri
+      )
+    )
+  );
+  const authTokenParam = new ethereum.EventParam(
+    "authToken",
+    ethereum.Value.fromTuple(createAuthToken(authTokenId, authTokenType))
+  );
+  const pendingAuthTokenParam = new ethereum.EventParam(
+    "pendingAuthToken",
+    ethereum.Value.fromTuple(createAuthToken(authTokenId, authTokenType))
+  );
+  const executedByParam = new ethereum.EventParam(
+    "executedBy",
+    ethereum.Value.fromAddress(Address.fromString(executedBy))
+  );
+
+  sellerUpdateAppliedEvent.parameters.push(sellerIdParam);
+  sellerUpdateAppliedEvent.parameters.push(sellerParam);
+  sellerUpdateAppliedEvent.parameters.push(pendingSellerParam);
+  sellerUpdateAppliedEvent.parameters.push(authTokenParam);
+  sellerUpdateAppliedEvent.parameters.push(pendingAuthTokenParam);
+  sellerUpdateAppliedEvent.parameters.push(executedByParam);
+
+  return sellerUpdateAppliedEvent;
+}
+
 export function createBuyerCreatedEvent(
   buyerId: i32,
   wallet: string,
@@ -778,4 +853,32 @@ export function createBuyerStruct(
   tuple.push(ethereum.Value.fromAddress(Address.fromString(wallet)));
   tuple.push(ethereum.Value.fromBoolean(active));
   return tuple;
+}
+
+export function mockCreateProduct(
+  uuid: string,
+  version: i32
+): ProductV1Product {
+  const productId = getProductId(uuid, version.toString());
+  const product = new ProductV1Product(productId);
+  product.uuid = uuid;
+  product.version = version;
+  product.title = "";
+  product.description = "";
+  product.disputeResolverId = BigInt.zero();
+  product.productionInformation_brandName = "";
+  product.details_offerCategory = "";
+  product.offerCategory = "PHYSICAL";
+  const media = new ProductV1Media("mediaId");
+  media.url = "...";
+  media.type = "IMAGE";
+  product.visuals_images = [media.id];
+  product.sellerId = BigInt.zero();
+  product.minValidFromDate = BigInt.zero();
+  product.maxValidFromDate = BigInt.zero();
+  product.minValidUntilDate = BigInt.zero();
+  product.maxValidUntilDate = BigInt.zero();
+
+  product.save();
+  return product;
 }
