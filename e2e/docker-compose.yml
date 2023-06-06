@@ -4,6 +4,7 @@ services:
     build:
       context: ../.
       dockerfile: ./e2e/meta-tx-gateway/Dockerfile
+    user: "node:node"
     image: meta-tx-gateway:20230606133800
     ports:
       - "8888:8888"

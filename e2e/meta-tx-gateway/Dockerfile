@@ -2,6 +2,8 @@ FROM node:16-alpine
 
 RUN apk --no-cache add --virtual .builds-deps build-base python3 git
 
+RUN mkdir -p /home/node/core-components && chown -R node:node /home/node/core-components
+
 USER node:node
 WORKDIR /home/node/core-components
 
