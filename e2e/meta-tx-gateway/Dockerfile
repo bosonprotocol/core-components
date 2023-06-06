@@ -2,6 +2,7 @@ FROM node:16-alpine
 
 RUN apk --no-cache add --virtual .builds-deps build-base python3 git
 
+USER node
 WORKDIR /opt/core-components
 
 COPY --chown=node:node ./**.json ./
@@ -13,7 +14,6 @@ ENV NODE_ENV production
 RUN npm run build
 
 WORKDIR /opt/core-components/e2e/meta-tx-gateway
-USER node
 EXPOSE 8888
 ENV PORT 8888
 CMD ["npm", "run", "start"]
