@@ -100,7 +100,7 @@
                   "type": "object",
                   "properties": {
                     "uuid": { "type": "string" },
-                    "version": { "type": "number" },
+                    "version": { "type": "number" }
                   },
                   "required": ["uuid", "version"]
                 },
