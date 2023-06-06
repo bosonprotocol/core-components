@@ -563,76 +563,76 @@ function saveProductV1Sections(sections: string[]): string[] {
   return savedSections;
 }
 
-export function removeSaleChannelFromProductV1(
+export function removeSalesChannelFromProductV1(
   productId: string,
-  saleChannelId: string
+  salesChannelId: string
 ): void {
   const product = ProductV1Product.load(productId);
 
   if (product) {
-    const removed = removeSaleChannel(product, saleChannelId);
+    const removed = removeSalesChannel(product, salesChannelId);
     if (!removed) {
       log.warning(
-        "saleChannel '{}' not found in product '{}' - Unable to remove",
-        [saleChannelId, productId]
+        "salesChannel '{}' not found in product '{}' - Unable to remove",
+        [salesChannelId, productId]
       );
     }
     product.save();
   } else {
-    log.warning("Product '{}' not found. Unable to update saleChannels", [
+    log.warning("Product '{}' not found. Unable to update salesChannels", [
       productId
     ]);
   }
 }
 
-export function addSaleChannelFromProductV1(
+export function addSalesChannelFromProductV1(
   productId: string,
-  saleChannelId: string
+  salesChannelId: string
 ): void {
   const product = ProductV1Product.load(productId);
 
   if (product) {
-    const removed = removeSaleChannel(product, saleChannelId);
+    const removed = removeSalesChannel(product, salesChannelId);
     if (removed) {
-      log.warning("saleChannel '{}' already found in product '{}'", [
-        saleChannelId,
+      log.warning("salesChannel '{}' already found in product '{}'", [
+        salesChannelId,
         productId
       ]);
     }
-    let saleChannels: string[] = [];
-    if (product.saleChannels) {
-      saleChannels = product.saleChannels as string[];
+    let salesChannels: string[] = [];
+    if (product.salesChannels) {
+      salesChannels = product.salesChannels as string[];
     }
-    saleChannels.push(saleChannelId);
-    product.saleChannels = saleChannels;
+    salesChannels.push(salesChannelId);
+    product.salesChannels = salesChannels;
 
-    saleChannels = product.saleChannels as string[];
-    for (let i = 0; i < saleChannels.length; i++) {
+    salesChannels = product.salesChannels as string[];
+    for (let i = 0; i < salesChannels.length; i++) {
     }
     product.save();
   } else {
-    log.warning("Product '{}' not found. Unable to update saleChannels", [
+    log.warning("Product '{}' not found. Unable to update salesChannels", [
       productId
     ]);
   }
 }
 
-function removeSaleChannel(
+function removeSalesChannel(
   product: ProductV1Product,
-  saleChannelId: string
+  salesChannelId: string
 ): boolean {
-  if (product.saleChannels) {
-    const saleChannels = product.saleChannels as string[];
-    const length = product.saleChannels ? saleChannels.length : 0;
-    const newSaleChannels: string[] = [];
+  if (product.salesChannels) {
+    const salesChannels = product.salesChannels as string[];
+    const length = product.salesChannels ? salesChannels.length : 0;
+    const newSalesChannels: string[] = [];
     for (let i = 0; i < length; i++) {
-      const oldSaleChannelId = saleChannels ? (saleChannels[i] as string) : "";
-      if (oldSaleChannelId != saleChannelId) {
-        newSaleChannels.push(oldSaleChannelId);
+      const oldSalesChannelId = salesChannels ? (salesChannels[i] as string) : "";
+      if (oldSalesChannelId != salesChannelId) {
+        newSalesChannels.push(oldSalesChannelId);
       }
     }
-    product.saleChannels = newSaleChannels;
-    return newSaleChannels.length < length;
+    product.salesChannels = newSalesChannels;
+    return newSalesChannels.length < length;
   }
   return false;
 }

@@ -17,7 +17,7 @@
   "socialLinks": [{ "url": "url", "tag": "tag" }],
   "type": "SELLER",
   "website": "website",
-  "saleChannels": [
+  "salesChannels": [
     {
       "tag": "DCL",
       "settingsUri": "file://dclsettings",

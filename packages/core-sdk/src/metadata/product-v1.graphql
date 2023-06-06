@@ -242,8 +242,8 @@ fragment BaseProductV1ProductFields on ProductV1Product {
   productV1Seller {
     ...BaseProductV1SellerFields
   }
-  saleChannels {
-    ...SaleChannelFields
+  salesChannels {
+    ...SalesChannelFields
   }
 }
 

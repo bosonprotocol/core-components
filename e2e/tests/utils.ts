@@ -114,7 +114,7 @@ export const sellerMetadata = {
       tag: "tag"
     }
   ],
-  saleChannels: [
+  salesChannels: [
     {
       tag: "DCL",
       settingsUri: "file://dclsettings",

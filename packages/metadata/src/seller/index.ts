@@ -32,7 +32,7 @@ export type SellerMetadata = {
     url: string;
     tag: string;
   }[];
-  saleChannels?: {
+  salesChannels?: {
     tag: string;
     settingsUri?: string;
     settingsEditor?: string;

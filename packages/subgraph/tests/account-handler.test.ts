@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   beforeEach,
   test,
@@ -24,16 +24,14 @@ import {
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
-  getSaleChannelDeploymentId,
-  getSaleChannelId
-} from "../src/entities/metadata/seller/saleChannels";
+  getSalesChannelDeploymentId,
+  getSalesChannelId
+} from "../src/entities/metadata/seller/salesChannels";
 import {
   Offer,
   ProductV1Product,
-  SaleChannel,
-  SellerMetadata
+  SalesChannel
 } from "../generated/schema";
-import { convertToStringArray } from "../src/utils/json";
 import { getMetadataEntityId } from "../src/entities/metadata/utils";
 import { saveMetadata } from "../src/entities/metadata/handler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
@@ -149,38 +147,38 @@ test("handle SellerCreatedEvent", () => {
   const sellerMetadataId = getSellerMetadataEntityId(sellerId);
   assert.fieldEquals("Seller", sellerId, "metadata", sellerMetadataId);
   assert.fieldEquals("SellerMetadata", sellerMetadataId, "type", "SELLER");
-  const dclSaleChannelId = getSaleChannelId(sellerId, "DCL");
-  assert.fieldEquals("SaleChannel", dclSaleChannelId, "tag", "DCL");
+  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
+  assert.fieldEquals("SalesChannel", dclSalesChannelId, "tag", "DCL");
   assert.fieldEquals(
-    "SaleChannel",
-    dclSaleChannelId,
+    "SalesChannel",
+    dclSalesChannelId,
     "settingsUri",
     "file://dclsettings"
   );
   const productAId = getProductId("Product_A", "1");
-  const deploymmentProductAId = getSaleChannelDeploymentId(
-    dclSaleChannelId,
+  const deploymmentProductAId = getSalesChannelDeploymentId(
+    dclSalesChannelId,
     productAId
   );
   assert.fieldEquals(
-    "SaleChannelDeployment",
+    "SalesChannelDeployment",
     deploymmentProductAId,
     "product",
     productAId
   );
   const productBId = getProductId("Product_B", "5");
-  const deploymmentProductBId = getSaleChannelDeploymentId(
-    dclSaleChannelId,
+  const deploymmentProductBId = getSalesChannelDeploymentId(
+    dclSalesChannelId,
     productBId
   );
   assert.fieldEquals(
-    "SaleChannelDeployment",
+    "SalesChannelDeployment",
     deploymmentProductBId,
     "product",
     productBId
   );
   assert.fieldEquals(
-    "SaleChannelDeployment",
+    "SalesChannelDeployment",
     deploymmentProductBId,
     "link",
     "https://play.decentraland.org/?position=-75%2C114"
@@ -220,7 +218,7 @@ test("handle BuyerCreatedEvent", () => {
   assert.fieldEquals("Buyer", "1", "active", "true");
 });
 
-test("add/remove product saleChannels", () => {
+test("add/remove product salesChannels", () => {
   // mock creation of ProductV1Product for Product_A and Product_B
   let productA = mockCreateProduct("Product_A", 1);
   let productB = mockCreateProduct("Product_B", 5);
@@ -229,23 +227,23 @@ test("add/remove product saleChannels", () => {
   productA = ProductV1Product.load(productA.id) as ProductV1Product;
   productB = ProductV1Product.load(productB.id) as ProductV1Product;
   assert.assertNotNull(productA);
-  assert.assertNotNull((productA as ProductV1Product).saleChannels);
+  assert.assertNotNull((productA as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((productA as ProductV1Product).saleChannels as string[]).length === 2
+    ((productA as ProductV1Product).salesChannels as string[]).length === 2
   );
   assert.assertNotNull(productB);
-  assert.assertNotNull((productB as ProductV1Product).saleChannels);
+  assert.assertNotNull((productB as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((productB as ProductV1Product).saleChannels as string[]).length === 1
+    ((productB as ProductV1Product).salesChannels as string[]).length === 1
   );
-  const saleChannelProductBId = (
-    (productB as ProductV1Product).saleChannels as string[]
+  const salesChannelProductBId = (
+    (productB as ProductV1Product).salesChannels as string[]
   )[0];
-  assert.assertNotNull(saleChannelProductBId);
-  const saleChannelProductB = SaleChannel.load(saleChannelProductBId);
-  assert.assertNotNull(saleChannelProductB);
-  assert.assertNotNull((saleChannelProductB as SaleChannel).tag);
-  assert.assertTrue((saleChannelProductB as SaleChannel).tag == "DCL");
+  assert.assertNotNull(salesChannelProductBId);
+  const salesChannelProductB = SalesChannel.load(salesChannelProductBId);
+  assert.assertNotNull(salesChannelProductB);
+  assert.assertNotNull((salesChannelProductB as SalesChannel).tag);
+  assert.assertTrue((salesChannelProductB as SalesChannel).tag == "DCL");
 
   // mirrored values from `tests/metadata/product-v1-full.json`
   const metadataUuid = "ecf2a6dc-555b-41b5-aca8-b7e29eebbb30";
@@ -268,28 +266,28 @@ test("add/remove product saleChannels", () => {
 
   let product = ProductV1Product.load(productId);
   assert.assertNotNull(product);
-  assert.assertNull((product as ProductV1Product).saleChannels);
+  assert.assertNull((product as ProductV1Product).salesChannels);
 
   // Update the seller
   updateSellerMetadata(1, "tests/metadata/seller-updated.json");
   product = ProductV1Product.load(productId);
   assert.assertNotNull(product);
-  assert.assertNotNull((product as ProductV1Product).saleChannels);
+  assert.assertNotNull((product as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((product as ProductV1Product).saleChannels as string[]).length === 1
+    ((product as ProductV1Product).salesChannels as string[]).length === 1
   );
 
   // Reload productA and productB to get the updated data
   productA = ProductV1Product.load(productA.id) as ProductV1Product;
   assert.assertNotNull(productA);
-  assert.assertNotNull((productA as ProductV1Product).saleChannels);
+  assert.assertNotNull((productA as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((productA as ProductV1Product).saleChannels as string[]).length === 0
+    ((productA as ProductV1Product).salesChannels as string[]).length === 0
   );
   productB = ProductV1Product.load(productB.id) as ProductV1Product;
   assert.assertNotNull(productB);
-  assert.assertNotNull((productB as ProductV1Product).saleChannels);
+  assert.assertNotNull((productB as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((productB as ProductV1Product).saleChannels as string[]).length === 1
+    ((productB as ProductV1Product).salesChannels as string[]).length === 1
   );
 });

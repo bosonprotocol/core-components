@@ -77,7 +77,7 @@
         "required": ["url", "tag"]
       }
     },
-    "saleChannels": {
+    "salesChannels": {
       "type": "array",
       "items": {
         "type": "object",

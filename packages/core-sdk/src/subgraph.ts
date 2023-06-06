@@ -4589,6 +4589,7 @@ export type ProductV1Product = {
   productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
   productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
   productionInformation_modelNumber?: Maybe<Scalars["String"]>;
+  salesChannels?: Maybe<Array<SalesChannel>>;
   sections?: Maybe<Array<ProductV1Section>>;
   sellerId: Scalars["BigInt"];
   subCategory?: Maybe<ProductV1Category>;
@@ -4624,6 +4625,14 @@ export type ProductV1ProductPersonalisationArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<ProductV1Personalisation_Filter>;
+};
+
+export type ProductV1ProductSalesChannelsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SalesChannel_Filter>;
 };
 
 export type ProductV1ProductSectionsArgs = {
@@ -5943,6 +5952,13 @@ export type ProductV1Product_Filter = {
   productionInformation_modelNumber_starts_with_nocase?: InputMaybe<
     Scalars["String"]
   >;
+  salesChannels?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_?: InputMaybe<SalesChannel_Filter>;
+  salesChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   sections?: InputMaybe<Array<Scalars["String"]>>;
   sections_?: InputMaybe<ProductV1Section_Filter>;
   sections_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -6115,6 +6131,7 @@ export enum ProductV1Product_OrderBy {
   ProductionInformationManufacturerPartNumber = "productionInformation_manufacturerPartNumber",
   ProductionInformationMaterials = "productionInformation_materials",
   ProductionInformationModelNumber = "productionInformation_modelNumber",
+  SalesChannels = "salesChannels",
   Sections = "sections",
   SellerId = "sellerId",
   SubCategory = "subCategory",
@@ -6888,10 +6905,10 @@ export type Query = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
-  saleChannel?: Maybe<SaleChannel>;
-  saleChannelDeployment?: Maybe<SaleChannelDeployment>;
-  saleChannelDeployments: Array<SaleChannelDeployment>;
-  saleChannels: Array<SaleChannel>;
+  salesChannel?: Maybe<SalesChannel>;
+  salesChannelDeployment?: Maybe<SalesChannelDeployment>;
+  salesChannelDeployments: Array<SalesChannelDeployment>;
+  salesChannels: Array<SalesChannel>;
   seller?: Maybe<Seller>;
   sellerContactLink?: Maybe<SellerContactLink>;
   sellerContactLinks: Array<SellerContactLink>;
@@ -7535,36 +7552,36 @@ export type QueryRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type QuerySaleChannelArgs = {
+export type QuerySalesChannelArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type QuerySaleChannelDeploymentArgs = {
+export type QuerySalesChannelDeploymentArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type QuerySaleChannelDeploymentsArgs = {
+export type QuerySalesChannelDeploymentsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannelDeployment_OrderBy>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<SaleChannelDeployment_Filter>;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
 };
 
-export type QuerySaleChannelsArgs = {
+export type QuerySalesChannelsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannel_OrderBy>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<SaleChannel_Filter>;
+  where?: InputMaybe<SalesChannel_Filter>;
 };
 
 export type QuerySellerArgs = {
@@ -7705,31 +7722,32 @@ export enum RangeEntity_OrderBy {
   Start = "start"
 }
 
-export type SaleChannel = {
-  __typename?: "SaleChannel";
-  deployments?: Maybe<Array<SaleChannelDeployment>>;
+export type SalesChannel = {
+  __typename?: "SalesChannel";
+  deployments?: Maybe<Array<SalesChannelDeployment>>;
   id: Scalars["ID"];
   settingsEditor?: Maybe<Scalars["String"]>;
   settingsUri?: Maybe<Scalars["String"]>;
   tag: Scalars["String"];
 };
 
-export type SaleChannelDeploymentsArgs = {
+export type SalesChannelDeploymentsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannelDeployment_OrderBy>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
-  where?: InputMaybe<SaleChannelDeployment_Filter>;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
 };
 
-export type SaleChannelDeployment = {
-  __typename?: "SaleChannelDeployment";
+export type SalesChannelDeployment = {
+  __typename?: "SalesChannelDeployment";
   id: Scalars["ID"];
-  product: Scalars["String"];
+  link?: Maybe<Scalars["String"]>;
+  product: ProductV1Product;
   status?: Maybe<Scalars["String"]>;
 };
 
-export type SaleChannelDeployment_Filter = {
+export type SalesChannelDeployment_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   id?: InputMaybe<Scalars["ID"]>;
@@ -7740,7 +7758,28 @@ export type SaleChannelDeployment_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  link?: InputMaybe<Scalars["String"]>;
+  link_contains?: InputMaybe<Scalars["String"]>;
+  link_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_ends_with?: InputMaybe<Scalars["String"]>;
+  link_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_gt?: InputMaybe<Scalars["String"]>;
+  link_gte?: InputMaybe<Scalars["String"]>;
+  link_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_lt?: InputMaybe<Scalars["String"]>;
+  link_lte?: InputMaybe<Scalars["String"]>;
+  link_not?: InputMaybe<Scalars["String"]>;
+  link_not_contains?: InputMaybe<Scalars["String"]>;
+  link_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_not_starts_with?: InputMaybe<Scalars["String"]>;
+  link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_starts_with?: InputMaybe<Scalars["String"]>;
+  link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   product?: InputMaybe<Scalars["String"]>;
+  product_?: InputMaybe<ProductV1Product_Filter>;
   product_contains?: InputMaybe<Scalars["String"]>;
   product_contains_nocase?: InputMaybe<Scalars["String"]>;
   product_ends_with?: InputMaybe<Scalars["String"]>;
@@ -7782,17 +7821,18 @@ export type SaleChannelDeployment_Filter = {
   status_starts_with_nocase?: InputMaybe<Scalars["String"]>;
 };
 
-export enum SaleChannelDeployment_OrderBy {
+export enum SalesChannelDeployment_OrderBy {
   Id = "id",
+  Link = "link",
   Product = "product",
   Status = "status"
 }
 
-export type SaleChannel_Filter = {
+export type SalesChannel_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   deployments?: InputMaybe<Array<Scalars["String"]>>;
-  deployments_?: InputMaybe<SaleChannelDeployment_Filter>;
+  deployments_?: InputMaybe<SalesChannelDeployment_Filter>;
   deployments_contains?: InputMaybe<Array<Scalars["String"]>>;
   deployments_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   deployments_not?: InputMaybe<Array<Scalars["String"]>>;
@@ -7868,7 +7908,7 @@ export type SaleChannel_Filter = {
   tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
 };
 
-export enum SaleChannel_OrderBy {
+export enum SalesChannel_OrderBy {
   Deployments = "deployments",
   Id = "id",
   SettingsEditor = "settingsEditor",
@@ -8009,7 +8049,7 @@ export type SellerMetadata = {
   kind: Scalars["String"];
   legalTradingName?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
-  saleChannels?: Maybe<Array<SaleChannel>>;
+  salesChannels?: Maybe<Array<SalesChannel>>;
   socialLinks?: Maybe<Array<SellerSocialLink>>;
   type: SellerMetadataType;
   website?: Maybe<Scalars["String"]>;
@@ -8031,12 +8071,12 @@ export type SellerMetadataImagesArgs = {
   where?: InputMaybe<SellerMetadataMedia_Filter>;
 };
 
-export type SellerMetadataSaleChannelsArgs = {
+export type SellerMetadataSalesChannelsArgs = {
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannel_OrderBy>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
-  where?: InputMaybe<SaleChannel_Filter>;
+  where?: InputMaybe<SalesChannel_Filter>;
 };
 
 export type SellerMetadataSocialLinksArgs = {
@@ -8292,13 +8332,13 @@ export type SellerMetadata_Filter = {
   name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   name_starts_with?: InputMaybe<Scalars["String"]>;
   name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
-  saleChannels?: InputMaybe<Array<Scalars["String"]>>;
-  saleChannels_?: InputMaybe<SaleChannel_Filter>;
-  saleChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
-  saleChannels_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
-  saleChannels_not?: InputMaybe<Array<Scalars["String"]>>;
-  saleChannels_not_contains?: InputMaybe<Array<Scalars["String"]>>;
-  saleChannels_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_?: InputMaybe<SalesChannel_Filter>;
+  salesChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   socialLinks?: InputMaybe<Array<Scalars["String"]>>;
   socialLinks_?: InputMaybe<SellerSocialLink_Filter>;
   socialLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -8342,7 +8382,7 @@ export enum SellerMetadata_OrderBy {
   Kind = "kind",
   LegalTradingName = "legalTradingName",
   Name = "name",
-  SaleChannels = "saleChannels",
+  SalesChannels = "salesChannels",
   SocialLinks = "socialLinks",
   Type = "type",
   Website = "website"
@@ -8662,10 +8702,10 @@ export type Subscription = {
   productV1Variations: Array<ProductV1Variation>;
   rangeEntities: Array<RangeEntity>;
   rangeEntity?: Maybe<RangeEntity>;
-  saleChannel?: Maybe<SaleChannel>;
-  saleChannelDeployment?: Maybe<SaleChannelDeployment>;
-  saleChannelDeployments: Array<SaleChannelDeployment>;
-  saleChannels: Array<SaleChannel>;
+  salesChannel?: Maybe<SalesChannel>;
+  salesChannelDeployment?: Maybe<SalesChannelDeployment>;
+  salesChannelDeployments: Array<SalesChannelDeployment>;
+  salesChannels: Array<SalesChannel>;
   seller?: Maybe<Seller>;
   sellerContactLink?: Maybe<SellerContactLink>;
   sellerContactLinks: Array<SellerContactLink>;
@@ -9309,36 +9349,36 @@ export type SubscriptionRangeEntityArgs = {
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type SubscriptionSaleChannelArgs = {
+export type SubscriptionSalesChannelArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type SubscriptionSaleChannelDeploymentArgs = {
+export type SubscriptionSalesChannelDeploymentArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
-export type SubscriptionSaleChannelDeploymentsArgs = {
+export type SubscriptionSalesChannelDeploymentsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannelDeployment_OrderBy>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<SaleChannelDeployment_Filter>;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
 };
 
-export type SubscriptionSaleChannelsArgs = {
+export type SubscriptionSalesChannelsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<SaleChannel_OrderBy>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<SaleChannel_Filter>;
+  where?: InputMaybe<SalesChannel_Filter>;
 };
 
 export type SubscriptionSellerArgs = {
@@ -9595,17 +9635,23 @@ export type GetSellerByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -9850,22 +9896,47 @@ export type GetSellerByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -9944,17 +10015,23 @@ export type GetSellerByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -10082,17 +10159,23 @@ export type GetSellerByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -10200,17 +10283,23 @@ export type GetSellerByIdQueryQuery = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -10369,17 +10458,23 @@ export type GetSellersQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -10624,22 +10719,47 @@ export type GetSellersQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -10718,17 +10838,23 @@ export type GetSellersQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -10856,17 +10982,23 @@ export type GetSellersQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -10974,17 +11106,23 @@ export type GetSellersQueryQuery = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -11115,17 +11253,23 @@ export type GetBuyerByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -11338,17 +11482,23 @@ export type GetBuyersQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -11544,17 +11694,23 @@ export type GetDisputeResolverByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -11799,22 +11955,47 @@ export type GetDisputeResolverByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -11893,17 +12074,23 @@ export type GetDisputeResolverByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -12159,17 +12346,23 @@ export type GetDisputeResolversQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -12414,22 +12607,47 @@ export type GetDisputeResolversQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -12508,17 +12726,23 @@ export type GetDisputeResolversQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -12771,17 +12995,23 @@ export type SellerFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -13022,22 +13252,47 @@ export type SellerFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -13116,17 +13371,23 @@ export type SellerFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -13254,17 +13515,23 @@ export type SellerFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -13372,17 +13639,23 @@ export type SellerFieldsFragment = {
       url: string;
       tag: string;
     }> | null;
-    saleChannels?: Array<{
-      __typename?: "SaleChannel";
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
       id: string;
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       deployments?: Array<{
-        __typename?: "SaleChannelDeployment";
+        __typename?: "SalesChannelDeployment";
         id: string;
-        product: string;
         status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
       }> | null;
     }> | null;
   } | null;
@@ -13412,17 +13685,23 @@ export type SellerSocialLinkFieldsFragment = {
   tag: string;
 };
 
-export type SaleChannelFieldsFragment = {
-  __typename?: "SaleChannel";
+export type SalesChannelFieldsFragment = {
+  __typename?: "SalesChannel";
   id: string;
   tag: string;
   settingsUri?: string | null;
   settingsEditor?: string | null;
   deployments?: Array<{
-    __typename?: "SaleChannelDeployment";
+    __typename?: "SalesChannelDeployment";
     id: string;
-    product: string;
     status?: string | null;
+    link?: string | null;
+    product: {
+      __typename?: "ProductV1Product";
+      id: string;
+      uuid: string;
+      version: number;
+    };
   }> | null;
 };
 
@@ -13472,17 +13751,23 @@ export type BaseSellerFieldsFragment = {
       url: string;
       tag: string;
     }> | null;
-    saleChannels?: Array<{
-      __typename?: "SaleChannel";
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
       id: string;
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       deployments?: Array<{
-        __typename?: "SaleChannelDeployment";
+        __typename?: "SalesChannelDeployment";
         id: string;
-        product: string;
         status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
       }> | null;
     }> | null;
   } | null;
@@ -13597,17 +13882,23 @@ export type BuyerFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -13791,17 +14082,23 @@ export type DisputeResolverFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -14042,22 +14339,47 @@ export type DisputeResolverFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -14136,17 +14458,23 @@ export type DisputeResolverFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -14447,17 +14775,23 @@ export type GetDisputeByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -14509,17 +14843,23 @@ export type GetDisputeByIdQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -14638,17 +14978,23 @@ export type GetDisputesQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -14700,17 +15046,23 @@ export type GetDisputesQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -14819,17 +15171,23 @@ export type DisputeFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -14881,17 +15239,23 @@ export type DisputeFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -15027,17 +15391,23 @@ export type GetExchangeTokenByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -15282,22 +15652,47 @@ export type GetExchangeTokenByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -15376,17 +15771,23 @@ export type GetExchangeTokenByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -15553,17 +15954,23 @@ export type GetExchangeTokensQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -15808,22 +16215,47 @@ export type GetExchangeTokensQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -15902,17 +16334,23 @@ export type GetExchangeTokensQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -16057,17 +16495,23 @@ export type ExchangeTokenFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -16308,22 +16752,47 @@ export type ExchangeTokenFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -16402,17 +16871,23 @@ export type ExchangeTokenFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -16740,17 +17215,23 @@ export type GetExchangeByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -16995,22 +17476,47 @@ export type GetExchangeByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -17089,17 +17595,23 @@ export type GetExchangeByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -17213,17 +17725,23 @@ export type GetExchangeByIdQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -17337,17 +17855,23 @@ export type GetExchangesQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -17592,22 +18116,47 @@ export type GetExchangesQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -17686,17 +18235,23 @@ export type GetExchangesQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -17810,17 +18365,23 @@ export type GetExchangesQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -17924,17 +18485,23 @@ export type ExchangeFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -18175,22 +18742,47 @@ export type ExchangeFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -18269,17 +18861,23 @@ export type ExchangeFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -18388,17 +18986,23 @@ export type ExchangeFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -18481,17 +19085,23 @@ export type BaseExchangeFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -18704,17 +19314,23 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -18959,22 +19575,47 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -19053,17 +19694,23 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -19156,17 +19803,23 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -19306,17 +19959,23 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -19561,22 +20220,47 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -19655,17 +20339,23 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -19758,17 +20448,23 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -19898,17 +20594,23 @@ export type BaseMetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -20149,22 +20851,47 @@ export type BaseMetadataEntityFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -20243,17 +20970,23 @@ export type BaseMetadataEntityFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -20346,17 +21079,23 @@ export type BaseMetadataEntityFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -20485,17 +21224,23 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -20736,22 +21481,47 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -20830,17 +21600,23 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -20933,17 +21709,23 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -21135,22 +21917,47 @@ export type GetProductV1ProductsQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -21308,17 +22115,23 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 url: string;
                 tag: string;
               }> | null;
-              saleChannels?: Array<{
-                __typename?: "SaleChannel";
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
                 id: string;
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 deployments?: Array<{
-                  __typename?: "SaleChannelDeployment";
+                  __typename?: "SalesChannelDeployment";
                   id: string;
-                  product: string;
                   status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
                 }> | null;
               }> | null;
             } | null;
@@ -21380,17 +22193,23 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -21635,22 +22454,47 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         url: string;
                         tag: string;
                       }> | null;
-                      saleChannels?: Array<{
-                        __typename?: "SaleChannel";
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
                         id: string;
                         tag: string;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
                         deployments?: Array<{
-                          __typename?: "SaleChannelDeployment";
+                          __typename?: "SalesChannelDeployment";
                           id: string;
-                          product: string;
                           status?: string | null;
+                          link?: string | null;
+                          product: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          };
                         }> | null;
                       }> | null;
                     } | null;
                   };
                 } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
+                  }> | null;
+                }> | null;
               };
               variations?: Array<{
                 __typename?: "ProductV1Variation";
@@ -21729,17 +22573,23 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
@@ -21913,22 +22763,47 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -22086,17 +22961,23 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 url: string;
                 tag: string;
               }> | null;
-              saleChannels?: Array<{
-                __typename?: "SaleChannel";
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
                 id: string;
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 deployments?: Array<{
-                  __typename?: "SaleChannelDeployment";
+                  __typename?: "SalesChannelDeployment";
                   id: string;
-                  product: string;
                   status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
                 }> | null;
               }> | null;
             } | null;
@@ -22158,17 +23039,23 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -22413,22 +23300,47 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         url: string;
                         tag: string;
                       }> | null;
-                      saleChannels?: Array<{
-                        __typename?: "SaleChannel";
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
                         id: string;
                         tag: string;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
                         deployments?: Array<{
-                          __typename?: "SaleChannelDeployment";
+                          __typename?: "SalesChannelDeployment";
                           id: string;
-                          product: string;
                           status?: string | null;
+                          link?: string | null;
+                          product: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          };
                         }> | null;
                       }> | null;
                     } | null;
                   };
                 } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
+                  }> | null;
+                }> | null;
               };
               variations?: Array<{
                 __typename?: "ProductV1Variation";
@@ -22507,17 +23419,23 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
@@ -22691,22 +23609,47 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -22878,17 +23821,23 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -22950,17 +23899,23 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -23205,22 +24160,47 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -23299,17 +24279,23 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -23402,17 +24388,23 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -23575,22 +24567,47 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
         };
       } | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
+        }> | null;
+      }> | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -23669,17 +24686,23 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -23848,17 +24871,23 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -23920,17 +24949,23 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -24175,22 +25210,47 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -24269,17 +25329,23 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -24372,17 +25438,23 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -24545,22 +25617,47 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
         };
       } | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
+        }> | null;
+      }> | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -24639,17 +25736,23 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -24808,17 +25911,23 @@ export type ProductV1MetadataEntityFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -24880,17 +25989,23 @@ export type ProductV1MetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -25131,22 +26246,47 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -25225,17 +26365,23 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -25328,17 +26474,23 @@ export type ProductV1MetadataEntityFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -25501,22 +26653,47 @@ export type ProductV1MetadataEntityFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
+      }> | null;
+    }> | null;
   };
   variations?: Array<{
     __typename?: "ProductV1Variation";
@@ -25595,17 +26772,23 @@ export type ProductV1MetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -25763,17 +26946,23 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -25835,17 +27024,23 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -26086,22 +27281,47 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -26180,17 +27400,23 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -26283,17 +27509,23 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -26456,22 +27688,47 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        product: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        };
+      }> | null;
+    }> | null;
   };
   variations?: Array<{
     __typename?: "ProductV1Variation";
@@ -26550,17 +27807,23 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -26736,22 +27999,47 @@ export type BaseProductV1ProductFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      product: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      };
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1ProductWithVariantsFieldsFragment = {
@@ -26898,17 +28186,23 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -26970,17 +28264,23 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -27225,22 +28525,47 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -27319,17 +28644,23 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -27503,22 +28834,47 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      product: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      };
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
@@ -27665,17 +29021,23 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               url: string;
               tag: string;
             }> | null;
-            saleChannels?: Array<{
-              __typename?: "SaleChannel";
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
               id: string;
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               deployments?: Array<{
-                __typename?: "SaleChannelDeployment";
+                __typename?: "SalesChannelDeployment";
                 id: string;
-                product: string;
                 status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
               }> | null;
             }> | null;
           } | null;
@@ -27737,17 +29099,23 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -27992,22 +29360,47 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       url: string;
                       tag: string;
                     }> | null;
-                    saleChannels?: Array<{
-                      __typename?: "SaleChannel";
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
                       id: string;
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       deployments?: Array<{
-                        __typename?: "SaleChannelDeployment";
+                        __typename?: "SalesChannelDeployment";
                         id: string;
-                        product: string;
                         status?: string | null;
+                        link?: string | null;
+                        product: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        };
                       }> | null;
                     }> | null;
                   } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -28086,17 +29479,23 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
@@ -28270,22 +29669,47 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      product: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      };
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1BrandFieldsFragment = {
@@ -28406,17 +29830,23 @@ export type BaseProductV1SellerFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -28624,17 +30054,23 @@ export type GetOfferByIdQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -28696,17 +30132,23 @@ export type GetOfferByIdQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -28947,22 +30389,47 @@ export type GetOfferByIdQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -29041,17 +30508,23 @@ export type GetOfferByIdQueryQuery = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -29223,17 +30696,23 @@ export type GetOffersQueryQuery = {
             url: string;
             tag: string;
           }> | null;
-          saleChannels?: Array<{
-            __typename?: "SaleChannel";
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
             id: string;
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             deployments?: Array<{
-              __typename?: "SaleChannelDeployment";
+              __typename?: "SalesChannelDeployment";
               id: string;
-              product: string;
               status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
             }> | null;
           }> | null;
         } | null;
@@ -29295,17 +30774,23 @@ export type GetOffersQueryQuery = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -29546,22 +31031,47 @@ export type GetOffersQueryQuery = {
                     url: string;
                     tag: string;
                   }> | null;
-                  saleChannels?: Array<{
-                    __typename?: "SaleChannel";
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
                     id: string;
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     deployments?: Array<{
-                      __typename?: "SaleChannelDeployment";
+                      __typename?: "SalesChannelDeployment";
                       id: string;
-                      product: string;
                       status?: string | null;
+                      link?: string | null;
+                      product: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      };
                     }> | null;
                   }> | null;
                 } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                product: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                };
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -29640,17 +31150,23 @@ export type GetOffersQueryQuery = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
@@ -29806,17 +31322,23 @@ export type OfferFieldsFragment = {
           url: string;
           tag: string;
         }> | null;
-        saleChannels?: Array<{
-          __typename?: "SaleChannel";
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
           id: string;
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           deployments?: Array<{
-            __typename?: "SaleChannelDeployment";
+            __typename?: "SalesChannelDeployment";
             id: string;
-            product: string;
             status?: string | null;
+            link?: string | null;
+            product: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            };
           }> | null;
         }> | null;
       } | null;
@@ -29878,17 +31400,23 @@ export type OfferFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -30129,22 +31657,47 @@ export type OfferFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
             };
           } | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
+            }> | null;
+          }> | null;
         };
         variations?: Array<{
           __typename?: "ProductV1Variation";
@@ -30223,17 +31776,23 @@ export type OfferFieldsFragment = {
                 url: string;
                 tag: string;
               }> | null;
-              saleChannels?: Array<{
-                __typename?: "SaleChannel";
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
                 id: string;
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 deployments?: Array<{
-                  __typename?: "SaleChannelDeployment";
+                  __typename?: "SalesChannelDeployment";
                   id: string;
-                  product: string;
                   status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
                 }> | null;
               }> | null;
             } | null;
@@ -30363,17 +31922,23 @@ export type BaseOfferFieldsFragment = {
         url: string;
         tag: string;
       }> | null;
-      saleChannels?: Array<{
-        __typename?: "SaleChannel";
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
         id: string;
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         deployments?: Array<{
-          __typename?: "SaleChannelDeployment";
+          __typename?: "SalesChannelDeployment";
           id: string;
-          product: string;
           status?: string | null;
+          link?: string | null;
+          product: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          };
         }> | null;
       }> | null;
     } | null;
@@ -30614,22 +32179,47 @@ export type BaseOfferFieldsFragment = {
                   url: string;
                   tag: string;
                 }> | null;
-                saleChannels?: Array<{
-                  __typename?: "SaleChannel";
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
                   id: string;
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   deployments?: Array<{
-                    __typename?: "SaleChannelDeployment";
+                    __typename?: "SalesChannelDeployment";
                     id: string;
-                    product: string;
                     status?: string | null;
+                    link?: string | null;
+                    product: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    };
                   }> | null;
                 }> | null;
               } | null;
             };
           } | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              product: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              };
+            }> | null;
+          }> | null;
         };
         variations?: Array<{
           __typename?: "ProductV1Variation";
@@ -30708,17 +32298,23 @@ export type BaseOfferFieldsFragment = {
                 url: string;
                 tag: string;
               }> | null;
-              saleChannels?: Array<{
-                __typename?: "SaleChannel";
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
                 id: string;
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 deployments?: Array<{
-                  __typename?: "SaleChannelDeployment";
+                  __typename?: "SalesChannelDeployment";
                   id: string;
-                  product: string;
                   status?: string | null;
+                  link?: string | null;
+                  product: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  };
                 }> | null;
               }> | null;
             } | null;
@@ -30798,16 +32394,21 @@ export const SellerSocialLinkFieldsFragmentDoc = gql`
     tag
   }
 `;
-export const SaleChannelFieldsFragmentDoc = gql`
-  fragment SaleChannelFields on SaleChannel {
+export const SalesChannelFieldsFragmentDoc = gql`
+  fragment SalesChannelFields on SalesChannel {
     id
     tag
     settingsUri
     settingsEditor
     deployments {
       id
-      product
+      product {
+        id
+        uuid
+        version
+      }
       status
+      link
     }
   }
 `;
@@ -30844,15 +32445,15 @@ export const BaseSellerFieldsFragmentDoc = gql`
       socialLinks {
         ...SellerSocialLinkFields
       }
-      saleChannels {
-        ...SaleChannelFields
+      salesChannels {
+        ...SalesChannelFields
       }
     }
   }
   ${SellerMetadataMediaFieldsFragmentDoc}
   ${SellerContactLinkFieldsFragmentDoc}
   ${SellerSocialLinkFieldsFragmentDoc}
-  ${SaleChannelFieldsFragmentDoc}
+  ${SalesChannelFieldsFragmentDoc}
 `;
 export const PendingSellerFieldsFragmentDoc = gql`
   fragment PendingSellerFields on PendingSeller {
@@ -31077,6 +32678,9 @@ export const BaseProductV1ProductFieldsFragmentDoc = gql`
     productV1Seller {
       ...BaseProductV1SellerFields
     }
+    salesChannels {
+      ...SalesChannelFields
+    }
   }
   ${BaseProductV1BrandFieldsFragmentDoc}
   ${BaseProductV1CategoryFieldsFragmentDoc}
@@ -31085,6 +32689,7 @@ export const BaseProductV1ProductFieldsFragmentDoc = gql`
   ${BaseProductV1PersonalisationFieldsFragmentDoc}
   ${BaseProductV1MediaFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
+  ${SalesChannelFieldsFragmentDoc}
 `;
 export const BaseProductV1VariationFieldsFragmentDoc = gql`
   fragment BaseProductV1VariationFields on ProductV1Variation {
