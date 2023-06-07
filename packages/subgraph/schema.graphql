@@ -65,7 +65,7 @@ enum SellerMetadataType {
 
 type SalesChannelDeployment @entity {
   id: ID!
-  product: ProductV1Product!
+  product: ProductV1Product
   status: String
   link: String
   lastUpdated: Int

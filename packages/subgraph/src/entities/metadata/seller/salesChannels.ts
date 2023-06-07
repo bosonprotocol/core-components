@@ -45,8 +45,11 @@ function removeSalesChannelDeployments(
       ]);
       continue;
     }
-    if (deployment.product) {
-      removeSalesChannelFromProductV1(deployment.product, salesChannelId);
+    if (deployment.product !== null) {
+      removeSalesChannelFromProductV1(
+        deployment.product as string,
+        salesChannelId
+      );
     }
   }
 }
