@@ -28,9 +28,9 @@ export function getSalesChannelId(
 
 export function getSalesChannelDeploymentId(
   salesChannelId: string,
-  productId: string
+  productIdOrLink: string
 ): string {
-  return `${salesChannelId}-${productId.toLowerCase()}-deployment`;
+  return `${salesChannelId}-${productIdOrLink.toLowerCase()}-deployment`;
 }
 
 function removeSalesChannelDeployments(
@@ -39,13 +39,15 @@ function removeSalesChannelDeployments(
 ): void {
   for (let i = 0; i < deployments.length; i++) {
     const deployment = SalesChannelDeployment.load(deployments[i]);
-    if (!deployment || !deployment.product) {
-      log.warning("No product found for SalesChannelDeployment '{}'", [
+    if (!deployment) {
+      log.warning("SalesChannelDeployment '{}' entity not found.", [
         deployments[i]
       ]);
       continue;
     }
-    removeSalesChannelFromProductV1(deployment.product, salesChannelId);
+    if (deployment.product) {
+      removeSalesChannelFromProductV1(deployment.product, salesChannelId);
+    }
   }
 }
 
@@ -58,14 +60,12 @@ function saveSalesChannelDeployments(
   for (let i = 0; i < deployments.length; i++) {
     const deployment = deployments[i];
     const product = convertToObject(deployment.get("product"));
-    const uuid = product ? convertToString(product.get("uuid")) : null;
-    const version = product ? convertToInt(product.get("version")) : -1;
-    if (uuid === null || version === -1) {
-      log.warning(
-        "Unable to find product for salesChannel {} deployment at index {}",
-        [salesChannelId, i.toString()]
-      );
-    } else {
+    const link = convertToString(deployment.get("link"));
+    let salesChannelDeploymentId: string | null = null;
+    let salesChannelDeployment: SalesChannelDeployment | null = null;
+    if (product) {
+      const uuid = convertToString(product.get("uuid"));
+      const version = convertToInt(product.get("version"));
       const productId = getProductId(uuid, version.toString());
       // Check the product exist, otherwise do not add the deployment
       const existingProduct = ProductV1Product.load(productId);
@@ -75,23 +75,55 @@ function saveSalesChannelDeployments(
           [productId, salesChannelId]
         );
       } else {
-        const status = convertToString(deployment.get("status"));
-        const link = convertToString(deployment.get("link"));
-
-        const id = getSalesChannelDeploymentId(salesChannelId, productId);
-        let salesChannelDeployment = SalesChannelDeployment.load(id);
+        salesChannelDeploymentId = getSalesChannelDeploymentId(
+          salesChannelId,
+          productId
+        ) as string;
+        log.info("debug salesChannelDeploymentId '{}'", [
+          salesChannelDeploymentId
+        ]);
+        salesChannelDeployment = SalesChannelDeployment.load(
+          salesChannelDeploymentId
+        );
 
         if (!salesChannelDeployment) {
-          salesChannelDeployment = new SalesChannelDeployment(id);
+          salesChannelDeployment = new SalesChannelDeployment(
+            salesChannelDeploymentId
+          );
           salesChannelDeployment.product = productId;
         }
         addSalesChannelFromProductV1(productId, salesChannelId);
-        salesChannelDeployment.status = status;
-        salesChannelDeployment.link = link;
-        salesChannelDeployment.save();
-
-        savedDeployments.push(id);
       }
+    } else {
+      if (link === null) {
+        log.warning(
+          "Unable to identify salesChannelDeployment for '{}' without a 'product' or a 'link' value",
+          [salesChannelId]
+        );
+      } else {
+        salesChannelDeploymentId = getSalesChannelDeploymentId(
+          salesChannelId,
+          link
+        ) as string;
+        salesChannelDeployment = SalesChannelDeployment.load(
+          salesChannelDeploymentId
+        );
+
+        if (!salesChannelDeployment) {
+          salesChannelDeployment = new SalesChannelDeployment(
+            salesChannelDeploymentId
+          );
+        }
+      }
+    }
+    if (salesChannelDeployment) {
+      salesChannelDeployment.link = link;
+      const lastUpdated = convertToInt(deployment.get("lastUpdated"));
+      const status = convertToString(deployment.get("status"));
+      salesChannelDeployment.status = status;
+      salesChannelDeployment.lastUpdated = lastUpdated;
+      salesChannelDeployment.save();
+      savedDeployments.push(salesChannelDeploymentId as string);
     }
   }
 
@@ -141,6 +173,7 @@ export function saveSalesChannels(
 
     const settingsUri = convertToString(salesChannel.get("settingsUri"));
     const settingsEditor = convertToString(salesChannel.get("settingsEditor"));
+    const link = convertToString(salesChannel.get("link"));
     const deployments = convertToObjectArray(salesChannel.get("deployments"));
     const deploymentsId = saveSalesChannelDeployments(
       salesChannelId,
@@ -149,6 +182,7 @@ export function saveSalesChannels(
 
     sellerSalesChannel.settingsUri = settingsUri;
     sellerSalesChannel.settingsEditor = settingsEditor;
+    sellerSalesChannel.link = link;
     sellerSalesChannel.deployments = deploymentsId;
     sellerSalesChannel.save();
 

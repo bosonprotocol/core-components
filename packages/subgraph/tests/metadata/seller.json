@@ -27,6 +27,19 @@
       "tag": "Opensea",
       "settingsUri": "file://dclsettings",
       "deployments": []
+    },
+    {
+      "tag": "CustomStoreFront",
+      "deployments": [
+        {
+          "link": "https://custom1",
+          "lastUpdated": 1686133617
+        },
+        {
+          "link": "https://custom2",
+          "lastUpdated": 1686133618
+        }
+      ]
     }
   ]
 }

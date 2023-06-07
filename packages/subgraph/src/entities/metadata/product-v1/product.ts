@@ -578,10 +578,6 @@ export function removeSalesChannelFromProductV1(
       );
     }
     product.save();
-  } else {
-    log.warning("Product '{}' not found. Unable to update salesChannels", [
-      productId
-    ]);
   }
 }
 
@@ -605,10 +601,6 @@ export function addSalesChannelFromProductV1(
     }
     salesChannels.push(salesChannelId);
     product.salesChannels = salesChannels;
-
-    salesChannels = product.salesChannels as string[];
-    for (let i = 0; i < salesChannels.length; i++) {
-    }
     product.save();
   } else {
     log.warning("Product '{}' not found. Unable to update salesChannels", [

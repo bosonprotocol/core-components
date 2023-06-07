@@ -68,6 +68,7 @@ type SalesChannelDeployment @entity {
   product: ProductV1Product!
   status: String
   link: String
+  lastUpdated: Int
 }
 
 type SalesChannel @entity {
@@ -75,6 +76,7 @@ type SalesChannel @entity {
   tag: String!
   settingsUri: String
   settingsEditor: String
+  link: String
   deployments: [SalesChannelDeployment!]
 }
 

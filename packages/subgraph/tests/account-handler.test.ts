@@ -30,7 +30,8 @@ import {
 import {
   Offer,
   ProductV1Product,
-  SalesChannel
+  SalesChannel,
+  SellerMetadata
 } from "../generated/schema";
 import { getMetadataEntityId } from "../src/entities/metadata/utils";
 import { saveMetadata } from "../src/entities/metadata/handler";
@@ -145,9 +146,7 @@ test("handle SellerCreatedEvent", () => {
     "metadataUri",
     "ipfs://" + sellerMetadataHash
   );
-  const sellerMetadataId = getSellerMetadataEntityId(sellerId);
-  assert.fieldEquals("Seller", sellerId, "metadata", sellerMetadataId);
-  assert.fieldEquals("SellerMetadata", sellerMetadataId, "type", "SELLER");
+  checkSalesChannelsLength(sellerId, 3);
   const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
   assert.fieldEquals("SalesChannel", dclSalesChannelId, "tag", "DCL");
   assert.fieldEquals(
@@ -155,6 +154,36 @@ test("handle SellerCreatedEvent", () => {
     dclSalesChannelId,
     "settingsUri",
     "file://dclsettings"
+  );
+  const customSFSalesChannelId = getSalesChannelId(
+    sellerId,
+    "CustomStoreFront"
+  );
+  assert.fieldEquals(
+    "SalesChannel",
+    customSFSalesChannelId,
+    "tag",
+    "CustomStoreFront"
+  );
+  const customSFDeployment1Id = getSalesChannelDeploymentId(
+    customSFSalesChannelId,
+    "https://custom1"
+  );
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    customSFDeployment1Id,
+    "link",
+    "https://custom1"
+  );
+  const customSFDeployment2Id = getSalesChannelDeploymentId(
+    customSFSalesChannelId,
+    "https://custom2"
+  );
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    customSFDeployment2Id,
+    "link",
+    "https://custom2"
   );
 });
 
@@ -200,6 +229,7 @@ test("add/remove product salesChannels", () => {
 
   // Update the seller to create salesChannel deployments on product_A and _B
   updateSellerMetadata(1, "tests/metadata/seller-updated-1.json");
+  checkSalesChannelsLength(sellerId, 2);
 
   const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
   const deploymmentProductAId = getSalesChannelDeploymentId(
@@ -232,16 +262,8 @@ test("add/remove product salesChannels", () => {
   // Reload productA and productB to get the updated data
   productA = ProductV1Product.load(productA.id) as ProductV1Product;
   productB = ProductV1Product.load(productB.id) as ProductV1Product;
-  assert.assertNotNull(productA);
-  assert.assertNotNull((productA as ProductV1Product).salesChannels);
-  assert.assertTrue(
-    ((productA as ProductV1Product).salesChannels as string[]).length === 2
-  );
-  assert.assertNotNull(productB);
-  assert.assertNotNull((productB as ProductV1Product).salesChannels);
-  assert.assertTrue(
-    ((productB as ProductV1Product).salesChannels as string[]).length === 1
-  );
+  checkProductSalesChannelsLength(productA.id, 2);
+  checkProductSalesChannelsLength(productB.id, 1);
   const salesChannelProductBId = (
     (productB as ProductV1Product).salesChannels as string[]
   )[0];
@@ -270,30 +292,41 @@ test("add/remove product salesChannels", () => {
   saveMetadata(offer, BigInt.fromI32(1651574093));
   const productId = getProductId(productUuid, productVersion.toString());
 
-  let product = ProductV1Product.load(productId);
+  const product = ProductV1Product.load(productId);
   assert.assertNotNull(product);
   assert.assertNull((product as ProductV1Product).salesChannels);
 
   // Update the seller again
   updateSellerMetadata(1, "tests/metadata/seller-updated-2.json");
-  product = ProductV1Product.load(productId);
+  checkSalesChannelsLength(sellerId, 1);
+
+  checkProductSalesChannelsLength(productId, 1);
+
+  checkProductSalesChannelsLength(productA.id, 0);
+  checkProductSalesChannelsLength(productB.id, 1);
+});
+
+function checkSalesChannelsLength(sellerId: string, expected: number): void {
+  const sellerMetadataId = getSellerMetadataEntityId(sellerId);
+  assert.fieldEquals("Seller", sellerId, "metadata", sellerMetadataId);
+  const sellerMetadata = SellerMetadata.load(sellerMetadataId);
+  assert.assertNotNull(sellerMetadata);
+  assert.fieldEquals("SellerMetadata", sellerMetadataId, "type", "SELLER");
+  assert.assertTrue(
+    ((sellerMetadata as SellerMetadata).salesChannels as string[]).length ===
+      expected
+  );
+}
+
+function checkProductSalesChannelsLength(
+  productId: string,
+  expected: number
+): void {
+  const product = ProductV1Product.load(productId) as ProductV1Product;
   assert.assertNotNull(product);
   assert.assertNotNull((product as ProductV1Product).salesChannels);
   assert.assertTrue(
-    ((product as ProductV1Product).salesChannels as string[]).length === 1
+    ((product as ProductV1Product).salesChannels as string[]).length ===
+      expected
   );
-
-  // Reload productA and productB to get the updated data
-  productA = ProductV1Product.load(productA.id) as ProductV1Product;
-  assert.assertNotNull(productA);
-  assert.assertNotNull((productA as ProductV1Product).salesChannels);
-  assert.assertTrue(
-    ((productA as ProductV1Product).salesChannels as string[]).length === 0
-  );
-  productB = ProductV1Product.load(productB.id) as ProductV1Product;
-  assert.assertNotNull(productB);
-  assert.assertNotNull((productB as ProductV1Product).salesChannels);
-  assert.assertTrue(
-    ((productB as ProductV1Product).salesChannels as string[]).length === 1
-  );
-});
+}

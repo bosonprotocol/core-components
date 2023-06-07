@@ -259,6 +259,7 @@ fragment SalesChannelFields on SalesChannel {
   tag
   settingsUri
   settingsEditor
+  link
   deployments {
     id
     product {
@@ -268,6 +269,7 @@ fragment SalesChannelFields on SalesChannel {
     }
     status
     link
+    lastUpdated
   }
 }
 

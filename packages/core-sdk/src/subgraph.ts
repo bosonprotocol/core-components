@@ -7726,6 +7726,7 @@ export type SalesChannel = {
   __typename?: "SalesChannel";
   deployments?: Maybe<Array<SalesChannelDeployment>>;
   id: Scalars["ID"];
+  link?: Maybe<Scalars["String"]>;
   settingsEditor?: Maybe<Scalars["String"]>;
   settingsUri?: Maybe<Scalars["String"]>;
   tag: Scalars["String"];
@@ -7742,6 +7743,7 @@ export type SalesChannelDeploymentsArgs = {
 export type SalesChannelDeployment = {
   __typename?: "SalesChannelDeployment";
   id: Scalars["ID"];
+  lastUpdated?: Maybe<Scalars["Int"]>;
   link?: Maybe<Scalars["String"]>;
   product: ProductV1Product;
   status?: Maybe<Scalars["String"]>;
@@ -7758,6 +7760,14 @@ export type SalesChannelDeployment_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  lastUpdated?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_gt?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_gte?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_in?: InputMaybe<Array<Scalars["Int"]>>;
+  lastUpdated_lt?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_lte?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_not?: InputMaybe<Scalars["Int"]>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   link?: InputMaybe<Scalars["String"]>;
   link_contains?: InputMaybe<Scalars["String"]>;
   link_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7823,6 +7833,7 @@ export type SalesChannelDeployment_Filter = {
 
 export enum SalesChannelDeployment_OrderBy {
   Id = "id",
+  LastUpdated = "lastUpdated",
   Link = "link",
   Product = "product",
   Status = "status"
@@ -7846,6 +7857,26 @@ export type SalesChannel_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  link?: InputMaybe<Scalars["String"]>;
+  link_contains?: InputMaybe<Scalars["String"]>;
+  link_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_ends_with?: InputMaybe<Scalars["String"]>;
+  link_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_gt?: InputMaybe<Scalars["String"]>;
+  link_gte?: InputMaybe<Scalars["String"]>;
+  link_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_lt?: InputMaybe<Scalars["String"]>;
+  link_lte?: InputMaybe<Scalars["String"]>;
+  link_not?: InputMaybe<Scalars["String"]>;
+  link_not_contains?: InputMaybe<Scalars["String"]>;
+  link_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_not_starts_with?: InputMaybe<Scalars["String"]>;
+  link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_starts_with?: InputMaybe<Scalars["String"]>;
+  link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   settingsEditor?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7911,6 +7942,7 @@ export type SalesChannel_Filter = {
 export enum SalesChannel_OrderBy {
   Deployments = "deployments",
   Id = "id",
+  Link = "link",
   SettingsEditor = "settingsEditor",
   SettingsUri = "settingsUri",
   Tag = "tag"
@@ -9641,11 +9673,13 @@ export type GetSellerByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -9902,11 +9936,13 @@ export type GetSellerByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -9924,11 +9960,13 @@ export type GetSellerByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -10021,11 +10059,13 @@ export type GetSellerByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -10165,11 +10205,13 @@ export type GetSellerByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -10289,11 +10331,13 @@ export type GetSellerByIdQueryQuery = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -10464,11 +10508,13 @@ export type GetSellersQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -10725,11 +10771,13 @@ export type GetSellersQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -10747,11 +10795,13 @@ export type GetSellersQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -10844,11 +10894,13 @@ export type GetSellersQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -10988,11 +11040,13 @@ export type GetSellersQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -11112,11 +11166,13 @@ export type GetSellersQueryQuery = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -11259,11 +11315,13 @@ export type GetBuyerByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -11488,11 +11546,13 @@ export type GetBuyersQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -11700,11 +11760,13 @@ export type GetDisputeResolverByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -11961,11 +12023,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -11983,11 +12047,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -12080,11 +12146,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -12352,11 +12420,13 @@ export type GetDisputeResolversQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -12613,11 +12683,13 @@ export type GetDisputeResolversQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -12635,11 +12707,13 @@ export type GetDisputeResolversQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -12732,11 +12806,13 @@ export type GetDisputeResolversQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -13001,11 +13077,13 @@ export type SellerFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -13258,11 +13336,13 @@ export type SellerFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -13280,11 +13360,13 @@ export type SellerFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -13377,11 +13459,13 @@ export type SellerFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -13521,11 +13605,13 @@ export type SellerFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -13645,11 +13731,13 @@ export type SellerFieldsFragment = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -13691,11 +13779,13 @@ export type SalesChannelFieldsFragment = {
   tag: string;
   settingsUri?: string | null;
   settingsEditor?: string | null;
+  link?: string | null;
   deployments?: Array<{
     __typename?: "SalesChannelDeployment";
     id: string;
     status?: string | null;
     link?: string | null;
+    lastUpdated?: number | null;
     product: {
       __typename?: "ProductV1Product";
       id: string;
@@ -13757,11 +13847,13 @@ export type BaseSellerFieldsFragment = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -13888,11 +13980,13 @@ export type BuyerFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -14088,11 +14182,13 @@ export type DisputeResolverFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -14345,11 +14441,13 @@ export type DisputeResolverFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -14367,11 +14465,13 @@ export type DisputeResolverFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -14464,11 +14564,13 @@ export type DisputeResolverFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -14781,11 +14883,13 @@ export type GetDisputeByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -14849,11 +14953,13 @@ export type GetDisputeByIdQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -14984,11 +15090,13 @@ export type GetDisputesQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -15052,11 +15160,13 @@ export type GetDisputesQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -15177,11 +15287,13 @@ export type DisputeFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -15245,11 +15357,13 @@ export type DisputeFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -15397,11 +15511,13 @@ export type GetExchangeTokenByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -15658,11 +15774,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -15680,11 +15798,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -15777,11 +15897,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -15960,11 +16082,13 @@ export type GetExchangeTokensQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -16221,11 +16345,13 @@ export type GetExchangeTokensQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -16243,11 +16369,13 @@ export type GetExchangeTokensQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -16340,11 +16468,13 @@ export type GetExchangeTokensQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -16501,11 +16631,13 @@ export type ExchangeTokenFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -16758,11 +16890,13 @@ export type ExchangeTokenFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -16780,11 +16914,13 @@ export type ExchangeTokenFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -16877,11 +17013,13 @@ export type ExchangeTokenFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -17221,11 +17359,13 @@ export type GetExchangeByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -17482,11 +17622,13 @@ export type GetExchangeByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -17504,11 +17646,13 @@ export type GetExchangeByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -17601,11 +17745,13 @@ export type GetExchangeByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -17731,11 +17877,13 @@ export type GetExchangeByIdQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -17861,11 +18009,13 @@ export type GetExchangesQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -18122,11 +18272,13 @@ export type GetExchangesQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -18144,11 +18296,13 @@ export type GetExchangesQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -18241,11 +18395,13 @@ export type GetExchangesQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -18371,11 +18527,13 @@ export type GetExchangesQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -18491,11 +18649,13 @@ export type ExchangeFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -18748,11 +18908,13 @@ export type ExchangeFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -18770,11 +18932,13 @@ export type ExchangeFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -18867,11 +19031,13 @@ export type ExchangeFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -18992,11 +19158,13 @@ export type ExchangeFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -19091,11 +19259,13 @@ export type BaseExchangeFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -19320,11 +19490,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -19581,11 +19753,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -19603,11 +19777,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -19700,11 +19876,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -19809,11 +19987,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -19965,11 +20145,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -20226,11 +20408,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -20248,11 +20432,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -20345,11 +20531,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -20454,11 +20642,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -20600,11 +20790,13 @@ export type BaseMetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -20857,11 +21049,13 @@ export type BaseMetadataEntityFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -20879,11 +21073,13 @@ export type BaseMetadataEntityFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -20976,11 +21172,13 @@ export type BaseMetadataEntityFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -21085,11 +21283,13 @@ export type BaseMetadataEntityFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -21230,11 +21430,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -21487,11 +21689,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -21509,11 +21713,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -21606,11 +21812,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -21715,11 +21923,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -21923,11 +22133,13 @@ export type GetProductV1ProductsQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -21945,11 +22157,13 @@ export type GetProductV1ProductsQueryQuery = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -22121,11 +22335,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -22199,11 +22415,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -22460,11 +22678,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         tag: string;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
+                        link?: string | null;
                         deployments?: Array<{
                           __typename?: "SalesChannelDeployment";
                           id: string;
                           status?: string | null;
                           link?: string | null;
+                          lastUpdated?: number | null;
                           product: {
                             __typename?: "ProductV1Product";
                             id: string;
@@ -22482,11 +22702,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -22579,11 +22801,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -22769,11 +22993,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -22791,11 +23017,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -22967,11 +23195,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -23045,11 +23275,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -23306,11 +23538,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         tag: string;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
+                        link?: string | null;
                         deployments?: Array<{
                           __typename?: "SalesChannelDeployment";
                           id: string;
                           status?: string | null;
                           link?: string | null;
+                          lastUpdated?: number | null;
                           product: {
                             __typename?: "ProductV1Product";
                             id: string;
@@ -23328,11 +23562,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -23425,11 +23661,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -23615,11 +23853,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -23637,11 +23877,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -23827,11 +24069,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -23905,11 +24149,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -24166,11 +24412,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -24188,11 +24436,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -24285,11 +24535,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -24394,11 +24646,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -24573,11 +24827,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -24595,11 +24851,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -24692,11 +24950,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -24877,11 +25137,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -24955,11 +25217,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -25216,11 +25480,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -25238,11 +25504,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -25335,11 +25603,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -25444,11 +25714,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -25623,11 +25895,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -25645,11 +25919,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -25742,11 +26018,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -25917,11 +26195,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -25995,11 +26275,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -26252,11 +26534,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -26274,11 +26558,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -26371,11 +26657,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -26480,11 +26768,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -26659,11 +26949,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -26681,11 +26973,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -26778,11 +27072,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -26952,11 +27248,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -27030,11 +27328,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -27287,11 +27587,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -27309,11 +27611,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -27406,11 +27710,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -27515,11 +27821,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -27694,11 +28002,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -27716,11 +28026,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       tag: string;
       settingsUri?: string | null;
       settingsEditor?: string | null;
+      link?: string | null;
       deployments?: Array<{
         __typename?: "SalesChannelDeployment";
         id: string;
         status?: string | null;
         link?: string | null;
+        lastUpdated?: number | null;
         product: {
           __typename?: "ProductV1Product";
           id: string;
@@ -27813,11 +28125,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -28005,11 +28319,13 @@ export type BaseProductV1ProductFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -28027,11 +28343,13 @@ export type BaseProductV1ProductFieldsFragment = {
     tag: string;
     settingsUri?: string | null;
     settingsEditor?: string | null;
+    link?: string | null;
     deployments?: Array<{
       __typename?: "SalesChannelDeployment";
       id: string;
       status?: string | null;
       link?: string | null;
+      lastUpdated?: number | null;
       product: {
         __typename?: "ProductV1Product";
         id: string;
@@ -28192,11 +28510,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -28270,11 +28590,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -28531,11 +28853,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -28553,11 +28877,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -28650,11 +28976,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -28840,11 +29168,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -28862,11 +29192,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     tag: string;
     settingsUri?: string | null;
     settingsEditor?: string | null;
+    link?: string | null;
     deployments?: Array<{
       __typename?: "SalesChannelDeployment";
       id: string;
       status?: string | null;
       link?: string | null;
+      lastUpdated?: number | null;
       product: {
         __typename?: "ProductV1Product";
         id: string;
@@ -29027,11 +29359,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -29105,11 +29439,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -29366,11 +29702,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       tag: string;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
+                      link?: string | null;
                       deployments?: Array<{
                         __typename?: "SalesChannelDeployment";
                         id: string;
                         status?: string | null;
                         link?: string | null;
+                        lastUpdated?: number | null;
                         product: {
                           __typename?: "ProductV1Product";
                           id: string;
@@ -29388,11 +29726,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -29485,11 +29825,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -29675,11 +30017,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -29697,11 +30041,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     tag: string;
     settingsUri?: string | null;
     settingsEditor?: string | null;
+    link?: string | null;
     deployments?: Array<{
       __typename?: "SalesChannelDeployment";
       id: string;
       status?: string | null;
       link?: string | null;
+      lastUpdated?: number | null;
       product: {
         __typename?: "ProductV1Product";
         id: string;
@@ -29836,11 +30182,13 @@ export type BaseProductV1SellerFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -30060,11 +30408,13 @@ export type GetOfferByIdQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -30138,11 +30488,13 @@ export type GetOfferByIdQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -30395,11 +30747,13 @@ export type GetOfferByIdQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -30417,11 +30771,13 @@ export type GetOfferByIdQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -30514,11 +30870,13 @@ export type GetOfferByIdQueryQuery = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -30702,11 +31060,13 @@ export type GetOffersQueryQuery = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -30780,11 +31140,13 @@ export type GetOffersQueryQuery = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -31037,11 +31399,13 @@ export type GetOffersQueryQuery = {
                     tag: string;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
+                    link?: string | null;
                     deployments?: Array<{
                       __typename?: "SalesChannelDeployment";
                       id: string;
                       status?: string | null;
                       link?: string | null;
+                      lastUpdated?: number | null;
                       product: {
                         __typename?: "ProductV1Product";
                         id: string;
@@ -31059,11 +31423,13 @@ export type GetOffersQueryQuery = {
               tag: string;
               settingsUri?: string | null;
               settingsEditor?: string | null;
+              link?: string | null;
               deployments?: Array<{
                 __typename?: "SalesChannelDeployment";
                 id: string;
                 status?: string | null;
                 link?: string | null;
+                lastUpdated?: number | null;
                 product: {
                   __typename?: "ProductV1Product";
                   id: string;
@@ -31156,11 +31522,13 @@ export type GetOffersQueryQuery = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -31328,11 +31696,13 @@ export type OfferFieldsFragment = {
           tag: string;
           settingsUri?: string | null;
           settingsEditor?: string | null;
+          link?: string | null;
           deployments?: Array<{
             __typename?: "SalesChannelDeployment";
             id: string;
             status?: string | null;
             link?: string | null;
+            lastUpdated?: number | null;
             product: {
               __typename?: "ProductV1Product";
               id: string;
@@ -31406,11 +31776,13 @@ export type OfferFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -31663,11 +32035,13 @@ export type OfferFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -31685,11 +32059,13 @@ export type OfferFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -31782,11 +32158,13 @@ export type OfferFieldsFragment = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -31928,11 +32306,13 @@ export type BaseOfferFieldsFragment = {
         tag: string;
         settingsUri?: string | null;
         settingsEditor?: string | null;
+        link?: string | null;
         deployments?: Array<{
           __typename?: "SalesChannelDeployment";
           id: string;
           status?: string | null;
           link?: string | null;
+          lastUpdated?: number | null;
           product: {
             __typename?: "ProductV1Product";
             id: string;
@@ -32185,11 +32565,13 @@ export type BaseOfferFieldsFragment = {
                   tag: string;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
+                  link?: string | null;
                   deployments?: Array<{
                     __typename?: "SalesChannelDeployment";
                     id: string;
                     status?: string | null;
                     link?: string | null;
+                    lastUpdated?: number | null;
                     product: {
                       __typename?: "ProductV1Product";
                       id: string;
@@ -32207,11 +32589,13 @@ export type BaseOfferFieldsFragment = {
             tag: string;
             settingsUri?: string | null;
             settingsEditor?: string | null;
+            link?: string | null;
             deployments?: Array<{
               __typename?: "SalesChannelDeployment";
               id: string;
               status?: string | null;
               link?: string | null;
+              lastUpdated?: number | null;
               product: {
                 __typename?: "ProductV1Product";
                 id: string;
@@ -32304,11 +32688,13 @@ export type BaseOfferFieldsFragment = {
                 tag: string;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
+                link?: string | null;
                 deployments?: Array<{
                   __typename?: "SalesChannelDeployment";
                   id: string;
                   status?: string | null;
                   link?: string | null;
+                  lastUpdated?: number | null;
                   product: {
                     __typename?: "ProductV1Product";
                     id: string;
@@ -32400,6 +32786,7 @@ export const SalesChannelFieldsFragmentDoc = gql`
     tag
     settingsUri
     settingsEditor
+    link
     deployments {
       id
       product {
@@ -32409,6 +32796,7 @@ export const SalesChannelFieldsFragmentDoc = gql`
       }
       status
       link
+      lastUpdated
     }
   }
 `;

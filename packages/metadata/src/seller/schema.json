@@ -91,6 +91,9 @@
           "settingsEditor": {
             "type": "string"
           },
+          "link": {
+            "type": "string"
+          },
           "deployments": {
             "type": "array",
             "items": {
@@ -109,9 +112,12 @@
                 },
                 "link": {
                   "type": "string"
+                },
+                "lastUpdated": {
+                  "type": "number"
                 }
               },
-              "required": ["product"]
+              "required": []
             }
           }
         },
