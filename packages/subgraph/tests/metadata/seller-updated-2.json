@@ -21,23 +21,15 @@
     {
       "tag": "DCL",
       "settingsUri": "file://dclsettings",
-      "deployments": []
-    },
-    {
-      "tag": "Opensea",
-      "settingsUri": "file://dclsettings",
-      "deployments": []
-    },
-    {
-      "tag": "CustomStoreFront",
       "deployments": [
         {
-          "link": "https://custom1",
-          "lastUpdated": 1686133617
+          "product": {"uuid": "77593bb2-f797-11ec-b939-0242ac120002", "version": 1},
+          "status": "in-progress"
         },
         {
-          "link": "https://custom2",
-          "lastUpdated": 1686133618
+          "product": {"uuid": "Product_B", "version": 5},
+          "status": "in-progress",
+          "link": "https://play.decentraland.org/?position=-75%2C114"
         }
       ]
     }

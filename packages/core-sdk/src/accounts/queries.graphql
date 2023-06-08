@@ -254,6 +254,25 @@ fragment SellerSocialLinkFields on SellerSocialLink {
   tag
 }
 
+fragment SalesChannelFields on SalesChannel {
+  id
+  tag
+  settingsUri
+  settingsEditor
+  link
+  deployments {
+    id
+    product {
+      id
+      uuid
+      version
+    }
+    status
+    link
+    lastUpdated
+  }
+}
+
 fragment BaseSellerFields on Seller {
   id
   assistant
@@ -285,6 +304,9 @@ fragment BaseSellerFields on Seller {
     contactPreference
     socialLinks {
       ...SellerSocialLinkFields
+    }
+    salesChannels {
+      ...SalesChannelFields
     }
   }
 }

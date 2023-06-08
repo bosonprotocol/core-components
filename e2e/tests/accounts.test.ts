@@ -343,6 +343,45 @@ describe("CoreSDK - accounts", () => {
       });
       expect(updatedSeller.metadata).toMatchObject(newMetadata);
     });
+    test("create seller and then update salesChannels in metadata", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      expect(seller.metadata).toMatchObject(sellerMetadata);
+      const newMetadata = {
+        type: "SELLER" as const,
+        kind: "regular",
+        contactPreference: "xmtp_and_email",
+        salesChannels: [
+          {
+            tag: "CustomStoreFront",
+            deployments: [
+              {
+                link: "https://custom1",
+                lastUpdated: 1686133617
+              },
+              {
+                link: "https://custom2",
+                lastUpdated: 1686133618
+              }
+            ]
+          },
+          {
+            tag: "DCL"
+          }
+        ]
+      };
+      const metadataHash = await coreSDK.storeMetadata(newMetadata);
+      const metadataUri = "ipfs://" + metadataHash;
+      const updatedSeller = await updateSeller(coreSDK, seller, {
+        metadataUri
+      });
+      expect(updatedSeller.metadata).toMatchObject(newMetadata);
+    });
+
     test("create seller - expect fail as image url is too large", async () => {
       const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
         seedWallet3
