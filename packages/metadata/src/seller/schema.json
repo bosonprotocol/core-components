@@ -114,7 +114,7 @@
                   "type": "string"
                 },
                 "lastUpdated": {
-                  "type": "number"
+                  "type": "string"
                 }
               },
               "required": []

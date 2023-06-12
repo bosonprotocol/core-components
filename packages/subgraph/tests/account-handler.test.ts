@@ -176,14 +176,11 @@ test("handle SellerCreatedEvent", () => {
     "link",
     "https://custom1"
   );
-  const customSFDeployment1 = SalesChannelDeployment.load(
-    customSFDeployment1Id
-  );
-  assert.assertNotNull(customSFDeployment1);
-  assert.bigIntEquals(
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    (customSFDeployment1 as SalesChannelDeployment).lastUpdated as BigInt,
-    BigInt.fromString("1686133617000")
+  assert.fieldEquals(
+    "SalesChannelDeployment",
+    customSFDeployment1Id,
+    "lastUpdated",
+    "1686133617000"
   );
   const customSFDeployment2Id = getSalesChannelDeploymentId(
     customSFSalesChannelId,
