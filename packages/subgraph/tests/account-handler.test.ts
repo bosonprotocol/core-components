@@ -31,6 +31,7 @@ import {
   Offer,
   ProductV1Product,
   SalesChannel,
+  SalesChannelDeployment,
   SellerMetadata
 } from "../generated/schema";
 import { getMetadataEntityId } from "../src/entities/metadata/utils";
@@ -174,6 +175,15 @@ test("handle SellerCreatedEvent", () => {
     customSFDeployment1Id,
     "link",
     "https://custom1"
+  );
+  const customSFDeployment1 = SalesChannelDeployment.load(
+    customSFDeployment1Id
+  );
+  assert.assertNotNull(customSFDeployment1);
+  assert.bigIntEquals(
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    (customSFDeployment1 as SalesChannelDeployment).lastUpdated as BigInt,
+    BigInt.fromString("1686133617000")
   );
   const customSFDeployment2Id = getSalesChannelDeploymentId(
     customSFSalesChannelId,
