@@ -361,11 +361,11 @@ describe("CoreSDK - accounts", () => {
             deployments: [
               {
                 link: "https://custom1",
-                lastUpdated: 1686133617
+                lastUpdated: 1686133617000
               },
               {
                 link: "https://custom2",
-                lastUpdated: 1686133618
+                lastUpdated: 1686133618000
               }
             ]
           },
@@ -379,6 +379,13 @@ describe("CoreSDK - accounts", () => {
       const updatedSeller = await updateSeller(coreSDK, seller, {
         metadataUri
       });
+      // Note: replace lastUpdated field from "number" to "string" as they are converted as BigInt in the subgraph
+      newMetadata.salesChannels.forEach((sc) =>
+        sc.deployments?.forEach(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (d) => ((d as any).lastUpdated = d.lastUpdated.toString())
+        )
+      );
       expect(updatedSeller.metadata).toMatchObject(newMetadata);
     });
 

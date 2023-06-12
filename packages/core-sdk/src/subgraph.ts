@@ -7743,9 +7743,9 @@ export type SalesChannelDeploymentsArgs = {
 export type SalesChannelDeployment = {
   __typename?: "SalesChannelDeployment";
   id: Scalars["ID"];
-  lastUpdated?: Maybe<Scalars["Int"]>;
+  lastUpdated?: Maybe<Scalars["BigInt"]>;
   link?: Maybe<Scalars["String"]>;
-  product: ProductV1Product;
+  product?: Maybe<ProductV1Product>;
   status?: Maybe<Scalars["String"]>;
 };
 
@@ -7760,14 +7760,14 @@ export type SalesChannelDeployment_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  lastUpdated?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_gt?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_gte?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_in?: InputMaybe<Array<Scalars["Int"]>>;
-  lastUpdated_lt?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_lte?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_not?: InputMaybe<Scalars["Int"]>;
-  lastUpdated_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  lastUpdated?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_gt?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_gte?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  lastUpdated_lt?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_lte?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_not?: InputMaybe<Scalars["BigInt"]>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   link?: InputMaybe<Scalars["String"]>;
   link_contains?: InputMaybe<Scalars["String"]>;
   link_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -9679,13 +9679,13 @@ export type GetSellerByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -9942,13 +9942,13 @@ export type GetSellerByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -9966,13 +9966,13 @@ export type GetSellerByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -10065,13 +10065,13 @@ export type GetSellerByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -10211,13 +10211,13 @@ export type GetSellerByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -10337,13 +10337,13 @@ export type GetSellerByIdQueryQuery = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -10514,13 +10514,13 @@ export type GetSellersQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -10777,13 +10777,13 @@ export type GetSellersQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -10801,13 +10801,13 @@ export type GetSellersQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -10900,13 +10900,13 @@ export type GetSellersQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -11046,13 +11046,13 @@ export type GetSellersQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -11172,13 +11172,13 @@ export type GetSellersQueryQuery = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -11321,13 +11321,13 @@ export type GetBuyerByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -11552,13 +11552,13 @@ export type GetBuyersQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -11766,13 +11766,13 @@ export type GetDisputeResolverByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -12029,13 +12029,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -12053,13 +12053,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -12152,13 +12152,13 @@ export type GetDisputeResolverByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -12426,13 +12426,13 @@ export type GetDisputeResolversQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -12689,13 +12689,13 @@ export type GetDisputeResolversQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -12713,13 +12713,13 @@ export type GetDisputeResolversQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -12812,13 +12812,13 @@ export type GetDisputeResolversQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -13083,13 +13083,13 @@ export type SellerFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -13342,13 +13342,13 @@ export type SellerFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -13366,13 +13366,13 @@ export type SellerFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -13465,13 +13465,13 @@ export type SellerFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -13611,13 +13611,13 @@ export type SellerFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -13737,13 +13737,13 @@ export type SellerFieldsFragment = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   } | null;
@@ -13785,13 +13785,13 @@ export type SalesChannelFieldsFragment = {
     id: string;
     status?: string | null;
     link?: string | null;
-    lastUpdated?: number | null;
-    product: {
+    lastUpdated?: string | null;
+    product?: {
       __typename?: "ProductV1Product";
       id: string;
       uuid: string;
       version: number;
-    };
+    } | null;
   }> | null;
 };
 
@@ -13853,13 +13853,13 @@ export type BaseSellerFieldsFragment = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   } | null;
@@ -13986,13 +13986,13 @@ export type BuyerFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -14188,13 +14188,13 @@ export type DisputeResolverFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -14447,13 +14447,13 @@ export type DisputeResolverFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -14471,13 +14471,13 @@ export type DisputeResolverFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -14570,13 +14570,13 @@ export type DisputeResolverFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -14889,13 +14889,13 @@ export type GetDisputeByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -14959,13 +14959,13 @@ export type GetDisputeByIdQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -15096,13 +15096,13 @@ export type GetDisputesQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -15166,13 +15166,13 @@ export type GetDisputesQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -15293,13 +15293,13 @@ export type DisputeFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -15363,13 +15363,13 @@ export type DisputeFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -15517,13 +15517,13 @@ export type GetExchangeTokenByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -15780,13 +15780,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -15804,13 +15804,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -15903,13 +15903,13 @@ export type GetExchangeTokenByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -16088,13 +16088,13 @@ export type GetExchangeTokensQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -16351,13 +16351,13 @@ export type GetExchangeTokensQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -16375,13 +16375,13 @@ export type GetExchangeTokensQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -16474,13 +16474,13 @@ export type GetExchangeTokensQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -16637,13 +16637,13 @@ export type ExchangeTokenFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -16896,13 +16896,13 @@ export type ExchangeTokenFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -16920,13 +16920,13 @@ export type ExchangeTokenFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -17019,13 +17019,13 @@ export type ExchangeTokenFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -17365,13 +17365,13 @@ export type GetExchangeByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -17628,13 +17628,13 @@ export type GetExchangeByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -17652,13 +17652,13 @@ export type GetExchangeByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -17751,13 +17751,13 @@ export type GetExchangeByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -17883,13 +17883,13 @@ export type GetExchangeByIdQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -18015,13 +18015,13 @@ export type GetExchangesQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -18278,13 +18278,13 @@ export type GetExchangesQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -18302,13 +18302,13 @@ export type GetExchangesQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -18401,13 +18401,13 @@ export type GetExchangesQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -18533,13 +18533,13 @@ export type GetExchangesQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -18655,13 +18655,13 @@ export type ExchangeFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -18914,13 +18914,13 @@ export type ExchangeFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -18938,13 +18938,13 @@ export type ExchangeFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -19037,13 +19037,13 @@ export type ExchangeFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -19164,13 +19164,13 @@ export type ExchangeFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -19265,13 +19265,13 @@ export type BaseExchangeFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -19496,13 +19496,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -19759,13 +19759,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -19783,13 +19783,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -19882,13 +19882,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -19993,13 +19993,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -20151,13 +20151,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -20414,13 +20414,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -20438,13 +20438,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -20537,13 +20537,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -20648,13 +20648,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -20796,13 +20796,13 @@ export type BaseMetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -21055,13 +21055,13 @@ export type BaseMetadataEntityFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -21079,13 +21079,13 @@ export type BaseMetadataEntityFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -21178,13 +21178,13 @@ export type BaseMetadataEntityFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -21289,13 +21289,13 @@ export type BaseMetadataEntityFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -21436,13 +21436,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -21695,13 +21695,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -21719,13 +21719,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -21818,13 +21818,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -21929,13 +21929,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -22139,13 +22139,13 @@ export type GetProductV1ProductsQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -22163,13 +22163,13 @@ export type GetProductV1ProductsQueryQuery = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   }>;
@@ -22341,13 +22341,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             } | null;
@@ -22421,13 +22421,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -22684,13 +22684,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                           id: string;
                           status?: string | null;
                           link?: string | null;
-                          lastUpdated?: number | null;
-                          product: {
+                          lastUpdated?: string | null;
+                          product?: {
                             __typename?: "ProductV1Product";
                             id: string;
                             uuid: string;
                             version: number;
-                          };
+                          } | null;
                         }> | null;
                       }> | null;
                     } | null;
@@ -22708,13 +22708,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               };
@@ -22807,13 +22807,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -22999,13 +22999,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -23023,13 +23023,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   }>;
@@ -23201,13 +23201,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             } | null;
@@ -23281,13 +23281,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -23544,13 +23544,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                           id: string;
                           status?: string | null;
                           link?: string | null;
-                          lastUpdated?: number | null;
-                          product: {
+                          lastUpdated?: string | null;
+                          product?: {
                             __typename?: "ProductV1Product";
                             id: string;
                             uuid: string;
                             version: number;
-                          };
+                          } | null;
                         }> | null;
                       }> | null;
                     } | null;
@@ -23568,13 +23568,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               };
@@ -23667,13 +23667,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -23859,13 +23859,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -23883,13 +23883,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   }>;
@@ -24075,13 +24075,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -24155,13 +24155,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -24418,13 +24418,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -24442,13 +24442,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -24541,13 +24541,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -24652,13 +24652,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -24833,13 +24833,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -24857,13 +24857,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     };
@@ -24956,13 +24956,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -25143,13 +25143,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -25223,13 +25223,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -25486,13 +25486,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -25510,13 +25510,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -25609,13 +25609,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -25720,13 +25720,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -25901,13 +25901,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -25925,13 +25925,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     };
@@ -26024,13 +26024,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -26201,13 +26201,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -26281,13 +26281,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -26540,13 +26540,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -26564,13 +26564,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -26663,13 +26663,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -26774,13 +26774,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -26955,13 +26955,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -26979,13 +26979,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   };
@@ -27078,13 +27078,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -27254,13 +27254,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -27334,13 +27334,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -27593,13 +27593,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -27617,13 +27617,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -27716,13 +27716,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -27827,13 +27827,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -28008,13 +28008,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -28032,13 +28032,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         id: string;
         status?: string | null;
         link?: string | null;
-        lastUpdated?: number | null;
-        product: {
+        lastUpdated?: string | null;
+        product?: {
           __typename?: "ProductV1Product";
           id: string;
           uuid: string;
           version: number;
-        };
+        } | null;
       }> | null;
     }> | null;
   };
@@ -28131,13 +28131,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -28325,13 +28325,13 @@ export type BaseProductV1ProductFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -28349,13 +28349,13 @@ export type BaseProductV1ProductFieldsFragment = {
       id: string;
       status?: string | null;
       link?: string | null;
-      lastUpdated?: number | null;
-      product: {
+      lastUpdated?: string | null;
+      product?: {
         __typename?: "ProductV1Product";
         id: string;
         uuid: string;
         version: number;
-      };
+      } | null;
     }> | null;
   }> | null;
 };
@@ -28516,13 +28516,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -28596,13 +28596,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -28859,13 +28859,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -28883,13 +28883,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -28982,13 +28982,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -29174,13 +29174,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -29198,13 +29198,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       id: string;
       status?: string | null;
       link?: string | null;
-      lastUpdated?: number | null;
-      product: {
+      lastUpdated?: string | null;
+      product?: {
         __typename?: "ProductV1Product";
         id: string;
         uuid: string;
         version: number;
-      };
+      } | null;
     }> | null;
   }> | null;
 };
@@ -29365,13 +29365,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           } | null;
@@ -29445,13 +29445,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -29708,13 +29708,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                         id: string;
                         status?: string | null;
                         link?: string | null;
-                        lastUpdated?: number | null;
-                        product: {
+                        lastUpdated?: string | null;
+                        product?: {
                           __typename?: "ProductV1Product";
                           id: string;
                           uuid: string;
                           version: number;
-                        };
+                        } | null;
                       }> | null;
                     }> | null;
                   } | null;
@@ -29732,13 +29732,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             };
@@ -29831,13 +29831,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -30023,13 +30023,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -30047,13 +30047,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       id: string;
       status?: string | null;
       link?: string | null;
-      lastUpdated?: number | null;
-      product: {
+      lastUpdated?: string | null;
+      product?: {
         __typename?: "ProductV1Product";
         id: string;
         uuid: string;
         version: number;
-      };
+      } | null;
     }> | null;
   }> | null;
 };
@@ -30188,13 +30188,13 @@ export type BaseProductV1SellerFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -30414,13 +30414,13 @@ export type GetOfferByIdQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -30494,13 +30494,13 @@ export type GetOfferByIdQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -30753,13 +30753,13 @@ export type GetOfferByIdQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -30777,13 +30777,13 @@ export type GetOfferByIdQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -30876,13 +30876,13 @@ export type GetOfferByIdQueryQuery = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -31066,13 +31066,13 @@ export type GetOffersQueryQuery = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         } | null;
@@ -31146,13 +31146,13 @@ export type GetOffersQueryQuery = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -31405,13 +31405,13 @@ export type GetOffersQueryQuery = {
                       id: string;
                       status?: string | null;
                       link?: string | null;
-                      lastUpdated?: number | null;
-                      product: {
+                      lastUpdated?: string | null;
+                      product?: {
                         __typename?: "ProductV1Product";
                         id: string;
                         uuid: string;
                         version: number;
-                      };
+                      } | null;
                     }> | null;
                   }> | null;
                 } | null;
@@ -31429,13 +31429,13 @@ export type GetOffersQueryQuery = {
                 id: string;
                 status?: string | null;
                 link?: string | null;
-                lastUpdated?: number | null;
-                product: {
+                lastUpdated?: string | null;
+                product?: {
                   __typename?: "ProductV1Product";
                   id: string;
                   uuid: string;
                   version: number;
-                };
+                } | null;
               }> | null;
             }> | null;
           };
@@ -31528,13 +31528,13 @@ export type GetOffersQueryQuery = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -31702,13 +31702,13 @@ export type OfferFieldsFragment = {
             id: string;
             status?: string | null;
             link?: string | null;
-            lastUpdated?: number | null;
-            product: {
+            lastUpdated?: string | null;
+            product?: {
               __typename?: "ProductV1Product";
               id: string;
               uuid: string;
               version: number;
-            };
+            } | null;
           }> | null;
         }> | null;
       } | null;
@@ -31782,13 +31782,13 @@ export type OfferFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -32041,13 +32041,13 @@ export type OfferFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -32065,13 +32065,13 @@ export type OfferFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         };
@@ -32164,13 +32164,13 @@ export type OfferFieldsFragment = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             } | null;
@@ -32312,13 +32312,13 @@ export type BaseOfferFieldsFragment = {
           id: string;
           status?: string | null;
           link?: string | null;
-          lastUpdated?: number | null;
-          product: {
+          lastUpdated?: string | null;
+          product?: {
             __typename?: "ProductV1Product";
             id: string;
             uuid: string;
             version: number;
-          };
+          } | null;
         }> | null;
       }> | null;
     } | null;
@@ -32571,13 +32571,13 @@ export type BaseOfferFieldsFragment = {
                     id: string;
                     status?: string | null;
                     link?: string | null;
-                    lastUpdated?: number | null;
-                    product: {
+                    lastUpdated?: string | null;
+                    product?: {
                       __typename?: "ProductV1Product";
                       id: string;
                       uuid: string;
                       version: number;
-                    };
+                    } | null;
                   }> | null;
                 }> | null;
               } | null;
@@ -32595,13 +32595,13 @@ export type BaseOfferFieldsFragment = {
               id: string;
               status?: string | null;
               link?: string | null;
-              lastUpdated?: number | null;
-              product: {
+              lastUpdated?: string | null;
+              product?: {
                 __typename?: "ProductV1Product";
                 id: string;
                 uuid: string;
                 version: number;
-              };
+              } | null;
             }> | null;
           }> | null;
         };
@@ -32694,13 +32694,13 @@ export type BaseOfferFieldsFragment = {
                   id: string;
                   status?: string | null;
                   link?: string | null;
-                  lastUpdated?: number | null;
-                  product: {
+                  lastUpdated?: string | null;
+                  product?: {
                     __typename?: "ProductV1Product";
                     id: string;
                     uuid: string;
                     version: number;
-                  };
+                  } | null;
                 }> | null;
               }> | null;
             } | null;

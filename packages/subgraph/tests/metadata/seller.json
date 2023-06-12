@@ -33,11 +33,11 @@
       "deployments": [
         {
           "link": "https://custom1",
-          "lastUpdated": 1686133617
+          "lastUpdated": 1686133617000
         },
         {
           "link": "https://custom2",
-          "lastUpdated": 1686133618
+          "lastUpdated": 1686133618000
         }
       ]
     }

@@ -7,6 +7,7 @@ import {
 } from "../../../../generated/schema";
 
 import {
+  convertToBigInt,
   convertToInt,
   convertToObject,
   convertToObjectArray,
@@ -121,7 +122,7 @@ function saveSalesChannelDeployments(
     }
     if (salesChannelDeployment) {
       salesChannelDeployment.link = link;
-      const lastUpdated = convertToInt(deployment.get("lastUpdated"));
+      const lastUpdated = convertToBigInt(deployment.get("lastUpdated"));
       const status = convertToString(deployment.get("status"));
       salesChannelDeployment.status = status;
       salesChannelDeployment.lastUpdated = lastUpdated;
