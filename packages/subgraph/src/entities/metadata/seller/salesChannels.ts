@@ -122,7 +122,7 @@ function saveSalesChannelDeployments(
     }
     if (salesChannelDeployment) {
       salesChannelDeployment.link = link;
-      const lastUpdated = convertToBigInt(deployment.get("lastUpdated"));
+      const lastUpdated = convertToString(deployment.get("lastUpdated"));
       const status = convertToString(deployment.get("status"));
       salesChannelDeployment.status = status;
       salesChannelDeployment.lastUpdated = lastUpdated;

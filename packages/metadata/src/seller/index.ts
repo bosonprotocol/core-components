@@ -41,7 +41,7 @@ export type SellerMetadata = {
       product?: { uuid: string; version: number };
       status?: string;
       link?: string;
-      lastUpdated?: number;
+      lastUpdated?: string;
     }[];
   }[];
 };

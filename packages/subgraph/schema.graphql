@@ -68,7 +68,7 @@ type SalesChannelDeployment @entity {
   product: ProductV1Product
   status: String
   link: String
-  lastUpdated: BigInt
+  lastUpdated: String
 }
 
 type SalesChannel @entity {
