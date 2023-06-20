@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../../theme";
 
 export const ProductCardCreator = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
 `;
 
@@ -24,6 +24,7 @@ export const ProductCardCreatorName = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
+  min-height: 3em;
   color: ${({ theme }) => theme?.colors?.light.accent};
   flex: none;
   order: 1;
@@ -32,12 +33,18 @@ export const ProductCardCreatorName = styled.div`
   margin-bottom: 0.25rem;
 `;
 
-export const ProductCardTitle = styled.div`
+export const ProductCardTitle = styled.div.attrs({ className: "title" })`
   font-weight: 600;
   font-size: 1.25rem;
-  line-height: 150%;
   color: ${({ theme }) => theme?.colors?.light.black};
   word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.5em;
+  max-height: calc(1.5em * 2);
 `;
 
 export const ProductCardPriceWrapper = styled.div`
@@ -64,10 +71,15 @@ export const ProductCardData = styled.div`
   flex-direction: column;
 `;
 
-export const ProductCardBottom = styled.div<{ $isNotImageLoaded: boolean }>`
+export const ProductCardBottom = styled.div.attrs({ className: "bottom" })<{
+  $isNotImageLoaded: boolean;
+}>`
   width: 100%;
-  flex: 1 1;
   background: ${theme?.colors?.light.white};
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 export const ProductCardBottomContent = styled.div`
   display: flex;
@@ -78,6 +90,12 @@ export const ProductCardBottomContent = styled.div`
   align-items: flex-start;
   column-gap: 0.25rem;
   border-top: 2px solid ${theme.colors.light.border};
+`;
+
+export const ProductCardTitleWrapper = styled.div`
+  width: 100%;
+  padding: 0 1.5rem 0.5rem 1.5rem;
+  box-sizing: border-box;
 `;
 
 export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
@@ -91,7 +109,6 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
   isolation: isolate;
   width: 100%;
   min-height: 31.25rem;
-  border: 1px solid rgba(85, 96, 114, 0.15);
   box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
   background: ${theme.colors.light.white};
@@ -99,27 +116,27 @@ export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
     position: static;
     padding-top: 0;
     height: 100%;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   ${({ $isHoverDisabled }) =>
     !$isHoverDisabled
-      ? `
-    transition: all 300ms ease-in-out;
-    &:hover {
-      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05), 4px 4px 4px rgba(0, 0, 0, 0.05),
-        8px 8px 8px rgba(0, 0, 0, 0.05), 16px 16px 16px rgba(0, 0, 0, 0.05);
-
-      [data-image-wrapper] {
-        img {
-          transform: scale(1.05);
+      ? css`
           transition: all 300ms ease-in-out;
-        }
-      }
-    }
-  `
+          &:hover {
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05),
+              4px 4px 4px rgba(0, 0, 0, 0.05), 8px 8px 8px rgba(0, 0, 0, 0.05),
+              16px 16px 16px rgba(0, 0, 0, 0.05);
+
+            [data-image-wrapper] {
+              img {
+                transform: scale(1.05);
+                transition: all 300ms ease-in-out;
+              }
+            }
+          }
+        `
       : ""}
 `;
 
@@ -144,7 +161,7 @@ export const BottomText = styled.p`
 
 export const ProductCardImageWrapper = styled.div`
   width: 100%;
-  flex: 1 1 100%;
   min-height: 0;
   height: auto;
+  flex: 1;
 `;
