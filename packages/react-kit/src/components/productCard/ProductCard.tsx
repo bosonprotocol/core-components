@@ -17,6 +17,7 @@ import {
   ProductCardPrice,
   ProductCardPriceWrapper,
   ProductCardTitle,
+  ProductCardTitleWrapper,
   ProductCardWrapper
 } from "./ProductCard.styles";
 
@@ -104,38 +105,42 @@ export const ProductCard = (props: IProductCard) => {
         <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
       </ProductCardImageWrapper>
       <ProductCardBottom $isNotImageLoaded={isNotImageLoaded}>
-        <ProductCardBottomContent>
-          <ProductCardData>
-            <ProductCardCreator
-              onClick={(e) => {
-                e.stopPropagation();
-                onAvatarNameClick?.();
-              }}
-            >
-              <ProductCardCreatorAvatar>
-                <img src={avatar} alt="avatar" onError={onAvatarError} />
-              </ProductCardCreatorAvatar>
-              <ProductCardCreatorName data-avatarname="product-card">
-                {avatarName}
-              </ProductCardCreatorName>
-            </ProductCardCreator>
-            <ProductCardTitle>{title}</ProductCardTitle>
-          </ProductCardData>
-          <ProductCardPriceWrapper>
-            <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-              <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
-              <CurrencyDisplay
-                value={price}
-                currency={currency}
-                style={{
-                  wordBreak: "break-all",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-end"
+        <div>
+          <ProductCardBottomContent>
+            <ProductCardData>
+              <ProductCardCreator
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAvatarNameClick?.();
                 }}
-              />
-            </Wrapper>
-          </ProductCardPriceWrapper>
-        </ProductCardBottomContent>
+              >
+                <ProductCardCreatorAvatar>
+                  <img src={avatar} alt="avatar" onError={onAvatarError} />
+                </ProductCardCreatorAvatar>
+                <ProductCardCreatorName data-avatarname="product-card">
+                  {avatarName}
+                </ProductCardCreatorName>
+              </ProductCardCreator>
+            </ProductCardData>
+            <ProductCardPriceWrapper>
+              <Wrapper tooltip={tooltip} tooltipProps={tooltipProps}>
+                <ProductCardPrice>Price {asterisk && "*"}</ProductCardPrice>
+                <CurrencyDisplay
+                  value={price}
+                  currency={currency}
+                  style={{
+                    wordBreak: "break-all",
+                    alignItems: "flex-start",
+                    justifyContent: "flex-end"
+                  }}
+                />
+              </Wrapper>
+            </ProductCardPriceWrapper>
+          </ProductCardBottomContent>
+          <ProductCardTitleWrapper>
+            <ProductCardTitle>{title}</ProductCardTitle>
+          </ProductCardTitleWrapper>
+        </div>
         {bottomText && <BottomText>{bottomText}</BottomText>}
       </ProductCardBottom>
     </ProductCardWrapper>
