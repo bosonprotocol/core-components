@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.23.1...@bosonprotocol/subgraph@1.24.0) (2023-06-22)
+
+
+### Bug Fixes
+
+* convert SalesChannelDeployment.lastUpdated from BigInt to String ([#509](https://github.com/bosonprotocol/core-components/issues/509)) ([1ef97fe](https://github.com/bosonprotocol/core-components/commit/1ef97fed322e90bf05a528f8f5e0bda602cf9068))
+* convert SalesChannelDeployment.lastUpdated from number into BigInt ([#508](https://github.com/bosonprotocol/core-components/issues/508)) ([10ee4db](https://github.com/bosonprotocol/core-components/commit/10ee4dbc070ca8b0e10ee44c0a4e79b6c5975643))
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
 ## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.23.0...@bosonprotocol/subgraph@1.23.1) (2023-05-17)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

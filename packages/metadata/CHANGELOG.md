@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.9.0...@bosonprotocol/metadata@1.10.0) (2023-06-22)
+
+
+### Bug Fixes
+
+* convert SalesChannelDeployment.lastUpdated from BigInt to String ([#509](https://github.com/bosonprotocol/core-components/issues/509)) ([1ef97fe](https://github.com/bosonprotocol/core-components/commit/1ef97fed322e90bf05a528f8f5e0bda602cf9068))
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
 # [1.9.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.8.1...@bosonprotocol/metadata@1.9.0) (2023-05-12)
 
 

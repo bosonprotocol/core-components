@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.3.2...meta-tx-gateway@1.4.0) (2023-06-22)
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
 ## [1.3.2](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.3.1...meta-tx-gateway@1.3.2) (2023-05-17)
 
 **Note:** Version bump only for package meta-tx-gateway
