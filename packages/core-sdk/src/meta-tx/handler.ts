@@ -1205,6 +1205,7 @@ export async function relayMetaTransaction(args: {
 
       const txHash = waitResponse.data.newHash;
       const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
+      console.log("[relayBiconomyMetaTransaction.wait] txReceipt", txReceipt);
       return {
         to: txReceipt?.to || contractAddress,
         from: txReceipt?.from || metaTx.params.userAddress,

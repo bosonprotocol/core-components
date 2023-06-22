@@ -169,7 +169,7 @@ export class Biconomy {
         });
       }
     }
-
+    console.log("[Biconomy.wait] resubmittedResponse", resubmittedResponse);
     return resubmittedResponse;
   }
 }
