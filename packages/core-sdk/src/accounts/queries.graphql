@@ -257,6 +257,7 @@ fragment SellerSocialLinkFields on SellerSocialLink {
 fragment SalesChannelFields on SalesChannel {
   id
   tag
+  name
   settingsUri
   settingsEditor
   link

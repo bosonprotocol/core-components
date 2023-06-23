@@ -167,12 +167,14 @@ export function saveSalesChannels(
   for (let i = 0; i < salesChannels.length; i++) {
     const salesChannel = salesChannels[i];
     const tag = convertToString(salesChannel.get("tag"));
+    const name = convertToString(salesChannel.get("name"));
     const salesChannelId = getSalesChannelId(sellerId, tag);
     let sellerSalesChannel = SalesChannel.load(salesChannelId);
 
     if (!sellerSalesChannel) {
       sellerSalesChannel = new SalesChannel(salesChannelId);
       sellerSalesChannel.tag = tag;
+      sellerSalesChannel.name = name;
     }
 
     const settingsUri = convertToString(salesChannel.get("settingsUri"));

@@ -74,6 +74,7 @@ type SalesChannelDeployment @entity {
 type SalesChannel @entity {
   id: ID!
   tag: String!
+  name: String
   settingsUri: String
   settingsEditor: String
   link: String
