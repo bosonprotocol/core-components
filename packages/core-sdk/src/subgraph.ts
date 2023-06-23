@@ -7727,6 +7727,7 @@ export type SalesChannel = {
   deployments?: Maybe<Array<SalesChannelDeployment>>;
   id: Scalars["ID"];
   link?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   settingsEditor?: Maybe<Scalars["String"]>;
   settingsUri?: Maybe<Scalars["String"]>;
   tag: Scalars["String"];
@@ -7889,6 +7890,26 @@ export type SalesChannel_Filter = {
   link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   link_starts_with?: InputMaybe<Scalars["String"]>;
   link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   settingsEditor?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains?: InputMaybe<Scalars["String"]>;
   settingsEditor_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -7955,6 +7976,7 @@ export enum SalesChannel_OrderBy {
   Deployments = "deployments",
   Id = "id",
   Link = "link",
+  Name = "name",
   SettingsEditor = "settingsEditor",
   SettingsUri = "settingsUri",
   Tag = "tag"
@@ -9683,6 +9705,7 @@ export type GetSellerByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -9946,6 +9969,7 @@ export type GetSellerByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -9970,6 +9994,7 @@ export type GetSellerByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -10069,6 +10094,7 @@ export type GetSellerByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -10215,6 +10241,7 @@ export type GetSellerByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -10341,6 +10368,7 @@ export type GetSellerByIdQueryQuery = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -10518,6 +10546,7 @@ export type GetSellersQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -10781,6 +10810,7 @@ export type GetSellersQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -10805,6 +10835,7 @@ export type GetSellersQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -10904,6 +10935,7 @@ export type GetSellersQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -11050,6 +11082,7 @@ export type GetSellersQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -11176,6 +11209,7 @@ export type GetSellersQueryQuery = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -11325,6 +11359,7 @@ export type GetBuyerByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -11556,6 +11591,7 @@ export type GetBuyersQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -11770,6 +11806,7 @@ export type GetDisputeResolverByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -12033,6 +12070,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -12057,6 +12095,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -12156,6 +12195,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -12430,6 +12470,7 @@ export type GetDisputeResolversQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -12693,6 +12734,7 @@ export type GetDisputeResolversQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -12717,6 +12759,7 @@ export type GetDisputeResolversQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -12816,6 +12859,7 @@ export type GetDisputeResolversQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -13087,6 +13131,7 @@ export type SellerFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -13346,6 +13391,7 @@ export type SellerFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -13370,6 +13416,7 @@ export type SellerFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -13469,6 +13516,7 @@ export type SellerFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -13615,6 +13663,7 @@ export type SellerFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -13741,6 +13790,7 @@ export type SellerFieldsFragment = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -13789,6 +13839,7 @@ export type SalesChannelFieldsFragment = {
   __typename?: "SalesChannel";
   id: string;
   tag: string;
+  name?: string | null;
   settingsUri?: string | null;
   settingsEditor?: string | null;
   link?: string | null;
@@ -13857,6 +13908,7 @@ export type BaseSellerFieldsFragment = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -13990,6 +14042,7 @@ export type BuyerFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -14192,6 +14245,7 @@ export type DisputeResolverFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -14451,6 +14505,7 @@ export type DisputeResolverFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -14475,6 +14530,7 @@ export type DisputeResolverFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -14574,6 +14630,7 @@ export type DisputeResolverFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -14893,6 +14950,7 @@ export type GetDisputeByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -14963,6 +15021,7 @@ export type GetDisputeByIdQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -15100,6 +15159,7 @@ export type GetDisputesQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -15170,6 +15230,7 @@ export type GetDisputesQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -15297,6 +15358,7 @@ export type DisputeFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -15367,6 +15429,7 @@ export type DisputeFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -15521,6 +15584,7 @@ export type GetExchangeTokenByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -15784,6 +15848,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -15808,6 +15873,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -15907,6 +15973,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -16092,6 +16159,7 @@ export type GetExchangeTokensQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -16355,6 +16423,7 @@ export type GetExchangeTokensQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -16379,6 +16448,7 @@ export type GetExchangeTokensQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -16478,6 +16548,7 @@ export type GetExchangeTokensQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -16641,6 +16712,7 @@ export type ExchangeTokenFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -16900,6 +16972,7 @@ export type ExchangeTokenFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -16924,6 +16997,7 @@ export type ExchangeTokenFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -17023,6 +17097,7 @@ export type ExchangeTokenFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -17369,6 +17444,7 @@ export type GetExchangeByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -17632,6 +17708,7 @@ export type GetExchangeByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -17656,6 +17733,7 @@ export type GetExchangeByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -17755,6 +17833,7 @@ export type GetExchangeByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -17887,6 +17966,7 @@ export type GetExchangeByIdQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -18019,6 +18099,7 @@ export type GetExchangesQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -18282,6 +18363,7 @@ export type GetExchangesQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -18306,6 +18388,7 @@ export type GetExchangesQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -18405,6 +18488,7 @@ export type GetExchangesQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -18537,6 +18621,7 @@ export type GetExchangesQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -18659,6 +18744,7 @@ export type ExchangeFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -18918,6 +19004,7 @@ export type ExchangeFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -18942,6 +19029,7 @@ export type ExchangeFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -19041,6 +19129,7 @@ export type ExchangeFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -19168,6 +19257,7 @@ export type ExchangeFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -19269,6 +19359,7 @@ export type BaseExchangeFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -19500,6 +19591,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -19763,6 +19855,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -19787,6 +19880,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -19886,6 +19980,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -19997,6 +20092,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -20155,6 +20251,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -20418,6 +20515,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -20442,6 +20540,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -20541,6 +20640,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -20652,6 +20752,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -20800,6 +20901,7 @@ export type BaseMetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -21059,6 +21161,7 @@ export type BaseMetadataEntityFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -21083,6 +21186,7 @@ export type BaseMetadataEntityFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -21182,6 +21286,7 @@ export type BaseMetadataEntityFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -21293,6 +21398,7 @@ export type BaseMetadataEntityFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -21440,6 +21546,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -21699,6 +21806,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -21723,6 +21831,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -21822,6 +21931,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -21933,6 +22043,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -22143,6 +22254,7 @@ export type GetProductV1ProductsQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -22167,6 +22279,7 @@ export type GetProductV1ProductsQueryQuery = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -22345,6 +22458,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -22425,6 +22539,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -22688,6 +22803,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         __typename?: "SalesChannel";
                         id: string;
                         tag: string;
+                        name?: string | null;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
                         link?: string | null;
@@ -22712,6 +22828,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -22811,6 +22928,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -23003,6 +23121,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -23027,6 +23146,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -23205,6 +23325,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -23285,6 +23406,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -23548,6 +23670,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         __typename?: "SalesChannel";
                         id: string;
                         tag: string;
+                        name?: string | null;
                         settingsUri?: string | null;
                         settingsEditor?: string | null;
                         link?: string | null;
@@ -23572,6 +23695,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -23671,6 +23795,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -23863,6 +23988,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -23887,6 +24013,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -24079,6 +24206,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -24159,6 +24287,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -24422,6 +24551,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -24446,6 +24576,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -24545,6 +24676,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -24656,6 +24788,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -24837,6 +24970,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -24861,6 +24995,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -24960,6 +25095,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -25147,6 +25283,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -25227,6 +25364,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -25490,6 +25628,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -25514,6 +25653,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -25613,6 +25753,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -25724,6 +25865,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -25905,6 +26047,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -25929,6 +26072,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -26028,6 +26172,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -26205,6 +26350,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -26285,6 +26431,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -26544,6 +26691,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -26568,6 +26716,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -26667,6 +26816,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -26778,6 +26928,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -26959,6 +27110,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -26983,6 +27135,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -27082,6 +27235,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -27258,6 +27412,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -27338,6 +27493,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -27597,6 +27753,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -27621,6 +27778,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -27720,6 +27878,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -27831,6 +27990,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -28012,6 +28172,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -28036,6 +28197,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       __typename?: "SalesChannel";
       id: string;
       tag: string;
+      name?: string | null;
       settingsUri?: string | null;
       settingsEditor?: string | null;
       link?: string | null;
@@ -28135,6 +28297,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -28329,6 +28492,7 @@ export type BaseProductV1ProductFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -28353,6 +28517,7 @@ export type BaseProductV1ProductFieldsFragment = {
     __typename?: "SalesChannel";
     id: string;
     tag: string;
+    name?: string | null;
     settingsUri?: string | null;
     settingsEditor?: string | null;
     link?: string | null;
@@ -28520,6 +28685,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -28600,6 +28766,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -28863,6 +29030,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -28887,6 +29055,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -28986,6 +29155,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -29178,6 +29348,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -29202,6 +29373,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     __typename?: "SalesChannel";
     id: string;
     tag: string;
+    name?: string | null;
     settingsUri?: string | null;
     settingsEditor?: string | null;
     link?: string | null;
@@ -29369,6 +29541,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -29449,6 +29622,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -29712,6 +29886,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       __typename?: "SalesChannel";
                       id: string;
                       tag: string;
+                      name?: string | null;
                       settingsUri?: string | null;
                       settingsEditor?: string | null;
                       link?: string | null;
@@ -29736,6 +29911,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -29835,6 +30011,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -30027,6 +30204,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -30051,6 +30229,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     __typename?: "SalesChannel";
     id: string;
     tag: string;
+    name?: string | null;
     settingsUri?: string | null;
     settingsEditor?: string | null;
     link?: string | null;
@@ -30192,6 +30371,7 @@ export type BaseProductV1SellerFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -30418,6 +30598,7 @@ export type GetOfferByIdQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -30498,6 +30679,7 @@ export type GetOfferByIdQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -30757,6 +30939,7 @@ export type GetOfferByIdQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -30781,6 +30964,7 @@ export type GetOfferByIdQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -30880,6 +31064,7 @@ export type GetOfferByIdQueryQuery = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -31070,6 +31255,7 @@ export type GetOffersQueryQuery = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -31150,6 +31336,7 @@ export type GetOffersQueryQuery = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -31409,6 +31596,7 @@ export type GetOffersQueryQuery = {
                     __typename?: "SalesChannel";
                     id: string;
                     tag: string;
+                    name?: string | null;
                     settingsUri?: string | null;
                     settingsEditor?: string | null;
                     link?: string | null;
@@ -31433,6 +31621,7 @@ export type GetOffersQueryQuery = {
               __typename?: "SalesChannel";
               id: string;
               tag: string;
+              name?: string | null;
               settingsUri?: string | null;
               settingsEditor?: string | null;
               link?: string | null;
@@ -31532,6 +31721,7 @@ export type GetOffersQueryQuery = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -31706,6 +31896,7 @@ export type OfferFieldsFragment = {
           __typename?: "SalesChannel";
           id: string;
           tag: string;
+          name?: string | null;
           settingsUri?: string | null;
           settingsEditor?: string | null;
           link?: string | null;
@@ -31786,6 +31977,7 @@ export type OfferFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -32045,6 +32237,7 @@ export type OfferFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -32069,6 +32262,7 @@ export type OfferFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -32168,6 +32362,7 @@ export type OfferFieldsFragment = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -32316,6 +32511,7 @@ export type BaseOfferFieldsFragment = {
         __typename?: "SalesChannel";
         id: string;
         tag: string;
+        name?: string | null;
         settingsUri?: string | null;
         settingsEditor?: string | null;
         link?: string | null;
@@ -32575,6 +32771,7 @@ export type BaseOfferFieldsFragment = {
                   __typename?: "SalesChannel";
                   id: string;
                   tag: string;
+                  name?: string | null;
                   settingsUri?: string | null;
                   settingsEditor?: string | null;
                   link?: string | null;
@@ -32599,6 +32796,7 @@ export type BaseOfferFieldsFragment = {
             __typename?: "SalesChannel";
             id: string;
             tag: string;
+            name?: string | null;
             settingsUri?: string | null;
             settingsEditor?: string | null;
             link?: string | null;
@@ -32698,6 +32896,7 @@ export type BaseOfferFieldsFragment = {
                 __typename?: "SalesChannel";
                 id: string;
                 tag: string;
+                name?: string | null;
                 settingsUri?: string | null;
                 settingsEditor?: string | null;
                 link?: string | null;
@@ -32796,6 +32995,7 @@ export const SalesChannelFieldsFragmentDoc = gql`
   fragment SalesChannelFields on SalesChannel {
     id
     tag
+    name
     settingsUri
     settingsEditor
     link

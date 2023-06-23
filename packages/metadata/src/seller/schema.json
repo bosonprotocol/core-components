@@ -85,6 +85,9 @@
           "tag": {
             "type": "string"
           },
+          "name": {
+            "type": "string"
+          },
           "settingsUrl": {
             "type": "string"
           },

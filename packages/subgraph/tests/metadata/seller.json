@@ -30,6 +30,7 @@
     },
     {
       "tag": "CustomStoreFront",
+      "name": "custom1",
       "deployments": [
         {
           "link": "https://custom1",

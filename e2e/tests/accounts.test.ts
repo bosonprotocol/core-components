@@ -358,6 +358,7 @@ describe("CoreSDK - accounts", () => {
         salesChannels: [
           {
             tag: "CustomStoreFront",
+            name: "my amazing store",
             deployments: [
               {
                 link: "https://custom1",
