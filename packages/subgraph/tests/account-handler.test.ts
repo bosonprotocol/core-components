@@ -148,7 +148,7 @@ test("handle SellerCreatedEvent", () => {
     "ipfs://" + sellerMetadataHash
   );
   checkSalesChannelsLength(sellerId, 3);
-  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
+  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL", "");
   assert.fieldEquals("SalesChannel", dclSalesChannelId, "tag", "DCL");
   assert.fieldEquals(
     "SalesChannel",
@@ -158,7 +158,8 @@ test("handle SellerCreatedEvent", () => {
   );
   const customSFSalesChannelId = getSalesChannelId(
     sellerId,
-    "CustomStoreFront"
+    "CustomStoreFront",
+    "custom1"
   );
   assert.fieldEquals(
     "SalesChannel",
@@ -238,7 +239,7 @@ test("add/remove product salesChannels", () => {
   updateSellerMetadata(1, "tests/metadata/seller-updated-1.json");
   checkSalesChannelsLength(sellerId, 2);
 
-  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL");
+  const dclSalesChannelId = getSalesChannelId(sellerId, "DCL", "");
   const deploymmentProductAId = getSalesChannelDeploymentId(
     dclSalesChannelId,
     productA.id

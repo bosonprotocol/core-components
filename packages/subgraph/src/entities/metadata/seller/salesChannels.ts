@@ -22,9 +22,10 @@ import { getSellerMetadataEntityId } from ".";
 
 export function getSalesChannelId(
   sellerId: string,
-  salesChannelTag: string
+  salesChannelTag: string,
+  salesChannelName: string
 ): string {
-  return `${sellerId}-${salesChannelTag.toLowerCase()}-sale-channel`;
+  return `${sellerId}-${salesChannelTag.toLowerCase()}-${salesChannelName.toLowerCase()}-sale-channel`;
 }
 
 export function getSalesChannelDeploymentId(
@@ -168,7 +169,7 @@ export function saveSalesChannels(
     const salesChannel = salesChannels[i];
     const tag = convertToString(salesChannel.get("tag"));
     const name = convertToString(salesChannel.get("name"));
-    const salesChannelId = getSalesChannelId(sellerId, tag);
+    const salesChannelId = getSalesChannelId(sellerId, tag, name);
     let sellerSalesChannel = SalesChannel.load(salesChannelId);
 
     if (!sellerSalesChannel) {
