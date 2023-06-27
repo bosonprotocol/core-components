@@ -160,7 +160,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Primary Buyer** means the first buyer who has acquired the rNFT.
 
-   **Seller** means anyone who offers to sell an Item through a rNFT. The Seller is **_{{sellerTradingName}}_**.
+   **Seller** means anyone who offers to sell an Item through an rNFT. The Seller is **_{{sellerTradingName}}_**.
 
    **Seller Contact Method** means **_{{sellerContactMethod}}_**.
 

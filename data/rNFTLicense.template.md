@@ -27,7 +27,7 @@ By redeeming the rNFT within the Redemption Period and having received from the 
 
 **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
 
-**Seller** means anyone who offers to sell an Item through a rNFT.
+**Seller** means anyone who offers to sell an Item through an rNFT.
 ___
 
 
