@@ -2,11 +2,11 @@
 
 The following agreement (the “**Agreement**") is entered into by and between you (the “**Buyer**”) and the Seller, and sets out the terms relating to a transaction whereby:
 
-- A) The Seller offers its products or services for sale through a Redeemable NFT (the “**rNFT**”), which can be redeemed for the Item.
+- A) The Seller offers its products or services for sale through a Redeemable NFT (the “**rNFT**”), which can be redeemed for the Item on the terms set in this Agreement. 
 
 - B) The Buyer redeems the rNFT from the Seller to obtain the Item.
 
-- C) The Buyer agrees to obtain and the Seller agrees to provide the Item on the terms set out in this Agreement.
+- C) Upon having received from the Seller the seller’s information as required by laws applicable to the Buyer, the Buyer is deemed to have agreed to the terms set out in this Agreement.
 
 The Seller and the Buyer hereinafter collectively referred to as the “**Parties**” and each individually as a “**Party**”.
 
@@ -56,7 +56,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
 2. Fulfilment
 
-   2.1. When the Buyer redeems the rNFT, the Seller will have the Item delivered to the Buyer by the Fulfilment Date.
+   2.1. When the Buyer redeems the rNFT, the Seller must provide to the Buyer the seller’s information as required by applicable laws and deliver the Item to the Buyer by the Fulfilment Date.
 
 3. Dispute Resolution
 
@@ -150,7 +150,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Fulfilment Date** means the date by which the Seller shall have the Item delivered to the Buyer.
 
-   **Item** means the thing being sold or a set of things being sold together in a single Offer.
+   **Item** means the good or service being sold or a set of goods and services being sold together in a single Offer.
 
    **Item Price** means the price originally paid by the Primary Buyer for an rNFT with the right to redeem an Item at the Commit action. The Item Price is set as **_{{priceValue}} {{exchangeTokenSymbol}}_**. The Item Price includes delivery costs. For customs and import taxes, refer to Exhibit A - Seller’s Shop Policy, clause 1.1.
 
@@ -160,7 +160,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Primary Buyer** means the first buyer who has acquired the rNFT.
 
-   **Seller** means a person who offers to sell an Item through a rNFT. The Seller is **_{{sellerTradingName}}_**.
+   **Seller** means anyone who offers to sell an Item through a rNFT. The Seller is **_{{sellerTradingName}}_**.
 
    **Seller Contact Method** means **_{{sellerContactMethod}}_**.
 
