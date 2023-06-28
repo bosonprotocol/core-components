@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.26.0...@bosonprotocol/core-sdk@1.27.0) (2023-06-28)
+
+
+### Features
+
+* add name to sales channels ([#514](https://github.com/bosonprotocol/core-components/issues/514)) ([30e3c41](https://github.com/bosonprotocol/core-components/commit/30e3c41ce0cf1668655c90699e1a0d5420dfbe09))
+
+
+
+
+
 # [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.3...@bosonprotocol/core-sdk@1.26.0) (2023-06-22)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.24.0...@bosonprotocol/subgraph@1.25.0) (2023-06-28)
+
+
+### Features
+
+* add name to sales channels ([#514](https://github.com/bosonprotocol/core-components/issues/514)) ([30e3c41](https://github.com/bosonprotocol/core-components/commit/30e3c41ce0cf1668655c90699e1a0d5420dfbe09))
+* change sales channel id structure ([#515](https://github.com/bosonprotocol/core-components/issues/515)) ([fc5d5d7](https://github.com/bosonprotocol/core-components/commit/fc5d5d7b95d725e89c90abb341e81ae3953b68b2))
+
+
+
+
+
 # [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.23.1...@bosonprotocol/subgraph@1.24.0) (2023-06-22)
 
 
