@@ -8,7 +8,9 @@
       "tag": "tag",
       "type": "image/jpeg",
       "width": 505,
-      "height": 393
+      "height": 393,
+      "fit": "contain",
+      "position": "21px 33px"
     }
   ],
   "kind": "lens",
