@@ -240,6 +240,8 @@ fragment SellerMetadataMediaFields on SellerMetadataMedia {
   type
   width
   height
+  fit
+  position
 }
 
 fragment SellerContactLinkFields on SellerContactLink {

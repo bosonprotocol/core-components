@@ -9732,6 +9732,8 @@ export type GetSellerByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -9996,6 +9998,8 @@ export type GetSellerByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -10121,6 +10125,8 @@ export type GetSellerByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -10268,6 +10274,8 @@ export type GetSellerByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -10395,6 +10403,8 @@ export type GetSellerByIdQueryQuery = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -10573,6 +10583,8 @@ export type GetSellersQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -10837,6 +10849,8 @@ export type GetSellersQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -10962,6 +10976,8 @@ export type GetSellersQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -11109,6 +11125,8 @@ export type GetSellersQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -11236,6 +11254,8 @@ export type GetSellersQueryQuery = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -11386,6 +11406,8 @@ export type GetBuyerByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -11618,6 +11640,8 @@ export type GetBuyersQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -11833,6 +11857,8 @@ export type GetDisputeResolverByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -12097,6 +12123,8 @@ export type GetDisputeResolverByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -12222,6 +12250,8 @@ export type GetDisputeResolverByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -12497,6 +12527,8 @@ export type GetDisputeResolversQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -12761,6 +12793,8 @@ export type GetDisputeResolversQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -12886,6 +12920,8 @@ export type GetDisputeResolversQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -13158,6 +13194,8 @@ export type SellerFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -13418,6 +13456,8 @@ export type SellerFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -13543,6 +13583,8 @@ export type SellerFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -13690,6 +13732,8 @@ export type SellerFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -13817,6 +13861,8 @@ export type SellerFieldsFragment = {
       type: string;
       width?: number | null;
       height?: number | null;
+      fit?: string | null;
+      position?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "SellerContactLink";
@@ -13863,6 +13909,8 @@ export type SellerMetadataMediaFieldsFragment = {
   type: string;
   width?: number | null;
   height?: number | null;
+  fit?: string | null;
+  position?: string | null;
 };
 
 export type SellerContactLinkFieldsFragment = {
@@ -13935,6 +13983,8 @@ export type BaseSellerFieldsFragment = {
       type: string;
       width?: number | null;
       height?: number | null;
+      fit?: string | null;
+      position?: string | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "SellerContactLink";
@@ -14069,6 +14119,8 @@ export type BuyerFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -14272,6 +14324,8 @@ export type DisputeResolverFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -14532,6 +14586,8 @@ export type DisputeResolverFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -14657,6 +14713,8 @@ export type DisputeResolverFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -14977,6 +15035,8 @@ export type GetDisputeByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -15048,6 +15108,8 @@ export type GetDisputeByIdQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -15186,6 +15248,8 @@ export type GetDisputesQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -15257,6 +15321,8 @@ export type GetDisputesQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -15385,6 +15451,8 @@ export type DisputeFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -15456,6 +15524,8 @@ export type DisputeFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -15611,6 +15681,8 @@ export type GetExchangeTokenByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -15875,6 +15947,8 @@ export type GetExchangeTokenByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -16000,6 +16074,8 @@ export type GetExchangeTokenByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -16186,6 +16262,8 @@ export type GetExchangeTokensQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -16450,6 +16528,8 @@ export type GetExchangeTokensQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -16575,6 +16655,8 @@ export type GetExchangeTokensQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -16739,6 +16821,8 @@ export type ExchangeTokenFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -16999,6 +17083,8 @@ export type ExchangeTokenFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -17124,6 +17210,8 @@ export type ExchangeTokenFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -17471,6 +17559,8 @@ export type GetExchangeByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -17735,6 +17825,8 @@ export type GetExchangeByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -17860,6 +17952,8 @@ export type GetExchangeByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -17993,6 +18087,8 @@ export type GetExchangeByIdQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -18126,6 +18222,8 @@ export type GetExchangesQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -18390,6 +18488,8 @@ export type GetExchangesQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -18515,6 +18615,8 @@ export type GetExchangesQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -18648,6 +18750,8 @@ export type GetExchangesQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -18771,6 +18875,8 @@ export type ExchangeFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -19031,6 +19137,8 @@ export type ExchangeFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -19156,6 +19264,8 @@ export type ExchangeFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -19284,6 +19394,8 @@ export type ExchangeFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -19386,6 +19498,8 @@ export type BaseExchangeFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -19618,6 +19732,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -19882,6 +19998,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -20007,6 +20125,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -20119,6 +20239,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -20278,6 +20400,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -20542,6 +20666,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -20667,6 +20793,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -20779,6 +20907,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -20928,6 +21058,8 @@ export type BaseMetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -21188,6 +21320,8 @@ export type BaseMetadataEntityFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -21313,6 +21447,8 @@ export type BaseMetadataEntityFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -21425,6 +21561,8 @@ export type BaseMetadataEntityFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -21573,6 +21711,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -21833,6 +21973,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -21958,6 +22100,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -22070,6 +22214,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -22281,6 +22427,8 @@ export type GetProductV1ProductsQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -22485,6 +22633,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 type: string;
                 width?: number | null;
                 height?: number | null;
+                fit?: string | null;
+                position?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "SellerContactLink";
@@ -22566,6 +22716,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -22830,6 +22982,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                         type: string;
                         width?: number | null;
                         height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
                       }> | null;
                       contactLinks?: Array<{
                         __typename?: "SellerContactLink";
@@ -22955,6 +23109,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -23148,6 +23304,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -23352,6 +23510,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 type: string;
                 width?: number | null;
                 height?: number | null;
+                fit?: string | null;
+                position?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "SellerContactLink";
@@ -23433,6 +23593,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -23697,6 +23859,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                         type: string;
                         width?: number | null;
                         height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
                       }> | null;
                       contactLinks?: Array<{
                         __typename?: "SellerContactLink";
@@ -23822,6 +23986,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -24015,6 +24181,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -24233,6 +24401,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -24314,6 +24484,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -24578,6 +24750,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -24703,6 +24877,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -24815,6 +24991,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -24997,6 +25175,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -25122,6 +25302,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -25310,6 +25492,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -25391,6 +25575,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -25655,6 +25841,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -25780,6 +25968,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -25892,6 +26082,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -26074,6 +26266,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -26199,6 +26393,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -26377,6 +26573,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -26458,6 +26656,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -26718,6 +26918,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -26843,6 +27045,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -26955,6 +27159,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -27137,6 +27343,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -27262,6 +27470,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -27439,6 +27649,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -27520,6 +27732,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -27780,6 +27994,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -27905,6 +28121,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -28017,6 +28235,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -28199,6 +28419,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -28324,6 +28546,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -28519,6 +28743,8 @@ export type BaseProductV1ProductFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -28712,6 +28938,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -28793,6 +29021,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -29057,6 +29287,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -29182,6 +29414,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -29375,6 +29609,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -29568,6 +29804,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               type: string;
               width?: number | null;
               height?: number | null;
+              fit?: string | null;
+              position?: string | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "SellerContactLink";
@@ -29649,6 +29887,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -29913,6 +30153,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                       type: string;
                       width?: number | null;
                       height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
                     }> | null;
                     contactLinks?: Array<{
                       __typename?: "SellerContactLink";
@@ -30038,6 +30280,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -30231,6 +30475,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -30398,6 +30644,8 @@ export type BaseProductV1SellerFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -30625,6 +30873,8 @@ export type GetOfferByIdQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -30706,6 +30956,8 @@ export type GetOfferByIdQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -30966,6 +31218,8 @@ export type GetOfferByIdQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -31091,6 +31345,8 @@ export type GetOfferByIdQueryQuery = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -31282,6 +31538,8 @@ export type GetOffersQueryQuery = {
             type: string;
             width?: number | null;
             height?: number | null;
+            fit?: string | null;
+            position?: string | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "SellerContactLink";
@@ -31363,6 +31621,8 @@ export type GetOffersQueryQuery = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -31623,6 +31883,8 @@ export type GetOffersQueryQuery = {
                     type: string;
                     width?: number | null;
                     height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "SellerContactLink";
@@ -31748,6 +32010,8 @@ export type GetOffersQueryQuery = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -31923,6 +32187,8 @@ export type OfferFieldsFragment = {
           type: string;
           width?: number | null;
           height?: number | null;
+          fit?: string | null;
+          position?: string | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "SellerContactLink";
@@ -32004,6 +32270,8 @@ export type OfferFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -32264,6 +32532,8 @@ export type OfferFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -32389,6 +32659,8 @@ export type OfferFieldsFragment = {
                 type: string;
                 width?: number | null;
                 height?: number | null;
+                fit?: string | null;
+                position?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "SellerContactLink";
@@ -32538,6 +32810,8 @@ export type BaseOfferFieldsFragment = {
         type: string;
         width?: number | null;
         height?: number | null;
+        fit?: string | null;
+        position?: string | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "SellerContactLink";
@@ -32798,6 +33072,8 @@ export type BaseOfferFieldsFragment = {
                   type: string;
                   width?: number | null;
                   height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "SellerContactLink";
@@ -32923,6 +33199,8 @@ export type BaseOfferFieldsFragment = {
                 type: string;
                 width?: number | null;
                 height?: number | null;
+                fit?: string | null;
+                position?: string | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "SellerContactLink";
@@ -33019,6 +33297,8 @@ export const SellerMetadataMediaFieldsFragmentDoc = gql`
     type
     width
     height
+    fit
+    position
   }
 `;
 export const SellerContactLinkFieldsFragmentDoc = gql`
