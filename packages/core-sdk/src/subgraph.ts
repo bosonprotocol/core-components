@@ -8155,8 +8155,10 @@ export type SellerMetadataSocialLinksArgs = {
 
 export type SellerMetadataMedia = {
   __typename?: "SellerMetadataMedia";
+  fit?: Maybe<Scalars["String"]>;
   height?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
+  position?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
   type: Scalars["String"];
   url: Scalars["String"];
@@ -8166,6 +8168,26 @@ export type SellerMetadataMedia = {
 export type SellerMetadataMedia_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  fit?: InputMaybe<Scalars["String"]>;
+  fit_contains?: InputMaybe<Scalars["String"]>;
+  fit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  fit_ends_with?: InputMaybe<Scalars["String"]>;
+  fit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_gt?: InputMaybe<Scalars["String"]>;
+  fit_gte?: InputMaybe<Scalars["String"]>;
+  fit_in?: InputMaybe<Array<Scalars["String"]>>;
+  fit_lt?: InputMaybe<Scalars["String"]>;
+  fit_lte?: InputMaybe<Scalars["String"]>;
+  fit_not?: InputMaybe<Scalars["String"]>;
+  fit_not_contains?: InputMaybe<Scalars["String"]>;
+  fit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  fit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  fit_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  fit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  fit_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_starts_with?: InputMaybe<Scalars["String"]>;
+  fit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   height?: InputMaybe<Scalars["Int"]>;
   height_gt?: InputMaybe<Scalars["Int"]>;
   height_gte?: InputMaybe<Scalars["Int"]>;
@@ -8182,6 +8204,26 @@ export type SellerMetadataMedia_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  position?: InputMaybe<Scalars["String"]>;
+  position_contains?: InputMaybe<Scalars["String"]>;
+  position_contains_nocase?: InputMaybe<Scalars["String"]>;
+  position_ends_with?: InputMaybe<Scalars["String"]>;
+  position_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_gt?: InputMaybe<Scalars["String"]>;
+  position_gte?: InputMaybe<Scalars["String"]>;
+  position_in?: InputMaybe<Array<Scalars["String"]>>;
+  position_lt?: InputMaybe<Scalars["String"]>;
+  position_lte?: InputMaybe<Scalars["String"]>;
+  position_not?: InputMaybe<Scalars["String"]>;
+  position_not_contains?: InputMaybe<Scalars["String"]>;
+  position_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  position_not_ends_with?: InputMaybe<Scalars["String"]>;
+  position_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  position_not_starts_with?: InputMaybe<Scalars["String"]>;
+  position_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_starts_with?: InputMaybe<Scalars["String"]>;
+  position_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   tag?: InputMaybe<Scalars["String"]>;
   tag_contains?: InputMaybe<Scalars["String"]>;
   tag_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -8253,8 +8295,10 @@ export type SellerMetadataMedia_Filter = {
 };
 
 export enum SellerMetadataMedia_OrderBy {
+  Fit = "fit",
   Height = "height",
   Id = "id",
+  Position = "position",
   Tag = "tag",
   Type = "type",
   Url = "url",
