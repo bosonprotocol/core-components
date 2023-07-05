@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.25.0...@bosonprotocol/subgraph@1.26.0) (2023-07-05)
+
+
+### Features
+
+* add fit and position fields to images in seller metadata ([#517](https://github.com/bosonprotocol/core-components/issues/517)) ([7382fe9](https://github.com/bosonprotocol/core-components/commit/7382fe9c25283e18dc25344037e4a734eafa700a))
+
+
+
+
+
 # [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.24.0...@bosonprotocol/subgraph@1.25.0) (2023-06-28)
 
 

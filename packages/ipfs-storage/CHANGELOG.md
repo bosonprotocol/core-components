@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.6...@bosonprotocol/ipfs-storage@1.10.7) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
 ## [1.10.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.5...@bosonprotocol/ipfs-storage@1.10.6) (2023-06-28)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

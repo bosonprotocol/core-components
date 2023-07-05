@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.27.0...@bosonprotocol/core-sdk@1.28.0) (2023-07-05)
+
+
+### Features
+
+* add fit and position fields to images in seller metadata ([#517](https://github.com/bosonprotocol/core-components/issues/517)) ([7382fe9](https://github.com/bosonprotocol/core-components/commit/7382fe9c25283e18dc25344037e4a734eafa700a))
+* add fit and position in seller metadata images ([#518](https://github.com/bosonprotocol/core-components/issues/518)) ([5ffbca4](https://github.com/bosonprotocol/core-components/commit/5ffbca4dc61afc1db9102ad32cc17532cc144b64))
+
+
+
+
+
 # [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.26.0...@bosonprotocol/core-sdk@1.27.0) (2023-06-28)
 
 
