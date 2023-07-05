@@ -39,6 +39,12 @@
           },
           "height": {
             "type": "number"
+          },
+          "fit": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
           }
         },
         "required": ["url", "type"]

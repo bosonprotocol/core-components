@@ -13,6 +13,8 @@ export type Media = {
   type?: string;
   width?: number;
   height?: number;
+  fit?: string;
+  position?: string;
 };
 
 export type SellerMetadata = {
