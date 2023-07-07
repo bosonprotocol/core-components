@@ -30,6 +30,7 @@
     "deposit-funds": "ts-node -P tsconfig.base.json ./scripts/deposit-funds.ts",
     "ipfs-upload": "ts-node -P tsconfig.base.json ./scripts/upload-to-ipfs.ts",
     "explore-offer": "ts-node -P tsconfig.base.json ./scripts/explore-offer.ts",
+    "explore-product": "ts-node -P tsconfig.base.json ./scripts/explore-product.ts",
     "create-offer": "ts-node -P tsconfig.base.json ./scripts/create-offer.ts",
     "create-offer-batch": "ts-node -P tsconfig.base.json ./scripts/create-offer-batch.ts",
     "create-seller": "ts-node -P tsconfig.base.json ./scripts/create-seller.ts",
