@@ -1,0 +1,107 @@
+{
+  "yupSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/person.schema.json",
+    "title": "Person",
+    "description": "A person",
+    "type": "object",
+    "properties": {
+      "disputePeriodDuration": {
+        "description": "Dispute Period Duration",
+        "type": "number",
+        "min": 2592000,
+        "required": true
+      },
+      "disputeResolverId": {
+        "description": "Dispute Resolver",
+        "type": "string",
+        "matches": "^(13)$",
+        "required": true
+      },
+      "exchangeToken": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "description": "Exchange Token",
+            "type": "string",
+            "flags": "i",
+            "pattern": "^(0x0000000000000000000000000000000000000000|0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa|0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0|0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747|0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f|0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832)$",
+            "required": true
+          }
+        },
+        "required": true
+      },
+      "resolutionPeriodDuration": {
+        "description": "Resolution Period Duration",
+        "type": "number",
+        "min": 1296000,
+        "required": true
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Metadata Type",
+            "type": "string",
+            "matches": "^PRODUCT_V1$",
+            "required": true
+          },
+          "exchangePolicy": {
+            "type": "object",
+            "properties": {
+              "template": {
+                "description": "Buyer/Seller Agreement Template",
+                "type": "string",
+                "flags": "i",
+                "pattern": "^(fairExchangePolicy|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz)$",
+                "required": true
+              }
+            },
+            "required": true
+          },
+          "shipping": {
+            "type": "object",
+            "properties": {
+              "returnPeriodInDays": {
+                "description": "Return Period (in days)",
+                "type": "number",
+                "min": 15,
+                "required": true
+              }
+            },
+            "required": true
+          }
+        },
+        "required": true
+      }
+    }
+  },
+  "yupConfig": {
+    "errMessages": {
+      "disputePeriodDuration": {
+        "min": "Dispute Period Duration is less than 30 days"
+      },
+      "disputeResolverId": {
+        "matches": "Dispute Resolver is not whitelisted"
+      },
+      "address": {
+        "pattern": "Currency Token is not whitelisted"
+      },
+      "resolutionPeriodDuration": {
+        "min": "Resolution Period Duration is less than 15 days"
+      },
+      "type": {
+        "matches": "Metadata Type is not PRODUCT_V1 standard",
+        "required": "Metadata Type is not specified"
+      },
+      "template": {
+        "pattern": "Buyer/Seller Agreement Template is not standard",
+        "required": "Buyer/Seller Agreement Template is not specified"
+      },
+      "returnPeriodInDays": {
+        "min": "Return Period is less than 15 days",
+        "required": "Return Period is not specified"
+      }
+    }
+  }
+}

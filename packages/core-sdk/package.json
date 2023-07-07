@@ -44,6 +44,7 @@
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
     "mustache": "^4.2.0",
+    "schema-to-yup": "^1.11.11",
     "yup": "^0.32.11"
   },
   "devDependencies": {
