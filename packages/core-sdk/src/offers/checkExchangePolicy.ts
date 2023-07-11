@@ -28,10 +28,10 @@ export type YupPropertyDef = {
 
 export type CheckExchangePolicyRules = {
   yupSchema: {
-    $schema: string;
-    $id: string;
-    title: string;
-    description: string;
+    $schema?: string;
+    $id?: string;
+    title?: string;
+    description?: string;
     type: string;
     properties: {
       [key: string]: YupPropertyDef;
