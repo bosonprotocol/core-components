@@ -14,10 +14,10 @@ const Container = styled(Grid)`
   background: ${colors.white};
   padding: 1rem;
   [data-seller-id] {
-    flex: 0 1;
+    flex: 1 1 50%;
   }
   [data-description] {
-    flex: 1 1;
+    flex: 1 1 50%;
     padding: 0 !important;
     [data-child-wrapper-button] {
       justify-content: flex-end;
