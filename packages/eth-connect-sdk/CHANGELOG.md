@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.4...@bosonprotocol/eth-connect-sdk@1.5.5) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
+## [1.5.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.3...@bosonprotocol/eth-connect-sdk@1.5.4) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
+## [1.5.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.2...@bosonprotocol/eth-connect-sdk@1.5.3) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
+## [1.5.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.1...@bosonprotocol/eth-connect-sdk@1.5.2) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
+## [1.5.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.5.0...@bosonprotocol/eth-connect-sdk@1.5.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/eth-connect-sdk
+
+
+
+
+
 # [1.5.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/eth-connect-sdk@1.4.4...@bosonprotocol/eth-connect-sdk@1.5.0) (2023-05-12)
 
 

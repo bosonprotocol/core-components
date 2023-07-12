@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import { JSONValue, JSONValueKind, TypedMap } from "@graphprotocol/graph-ts";
 
 export function convertToInt(jsonValue: JSONValue | null): i32 {
@@ -6,6 +7,15 @@ export function convertToInt(jsonValue: JSONValue | null): i32 {
   }
 
   return 0;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function convertToBigInt(jsonValue: JSONValue | null): BigInt {
+  if (jsonValue !== null && jsonValue.kind === JSONValueKind.NUMBER) {
+    return jsonValue.toBigInt();
+  }
+
+  return BigInt.fromI32(0);
 }
 
 export function convertToString(jsonValue: JSONValue | null): string {

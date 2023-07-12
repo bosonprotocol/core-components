@@ -13,6 +13,8 @@ export type Media = {
   type?: string;
   width?: number;
   height?: number;
+  fit?: string;
+  position?: string;
 };
 
 export type SellerMetadata = {
@@ -31,5 +33,17 @@ export type SellerMetadata = {
   socialLinks?: {
     url: string;
     tag: string;
+  }[];
+  salesChannels?: {
+    tag: string;
+    settingsUri?: string;
+    settingsEditor?: string;
+    link?: string;
+    deployments?: {
+      product?: { uuid: string; version: number };
+      status?: string;
+      link?: string;
+      lastUpdated?: string;
+    }[];
   }[];
 };

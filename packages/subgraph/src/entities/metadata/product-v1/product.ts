@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   ProductV1Product,
   ProductV1Brand,
@@ -561,4 +561,70 @@ function saveProductV1Sections(sections: string[]): string[] {
   }
 
   return savedSections;
+}
+
+export function removeSalesChannelFromProductV1(
+  productId: string,
+  salesChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSalesChannel(product, salesChannelId);
+    if (!removed) {
+      log.warning(
+        "salesChannel '{}' not found in product '{}' - Unable to remove",
+        [salesChannelId, productId]
+      );
+    }
+    product.save();
+  }
+}
+
+export function addSalesChannelFromProductV1(
+  productId: string,
+  salesChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSalesChannel(product, salesChannelId);
+    if (removed) {
+      log.warning("salesChannel '{}' already found in product '{}'", [
+        salesChannelId,
+        productId
+      ]);
+    }
+    let salesChannels: string[] = [];
+    if (product.salesChannels) {
+      salesChannels = product.salesChannels as string[];
+    }
+    salesChannels.push(salesChannelId);
+    product.salesChannels = salesChannels;
+    product.save();
+  } else {
+    log.warning("Product '{}' not found. Unable to update salesChannels", [
+      productId
+    ]);
+  }
+}
+
+function removeSalesChannel(
+  product: ProductV1Product,
+  salesChannelId: string
+): boolean {
+  if (product.salesChannels) {
+    const salesChannels = product.salesChannels as string[];
+    const length = product.salesChannels ? salesChannels.length : 0;
+    const newSalesChannels: string[] = [];
+    for (let i = 0; i < length; i++) {
+      const oldSalesChannelId = salesChannels ? (salesChannels[i] as string) : "";
+      if (oldSalesChannelId != salesChannelId) {
+        newSalesChannels.push(oldSalesChannelId);
+      }
+    }
+    product.salesChannels = newSalesChannels;
+    return newSalesChannels.length < length;
+  }
+  return false;
 }

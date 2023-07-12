@@ -57,10 +57,30 @@ type SellerMetadataMedia @entity {
   type: String!
   width: Int
   height: Int
+  fit: String
+  position: String
 }
 
 enum SellerMetadataType {
   SELLER
+}
+
+type SalesChannelDeployment @entity {
+  id: ID!
+  product: ProductV1Product
+  status: String
+  link: String
+  lastUpdated: String
+}
+
+type SalesChannel @entity {
+  id: ID!
+  tag: String!
+  name: String
+  settingsUri: String
+  settingsEditor: String
+  link: String
+  deployments: [SalesChannelDeployment!]
 }
 
 type SellerMetadata @entity {
@@ -76,6 +96,7 @@ type SellerMetadata @entity {
   contactLinks: [SellerContactLink!]
   contactPreference: String!
   socialLinks: [SellerSocialLink!]
+  salesChannels: [SalesChannel!]
 }
 
 type AnimationMetadata @entity {
@@ -233,6 +254,7 @@ type ProductV1Product @entity {
   """
   productV1Seller: ProductV1Seller
   sellerId: BigInt!
+  salesChannels: [SalesChannel!]
   """
   PRODUCT_V1 specific fields
   """

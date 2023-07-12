@@ -81,4 +81,4 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
   }
 }
 
-export { validateMetadata, base, productV1 };
+export { validateMetadata, base, productV1, seller };

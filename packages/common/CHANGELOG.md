@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.2...@bosonprotocol/common@1.22.3) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.22.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.1...@bosonprotocol/common@1.22.2) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.22.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.0...@bosonprotocol/common@1.22.1) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.21.1...@bosonprotocol/common@1.22.0) (2023-05-17)
+
+
+### Features
+
+* valid from date can be in the past ([#503](https://github.com/bosonprotocol/core-components/issues/503)) ([67b8919](https://github.com/bosonprotocol/core-components/commit/67b89196610fa6f6a7c68d39b9445fc4f664dec5))
+
+
+
+
+
+## [1.21.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.21.0...@bosonprotocol/common@1.21.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
 # [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.2...@bosonprotocol/common@1.21.0) (2023-05-12)
 
 

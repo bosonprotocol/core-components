@@ -26,7 +26,7 @@ const envNameToConfig: Record<
   },
   staging: {
     network: "mumbai",
-    startBlock: 28563076 // mumbai, block number when protocol was deployed
+    startBlock: 28566747 // mumbai, block number when protocol was deployed
   },
   production: {
     network: providers.getNetwork(chainId).name,

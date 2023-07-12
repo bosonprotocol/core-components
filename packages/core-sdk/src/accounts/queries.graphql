@@ -240,6 +240,8 @@ fragment SellerMetadataMediaFields on SellerMetadataMedia {
   type
   width
   height
+  fit
+  position
 }
 
 fragment SellerContactLinkFields on SellerContactLink {
@@ -252,6 +254,26 @@ fragment SellerSocialLinkFields on SellerSocialLink {
   id
   url
   tag
+}
+
+fragment SalesChannelFields on SalesChannel {
+  id
+  tag
+  name
+  settingsUri
+  settingsEditor
+  link
+  deployments {
+    id
+    product {
+      id
+      uuid
+      version
+    }
+    status
+    link
+    lastUpdated
+  }
 }
 
 fragment BaseSellerFields on Seller {
@@ -285,6 +307,9 @@ fragment BaseSellerFields on Seller {
     contactPreference
     socialLinks {
       ...SellerSocialLinkFields
+    }
+    salesChannels {
+      ...SalesChannelFields
     }
   }
 }

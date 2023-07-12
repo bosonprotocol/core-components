@@ -19,6 +19,8 @@ export function saveSellerMedias(
     const mediaHeight = convertToInt(mediaObject.get("height"));
     const mediaWidth = convertToInt(mediaObject.get("width"));
     const mediaType = convertToString(mediaObject.get("type"));
+    const mediaFit = convertToString(mediaObject.get("fit"));
+    const mediaPosition = convertToString(mediaObject.get("position"));
     const mediaId = getMediaId(mediaUrl, mediaTag);
 
     let media = SellerMetadataMedia.load(mediaId);
@@ -27,6 +29,8 @@ export function saveSellerMedias(
       media.height = mediaHeight;
       media.width = mediaWidth;
       media.type = mediaType;
+      media.fit = mediaFit;
+      media.position = mediaPosition;
     } else {
       media = new SellerMetadataMedia(mediaId);
       media.url = mediaUrl;
@@ -34,6 +38,8 @@ export function saveSellerMedias(
       media.height = mediaHeight;
       media.width = mediaWidth;
       media.type = mediaType;
+      media.fit = mediaFit;
+      media.position = mediaPosition;
     }
     media.save();
 

@@ -3,6 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.27.0...@bosonprotocol/core-sdk@1.28.0) (2023-07-05)
+
+
+### Features
+
+* add fit and position fields to images in seller metadata ([#517](https://github.com/bosonprotocol/core-components/issues/517)) ([7382fe9](https://github.com/bosonprotocol/core-components/commit/7382fe9c25283e18dc25344037e4a734eafa700a))
+* add fit and position in seller metadata images ([#518](https://github.com/bosonprotocol/core-components/issues/518)) ([5ffbca4](https://github.com/bosonprotocol/core-components/commit/5ffbca4dc61afc1db9102ad32cc17532cc144b64))
+
+
+
+
+
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.26.0...@bosonprotocol/core-sdk@1.27.0) (2023-06-28)
+
+
+### Features
+
+* add name to sales channels ([#514](https://github.com/bosonprotocol/core-components/issues/514)) ([30e3c41](https://github.com/bosonprotocol/core-components/commit/30e3c41ce0cf1668655c90699e1a0d5420dfbe09))
+
+
+
+
+
+# [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.3...@bosonprotocol/core-sdk@1.26.0) (2023-06-22)
+
+
+### Bug Fixes
+
+* convert SalesChannelDeployment.lastUpdated from BigInt to String ([#509](https://github.com/bosonprotocol/core-components/issues/509)) ([1ef97fe](https://github.com/bosonprotocol/core-components/commit/1ef97fed322e90bf05a528f8f5e0bda602cf9068))
+* convert SalesChannelDeployment.lastUpdated from number into BigInt ([#508](https://github.com/bosonprotocol/core-components/issues/508)) ([10ee4db](https://github.com/bosonprotocol/core-components/commit/10ee4dbc070ca8b0e10ee44c0a4e79b6c5975643))
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
+## [1.25.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.2...@bosonprotocol/core-sdk@1.25.3) (2023-05-19)
+
+
+### Bug Fixes
+
+* merge origin/releases/mvfw-2023 ([#504](https://github.com/bosonprotocol/core-components/issues/504)) ([3561d45](https://github.com/bosonprotocol/core-components/commit/3561d453dcc117bf52daf04e66a6be5e0122485d))
+
+
+
+
+
+## [1.25.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.1...@bosonprotocol/core-sdk@1.25.2) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+## [1.25.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.0...@bosonprotocol/core-sdk@1.25.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
 # [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.24.0...@bosonprotocol/core-sdk@1.25.0) (2023-05-12)
 
 

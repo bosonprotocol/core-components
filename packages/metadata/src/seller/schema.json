@@ -39,6 +39,12 @@
           },
           "height": {
             "type": "number"
+          },
+          "fit": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
           }
         },
         "required": ["url", "type"]
@@ -75,6 +81,56 @@
           }
         },
         "required": ["url", "tag"]
+      }
+    },
+    "salesChannels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "settingsUrl": {
+            "type": "string"
+          },
+          "settingsEditor": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "deployments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": { "type": "string" },
+                    "version": { "type": "number" }
+                  },
+                  "required": []
+                },
+                "status": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "lastUpdated": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            }
+          }
+        },
+        "required": ["tag"]
       }
     }
   },

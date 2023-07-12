@@ -8,9 +8,7 @@
       "tag": "tag",
       "type": "image/jpeg",
       "width": 505,
-      "height": 393,
-      "fit": "contain",
-      "position": "21px 33px"
+      "height": 393
     }
   ],
   "kind": "lens",
@@ -23,24 +21,23 @@
     {
       "tag": "DCL",
       "settingsUri": "file://dclsettings",
-      "deployments": []
+      "deployments": [
+        {
+          "product": {"uuid": "Product_A", "version": 1},
+          "status": "in-progress"
+        },
+        {
+          "product": {"uuid": "Product_B", "version": 5},
+          "link": "https://play.decentraland.org/?position=-75%2C114"
+        }
+      ]
     },
     {
       "tag": "Opensea",
       "settingsUri": "file://dclsettings",
-      "deployments": []
-    },
-    {
-      "tag": "CustomStoreFront",
-      "name": "custom1",
       "deployments": [
         {
-          "link": "https://custom1",
-          "lastUpdated": "1686133617000"
-        },
-        {
-          "link": "https://custom2",
-          "lastUpdated": "1686133618000"
+          "product": {"uuid": "Product_A", "version": 1}
         }
       ]
     }
