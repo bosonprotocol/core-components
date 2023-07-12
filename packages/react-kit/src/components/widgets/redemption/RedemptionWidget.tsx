@@ -18,7 +18,6 @@ import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
-import { getIpfsHeaders } from "../../../hooks/ipfs/getIpfsHeaders";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import { BosonFooter } from "../../modal/components/Redeem/BosonFooter";
 import { ExtendedOmit } from "../../../types/helpers";

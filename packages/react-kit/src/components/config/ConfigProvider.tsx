@@ -38,10 +38,10 @@ export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
           rest.minimumDisputeResolutionPeriodDays || 15,
         buyerSellerAgreementTemplate:
           rest.buyerSellerAgreementTemplate ||
-          "ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz",
+          "ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ",
         licenseTemplate:
           rest.licenseTemplate ||
-          "ipfs://QmUxAXqM6smDYj7TvS9oDe5kRoAVmkqcyWCKEeNsD6JA97"
+          "ipfs://QmeYsxxy4aDvC5ocMEDrBj5xjSKobnRNw9VDN8DBzqqdmj"
       }}
     >
       {children}
