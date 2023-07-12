@@ -292,6 +292,7 @@ export const CheckboxWrapper = styled.label.attrs((props: { error: any }) => ({
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
 
   > input {
     :disabled {
