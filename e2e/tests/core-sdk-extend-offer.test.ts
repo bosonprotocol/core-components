@@ -1,5 +1,4 @@
-import { BigNumber, Wallet } from "ethers";
-import { CoreSDK } from "../../packages/core-sdk/src";
+import { BigNumber } from "ethers";
 
 import {
   createOffer,
@@ -7,14 +6,12 @@ import {
   ensureCreatedSeller,
   initCoreSDKWithFundedWallet,
   seedWallet16,
-  seedWallet17,
   waitForGraphNodeIndexing
 } from "./utils";
 
 jest.setTimeout(60_000);
 
 const seedWallet = seedWallet16; // be sure the seedWallet is not used by another test (to allow concurrent run)
-const buyerWallet = seedWallet17;
 
 describe("core-sdk-extend-offer", () => {
   test("Extend an offer", async () => {
