@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 import { Exchange } from "../../types/exchange";
 import { useConfigContext } from "../config/ConfigContext";
-import DetailTable from "../modal/components/Redeem/exchangeView/detail/DetailTable";
+import DetailTable from "../modal/components/Redeem/ExchangeView/detail/DetailTable";
 import Grid from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";

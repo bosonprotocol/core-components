@@ -16,17 +16,17 @@ import {
 import RedeemFormView from "./RedeemForm/RedeemFormView";
 import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
 
-import { RedeemSuccess } from "./exchangeView/RedeemSuccess";
+import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
 import {
   ExpireVoucherView,
   ExpireVoucherViewProps
-} from "./exchangeView/expireVoucher/ExpireVoucherView";
-import { ExchangeView, ExchangeViewProps } from "./exchangeView/ExchangeView";
+} from "./ExchangeView/expireVoucher/ExpireVoucherView";
+import { ExchangeView, ExchangeViewProps } from "./ExchangeView/ExchangeView";
 import {
   CancellationView,
   CancellationViewProps
-} from "./exchangeView/cancellation/CancellationView";
-import { ExchangeFullDescriptionView } from "./exchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
+} from "./ExchangeView/cancellation/CancellationView";
+import { ExchangeFullDescriptionView } from "./ExchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
 import { Loading } from "../../../Loading";
 import { ContactPreference } from "./const";

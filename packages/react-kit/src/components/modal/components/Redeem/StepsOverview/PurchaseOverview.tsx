@@ -11,7 +11,7 @@ import Typography from "../../../../ui/Typography";
 import {
   LearnMore,
   ModalBackground
-} from "../exchangeView/detail/Detail.style";
+} from "../ExchangeView/detail/Detail.style";
 import { CommitStep } from "./style";
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
