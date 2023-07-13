@@ -450,4 +450,20 @@ export class OfferMixin extends BaseCoreSDK {
     }
     throw new Error(`Unsupported tokenType=${tokenType}`);
   }
+
+  /**
+   * Check a given offer meets ExchangePolicy rules.
+   * @param offerId - Id of offer to render agreement for.
+   * @returns Contractual agreement as string.
+   */
+  public async checkExchangePolicy(
+    offerId: BigNumberish,
+    rules: offers.CheckExchangePolicyRules
+  ): Promise<offers.CheckExchangePolicyResult> {
+    const offerData = await offers.subgraph.getOfferById(
+      this._subgraphUrl,
+      offerId
+    );
+    return offers.checkExchangePolicy(offerData, rules);
+  }
 }

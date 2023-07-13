@@ -25,6 +25,7 @@ import {
 import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
 import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
+import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
 
 jest.setTimeout(120_000);
 
@@ -1035,4 +1036,48 @@ describe("additional tests", () => {
 
     // Do not create the offer with this invalid returnPeriod because the subgraph does not support it
   });
+});
+
+describe("core-sdk-check-exchange-policy", () => {
+  test("check a compliant fair exchange policy offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const template = "fairExchangePolicy";
+    const metadata = mockProductV1Metadata(template);
+    metadata.shipping.returnPeriod = "15";
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer?.id).toBeTruthy();
+    const result = await coreSDK.checkExchangePolicy(
+      offer?.id as string,
+      exchangePolicyRules
+    );
+    expect(result.isValid).toBe(true);
+  });
+
+  test("check a not compliant fair exchange policy offer", async () => {
+    const { coreSDK, fundedWallet: sellerWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet);
+
+    const template = "unfairExchangePolicy";
+    const metadata = mockProductV1Metadata(template);
+    metadata.shipping.returnPeriod = "15";
+    const { offerArgs } = await createOfferArgs(coreSDK, metadata);
+    resolveDateValidity(offerArgs);
+
+    const offer = await createOffer(coreSDK, sellerWallet, offerArgs);
+    expect(offer?.id).toBeTruthy();
+    const result = await coreSDK.checkExchangePolicy(
+      offer?.id as string,
+      exchangePolicyRules
+    );
+    expect(result.isValid).toBe(false);
+    expect(result.errors.length).toEqual(1);
+    expect(result.errors[0].path).toEqual("metadata.exchangePolicy.template");
+    expect(result.errors[0].value).toEqual("unfairExchangePolicy");
+  });
+
 });

@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/core-sdk",
-  "version": "1.28.0",
+  "version": "1.29.0-alpha.0",
   "description": "Facilitates interaction with the contracts and subgraphs of the Boson Protocol",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -44,6 +44,7 @@
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
     "mustache": "^4.2.0",
+    "schema-to-yup": "^1.11.11",
     "yup": "^0.32.11"
   },
   "devDependencies": {

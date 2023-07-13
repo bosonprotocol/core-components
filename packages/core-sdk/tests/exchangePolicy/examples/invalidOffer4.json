@@ -1,0 +1,224 @@
+{
+  "id": "10",
+  "createdAt": "1683819387",
+  "price": "100000000000000",
+  "sellerDeposit": "0",
+  "protocolFee": "500000000000",
+  "agentFee": "0",
+  "agentId": "0",
+  "buyerCancelPenalty": "0",
+  "quantityAvailable": "97",
+  "quantityInitial": "100",
+  "validFromDate": "1683819900",
+  "validUntilDate": "1685570340",
+  "voucherRedeemableFromDate": "1683819600",
+  "voucherRedeemableUntilDate": "1685570340",
+  "disputePeriodDuration": "2592000",
+  "voucherValidDuration": "0",
+  "resolutionPeriodDuration": "1296000",
+  "metadataUri": "ipfs://QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
+  "metadataHash": "QmSpHGbRyfXqAqJ5xHv8E2TZjy6LDmUYoXUGHrcx7RrqGB",
+  "voided": false,
+  "voidedAt": null,
+  "disputeResolverId": "13",
+  "numberOfCommits": "3",
+  "numberOfRedemptions": "3",
+  "condition": null,
+  "seller": {
+    "id": "30",
+    "assistant": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "admin": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "clerk": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "treasury": "0xe28b648541a5376383865672dc1589c02634ec42",
+    "authTokenId": "0",
+    "authTokenType": 0,
+    "voucherCloneAddress": "0x87ef301c97c72648bab63c0ea77eddf145d4317b",
+    "active": true,
+    "contractURI": "ipfs://QmXV5eGPvsLevPPaSyYwV97yHbY1vPfRKK3Y7mpRKKtQ4d",
+    "royaltyPercentage": "200",
+    "metadataUri": "ipfs://QmeebkVhK1jgwwX4mKnBSfNv47vqDeeAZ6MZ5SjLUv7c31",
+    "metadata": {
+      "id": "30-seller-metadata",
+      "createdAt": "1687943706",
+      "name": "reg",
+      "description": "reg",
+      "legalTradingName": "legal reg",
+      "type": "SELLER",
+      "kind": "regular",
+      "website": "www.reg2.com",
+      "images": [
+        {
+          "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmnvfqgaszimjciuxypim4brpun2nxkiqmth6rtbcmvbnn-profile",
+          "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmNvFQGASzimJciuXyPiM4brpuN2nXKiqMtH6RtBcmvBNN",
+          "tag": "profile",
+          "type": "image/png",
+          "width": 200,
+          "height": 200,
+          "fit": null,
+          "position": null
+        },
+        {
+          "id": "https://bosonprotocol.infura-ipfs.io/ipfs/qmqsvfkcua3l9kxixtphym6vtzvvet5y4eayjnuuycp1kg-cover",
+          "url": "https://bosonprotocol.infura-ipfs.io/ipfs/QmQSVFKCua3L9kxiXtpHYM6Vtzvvet5Y4EAyjnuUyCP1kG",
+          "tag": "cover",
+          "type": "image/jpeg",
+          "width": 1531,
+          "height": 190,
+          "fit": null,
+          "position": null
+        }
+      ],
+      "contactLinks": [
+        {
+          "id": "reg@email.com-email-contact-link",
+          "url": "reg@email.com",
+          "tag": "email"
+        }
+      ],
+      "contactPreference": "xmtp_and_email",
+      "socialLinks": [],
+      "salesChannels": [
+        {
+          "id": "30-custom storefront-customstore1-sale-channel",
+          "tag": "Custom storefront",
+          "name": "customstore1",
+          "settingsUri": null,
+          "settingsEditor": null,
+          "link": null,
+          "deployments": [
+            {
+              "id": "30-custom storefront-customstore1-sale-channel-https://bosonprotocol.infura-ipfs.io/ipfs/qmvsxnwynzhetbyahbsmgvuhqnkyyqsjrsem5xambde7hs-deployment",
+              "product": null,
+              "status": null,
+              "link": "https://bosonprotocol.infura-ipfs.io/ipfs/QmVsxnWyNZhETbYahBsmgVuhqNKYyQsjrSeM5XAMbDE7hS",
+              "lastUpdated": "1687773517"
+            }
+          ]
+        },
+        {
+          "id": "30-custom storefront-hola-sale-channel",
+          "tag": "Custom storefront",
+          "name": "hola",
+          "settingsUri": null,
+          "settingsEditor": null,
+          "link": null,
+          "deployments": [
+            {
+              "id": "30-custom storefront-hola-sale-channel-https://bosonprotocol.infura-ipfs.io/ipfs/qmrhxgik53crhkx11m518tku8p3ybddcjado3mcrt9hjfj-deployment",
+              "product": null,
+              "status": null,
+              "link": "https://bosonprotocol.infura-ipfs.io/ipfs/QmRhXgik53crHKX11M518tKU8p3yBddCJADo3Mcrt9HJFj",
+              "lastUpdated": "1687862702"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "exchangeToken": {
+    "id": "0x0000000000000000000000000000000000000000",
+    "address": "0x0000000000000000000000000000000000000000",
+    "decimals": "18",
+    "symbol": "MATIC",
+    "name": "Matic"
+  },
+  "disputeResolver": {
+    "id": "13",
+    "escalationResponsePeriod": "7775999",
+    "admin": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "clerk": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "treasury": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "assistant": "0xd347c4a2248b231b39fce4eeb6b3f6e3289d897c",
+    "metadataUri": "ipfs://dispute-resolver-uri",
+    "active": true,
+    "sellerAllowList": [],
+    "fees": [
+      {
+        "id": "13-0x0000000000000000000000000000000000000000-fee",
+        "tokenAddress": "0x0000000000000000000000000000000000000000",
+        "tokenName": "ETH",
+        "token": {
+          "id": "0x0000000000000000000000000000000000000000",
+          "address": "0x0000000000000000000000000000000000000000",
+          "decimals": "18",
+          "symbol": "MATIC",
+          "name": "Matic"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f-fee",
+        "tokenAddress": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+        "tokenName": "DAI",
+        "token": {
+          "id": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          "address": "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          "decimals": "18",
+          "symbol": "DAI",
+          "name": "DAI"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0-fee",
+        "tokenAddress": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+        "tokenName": "BOSON",
+        "token": {
+          "id": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+          "address": "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0",
+          "decimals": "18",
+          "symbol": "BOSON",
+          "name": "Boson Token (PoS)"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832-fee",
+        "tokenAddress": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+        "tokenName": "USDT",
+        "token": {
+          "id": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+          "address": "0xa02f6adc7926efebbd59fd43a84f4e0c0c91e832",
+          "decimals": "6",
+          "symbol": "USDT",
+          "name": "Tether USD"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa-fee",
+        "tokenAddress": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+        "tokenName": "WETH",
+        "token": {
+          "id": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+          "address": "0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa",
+          "decimals": "18",
+          "symbol": "WETH",
+          "name": "Wrapped Ether"
+        },
+        "feeAmount": "0"
+      },
+      {
+        "id": "13-0xe6b8a5cf854791412c1f6efc7caf629f5df1c747-fee",
+        "tokenAddress": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+        "tokenName": "USDC",
+        "token": {
+          "id": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+          "address": "0xe6b8a5cf854791412c1f6efc7caf629f5df1c747",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "Mumbai USD Coin"
+        },
+        "feeAmount": "0"
+      }
+    ]
+  },
+  "disputeResolutionTerms": {
+    "id": "13-10-terms",
+    "disputeResolverId": "13",
+    "escalationResponsePeriod": "7775999",
+    "feeAmount": "0",
+    "buyerEscalationDeposit": "0"
+  },
+  "range": null
+}
