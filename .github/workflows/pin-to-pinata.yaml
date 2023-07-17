@@ -1,4 +1,4 @@
-name: CI
+name: pin-to-pinata
 
 on:
   schedule:
