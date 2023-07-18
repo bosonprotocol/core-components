@@ -2,8 +2,7 @@ export function getIpfsHeaders(
   infuraProjectId?: string,
   infuraProjectSecret?: string
 ) {
-  if (!infuraProjectId && !infuraProjectSecret) {
-    console.error("IpfsProjectId and IpfsProjectSecret must be defined");
+  if (!infuraProjectId || !infuraProjectSecret) {
     return {} as Headers;
   }
 

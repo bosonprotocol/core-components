@@ -12,8 +12,8 @@ export type IpfsProviderProps = Omit<
   >,
   "ipfsMetadataStorageHeaders"
 > & {
-  ipfsProjectId: string;
-  ipfsProjectSecret: string;
+  ipfsProjectId?: string;
+  ipfsProjectSecret?: string;
   children: ReactNode;
 };
 

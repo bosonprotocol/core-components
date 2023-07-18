@@ -16,11 +16,12 @@ export default function ChatProvider({ children }: Props) {
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
+  const [chatEnvName, setChatEnvName] = useState<string>("undefined");
   const coreSDK = useCoreSDKWithContext();
   const { envName } = useEnvContext();
-  const chatEnvName = getChatEnvName(envName, coreSDK.contracts);
   useEffect(() => {
     if (signer && initialize && !bosonXmtp) {
+      setChatEnvName(getChatEnvName(envName, coreSDK.contracts));
       setLoading(true);
       BosonXmtpClient.initialise(
         signer,
@@ -34,7 +35,7 @@ export default function ChatProvider({ children }: Props) {
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signer, initialize]);
+  }, [signer, initialize, coreSDK]);
   return (
     <Context.Provider
       value={{

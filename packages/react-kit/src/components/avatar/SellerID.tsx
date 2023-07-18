@@ -114,12 +114,13 @@ const SellerID: React.FC<
           <ImageContainer>
             {(lens?.picture as MediaSet) ||
             (artist?.images && artist?.images.length > 0) ? (
-              <Image
+              <img
                 src={getLensImageUrl(
                   getLensProfilePictureUrl(lens) ||
                     ((artist?.images?.[0]?.url || "") as string),
                   ipfsGateway
                 )}
+                alt="avatar"
                 style={{
                   height: "1rem",
                   width: "1rem",
