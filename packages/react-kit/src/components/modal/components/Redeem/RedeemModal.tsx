@@ -48,6 +48,7 @@ enum ActiveStep {
 }
 
 type RedeemModalProps = {
+  exchange?: Exchange;
   myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
   myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
   myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
@@ -64,6 +65,7 @@ type RedeemModalProps = {
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
 };
 export default function RedeemModal({
+  exchange: selectedExchange,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
   myItemsOnCancelExchange,
@@ -192,7 +194,14 @@ export default function RedeemModal({
             <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
                 <StepsOverview
-                  onNextClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
+                  onNextClick={() => {
+                    if (selectedExchange) {
+                      setExchange(selectedExchange);
+                      setActiveStep(ActiveStep.EXCHANGE_VIEW);
+                    } else {
+                      setActiveStep(ActiveStep.MY_ITEMS);
+                    }
+                  }}
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems

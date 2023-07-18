@@ -21,6 +21,7 @@ import {
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import { BosonFooter } from "../../modal/components/Redeem/BosonFooter";
 import { ExtendedOmit } from "../../../types/helpers";
+import { useExchanges } from "../../../hooks/useExchanges";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -31,26 +32,40 @@ type RedemptionProps = {
       "headerComponent" | "footerComponent" | "title"
     >
   >;
+  exchangeId?: string;
 };
 function Redemption({
   trigger: Trigger,
   modalProps,
-  buttonProps
+  buttonProps,
+  exchangeId
 }: RedemptionProps) {
   const { showModal } = useModal();
+  const { data: exchanges } = useExchanges(
+    {
+      id: exchangeId
+    },
+    {
+      enabled: !!exchangeId
+    }
+  );
+  const exchange = exchanges?.[0];
   const onClick = useCallback(() => {
-    showModal("REDEEM", {
-      ...modalProps,
-      headerComponent: (
-        <Grid>
-          <Typography tag="h3">Redeem your item</Typography>
-          <ConnectButton showChangeWallet />
-        </Grid>
-      ),
-      footerComponent: <BosonFooter />
-    });
+    if (!exchangeId || !!exchange) {
+      showModal("REDEEM", {
+        ...modalProps,
+        exchange,
+        headerComponent: (
+          <Grid>
+            <Typography tag="h3">Redeem your item</Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalProps]);
+  }, [modalProps, exchangeId, exchange]);
   if (Trigger) {
     return <Trigger onClick={onClick} />;
   }
