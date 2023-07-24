@@ -24,7 +24,13 @@ export const theme = {
       bosonSkyBlue: "#51BEFA",
       navy: "#222539",
       grey2: "#D3D5DB",
-      grey: "grey"
+      grey: "grey",
+      grey3: "#A1A1A1",
+      darkRed: "darkred",
+      cyan: "#00FFFF",
+      lightArrowColor: "#dedfe3",
+      darkGreyTimeStamp: "#E8EAF1",
+      lightGrey2: "#eff0f7"
     }
   },
   mobile: "768px",
