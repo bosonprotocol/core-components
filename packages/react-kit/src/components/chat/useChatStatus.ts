@@ -47,7 +47,7 @@ export const useChatStatus = (): {
           setChatInitializationStatus("ERROR");
         });
     }
-  }, [address, bosonXmtp, chatInitializationStatus, envName]);
+  }, [address, bosonXmtp, chatEnvName, chatInitializationStatus, envName]);
   return {
     chatInitializationStatus,
     error,
