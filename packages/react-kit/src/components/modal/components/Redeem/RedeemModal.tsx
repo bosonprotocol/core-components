@@ -161,22 +161,28 @@ export default function RedeemModal({
   if (isLoading) {
     return <Loading />;
   }
+  const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
+    ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
+    : undefined;
+  console.log("defaultDeliveryAddress", mockedDeliveryAddress);
   return (
     <>
       <Formik<FormType>
         innerRef={formRef}
         validationSchema={validationSchema}
         onSubmit={() => {}} // eslint-disable-line @typescript-eslint/no-empty-function
-        initialValues={{
-          [FormModel.formFields.name.name]: "",
-          [FormModel.formFields.streetNameAndNumber.name]: "",
-          [FormModel.formFields.city.name]: "",
-          [FormModel.formFields.state.name]: "",
-          [FormModel.formFields.zip.name]: "",
-          [FormModel.formFields.country.name]: "",
-          [FormModel.formFields.email.name]: "",
-          [FormModel.formFields.phone.name]: ""
-        }}
+        initialValues={
+          mockedDeliveryAddress || {
+            [FormModel.formFields.name.name]: "",
+            [FormModel.formFields.streetNameAndNumber.name]: "",
+            [FormModel.formFields.city.name]: "",
+            [FormModel.formFields.state.name]: "",
+            [FormModel.formFields.zip.name]: "",
+            [FormModel.formFields.country.name]: "",
+            [FormModel.formFields.email.name]: "",
+            [FormModel.formFields.phone.name]: ""
+          }
+        }
         validateOnMount
       >
         {({ errors }) => {
