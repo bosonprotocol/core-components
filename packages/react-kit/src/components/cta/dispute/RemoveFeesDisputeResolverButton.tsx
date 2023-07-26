@@ -44,7 +44,7 @@ export const RemoveFeesDisputeResolver = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async (e) => {
+      onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
           try {

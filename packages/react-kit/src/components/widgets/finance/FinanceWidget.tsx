@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import useOffersBacked from "./useOffersBacked";
-import Loading from "../../ui/Loading";
+import Loading from "../../ui/loading/Loading";
 import Finance, { Props } from "./Finance";
 import { useSellerRoles } from "./useSellerRoles";
 import { useConvertionRate } from "./convertion-rate/useConvertionRate";
@@ -14,11 +14,19 @@ import { useSellerDeposit } from "./useSellerDeposit";
 import useFunds from "./useFunds";
 import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { EnvironmentType } from "@bosonprotocol/core-sdk";
-import { EnvironmentProvider } from "../../environment/EnvironmentProvider";
+import {
+  EnvironmentProvider,
+  EnvironmentProviderProps
+} from "../../environment/EnvironmentProvider";
 import ModalProvider from "../../modal/ModalProvider";
-import ConvertionRateProvider from "./convertion-rate/ConvertionRateProvider";
+import ConvertionRateProvider, {
+  ConvertionRateProviderProps
+} from "./convertion-rate/ConvertionRateProvider";
 import GlobalStyle from "../../styles/GlobalStyle";
+import {
+  ConfigProvider,
+  ConfigProviderProps
+} from "../../config/ConfigProvider";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
@@ -83,15 +91,16 @@ const queryClient = new QueryClient({
     }
   }
 });
-type FinanceWidgetProps = {
-  envName: EnvironmentType;
-  sellerId: string;
-  defaultTokensList: string;
-};
+
+type FinanceWidgetProps = ConfigProviderProps &
+  EnvironmentProviderProps &
+  ConvertionRateProviderProps &
+  Parameters<typeof Component>[0];
 export function FinanceWidget({
   envName,
   sellerId,
-  defaultTokensList
+  defaultTokensList,
+  ...rest
 }: FinanceWidgetProps) {
   return (
     <EnvironmentProvider envName={envName}>
@@ -99,15 +108,17 @@ export function FinanceWidget({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
       <GlobalStyle />
-      <WalletConnectionProvider envName={envName}>
-        <QueryClientProvider client={queryClient}>
-          <ConvertionRateProvider defaultTokensList={defaultTokensList}>
-            <ModalProvider>
-              <Component sellerId={sellerId} />
-            </ModalProvider>
-          </ConvertionRateProvider>
-        </QueryClientProvider>
-      </WalletConnectionProvider>
+      <ConfigProvider {...rest}>
+        <WalletConnectionProvider envName={envName}>
+          <QueryClientProvider client={queryClient}>
+            <ConvertionRateProvider defaultTokensList={defaultTokensList}>
+              <ModalProvider>
+                <Component sellerId={sellerId} />
+              </ModalProvider>
+            </ConvertionRateProvider>
+          </QueryClientProvider>
+        </WalletConnectionProvider>
+      </ConfigProvider>
     </EnvironmentProvider>
   );
 }

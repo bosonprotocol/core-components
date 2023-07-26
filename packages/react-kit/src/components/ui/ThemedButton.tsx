@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { forwardRef, Fragment } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
 
 import { zIndex } from "./zIndex";
@@ -6,7 +6,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 import * as Styles from "./styles";
 import Typography from "./Typography";
 import { theme } from "../../theme";
-import Loading from "./Loading";
+import { Loading } from "../Loading";
 
 const colors = theme.colors.light;
 
@@ -37,6 +37,15 @@ const BaseButton = styled.button<{
           color: ${props.theme.hover.color} !important;
           svg {
             fill: ${props.theme.hover.color} !important;
+            line {
+              stroke: ${props.theme.hover.color} !important;
+            }
+            polyline {
+              stroke: ${props.theme.hover.color} !important;
+            }
+            path {
+              stroke: ${props.theme.hover.color} !important;
+            }
           }
         `};
         ${props.theme.hover.borderColor &&
@@ -90,8 +99,12 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
   return {
     primary: {
       color: withBosonStyle ? colors.black : "var(--textColor)",
-      background: colors.green,
-      borderColor: colors.green,
+      background: withBosonStyle
+        ? colors.green
+        : `var(--accentNoDefault, ${colors.green})`,
+      borderColor: withBosonStyle
+        ? colors.green
+        : `var(--accentNoDefault, ${colors.green})`,
       borderWidth: 2,
       hover: {
         background: colors.black,
@@ -171,7 +184,6 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         background: colors.border
       }
     },
-
     blank: {
       color: `${colors.black}4d`,
       padding: "0.75rem 0.5rem",
@@ -185,6 +197,16 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
     blankSecondary: {
       color: "var(--accent)",
       padding: "0.75rem 0.5rem",
+      hover: {
+        borderColor: colors.secondary,
+        background: colors.border,
+        color: colors.black
+      }
+    },
+    blankSecondaryOutline: {
+      color: "var(--accent)",
+      borderWidth: 1,
+      borderColor: colors.secondary,
       hover: {
         borderColor: colors.secondary,
         background: colors.border,

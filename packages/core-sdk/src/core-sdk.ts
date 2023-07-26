@@ -60,9 +60,17 @@ export class CoreSDK extends BaseCoreSDK {
         ...defaultConfig.metaTx,
         ...args.metaTx
       },
-      lensContracts: defaultConfig.lens,
+      lens: defaultConfig.lens,
       contracts: defaultConfig.contracts
     });
+  }
+
+  public get lens() {
+    return this._lens;
+  }
+
+  public get contracts() {
+    return this._contracts;
   }
 
   public get subgraphUrl() {
@@ -75,6 +83,10 @@ export class CoreSDK extends BaseCoreSDK {
 
   public get isMetaTxConfigSet() {
     return this.checkMetaTxConfigSet();
+  }
+
+  public get getTxExplorerUrl() {
+    return this._getTxExplorerUrl;
   }
 
   public checkMetaTxConfigSet(

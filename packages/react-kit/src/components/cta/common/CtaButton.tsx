@@ -54,7 +54,7 @@ export function CtaButton<T>({
       size={size}
       disabled={disabled}
       ref={buttonRef}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (!isLoading) {
           clickHandler(e);
         }

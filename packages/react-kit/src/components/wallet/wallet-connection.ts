@@ -2,7 +2,7 @@ import { Chain, connectorsForWallets, wallet } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-type EnvironmentType = "local" | "testing" | "staging" | "production"; // TODO: export EnvironmentType in react-kit
+export type EnvironmentType = "local" | "testing" | "staging" | "production";
 
 const chainPerEnviromnent: Record<EnvironmentType, Chain> = {
   local: chain.polygonMumbai,
@@ -31,9 +31,12 @@ export const getWagmiClient = (envName: EnvironmentType) => {
       wallets: [wallet.metaMask({ chains }), wallet.walletConnect({ chains })]
     }
   ]);
-  return createClient({
-    autoConnect: true,
-    connectors,
-    provider
-  });
+  return {
+    wagmiClient: createClient({
+      autoConnect: true,
+      connectors,
+      provider
+    }),
+    chains
+  };
 };

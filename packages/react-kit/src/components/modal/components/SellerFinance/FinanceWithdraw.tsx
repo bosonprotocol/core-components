@@ -26,6 +26,8 @@ import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import { subgraph } from "@bosonprotocol/core-sdk";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -63,7 +65,7 @@ export default function FinanceWithdraw({
 
   const { data: signer } = useSigner();
   const { address } = useAccount();
-  // const addPendingTransaction = useAddPendingTransaction();
+  const addPendingTransaction = useAddPendingTransactionWithContext();
 
   const { data: dataBalance, refetch } = useBalance(
     exchangeToken !== ethers.constants.AddressZero
@@ -168,6 +170,12 @@ export default function FinanceWithdraw({
             showModal("TRANSACTION_SUBMITTED", {
               action: "Finance withdraw",
               txHash: hash
+            });
+            addPendingTransaction({
+              type: subgraph.EventType.FundsWithdrawn,
+              hash: hash,
+              isMetaTx: isMetaTx,
+              accountType: "Account"
             });
           }}
           onSuccess={async () => {

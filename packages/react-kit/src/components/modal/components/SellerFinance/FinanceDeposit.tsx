@@ -20,6 +20,8 @@ import { Provider } from "@bosonprotocol/ethers-sdk";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 interface Props {
   protocolBalance: string;
@@ -60,8 +62,7 @@ export default function FinanceDeposit({
   );
 
   const { showModal, hideModal } = useModal();
-  // TODO: comment out?
-  // const addPendingTransaction = useAddPendingTransaction();
+  const addPendingTransaction = useAddPendingTransactionWithContext();
 
   const tokenStep = 10 ** -Number(tokenDecimals);
   const step = 0.01;
@@ -155,13 +156,12 @@ export default function FinanceDeposit({
                   action: "Finance deposit",
                   txHash: hash
                 });
-                // TODO: comment out?
-                // addPendingTransaction({
-                //   type: subgraph.EventType.FundsDeposited,
-                //   hash: hash,
-                //   isMetaTx,
-                //   accountType: "Seller"
-                // });
+                addPendingTransaction({
+                  type: subgraph.EventType.FundsDeposited,
+                  hash: hash,
+                  isMetaTx,
+                  accountType: "Seller"
+                });
                 break;
               default:
                 break;

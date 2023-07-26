@@ -71,6 +71,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
   useEffect(() => {
     const newCoreSdk = initCoreSdk(config);
     setCoreSdk(newCoreSdk);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.web3Provider, config.envName]);
 
   return coreSdk;
@@ -90,6 +91,7 @@ function initCoreSdk(config: CoreSdkConfig) {
   const metaTx = config.metaTx || defaultConfig.metaTx;
 
   const instance = new CoreSDK({
+    ...defaultConfig,
     web3Lib: new EthersAdapter(connectedProvider),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
@@ -108,7 +110,7 @@ function initCoreSdk(config: CoreSdkConfig) {
     }),
     chainId: defaultConfig.chainId,
     metaTx,
-    lensContracts: config.lensContracts || defaultConfig.lens
+    lens: config.lensContracts || defaultConfig.lens
   });
   Object.setPrototypeOf(instance, CoreSDK.prototype);
   return instance;

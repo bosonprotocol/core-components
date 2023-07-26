@@ -5,10 +5,11 @@ import styled from "styled-components";
 
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import { ModalProps } from "../../../ModalContext";
+import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
+import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
 
 const colors = theme.colors.light;
 const StyledArrowCircleUp = styled(ArrowCircleUp)`
@@ -24,19 +25,15 @@ const StyledButton = styled(Button)`
 interface Props {
   action: string;
   txHash: string;
-  hideModal: NonNullable<ModalProps["hideModal"]>;
 }
-export default function TransactionSubmittedModal({
-  action,
-  txHash,
-  hideModal
-}: Props) {
-  const { updateProps, store } = useModal();
+export default function TransactionSubmittedModal({ action, txHash }: Props) {
+  const { updateProps, store, hideModal } = useModal();
+  const coreSDK = useCoreSDKWithContext();
   useEffect(() => {
     updateProps<"TRANSACTION_SUBMITTED">({
       ...store,
       modalProps: {
-        ...store.modalProps
+        ...(store.modalProps as GenericModalProps<"TRANSACTION_SUBMITTED">)
       },
       modalSize: "auto",
       modalMaxWidth: {
@@ -45,6 +42,7 @@ export default function TransactionSubmittedModal({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Grid
       flexDirection="column"
@@ -56,17 +54,21 @@ export default function TransactionSubmittedModal({
       <Typography fontWeight="600" $fontSize="1.5rem" lineHeight="150%">
         {action} transaction submitted
       </Typography>
-      {/* <a href={CONFIG.getTxExplorerUrl?.(txHash)} target="_blank"> */}
-      <Typography
-        fontWeight="600"
-        $fontSize="1rem"
-        lineHeight="150%"
-        margin="0.5rem 0 1.5rem 0"
-        color={colors.secondary}
+      <a
+        href={coreSDK.getTxExplorerUrl?.(txHash)}
+        target="_blank"
+        rel="noreferrer"
       >
-        View on Explorer
-      </Typography>
-      {/* </a> */}
+        <Typography
+          fontWeight="600"
+          $fontSize="1rem"
+          lineHeight="150%"
+          margin="0.5rem 0 1.5rem 0"
+          color={colors.secondary}
+        >
+          View on Explorer
+        </Typography>
+      </a>
 
       <StyledButton onClick={hideModal} withBosonStyle>
         Close

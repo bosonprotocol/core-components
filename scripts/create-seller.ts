@@ -38,7 +38,8 @@ async function main() {
       contractUri: "",
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: "0"
+      authTokenType: "0",
+      metadataUri: ""
     };
   }
 

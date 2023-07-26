@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Button, ButtonProps } from "../buttons/Button";
+import { Button } from "../buttons/Button";
 import {
   CurrencyDisplay,
   Currencies
@@ -26,6 +26,7 @@ import {
   ExchangeImageWrapper,
   ExchangeCTAWrapper
 } from "./ExchangeCard.styles";
+import { IButton } from "../ui/ThemedButton";
 
 export type ExchangeCardStatus = "REDEEMED" | "CANCELLED" | "COMMITTED";
 
@@ -47,7 +48,7 @@ interface Base {
 
 interface RedeemCard extends Base {
   status: Extract<ExchangeCardStatus, "REDEEMED">;
-  disputeButtonConfig: ButtonProps;
+  disputeButtonConfig: IButton;
 }
 
 interface CancelledCard extends Base {
@@ -56,8 +57,8 @@ interface CancelledCard extends Base {
 
 interface CommittedCard extends Base {
   status: Extract<ExchangeCardStatus, "COMMITTED">;
-  redeemButtonConfig: ButtonProps;
-  cancelButtonConfig: ButtonProps;
+  redeemButtonConfig: IButton;
+  cancelButtonConfig: IButton;
   bottomText?: string;
 }
 
@@ -95,7 +96,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   variant="secondaryInverted"
                   showBorder={false}
                   {...disputeButtonConfig}
-                  onClick={(e) => {
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
                     e.stopPropagation();
                     disputeButtonConfig?.onClick?.(e);
                   }}
@@ -114,7 +117,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 <Button
                   variant="primaryFill"
                   {...redeemButtonConfig}
-                  onClick={(e) => {
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
                     e.stopPropagation();
                     redeemButtonConfig?.onClick?.(e);
                   }}
@@ -125,7 +130,9 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                   variant="secondaryInverted"
                   showBorder={false}
                   {...cancelButtonConfig}
-                  onClick={(e) => {
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
                     e.stopPropagation();
                     cancelButtonConfig?.onClick?.(e);
                   }}

@@ -1,8 +1,7 @@
-import React from "react";
 import { createGlobalStyle } from "styled-components";
+import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
 
-import { breakpoint } from "./breakpoint";
 const colors = theme.colors.light;
 const GlobalStyle = createGlobalStyle<
   Partial<{
@@ -49,7 +48,7 @@ const GlobalStyle = createGlobalStyle<
     --accent: ${(props) =>
       props.$accentColor && !props.$withBosonStyles
         ? props.$accentColor
-        : colors.secondary};
+        : colors.accent};
     --accentNoDefault : ${(props) =>
       props.$accentColor && !props.$withBosonStyles ? props.$accentColor : ""};
     --accentDark: ${(props) =>

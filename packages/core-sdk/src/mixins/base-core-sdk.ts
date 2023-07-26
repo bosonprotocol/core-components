@@ -2,8 +2,8 @@ import {
   Web3LibAdapter,
   MetadataStorage,
   MetaTxConfig,
-  LensContracts,
-  ContractAddresses
+  ContractAddresses,
+  Lens
 } from "@bosonprotocol/common";
 import { TokenInfoManager } from "../utils/tokenInfoManager";
 
@@ -18,8 +18,12 @@ export class BaseCoreSDK {
   protected _tokenInfoManager: TokenInfoManager;
 
   protected _metaTxConfig?: Partial<MetaTxConfig>;
-  protected _lensContracts?: LensContracts;
+  protected _lens?: Lens;
   protected _contracts?: ContractAddresses;
+  protected _getTxExplorerUrl?: (
+    txHash?: string,
+    isAddress?: boolean
+  ) => string;
 
   /**
    * Creates an instance of `BaseCoreSDK`
@@ -33,8 +37,9 @@ export class BaseCoreSDK {
     theGraphStorage?: MetadataStorage;
     chainId: number;
     metaTx?: Partial<MetaTxConfig>;
-    lensContracts?: LensContracts;
+    lens?: Lens;
     contracts?: ContractAddresses;
+    getTxExplorerUrl?: (txHash?: string, isAddress?: boolean) => string;
   }) {
     this._web3Lib = opts.web3Lib;
     this._subgraphUrl = opts.subgraphUrl;
@@ -43,8 +48,9 @@ export class BaseCoreSDK {
     this._theGraphStorage = opts.theGraphStorage;
     this._chainId = opts.chainId;
     this._metaTxConfig = opts.metaTx;
-    this._lensContracts = opts.lensContracts;
+    this._lens = opts.lens;
     this._contracts = opts.contracts;
+    this._getTxExplorerUrl = opts.getTxExplorerUrl;
   }
 
   protected assertAndGetMetaTxConfig(

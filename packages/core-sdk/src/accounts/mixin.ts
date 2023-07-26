@@ -118,7 +118,7 @@ export class AccountsMixin extends BaseCoreSDK {
       address,
       queryVars
     );
-    if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
+    if (!seller && this._lens?.LENS_HUB_CONTRACT) {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
@@ -151,11 +151,11 @@ export class AccountsMixin extends BaseCoreSDK {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
     }
-    if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
+    if (!this._lens || !this._lens?.LENS_HUB_CONTRACT) {
       throw new Error("LENS contract is not configured in Core-SDK");
     }
     const balance = await erc721.handler.balanceOf({
-      contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+      contractAddress: this._lens?.LENS_HUB_CONTRACT,
       owner: address,
       web3Lib: this._web3Lib
     });
@@ -164,7 +164,7 @@ export class AccountsMixin extends BaseCoreSDK {
     const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
       const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
-        contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+        contractAddress: this._lens?.LENS_HUB_CONTRACT,
         owner: address,
         index,
         web3Lib: this._web3Lib

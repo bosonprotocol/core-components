@@ -39,6 +39,8 @@ const RenderModalComponent = ({
       hideModal={hideModal}
       title={store.modalProps?.title}
       headerComponent={store.modalProps?.headerComponent}
+      footerComponent={store.modalProps?.footerComponent}
+      contentStyle={store.modalProps?.contentStyle}
       closable={store.modalProps?.closable}
       modalType={store.modalType}
     >
@@ -109,7 +111,7 @@ export default function ModalProvider({ children }: Props) {
     updateProps,
     showModal,
     hideModal
-  };
+  } as ModalContextType;
 
   return (
     <ModalContext.Provider value={value}>

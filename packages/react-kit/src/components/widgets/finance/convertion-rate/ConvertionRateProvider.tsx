@@ -12,14 +12,14 @@ import ConvertionRateContext, {
 import { useUniswapPools } from "./useUniswapPools";
 import { handleRates } from "./utils";
 
-interface Props {
+export interface ConvertionRateProviderProps {
   children: React.ReactNode;
   defaultTokensList: string;
 }
 export default function ConvertionRateProvider({
   children,
   defaultTokensList
-}: Props) {
+}: ConvertionRateProviderProps) {
   const defaultTokens = getDefaultTokens(defaultTokensList);
   const [store, setStore] = useState(initalState.store);
   const { data: tokens, isLoading: isTokensLoading } = useTokens({

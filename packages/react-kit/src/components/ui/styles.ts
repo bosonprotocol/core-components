@@ -1,6 +1,5 @@
 import { css } from "styled-components";
-
-import { breakpoint } from "../styles/breakpoint";
+import { breakpoint } from "../../lib/ui/breakpoint";
 
 export const transition = css`
   transition: all 150ms ease-in-out;

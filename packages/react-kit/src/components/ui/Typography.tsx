@@ -13,6 +13,10 @@ interface WrapperProps extends IGrid {
   letterSpacing?: string;
   textAlign?: string;
   opacity?: string;
+  marginTop?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  marginLeft?: string;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -31,6 +35,11 @@ const Wrapper = styled.div<WrapperProps>`
   ${({ flex }) => (flex ? `> * { flex: ${flex}; }` : "")}
   ${({ padding }) => (padding ? `padding:${padding};` : "")}
   ${({ margin }) => (margin ? `margin:${margin};` : "")}
+  ${({ marginTop }) => (marginTop ? `margin-top:${marginTop};` : "")}
+  ${({ marginRight }) => (marginRight ? `margin-right:${marginRight};` : "")}
+  ${({ marginBottom }) =>
+    marginBottom ? `margin-bottom:${marginBottom};` : ""}
+  ${({ marginLeft }) => (marginLeft ? `margin-left:${marginLeft};` : "")}
 
 
   ${({ $fontSize }) => ($fontSize ? `font-size:${$fontSize};` : "")}
@@ -46,7 +55,7 @@ const Wrapper = styled.div<WrapperProps>`
     ${({ $width }) => ($width ? `width:${$width};` : "")}
 `;
 
-interface ITypography extends WrapperProps {
+export interface ITypography extends WrapperProps {
   children?: string | React.ReactNode;
   tag?: keyof JSX.IntrinsicElements;
   style?: React.CSSProperties;

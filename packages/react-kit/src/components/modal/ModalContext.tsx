@@ -1,20 +1,16 @@
 /* eslint @typescript-eslint/no-empty-function: "off" */
 /* eslint @typescript-eslint/no-explicit-any: "off" */
-import { subgraph } from "@bosonprotocol/core-sdk";
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, CSSProperties, ReactNode } from "react";
 
 import { MODAL_COMPONENTS, MODAL_TYPES } from "./ModalComponents";
 
 export type ModalProps = {
   title?: string;
-  message?: string;
-  type?: string;
-  state?: keyof typeof subgraph.ExchangeState;
-  noCloseIcon?: boolean;
-  [x: string]: any;
   headerComponent?: ReactNode;
-  hideModal?: () => void;
+  footerComponent?: ReactNode;
+  contentStyle?: CSSProperties;
   closable?: boolean;
+  onClose?: (data: unknown | undefined | null) => void;
 };
 export type ModalType = keyof typeof MODAL_TYPES | null;
 type ModalSize = "xxs" | "xs" | "s" | "m" | "l" | "xl";
@@ -27,17 +23,16 @@ export type Store = {
   > | null;
   theme?: "light" | "dark";
 };
+export type GenericModalProps<T extends keyof typeof MODAL_TYPES> = Parameters<
+  typeof MODAL_COMPONENTS[T]
+>[0] extends undefined
+  ? ModalProps
+  : ModalProps & Parameters<typeof MODAL_COMPONENTS[T]>[0];
 
 export interface ModalContextType {
   showModal: <T extends keyof typeof MODAL_TYPES>(
     modalType: T,
-    modalProps?: Omit<
-      Parameters<typeof MODAL_COMPONENTS[T]>,
-      "hideModal"
-    >[0] extends undefined
-      ? Omit<ModalProps, "hideModal">
-      : Omit<ModalProps, "hideModal"> &
-          Omit<Parameters<typeof MODAL_COMPONENTS[T]>[0], "hideModal">,
+    modalProps?: GenericModalProps<T>,
     modalSize?: Store["modalSize"],
     theme?: Store["theme"],
     modalMaxWidth?: Store["modalMaxWidth"]
@@ -46,15 +41,7 @@ export interface ModalContextType {
 
   updateProps: <T extends keyof typeof MODAL_TYPES>(
     store: Store & {
-      modalProps: Omit<
-        Parameters<typeof MODAL_COMPONENTS[T]>,
-        "hideModal"
-      >[0] extends undefined
-        ? Partial<Omit<ModalProps, "hideModal">>
-        : Partial<
-            Omit<ModalProps, "hideModal"> &
-              Omit<Parameters<typeof MODAL_COMPONENTS[T]>[0], "hideModal">
-          >;
+      modalProps: GenericModalProps<T>;
       modalSize?: Store["modalSize"];
       modalMaxWidth?: Store["modalMaxWidth"];
       theme?: Store["theme"];
