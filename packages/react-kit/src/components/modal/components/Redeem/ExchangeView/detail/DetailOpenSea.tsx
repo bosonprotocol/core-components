@@ -5,6 +5,7 @@ import { Exchange } from "../../../../../../types/exchange";
 import { useEnvContext } from "../../../../../environment/EnvironmentContext";
 
 import { OpenSeaButton } from "./Detail.style";
+import { getExchangeTokenId } from "../../../../../../lib/utils/exchange";
 
 interface Props {
   exchange?: Exchange;
@@ -13,18 +14,18 @@ interface Props {
 const openSeaUrlMap = new Map([
   [
     "testing", // Mumbai
-    (exchangeId: string, contractAddress: string) =>
-      `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${exchangeId}`
+    (tokenId: string, contractAddress: string) =>
+      `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${tokenId}`
   ],
   [
     "staging", // Mumbai
-    (exchangeId: string, contractAddress: string) =>
-      `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${exchangeId}`
+    (tokenId: string, contractAddress: string) =>
+      `https://testnets.opensea.io/assets/mumbai/${contractAddress}/${tokenId}`
   ],
   [
     "production", // Polygon
-    (exchangeId: string, contractAddress: string) =>
-      `https://opensea.io/assets/matic/${contractAddress}/${exchangeId}`
+    (tokenId: string, contractAddress: string) =>
+      `https://opensea.io/assets/matic/${contractAddress}/${tokenId}`
   ]
 ]);
 
@@ -45,7 +46,9 @@ export default function DetailOpenSea({ exchange }: Props) {
 
     const urlFn = openSeaUrlMap.get(envName);
 
-    return urlFn?.(exchange.id, exchange.seller.voucherCloneAddress) || "";
+    const tokenId = getExchangeTokenId(exchange, envName);
+
+    return urlFn?.(tokenId, exchange.seller.voucherCloneAddress) || "";
   }, [exchange, envName]);
 
   if (!isToRedeem) {
