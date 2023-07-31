@@ -12,7 +12,9 @@ import GlobalStyle from "../../styles/GlobalStyle";
 import Grid from "../../ui/Grid";
 import Typography from "../../ui/Typography";
 import ConnectButton from "../../wallet/ConnectButton";
-import WalletConnectionProvider, { WalletConnectionProviderProps } from "../../wallet/WalletConnectionProvider";
+import WalletConnectionProvider, {
+  WalletConnectionProviderProps
+} from "../../wallet/WalletConnectionProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
   ConfigProvider,
