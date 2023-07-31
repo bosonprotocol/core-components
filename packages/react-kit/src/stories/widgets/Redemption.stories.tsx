@@ -3,6 +3,7 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
 import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
+import { EnvironmentType } from "@bosonprotocol/core-sdk";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
@@ -27,7 +28,9 @@ export const Redemption: ComponentStory<typeof RedemptionWidget> =
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
-  envName: "testing",
+  envName:
+    (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing",
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
   dateFormat: "YYYY/MM/DD",
   defaultCurrencySymbol: "$",
   defaultCurrencyTicker: "USD",

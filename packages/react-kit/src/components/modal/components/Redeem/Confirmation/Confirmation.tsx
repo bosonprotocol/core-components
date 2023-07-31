@@ -11,7 +11,6 @@ import { Warning } from "phosphor-react";
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
-import { useSigner } from "wagmi";
 import { useAddPendingTransactionWithContext } from "../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
 import { poll } from "../../../../../lib/promises/promises";
@@ -33,6 +32,7 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemModalFormModel";
+import { useEthersSigner } from "../../../../../hooks/ethers/useEthersSigner";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -86,7 +86,7 @@ export default function Confirmation({
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { data: signer } = useSigner();
+  const signer = useEthersSigner();
   const { values } = useFormikContext<FormType>();
   const [nameField] = useField(FormModel.formFields.name.name);
   const [streetNameAndNumberField] = useField(

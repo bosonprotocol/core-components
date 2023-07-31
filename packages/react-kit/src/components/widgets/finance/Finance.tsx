@@ -30,6 +30,8 @@ import {
   CurrencyDisplay
 } from "../../currencyDisplay/CurrencyDisplay";
 import ThemedButton from "../../ui/ThemedButton";
+import { Offer } from "../../../types/offer";
+import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 dayjs.extend(isBetween);
 const BosonButton = Button;
 const Table = styled.table`
@@ -153,7 +155,7 @@ interface FundsProps {
 }
 
 interface ExchangesTokensProps extends QueryProps {
-  data: unknown[] | undefined;
+  data: ExchangeTokensProps[] | undefined;
 }
 interface SellerExchangeProps {
   id: string;

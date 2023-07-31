@@ -2,7 +2,6 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSigner } from "wagmi";
 import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
@@ -21,6 +20,7 @@ import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import Typography from "../../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
+import { useEthersSigner } from "../../../../../../hooks/ethers/useEthersSigner";
 
 const colors = theme.colors.light;
 
@@ -74,7 +74,7 @@ export default function ExpireVoucher({
   const { envName } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const addPendingTransaction = useAddPendingTransactionWithContext();
-  const { data: signer } = useSigner();
+  const signer = useEthersSigner();
   const displayFloat = useDisplayFloat();
 
   const { currency, price, penalty, refund } = useRefundData(

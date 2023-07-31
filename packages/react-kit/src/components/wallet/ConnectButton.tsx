@@ -130,7 +130,8 @@ export default function ConnectButton({
                       size={32}
                       onClick={async () => {
                         try {
-                          await window.ethereum?.request({
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          await (window as any).ethereum?.request({
                             method: "wallet_requestPermissions",
                             params: [
                               {
