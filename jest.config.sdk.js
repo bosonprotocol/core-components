@@ -9,9 +9,12 @@ module.exports = {
   moduleNameMapper: {
     "^@bosonprotocol/(.*)$": "<rootDir>/../$1/"
   },
-  globals: {
-    "ts-jest": {
-      tsconfig: "../../tsconfig.tests.json"
-    }
+  transform: {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        tsconfig: "../../tsconfig.tests.json"
+      }
+    ]
   }
 };
