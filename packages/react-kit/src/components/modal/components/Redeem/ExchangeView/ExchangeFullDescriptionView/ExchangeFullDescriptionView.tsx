@@ -11,9 +11,16 @@ import { ExchangeFullDescription } from "./ExchangeFullDescription";
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 }
 
-export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
+export function ExchangeFullDescriptionView({
+  onBackClick,
+  exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
+}: Props) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -30,7 +37,9 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchange]);

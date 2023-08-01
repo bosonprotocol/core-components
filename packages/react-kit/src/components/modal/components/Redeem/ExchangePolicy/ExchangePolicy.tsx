@@ -13,6 +13,8 @@ import { BosonFooter } from "../BosonFooter";
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
   onContractualAgreementClick: FairExchangePolicyProps["onContractualAgreementClick"];
   onLicenseAgreementClick: FairExchangePolicyProps["onLicenseAgreementClick"];
 }
@@ -20,6 +22,8 @@ interface Props {
 export function ExchangePolicy({
   onBackClick,
   exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId,
   onContractualAgreementClick,
   onLicenseAgreementClick
 }: Props) {
@@ -27,6 +31,8 @@ export function ExchangePolicy({
   const exchangeName = exchange?.offer.metadata.name || "";
   useEffect(() => {
     showModal("REDEEM", {
+      fairExchangePolicyRules,
+      defaultDisputeResolverId,
       headerComponent: (
         <Grid gap="1rem">
           <ArrowLeft

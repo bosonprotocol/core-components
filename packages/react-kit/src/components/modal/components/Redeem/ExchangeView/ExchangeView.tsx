@@ -39,6 +39,8 @@ export type ExchangeViewProps = {
   onExpireVoucherClick: () => void;
   onRaiseDisputeClick: () => void;
   exchangeId: string;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
   isValid: boolean;
 };
 
@@ -58,7 +60,9 @@ export function ExchangeView({
   onViewFullDescription,
   onExpireVoucherClick,
   onRaiseDisputeClick,
-  exchangeId
+  exchangeId,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -99,7 +103,9 @@ export function ExchangeView({
       footerComponent: <BosonFooter />,
       contentStyle: {
         background: colors.lightGrey
-      }
+      },
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offer]);

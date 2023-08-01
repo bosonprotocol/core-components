@@ -9,6 +9,7 @@ export type ConfigContextProps = {
   };
   minimumDisputePeriodInDays: number;
   minimumDisputeResolutionPeriodDays: number;
+  fairExchangePolicyRules: string;
   commitProxyAddress?: string;
   openseaLinkToOriginalMainnetCollection?: string;
   enableCurationLists?: boolean;

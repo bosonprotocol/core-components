@@ -10,12 +10,16 @@ interface Props {
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 }
 
 export default function RedeemFormView({
   isValid,
   onNextClick,
-  onBackClick
+  onBackClick,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
 }: Props) {
   const { showModal } = useModal();
   useEffect(() => {
@@ -26,7 +30,9 @@ export default function RedeemFormView({
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

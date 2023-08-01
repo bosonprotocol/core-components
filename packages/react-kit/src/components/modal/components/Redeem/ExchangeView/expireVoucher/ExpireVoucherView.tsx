@@ -12,10 +12,14 @@ export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
   onSuccess: ExpireVoucherProps["onSuccess"];
   exchange: Exchange | null;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 }
 
 export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId,
   onBackClick,
   onSuccess
 }) => {
@@ -33,7 +37,9 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

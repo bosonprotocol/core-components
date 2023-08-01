@@ -24,6 +24,9 @@ import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import { BosonFooter } from "../../modal/components/Redeem/BosonFooter";
 import { ExtendedOmit } from "../../../types/helpers";
 import { useExchanges } from "../../../hooks/useExchanges";
+import ConvertionRateProvider, {
+  ConvertionRateProviderProps
+} from "../finance/convertion-rate/ConvertionRateProvider";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -35,12 +38,16 @@ type RedemptionProps = {
     >
   >;
   exchangeId?: string;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 };
 function Redemption({
   trigger: Trigger,
   modalProps,
   buttonProps,
-  exchangeId
+  exchangeId,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
 }: RedemptionProps) {
   const { showModal } = useModal();
   const { data: exchanges } = useExchanges(
@@ -57,6 +64,8 @@ function Redemption({
       showModal("REDEEM", {
         ...modalProps,
         exchange,
+        fairExchangePolicyRules,
+        defaultDisputeResolverId,
         headerComponent: (
           <Grid>
             <Typography tag="h3">Redeem your item</Typography>
@@ -66,8 +75,14 @@ function Redemption({
         footerComponent: <BosonFooter />
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalProps, exchangeId, exchange]);
+  }, [
+    exchangeId,
+    exchange,
+    showModal,
+    modalProps,
+    fairExchangePolicyRules,
+    defaultDisputeResolverId
+  ]);
   if (Trigger) {
     return <Trigger onClick={onClick} />;
   }
@@ -82,6 +97,7 @@ type WidgetProps = RedemptionProps &
   IpfsProviderProps &
   ConfigProviderProps &
   EnvironmentProviderProps &
+  ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -105,9 +121,13 @@ export function RedemptionWidget(props: WidgetProps) {
           >
             <ChatProvider>
               <IpfsProvider {...props}>
-                <ModalProvider>
-                  <Redemption {...props} />
-                </ModalProvider>
+                <ConvertionRateProvider
+                  defaultTokensList={props.defaultTokensList}
+                >
+                  <ModalProvider>
+                    <Redemption {...props} />
+                  </ModalProvider>
+                </ConvertionRateProvider>
               </IpfsProvider>
             </ChatProvider>
           </WalletConnectionProvider>
