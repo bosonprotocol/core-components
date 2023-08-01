@@ -312,10 +312,10 @@ const DetailView: React.FC<IDetailWidget> = ({
   const { data: dataBalance } = useBalance(
     offer.exchangeToken.address !== ethers.constants.AddressZero
       ? {
-          addressOrName: address,
-          token: offer.exchangeToken.address
+          address,
+          token: offer.exchangeToken.address as `0x${string}`
         }
-      : { addressOrName: address }
+      : { address }
   );
 
   const isToRedeem =
@@ -330,8 +330,8 @@ const DetailView: React.FC<IDetailWidget> = ({
       exchangeStatus as unknown as exchanges.ExtendedExchangeState
     );
 
-  const isBuyerInsufficientFunds = useMemo(
-    () => dataBalance?.value.lt(BigNumber.from(offer.price)),
+  const isBuyerInsufficientFunds: boolean = useMemo(
+    () => !!dataBalance?.value && dataBalance?.value < BigInt(offer.price),
     [dataBalance, offer.price]
   );
 

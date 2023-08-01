@@ -1,18 +1,18 @@
 import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useSigner } from "wagmi";
 import { useCoreSDKWithContext } from "../../../hooks/useCoreSdkWithContext";
 import { useEnvContext } from "../../environment/EnvironmentContext";
 
 import { Context } from "./ChatContext";
 import { getChatEnvName } from "./const";
+import { useEthersSigner } from "../../../hooks/ethers/useEthersSigner";
 
 interface Props {
   children: ReactNode;
 }
 
 export default function ChatProvider({ children }: Props) {
-  const { data: signer } = useSigner();
+  const signer = useEthersSigner();
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();

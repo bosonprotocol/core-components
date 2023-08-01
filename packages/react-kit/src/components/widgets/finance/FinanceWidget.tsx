@@ -92,12 +92,15 @@ const queryClient = new QueryClient({
   }
 });
 
-type FinanceWidgetProps = ConfigProviderProps &
+type FinanceWidgetProps = {
+  walletConnectProjectId: string;
+} & ConfigProviderProps &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Parameters<typeof Component>[0];
 export function FinanceWidget({
   envName,
+  walletConnectProjectId,
   sellerId,
   defaultTokensList,
   ...rest
@@ -109,7 +112,10 @@ export function FinanceWidget({
         /* @ts-ignore */}
       <GlobalStyle />
       <ConfigProvider {...rest}>
-        <WalletConnectionProvider envName={envName}>
+        <WalletConnectionProvider
+          envName={envName}
+          walletConnectProjectId={walletConnectProjectId}
+        >
           <QueryClientProvider client={queryClient}>
             <ConvertionRateProvider defaultTokensList={defaultTokensList}>
               <ModalProvider>

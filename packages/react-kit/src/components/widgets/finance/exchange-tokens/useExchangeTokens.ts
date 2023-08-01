@@ -1,8 +1,8 @@
-import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
 import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { fetchSubgraph } from "../../../../lib/subgraph/subgraph";
+import { Offer } from "../../../../types/offer";
 
 interface Props {
   sellerId: string;

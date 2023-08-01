@@ -5,11 +5,11 @@ import groupBy from "lodash/groupBy";
 import { useCallback, useMemo } from "react";
 
 import { Props } from "./Finance";
-import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { saveItemInStorage } from "./storage/useLocalStorage";
 import { SellerExchangeProps } from "./useSellerDeposit";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { getDateTimestamp } from "../../../lib/dates/getDateTimestamp";
+import { Offer } from "../../../types/offer";
 dayjs.extend(isBetween);
 
 export default function useOffersBacked({

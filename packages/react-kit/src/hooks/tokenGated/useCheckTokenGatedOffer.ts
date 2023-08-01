@@ -1,10 +1,11 @@
 import * as Sentry from "@sentry/browser";
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import { Offer } from "../../types/offer";
 import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
 import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";
+import { useEthersSigner } from "../ethers/useEthersSigner";
 
 interface Props {
   commitProxyAddress?: string | undefined;
@@ -15,7 +16,7 @@ export default function useCheckTokenGatedOffer({
   commitProxyAddress,
   condition
 }: Props) {
-  const { data: signer } = useSigner();
+  const signer = useEthersSigner();
   const { address } = useAccount();
   const core = useCoreSDKWithContext();
   const [isConditionMet, setConditionMet] = useState<boolean>(false);

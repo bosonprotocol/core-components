@@ -1,14 +1,18 @@
-import { Chain, connectorsForWallets, wallet } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient } from "wagmi";
+import { EnvironmentType } from "@bosonprotocol/core-sdk";
+import { Chain, connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  metaMaskWallet,
+  walletConnectWallet
+} from "@rainbow-me/rainbowkit/wallets";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-
-export type EnvironmentType = "local" | "testing" | "staging" | "production";
+import { configureChains, createConfig } from "wagmi";
+import { polygon, polygonMumbai } from "wagmi/chains";
 
 const chainPerEnviromnent: Record<EnvironmentType, Chain> = {
-  local: chain.polygonMumbai,
-  testing: chain.polygonMumbai,
-  staging: chain.polygonMumbai,
-  production: chain.polygon
+  local: polygonMumbai,
+  testing: polygonMumbai,
+  staging: polygonMumbai,
+  production: polygon
 };
 
 function getChainForEnvironment(envName: EnvironmentType): Array<Chain> {
@@ -19,23 +23,34 @@ function getChainForEnvironment(envName: EnvironmentType): Array<Chain> {
 const getConfigureChains = (envName: EnvironmentType) =>
   configureChains(getChainForEnvironment(envName), [
     jsonRpcProvider({
-      rpc: (chain: Chain) => ({ http: chain.rpcUrls.default })
+      rpc: (chain: Chain) => {
+        return {
+          http: chain.rpcUrls.default.http[0],
+          webSocket: chain.rpcUrls.default.webSocket?.[0]
+        };
+      }
     })
   ]);
 
-export const getWagmiClient = (envName: EnvironmentType) => {
-  const { provider, chains } = getConfigureChains(envName);
+export const _getWagmiConfig = (
+  envName: EnvironmentType,
+  projectId: string
+) => {
+  const { publicClient, chains } = getConfigureChains(envName);
   const connectors = connectorsForWallets([
     {
       groupName: "Popular",
-      wallets: [wallet.metaMask({ chains }), wallet.walletConnect({ chains })]
+      wallets: [
+        metaMaskWallet({ chains, projectId }),
+        walletConnectWallet({ chains, projectId })
+      ]
     }
   ]);
   return {
-    wagmiClient: createClient({
+    wagmiConfig: createConfig({
       autoConnect: true,
       connectors,
-      provider
+      publicClient
     }),
     chains
   };

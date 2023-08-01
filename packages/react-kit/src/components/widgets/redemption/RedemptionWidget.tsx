@@ -12,7 +12,9 @@ import GlobalStyle from "../../styles/GlobalStyle";
 import Grid from "../../ui/Grid";
 import Typography from "../../ui/Typography";
 import ConnectButton from "../../wallet/ConnectButton";
-import WalletConnectionProvider from "../../wallet/WalletConnectionProvider";
+import WalletConnectionProvider, {
+  WalletConnectionProviderProps
+} from "../../wallet/WalletConnectionProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
   ConfigProvider,
@@ -79,7 +81,8 @@ function Redemption({
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
   ConfigProviderProps &
-  EnvironmentProviderProps;
+  EnvironmentProviderProps &
+  Omit<WalletConnectionProviderProps, "children" | "envName">;
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -96,7 +99,10 @@ export function RedemptionWidget(props: WidgetProps) {
       <GlobalStyle />
       <ConfigProvider {...props}>
         <QueryClientProvider client={queryClient}>
-          <WalletConnectionProvider envName={props.envName}>
+          <WalletConnectionProvider
+            envName={props.envName}
+            walletConnectProjectId={props.walletConnectProjectId}
+          >
             <ChatProvider>
               <IpfsProvider {...props}>
                 <ModalProvider>

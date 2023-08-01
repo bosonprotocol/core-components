@@ -11,21 +11,26 @@ import React, { ReactNode, useMemo } from "react";
 import { WagmiConfig } from "wagmi";
 import { theme } from "../../theme";
 import merge from "lodash.merge";
-import { getWagmiClient } from "./wallet-connection";
+import { _getWagmiConfig } from "./wallet-connection";
 import { useCSSVariable } from "../styles/useCSSVariable";
 import FallbackAvatar from "../avatar/fallback-avatar";
 
-interface Props {
+export type WalletConnectionProviderProps = {
   children: ReactNode;
   envName: EnvironmentType;
-}
+  walletConnectProjectId: string;
+};
 const colors = theme.colors.light;
-export default function WalletConnectionProvider({ children, envName }: Props) {
+export default function WalletConnectionProvider({
+  children,
+  envName,
+  walletConnectProjectId
+}: WalletConnectionProviderProps) {
   const secondaryColor = useCSSVariable("--secondary");
   const accentDarkColor = useCSSVariable("--accentDark");
-  const { wagmiClient, chains } = useMemo(() => {
-    return getWagmiClient(envName);
-  }, [envName]);
+  const { wagmiConfig, chains } = useMemo(() => {
+    return _getWagmiConfig(envName, walletConnectProjectId);
+  }, [envName, walletConnectProjectId]);
   const walletConnectionTheme = merge(darkTheme({ borderRadius: "medium" }), {
     colors: {
       accentColor: secondaryColor,
@@ -46,7 +51,7 @@ export default function WalletConnectionProvider({ children, envName }: Props) {
     }
   } as Theme);
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         chains={chains}
         theme={walletConnectionTheme}

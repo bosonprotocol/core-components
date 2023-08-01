@@ -4,7 +4,6 @@ import { Info as InfoComponent } from "phosphor-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
-import { useSigner } from "wagmi";
 import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
@@ -23,6 +22,7 @@ import Grid from "../../../../../ui/Grid";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import DetailTable from "../detail/DetailTable";
+import { useEthersSigner } from "../../../../../../hooks/ethers/useEthersSigner";
 
 const colors = theme.colors.light;
 
@@ -94,7 +94,7 @@ export function CancelExchange({
   const coreSDK = useCoreSDKWithContext();
 
   const addPendingTransaction = useAddPendingTransactionWithContext();
-  const { data: signer } = useSigner();
+  const signer = useEthersSigner();
   const { envName } = useEnvContext();
   const { currency, price, penalty, refund } = useRefundData(
     exchange,
