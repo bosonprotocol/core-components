@@ -19,6 +19,8 @@ import GridContainer from "../../../../ui/GridContainer";
 import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
+import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
+import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 
 const colors = theme.colors.light;
 
@@ -140,6 +142,17 @@ export function ExchangeView({
       isTruthy
     );
   }, [offerImg, images]);
+  const {
+    store: { tokens: defaultTokens }
+  } = useConvertionRate();
+
+  const exchangePolicyCheckResult = useCheckExchangePolicy({
+    offerId: exchange?.offer?.id,
+    fairExchangePolicyRules,
+    defaultDisputeResolverId,
+    defaultTokens: defaultTokens || []
+  });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -207,6 +220,7 @@ export function ExchangeView({
           pageType="exchange"
           hasMultipleVariants={false}
           isPreview={false}
+          exchangePolicyCheckResult={exchangePolicyCheckResult}
         />
       </Grid>
     </GridContainer>

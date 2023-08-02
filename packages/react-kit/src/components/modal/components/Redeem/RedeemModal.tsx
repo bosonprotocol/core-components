@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
-import { FormModel, FormType } from "./RedeemModalFormModel";
+import { FormModel } from "./RedeemModalFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
@@ -342,6 +342,7 @@ export default function RedeemModal({
                   onLicenseAgreementClick={() =>
                     setActiveStep(ActiveStep.LICENSE_AGREEMENT)
                   }
+                  exchangePolicyCheckResult={exchangePolicyCheckResult}
                 />
               ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
                 <ContractualAgreementView

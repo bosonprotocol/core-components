@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import ExchangePolicyDetails, {
-  ExchangePolicyDetailsProps
-} from "../../../../exchangePolicy/ExchangePolicyDetails";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
@@ -9,6 +6,10 @@ import { useModal } from "../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import { BosonFooter } from "../BosonFooter";
+import { offers } from "@bosonprotocol/core-sdk";
+import ExchangePolicyDetails, {
+  ExchangePolicyDetailsProps
+} from "../../../../exchangePolicy/ExchangePolicyDetails";
 
 interface Props {
   onBackClick: () => void;
@@ -17,6 +18,7 @@ interface Props {
   defaultDisputeResolverId: string;
   onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
+  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
 export function ExchangePolicy({
@@ -25,7 +27,8 @@ export function ExchangePolicy({
   fairExchangePolicyRules,
   defaultDisputeResolverId,
   onContractualAgreementClick,
-  onLicenseAgreementClick
+  onLicenseAgreementClick,
+  exchangePolicyCheckResult
 }: Props) {
   const { showModal } = useModal();
   const exchangeName = exchange?.offer.metadata.name || "";
@@ -56,6 +59,7 @@ export function ExchangePolicy({
   return (
     <ExchangePolicyDetails
       exchange={exchange}
+      exchangePolicyCheckResult={exchangePolicyCheckResult}
       onContractualAgreementClick={onContractualAgreementClick}
       onLicenseAgreementClick={onLicenseAgreementClick}
     />

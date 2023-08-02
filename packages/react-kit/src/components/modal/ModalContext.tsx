@@ -25,8 +25,8 @@ export type Store = {
 };
 export type GenericModalProps<T extends keyof typeof MODAL_TYPES> = Parameters<
   typeof MODAL_COMPONENTS[T]
->[0] extends undefined
-  ? ModalProps
+>[0] extends Record<string, never>
+  ? ModalProps & Record<string, never>
   : ModalProps & Parameters<typeof MODAL_COMPONENTS[T]>[0];
 
 export interface ModalContextType {
