@@ -14,17 +14,17 @@ const NoPaddingButton = styled(ThemedButton)`
   border-color: transparent !important;
 `;
 
-export interface FairExchangePolicyProps {
+export interface ExchangePolicyDetailsProps {
   exchange: Exchange;
   onContractualAgreementClick: () => void;
   onLicenseAgreementClick: () => void;
 }
 
-export default function FairExchangePolicy({
+export default function ExchangePolicyDetails({
   exchange,
   onContractualAgreementClick,
   onLicenseAgreementClick
-}: FairExchangePolicyProps) {
+}: ExchangePolicyDetailsProps) {
   const { minimumDisputePeriodInDays, minimumDisputeResolutionPeriodDays } =
     useConfigContext();
   return (

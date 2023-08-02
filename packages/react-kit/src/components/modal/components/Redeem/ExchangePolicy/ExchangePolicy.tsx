@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import FairExchangePolicy, {
-  FairExchangePolicyProps
-} from "../../../../exchangePolicy/FairExchangePolicy";
+import ExchangePolicyDetails, {
+  ExchangePolicyDetailsProps
+} from "../../../../exchangePolicy/ExchangePolicyDetails";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
@@ -15,8 +15,8 @@ interface Props {
   exchange: Exchange | null;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
-  onContractualAgreementClick: FairExchangePolicyProps["onContractualAgreementClick"];
-  onLicenseAgreementClick: FairExchangePolicyProps["onLicenseAgreementClick"];
+  onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
+  onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
 }
 
 export function ExchangePolicy({
@@ -54,7 +54,7 @@ export function ExchangePolicy({
     return <p>Exchange could not be retrieved</p>;
   }
   return (
-    <FairExchangePolicy
+    <ExchangePolicyDetails
       exchange={exchange}
       onContractualAgreementClick={onContractualAgreementClick}
       onLicenseAgreementClick={onLicenseAgreementClick}
