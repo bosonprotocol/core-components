@@ -16,13 +16,24 @@ interface ContractualAgreementProps {
   offerData: subgraph.OfferFieldsFragment | undefined;
 }
 
+const getTemplate = (
+  offer: subgraph.OfferFieldsFragment | undefined
+): string | undefined => {
+  return (offer?.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
+    ?.template;
+};
+
 export default function ContractualAgreement({
   offerId,
   offerData
 }: ContractualAgreementProps) {
   // TODO: get the template from the offer metadata (BP390 - https://app.asana.com/0/1200803815983047/1203080300620356)
   const { buyerSellerAgreementTemplate } = useConfigContext();
-  const templateUrl = buyerSellerAgreementTemplate;
+  const template = getTemplate(offerData);
+  const templateUrl =
+    !template || template === "fairExchangePolicy"
+      ? (buyerSellerAgreementTemplate as string)
+      : template;
   const { renderStatus, renderResult } = useRenderTemplate(
     offerId,
     offerData,

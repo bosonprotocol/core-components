@@ -24,6 +24,8 @@ export type MyItemsProps = {
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -33,7 +35,9 @@ export function MyItems({
   onExchangeCardClick,
   onCancelExchange,
   onRaiseDisputeClick,
-  onAvatarClick
+  onAvatarClick,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
 }: MyItemsProps) {
   const { showModal } = useModal();
   useEffect(() => {
@@ -47,7 +51,9 @@ export function MyItems({
       footerComponent: <BosonFooter />,
       contentStyle: {
         background: colors.lightGrey
-      }
+      },
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

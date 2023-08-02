@@ -31,6 +31,7 @@ export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
           ticker: rest.defaultCurrencyTicker,
           symbol: rest.defaultCurrencySymbol
         },
+        fairExchangePolicyRules: rest.fairExchangePolicyRules,
         dateFormat: rest.dateFormat || "YYYY/MM/DD",
         shortDateFormat: rest.shortDateFormat || "MMM DD, YYYY",
         minimumDisputePeriodInDays: rest.minimumDisputePeriodInDays || 30,

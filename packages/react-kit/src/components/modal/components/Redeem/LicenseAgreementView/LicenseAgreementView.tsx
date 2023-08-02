@@ -11,9 +11,16 @@ import { BosonFooter } from "../BosonFooter";
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 }
 
-export function LicenseAgreementView({ onBackClick, exchange }: Props) {
+export function LicenseAgreementView({
+  onBackClick,
+  exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
+}: Props) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -28,7 +35,9 @@ export function LicenseAgreementView({ onBackClick, exchange }: Props) {
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

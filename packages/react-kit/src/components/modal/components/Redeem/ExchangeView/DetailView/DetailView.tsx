@@ -1,6 +1,13 @@
 import dayjs from "dayjs";
-import { BigNumber, ethers } from "ethers";
-import { ArrowRight, ArrowSquareOut, Check, Question } from "phosphor-react";
+import { ethers } from "ethers";
+import {
+  ArrowRight,
+  ArrowSquareOut,
+  Check,
+  Question,
+  CircleWavyQuestion,
+  WarningCircle
+} from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useAccount, useBalance } from "wagmi";
@@ -29,7 +36,7 @@ import {
   WidgetUpperGrid
 } from "../detail/Detail.style";
 import TokenGated from "./TokenGated";
-import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
+import { exchanges, offers, subgraph } from "@bosonprotocol/core-sdk";
 import Price from "../../../../../price/Price";
 import {
   getCalcPercentage,
@@ -91,7 +98,8 @@ const getOfferDetailData = (
   convertedPrice: IPrice | null,
   isModal: boolean,
   onExchangePolicyClick: IDetailWidget["onExchangePolicyClick"],
-  isExchange?: boolean
+  isExchange?: boolean,
+  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult
 ) => {
   const redeemableFromDayJs = dayjs(
     Number(`${offer.voucherRedeemableFromDate}000`)
@@ -107,6 +115,11 @@ const getOfferDetailData = (
     offer,
     "sellerDeposit"
   );
+
+  const exchangePolicyLabel = (
+    (offer.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
+      ?.label || "Unspecified"
+  ).replace("fairExchangePolicy", "Fair Exchange Policy");
 
   // if offer is in creation, offer.id does not exist
   const handleShowExchangePolicy = () => {
@@ -232,9 +245,29 @@ const getOfferDetailData = (
           </Typography>
         </>
       ),
-      value: (
-        <Typography tag="p" style={{ wordBreak: "break-word" }}>
-          Fair Exchange Policy{" "}
+      value: exchangePolicyCheckResult ? (
+        exchangePolicyCheckResult.isValid ? (
+          <Typography tag="p">
+            {exchangePolicyLabel + " "}
+            <ArrowSquareOut
+              size={20}
+              onClick={() => handleShowExchangePolicy()}
+              style={{ cursor: "pointer" }}
+            />
+          </Typography>
+        ) : (
+          <Typography tag="p" color={colors.orange}>
+            <WarningCircle size={20}></WarningCircle> Non-standard{" "}
+            <ArrowSquareOut
+              size={20}
+              onClick={() => handleShowExchangePolicy()}
+              style={{ cursor: "pointer" }}
+            />
+          </Typography>
+        )
+      ) : (
+        <Typography tag="p" color="purple">
+          <CircleWavyQuestion size={20}></CircleWavyQuestion> Unknown{" "}
           <ArrowSquareOut
             size={20}
             onClick={() => handleShowExchangePolicy()}
@@ -274,6 +307,7 @@ interface IDetailWidget {
   onPurchaseOverview: () => void;
   onExpireVoucherClick: () => void;
   onRaiseDisputeClick: () => void;
+  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
 const DetailView: React.FC<IDetailWidget> = ({
@@ -288,7 +322,8 @@ const DetailView: React.FC<IDetailWidget> = ({
   onExpireVoucherClick,
   onPurchaseOverview,
   onRaiseDisputeClick,
-  onRedeem
+  onRedeem,
+  exchangePolicyCheckResult
 }) => {
   const { isLteXS } = useBreakpoints();
   const config = useConfigContext();
@@ -350,7 +385,8 @@ const DetailView: React.FC<IDetailWidget> = ({
         convertedPrice,
         false,
         onExchangePolicyClick,
-        isExchange
+        isExchange,
+        exchangePolicyCheckResult
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [offer, convertedPrice, isExchange, config, displayFloat]

@@ -19,6 +19,8 @@ import GridContainer from "../../../../ui/GridContainer";
 import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
+import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
+import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 
 const colors = theme.colors.light;
 
@@ -39,6 +41,8 @@ export type ExchangeViewProps = {
   onExpireVoucherClick: () => void;
   onRaiseDisputeClick: () => void;
   exchangeId: string;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
   isValid: boolean;
 };
 
@@ -58,7 +62,9 @@ export function ExchangeView({
   onViewFullDescription,
   onExpireVoucherClick,
   onRaiseDisputeClick,
-  exchangeId
+  exchangeId,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -99,7 +105,9 @@ export function ExchangeView({
       footerComponent: <BosonFooter />,
       contentStyle: {
         background: colors.lightGrey
-      }
+      },
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offer]);
@@ -134,6 +142,17 @@ export function ExchangeView({
       isTruthy
     );
   }, [offerImg, images]);
+  const {
+    store: { tokens: defaultTokens }
+  } = useConvertionRate();
+
+  const exchangePolicyCheckResult = useCheckExchangePolicy({
+    offerId: exchange?.offer?.id,
+    fairExchangePolicyRules,
+    defaultDisputeResolverId,
+    defaultTokens: defaultTokens || []
+  });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -201,6 +220,7 @@ export function ExchangeView({
           pageType="exchange"
           hasMultipleVariants={false}
           isPreview={false}
+          exchangePolicyCheckResult={exchangePolicyCheckResult}
         />
       </Grid>
     </GridContainer>

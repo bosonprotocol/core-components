@@ -8,8 +8,14 @@ import PurchaseOverview from "./PurchaseOverview";
 
 type Props = {
   onBackClick: () => void;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
 };
-export function PurchaseOverviewView({ onBackClick }: Props) {
+export function PurchaseOverviewView({
+  onBackClick,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId
+}: Props) {
   const { showModal } = useModal();
   useEffect(() => {
     showModal("REDEEM", {
@@ -23,7 +29,9 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      defaultDisputeResolverId,
+      fairExchangePolicyRules
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

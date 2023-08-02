@@ -6,17 +6,18 @@ import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
+import { GenericModalProps } from "../../../ModalContext";
 
 const colors = theme.colors.light;
 
-export default function ConfirmationFailedModal() {
+export default function ConfirmationFailedModal(_: Record<string, never>) {
   const { updateProps, store } = useModal();
   useEffect(() => {
     updateProps<"CONFIRMATION_FAILED">({
       ...store,
       modalProps: {
         ...store.modalProps
-      },
+      } as GenericModalProps<"CONFIRMATION_FAILED">,
       modalSize: "auto",
       modalMaxWidth: {
         xs: "550px"

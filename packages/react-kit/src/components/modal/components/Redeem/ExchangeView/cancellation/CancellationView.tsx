@@ -10,12 +10,16 @@ import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 
 export interface CancellationViewProps {
   exchange: Exchange | null;
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
   onBackClick: CancelExchangeProps["onBackClick"];
   onSuccess: CancelExchangeProps["onSuccess"];
 }
 
 export const CancellationView: React.FC<CancellationViewProps> = ({
   exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId,
   onBackClick
 }) => {
   const { showModal } = useModal();
@@ -34,7 +38,9 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
           <ConnectButton showChangeWallet />
         </Grid>
       ),
-      footerComponent: <BosonFooter />
+      footerComponent: <BosonFooter />,
+      fairExchangePolicyRules,
+      defaultDisputeResolverId
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

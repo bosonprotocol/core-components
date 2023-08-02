@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import FairExchangePolicy, {
-  FairExchangePolicyProps
-} from "../../../../exchangePolicy/FairExchangePolicy";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
@@ -9,24 +6,36 @@ import { useModal } from "../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import { BosonFooter } from "../BosonFooter";
+import { offers } from "@bosonprotocol/core-sdk";
+import ExchangePolicyDetails, {
+  ExchangePolicyDetailsProps
+} from "../../../../exchangePolicy/ExchangePolicyDetails";
 
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
-  onContractualAgreementClick: FairExchangePolicyProps["onContractualAgreementClick"];
-  onLicenseAgreementClick: FairExchangePolicyProps["onLicenseAgreementClick"];
+  fairExchangePolicyRules: string;
+  defaultDisputeResolverId: string;
+  onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
+  onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
+  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
 export function ExchangePolicy({
   onBackClick,
   exchange,
+  fairExchangePolicyRules,
+  defaultDisputeResolverId,
   onContractualAgreementClick,
-  onLicenseAgreementClick
+  onLicenseAgreementClick,
+  exchangePolicyCheckResult
 }: Props) {
   const { showModal } = useModal();
   const exchangeName = exchange?.offer.metadata.name || "";
   useEffect(() => {
     showModal("REDEEM", {
+      fairExchangePolicyRules,
+      defaultDisputeResolverId,
       headerComponent: (
         <Grid gap="1rem">
           <ArrowLeft
@@ -48,8 +57,9 @@ export function ExchangePolicy({
     return <p>Exchange could not be retrieved</p>;
   }
   return (
-    <FairExchangePolicy
+    <ExchangePolicyDetails
       exchange={exchange}
+      exchangePolicyCheckResult={exchangePolicyCheckResult}
       onContractualAgreementClick={onContractualAgreementClick}
       onLicenseAgreementClick={onLicenseAgreementClick}
     />
