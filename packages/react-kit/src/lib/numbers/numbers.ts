@@ -6,7 +6,7 @@ export const getNumberWithoutDecimals = (
 ): string => {
   const valueAsNumber = Number(value);
   if (!Number.isInteger(valueAsNumber)) {
-    return Math.floor(valueAsNumber * 10 ** Number(decimals)).toString();
+    return BigNumber.from(10).pow(decimals).mul(valueAsNumber).toString();
   }
   return BigNumber.from(valueAsNumber + "")
     .mul(BigNumber.from(10).pow(BigNumber.from(decimals)))
@@ -17,7 +17,9 @@ export const getNumberWithDecimals = (
   value: string,
   decimals: string
 ): number => {
-  return Number(value) * 10 ** -Number(decimals);
+  return BigNumber.from(value)
+    .mul(10000)
+    .div(BigNumber.from(10).pow(Number(decimals) - 5)).toNumber();
 };
 
 /**

@@ -78,7 +78,7 @@ export default function FinanceWithdraw({
   );
   const { showModal, hideModal } = useModal();
 
-  const tokenStep = 10 ** -Number(tokenDecimals);
+  const tokenStep = BigNumber.from(10).pow(-Number(tokenDecimals)).toNumber();
   const step = 0.01;
 
   const handleChangeWithdrawAmount = (

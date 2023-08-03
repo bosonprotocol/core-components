@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import {
   ArrowRight,
   ArrowSquareOut,
@@ -366,7 +366,9 @@ const DetailView: React.FC<IDetailWidget> = ({
     );
 
   const isBuyerInsufficientFunds: boolean = useMemo(
-    () => !!dataBalance?.value && dataBalance?.value < BigInt(offer.price),
+    () =>
+      !!dataBalance?.value &&
+      BigNumber.from(offer.price).gt(dataBalance?.value),
     [dataBalance, offer.price]
   );
 
