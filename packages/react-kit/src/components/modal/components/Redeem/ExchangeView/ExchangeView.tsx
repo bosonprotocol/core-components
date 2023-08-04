@@ -1,5 +1,5 @@
 import { House } from "phosphor-react";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
@@ -9,7 +9,6 @@ import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
-import { useModal } from "../../../useModal";
 import DetailOpenSea from "./detail/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
 import VariationSelects from "./VariationSelects";
@@ -21,6 +20,7 @@ import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
 import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
+import NonModal from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -83,34 +83,6 @@ export function ExchangeView({
   const metadata = offer?.metadata;
   const variations = metadata?.variations;
   const hasVariations = !!variations?.length;
-  const { showModal } = useModal();
-  useEffect(() => {
-    if (!offer) {
-      return;
-    }
-    showModal("REDEEM", {
-      headerComponent: (
-        <Grid gap="1rem">
-          <House
-            onClick={onHouseClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-          <Typography tag="h3" style={{ flex: "1 1" }}>
-            {offer.metadata.name}
-          </Typography>
-          <ConnectButton showChangeWallet />
-        </Grid>
-      ),
-      footerComponent: <BosonFooter />,
-      contentStyle: {
-        background: colors.lightGrey
-      },
-      fairExchangePolicyRules,
-      defaultDisputeResolverId
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offer]);
 
   const variant = {
     offer,
@@ -168,61 +140,83 @@ export function ExchangeView({
   }
 
   return (
-    <GridContainer
-      itemsPerRow={{
-        xs: 1,
-        s: 2,
-        m: 2,
-        l: 2,
-        xl: 2
+    <NonModal
+      props={{
+        headerComponent: (
+          <Grid gap="1rem">
+            <House
+              onClick={onHouseClick}
+              size={32}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+            />
+            <Typography tag="h3" style={{ flex: "1 1" }}>
+              {offer.metadata.name}
+            </Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />,
+        contentStyle: {
+          background: colors.lightGrey
+        }
       }}
     >
-      <Grid flexDirection="column" alignItems="center">
-        <ImageWrapper>
-          <DetailOpenSea exchange={exchange} />
+      <GridContainer
+        itemsPerRow={{
+          xs: 1,
+          s: 2,
+          m: 2,
+          l: 2,
+          xl: 2
+        }}
+      >
+        <Grid flexDirection="column" alignItems="center">
+          <ImageWrapper>
+            <DetailOpenSea exchange={exchange} />
 
-          <>
-            {(allImages.length > 0 || animationUrl) && (
-              <DetailSlider
-                animationUrl={animationUrl}
-                images={allImages}
-                sliderOptions={SLIDER_OPTIONS}
-              />
-            )}
-          </>
+            <>
+              {(allImages.length > 0 || animationUrl) && (
+                <DetailSlider
+                  animationUrl={animationUrl}
+                  images={allImages}
+                  sliderOptions={SLIDER_OPTIONS}
+                />
+              )}
+            </>
 
-          <SellerAndDescription
-            exchange={exchange}
-            onViewFullDescription={onViewFullDescription}
-          />
-        </ImageWrapper>
-      </Grid>
-      <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
-        {hasVariations && (
-          <div style={{ width: "100%" }}>
-            <VariationSelects
-              selectedVariant={variant as VariantV1}
-              variants={[variant] as VariantV1[]}
-              disabled
+            <SellerAndDescription
+              exchange={exchange}
+              onViewFullDescription={onViewFullDescription}
             />
-          </div>
-        )}
-        <DetailView
-          hasSellerEnoughFunds={hasSellerEnoughFunds}
-          offer={offer}
-          exchange={exchange}
-          onCancelExchange={onCancelExchange}
-          onExchangePolicyClick={onExchangePolicyClick}
-          onRedeem={onNextClick}
-          onPurchaseOverview={onPurchaseOverview}
-          onExpireVoucherClick={onExpireVoucherClick}
-          onRaiseDisputeClick={onRaiseDisputeClick}
-          pageType="exchange"
-          hasMultipleVariants={false}
-          isPreview={false}
-          exchangePolicyCheckResult={exchangePolicyCheckResult}
-        />
-      </Grid>
-    </GridContainer>
+          </ImageWrapper>
+        </Grid>
+        <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
+          {hasVariations && (
+            <div style={{ width: "100%" }}>
+              <VariationSelects
+                selectedVariant={variant as VariantV1}
+                variants={[variant] as VariantV1[]}
+                disabled
+              />
+            </div>
+          )}
+          <DetailView
+            hasSellerEnoughFunds={hasSellerEnoughFunds}
+            offer={offer}
+            exchange={exchange}
+            onCancelExchange={onCancelExchange}
+            onExchangePolicyClick={onExchangePolicyClick}
+            onRedeem={onNextClick}
+            onPurchaseOverview={onPurchaseOverview}
+            onExpireVoucherClick={onExpireVoucherClick}
+            onRaiseDisputeClick={onRaiseDisputeClick}
+            pageType="exchange"
+            hasMultipleVariants={false}
+            isPreview={false}
+            exchangePolicyCheckResult={exchangePolicyCheckResult}
+          />
+        </Grid>
+      </GridContainer>
+    </NonModal>
   );
 }

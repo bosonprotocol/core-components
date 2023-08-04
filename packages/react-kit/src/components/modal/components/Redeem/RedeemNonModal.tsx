@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
-import { FormModel } from "./RedeemModalFormModel";
+import { FormModel } from "./RedeemFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
@@ -49,7 +49,7 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
-type RedeemModalProps = {
+export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
@@ -68,7 +68,7 @@ type RedeemModalProps = {
   cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
 };
-export default function RedeemModal({
+export default function RedeemNonModal({
   exchange: selectedExchange,
   fairExchangePolicyRules,
   defaultDisputeResolverId,
@@ -86,7 +86,7 @@ export default function RedeemModal({
   expireVoucherViewOnSuccess,
   cancellationViewOnSuccess,
   confirmationViewOnSuccess
-}: RedeemModalProps) {
+}: RedeemNonModalProps) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
   const seller = sellers?.[0];
@@ -180,6 +180,7 @@ export default function RedeemModal({
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
     : undefined;
+  console.log("RedeemModal - ", currentStep);
   return (
     <>
       <Formik<FormType>
@@ -250,8 +251,6 @@ export default function RedeemModal({
                     setExchange(exchange);
                     myItemsOnAvatarClick?.(exchange);
                   }}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
@@ -289,15 +288,11 @@ export default function RedeemModal({
                 <ExchangeFullDescriptionView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                 />
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   onSuccess={(...args) => {
                     goToPreviousStep();
                     expireVoucherViewOnSuccess?.(...args);
@@ -307,19 +302,13 @@ export default function RedeemModal({
                 <CancellationView
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   onSuccess={(...args) => {
                     goToPreviousStep();
                     cancellationViewOnSuccess?.(...args);
                   }}
                 />
               ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
-                <PurchaseOverviewView
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
-                  onBackClick={goToPreviousStep}
-                />
+                <PurchaseOverviewView onBackClick={goToPreviousStep} />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
                   onBackClick={goToPreviousStep}
@@ -327,14 +316,10 @@ export default function RedeemModal({
                     setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
                   }
                   isValid={isRedeemFormOK}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <ExchangePolicy
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   onBackClick={goToPreviousStep}
                   onContractualAgreementClick={() =>
                     setActiveStep(ActiveStep.CONTRACTUAL_AGREEMENT)
@@ -347,15 +332,11 @@ export default function RedeemModal({
               ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
                 <ContractualAgreementView
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
                 <LicenseAgreementView
                   exchange={exchange}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (
@@ -375,8 +356,6 @@ export default function RedeemModal({
                     setActiveStep(ActiveStep.EXCHANGE_POLICY)
                   }
                   exchangeId={exchange?.id || ""}
-                  fairExchangePolicyRules={fairExchangePolicyRules}
-                  defaultDisputeResolverId={defaultDisputeResolverId}
                 />
               ) : (
                 <p>Wrong step...something went wrong</p>

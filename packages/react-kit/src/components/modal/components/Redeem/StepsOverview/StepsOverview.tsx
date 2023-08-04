@@ -7,6 +7,10 @@ import Grid from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import NonModal from "../../../NonModal";
+import { BosonFooter } from "../BosonFooter";
+import ConnectButton from "../../../../wallet/ConnectButton";
+import Typography from "../../../../ui/Typography";
 
 const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`
@@ -45,7 +49,17 @@ interface Props {
 
 export default function StepsOverview({ onNextClick }: Props) {
   return (
-    <>
+    <NonModal
+      props={{
+        headerComponent: (
+          <Grid>
+            <Typography tag="h3">Redeem your item</Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />
+      }}
+    >
       <StyledCommitStepWrapper>
         <CommitStep>
           <Step number={1} title="Provide your address">
@@ -77,6 +91,6 @@ export default function StepsOverview({ onNextClick }: Props) {
           Next
         </Button>
       </Grid>
-    </>
+    </NonModal>
   );
 }

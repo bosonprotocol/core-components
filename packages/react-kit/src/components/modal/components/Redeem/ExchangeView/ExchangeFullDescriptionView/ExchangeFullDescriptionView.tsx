@@ -1,51 +1,43 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
 import ConnectButton from "../../../../../wallet/ConnectButton";
-import { useModal } from "../../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { BosonFooter } from "../../BosonFooter";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
+import NonModal from "../../../../NonModal";
 
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
-  fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
 }
 
-export function ExchangeFullDescriptionView({
-  onBackClick,
-  exchange,
-  fairExchangePolicyRules,
-  defaultDisputeResolverId
-}: Props) {
-  const { showModal } = useModal();
-  useEffect(() => {
-    showModal("REDEEM", {
-      headerComponent: (
-        <Grid>
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer" }}
-          />
-          <Typography tag="h3">
-            {exchange?.offer.metadata.name || ""}
-          </Typography>
-          <ConnectButton showChangeWallet />
-        </Grid>
-      ),
-      footerComponent: <BosonFooter />,
-      fairExchangePolicyRules,
-      defaultDisputeResolverId
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exchange]);
+export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
   if (!exchange) {
     return <p>Exchange could not be retrieved</p>;
   }
 
-  return <ExchangeFullDescription exchange={exchange} />;
+  return (
+    <NonModal
+      props={{
+        headerComponent: (
+          <Grid>
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer" }}
+            />
+            <Typography tag="h3">
+              {exchange?.offer.metadata.name || ""}
+            </Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />
+      }}
+    >
+      <ExchangeFullDescription exchange={exchange} />
+    </NonModal>
+  );
 }

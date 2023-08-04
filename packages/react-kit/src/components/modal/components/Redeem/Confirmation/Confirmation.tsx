@@ -31,7 +31,7 @@ import Grid from "../../../../ui/Grid";
 import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
-import { FormModel, FormType } from "../RedeemModalFormModel";
+import { FormModel, FormType } from "../RedeemFormModel";
 import { useEthersSigner } from "../../../../../hooks/ethers/useEthersSigner";
 const colors = theme.colors.light;
 

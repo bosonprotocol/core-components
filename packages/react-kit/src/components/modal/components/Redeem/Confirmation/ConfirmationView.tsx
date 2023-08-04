@@ -2,6 +2,11 @@ import { getAddress } from "ethers/lib/utils";
 import React from "react";
 import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
+import NonModal from "../../../NonModal";
+import Grid from "../../../../ui/Grid";
+import Typography from "../../../../ui/Typography";
+import ConnectButton from "../../../../wallet/ConnectButton";
+import { BosonFooter } from "../BosonFooter";
 
 export interface ConfirmationViewProps {
   onBackClick: ConfirmationProps["onBackClick"];
@@ -24,15 +29,27 @@ export function ConfirmationView({
   const sellerId = exchange?.seller.id || "";
   const sellerAddress = getAddress(exchange?.seller.assistant) || "";
   return (
-    <Confirmation
-      exchangeId={exchange.id}
-      offerId={offerId}
-      offerName={offerName}
-      buyerId={buyerId}
-      sellerId={sellerId}
-      sellerAddress={sellerAddress}
-      onBackClick={onBackClick}
-      onSuccess={onSuccess}
-    />
+    <NonModal
+      props={{
+        headerComponent: (
+          <Grid>
+            <Typography tag="h3">Redeem your item</Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />
+      }}
+    >
+      <Confirmation
+        exchangeId={exchange.id}
+        offerId={offerId}
+        offerName={offerName}
+        buyerId={buyerId}
+        sellerId={sellerId}
+        sellerAddress={sellerAddress}
+        onBackClick={onBackClick}
+        onSuccess={onSuccess}
+      />
+    </NonModal>
   );
 }

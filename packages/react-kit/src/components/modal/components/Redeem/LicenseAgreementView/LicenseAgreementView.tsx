@@ -1,51 +1,41 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
-import { useModal } from "../../../useModal";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import License from "../../../../license/License";
 import { BosonFooter } from "../BosonFooter";
+import NonModal from "../../../NonModal";
 
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
-  fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
 }
 
-export function LicenseAgreementView({
-  onBackClick,
-  exchange,
-  fairExchangePolicyRules,
-  defaultDisputeResolverId
-}: Props) {
-  const { showModal } = useModal();
-  useEffect(() => {
-    showModal("REDEEM", {
-      headerComponent: (
-        <Grid>
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer" }}
-          />
-          <Typography tag="h3">License Agreement</Typography>
-          <ConnectButton showChangeWallet />
-        </Grid>
-      ),
-      footerComponent: <BosonFooter />,
-      fairExchangePolicyRules,
-      defaultDisputeResolverId
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
-  const { offer } = exchange;
-  const offerId = offer.id;
-
-  return <License offerId={offerId} offerData={offer} />;
+export function LicenseAgreementView({ onBackClick, exchange }: Props) {
+  return (
+    <NonModal
+      props={{
+        headerComponent: (
+          <Grid>
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer" }}
+            />
+            <Typography tag="h3">License Agreement</Typography>
+            <ConnectButton showChangeWallet />
+          </Grid>
+        ),
+        footerComponent: <BosonFooter />
+      }}
+    >
+      {exchange ? (
+        <License offerId={exchange.offer?.id} offerData={exchange.offer} />
+      ) : (
+        <p>Exchange could not be retrieved</p>
+      )}
+    </NonModal>
+  );
 }
