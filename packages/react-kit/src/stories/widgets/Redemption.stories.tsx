@@ -46,7 +46,8 @@ Redemption.args = {
   defaultDisputeResolverId,
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
-  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  exchangeId: undefined
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];
