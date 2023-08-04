@@ -27,8 +27,11 @@ export const BosonPrimary: ComponentStory<typeof ThemedButton> = Template.bind(
 );
 
 export const Secondary: ComponentStory<typeof ThemedButton> = Template.bind({});
-export const BosonSecondary: ComponentStory<typeof ThemedButton> = Template.bind({});
-export const AccentFiil: ComponentStory<typeof ThemedButton> = Template.bind({});
+export const BosonSecondary: ComponentStory<typeof ThemedButton> =
+  Template.bind({});
+export const AccentFiil: ComponentStory<typeof ThemedButton> = Template.bind(
+  {}
+);
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
