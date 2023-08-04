@@ -14,10 +14,6 @@ interface Props {
 }
 
 export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
-
   return (
     <NonModal
       props={{
@@ -37,7 +33,11 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
         footerComponent: <BosonFooter />
       }}
     >
-      <ExchangeFullDescription exchange={exchange} />
+      {!exchange ? (
+        <p>Exchange could not be retrieved</p>
+      ) : (
+        <ExchangeFullDescription exchange={exchange} />
+      )}
     </NonModal>
   );
 }

@@ -57,20 +57,7 @@ export function RedeemSuccess({
   const exchange = exchanges?.[0];
   const offer = exchange?.offer;
 
-  if (isFetching) {
-    return <Loading />;
-  }
-  if (!offer) {
-    return <div data-testid="notFound">This exchange does not exist</div>;
-  }
-  if (isError || !exchangeId) {
-    return (
-      <div data-testid="errorExchange">
-        There has been an error, please try again later...
-      </div>
-    );
-  }
-  const { offerImg, animationUrl } = getOfferDetails(offer);
+  const offerDetails = offer ? getOfferDetails(offer) : undefined;
 
   return (
     <NonModal
@@ -92,103 +79,116 @@ export function RedeemSuccess({
         }
       }}
     >
-      <GridContainer
-        itemsPerRow={{
-          xs: 2,
-          s: 2,
-          m: 2,
-          l: 2,
-          xl: 2
-        }}
-      >
-        <ImageWrapper>
-          {animationUrl ? (
-            <Video
-              src={animationUrl}
-              dataTestId="offerAnimationUrl"
-              videoProps={{ muted: true, loop: true, autoPlay: true }}
-              componentWhileLoading={() => (
-                <IpfsImage src={offerImg} dataTestId="offerImage" />
-              )}
-            />
-          ) : (
-            <IpfsImage src={offerImg} dataTestId="offerImage" />
-          )}
-          <DetailOpenSea exchange={exchange} />
-        </ImageWrapper>
-        <Grid flexDirection="column" gap="1rem">
-          <Grid
-            as="section"
-            style={{ background: colors.white, padding: "2rem" }}
-            gap="1rem"
-          >
-            <CheckCircle size="60" color={colors.green} />
-            <Grid flexDirection="column" alignItems="flex-start">
-              <Typography fontWeight="600" $fontSize="1.25rem">
-                Congratulations!
-              </Typography>
-
-              <p>
-                {redeemCallbackUrl
-                  ? `Your item is on its way to the provided address. Please check your email for the shipping confirmation. Thank you for using our service.`
-                  : `Your item is on its way to the provided address. Please check the chat for the shipping confirmation. Thank you for using our service.`}
-              </p>
-            </Grid>
-          </Grid>
-          <Grid
-            as="section"
-            gap="1.5rem"
-            style={{ background: colors.white, padding: "2rem" }}
-            flexDirection="column"
-          >
-            <Grid flex="1 1" alignItems="flex-start" gap="1rem">
-              <div>
-                <Typography fontWeight="600">
-                  Your item is on it's way to:
-                </Typography>
-                <Grid
-                  flexDirection="column"
-                  alignItems="flex-start"
-                  gap="0.25rem"
-                >
-                  <div>{values.name}</div>
-                  <div>{values.streetNameAndNumber}</div>
-                  <div>{values.city}</div>
-                  <div>{values.state}</div>
-                  <div>{values.zip}</div>
-                  <div>{values.country}</div>
-                  <div>{values.email}</div>
-                  <div>{values.phone}</div>
-                </Grid>
-              </div>
-              <div>
-                <Typography fontWeight="600">What's next?</Typography>
-                <Typography tag="p">
-                  {redeemCallbackUrl
-                    ? `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via email.`
-                    : `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via chat.`}
-                </Typography>
-              </div>
-            </Grid>
+      {isFetching ? (
+        <Loading />
+      ) : !offer ? (
+        <div data-testid="notFound">This exchange does not exist</div>
+      ) : isError || !exchangeId || !offerDetails ? (
+        <div data-testid="errorExchange">
+          There has been an error, please try again later...
+        </div>
+      ) : (
+        <GridContainer
+          itemsPerRow={{
+            xs: 2,
+            s: 2,
+            m: 2,
+            l: 2,
+            xl: 2
+          }}
+        >
+          <ImageWrapper>
+            {offerDetails.animationUrl ? (
+              <Video
+                src={offerDetails.animationUrl}
+                dataTestId="offerAnimationUrl"
+                videoProps={{ muted: true, loop: true, autoPlay: true }}
+                componentWhileLoading={() => (
+                  <IpfsImage
+                    src={offerDetails.offerImg}
+                    dataTestId="offerImage"
+                  />
+                )}
+              />
+            ) : (
+              <IpfsImage src={offerDetails.offerImg} dataTestId="offerImage" />
+            )}
+            <DetailOpenSea exchange={exchange} />
+          </ImageWrapper>
+          <Grid flexDirection="column" gap="1rem">
             <Grid
-              style={{ background: colors.lightGrey, padding: "1.5rem" }}
-              justifyContent="flex-start"
+              as="section"
+              style={{ background: colors.white, padding: "2rem" }}
               gap="1rem"
             >
-              <Fire size={25} color={colors.orange} />
-              <Typography>Your rNFT was burned</Typography>
+              <CheckCircle size="60" color={colors.green} />
+              <Grid flexDirection="column" alignItems="flex-start">
+                <Typography fontWeight="600" $fontSize="1.25rem">
+                  Congratulations!
+                </Typography>
+
+                <p>
+                  {redeemCallbackUrl
+                    ? `Your item is on its way to the provided address. Please check your email for the shipping confirmation. Thank you for using our service.`
+                    : `Your item is on its way to the provided address. Please check the chat for the shipping confirmation. Thank you for using our service.`}
+                </p>
+              </Grid>
+            </Grid>
+            <Grid
+              as="section"
+              gap="1.5rem"
+              style={{ background: colors.white, padding: "2rem" }}
+              flexDirection="column"
+            >
+              <Grid flex="1 1" alignItems="flex-start" gap="1rem">
+                <div>
+                  <Typography fontWeight="600">
+                    Your item is on it's way to:
+                  </Typography>
+                  <Grid
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    gap="0.25rem"
+                  >
+                    <div>{values.name}</div>
+                    <div>{values.streetNameAndNumber}</div>
+                    <div>{values.city}</div>
+                    <div>{values.state}</div>
+                    <div>{values.zip}</div>
+                    <div>{values.country}</div>
+                    <div>{values.email}</div>
+                    <div>{values.phone}</div>
+                  </Grid>
+                </div>
+                <div>
+                  <Typography fontWeight="600">What's next?</Typography>
+                  <Typography tag="p">
+                    {redeemCallbackUrl
+                      ? `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via email.`
+                      : `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via chat.`}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid
+                style={{ background: colors.lightGrey, padding: "1.5rem" }}
+                justifyContent="flex-start"
+                gap="1rem"
+              >
+                <Fire size={25} color={colors.orange} />
+                <Typography>Your rNFT was burned</Typography>
+              </Grid>
+            </Grid>
+
+            <Grid
+              as="section"
+              justifyContent="flex-end"
+              style={{ background: colors.white, padding: "2rem" }}
+            >
+              <Button onClick={onClickDone}>Done</Button>
             </Grid>
           </Grid>
-
-          <Grid
-            as="section"
-            justifyContent="flex-end"
-            style={{ background: colors.white, padding: "2rem" }}
-          >
-            <Button onClick={onClickDone}>Done</Button>
-          </Grid>
-        </Grid>
-      </GridContainer>
+        </GridContainer>
+      )}
     </NonModal>
   );
 }

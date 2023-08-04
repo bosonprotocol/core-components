@@ -27,9 +27,6 @@ export function ExchangePolicy({
   exchangePolicyCheckResult
 }: Props) {
   const exchangeName = exchange?.offer.metadata.name || "";
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
   return (
     <NonModal
       props={{
@@ -49,12 +46,16 @@ export function ExchangePolicy({
         footerComponent: <BosonFooter />
       }}
     >
-      <ExchangePolicyDetails
-        exchange={exchange}
-        exchangePolicyCheckResult={exchangePolicyCheckResult}
-        onContractualAgreementClick={onContractualAgreementClick}
-        onLicenseAgreementClick={onLicenseAgreementClick}
-      />
+      {exchange ? (
+        <ExchangePolicyDetails
+          exchange={exchange}
+          exchangePolicyCheckResult={exchangePolicyCheckResult}
+          onContractualAgreementClick={onContractualAgreementClick}
+          onLicenseAgreementClick={onLicenseAgreementClick}
+        />
+      ) : (
+        <p>Exchange could not be retrieved</p>
+      )}
     </NonModal>
   );
 }

@@ -198,7 +198,21 @@ export default function RedeemNonModal({
     );
   }
   if (isLoading) {
-    return <Loading />;
+    return (
+      <NonModal
+        props={{
+          headerComponent: (
+            <Grid>
+              <Typography tag="h3">Redeem your item</Typography>
+              <ConnectButton showChangeWallet />
+            </Grid>
+          ),
+          footerComponent: <BosonFooter />
+        }}
+      >
+        <Loading />
+      </NonModal>
+    );
   }
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)

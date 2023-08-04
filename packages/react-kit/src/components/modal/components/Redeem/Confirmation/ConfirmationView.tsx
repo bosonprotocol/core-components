@@ -19,15 +19,13 @@ export function ConfirmationView({
   onSuccess,
   exchange
 }: ConfirmationViewProps) {
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
-  const { offer } = exchange;
-  const offerId = offer.id;
-  const offerName = offer.metadata.name;
+  const offerId = exchange?.offer?.id;
+  const offerName = exchange?.offer?.metadata?.name;
   const buyerId = exchange?.buyer.id || "";
   const sellerId = exchange?.seller.id || "";
-  const sellerAddress = getAddress(exchange?.seller.assistant) || "";
+  const sellerAddress = exchange?.seller?.assistant
+    ? getAddress(exchange.seller.assistant)
+    : "";
   return (
     <NonModal
       props={{
@@ -40,16 +38,20 @@ export function ConfirmationView({
         footerComponent: <BosonFooter />
       }}
     >
-      <Confirmation
-        exchangeId={exchange.id}
-        offerId={offerId}
-        offerName={offerName}
-        buyerId={buyerId}
-        sellerId={sellerId}
-        sellerAddress={sellerAddress}
-        onBackClick={onBackClick}
-        onSuccess={onSuccess}
-      />
+      {exchange ? (
+        <Confirmation
+          exchangeId={exchange.id}
+          offerId={offerId as string}
+          offerName={offerName as string}
+          buyerId={buyerId}
+          sellerId={sellerId}
+          sellerAddress={sellerAddress}
+          onBackClick={onBackClick}
+          onSuccess={onSuccess}
+        />
+      ) : (
+        <p>Exchange could not be retrieved</p>
+      )}
     </NonModal>
   );
 }

@@ -18,10 +18,6 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
   exchange,
   onBackClick
 }) => {
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
-
   return (
     <NonModal
       props={{
@@ -41,11 +37,15 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
         footerComponent: <BosonFooter />
       }}
     >
-      <CancelExchange
-        exchange={exchange}
-        onBackClick={onBackClick}
-        onSuccess={onBackClick}
-      />
+      {!exchange ? (
+        <p>Exchange could not be retrieved</p>
+      ) : (
+        <CancelExchange
+          exchange={exchange}
+          onBackClick={onBackClick}
+          onSuccess={onBackClick}
+        />
+      )}
     </NonModal>
   );
 };

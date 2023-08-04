@@ -39,13 +39,7 @@ export function MyItems({
   const { data: buyers, isLoading } = useBuyers({
     wallet: address
   });
-  if (isLoading) {
-    return <Loading />;
-  }
   const buyerId = buyers?.[0]?.id;
-  if (!buyerId) {
-    return <div>You do not have any exchanges yet</div>;
-  }
   return (
     <NonModal
       props={{
@@ -61,49 +55,55 @@ export function MyItems({
         }
       }}
     >
-      <Formik<ExchangesStates>
-        onSubmit={() => {
-          // empty
-        }}
-        initialValues={{
-          committed: true,
-          redeemed: false,
-          disputed: false,
-          completed: false
-        }}
-      >
-        {({ values }) => {
-          return (
-            <>
-              <GridContainer
-                itemsPerRow={{
-                  xs: 4,
-                  s: 4,
-                  m: 4,
-                  l: 4,
-                  xl: 4
-                }}
-                style={{ margin: "0 0 2rem 0" }}
-              >
-                <Checkbox name="committed" text="Committed" />
-                <Checkbox name="redeemed" text="Redeemed" />
-                <Checkbox name="disputed" text="Disputed" />
-                <Checkbox name="completed" text="Completed" />
-              </GridContainer>
+      {isLoading ? (
+        <Loading />
+      ) : buyerId ? (
+        <Formik<ExchangesStates>
+          onSubmit={() => {
+            // empty
+          }}
+          initialValues={{
+            committed: true,
+            redeemed: false,
+            disputed: false,
+            completed: false
+          }}
+        >
+          {({ values }) => {
+            return (
+              <>
+                <GridContainer
+                  itemsPerRow={{
+                    xs: 4,
+                    s: 4,
+                    m: 4,
+                    l: 4,
+                    xl: 4
+                  }}
+                  style={{ margin: "0 0 2rem 0" }}
+                >
+                  <Checkbox name="committed" text="Committed" />
+                  <Checkbox name="redeemed" text="Redeemed" />
+                  <Checkbox name="disputed" text="Disputed" />
+                  <Checkbox name="completed" text="Completed" />
+                </GridContainer>
 
-              <ExchangesWithData
-                buyerId={buyerId}
-                {...values}
-                onCardClick={onExchangeCardClick}
-                onRedeemClick={onRedeemClick}
-                onCancelExchangeClick={onCancelExchange}
-                onRaiseDisputeClick={onRaiseDisputeClick}
-                onAvatarClick={onAvatarClick}
-              />
-            </>
-          );
-        }}
-      </Formik>
+                <ExchangesWithData
+                  buyerId={buyerId}
+                  {...values}
+                  onCardClick={onExchangeCardClick}
+                  onRedeemClick={onRedeemClick}
+                  onCancelExchangeClick={onCancelExchange}
+                  onRaiseDisputeClick={onRaiseDisputeClick}
+                  onAvatarClick={onAvatarClick}
+                />
+              </>
+            );
+          }}
+        </Formik>
+      ) : (
+        <div>You do not have any exchanges yet</div>
+      )}
     </NonModal>
   );
 }

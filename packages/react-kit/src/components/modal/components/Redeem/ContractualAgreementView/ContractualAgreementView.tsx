@@ -14,11 +14,8 @@ interface Props {
 }
 
 export function ContractualAgreementView({ onBackClick, exchange }: Props) {
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
-  const { offer } = exchange;
-  const offerId = offer.id;
+  const offer = exchange?.offer;
+  const offerId = offer?.id;
 
   return (
     <NonModal
@@ -37,7 +34,11 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
         footerComponent: <BosonFooter />
       }}
     >
-      <ContractualAgreement offerId={offerId} offerData={offer} />
+      {exchange ? (
+        <ContractualAgreement offerId={offerId} offerData={offer} />
+      ) : (
+        <p>Exchange could not be retrieved</p>
+      )}
     </NonModal>
   );
 }
