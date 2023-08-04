@@ -40,7 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         break;
       }
       case "accentFill": {
-        theme = "escalate";
+        theme = "accentFill";
         break;
       }
       case "accentInverted": {

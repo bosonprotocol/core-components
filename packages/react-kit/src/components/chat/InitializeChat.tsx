@@ -61,7 +61,7 @@ export default function InitializeChat({ isError = false }: Props) {
         {isInitializeButtonVisible ? (
           <ThemedButton
             type="button"
-            variant="accentFill"
+            theme="accentFill"
             style={{
               color: colors.white
             }}
