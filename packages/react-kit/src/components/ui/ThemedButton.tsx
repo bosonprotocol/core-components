@@ -253,6 +253,17 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         color: colors.white,
         borderColor: colors.black
       }
+    },
+    accentFill: {
+      color: theme.colors.light.black,
+      background: theme.colors.light.accent,
+      borderColor: "transparent",
+      borderWidth: 2,
+      hover: {
+        background: theme.colors.light.black,
+        color: theme.colors.light.white,
+        borderColor: theme.colors.light.black
+      }
     }
   };
 };
