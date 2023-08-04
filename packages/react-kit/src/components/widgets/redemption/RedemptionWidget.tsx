@@ -16,14 +16,13 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
-import { ExtendedOmit } from "../../../types/helpers";
 import { useExchanges } from "../../../hooks/useExchanges";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
-import RedeemModal, {
-  RedeemModalProps
-} from "../../modal/components/Redeem/RedeemModal";
+import RedeemNonModal, {
+  RedeemNonModalProps
+} from "../../modal/components/Redeem/RedeemNonModal";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -47,9 +46,11 @@ const queryClient = new QueryClient({
   }
 });
 
-function WithExchange(WrappedComponent: React.ComponentType<RedeemModalProps>) {
+function WithExchange(
+  WrappedComponent: React.ComponentType<RedeemNonModalProps>
+) {
   const ComponentWithExchange = (
-    props: Omit<RedeemModalProps, "exchange"> & { exchangeId?: string }
+    props: Omit<RedeemNonModalProps, "exchange"> & { exchangeId?: string }
   ) => {
     const { data: exchanges } = useExchanges(
       {
@@ -65,7 +66,7 @@ function WithExchange(WrappedComponent: React.ComponentType<RedeemModalProps>) {
   return ComponentWithExchange;
 }
 
-const RedeemModalWithExchange = WithExchange(RedeemModal);
+const RedeemModalWithExchange = WithExchange(RedeemNonModal);
 
 export function RedemptionWidget(props: WidgetProps) {
   return (

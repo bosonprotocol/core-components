@@ -9,7 +9,7 @@ import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
 import DetailOpenSea from "./detail/DetailOpenSea";
 import { useFormikContext } from "formik";
-import { FormType } from "../RedeemModalFormModel";
+import { FormType } from "../RedeemFormModel";
 import { theme } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";

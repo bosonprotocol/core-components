@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
-import { FormModel } from "./RedeemModalFormModel";
+import { FormModel } from "./RedeemFormModel";
 import StepsOverview from "./StepsOverview/StepsOverview";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
@@ -49,7 +49,7 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
-export type RedeemModalProps = {
+export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
@@ -68,7 +68,7 @@ export type RedeemModalProps = {
   cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
 };
-export default function RedeemModal({
+export default function RedeemNonModal({
   exchange: selectedExchange,
   fairExchangePolicyRules,
   defaultDisputeResolverId,
@@ -86,7 +86,7 @@ export default function RedeemModal({
   expireVoucherViewOnSuccess,
   cancellationViewOnSuccess,
   confirmationViewOnSuccess
-}: RedeemModalProps) {
+}: RedeemNonModalProps) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
   const seller = sellers?.[0];

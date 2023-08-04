@@ -5,7 +5,7 @@ import Input from "../../../../form/Input";
 import Phone from "../../../../form/Phone";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import { FormModel } from "../RedeemModalFormModel";
+import { FormModel } from "../RedeemFormModel";
 import { CountrySelect } from "../../../../form/CountrySelect";
 import type { Country as CountryCode } from "react-phone-number-input";
 interface Props {
