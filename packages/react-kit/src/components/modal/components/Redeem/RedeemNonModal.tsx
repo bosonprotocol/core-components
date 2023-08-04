@@ -32,6 +32,11 @@ import { Loading } from "../../../Loading";
 import { ContactPreference } from "./const";
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
+import NonModal from "../../NonModal";
+import Grid from "../../../ui/Grid";
+import Typography from "../../../ui/Typography";
+import ConnectButton from "../../../wallet/ConnectButton";
+import { BosonFooter } from "./BosonFooter";
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -172,7 +177,25 @@ export default function RedeemNonModal({
   }, [currentStep]);
   const { address } = useAccount();
   if (!address) {
-    return <p>Please connect your wallet</p>;
+    if (currentStep !== ActiveStep.STEPS_OVERVIEW) {
+      // reinitialize the wizard step
+      setStep({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
+    }
+    return (
+      <NonModal
+        props={{
+          headerComponent: (
+            <Grid>
+              <Typography tag="h3">Redeem your item</Typography>
+              <ConnectButton showChangeWallet />
+            </Grid>
+          ),
+          footerComponent: <BosonFooter />
+        }}
+      >
+        <p>Please connect your wallet</p>
+      </NonModal>
+    );
   }
   if (isLoading) {
     return <Loading />;
@@ -180,7 +203,6 @@ export default function RedeemNonModal({
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
     : undefined;
-  console.log("RedeemModal - ", currentStep);
   return (
     <>
       <Formik<FormType>
