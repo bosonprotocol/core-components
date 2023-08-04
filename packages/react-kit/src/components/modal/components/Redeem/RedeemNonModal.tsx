@@ -269,7 +269,7 @@ export default function RedeemNonModal({
                     myItemsOnExchangeCardClick?.(exchange);
                   }}
                   onRedeemClick={(exchange) => {
-                    setActiveStep(ActiveStep.EXCHANGE_VIEW);
+                    setActiveStep(ActiveStep.REDEEM_FORM);
                     setExchange(exchange);
                     myItemsOnRedeemClick?.(exchange);
                   }}
