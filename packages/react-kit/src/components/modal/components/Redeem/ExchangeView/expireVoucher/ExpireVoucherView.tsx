@@ -19,9 +19,6 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   onBackClick,
   onSuccess
 }) => {
-  if (!exchange) {
-    return <p>Exchange could not be retrieved</p>;
-  }
   return (
     <NonModal
       props={{
@@ -39,11 +36,15 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
         footerComponent: <BosonFooter />
       }}
     >
-      <ExpireVoucher
-        exchange={exchange}
-        onBackClick={onBackClick}
-        onSuccess={onSuccess}
-      />
+      {!exchange ? (
+        <p>Exchange could not be retrieved</p>
+      ) : (
+        <ExpireVoucher
+          exchange={exchange}
+          onBackClick={onBackClick}
+          onSuccess={onSuccess}
+        />
+      )}
     </NonModal>
   );
 };

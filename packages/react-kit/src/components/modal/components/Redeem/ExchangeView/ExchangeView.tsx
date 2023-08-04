@@ -125,20 +125,6 @@ export function ExchangeView({
     defaultTokens: defaultTokens || []
   });
 
-  if (isLoading) {
-    return <Loading />;
-  }
-  if (!offer) {
-    return <div data-testid="notFound">This exchange does not exist</div>;
-  }
-  if (isError || !exchangeId) {
-    return (
-      <div data-testid="errorExchange">
-        There has been an error, please try again later...
-      </div>
-    );
-  }
-
   return (
     <NonModal
       props={{
@@ -149,9 +135,11 @@ export function ExchangeView({
               size={32}
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
-            <Typography tag="h3" style={{ flex: "1 1" }}>
-              {offer.metadata.name}
-            </Typography>
+            {offer && (
+              <Typography tag="h3" style={{ flex: "1 1" }}>
+                {offer.metadata.name}
+              </Typography>
+            )}
             <ConnectButton showChangeWallet />
           </Grid>
         ),
@@ -161,62 +149,72 @@ export function ExchangeView({
         }
       }}
     >
-      <GridContainer
-        itemsPerRow={{
-          xs: 1,
-          s: 2,
-          m: 2,
-          l: 2,
-          xl: 2
-        }}
-      >
-        <Grid flexDirection="column" alignItems="center">
-          <ImageWrapper>
-            <DetailOpenSea exchange={exchange} />
+      {isLoading ? (
+        <Loading />
+      ) : !offer ? (
+        <div data-testid="notFound">This exchange does not exist</div>
+      ) : isError || !exchangeId ? (
+        <div data-testid="errorExchange">
+          There has been an error, please try again later...
+        </div>
+      ) : (
+        <GridContainer
+          itemsPerRow={{
+            xs: 1,
+            s: 2,
+            m: 2,
+            l: 2,
+            xl: 2
+          }}
+        >
+          <Grid flexDirection="column" alignItems="center">
+            <ImageWrapper>
+              <DetailOpenSea exchange={exchange} />
 
-            <>
-              {(allImages.length > 0 || animationUrl) && (
-                <DetailSlider
-                  animationUrl={animationUrl}
-                  images={allImages}
-                  sliderOptions={SLIDER_OPTIONS}
-                />
-              )}
-            </>
+              <>
+                {(allImages.length > 0 || animationUrl) && (
+                  <DetailSlider
+                    animationUrl={animationUrl}
+                    images={allImages}
+                    sliderOptions={SLIDER_OPTIONS}
+                  />
+                )}
+              </>
 
-            <SellerAndDescription
-              exchange={exchange}
-              onViewFullDescription={onViewFullDescription}
-            />
-          </ImageWrapper>
-        </Grid>
-        <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
-          {hasVariations && (
-            <div style={{ width: "100%" }}>
-              <VariationSelects
-                selectedVariant={variant as VariantV1}
-                variants={[variant] as VariantV1[]}
-                disabled
+              <SellerAndDescription
+                exchange={exchange}
+                onViewFullDescription={onViewFullDescription}
               />
-            </div>
-          )}
-          <DetailView
-            hasSellerEnoughFunds={hasSellerEnoughFunds}
-            offer={offer}
-            exchange={exchange}
-            onCancelExchange={onCancelExchange}
-            onExchangePolicyClick={onExchangePolicyClick}
-            onRedeem={onNextClick}
-            onPurchaseOverview={onPurchaseOverview}
-            onExpireVoucherClick={onExpireVoucherClick}
-            onRaiseDisputeClick={onRaiseDisputeClick}
-            pageType="exchange"
-            hasMultipleVariants={false}
-            isPreview={false}
-            exchangePolicyCheckResult={exchangePolicyCheckResult}
-          />
-        </Grid>
-      </GridContainer>
+            </ImageWrapper>
+          </Grid>
+          <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
+            {hasVariations && (
+              <div style={{ width: "100%" }}>
+                <VariationSelects
+                  selectedVariant={variant as VariantV1}
+                  variants={[variant] as VariantV1[]}
+                  disabled
+                />
+              </div>
+            )}
+            <DetailView
+              hasSellerEnoughFunds={hasSellerEnoughFunds}
+              offer={offer}
+              exchange={exchange}
+              onCancelExchange={onCancelExchange}
+              onExchangePolicyClick={onExchangePolicyClick}
+              onRedeem={onNextClick}
+              onPurchaseOverview={onPurchaseOverview}
+              onExpireVoucherClick={onExpireVoucherClick}
+              onRaiseDisputeClick={onRaiseDisputeClick}
+              pageType="exchange"
+              hasMultipleVariants={false}
+              isPreview={false}
+              exchangePolicyCheckResult={exchangePolicyCheckResult}
+            />
+          </Grid>
+        </GridContainer>
+      )}
     </NonModal>
   );
 }
