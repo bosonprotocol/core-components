@@ -33,7 +33,7 @@ const defaultDisputeResolverId =
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
   envName,
-  defaultTokensList:
+  tokensList:
     process.env.STORYBOOK_DATA_TOKENS_LIST ||
     '[{"symbol":"MATIC","name":"MATIC","address":"0x0000000000000000000000000000000000000000","decimals":"18"},{"symbol":"WETH","name":"Wrapped Ether","address":"0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa","decimals":"18"},{"symbol":"BOSON","name":"Boson Token (PoS)","address":"0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0","decimals":"18"},{"symbol":"USDC","name":"Mumbai USD Coin","address":"0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747","decimals":"6"},{"symbol":"DAI","name":"DAI","address":"0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f","decimals":"18"},{"symbol":"USDT","name":"Tether USD","address":"0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832","decimals":"6"}]',
   walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
@@ -47,7 +47,11 @@ Redemption.args = {
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
-  exchangeId: ""
+  exchangeId: "",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  }
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

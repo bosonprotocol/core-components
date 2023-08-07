@@ -1,7 +1,12 @@
 import { EnvironmentType } from "@bosonprotocol/core-sdk";
 import { createContext, useContext } from "react";
+import { Token } from "../widgets/finance/convertion-rate/ConvertionRateContext";
 
-export const Context = createContext<{ envName: EnvironmentType } | null>(null);
+export const Context = createContext<{
+  envName: EnvironmentType;
+  tokens: Token[];
+  metaTx?: { apiKey: string; apiIds: string };
+} | null>(null);
 
 export const useEnvContext = () => {
   const contextValue = useContext(Context);

@@ -1,9 +1,9 @@
 import { Token } from "../convertion-rate/ConvertionRateContext";
 
-export function getDefaultTokens(defaultTokensList: string): Token[] {
+export function getDefaultTokens(tokensList: string): Token[] {
   let tokens: Token[] = [];
   try {
-    tokens = JSON.parse(defaultTokensList || "[]");
+    tokens = JSON.parse(tokensList || "[]");
   } catch (e) {
     console.error(e);
   }
