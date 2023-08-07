@@ -14,13 +14,13 @@ import { handleRates } from "./utils";
 
 export interface ConvertionRateProviderProps {
   children: React.ReactNode;
-  defaultTokensList: string;
+  tokensList: string;
 }
 export default function ConvertionRateProvider({
   children,
-  defaultTokensList
+  tokensList
 }: ConvertionRateProviderProps) {
-  const defaultTokens = getDefaultTokens(defaultTokensList);
+  const defaultTokens = getDefaultTokens(tokensList);
   const [store, setStore] = useState(initalState.store);
   const { data: tokens, isLoading: isTokensLoading } = useTokens({
     enabled: defaultTokens.length > 0

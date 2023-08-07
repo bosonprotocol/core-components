@@ -102,11 +102,16 @@ export function FinanceWidget({
   envName,
   walletConnectProjectId,
   sellerId,
-  defaultTokensList,
+  tokensList,
+  metaTx,
   ...rest
 }: FinanceWidgetProps) {
   return (
-    <EnvironmentProvider envName={envName}>
+    <EnvironmentProvider
+      envName={envName}
+      metaTx={metaTx}
+      tokensList={tokensList}
+    >
       {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
@@ -117,7 +122,7 @@ export function FinanceWidget({
           walletConnectProjectId={walletConnectProjectId}
         >
           <QueryClientProvider client={queryClient}>
-            <ConvertionRateProvider defaultTokensList={defaultTokensList}>
+            <ConvertionRateProvider tokensList={tokensList}>
               <ModalProvider>
                 <Component sellerId={sellerId} />
               </ModalProvider>

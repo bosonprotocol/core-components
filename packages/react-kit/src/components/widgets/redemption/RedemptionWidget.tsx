@@ -70,7 +70,11 @@ const RedeemModalWithExchange = WithExchange(RedeemNonModal);
 
 export function RedemptionWidget(props: WidgetProps) {
   return (
-    <EnvironmentProvider envName={props.envName}>
+    <EnvironmentProvider
+      envName={props.envName}
+      metaTx={props.metaTx}
+      tokensList={props.tokensList}
+    >
       {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
@@ -83,9 +87,7 @@ export function RedemptionWidget(props: WidgetProps) {
           >
             <ChatProvider>
               <IpfsProvider {...props}>
-                <ConvertionRateProvider
-                  defaultTokensList={props.defaultTokensList}
-                >
+                <ConvertionRateProvider tokensList={props.tokensList}>
                   <ModalProvider>
                     <RedeemModalWithExchange {...props} />
                   </ModalProvider>
