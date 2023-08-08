@@ -27,10 +27,7 @@ import RedeemNonModal, {
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-  exchangeId?: string;
-  fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
-};
+} & Omit<RedeemNonModalProps, "exchange"> & { exchangeId?: string };
 
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
