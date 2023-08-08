@@ -58,6 +58,7 @@ export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
+  raiseDisputeForExchangeUrl: string;
   myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
   myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
   myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
@@ -77,6 +78,7 @@ export default function RedeemNonModal({
   exchange: selectedExchange,
   fairExchangePolicyRules,
   defaultDisputeResolverId,
+  raiseDisputeForExchangeUrl,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
   myItemsOnCancelExchange,
@@ -217,6 +219,15 @@ export default function RedeemNonModal({
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
     : undefined;
+
+  const handleRaiseDispute = (exchangeId: string | undefined) => {
+    const raiseDisputeForExchangeUrlWithId = raiseDisputeForExchangeUrl.replace(
+      "{id}",
+      exchangeId || ""
+    );
+    window.open(raiseDisputeForExchangeUrlWithId, "_blank");
+  };
+
   return (
     <>
       <Formik<FormType>
@@ -281,6 +292,7 @@ export default function RedeemNonModal({
                   isValid={isRedeemFormOK}
                   onRaiseDisputeClick={(exchange) => {
                     setExchange(exchange);
+                    handleRaiseDispute(exchange?.id);
                     myItemsOnRaiseDisputeClick?.(exchange);
                   }}
                   onAvatarClick={(exchange) => {
@@ -315,6 +327,7 @@ export default function RedeemNonModal({
                   isValid={isRedeemFormOK}
                   exchangeId={exchange?.id || ""}
                   onRaiseDisputeClick={() => {
+                    handleRaiseDispute(exchange?.id);
                     exchangeViewOnRaiseDisputeClick?.();
                   }}
                   fairExchangePolicyRules={fairExchangePolicyRules}
