@@ -12,7 +12,7 @@ import { zIndex } from "../ui/zIndex";
 
 const colors = theme.colors.light;
 const Root = styled.div`
-  position: fixed;
+  position: relative;
   top: 0;
   bottom: 0;
   left: 0;

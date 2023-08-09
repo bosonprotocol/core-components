@@ -54,7 +54,8 @@ Redemption.args = {
   },
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
-  }
+  },
+  modalMargin: "2%"
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];
