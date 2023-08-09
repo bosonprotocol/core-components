@@ -4,15 +4,17 @@ import Grid from "../../../../ui/Grid";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import { BosonFooter } from "../BosonFooter";
 import PurchaseOverview from "./PurchaseOverview";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 type Props = {
   onBackClick: () => void;
+  nonModalProps: Partial<NonModalProps>;
 };
-export function PurchaseOverviewView({ onBackClick }: Props) {
+export function PurchaseOverviewView({ onBackClick, nonModalProps }: Props) {
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid gap="1rem">
             <ArrowLeft

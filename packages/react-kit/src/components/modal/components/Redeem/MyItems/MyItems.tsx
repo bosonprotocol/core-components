@@ -13,7 +13,7 @@ import { Exchange } from "../../../../../types/exchange";
 import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -24,6 +24,7 @@ export type MyItemsProps = {
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
+  nonModalProps: Partial<NonModalProps>;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -33,7 +34,8 @@ export function MyItems({
   onExchangeCardClick,
   onCancelExchange,
   onRaiseDisputeClick,
-  onAvatarClick
+  onAvatarClick,
+  nonModalProps
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
@@ -43,6 +45,7 @@ export function MyItems({
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <Typography tag="h3">Redeem your item</Typography>

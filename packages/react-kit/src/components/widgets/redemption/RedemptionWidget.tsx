@@ -27,7 +27,10 @@ import RedeemNonModal, {
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<RedeemNonModalProps, "exchange"> & { exchangeId?: string };
+} & Omit<RedeemNonModalProps, "exchange" | "hideModal"> & {
+    exchangeId?: string;
+    closeWidgetClick?: () => void;
+  };
 
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
@@ -86,7 +89,10 @@ export function RedemptionWidget(props: WidgetProps) {
               <IpfsProvider {...props}>
                 <ConvertionRateProvider tokensList={props.tokensList}>
                   <ModalProvider>
-                    <RedeemModalWithExchange {...props} />
+                    <RedeemModalWithExchange
+                      {...props}
+                      hideModal={props.closeWidgetClick}
+                    />
                   </ModalProvider>
                 </ConvertionRateProvider>
               </IpfsProvider>

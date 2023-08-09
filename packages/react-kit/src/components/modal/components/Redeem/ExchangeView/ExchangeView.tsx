@@ -20,7 +20,7 @@ import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
 import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -44,6 +44,7 @@ export type ExchangeViewProps = {
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   isValid: boolean;
+  nonModalProps: Partial<NonModalProps>;
 };
 
 const SLIDER_OPTIONS = {
@@ -64,7 +65,8 @@ export function ExchangeView({
   onRaiseDisputeClick,
   exchangeId,
   fairExchangePolicyRules,
-  defaultDisputeResolverId
+  defaultDisputeResolverId,
+  nonModalProps
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -128,6 +130,7 @@ export function ExchangeView({
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid gap="1rem">
             <House

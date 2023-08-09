@@ -86,9 +86,9 @@ const background = {
 } as const;
 
 const Wrapper = styled.div<{
-  $size: Props["size"];
-  $theme: Props["theme"];
-  $maxWidths: Props["maxWidths"];
+  $size: NonModalProps["size"];
+  $theme: NonModalProps["theme"];
+  $maxWidths: NonModalProps["maxWidths"];
 }>`
   position: relative;
   z-index: ${zIndex.Modal};
@@ -184,12 +184,12 @@ const Close = styled(X)`
 `;
 
 const Content = styled.div<{
-  $size: Props["size"];
+  $size: NonModalProps["size"];
 }>`
   padding: 2rem;
 `;
 
-interface Props {
+export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
   title?: string;
   headerComponent?: ReactNode;
@@ -216,7 +216,7 @@ export default function NonModal({
   }
 }: {
   children: React.ReactNode;
-  props: Props;
+  props: NonModalProps;
 }) {
   const handleOnClose = () => {
     if (closable && hideModal) {

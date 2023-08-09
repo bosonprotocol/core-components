@@ -7,7 +7,7 @@ import Grid from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 import { BosonFooter } from "../BosonFooter";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import Typography from "../../../../ui/Typography";
@@ -45,12 +45,14 @@ const StyledCommitStepWrapper = styled(CommitStepWrapper)`
 
 interface Props {
   onNextClick: () => void;
+  nonModalProps: Partial<NonModalProps>;
 }
 
-export default function StepsOverview({ onNextClick }: Props) {
+export default function StepsOverview({ onNextClick, nonModalProps }: Props) {
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <Typography tag="h3">Redeem your item</Typography>

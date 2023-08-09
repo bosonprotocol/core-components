@@ -9,7 +9,7 @@ import { offers } from "@bosonprotocol/core-sdk";
 import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 interface Props {
   onBackClick: () => void;
@@ -17,6 +17,7 @@ interface Props {
   onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
+  nonModalProps: Partial<NonModalProps>;
 }
 
 export function ExchangePolicy({
@@ -24,12 +25,14 @@ export function ExchangePolicy({
   exchange,
   onContractualAgreementClick,
   onLicenseAgreementClick,
-  exchangePolicyCheckResult
+  exchangePolicyCheckResult,
+  nonModalProps
 }: Props) {
   const exchangeName = exchange?.offer.metadata.name || "";
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid gap="1rem">
             <ArrowLeft
