@@ -253,7 +253,6 @@ async function main() {
           content.push(...chunk);
         }
       })();
-      console.log("content.length", content.length);
       fetchChunks = content.length > read;
       read = content.length;
     }
