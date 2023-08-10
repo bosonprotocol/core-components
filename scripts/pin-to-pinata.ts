@@ -239,11 +239,22 @@ async function main() {
       );
     }
 
-    const fileChunks = ipfsStorage.ipfsClient.cat(cid);
-
-    let content: number[] = [];
-    for await (const chunk of fileChunks) {
-      content = [...content, ...chunk];
+    const content: number[] = [];
+    let fetchChunks = true;
+    const maxChunkSize = 10485760;
+    let read = 0;
+    while (fetchChunks) {
+      const fileChunks = ipfsStorage.ipfsClient.cat(cid, {
+        offset: content.length,
+        length: maxChunkSize
+      });
+      await (async () => {
+        for await (const chunk of fileChunks) {
+          content.push(...chunk);
+        }
+      })();
+      fetchChunks = content.length > read;
+      read = content.length;
     }
 
     const formData = new FormData();
