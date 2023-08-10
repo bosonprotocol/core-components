@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.28.0...@bosonprotocol/core-sdk@1.29.0) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+
+
+### Features
+
+* allow checking an offer is compliant with the fair exchange policy ([#520](https://github.com/bosonprotocol/core-components/issues/520)) ([1ad4d0f](https://github.com/bosonprotocol/core-components/commit/1ad4d0f0997032a372cd481e1538590f84ab8ca6))
+* redemption widget ([#460](https://github.com/bosonprotocol/core-components/issues/460)) ([953d9c3](https://github.com/bosonprotocol/core-components/commit/953d9c3ad2caafc0a8028637ad25afbebab7c9e2))
+
+
+
+
+
 # [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.27.0...@bosonprotocol/core-sdk@1.28.0) (2023-07-05)
 
 

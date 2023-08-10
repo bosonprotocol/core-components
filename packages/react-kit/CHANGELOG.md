@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.6...@bosonprotocol/react-kit@0.18.0) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+* opensea link is not correct ([#523](https://github.com/bosonprotocol/core-components/issues/523)) ([45354d6](https://github.com/bosonprotocol/core-components/commit/45354d6eb86746d4c5c5cd9158532e35313cf0a9))
+* redemption widget - direct click on Redeem exchange ([#531](https://github.com/bosonprotocol/core-components/issues/531)) ([3412855](https://github.com/bosonprotocol/core-components/commit/3412855006938c998c938cfd4eb64947b252815b))
+* redemption widget: change initialise button colour ([#529](https://github.com/bosonprotocol/core-components/issues/529)) ([5771c51](https://github.com/bosonprotocol/core-components/commit/5771c51edfa52f865a45b1ab5fa53c6b5b705c82))
+* report check exchange policy in Redemption Widget ([#525](https://github.com/bosonprotocol/core-components/issues/525)) ([1fadde5](https://github.com/bosonprotocol/core-components/commit/1fadde5b2ecf1afe34c1d888483e473f459b4396))
+* upgrade chat-sdk version in react-kit ([#526](https://github.com/bosonprotocol/core-components/issues/526)) ([5d6f996](https://github.com/bosonprotocol/core-components/commit/5d6f996e57a9f6fb453151b9347b1fc8495003cd))
+
+
+### Features
+
+* add biconomy metaTx configuration to widgets ([#532](https://github.com/bosonprotocol/core-components/issues/532)) ([90790bb](https://github.com/bosonprotocol/core-components/commit/90790bb520761fe0dcad005487e58940a241bda8))
+* change redemption widget to be the redeem form instead of the redeem button ([#527](https://github.com/bosonprotocol/core-components/issues/527)) ([512260a](https://github.com/bosonprotocol/core-components/commit/512260a2cefea2868953727c8537bc6dd7407ba1))
+* link "raise dispute" button to dr center according to env ([#533](https://github.com/bosonprotocol/core-components/issues/533)) ([ce6533f](https://github.com/bosonprotocol/core-components/commit/ce6533f3a8e4e011056722cff8fd2ecbd06014a1))
+* redemption widget - allow to hide modal ([#534](https://github.com/bosonprotocol/core-components/issues/534)) ([276eb8e](https://github.com/bosonprotocol/core-components/commit/276eb8e9620d81ed4047b881b4fba6049d3ac942))
+* redemption widget ([#460](https://github.com/bosonprotocol/core-components/issues/460)) ([953d9c3](https://github.com/bosonprotocol/core-components/commit/953d9c3ad2caafc0a8028637ad25afbebab7c9e2))
+* reinitialize the redeem modal steps when switching wallet ([#528](https://github.com/bosonprotocol/core-components/issues/528)) ([dc9521b](https://github.com/bosonprotocol/core-components/commit/dc9521b4738292f7a6ac00164d4920270d351e53))
+
+
+
+
+
 ## [0.17.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.5...@bosonprotocol/react-kit@0.17.6) (2023-07-05)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
