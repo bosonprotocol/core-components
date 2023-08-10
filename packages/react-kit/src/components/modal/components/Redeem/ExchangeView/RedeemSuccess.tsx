@@ -17,7 +17,7 @@ import ConnectButton from "../../../../wallet/ConnectButton";
 import { BosonFooter } from "../BosonFooter";
 import GridContainer from "../../../../ui/GridContainer";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -33,12 +33,14 @@ type Props = {
   onHouseClick: () => void;
   onExchangePolicyClick: () => void;
   exchangeId: string;
+  nonModalProps: Partial<NonModalProps>;
 };
 
 export function RedeemSuccess({
   onClickDone,
   onHouseClick,
-  exchangeId
+  exchangeId,
+  nonModalProps
 }: Props) {
   const { redeemCallbackUrl } = useConfigContext();
   const {
@@ -62,6 +64,7 @@ export function RedeemSuccess({
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <House

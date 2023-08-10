@@ -6,22 +6,25 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { BosonFooter } from "../../BosonFooter";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
-import NonModal from "../../../../NonModal";
+import NonModal, { NonModalProps } from "../../../../NonModal";
 
 export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
   onSuccess: ExpireVoucherProps["onSuccess"];
   exchange: Exchange | null;
+  nonModalProps: Partial<NonModalProps>;
 }
 
 export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   exchange,
   onBackClick,
-  onSuccess
+  onSuccess,
+  nonModalProps
 }) => {
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <ArrowLeft

@@ -2,7 +2,7 @@ import { getAddress } from "ethers/lib/utils";
 import React from "react";
 import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import ConnectButton from "../../../../wallet/ConnectButton";
@@ -12,12 +12,14 @@ export interface ConfirmationViewProps {
   onBackClick: ConfirmationProps["onBackClick"];
   onSuccess: ConfirmationProps["onSuccess"];
   exchange: Exchange | null;
+  nonModalProps: Partial<NonModalProps>;
 }
 
 export function ConfirmationView({
   onBackClick,
   onSuccess,
-  exchange
+  exchange,
+  nonModalProps
 }: ConfirmationViewProps) {
   const offerId = exchange?.offer?.id;
   const offerName = exchange?.offer?.metadata?.name;
@@ -29,6 +31,7 @@ export function ConfirmationView({
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <Typography tag="h3">Redeem your item</Typography>

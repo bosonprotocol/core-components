@@ -12,7 +12,7 @@ import { zIndex } from "../ui/zIndex";
 
 const colors = theme.colors.light;
 const Root = styled.div`
-  position: fixed;
+  position: relative;
   top: 0;
   bottom: 0;
   left: 0;
@@ -37,38 +37,38 @@ const RootBG = styled.div`
 const sizeToMargin = {
   xs: {
     xs: "0",
-    s: "4rem 12rem",
-    m: "4rem 20rem",
-    l: "4rem 24rem",
-    xl: "4rem 30rem"
+    s: "0 12rem",
+    m: "0 20rem",
+    l: "0 24rem",
+    xl: "0 30rem"
   },
   s: {
     xs: "0",
-    s: "4rem 10rem",
-    m: "4rem 19rem",
-    l: "4rem 22rem",
-    xl: "4rem 30rem"
+    s: "0 10rem",
+    m: "0 19rem",
+    l: "0 22rem",
+    xl: "0 30rem"
   },
   m: {
     xs: "0",
-    s: "4rem 6rem",
-    m: "4rem 12rem",
-    l: "4rem 16rem",
-    xl: "4rem 25.75rem"
+    s: "0 6rem",
+    m: "0 12rem",
+    l: "0 16rem",
+    xl: "0 25.75rem"
   },
   l: {
     xs: "0",
-    s: "4rem",
-    m: "4rem 8rem",
-    l: "4rem 10rem",
-    xl: "4rem 14rem"
+    s: "0",
+    m: "0 8rem",
+    l: "0 10rem",
+    xl: "0 14rem"
   },
   auto: {
-    xs: "4rem auto",
-    s: "4rem auto",
-    m: "4rem auto",
-    l: "4rem auto",
-    xl: "4rem auto"
+    xs: "0 auto",
+    s: "0 auto",
+    m: "0 auto",
+    l: "0 auto",
+    xl: "0 auto"
   },
   fullscreen: {
     xs: "0 auto",
@@ -86,9 +86,9 @@ const background = {
 } as const;
 
 const Wrapper = styled.div<{
-  $size: Props["size"];
-  $theme: Props["theme"];
-  $maxWidths: Props["maxWidths"];
+  $size: NonModalProps["size"];
+  $theme: NonModalProps["theme"];
+  $maxWidths: NonModalProps["maxWidths"];
 }>`
   position: relative;
   z-index: ${zIndex.Modal};
@@ -184,12 +184,12 @@ const Close = styled(X)`
 `;
 
 const Content = styled.div<{
-  $size: Props["size"];
+  $size: NonModalProps["size"];
 }>`
   padding: 2rem;
 `;
 
-interface Props {
+export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
   title?: string;
   headerComponent?: ReactNode;
@@ -216,7 +216,7 @@ export default function NonModal({
   }
 }: {
   children: React.ReactNode;
-  props: Props;
+  props: NonModalProps;
 }) {
   const handleOnClose = () => {
     if (closable && hideModal) {

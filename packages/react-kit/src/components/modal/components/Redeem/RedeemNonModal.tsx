@@ -32,7 +32,7 @@ import { Loading } from "../../../Loading";
 import { ContactPreference } from "./const";
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
-import NonModal from "../../NonModal";
+import NonModal, { NonModalProps } from "../../NonModal";
 import Grid from "../../../ui/Grid";
 import Typography from "../../../ui/Typography";
 import ConnectButton from "../../../wallet/ConnectButton";
@@ -59,6 +59,7 @@ export type RedeemNonModalProps = {
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   raiseDisputeForExchangeUrl: string;
+  hideModal?: NonModalProps["hideModal"];
   myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
   myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
   myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
@@ -79,6 +80,7 @@ export default function RedeemNonModal({
   fairExchangePolicyRules,
   defaultDisputeResolverId,
   raiseDisputeForExchangeUrl,
+  hideModal,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
   myItemsOnCancelExchange,
@@ -170,6 +172,7 @@ export default function RedeemNonModal({
     });
   };
   const formRef = useRef<FormikProps<FormType> | null>(null);
+  const nonModalProps: Partial<NonModalProps> = { hideModal };
 
   useEffect(() => {
     // TODO: this should not be necessary as validateOnMount should handle that
@@ -186,6 +189,7 @@ export default function RedeemNonModal({
     return (
       <NonModal
         props={{
+          ...nonModalProps,
           headerComponent: (
             <Grid>
               <Typography tag="h3">Redeem your item</Typography>
@@ -203,6 +207,7 @@ export default function RedeemNonModal({
     return (
       <NonModal
         props={{
+          ...nonModalProps,
           headerComponent: (
             <Grid>
               <Typography tag="h3">Redeem your item</Typography>
@@ -263,6 +268,7 @@ export default function RedeemNonModal({
             <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
                 <StepsOverview
+                  nonModalProps={nonModalProps}
                   onNextClick={() => {
                     if (selectedExchange) {
                       setExchange(selectedExchange);
@@ -274,6 +280,7 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
+                  nonModalProps={nonModalProps}
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
@@ -302,6 +309,7 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
+                  nonModalProps={nonModalProps}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
                   onExchangePolicyClick={() => {
@@ -335,11 +343,13 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
                 <ExchangeFullDescriptionView
+                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                 />
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
+                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                   onSuccess={(...args) => {
@@ -349,6 +359,7 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.CANCELLATION_VIEW ? (
                 <CancellationView
+                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                   onSuccess={(...args) => {
@@ -357,9 +368,13 @@ export default function RedeemNonModal({
                   }}
                 />
               ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
-                <PurchaseOverviewView onBackClick={goToPreviousStep} />
+                <PurchaseOverviewView
+                  nonModalProps={nonModalProps}
+                  onBackClick={goToPreviousStep}
+                />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
+                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   onNextClick={() =>
                     setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
@@ -368,6 +383,7 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <ExchangePolicy
+                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                   onContractualAgreementClick={() =>
@@ -380,16 +396,19 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
                 <ContractualAgreementView
+                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
                 <LicenseAgreementView
+                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (
                 <ConfirmationView
+                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   onSuccess={(...args) => {
                     setActiveStep(ActiveStep.REDEEM_SUCESS);
@@ -399,6 +418,7 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess
+                  nonModalProps={nonModalProps}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onExchangePolicyClick={() =>

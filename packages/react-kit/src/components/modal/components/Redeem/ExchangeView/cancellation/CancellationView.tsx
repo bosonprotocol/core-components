@@ -6,21 +6,24 @@ import Typography from "../../../../../ui/Typography";
 import ConnectButton from "../../../../../wallet/ConnectButton";
 import { BosonFooter } from "../../BosonFooter";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
-import NonModal from "../../../../NonModal";
+import NonModal, { NonModalProps } from "../../../../NonModal";
 
 export interface CancellationViewProps {
   exchange: Exchange | null;
   onBackClick: CancelExchangeProps["onBackClick"];
   onSuccess: CancelExchangeProps["onSuccess"];
+  nonModalProps: Partial<NonModalProps>;
 }
 
 export const CancellationView: React.FC<CancellationViewProps> = ({
   exchange,
-  onBackClick
+  onBackClick,
+  nonModalProps
 }) => {
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid gap="1rem">
             <ArrowLeft

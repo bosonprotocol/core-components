@@ -51,7 +51,11 @@ Redemption.args = {
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
-  }
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  modalMargin: "2%"
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

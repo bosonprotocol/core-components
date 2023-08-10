@@ -6,20 +6,26 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { BosonFooter } from "../BosonFooter";
-import NonModal from "../../../NonModal";
+import NonModal, { NonModalProps } from "../../../NonModal";
 
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  nonModalProps: Partial<NonModalProps>;
 }
 
-export function ContractualAgreementView({ onBackClick, exchange }: Props) {
+export function ContractualAgreementView({
+  onBackClick,
+  exchange,
+  nonModalProps
+}: Props) {
   const offer = exchange?.offer;
   const offerId = offer?.id;
 
   return (
     <NonModal
       props={{
+        ...nonModalProps,
         headerComponent: (
           <Grid>
             <ArrowLeft
