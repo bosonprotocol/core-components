@@ -54,11 +54,18 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
+export enum RedemptionBypassMode {
+  NORMAL = "NORMAL",
+  REDEEM = "REDEEM",
+  CANCEL = "CANCEL"
+}
+
 export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   raiseDisputeForExchangeUrl: string;
+  bypassMode?: RedemptionBypassMode;
   hideModal?: NonModalProps["hideModal"];
   myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
   myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
@@ -80,6 +87,7 @@ export default function RedeemNonModal({
   fairExchangePolicyRules,
   defaultDisputeResolverId,
   raiseDisputeForExchangeUrl,
+  bypassMode,
   hideModal,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
@@ -140,7 +148,13 @@ export default function RedeemNonModal({
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
-  }>({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
+  }>({
+    previousStep: [],
+    currentStep:
+      bypassMode === RedemptionBypassMode.CANCEL
+        ? ActiveStep.CANCELLATION_VIEW
+        : ActiveStep.STEPS_OVERVIEW
+  });
   const {
     store: { tokens: defaultTokens }
   } = useConvertionRate();
@@ -272,7 +286,13 @@ export default function RedeemNonModal({
                   onNextClick={() => {
                     if (selectedExchange) {
                       setExchange(selectedExchange);
-                      setActiveStep(ActiveStep.EXCHANGE_VIEW);
+                      if (bypassMode === RedemptionBypassMode.REDEEM) {
+                        setActiveStep(ActiveStep.REDEEM_FORM);
+                      } else if (bypassMode === RedemptionBypassMode.CANCEL) {
+                        setActiveStep(ActiveStep.CANCELLATION_VIEW);
+                      } else {
+                        setActiveStep(ActiveStep.EXCHANGE_VIEW);
+                      }
                     } else {
                       setActiveStep(ActiveStep.MY_ITEMS);
                     }
@@ -361,7 +381,7 @@ export default function RedeemNonModal({
                 <CancellationView
                   nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
-                  exchange={exchange}
+                  exchange={exchange || selectedExchange || null}
                   onSuccess={(...args) => {
                     goToPreviousStep();
                     cancellationViewOnSuccess?.(...args);
