@@ -30,7 +30,6 @@ import {
   CurrencyDisplay
 } from "../../currencyDisplay/CurrencyDisplay";
 import ThemedButton from "../../ui/ThemedButton";
-import { Offer } from "../../../types/offer";
 import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 dayjs.extend(isBetween);
 const BosonButton = Button;

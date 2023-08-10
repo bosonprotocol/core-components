@@ -368,9 +368,10 @@ export default function RedeemNonModal({
                   }}
                 />
               ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
-                <PurchaseOverviewView 
+                <PurchaseOverviewView
                   nonModalProps={nonModalProps}
-                  onBackClick={goToPreviousStep} />
+                  onBackClick={goToPreviousStep}
+                />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
                   nonModalProps={nonModalProps}

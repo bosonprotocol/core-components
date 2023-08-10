@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../../theme";
 import { Exchange } from "../../types/exchange";
-import { useConfigContext } from "../config/ConfigContext";
 import DetailTable from "../modal/components/Redeem/ExchangeView/detail/DetailTable";
 import Grid from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
@@ -33,8 +32,6 @@ export default function ExchangePolicyDetails({
   onContractualAgreementClick,
   onLicenseAgreementClick
 }: ExchangePolicyDetailsProps) {
-  const { minimumDisputePeriodInDays, minimumDisputeResolutionPeriodDays } =
-    useConfigContext();
   const offerData: subgraph.OfferFieldsFragment = exchange.offer;
   const isExchangePolicyValid =
     exchangePolicyCheckResult &&

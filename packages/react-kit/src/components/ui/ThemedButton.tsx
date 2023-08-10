@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment } from "react";
+import React, { Fragment } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
 
 import { zIndex } from "./zIndex";
