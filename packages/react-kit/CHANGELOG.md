@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.18.0...@bosonprotocol/react-kit@0.19.0) (2023-08-14)
+
+
+### Features
+
+* redemption widget - allow to switch direct to redeem or cancel … ([#535](https://github.com/bosonprotocol/core-components/issues/535)) ([aa7c7f9](https://github.com/bosonprotocol/core-components/commit/aa7c7f96a64ff4d4f27d2a0118163f0d98fc8c2f))
+
+
+
+
+
 # [0.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.6...@bosonprotocol/react-kit@0.18.0) (2023-08-10)
 
 
