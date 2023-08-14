@@ -2,6 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import ThemedButton, { IButton } from "../../components/ui/ThemedButton";
 import React from "react";
+import { CaretDown } from "phosphor-react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -10,7 +11,11 @@ export default {
 } as ComponentMeta<typeof ThemedButton>;
 
 const BASE_ARGS: Pick<IButton, "onClick" | "size" | "children"> = {
-  children: "Button Text",
+  children: (
+    <>
+      Button Text <CaretDown size={16} />
+    </>
+  ),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClick: () => {},
   size: "regular"

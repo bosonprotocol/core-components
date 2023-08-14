@@ -21,6 +21,9 @@ const BaseButton = styled.button<{
   border-width: ${(props) => props.theme.borderWidth || 0}px;
   color: ${(props) => props.theme.color || "#000000"};
   background-color: ${(props) => props.theme.background || "transparent"};
+  svg {
+    stroke: ${(props) => props.theme.color || "#000000"};
+  }
   ${(props) =>
     props.fill
       ? css`
@@ -141,6 +144,38 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         color: colors.white
       }
     },
+    secondaryInverted: {
+      background: "transparent",
+      color: colors.secondary,
+      border: "none",
+      hover: {
+        background: colors.lightGrey,
+        color: colors.black,
+        border: "none"
+      }
+    },
+    accentInvertedNoBorder: {
+      background: "transparent",
+      color: colors.accent,
+      border: "none",
+      hover: {
+        background: colors.black,
+        color: colors.white,
+        border: "none"
+      }
+    },
+    accentInverted: {
+      background: "transparent",
+      color: colors.accent,
+      borderColor: colors.accent,
+      borderWidth: 2,
+      hover: {
+        background: colors.black,
+        color: colors.white,
+        borderColor: colors.black,
+        border: "none"
+      }
+    },
     orangeInverse: {
       color: colors.orange,
       borderColor: colors.orange,
@@ -190,6 +225,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
       hover: {
         color: colors.black
       },
+      background: "transparent",
       disabled: {
         background: "transparent"
       }

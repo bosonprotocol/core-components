@@ -8,12 +8,24 @@ export const transition = css`
 export const button = css`
   box-sizing: border-box;
   cursor: pointer;
-  display: block;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.5px;
+  gap: 0.5rem;
+  margin: 1px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0px 0px 0px #000000;
 
   ${transition}
+  svg {
+    ${transition}
+  }
+  svg > *:not(rect[fill="none"]) {
+    stroke: inherit;
+  }
 `;
 export const clamp = css`
   overflow: hidden;
@@ -44,13 +56,18 @@ export const buttonText = css`
 `;
 
 export const small = css`
-  padding: 0.25rem 1rem;
+  height: 2.125rem;
+  padding: 0.5rem 1rem;
   > * {
     font-size: 12px !important;
   }
+  #buttonText {
+    font-size: 0.75rem;
+  }
 `;
 export const regular = css`
-  padding: 0.75rem 2rem;
+  height: 2.813rem;
+  padding: 0.75rem 1.5rem;
   > * {
     font-size: 16px !important;
   }
@@ -59,9 +76,13 @@ export const regular = css`
       font-size: 14px !important;
     }
   }
+  #buttonText {
+    font-size: 0.875rem;
+  }
 `;
 export const large = css`
-  padding: 1.25rem 2rem;
+  height: 3.5rem;
+  padding: 1rem 2rem;
   > * {
     font-size: 18px !important;
   }
@@ -69,5 +90,8 @@ export const large = css`
     > * {
       font-size: 16px !important;
     }
+  }
+  #buttonText {
+    font-size: 1rem;
   }
 `;
