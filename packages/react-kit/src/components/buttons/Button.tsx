@@ -8,20 +8,21 @@ export enum ButtonSize {
   Large = "large"
 }
 
-export type ButtonProps = Omit<IButton, "theme"> & {
+export type ButtonProps = IButton & {
   variant?:
     | "primaryFill" // default
     | "primaryInverted" // ?
     | "secondaryFill" // Dispute - Escalate
     | "secondaryInverted" // Dispute - Refuse, ProgressBar Cancel, Back to home page, Remove variant, Batch void, Void
     | "accentFill" // cookie
-    | "accentInverted"; // Dispute - Copy email, Upload File, Header Sell/Seller Hub, Create Product Draft - Start Fresh, ...
+    | "accentInverted" // Dispute - Copy email, Upload File, Header Sell/Seller Hub, Create Product Draft - Start Fresh, ...
+    | "accentInvertedNoBorder";
   loading?: boolean;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "primaryFill", loading = false, ...props }, ref) => {
-    let theme: IButton["theme"];
+    let theme: IButton["theme"] = props.theme;
     switch (variant) {
       case "primaryFill": {
         theme = "primary";
@@ -36,7 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         break;
       }
       case "secondaryInverted": {
-        theme = "bosonSecondary";
+        theme = "secondaryInverted";
         break;
       }
       case "accentFill": {
@@ -44,7 +45,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         break;
       }
       case "accentInverted": {
-        theme = "orangeInverse";
+        theme = "accentInverted";
+        break;
+      }
+      case "accentInvertedNoBorder": {
+        theme = "accentInvertedNoBorder";
         break;
       }
     }

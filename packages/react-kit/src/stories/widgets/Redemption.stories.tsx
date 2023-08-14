@@ -4,6 +4,7 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
 import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
 import { EnvironmentType } from "@bosonprotocol/core-sdk";
+import { RedemptionBypassMode } from "../../components/modal/components/Redeem/RedeemNonModal";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
@@ -55,7 +56,8 @@ Redemption.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
-  modalMargin: "2%"
+  modalMargin: "2%",
+  bypassMode: RedemptionBypassMode.NORMAL
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];
