@@ -105,6 +105,7 @@ export default function Confirmation({
         "[callredeemCallbackUrl] redeemCallbackUrl is not defined"
       );
     }
+    // TODO: add wallet signature in the message (structure still TBD - must be verifiable by the backend)
     await fetch(redeemCallbackUrl, {
       method: "POST",
       body: JSON.stringify({
@@ -114,7 +115,11 @@ export default function Confirmation({
         sellerId,
         sellerAddress,
         buyerAddress: await signer?.getAddress()
-      })
+      }),
+      headers: {
+        "content-type": "application/json;charset=UTF-8"
+        // TODO: add optional headers passed as arguments (could be passed as POST request parameters)
+      }
     });
   };
   const handleRedeem = async () => {
