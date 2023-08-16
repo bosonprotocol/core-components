@@ -20,6 +20,7 @@ export type ConfigContextProps = {
   licenseTemplate: string;
   contactSellerForExchangeUrl: string;
   redeemCallbackUrl?: string;
+  redeemCallbackHeaders?: { [key: string]: string };
   usePendingTransactions?: boolean;
 };
 
