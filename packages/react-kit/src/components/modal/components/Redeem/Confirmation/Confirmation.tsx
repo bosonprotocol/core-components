@@ -71,7 +71,7 @@ export default function Confirmation({
   setIsLoading: setLoading
 }: ConfirmationProps) {
   const { envName } = useEnvContext();
-  const { redeemCallbackUrl } = useConfigContext();
+  const { redeemCallbackUrl, redeemCallbackHeaders } = useConfigContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -105,20 +105,28 @@ export default function Confirmation({
         "[callredeemCallbackUrl] redeemCallbackUrl is not defined"
       );
     }
-    // TODO: add wallet signature in the message (structure still TBD - must be verifiable by the backend)
+    // add wallet signature in the message (must be verifiable by the backend)
+    const message = {
+      deliveryDetails: values,
+      exchangeId,
+      offerId,
+      buyerId,
+      sellerId,
+      sellerAddress,
+      buyerAddress: await signer?.getAddress()
+    };
+    const signature = signer
+      ? await signer.signMessage(JSON.stringify(message))
+      : undefined;
     await fetch(redeemCallbackUrl, {
       method: "POST",
       body: JSON.stringify({
-        deliveryDetails: values,
-        exchangeId,
-        buyerId,
-        sellerId,
-        sellerAddress,
-        buyerAddress: await signer?.getAddress()
+        message,
+        signature
       }),
       headers: {
-        "content-type": "application/json;charset=UTF-8"
-        // TODO: add optional headers passed as arguments (could be passed as POST request parameters)
+        "content-type": "application/json;charset=UTF-8",
+        ...redeemCallbackHeaders
       }
     });
   };
