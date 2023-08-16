@@ -396,6 +396,7 @@ export default function RedeemNonModal({
                 <RedeemFormView
                   nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
+                  exchange={exchange || selectedExchange || null}
                   onNextClick={() =>
                     setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION)
                   }
