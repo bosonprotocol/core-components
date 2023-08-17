@@ -1,3 +1,4 @@
+import { useAccount } from "wagmi";
 import { ArrowLeft } from "phosphor-react";
 import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
@@ -20,6 +21,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
   onBackClick,
   nonModalProps
 }) => {
+  const { address } = useAccount();
   return (
     <NonModal
       props={{
@@ -41,7 +43,11 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
       }}
     >
       {!exchange ? (
-        <p>Exchange could not be retrieved</p>
+        <p>Exchange could not be retrieved.</p>
+      ) : exchange.buyer?.wallet?.toLowerCase() !== address?.toLowerCase() ? (
+        <p>You do not own this exchange.</p>
+      ) : exchange.state !== "COMMITTED" ? (
+        <p>Invalid exchange state.</p>
       ) : (
         <CancelExchange
           exchange={exchange}
