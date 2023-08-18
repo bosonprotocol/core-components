@@ -30,7 +30,8 @@ function extractCID(imageUri: string) {
       CID.parse(cidFromUrl || imageUri);
       return cidFromUrl;
     } catch (error) {
-      throw new Error(`Failed to parse CID from: ${imageUri}`);
+      console.error(`Failed to parse CID from: ${imageUri}`);
+      return undefined;
     }
   }
 }

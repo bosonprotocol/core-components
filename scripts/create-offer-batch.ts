@@ -43,10 +43,10 @@ async function main() {
   const offersFullDataJson = offersDataJson.map((specData) => {
     const offerData = { ...offerTemplate, ...specData };
     if (offerData["validFromDateInMS"] === undefined) {
-      offerData["validFromDateInMS"] = Date.now() + 5 * 60000;
+      offerData["validFromDateInMS"] = Date.now();
     }
     if (offerData["voucherRedeemableFromDateInMS"] === undefined) {
-      offerData["voucherRedeemableFromDateInMS"] = Date.now() + 5 * 60000;
+      offerData["voucherRedeemableFromDateInMS"] = Date.now();
     }
     return offerData;
   });
