@@ -30,7 +30,8 @@ function extractCID(imageUri: string) {
       CID.parse(cidFromUrl || imageUri);
       return cidFromUrl;
     } catch (error) {
-      throw new Error(`Failed to parse CID from: ${imageUri}`);
+      console.error(`Failed to parse CID from: ${imageUri}`);
+      return undefined;
     }
   }
 }
@@ -170,12 +171,14 @@ async function main() {
             offer.metadata?.productV1Seller?.images?.map((img) =>
               extractCID(img.url)
             ) || [];
-          const videoCIDs = [...metadataAnimation, ...visualVideos];
+          const videoCIDs = [...metadataAnimation, ...visualVideos].filter(
+            (v) => !!v
+          );
           const imageCIDs = [
             ...metadataImage,
             ...visualImages,
             ...sellerImages
-          ];
+          ].filter((v) => !!v);
 
           // save some metadata for later usage
           for (const videoCID of videoCIDs) {
