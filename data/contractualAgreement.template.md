@@ -2,9 +2,9 @@
 
 The following agreement (the “**Agreement**") is entered into by and between you (the “**Buyer**”) and the Seller, and sets out the terms relating to a transaction whereby:
 
-- A) The Seller offers its products or services for sale through a Redeemable NFT (the “**rNFT**”), which can be redeemed for the Item on the terms set in this Agreement. 
+- A) By offering its products or services for sale through a Redeemable NFT (the “**rNFT**”),  the Seller agrees to do so on the terms set out in this Agreement. 
 
-- B) The Buyer redeems the rNFT from the Seller to obtain the Item.
+- B) The Buyer redeems the rNFT from the Seller to obtain the product or service.
 
 - C) Upon having received from the Seller the seller’s information as required by laws applicable to the Buyer, the Buyer is deemed to have agreed to the terms set out in this Agreement.
 
