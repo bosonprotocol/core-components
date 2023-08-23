@@ -21,6 +21,7 @@ export function handleGroupCreatedEvent(event: GroupCreated): void {
   condition.tokenId = conditionFromEvent.tokenId;
   condition.threshold = conditionFromEvent.threshold;
   condition.maxCommits = conditionFromEvent.maxCommits;
+  condition.length = conditionFromEvent.length;
   condition.save();
 
   // find the offers and update them: isConditional = true?, condition = Condition

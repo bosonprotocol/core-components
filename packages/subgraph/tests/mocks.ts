@@ -64,6 +64,7 @@ export function createOfferCreatedEvent(
   metadataUri: string,
   metadataHash: string,
   voided: boolean,
+  collectionIndex: i32,
   agentId: i32,
   executedBy: string
 ): OfferCreated {
@@ -91,7 +92,8 @@ export function createOfferCreatedEvent(
         exchangeToken,
         metadataUri,
         metadataHash,
-        voided
+        voided,
+        collectionIndex
       )
     )
   );
@@ -729,7 +731,8 @@ export function createOfferStruct(
   exchangeToken: string,
   metadataUri: string,
   metadataHash: string,
-  voided: boolean
+  voided: boolean,
+  collectionIndex: i32
 ): OfferCreatedOfferStruct {
   const tuple = new OfferCreatedOfferStruct();
   tuple.push(ethereum.Value.fromI32(offerId));
@@ -742,6 +745,7 @@ export function createOfferStruct(
   tuple.push(ethereum.Value.fromString(metadataUri));
   tuple.push(ethereum.Value.fromString(metadataHash));
   tuple.push(ethereum.Value.fromBoolean(voided));
+  tuple.push(ethereum.Value.fromI32(collectionIndex));
   return tuple;
 }
 

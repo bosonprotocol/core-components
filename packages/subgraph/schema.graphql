@@ -427,6 +427,7 @@ type Offer @entity {
   metadataUri: String!
   metadataHash: String!
   voided: Boolean!
+  collectionIndex: BigInt!
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
@@ -750,6 +751,7 @@ type ConditionEntity @entity {
   tokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
+  length: BigInt!
 }
 
 """

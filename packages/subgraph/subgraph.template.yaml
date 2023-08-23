@@ -31,7 +31,7 @@ dataSources:
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
-        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256),indexed uint256,address)
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256),indexed uint256,address)
           handler: handleOfferCreatedEvent
         - event: OfferVoided(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferVoidedEvent
@@ -254,9 +254,9 @@ dataSources:
         - name: IBosonGroupHandler
           file: ../common/src/abis/IBosonGroupHandler.json
       eventHandlers:
-        - event: GroupCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+        - event: GroupCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256,uint256),indexed address)
           handler: handleGroupCreatedEvent
-        - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+        - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256,uint256),indexed address)
           handler: handleGroupUpdatedEvent
       file: ./src/mappings/group-handler.ts
 templates:

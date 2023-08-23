@@ -58,6 +58,7 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.metadataHash = offerStruct.metadataHash;
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
+    offer.collectionIndex = offerStruct.collectionIndex;
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
 
