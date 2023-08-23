@@ -239,6 +239,11 @@
         "internalType": "uint256",
         "name": "_offerId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
     "name": "burnPremintedVouchers",
@@ -273,7 +278,13 @@
       }
     ],
     "name": "callExternalContract",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
@@ -643,7 +654,7 @@
       },
       {
         "internalType": "bool",
-        "name": "_approved",
+        "name": "approved",
         "type": "bool"
       }
     ],

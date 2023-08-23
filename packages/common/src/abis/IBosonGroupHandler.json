@@ -68,6 +68,11 @@
             "internalType": "uint256",
             "name": "maxCommits",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
+            "type": "uint256"
           }
         ],
         "indexed": false,
@@ -153,6 +158,11 @@
           {
             "internalType": "uint256",
             "name": "maxCommits",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
             "type": "uint256"
           }
         ],
@@ -244,6 +254,11 @@
             "internalType": "uint256",
             "name": "maxCommits",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BosonTypes.Condition",
@@ -324,6 +339,11 @@
             "internalType": "uint256",
             "name": "maxCommits",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BosonTypes.Condition",
@@ -402,6 +422,11 @@
           {
             "internalType": "uint256",
             "name": "maxCommits",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
             "type": "uint256"
           }
         ],
