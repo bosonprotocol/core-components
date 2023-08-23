@@ -105,12 +105,14 @@ export declare namespace BosonTypes {
     tokenId: BigNumberish;
     threshold: BigNumberish;
     maxCommits: BigNumberish;
+    length: BigNumberish;
   };
 
   export type ConditionStructOutput = [
     number,
     number,
     string,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
@@ -121,6 +123,7 @@ export declare namespace BosonTypes {
     tokenId: BigNumber;
     threshold: BigNumber;
     maxCommits: BigNumber;
+    length: BigNumber;
   };
 
   export type TwinReceiptStruct = {
@@ -217,6 +220,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   contractName: "IBosonExchangeHandler";
   functions: {
     "cancelVoucher(uint256)": FunctionFragment;
+    "commitToConditionalOffer(address,uint256,uint256)": FunctionFragment;
     "commitToOffer(address,uint256)": FunctionFragment;
     "commitToPreMintedOffer(address,uint256,uint256)": FunctionFragment;
     "completeExchange(uint256)": FunctionFragment;
@@ -236,6 +240,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "cancelVoucher",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "commitToConditionalOffer",
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "commitToOffer",
@@ -296,6 +304,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "cancelVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "commitToConditionalOffer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -608,6 +620,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
@@ -702,6 +721,13 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  commitToConditionalOffer(
+    _buyer: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   commitToOffer(
     _buyer: string,
     _offerId: BigNumberish,
@@ -787,6 +813,13 @@ export interface IBosonExchangeHandler extends BaseContract {
   callStatic: {
     cancelVoucher(
       _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1095,6 +1128,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
@@ -1172,6 +1212,13 @@ export interface IBosonExchangeHandler extends BaseContract {
     cancelVoucher(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     commitToOffer(

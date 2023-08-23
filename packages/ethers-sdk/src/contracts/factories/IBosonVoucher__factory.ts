@@ -248,6 +248,11 @@ const _abi = [
         name: "_offerId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
     ],
     name: "burnPremintedVouchers",
     outputs: [],
@@ -281,7 +286,13 @@ const _abi = [
       },
     ],
     name: "callExternalContract",
-    outputs: [],
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
     stateMutability: "payable",
     type: "function",
   },
@@ -651,7 +662,7 @@ const _abi = [
       },
       {
         internalType: "bool",
-        name: "_approved",
+        name: "approved",
         type: "bool",
       },
     ],

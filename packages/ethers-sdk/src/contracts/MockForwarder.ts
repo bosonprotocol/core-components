@@ -13,7 +13,7 @@ import {
   Signer,
   utils,
 } from "ethers";
-import { FunctionFragment, Result } from "@ethersproject/abi";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
@@ -36,11 +36,16 @@ export declare namespace MockForwarder {
 export interface MockForwarderInterface extends utils.Interface {
   contractName: "MockForwarder";
   functions: {
+    "eip712Domain()": FunctionFragment;
     "execute((address,address,uint256,bytes),bytes)": FunctionFragment;
     "getNonce(address)": FunctionFragment;
     "verify((address,address,uint256,bytes),bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "eip712Domain",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "execute",
     values: [MockForwarder.ForwardRequestStruct, BytesLike]
@@ -51,12 +56,25 @@ export interface MockForwarderInterface extends utils.Interface {
     values: [MockForwarder.ForwardRequestStruct, BytesLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "eip712Domain",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "verify", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "EIP712DomainChanged()": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "EIP712DomainChanged"): EventFragment;
 }
+
+export type EIP712DomainChangedEvent = TypedEvent<[], {}>;
+
+export type EIP712DomainChangedEventFilter =
+  TypedEventFilter<EIP712DomainChangedEvent>;
 
 export interface MockForwarder extends BaseContract {
   contractName: "MockForwarder";
@@ -86,6 +104,20 @@ export interface MockForwarder extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    eip712Domain(
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, BigNumber, string, string, BigNumber[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: BigNumber;
+        verifyingContract: string;
+        salt: string;
+        extensions: BigNumber[];
+      }
+    >;
+
     execute(
       req: MockForwarder.ForwardRequestStruct,
       signature: BytesLike,
@@ -100,6 +132,20 @@ export interface MockForwarder extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
+
+  eip712Domain(
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, string, BigNumber, string, string, BigNumber[]] & {
+      fields: string;
+      name: string;
+      version: string;
+      chainId: BigNumber;
+      verifyingContract: string;
+      salt: string;
+      extensions: BigNumber[];
+    }
+  >;
 
   execute(
     req: MockForwarder.ForwardRequestStruct,
@@ -116,6 +162,20 @@ export interface MockForwarder extends BaseContract {
   ): Promise<boolean>;
 
   callStatic: {
+    eip712Domain(
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, BigNumber, string, string, BigNumber[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: BigNumber;
+        verifyingContract: string;
+        salt: string;
+        extensions: BigNumber[];
+      }
+    >;
+
     execute(
       req: MockForwarder.ForwardRequestStruct,
       signature: BytesLike,
@@ -131,9 +191,14 @@ export interface MockForwarder extends BaseContract {
     ): Promise<boolean>;
   };
 
-  filters: {};
+  filters: {
+    "EIP712DomainChanged()"(): EIP712DomainChangedEventFilter;
+    EIP712DomainChanged(): EIP712DomainChangedEventFilter;
+  };
 
   estimateGas: {
+    eip712Domain(overrides?: CallOverrides): Promise<BigNumber>;
+
     execute(
       req: MockForwarder.ForwardRequestStruct,
       signature: BytesLike,
@@ -150,6 +215,8 @@ export interface MockForwarder extends BaseContract {
   };
 
   populateTransaction: {
+    eip712Domain(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     execute(
       req: MockForwarder.ForwardRequestStruct,
       signature: BytesLike,

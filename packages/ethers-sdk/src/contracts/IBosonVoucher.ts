@@ -47,7 +47,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burnPremintedVouchers(uint256)": FunctionFragment;
+    "burnPremintedVouchers(uint256,uint256)": FunctionFragment;
     "burnVoucher(uint256)": FunctionFragment;
     "callExternalContract(address,bytes)": FunctionFragment;
     "contractURI()": FunctionFragment;
@@ -84,7 +84,7 @@ export interface IBosonVoucherInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
     functionFragment: "burnPremintedVouchers",
-    values: [BigNumberish]
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "burnVoucher",
@@ -411,6 +411,7 @@ export interface IBosonVoucher extends BaseContract {
 
     burnPremintedVouchers(
       _offerId: BigNumberish,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -516,7 +517,7 @@ export interface IBosonVoucher extends BaseContract {
 
     setApprovalForAll(
       operator: string,
-      _approved: boolean,
+      approved: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -576,6 +577,7 @@ export interface IBosonVoucher extends BaseContract {
 
   burnPremintedVouchers(
     _offerId: BigNumberish,
+    _amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -674,7 +676,7 @@ export interface IBosonVoucher extends BaseContract {
 
   setApprovalForAll(
     operator: string,
-    _approved: boolean,
+    approved: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -731,6 +733,7 @@ export interface IBosonVoucher extends BaseContract {
 
     burnPremintedVouchers(
       _offerId: BigNumberish,
+      _amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -743,7 +746,7 @@ export interface IBosonVoucher extends BaseContract {
       _to: string,
       _data: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<string>;
 
     contractURI(overrides?: CallOverrides): Promise<string>;
 
@@ -829,7 +832,7 @@ export interface IBosonVoucher extends BaseContract {
 
     setApprovalForAll(
       operator: string,
-      _approved: boolean,
+      approved: boolean,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -965,6 +968,7 @@ export interface IBosonVoucher extends BaseContract {
 
     burnPremintedVouchers(
       _offerId: BigNumberish,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1064,7 +1068,7 @@ export interface IBosonVoucher extends BaseContract {
 
     setApprovalForAll(
       operator: string,
-      _approved: boolean,
+      approved: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1128,6 +1132,7 @@ export interface IBosonVoucher extends BaseContract {
 
     burnPremintedVouchers(
       _offerId: BigNumberish,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1229,7 +1234,7 @@ export interface IBosonVoucher extends BaseContract {
 
     setApprovalForAll(
       operator: string,
-      _approved: boolean,
+      approved: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

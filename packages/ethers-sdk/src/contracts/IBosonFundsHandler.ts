@@ -36,7 +36,10 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
   contractName: "IBosonFundsHandler";
   functions: {
     "depositFunds(uint256,address,uint256)": FunctionFragment;
-    "getAvailableFunds(uint256)": FunctionFragment;
+    "getAllAvailableFunds(uint256)": FunctionFragment;
+    "getAvailableFunds(uint256,address[])": FunctionFragment;
+    "getTokenList(uint256)": FunctionFragment;
+    "getTokenListPaginated(uint256,uint256,uint256)": FunctionFragment;
     "withdrawFunds(uint256,address[],uint256[])": FunctionFragment;
     "withdrawProtocolFees(address[],uint256[])": FunctionFragment;
   };
@@ -46,8 +49,20 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
     values: [BigNumberish, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getAvailableFunds",
+    functionFragment: "getAllAvailableFunds",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAvailableFunds",
+    values: [BigNumberish, string[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenList",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenListPaginated",
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawFunds",
@@ -63,7 +78,19 @@ export interface IBosonFundsHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getAllAvailableFunds",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getAvailableFunds",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenListPaginated",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -188,7 +215,7 @@ export interface IBosonFundsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    getAvailableFunds(
+    getAllAvailableFunds(
       _entityId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
@@ -196,6 +223,28 @@ export interface IBosonFundsHandler extends BaseContract {
         availableFunds: BosonTypes.FundsStructOutput[];
       }
     >;
+
+    getAvailableFunds(
+      _entityId: BigNumberish,
+      _tokenList: string[],
+      overrides?: CallOverrides
+    ): Promise<
+      [BosonTypes.FundsStructOutput[]] & {
+        availableFunds: BosonTypes.FundsStructOutput[];
+      }
+    >;
+
+    getTokenList(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string[]] & { tokenList: string[] }>;
+
+    getTokenListPaginated(
+      _entityId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string[]] & { tokenList: string[] }>;
 
     withdrawFunds(
       _entityId: BigNumberish,
@@ -218,10 +267,28 @@ export interface IBosonFundsHandler extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  getAvailableFunds(
+  getAllAvailableFunds(
     _entityId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BosonTypes.FundsStructOutput[]>;
+
+  getAvailableFunds(
+    _entityId: BigNumberish,
+    _tokenList: string[],
+    overrides?: CallOverrides
+  ): Promise<BosonTypes.FundsStructOutput[]>;
+
+  getTokenList(
+    _entityId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
+  getTokenListPaginated(
+    _entityId: BigNumberish,
+    _limit: BigNumberish,
+    _offset: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   withdrawFunds(
     _entityId: BigNumberish,
@@ -244,10 +311,28 @@ export interface IBosonFundsHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getAvailableFunds(
+    getAllAvailableFunds(
       _entityId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BosonTypes.FundsStructOutput[]>;
+
+    getAvailableFunds(
+      _entityId: BigNumberish,
+      _tokenList: string[],
+      overrides?: CallOverrides
+    ): Promise<BosonTypes.FundsStructOutput[]>;
+
+    getTokenList(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
+    getTokenListPaginated(
+      _entityId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     withdrawFunds(
       _entityId: BigNumberish,
@@ -342,8 +427,26 @@ export interface IBosonFundsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    getAllAvailableFunds(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getAvailableFunds(
       _entityId: BigNumberish,
+      _tokenList: string[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTokenList(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTokenListPaginated(
+      _entityId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -369,8 +472,26 @@ export interface IBosonFundsHandler extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    getAllAvailableFunds(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getAvailableFunds(
       _entityId: BigNumberish,
+      _tokenList: string[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTokenList(
+      _entityId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTokenListPaginated(
+      _entityId: BigNumberish,
+      _limit: BigNumberish,
+      _offset: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

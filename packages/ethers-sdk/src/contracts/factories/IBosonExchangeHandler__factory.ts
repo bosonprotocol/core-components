@@ -635,6 +635,29 @@ const _abi = [
         name: "_offerId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "commitToConditionalOffer",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address payable",
+        name: "_buyer",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
     ],
     name: "commitToOffer",
     outputs: [],
@@ -945,6 +968,11 @@ const _abi = [
               {
                 internalType: "uint256",
                 name: "maxCommits",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "length",
                 type: "uint256",
               },
             ],

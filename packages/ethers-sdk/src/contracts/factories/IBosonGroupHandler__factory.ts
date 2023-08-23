@@ -80,6 +80,11 @@ const _abi = [
             name: "maxCommits",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "length",
+            type: "uint256",
+          },
         ],
         indexed: false,
         internalType: "struct BosonTypes.Condition",
@@ -164,6 +169,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "length",
             type: "uint256",
           },
         ],
@@ -256,6 +266,11 @@ const _abi = [
             name: "maxCommits",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "length",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Condition",
         name: "_condition",
@@ -336,6 +351,11 @@ const _abi = [
             name: "maxCommits",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "length",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Condition",
         name: "condition",
@@ -413,6 +433,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "length",
             type: "uint256",
           },
         ],
