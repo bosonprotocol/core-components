@@ -100,6 +100,7 @@ type FinanceWidgetProps = {
   Parameters<typeof Component>[0];
 export function FinanceWidget({
   envName,
+  configId,
   walletConnectProjectId,
   sellerId,
   tokensList,
@@ -109,6 +110,7 @@ export function FinanceWidget({
   return (
     <EnvironmentProvider
       envName={envName}
+      configId={configId}
       metaTx={metaTx}
       tokensList={tokensList}
     >

@@ -1,7 +1,7 @@
 import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { Wallet, providers } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig } from "../packages/common/src";
+import { getEnvConfigById } from "../packages/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 import {
@@ -16,6 +16,7 @@ program
     "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and assistant."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "-esc, --escalation-period <PERIOD_IN_MS>",
     "Escalation response period in milliseconds."
@@ -48,7 +49,8 @@ async function main() {
   const clerk = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName, configId);
   const chainId = defaultConfig.chainId;
   const metadataUri = opts.metadata;
   const fees = opts.fees
@@ -68,7 +70,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       disputeResolverAdminWallet
     ),
-    envName
+    envName,
+    configId
   });
 
   console.log(

@@ -6,7 +6,8 @@ import { DisputesMixin } from "./disputes/mixin";
 import { applyMixins, BaseCoreSDK } from "./mixins/base-core-sdk";
 import {
   Web3LibAdapter,
-  getDefaultConfig,
+  getEnvConfigById,
+  ConfigId,
   MetadataStorage,
   MetaTxConfig
 } from "@bosonprotocol/common";
@@ -43,11 +44,12 @@ export class CoreSDK extends BaseCoreSDK {
   static fromDefaultConfig(args: {
     web3Lib: Web3LibAdapter;
     envName: EnvironmentType;
+    configId: ConfigId;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
     metaTx?: Partial<MetaTxConfig>;
   }) {
-    const defaultConfig = getDefaultConfig(args.envName);
+    const defaultConfig = getEnvConfigById(args.envName, args.configId);
 
     return new CoreSDK({
       web3Lib: args.web3Lib,

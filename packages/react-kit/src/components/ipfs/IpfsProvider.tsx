@@ -1,5 +1,5 @@
 import { Optional } from "utility-types";
-import { getDefaultConfig } from "@bosonprotocol/core-sdk";
+import { getEnvConfigById } from "@bosonprotocol/core-sdk";
 import React, { ReactNode } from "react";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { Context, IpfsContextProps } from "./IpfsContext";
@@ -18,8 +18,8 @@ export type IpfsProviderProps = Omit<
 };
 
 export function IpfsProvider({ children, ...rest }: IpfsProviderProps) {
-  const { envName } = useEnvContext();
-  const { ipfsMetadataUrl } = getDefaultConfig(envName);
+  const { envName, configId } = useEnvContext();
+  const { ipfsMetadataUrl } = getEnvConfigById(envName, configId);
   const ipfsMetadataStorageUrl = rest.ipfsMetadataStorageUrl || ipfsMetadataUrl;
   const ipfsGateway = rest.ipfsGateway || "https://ipfs.io/ipfs";
   const ipfsMetadataStorageHeaders = getIpfsHeaders(

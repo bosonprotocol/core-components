@@ -1,7 +1,7 @@
 import { BaseIpfsStorage } from "./../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
 import { program } from "commander";
-import { getDefaultConfig } from "../packages/core-sdk/src";
+import { getEnvConfigById } from "../packages/core-sdk/src";
 import fs from "fs";
 import { buildInfuraHeaders } from "./utils/infura";
 
@@ -9,6 +9,7 @@ program
   .description("Upload to IPFS.")
   .argument("<FILEPATH>", "File to upload.")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",
     "ProjectId and Secret required to address Infura IPFS gateway"
@@ -17,8 +18,8 @@ program
 
 async function main() {
   const [filePath] = program.args;
-  const { env: envName, infura } = program.opts();
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const { env: envName, infura, configId } = program.opts();
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const storage = new BaseIpfsStorage({
     url: defaultConfig.ipfsMetadataUrl,
     headers: infura ? buildInfuraHeaders(infura) : undefined

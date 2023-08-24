@@ -71,7 +71,7 @@ export default function ExpireVoucher({
 }: ExpireVoucherProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [expireError, setExpireError] = useState<Error | null>(null);
-  const { envName } = useEnvContext();
+  const { envName, configId } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const addPendingTransaction = useAddPendingTransactionWithContext();
   const signer = useEthersSigner();
@@ -191,6 +191,7 @@ export default function ExpireVoucher({
             variant="primaryFill"
             exchangeId={exchange.id}
             envName={envName}
+            configId={configId}
             disabled={isLoading}
             onError={(...args) => {
               const [error] = args;

@@ -70,7 +70,7 @@ export default function Confirmation({
   onPendingTransaction,
   setIsLoading: setLoading
 }: ConfirmationProps) {
-  const { envName } = useEnvContext();
+  const { envName, configId } = useEnvContext();
   const { redeemCallbackUrl, redeemCallbackHeaders } = useConfigContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
@@ -263,6 +263,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
             }
             exchangeId={exchangeId}
             envName={envName}
+            configId={configId}
             onError={(...args) => {
               const [error] = args;
               console.error("Error while redeeming", error);

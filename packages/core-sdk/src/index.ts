@@ -16,9 +16,11 @@ export * as voucher from "./voucher";
 export * as seaport from "./seaport";
 
 export {
-  defaultConfigs,
-  getDefaultConfig,
+  envConfigs,
+  getEnvConfigs,
+  getEnvConfigById,
   EnvironmentType,
+  ConfigId,
   MetaTxConfig,
   ProtocolConfig,
   abis

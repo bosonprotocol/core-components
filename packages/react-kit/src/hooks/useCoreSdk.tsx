@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import {
   CoreSDK,
-  getDefaultConfig,
+  getEnvConfigById,
+  ConfigId,
   EnvironmentType,
   MetaTxConfig
 } from "@bosonprotocol/core-sdk";
@@ -15,6 +16,10 @@ export type CoreSdkConfig = {
    * Target Environment
    */
   envName: EnvironmentType;
+  /**
+   * Config id of the chosen environment
+   */
+  configId: ConfigId;
   /**
    * Ethers provider that will be passed to `CoreSDK`. Defaults to `JsonRpcProvider`
    * connected via default URL of respective chain ID.
@@ -78,7 +83,7 @@ export function useCoreSdk(config: CoreSdkConfig) {
 }
 
 function initCoreSdk(config: CoreSdkConfig) {
-  const defaultConfig = getDefaultConfig(config.envName);
+  const defaultConfig = getEnvConfigById(config.envName, config.configId);
   const connectedProvider =
     config.web3Provider ||
     createDefaultProvider(config.jsonRpcUrl || defaultConfig.jsonRpcUrl);
