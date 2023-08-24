@@ -116,7 +116,8 @@ function buildOfferData(offerFields: OfferFieldsFragment): {
       exchangeToken: offerFields.exchangeToken.address as string,
       disputeResolverId: offerFields.disputeResolverId as string,
       metadataHash: offerFields.metadataHash as string,
-      metadataUri: offerFields.metadataUri as string
+      metadataUri: offerFields.metadataUri as string,
+      collectionIndex: offerFields.collectionIndex
     },
     offerMetadata: {
       sellerContactMethod:

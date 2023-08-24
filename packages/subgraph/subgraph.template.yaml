@@ -41,6 +41,36 @@ dataSources:
           handler: handleRangeReservedEvent
       file: ./src/mappings/offer-handler.ts
   - kind: ethereum/contract
+    name: BosonOfferHandlerLegacy
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonOfferHandlerLegacy
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - BaseMetadataEntity
+        - ProductV1MetadataEntity
+        - Offer
+        - ExchangeToken
+        - ProductV1Brand
+      abis:
+        - name: IBosonOfferHandlerLegacy
+          file: ../common/src/abis/IBosonOfferHandlerLegacy.json
+        - name: ERC20
+          file: ../common/src/abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: OfferCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256),indexed uint256,address)
+          handler: handleOfferCreatedEventLegacy
+      file: ./src/mappings/offer-handler.ts
+  - kind: ethereum/contract
     name: BosonAccountHandler
     network: {{network}}
     source:
@@ -258,6 +288,28 @@ dataSources:
           handler: handleGroupCreatedEvent
         - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256,uint256),indexed address)
           handler: handleGroupUpdatedEvent
+      file: ./src/mappings/group-handler.ts
+  - kind: ethereum/contract
+    name: BosonGroupHandlerLegacy
+    network: {{network}}
+    source:
+      address: "{{protocolDiamond}}"
+      abi: IBosonGroupHandlerLegacy
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Condition
+      abis:
+        - name: IBosonGroupHandlerLegacy
+          file: ../common/src/abis/IBosonGroupHandlerLegacy.json
+      eventHandlers:
+        - event: GroupCreated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+          handler: handleGroupCreatedEventLegacy
+        - event: GroupUpdated(indexed uint256,indexed uint256,(uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256),indexed address)
+          handler: handleGroupUpdatedEventLegacy
       file: ./src/mappings/group-handler.ts
 templates:
   - name: BosonVoucher
