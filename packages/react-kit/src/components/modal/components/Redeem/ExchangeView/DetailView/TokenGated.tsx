@@ -30,6 +30,7 @@ interface Condition {
   tokenId: string;
   threshold?: string;
   maxCommits: string;
+  length: string;
   minBalance?: string;
 }
 

@@ -6,4 +6,5 @@ fragment BaseConditionFields on ConditionEntity {
   tokenId
   threshold
   maxCommits
+  length
 }

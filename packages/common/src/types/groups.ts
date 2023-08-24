@@ -25,6 +25,7 @@ export type ConditionStruct = {
   tokenId: BigNumberish;
   threshold: BigNumberish;
   maxCommits: BigNumberish;
+  length: BigNumberish;
 };
 
 export type CreateGroupArgs = ConditionStruct & {

@@ -71,7 +71,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "length",
+            "name": "tokenLength",
             "type": "uint256"
           }
         ],

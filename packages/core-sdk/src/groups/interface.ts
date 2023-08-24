@@ -30,7 +30,8 @@ export function createGroupArgsToStructs(
       tokenAddress: args.tokenAddress,
       tokenId: args.tokenId,
       threshold: args.threshold,
-      maxCommits: args.maxCommits
+      maxCommits: args.maxCommits,
+      length: args.length
     }
   ];
 }

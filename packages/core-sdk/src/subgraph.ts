@@ -709,6 +709,7 @@ export enum Buyer_OrderBy {
 export type ConditionEntity = {
   __typename?: "ConditionEntity";
   id: Scalars["ID"];
+  length: Scalars["BigInt"];
   maxCommits: Scalars["BigInt"];
   method: Scalars["Int"];
   threshold: Scalars["BigInt"];
@@ -728,6 +729,14 @@ export type ConditionEntity_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  length?: InputMaybe<Scalars["BigInt"]>;
+  length_gt?: InputMaybe<Scalars["BigInt"]>;
+  length_gte?: InputMaybe<Scalars["BigInt"]>;
+  length_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  length_lt?: InputMaybe<Scalars["BigInt"]>;
+  length_lte?: InputMaybe<Scalars["BigInt"]>;
+  length_not?: InputMaybe<Scalars["BigInt"]>;
+  length_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   maxCommits?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_gt?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -778,6 +787,7 @@ export type ConditionEntity_Filter = {
 
 export enum ConditionEntity_OrderBy {
   Id = "id",
+  Length = "length",
   MaxCommits = "maxCommits",
   Method = "method",
   Threshold = "threshold",
@@ -2798,6 +2808,7 @@ export type Offer = {
   agentFee: Scalars["BigInt"];
   agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
+  collectionIndex: Scalars["BigInt"];
   condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"];
   /** Offer durations */
@@ -2986,6 +2997,14 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex_lt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_lte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   condition?: InputMaybe<Scalars["String"]>;
   condition_?: InputMaybe<ConditionEntity_Filter>;
   condition_contains?: InputMaybe<Scalars["String"]>;
@@ -3335,6 +3354,7 @@ export enum Offer_OrderBy {
   AgentFee = "agentFee",
   AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
+  CollectionIndex = "collectionIndex",
   Condition = "condition",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
@@ -9686,6 +9706,7 @@ export type GetSellerByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -9698,6 +9719,7 @@ export type GetSellerByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -10537,6 +10559,7 @@ export type GetSellersQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -10549,6 +10572,7 @@ export type GetSellersQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -11811,6 +11835,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -11823,6 +11848,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -12481,6 +12507,7 @@ export type GetDisputeResolversQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -12493,6 +12520,7 @@ export type GetDisputeResolversQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -13148,6 +13176,7 @@ export type SellerFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -13160,6 +13189,7 @@ export type SellerFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -14278,6 +14308,7 @@ export type DisputeResolverFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -14290,6 +14321,7 @@ export type DisputeResolverFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -15635,6 +15667,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -15647,6 +15680,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -16216,6 +16250,7 @@ export type GetExchangeTokensQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -16228,6 +16263,7 @@ export type GetExchangeTokensQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -16775,6 +16811,7 @@ export type ExchangeTokenFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -16787,6 +16824,7 @@ export type ExchangeTokenFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -17513,6 +17551,7 @@ export type GetExchangeByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -17525,6 +17564,7 @@ export type GetExchangeByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -18176,6 +18216,7 @@ export type GetExchangesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -18188,6 +18229,7 @@ export type GetExchangesQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -18829,6 +18871,7 @@ export type ExchangeFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -18841,6 +18884,7 @@ export type ExchangeFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -19618,6 +19662,7 @@ export type BaseConditionFieldsFragment = {
   tokenId: string;
   threshold: string;
   maxCommits: string;
+  length: string;
 };
 
 export type GetBaseMetadataEntityByIdQueryQueryVariables = Exact<{
@@ -19686,6 +19731,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -19698,6 +19744,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -20354,6 +20401,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -20366,6 +20414,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -21012,6 +21061,7 @@ export type BaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -21024,6 +21074,7 @@ export type BaseMetadataEntityFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -21665,6 +21716,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -21677,6 +21729,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -22562,6 +22615,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -22682,6 +22736,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           tokenId: string;
           threshold: string;
           maxCommits: string;
+          length: string;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -23439,6 +23494,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -23559,6 +23615,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           tokenId: string;
           threshold: string;
           maxCommits: string;
+          length: string;
         } | null;
         seller: {
           __typename?: "Seller";
@@ -24330,6 +24387,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -24450,6 +24508,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -25421,6 +25480,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -25541,6 +25601,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -26502,6 +26563,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -26622,6 +26684,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -27578,6 +27641,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -27698,6 +27762,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -28867,6 +28932,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -28987,6 +29053,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -29733,6 +29800,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -29853,6 +29921,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         tokenId: string;
         threshold: string;
         maxCommits: string;
+        length: string;
       } | null;
       seller: {
         __typename?: "Seller";
@@ -30802,6 +30871,7 @@ export type GetOfferByIdQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -30922,6 +30992,7 @@ export type GetOfferByIdQueryQuery = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -31467,6 +31538,7 @@ export type GetOffersQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -31587,6 +31659,7 @@ export type GetOffersQueryQuery = {
       tokenId: string;
       threshold: string;
       maxCommits: string;
+      length: string;
     } | null;
     seller: {
       __typename?: "Seller";
@@ -32116,6 +32189,7 @@ export type OfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -32236,6 +32310,7 @@ export type OfferFieldsFragment = {
     tokenId: string;
     threshold: string;
     maxCommits: string;
+    length: string;
   } | null;
   seller: {
     __typename?: "Seller";
@@ -32764,6 +32839,7 @@ export type BaseOfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -32776,6 +32852,7 @@ export type BaseOfferFieldsFragment = {
     tokenId: string;
     threshold: string;
     maxCommits: string;
+    length: string;
   } | null;
   seller: {
     __typename?: "Seller";
@@ -33423,6 +33500,7 @@ export const BaseConditionFieldsFragmentDoc = gql`
     tokenId
     threshold
     maxCommits
+    length
   }
 `;
 export const BaseDisputeResolverFeeFieldsFragmentDoc = gql`
@@ -33684,6 +33762,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
     metadataHash
     voided
     voidedAt
+    collectionIndex
     disputeResolverId
     numberOfCommits
     numberOfRedemptions

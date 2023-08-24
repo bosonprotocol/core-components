@@ -17,6 +17,7 @@ export type CreateOfferArgs = {
   disputeResolverId: BigNumberish;
   metadataUri: string;
   metadataHash: string;
+  collectionIndex: BigNumberish;
 };
 
 export type OfferStruct = {
@@ -30,6 +31,7 @@ export type OfferStruct = {
   metadataUri: string;
   metadataHash: string;
   voided: boolean;
+  collectionIndex: BigNumberish;
 };
 
 export type OfferDatesStruct = {
