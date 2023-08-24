@@ -4,7 +4,7 @@ import { resolve } from "path";
 import { program } from "commander";
 import { Wallet, providers } from "ethers";
 import {
-  getDefaultConfig,
+  getEnvConfigById,
   EnvironmentType,
   CoreSDK
 } from "../packages/core-sdk/src";
@@ -23,6 +23,7 @@ program
     "Private key of the account issuing the transaction."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "-m, --metaTx <META_TX_CONFIG>",
     "JSON file with the meta tx parameters"
@@ -43,7 +44,8 @@ async function main() {
 
   const opts = program.opts();
   const envName = (opts.env as EnvironmentType) || "testing";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName, configId);
   const wallet = new Wallet(privateKey);
   let metaTx: Partial<MetaTxConfig> | undefined = undefined;
   if (opts.metaTx) {
@@ -63,7 +65,8 @@ async function main() {
       wallet
     ),
     envName,
-    metaTx
+    metaTx,
+    configId
   });
   if (opts.metaTx && !coreSDK.isMetaTxConfigSet) {
     throw `Invalid metaTx configuration:\n${JSON.stringify(metaTx)}`;

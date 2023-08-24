@@ -3,7 +3,7 @@ import { isAddress } from "@ethersproject/address";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Wallet, providers } from "ethers";
 import { InvalidArgumentError, program } from "commander";
-import { CoreSDK, getDefaultConfig } from "../packages/core-sdk/src";
+import { CoreSDK, getEnvConfigById } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
 function validAddress(value) {
@@ -34,20 +34,17 @@ program
   .description("Deposit funds.")
   .requiredOption("-k, --key <privateKey>", "Private Key.", validPrivateKey)
   .requiredOption("-e , --env <envName>", "Environment.")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .requiredOption("-s, --sellerId <sellerId>", "Seller ID.", validBigNumber)
   .requiredOption("-v, --value <value>", "Value.", validBigNumber)
   .option("-t, --token <token>", "Token Address.", validAddress)
   .parse(process.argv);
 
 async function main() {
-  const {
-    key: privateKey,
-    env: envName,
-    sellerId,
-    value,
-    token
-  } = program.opts();
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const opts = program.opts();
+  const { key: privateKey, env: envName, sellerId, value, token } = opts;
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const wallet = new Wallet(privateKey);
   const coreSDK = CoreSDK.fromDefaultConfig({
@@ -55,7 +52,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       wallet
     ),
-    envName
+    envName,
+    configId
   });
   console.log(`*********************`);
   console.log(`   Deposit Funds`);

@@ -82,132 +82,160 @@ const chainIdToLensInfo = new Map<number, Lens>([
   ]
 ]);
 
-export const defaultConfigs: ProtocolConfig[] = [
-  {
-    envName: "testing",
-    chainId: 80001,
-    nativeCoin: chainIdToInfo.get(80001),
-    getTxExplorerUrl: chainIdToGraphTx.get(80001),
-    subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
-    jsonRpcUrl:
-      "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e08ee49714dd5a4c8d7f3916d27027e699b3b674
-      protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
-      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
-    },
-    metaTx: {
-      relayerUrl: "https://api.biconomy.io",
-      forwarderAbi: abis.BiconomyForwarderABI
-    },
-    lens: {
-      ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
+  local: [
+    {
+      envName: "local",
+      chainId: 31337,
+      configId: "local-31337-0",
+      nativeCoin: chainIdToInfo.get(31337),
+      getTxExplorerUrl: chainIdToGraphTx.get(31337),
+      subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
+      jsonRpcUrl: "http://127.0.0.1:8545",
+      theGraphIpfsUrl: "http://127.0.0.1:5001",
+      ipfsMetadataUrl: "http://127.0.0.1:5001",
+      contracts: {
+        protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+        testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
+        testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
+        testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
+        forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
+        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
+      },
+      metaTx: {
+        relayerUrl: "http://localhost:8888",
+        forwarderAbi: abis.MockForwarderABI
+      },
+      lens: {
+        LENS_HUB_CONTRACT: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
+      }
     }
-  },
-  {
-    envName: "staging",
-    chainId: 80001,
-    nativeCoin: chainIdToInfo.get(80001),
-    getTxExplorerUrl: chainIdToGraphTx.get(80001),
-    subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
-    jsonRpcUrl:
-      "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
-    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    contracts: {
-      // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e7668625ef01ce53ee14667b960e858bc33726fb
-      protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
-      forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
-    },
-    metaTx: {
-      relayerUrl: "https://api.biconomy.io",
-      forwarderAbi: abis.BiconomyForwarderABI
-    },
-    lens: {
-      ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+  ],
+  testing: [
+    {
+      envName: "testing",
+      chainId: 80001,
+      configId: "testing-80001-0",
+      nativeCoin: chainIdToInfo.get(80001),
+      getTxExplorerUrl: chainIdToGraphTx.get(80001),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
+      jsonRpcUrl:
+        "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e08ee49714dd5a4c8d7f3916d27027e699b3b674
+        protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
+        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: {
+        ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+      }
     }
-  },
-  {
-    envName: "production",
-    chainId: 137,
-    nativeCoin: chainIdToInfo.get(137),
-    getTxExplorerUrl: chainIdToGraphTx.get(137),
-
-    subgraphUrl:
-      "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
-    jsonRpcUrl:
-      "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
-    theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
-    ipfsMetadataUrl: "https://ipfs.infura.io:5001",
-    contracts: {
-      protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
-      forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
-    },
-    metaTx: {
-      relayerUrl: "https://api.biconomy.io",
-      forwarderAbi: abis.BiconomyForwarderABI
-    },
-    lens: {
-      ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
+  ],
+  staging: [
+    {
+      envName: "staging",
+      chainId: 80001,
+      configId: "staging-80001-0",
+      nativeCoin: chainIdToInfo.get(80001),
+      getTxExplorerUrl: chainIdToGraphTx.get(80001),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-staging",
+      jsonRpcUrl:
+        "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e7668625ef01ce53ee14667b960e858bc33726fb
+        protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
+        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: {
+        ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
+      }
     }
-  },
-  {
-    envName: "local",
-    chainId: 31337,
-    nativeCoin: chainIdToInfo.get(31337),
-    getTxExplorerUrl: chainIdToGraphTx.get(31337),
-    subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
-    jsonRpcUrl: "http://127.0.0.1:8545",
-    theGraphIpfsUrl: "http://127.0.0.1:5001",
-    ipfsMetadataUrl: "http://127.0.0.1:5001",
-    contracts: {
-      protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
-      testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
-      testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
-      forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
-      seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
-    },
-    metaTx: {
-      relayerUrl: "http://localhost:8888",
-      forwarderAbi: abis.MockForwarderABI
-    },
-    lens: {
-      LENS_HUB_CONTRACT: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      LENS_PERIPHERY_CONTRACT: "0x0000000000000000000000000000000000000000"
+  ],
+  production: [
+    {
+      envName: "production",
+      chainId: 137,
+      configId: "production-137-0",
+      nativeCoin: chainIdToInfo.get(137),
+      getTxExplorerUrl: chainIdToGraphTx.get(137),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/polygon",
+      jsonRpcUrl:
+        "https://polygon-mainnet.infura.io/v3/383117b55d614525b07f03b5979c5f19",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        forwarder: "0xf0511f123164602042ab2bCF02111fA5D3Fe97CD"
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: {
+        ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
+      }
     }
-  }
-];
+  ]
+};
 
 /**
- * Returns default config values based on provided `envName` or `chainId` that can be
- * used to instantiate a `CoreSDK` instance. The argument `envName` has a higher
- * specificity than `chainId`.
- * @param filter - Filter for default config.
- * @returns Default config.
+ * Returns configs based on provided `envName` that can be
+ * used to instantiate a `CoreSDK` instance.
+ * @param envName - local, testing, staging or production
+ * @returns an array of possible configs for CoreSDK
  */
-export function getDefaultConfig(envName: EnvironmentType): ProtocolConfig {
+export function getEnvConfigs(envName: EnvironmentType): ProtocolConfig[] {
   if (!envName) {
     throw new Error(`envName has to be set`);
   }
-
-  const [defaultConfig] = defaultConfigs.filter((config) => {
-    return config.envName === envName;
-  });
-
-  if (!defaultConfig) {
+  const configs = envConfigs[envName];
+  if (!configs) {
     throw new Error(`Could not find default config for envName ${envName}`);
   }
+  configs.forEach((config) => {
+    if (!config.nativeCoin) {
+      throw new Error(
+        `Native coin has not been set for this chainId=${config.chainId}`
+      );
+    }
+  });
+  return configs;
+}
 
-  if (!defaultConfig.nativeCoin) {
+/**
+ * Returns a config based on provided `envName` and `configId` that can be
+ * used to instantiate a `CoreSDK` instance.
+ * @param envName - local, testing, staging or production
+ * @param configId - it should follow the following pattern `${envName}-${chainId}-${number}`
+ * @returns a config for CoreSDK
+ */
+export function getEnvConfigById(
+  envName: EnvironmentType,
+  configId: ProtocolConfig["configId"]
+): ProtocolConfig {
+  const configs = getEnvConfigs(envName);
+
+  const config = configs.find((config) => config.configId === configId);
+  if (!config) {
     throw new Error(
-      `Native coin has not been set for this chainId=${defaultConfig.chainId}`
+      `Could not find config for envName ${envName} and configId ${configId}`
     );
   }
-
-  return defaultConfig;
+  return config;
 }

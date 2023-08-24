@@ -95,7 +95,7 @@ export function CancelExchange({
 
   const addPendingTransaction = useAddPendingTransactionWithContext();
   const signer = useEthersSigner();
-  const { envName } = useEnvContext();
+  const { envName, configId } = useEnvContext();
   const { currency, price, penalty, refund } = useRefundData(
     exchange,
     exchange.offer.price
@@ -174,6 +174,7 @@ export function CancelExchange({
             variant="accentInverted"
             exchangeId={exchange.id}
             envName={envName}
+            configId={configId}
             disabled={isLoading}
             onError={(...args) => {
               const [error] = args;

@@ -41,7 +41,7 @@ export default function FinanceDeposit({
   tokenDecimals,
   reload
 }: Props) {
-  const { envName } = useEnvContext();
+  const { envName, configId } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const [amountToDepositTouched, setAmountToDepositTouched] =
     useState<boolean>(false);
@@ -136,6 +136,7 @@ export default function FinanceDeposit({
                 )
           }
           envName={envName}
+          configId={configId}
           disabled={isBeingDeposit || isDepositInvalid}
           web3Provider={signer?.provider as Provider}
           metaTx={coreSDK.metaTxConfig}

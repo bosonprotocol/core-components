@@ -1,16 +1,17 @@
 import { providers } from "ethers";
-import { getDefaultConfig, hooks } from "..";
+import { getEnvConfigById, hooks } from "..";
 import { useEnvContext } from "../components/environment/EnvironmentContext";
 import { useEthersSigner } from "./ethers/useEthersSigner";
 import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
 
 export function useCoreSDKWithContext() {
-  const { envName, tokens, metaTx } = useEnvContext();
+  const { envName, configId, tokens, metaTx } = useEnvContext();
   const signer = useEthersSigner();
-  const defaultConfig = getDefaultConfig(envName);
+  const defaultConfig = getEnvConfigById(envName, configId);
 
   return hooks.useCoreSdk({
     envName,
+    configId,
     web3Provider: signer?.provider as providers.Web3Provider,
     metaTx: {
       ...defaultConfig.metaTx,

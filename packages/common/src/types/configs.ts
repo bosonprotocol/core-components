@@ -1,4 +1,5 @@
 import { abis } from "..";
+import type { chains } from "../chains";
 
 export type ContractAddresses = {
   protocolDiamond: string;
@@ -30,9 +31,14 @@ export type Lens = LensContracts & {
   ipfsGateway?: string | undefined;
 };
 
+type ChainId = typeof chains[keyof typeof chains];
+
+export type ConfigId = `${EnvironmentType}-${ChainId}-${number}`;
+
 export type ProtocolConfig = {
   envName: EnvironmentType;
-  chainId: number;
+  configId: ConfigId;
+  chainId: ChainId;
   nativeCoin:
     | undefined
     | {

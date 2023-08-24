@@ -1,5 +1,5 @@
 import { Web3LibAdapter, EnvironmentType } from "@bosonprotocol/common";
-import { getDefaultConfig } from "@bosonprotocol/core-sdk";
+import { getEnvConfigs, ConfigId } from "@bosonprotocol/core-sdk";
 import { CoreSDK } from "../src/core-sdk";
 import { MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
 import {
@@ -16,7 +16,8 @@ describe("#fromDefaultConfig()", () => {
   test("construct using default config from env name", () => {
     const coreSDK = CoreSDK.fromDefaultConfig({
       web3Lib: new MockWeb3LibAdapter(),
-      envName: "testing"
+      envName: "testing",
+      configId: "testing-80001-0"
     });
     expect(coreSDK).toBeInstanceOf(CoreSDK);
   });
@@ -25,7 +26,8 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter(),
-        envName: "unknown" as EnvironmentType
+        envName: "unknown" as EnvironmentType,
+        configId: "testing-80001-0"
       })
     ).toThrow();
   });
@@ -34,7 +36,7 @@ describe("#fromDefaultConfig()", () => {
     expect(() =>
       CoreSDK.fromDefaultConfig({
         web3Lib: new MockWeb3LibAdapter()
-      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter })
+      } as unknown as { envName: EnvironmentType; web3Lib: Web3LibAdapter; configId: ConfigId })
     ).toThrow();
   });
 });
@@ -57,7 +59,7 @@ describe("#renderContractualAgreementForOffer()", () => {
         productV1MetadataEntity: mockedRawOfferFromSubgraph.metadata
       }
     });
-    const defaultConfig = getDefaultConfig("testing");
+    const defaultConfig = getEnvConfigs("testing")[0];
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
@@ -73,7 +75,7 @@ describe("#renderContractualAgreementForOffer()", () => {
   });
 
   test("Not existing offer", async () => {
-    const mockedRawOfferFromSubgraph = mockRawOfferFromSubgraph({
+    mockRawOfferFromSubgraph({
       price: "100" + "0".repeat(18),
       metadata: buildProductV1Metadata("{{priceValue}} {{exchangeTokenSymbol}}")
     });
@@ -82,7 +84,7 @@ describe("#renderContractualAgreementForOffer()", () => {
         offer: null
       }
     });
-    const defaultConfig = getDefaultConfig("testing");
+    const defaultConfig = getEnvConfigs("testing")[0];
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
@@ -106,7 +108,7 @@ describe("getSellersByAddress()", () => {
         sellers: [mockedRawSellerFromSubgraph]
       }
     });
-    const defaultConfig = getDefaultConfig("testing");
+    const defaultConfig = getEnvConfigs("testing")[0];
     const coreSDK = new CoreSDK({
       web3Lib: new MockWeb3LibAdapter(),
       subgraphUrl: SUBGRAPH_URL,
