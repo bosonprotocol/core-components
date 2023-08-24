@@ -1,11 +1,11 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const { task, subtask } = require("hardhat/config");
 const { ACCOUNTS } = require("./accounts");
-require("dotenv").config();
+const dotEnvConfig = require("dotenv");
+dotEnvConfig.config();
 
-require("@nomiclabs/hardhat-waffle");
+require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-abi-exporter");
-require("@nomiclabs/hardhat-etherscan");
 const path = require("node:path");
 const { glob } = require("glob");
 const {
