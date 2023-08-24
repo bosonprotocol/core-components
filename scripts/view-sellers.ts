@@ -1,12 +1,16 @@
-import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
+import {
+  ConfigId,
+  EnvironmentType
+} from "@bosonprotocol/common/src/types/configs";
 import { providers, Contract } from "ethers";
-import { getDefaultConfig } from "@bosonprotocol/common/src";
 import { abis } from "@bosonprotocol/common";
 import { extractSellerData } from "./utils/account";
+import { getEnvConfigById } from "@bosonprotocol/common/src/configs";
 
 async function main() {
   const envName: EnvironmentType = "staging";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId: ConfigId = "staging-80001-0";
+  const defaultConfig = getEnvConfigById(envName, configId);
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 
   const accountAbi = abis.IBosonAccountHandlerABI;

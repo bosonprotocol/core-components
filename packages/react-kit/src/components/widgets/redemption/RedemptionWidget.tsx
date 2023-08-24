@@ -74,6 +74,7 @@ export function RedemptionWidget(props: WidgetProps) {
     <div style={{ margin: props.modalMargin || "0 0 0 0" }}>
       <EnvironmentProvider
         envName={props.envName}
+        configId={props.configId}
         metaTx={props.metaTx}
         tokensList={props.tokensList}
       >

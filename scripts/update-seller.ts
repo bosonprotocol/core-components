@@ -3,7 +3,7 @@ import fs from "fs";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
 import { providers, Contract, Wallet } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig, UpdateSellerArgs } from "@bosonprotocol/common/src";
+import { getEnvConfigById, UpdateSellerArgs } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 import { abis, TransactionResponse } from "@bosonprotocol/common";
@@ -17,6 +17,7 @@ program
   )
   .option("-d, --data <SELLER_DATA>", "JSON file with the Seller parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option("--id <SELLER_ID>", "SellerId")
   .option("--admin <ADMIN>", "New admin address")
   .option("--treasury <TREASURY>", "New treasury address")
@@ -36,7 +37,8 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
   const sellerWallet = new Wallet(sellerPrivateKey);
@@ -77,7 +79,8 @@ async function main() {
           new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
           wallet
         ),
-        envName
+        envName,
+        configId
       });
       optInSigners.set(wallet.address.toLowerCase(), {
         sdk,
@@ -145,7 +148,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       sellerWallet
     ),
-    envName
+    envName,
+    configId
   });
 
   console.log(`Updating seller on env ${envName} on chain ${chainId}...`);

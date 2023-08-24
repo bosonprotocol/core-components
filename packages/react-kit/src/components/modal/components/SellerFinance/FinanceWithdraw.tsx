@@ -55,7 +55,7 @@ export default function FinanceWithdraw({
   reload,
   availableAmount
 }: Props) {
-  const { envName } = useEnvContext();
+  const { envName, configId } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const [amountToWithdrawTouched, setAmountToDepositTouched] =
     useState<boolean>(false);
@@ -158,6 +158,7 @@ export default function FinanceWithdraw({
             }
           ]}
           envName={envName}
+          configId={configId}
           disabled={isBeingWithdrawn || isWithdrawInvalid}
           web3Provider={signer?.provider as Provider}
           metaTx={coreSDK.metaTxConfig}

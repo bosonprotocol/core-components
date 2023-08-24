@@ -6,7 +6,7 @@ import { Readable } from "stream";
 
 import { BaseIpfsStorage } from "../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "../packages/common/src/types/configs";
-import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
+import { getEnvConfigById, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
 
 const imageIpfsGatewayMap = {
@@ -85,11 +85,19 @@ program
     "Start timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {
-  const { pinata, env: envName, infura, fromDate, list } = program.opts();
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const {
+    pinata,
+    env: envName,
+    infura,
+    fromDate,
+    list,
+    configId = "testing-80001-0"
+  } = program.opts();
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const ipfsStorage = new BaseIpfsStorage({
     url: defaultConfig.ipfsMetadataUrl,
     headers: infura ? buildInfuraHeaders(infura) : undefined

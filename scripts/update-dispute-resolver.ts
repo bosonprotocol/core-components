@@ -2,7 +2,7 @@ import { DisputeResolutionFee } from "./../packages/core-sdk/src/accounts/types"
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
 import { Wallet, providers } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig } from "@bosonprotocol/common/src";
+import { getEnvConfigById } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
@@ -10,6 +10,7 @@ program
   .description("Updates a dispute resolver.")
   .argument("<DR_ADMIN_PK>", "Private key of the DR admin account.")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "--addFees <...FEES>",
     "Comma-separated list of dispute resolution fee tuples with the format: <TOKEN_ADDRESS>/<TOKEN_NAME>/<FEE_AMOUNT>"
@@ -30,8 +31,8 @@ async function main() {
 
   const opts = program.opts();
   const envName = (opts.env as EnvironmentType) || "testing";
-  const defaultConfig = getDefaultConfig(envName);
-  const chainId = defaultConfig.chainId;
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName, configId);
   const addFees = opts.addFees
     ? (opts.addFees as string)
         .split(",")
@@ -54,7 +55,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       drAdminWallet
     ),
-    envName
+    envName,
+    configId
   });
 
   const adminAddress = drAdminWallet.address;

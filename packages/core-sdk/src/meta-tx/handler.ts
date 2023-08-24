@@ -10,7 +10,7 @@ import {
   ConditionStruct,
   UpdateSellerArgs,
   OptInToSellerUpdateArgs,
-  defaultConfigs,
+  envConfigs,
   abis
 } from "@bosonprotocol/common";
 import { storeMetadataOnTheGraph } from "../offers/storage";
@@ -637,10 +637,10 @@ export async function signMetaTxPreMint(
     relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
-  const localConfig = defaultConfigs.find(
-    (config) => config.envName === "local"
+  const localConfigs = envConfigs["local"];
+  const isLocal = localConfigs.some(
+    (localConfig) => localConfig.chainId === args.chainId
   );
-  const isLocal = localConfig.chainId === args.chainId;
   const functionSignature = encodePreMint(args.offerId, args.amount);
   if (isLocal) {
     return signVoucherMetaTx({
@@ -672,10 +672,10 @@ export async function signMetaTxSetApprovalForAll(
     relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
-  const localConfig = defaultConfigs.find(
-    (config) => config.envName === "local"
+  const localConfigs = envConfigs["local"];
+  const isLocal = localConfigs.some(
+    (localConfig) => localConfig.chainId === args.chainId
   );
-  const isLocal = localConfig.chainId === args.chainId;
   const functionSignature = encodeSetApprovalForAll(
     args.operator,
     args.approved
@@ -713,10 +713,10 @@ export async function signMetaTxSetApprovalForAllToContract(
     txGas?: number;
   } = {}
 ): Promise<SignedVoucherMetaTx> {
-  const localConfig = defaultConfigs.find(
-    (config) => config.envName === "local"
+  const localConfigs = envConfigs["local"];
+  const isLocal = localConfigs.some(
+    (localConfig) => localConfig.chainId === args.chainId
   );
-  const isLocal = localConfig.chainId === args.chainId;
   const functionSignature = encodeSetApprovalForAllToContract(
     args.operator,
     args.approved
@@ -754,10 +754,10 @@ export async function signMetaTxCallExternalContract(
     txGas?: number;
   } = {}
 ): Promise<SignedVoucherMetaTx> {
-  const localConfig = defaultConfigs.find(
-    (config) => config.envName === "local"
+  const localConfigs = envConfigs["local"];
+  const isLocal = localConfigs.some(
+    (localConfig) => localConfig.chainId === args.chainId
   );
-  const isLocal = localConfig.chainId === args.chainId;
   const functionSignature = encodeCallExternalContract(args.to, args.data);
   if (isLocal) {
     return signVoucherMetaTx({

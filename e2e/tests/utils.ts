@@ -12,11 +12,7 @@ import {
   BigNumber,
   BigNumberish
 } from "ethers";
-import {
-  CoreSDK,
-  getDefaultConfig,
-  accounts
-} from "../../packages/core-sdk/src";
+import { CoreSDK, getEnvConfigs, accounts } from "../../packages/core-sdk/src";
 import { base, seller } from "../../packages/metadata/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
@@ -51,24 +47,27 @@ import {
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
+const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
+  getEnvConfigs(arg0)[0];
+
 export const MOCK_ERC20_ADDRESS =
-  getDefaultConfig("local").contracts.testErc20 ||
+  getFirstEnvConfig("local").contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC721_ADDRESS =
-  getDefaultConfig("local").contracts.testErc721 ||
+  getFirstEnvConfig("local").contracts.testErc721 ||
   "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
 
 export const MOCK_ERC1155_ADDRESS =
-  getDefaultConfig("local").contracts.testErc1155 ||
+  getFirstEnvConfig("local").contracts.testErc1155 ||
   "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
 export const MOCK_FORWARDER_ADDRESS =
-  getDefaultConfig("local").contracts.forwarder ||
+  getFirstEnvConfig("local").contracts.forwarder ||
   "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export const MOCK_SEAPORT_ADDRESS =
-  getDefaultConfig("local").contracts.seaport ||
+  getFirstEnvConfig("local").contracts.seaport ||
   "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
 
 export const metadata = {
@@ -124,7 +123,7 @@ export const sellerMetadata = {
 };
 export const sellerFundsDepositInEth = "5";
 
-export const defaultConfig = getDefaultConfig("local");
+export const defaultConfig = getFirstEnvConfig("local");
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 // seedWallets used by accounts test
@@ -200,7 +199,8 @@ export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
 
 export function initCoreSDKWithWallet(wallet: Wallet) {
   const envName = "local";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId = "local-31337-0";
+  const defaultConfig = getFirstEnvConfig(envName);
   const protocolAddress = defaultConfig.contracts.protocolDiamond;
   const testErc20Address = defaultConfig.contracts.testErc20 as string;
   const apiIds = {
@@ -213,6 +213,7 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
   };
   return CoreSDK.fromDefaultConfig({
     envName,
+    configId,
     web3Lib: new EthersAdapter(provider, wallet),
     metadataStorage: ipfsMetadataStorage,
     theGraphStorage: graphMetadataStorage,
@@ -652,7 +653,7 @@ export async function mintLensToken(
   wallet: Wallet,
   to: string
 ): Promise<BigNumberish> {
-  const defaultConfig = getDefaultConfig("local");
+  const defaultConfig = getFirstEnvConfig("local");
   const lensContractAddress = defaultConfig.lens?.LENS_HUB_CONTRACT as string;
 
   const lensContract = new Contract(

@@ -1,5 +1,5 @@
 import { Wallet } from "ethers";
-import { getDefaultConfig, EnvironmentType } from "@bosonprotocol/common";
+import { getEnvConfigs, EnvironmentType } from "@bosonprotocol/common";
 import { config as dotenvConfig } from "dotenv";
 import fs from "fs";
 import { resolve } from "path";
@@ -77,7 +77,7 @@ let config: Config;
 export function getConfig(): Config {
   if (!config) {
     const envName = args.envName || process.env.ENV_NAME || "local";
-    const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+    const defaultConfig = getEnvConfigs(envName as EnvironmentType)[0];
     const privateKey = args.privateKey || process.env.PRIVATE_KEY;
     if (!privateKey) {
       throw new Error(
