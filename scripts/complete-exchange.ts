@@ -23,7 +23,7 @@ program
     "Private key of the account issuing the transaction."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "-m, --metaTx <META_TX_CONFIG>",
     "JSON file with the meta tx parameters"

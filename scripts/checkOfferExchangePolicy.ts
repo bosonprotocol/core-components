@@ -18,7 +18,7 @@ program
   .description("Check Exchange policy of an Offer.")
   .argument("<OFFER_ID>", "Id of the offer to check")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {

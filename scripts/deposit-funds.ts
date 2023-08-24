@@ -34,7 +34,7 @@ program
   .description("Deposit funds.")
   .requiredOption("-k, --key <privateKey>", "Private Key.", validPrivateKey)
   .requiredOption("-e , --env <envName>", "Environment.")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .requiredOption("-s, --sellerId <sellerId>", "Seller ID.", validBigNumber)
   .requiredOption("-v, --value <value>", "Value.", validBigNumber)
   .option("-t, --token <token>", "Token Address.", validAddress)

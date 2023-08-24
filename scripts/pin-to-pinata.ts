@@ -85,7 +85,7 @@ program
     "Start timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {

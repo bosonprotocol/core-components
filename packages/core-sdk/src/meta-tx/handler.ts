@@ -47,14 +47,13 @@ import {
   encodeSetApprovalForAll,
   encodeSetApprovalForAllToContract
 } from "../voucher/interface";
-import { hexZeroPad } from "@ethersproject/bytes";
 import { keccak256 } from "@ethersproject/keccak256";
 import { id } from "@ethersproject/hash";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { getNonce, verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
-import { isTrustedForwarder, owner } from "../voucher/handler";
+import { isTrustedForwarder } from "../voucher/handler";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -625,6 +624,11 @@ export async function signMetaTxReserveRange(
   });
 }
 
+function isLocal(chainId: number): boolean {
+  const localConfigs = envConfigs["local"];
+  return localConfigs.some((localConfig) => localConfig.chainId === chainId);
+}
+
 export async function signMetaTxPreMint(
   args: BaseVoucherMetaTxArgs & {
     offerId: BigNumberish;
@@ -637,12 +641,8 @@ export async function signMetaTxPreMint(
     relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
-  const localConfigs = envConfigs["local"];
-  const isLocal = localConfigs.some(
-    (localConfig) => localConfig.chainId === args.chainId
-  );
   const functionSignature = encodePreMint(args.offerId, args.amount);
-  if (isLocal) {
+  if (isLocal(args.chainId)) {
     return signVoucherMetaTx({
       ...args,
       forwarderAddress: args.forwarderAddress,
@@ -672,15 +672,11 @@ export async function signMetaTxSetApprovalForAll(
     relayerUrl: string;
   }
 ): Promise<SignedVoucherMetaTx> {
-  const localConfigs = envConfigs["local"];
-  const isLocal = localConfigs.some(
-    (localConfig) => localConfig.chainId === args.chainId
-  );
   const functionSignature = encodeSetApprovalForAll(
     args.operator,
     args.approved
   );
-  if (isLocal) {
+  if (isLocal(args.chainId)) {
     return signVoucherMetaTx({
       ...args,
       forwarderAddress: args.forwarderAddress,
@@ -713,15 +709,11 @@ export async function signMetaTxSetApprovalForAllToContract(
     txGas?: number;
   } = {}
 ): Promise<SignedVoucherMetaTx> {
-  const localConfigs = envConfigs["local"];
-  const isLocal = localConfigs.some(
-    (localConfig) => localConfig.chainId === args.chainId
-  );
   const functionSignature = encodeSetApprovalForAllToContract(
     args.operator,
     args.approved
   );
-  if (isLocal) {
+  if (isLocal(args.chainId)) {
     return signVoucherMetaTx({
       ...args,
       forwarderAddress: args.forwarderAddress,
@@ -754,12 +746,8 @@ export async function signMetaTxCallExternalContract(
     txGas?: number;
   } = {}
 ): Promise<SignedVoucherMetaTx> {
-  const localConfigs = envConfigs["local"];
-  const isLocal = localConfigs.some(
-    (localConfig) => localConfig.chainId === args.chainId
-  );
   const functionSignature = encodeCallExternalContract(args.to, args.data);
-  if (isLocal) {
+  if (isLocal(args.chainId)) {
     return signVoucherMetaTx({
       ...args,
       forwarderAddress: args.forwarderAddress,

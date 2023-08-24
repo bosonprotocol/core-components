@@ -27,7 +27,7 @@ program
   .description("Explore an on-chain Offer.")
   .argument("<OFFER_ID>", "Id of the Offer")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option("--export <FILEPATH>", "Export offer data to a JSON file")
   .option(
     "--infura <INFURA_PROJECT_ID>/<INFURA_PROJECT_SECRET>",

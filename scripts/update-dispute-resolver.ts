@@ -10,7 +10,7 @@ program
   .description("Updates a dispute resolver.")
   .argument("<DR_ADMIN_PK>", "Private key of the DR admin account.")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "--addFees <...FEES>",
     "Comma-separated list of dispute resolution fee tuples with the format: <TOKEN_ADDRESS>/<TOKEN_NAME>/<FEE_AMOUNT>"

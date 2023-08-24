@@ -13,7 +13,7 @@ program
   )
   .argument("<CONTRACT_URI>", "Contract URI to set in the seller's voucher")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
-  .option("-cid, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {
