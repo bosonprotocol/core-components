@@ -161,7 +161,7 @@ export function mockRawExchangeFromSubgraph(
   overrides: Partial<ExchangeFieldsFragment> = {},
   offerOverrides: Partial<OfferFieldsFragment> = {}
 ): ExchangeFieldsFragment {
-  const { buyer = {}, seller = {}, offer = {}, ...restOverrides } = overrides;
+  const { buyer = {}, seller = {}, ...restOverrides } = overrides;
 
   return {
     id: "1",

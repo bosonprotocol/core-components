@@ -4,7 +4,6 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "@ethersproject/units";
-import { productV1 } from "@bosonprotocol/metadata";
 
 import { CreateOfferArgs } from "./types";
 import {
