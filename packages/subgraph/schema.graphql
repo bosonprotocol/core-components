@@ -748,10 +748,11 @@ type ConditionEntity @entity {
   method: Int!
   tokenType: Int!
   tokenAddress: Bytes!
-  tokenId: BigInt!
+  gatingType: Int!
+  minTokenId: BigInt!
+  maxTokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
-  length: BigInt!
 }
 
 """

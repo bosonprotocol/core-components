@@ -37,7 +37,7 @@ export default function useCheckTokenGatedOffer({
             signer
           );
           const [owned, used] = await proxyContract.checkSnapshot(
-            condition.tokenId,
+            condition.minTokenId,
             utils.getAddress(address)
           );
           setConditionMet(owned.sub(used).gt("0"));

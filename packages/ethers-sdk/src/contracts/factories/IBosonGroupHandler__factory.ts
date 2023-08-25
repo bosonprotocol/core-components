@@ -66,8 +66,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -82,7 +87,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "length",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -157,8 +162,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -173,7 +183,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "length",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -252,8 +262,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -268,7 +283,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "length",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -337,8 +352,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -353,7 +373,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "length",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -421,8 +441,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -437,7 +462,7 @@ const _abi = [
           },
           {
             internalType: "uint256",
-            name: "length",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],

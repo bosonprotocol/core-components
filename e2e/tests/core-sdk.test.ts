@@ -35,7 +35,7 @@ import {
   createSeller,
   createSellerAndOffer
 } from "./utils";
-import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
+import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -204,7 +204,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -242,7 +244,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -283,7 +287,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -340,7 +346,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenID,
+            maxTokenId: tokenID,
             threshold: "0",
             maxCommits: "3"
           };
@@ -355,7 +363,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenID,
+            maxTokenId: tokenID,
             threshold: "1",
             maxCommits: "3"
           };
@@ -370,7 +380,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenID,
+            maxTokenId: tokenID,
             threshold: "1",
             maxCommits: "1"
           };
@@ -436,7 +448,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -448,7 +462,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -460,7 +476,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "1",
             maxCommits: "1"
           };

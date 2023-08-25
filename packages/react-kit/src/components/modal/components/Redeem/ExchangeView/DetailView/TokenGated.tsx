@@ -27,10 +27,11 @@ interface Condition {
   method: number;
   tokenType: number;
   tokenAddress: string;
-  tokenId: string;
+  gatingType: number;
+  minTokenId: string;
+  maxTokenId: string;
   threshold?: string;
   maxCommits: string;
-  length: string;
   minBalance?: string;
 }
 
@@ -52,7 +53,13 @@ const buildMessage = (
   condition: Condition,
   tokenInfo: TokenInfo
 ) => {
-  const { method, tokenType, tokenId, tokenAddress, threshold } = condition;
+  const {
+    method,
+    tokenType,
+    minTokenId: tokenId,
+    tokenAddress,
+    threshold
+  } = condition;
 
   if (tokenType === TokenType.FungibleToken) {
     return (

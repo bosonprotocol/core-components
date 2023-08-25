@@ -187,7 +187,7 @@ describe("core-sdk-premint", () => {
 
       await (await coreSDK.voidOffer(offerId)).wait();
 
-      await (await coreSDK.burnPremintedVouchers(offerId)).wait();
+      await (await coreSDK.burnPremintedVouchers(offerId, preMinted)).wait();
 
       const count = await coreSDK.getAvailablePreMints(offerId);
       expect(Number(count.toString())).toBe(0);

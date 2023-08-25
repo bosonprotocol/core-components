@@ -259,7 +259,6 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       assistant: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       // TODO: replace with correct uri
       contractUri: "ipfs://seller-contract",
       royaltyPercentage: "0",
@@ -451,7 +450,6 @@ export async function createSellerAndOfferWithCondition(
     {
       assistant: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       treasury: sellerAddress,
       contractUri: contractUri,
       royaltyPercentage: "0",
@@ -496,7 +494,6 @@ export async function createSeller(
   const createSellerTxResponse = await coreSDK.createSeller({
     assistant: sellerAddress,
     admin: sellerAddress,
-    clerk: sellerAddress,
     treasury: sellerAddress,
     contractUri,
     royaltyPercentage: "0",
@@ -622,7 +619,6 @@ export async function createSellerAndOffer(
     {
       assistant: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       treasury: sellerAddress,
       contractUri: metadataUri,
       royaltyPercentage: "0",

@@ -6,6 +6,7 @@ import { createOfferArgsToStructs } from "../offers/interface";
 import { CreateSellerArgs } from "../accounts/types";
 import { CreateOfferArgs } from "../offers/types";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { conditionArgsToStructs } from "../groups/interface";
 
 export const bosonOrchestrationHandlerIface = new Interface(
   abis.IBosonOrchestrationHandlerABI
@@ -44,7 +45,7 @@ export function encodeCreateOfferWithCondition(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      condition,
+      conditionArgsToStructs(condition),
       offerArgs[4] // agentId
     ]
   );
@@ -65,7 +66,7 @@ export function encodeCreateSellerAndOfferWithCondition(
       offerArgs[1], // offerDates
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
-      condition,
+      conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
       offerArgs[4] // agentId
@@ -108,7 +109,7 @@ export function encodeCreatePremintedOfferWithCondition(
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
       reservedRangeLength,
-      condition,
+      conditionArgsToStructs(condition),
       offerArgs[4] // agentId
     ]
   );
@@ -154,7 +155,7 @@ export function encodeCreateSellerAndPremintedOfferWithCondition(
       offerArgs[2], // offerDurations
       offerArgs[3], // disputeResolverId
       reservedRangeLength,
-      condition,
+      conditionArgsToStructs(condition),
       sellerArgs.authTokenStruct,
       sellerArgs.voucherInitValues,
       offerArgs[4] // agentId

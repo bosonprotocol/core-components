@@ -23,10 +23,11 @@ export function handleGroupCreatedEvent(event: GroupCreated): void {
   condition.method = conditionFromEvent.method;
   condition.tokenType = conditionFromEvent.tokenType;
   condition.tokenAddress = conditionFromEvent.tokenAddress;
-  condition.tokenId = conditionFromEvent.tokenId;
+  condition.gatingType = conditionFromEvent.gating;
+  condition.minTokenId = conditionFromEvent.minTokenId;
+  condition.maxTokenId = conditionFromEvent.maxTokenId;
   condition.threshold = conditionFromEvent.threshold;
   condition.maxCommits = conditionFromEvent.maxCommits;
-  condition.length = conditionFromEvent.tokenLength; // <-- adding length property in the event is failing (because already existing at the Array type)
   condition.save();
 
   // find the offers and update them: isConditional = true?, condition = Condition
@@ -69,11 +70,11 @@ export function handleGroupCreatedEventLegacy(event: GroupCreatedLegacy): void {
   condition.method = conditionFromEvent.method;
   condition.tokenType = conditionFromEvent.tokenType;
   condition.tokenAddress = conditionFromEvent.tokenAddress;
-  condition.tokenId = conditionFromEvent.tokenId;
+  condition.minTokenId = conditionFromEvent.tokenId; // minTokenId does not exist in GroupCreatedLegacy event (< v2.3.0)
+  condition.maxTokenId = conditionFromEvent.tokenId; // maxTokenId does not exist in GroupCreatedLegacy event (< v2.3.0)
+  condition.gatingType = 0; // gating does not exist in GroupCreatedLegacy event (< v2.3.0)
   condition.threshold = conditionFromEvent.threshold;
   condition.maxCommits = conditionFromEvent.maxCommits;
-  // TODO: to be fixed when protocol v2.3.0 dep is up-to-date
-  condition.length = BigInt.fromI32(0); // length does not exist in GroupCreatedLegacy event (< v2.3.0)
   condition.save();
 
   // find the offers and update them: isConditional = true?, condition = Condition

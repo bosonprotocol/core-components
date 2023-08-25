@@ -102,16 +102,18 @@ export declare namespace BosonTypes {
     method: BigNumberish;
     tokenType: BigNumberish;
     tokenAddress: string;
-    tokenId: BigNumberish;
+    gating: BigNumberish;
+    minTokenId: BigNumberish;
     threshold: BigNumberish;
     maxCommits: BigNumberish;
-    length: BigNumberish;
+    maxTokenId: BigNumberish;
   };
 
   export type ConditionStructOutput = [
     number,
     number,
     string,
+    number,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -120,10 +122,11 @@ export declare namespace BosonTypes {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: BigNumber;
+    gating: number;
+    minTokenId: BigNumber;
     threshold: BigNumber;
     maxCommits: BigNumber;
-    length: BigNumber;
+    maxTokenId: BigNumber;
   };
 
   export type TwinReceiptStruct = {

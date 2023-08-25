@@ -12,6 +12,11 @@ export enum EvaluationMethod {
   SpecificToken = 2
 }
 
+export enum GatingType {
+  PerAddress = 0,
+  PerTokenId = 1
+}
+
 export enum TokenType {
   FungibleToken = 0,
   NonFungibleToken = 1,
@@ -22,10 +27,11 @@ export type ConditionStruct = {
   method: number; // EvaluationMethod
   tokenType: number; // TokenType
   tokenAddress: string;
-  tokenId: BigNumberish;
+  gatingType: number; // GatingType
+  minTokenId: BigNumberish;
+  maxTokenId: BigNumberish;
   threshold: BigNumberish;
   maxCommits: BigNumberish;
-  length: BigNumberish;
 };
 
 export type CreateGroupArgs = ConditionStruct & {

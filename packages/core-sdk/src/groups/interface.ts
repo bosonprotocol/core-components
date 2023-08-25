@@ -17,21 +17,28 @@ export function encodeCreateGroup(args: CreateGroupArgs) {
 
 export function createGroupArgsToStructs(
   args: CreateGroupArgs
-): [GroupStruct, ConditionStruct] {
+): [GroupStruct, Omit<ConditionStruct, "gatingType"> & { gating: number }] {
   return [
     {
       id: "0",
       sellerId: "0",
       offerIds: args.offerIds
     },
-    {
-      method: args.method,
-      tokenType: args.tokenType,
-      tokenAddress: args.tokenAddress,
-      tokenId: args.tokenId,
-      threshold: args.threshold,
-      maxCommits: args.maxCommits,
-      length: args.length
-    }
+    conditionArgsToStructs(args)
   ];
+}
+
+export function conditionArgsToStructs(
+  args: ConditionStruct
+): Omit<ConditionStruct, "gatingType"> & { gating: number } {
+  return {
+    method: args.method,
+    tokenType: args.tokenType,
+    tokenAddress: args.tokenAddress,
+    gating: args.gatingType,
+    minTokenId: args.minTokenId,
+    maxTokenId: args.maxTokenId,
+    threshold: args.threshold,
+    maxCommits: args.maxCommits
+  };
 }

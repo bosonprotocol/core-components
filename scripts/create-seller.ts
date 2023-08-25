@@ -35,7 +35,6 @@ async function main() {
     sellerDataJson = {
       assistant: sellerWallet.address,
       admin: sellerWallet.address,
-      clerk: sellerWallet.address,
       treasury: sellerWallet.address,
       contractUri: "",
       royaltyPercentage: "0",

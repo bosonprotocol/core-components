@@ -10,8 +10,10 @@ import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
 import IBosonExchangeHandlerABI from "./IBosonExchangeHandler.json";
 import IBosonFundsHandlerABI from "./IBosonFundsHandler.json";
 import IBosonGroupHandlerABI from "./IBosonGroupHandler.json";
+import IBosonGroupHandlerLegacyABI from "./IBosonGroupHandlerLegacy.json";
 import IBosonMetaTransactionsHandlerABI from "./IBosonMetaTransactionsHandler.json";
 import IBosonOfferHandlerABI from "./IBosonOfferHandler.json";
+import IBosonOfferHandlerLegacyABI from "./IBosonOfferHandlerLegacy.json";
 import IBosonOrchestrationHandlerABI from "./IBosonOrchestrationHandler.json";
 import IBosonVoucherABI from "./IBosonVoucher.json";
 import MockForwarderABI from "./MockForwarder.json";
@@ -29,8 +31,10 @@ export {
   IBosonExchangeHandlerABI,
   IBosonFundsHandlerABI,
   IBosonGroupHandlerABI,
+  IBosonGroupHandlerLegacyABI,
   IBosonMetaTransactionsHandlerABI,
   IBosonOfferHandlerABI,
+  IBosonOfferHandlerLegacyABI,
   IBosonOrchestrationHandlerABI,
   IBosonVoucherABI,
   MockForwarderABI,

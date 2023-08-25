@@ -131,7 +131,6 @@ export class MetaTxMixin extends BaseCoreSDK {
     const fieldsToUpdate = {
       assistant:
         currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
-      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
       admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
       authToken:
         pendingSellerUpdate.authTokenType !== undefined &&
@@ -140,7 +139,6 @@ export class MetaTxMixin extends BaseCoreSDK {
     };
     if (
       fieldsToUpdate.assistant ||
-      fieldsToUpdate.clerk ||
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
     ) {
@@ -151,7 +149,6 @@ export class MetaTxMixin extends BaseCoreSDK {
           fieldsToUpdate: {
             assistant:
               currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
-            clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
             admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
             authToken: pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
           }

@@ -3,18 +3,18 @@ import { BigNumberish } from "@ethersproject/bignumber";
 export type CreateSellerArgs = {
   assistant: string;
   admin: string;
-  clerk: string;
   treasury: string;
   contractUri: string;
   royaltyPercentage: BigNumberish;
   authTokenId: BigNumberish;
   authTokenType: number;
   metadataUri: string;
+  collectionId?: string;
 };
 
 export type UpdateSellerArgs = { id: BigNumberish } & Omit<
   CreateSellerArgs,
-  "contractUri" | "royaltyPercentage"
+  "contractUri" | "royaltyPercentage" | "collectionId"
 >;
 
 export const SellerUpdateFields = {
@@ -29,7 +29,6 @@ export type OptInToSellerUpdateArgs = {
   fieldsToUpdate: {
     admin?: boolean;
     assistant?: boolean;
-    clerk?: boolean;
     authToken?: boolean;
   };
 };
@@ -45,7 +44,6 @@ export type OptInToDisputeResolverUpdateArgs = {
   fieldsToUpdate: {
     admin?: boolean;
     assistant?: boolean;
-    clerk?: boolean;
   };
 };
 
@@ -76,6 +74,7 @@ export type AuthTokenStruct = {
 export type VoucherInitValuesStruct = {
   contractURI: string;
   royaltyPercentage: BigNumberish;
+  collectionSalt: string;
 };
 
 export type DisputeResolverStruct = {

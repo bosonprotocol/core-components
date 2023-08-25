@@ -16,6 +16,7 @@ export class VoucherMixin extends BaseCoreSDK {
    */
   public async burnPremintedVouchers(
     offerId: BigNumberish,
+    amount: BigNumberish,
     overrides: Partial<{
       contractAddress: string;
     }> = {}
@@ -23,6 +24,7 @@ export class VoucherMixin extends BaseCoreSDK {
     const offerFromSubgraph = await getOfferById(this._subgraphUrl, offerId);
     return handler.burnPremintedVouchers({
       offerId,
+      amount,
       contractAddress:
         overrides.contractAddress ||
         offerFromSubgraph.seller.voucherCloneAddress,

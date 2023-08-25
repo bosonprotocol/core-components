@@ -408,7 +408,7 @@ export class OfferMixin extends BaseCoreSDK {
     offerCondition: subgraph.OfferFieldsFragment["condition"],
     buyerAddress: string
   ): Promise<boolean> {
-    const { tokenId, tokenType, threshold, method, tokenAddress } =
+    const { minTokenId: tokenId, tokenType, threshold, method, tokenAddress } =
       offerCondition;
     if (tokenType === TokenType.FungibleToken) {
       const balance: string = await erc20.handler.balanceOf({

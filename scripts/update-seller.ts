@@ -60,7 +60,6 @@ async function main() {
       fields: {
         admin: boolean;
         assistant: boolean;
-        clerk: boolean;
         authToken: boolean;
       };
     }
@@ -69,7 +68,6 @@ async function main() {
     const defaultFields = {
       admin: false,
       assistant: false,
-      clerk: false,
       authToken: false
     };
     (opts.privateKeys as string).split(",").forEach((privKey) => {
@@ -107,7 +105,6 @@ async function main() {
     assistant:
       opts.assistant || sellerDataJson.assistant || sellerData.seller.assistant,
     admin: opts.admin || sellerDataJson.admin || sellerData.seller.admin,
-    clerk: opts.clerk || sellerDataJson.clerk || sellerData.seller.clerk,
     treasury:
       opts.treasury || sellerDataJson.treasury || sellerData.seller.treasury,
     authTokenId:
