@@ -38,7 +38,7 @@ export type ConfigId = `${EnvironmentType}-${ChainId}-${number}`;
 export type ProtocolConfig = {
   envName: EnvironmentType;
   configId: ConfigId;
-  defaultDisputeResolverId: number;
+  defaultDisputeResolverId: string;
   sellersBlackList: string;
   chainId: ChainId;
   nativeCoin:
