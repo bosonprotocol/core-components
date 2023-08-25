@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { forwardRef, Fragment } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
 
 import { zIndex } from "./zIndex";
@@ -318,55 +318,61 @@ export interface IButton {
   withBosonStyle?: boolean;
 }
 
-const ThemedButton: React.FC<IButton> = ({
-  children,
-  onClick,
-  size = "regular",
-  theme = "primary",
-  type = "button",
-  step = 0,
-  fill = false,
-  isLoading = false,
-  tooltip = "",
-  withBosonStyle = false,
-  ...rest
-}) => {
-  const Wrapper = tooltip !== "" && rest?.disabled ? Tooltip : Fragment;
-  const wrapperParams =
-    tooltip !== "" && rest?.disabled ? { wrap: false, content: tooltip } : {};
+const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
+  (
+    {
+      children,
+      onClick,
+      size = "regular",
+      theme = "primary",
+      type = "button",
+      step = 0,
+      fill = false,
+      isLoading = false,
+      tooltip = "",
+      withBosonStyle = false,
+      ...rest
+    },
+    ref
+  ) => {
+    const Wrapper = tooltip !== "" && rest?.disabled ? Tooltip : Fragment;
+    const wrapperParams =
+      tooltip !== "" && rest?.disabled ? { wrap: false, content: tooltip } : {};
 
-  return (
-    <>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
-      <ThemeProvider theme={allThemes({ withBosonStyle })[theme]}>
+    return (
+      <>
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore */}
-        <Wrapper {...wrapperParams}>
-          <BaseButton
-            onClick={onClick}
-            type={type}
-            size={size}
-            fill={fill ? fill : undefined}
-            {...rest}
-          >
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <ChildWrapperButton data-child-wrapper-button>
-                {children}
-                {step !== 0 && (
-                  <Typography>
-                    <small>Step {step}</small>
-                  </Typography>
-                )}
-              </ChildWrapperButton>
-            )}
-          </BaseButton>
-        </Wrapper>
-      </ThemeProvider>
-    </>
-  );
-};
+        <ThemeProvider theme={allThemes({ withBosonStyle })[theme]}>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <Wrapper {...wrapperParams}>
+            <BaseButton
+              onClick={onClick}
+              type={type}
+              size={size}
+              fill={fill ? fill : undefined}
+              {...rest}
+              ref={ref}
+            >
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <ChildWrapperButton data-child-wrapper-button>
+                  {children}
+                  {step !== 0 && (
+                    <Typography>
+                      <small>Step {step}</small>
+                    </Typography>
+                  )}
+                </ChildWrapperButton>
+              )}
+            </BaseButton>
+          </Wrapper>
+        </ThemeProvider>
+      </>
+    );
+  }
+);
 
 export default ThemedButton;
