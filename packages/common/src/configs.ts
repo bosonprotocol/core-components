@@ -88,6 +88,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "local",
       chainId: 31337,
       configId: "local-31337-0",
+      defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
       subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
@@ -117,6 +118,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "testing",
       chainId: 80001,
       configId: "testing-80001-0",
+      defaultDisputeResolverId: 13,
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -144,6 +146,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "staging",
       chainId: 80001,
       configId: "staging-80001-0",
+      defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -171,6 +174,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "production",
       chainId: 137,
       configId: "production-137-0",
+      defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
