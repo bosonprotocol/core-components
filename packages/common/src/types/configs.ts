@@ -39,6 +39,7 @@ export type ProtocolConfig = {
   envName: EnvironmentType;
   configId: ConfigId;
   defaultDisputeResolverId: number;
+  sellersBlackList: string;
   chainId: ChainId;
   nativeCoin:
     | undefined

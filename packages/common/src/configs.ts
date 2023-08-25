@@ -88,6 +88,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "local",
       chainId: 31337,
       configId: "local-31337-0",
+      sellersBlackList: "",
       defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
@@ -118,6 +119,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "testing",
       chainId: 80001,
       configId: "testing-80001-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
       defaultDisputeResolverId: 13,
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
@@ -146,6 +149,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "staging",
       chainId: 80001,
       configId: "staging-80001-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
       defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
@@ -174,6 +179,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "production",
       chainId: 137,
       configId: "production-137-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
       defaultDisputeResolverId: 1,
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
