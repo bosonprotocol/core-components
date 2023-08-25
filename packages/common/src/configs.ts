@@ -151,7 +151,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "staging-80001-0",
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
-      defaultDisputeResolverId: "1",
+      defaultDisputeResolverId: "2",
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
