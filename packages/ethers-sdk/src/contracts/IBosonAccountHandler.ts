@@ -154,6 +154,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "addFeesToDisputeResolver(uint256,(address,string,uint256)[])": FunctionFragment;
     "addSellersToAllowList(uint256,uint256[])": FunctionFragment;
     "areSellersAllowed(uint256,uint256[])": FunctionFragment;
+    "calculateCollectionAddress(uint256,bytes32)": FunctionFragment;
     "createAgent((uint256,uint256,address,bool))": FunctionFragment;
     "createBuyer((uint256,address,bool))": FunctionFragment;
     "createDisputeResolver((uint256,uint256,address,address,address,address,string,bool),(address,string,uint256)[],uint256[])": FunctionFragment;
@@ -168,6 +169,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "getSellerByAddress(address)": FunctionFragment;
     "getSellerByAuthToken((uint256,uint8))": FunctionFragment;
     "getSellersCollections(uint256)": FunctionFragment;
+    "isSellerSaltAvailable(address,bytes32)": FunctionFragment;
     "optInToDisputeResolverUpdate(uint256,uint8[])": FunctionFragment;
     "optInToSellerUpdate(uint256,uint8[])": FunctionFragment;
     "removeFeesFromDisputeResolver(uint256,address[])": FunctionFragment;
@@ -176,7 +178,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     "updateBuyer((uint256,address,bool))": FunctionFragment;
     "updateDisputeResolver((uint256,uint256,address,address,address,address,string,bool))": FunctionFragment;
     "updateSeller((uint256,address,address,address,address,bool,string),(uint256,uint8))": FunctionFragment;
-    "updateSellerSalt(bytes32)": FunctionFragment;
+    "updateSellerSalt(uint256,bytes32)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -190,6 +192,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "areSellersAllowed",
     values: [BigNumberish, BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "calculateCollectionAddress",
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "createAgent",
@@ -256,6 +262,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "isSellerSaltAvailable",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "optInToDisputeResolverUpdate",
     values: [BigNumberish, BigNumberish[]]
   ): string;
@@ -289,7 +299,7 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateSellerSalt",
-    values: [BytesLike]
+    values: [BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -302,6 +312,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "areSellersAllowed",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "calculateCollectionAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -349,6 +363,10 @@ export interface IBosonAccountHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getSellersCollections",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isSellerSaltAvailable",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -688,6 +706,14 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean[]] & { sellerAllowed: boolean[] }>;
 
+    calculateCollectionAddress(
+      _sellerId: BigNumberish,
+      _collectionSalt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean] & { collectionAddress: string; isAvailable: boolean }
+    >;
+
     createAgent(
       _agent: BosonTypes.AgentStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -831,6 +857,12 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    isSellerSaltAvailable(
+      _adminAddres: string,
+      _salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean] & { isAvailable: boolean }>;
+
     optInToDisputeResolverUpdate(
       _disputeResolverId: BigNumberish,
       _fieldsToUpdate: BigNumberish[],
@@ -877,6 +909,7 @@ export interface IBosonAccountHandler extends BaseContract {
     ): Promise<ContractTransaction>;
 
     updateSellerSalt(
+      _sellerId: BigNumberish,
       _newSalt: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -899,6 +932,14 @@ export interface IBosonAccountHandler extends BaseContract {
     _sellerIds: BigNumberish[],
     overrides?: CallOverrides
   ): Promise<boolean[]>;
+
+  calculateCollectionAddress(
+    _sellerId: BigNumberish,
+    _collectionSalt: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, boolean] & { collectionAddress: string; isAvailable: boolean }
+  >;
 
   createAgent(
     _agent: BosonTypes.AgentStruct,
@@ -1041,6 +1082,12 @@ export interface IBosonAccountHandler extends BaseContract {
     }
   >;
 
+  isSellerSaltAvailable(
+    _adminAddres: string,
+    _salt: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   optInToDisputeResolverUpdate(
     _disputeResolverId: BigNumberish,
     _fieldsToUpdate: BigNumberish[],
@@ -1087,6 +1134,7 @@ export interface IBosonAccountHandler extends BaseContract {
   ): Promise<ContractTransaction>;
 
   updateSellerSalt(
+    _sellerId: BigNumberish,
     _newSalt: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1109,6 +1157,14 @@ export interface IBosonAccountHandler extends BaseContract {
       _sellerIds: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<boolean[]>;
+
+    calculateCollectionAddress(
+      _sellerId: BigNumberish,
+      _collectionSalt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean] & { collectionAddress: string; isAvailable: boolean }
+    >;
 
     createAgent(
       _agent: BosonTypes.AgentStruct,
@@ -1251,6 +1307,12 @@ export interface IBosonAccountHandler extends BaseContract {
       }
     >;
 
+    isSellerSaltAvailable(
+      _adminAddres: string,
+      _salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     optInToDisputeResolverUpdate(
       _disputeResolverId: BigNumberish,
       _fieldsToUpdate: BigNumberish[],
@@ -1297,6 +1359,7 @@ export interface IBosonAccountHandler extends BaseContract {
     ): Promise<void>;
 
     updateSellerSalt(
+      _sellerId: BigNumberish,
       _newSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1510,6 +1573,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    calculateCollectionAddress(
+      _sellerId: BigNumberish,
+      _collectionSalt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     createAgent(
       _agent: BosonTypes.AgentStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1582,6 +1651,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isSellerSaltAvailable(
+      _adminAddres: string,
+      _salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     optInToDisputeResolverUpdate(
       _disputeResolverId: BigNumberish,
       _fieldsToUpdate: BigNumberish[],
@@ -1628,6 +1703,7 @@ export interface IBosonAccountHandler extends BaseContract {
     ): Promise<BigNumber>;
 
     updateSellerSalt(
+      _sellerId: BigNumberish,
       _newSalt: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1649,6 +1725,12 @@ export interface IBosonAccountHandler extends BaseContract {
     areSellersAllowed(
       _disputeResolverId: BigNumberish,
       _sellerIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    calculateCollectionAddress(
+      _sellerId: BigNumberish,
+      _collectionSalt: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1724,6 +1806,12 @@ export interface IBosonAccountHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    isSellerSaltAvailable(
+      _adminAddres: string,
+      _salt: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     optInToDisputeResolverUpdate(
       _disputeResolverId: BigNumberish,
       _fieldsToUpdate: BigNumberish[],
@@ -1770,6 +1858,7 @@ export interface IBosonAccountHandler extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     updateSellerSalt(
+      _sellerId: BigNumberish,
       _newSalt: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

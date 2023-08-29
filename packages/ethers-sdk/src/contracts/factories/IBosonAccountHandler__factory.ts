@@ -1007,6 +1007,35 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_collectionSalt",
+        type: "bytes32",
+      },
+    ],
+    name: "calculateCollectionAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "collectionAddress",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "isAvailable",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -1846,6 +1875,30 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_adminAddres",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "_salt",
+        type: "bytes32",
+      },
+    ],
+    name: "isSellerSaltAvailable",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isAvailable",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_disputeResolverId",
         type: "uint256",
@@ -2104,6 +2157,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256",
+      },
       {
         internalType: "bytes32",
         name: "_newSalt",
