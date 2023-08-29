@@ -26,25 +26,28 @@ type BaseExchangeHandlerArgs = {
   web3Lib: Web3LibAdapter;
 };
 
-function checkOfferIsCommittable(offer: OfferFieldsFragment) {
+function checkOfferIsCommittable(
+  offerId: BigNumberish,
+  offer: OfferFieldsFragment
+) {
   if (!offer) {
-    throw new Error(`Offer with id ${offer.id} does not exist`);
+    throw new Error(`Offer with id ${offerId.toString()} does not exist`);
   }
 
   if (offer.voidedAt) {
-    throw new Error(`Offer with id ${offer.id} has been voided`);
+    throw new Error(`Offer with id ${offerId.toString()} has been voided`);
   }
 
   if (Date.now() < Number(offer.validFromDate) * 1000) {
-    throw new Error(`Offer with id ${offer.id} is not valid yet`);
+    throw new Error(`Offer with id ${offerId.toString()} is not valid yet`);
   }
 
   if (Date.now() >= Number(offer.validUntilDate) * 1000) {
-    throw new Error(`Offer with id ${offer.id} is not valid anymore`);
+    throw new Error(`Offer with id ${offerId.toString()} is not valid anymore`);
   }
 
   if (Number(offer.quantityAvailable) === 0) {
-    throw new Error(`Offer with id ${offer.id} is sold out`);
+    throw new Error(`Offer with id ${offerId.toString()} is sold out`);
   }
 }
 
@@ -56,7 +59,7 @@ export async function commitToOffer(
 ): Promise<TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
-  await checkOfferIsCommittable(offer);
+  await checkOfferIsCommittable(args.offerId, offer);
 
   if (offer.condition) {
     // keep compatibility with previous version
@@ -95,7 +98,7 @@ export async function commitToConditionalOffer(
 ): Promise<TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
-  await checkOfferIsCommittable(offer);
+  await checkOfferIsCommittable(args.offerId, offer);
 
   if (offer.exchangeToken.address !== AddressZero) {
     const owner = await args.web3Lib.getSignerAddress();
