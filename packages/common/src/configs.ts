@@ -90,6 +90,44 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "local-31337-0",
       sellersBlackList: "",
       defaultDisputeResolverId: "1",
+      defaultTokens: [
+        {
+          symbol: "MATIC",
+          name: "MATIC",
+          address: "0x0000000000000000000000000000000000000000",
+          decimals: "18"
+        },
+        {
+          symbol: "WETH",
+          name: "Wrapped Ether",
+          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
+          decimals: "18"
+        },
+        {
+          symbol: "BOSON",
+          name: "Boson Token (PoS)",
+          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
+          decimals: "18"
+        },
+        {
+          symbol: "USDC",
+          name: "Mumbai USD Coin",
+          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
+          decimals: "6"
+        },
+        {
+          symbol: "DAI",
+          name: "DAI",
+          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          decimals: "18"
+        },
+        {
+          symbol: "USDT",
+          name: "Tether USD",
+          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
+          decimals: "6"
+        }
+      ],
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
       subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
@@ -122,6 +160,44 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
       defaultDisputeResolverId: "13",
+      defaultTokens: [
+        {
+          symbol: "MATIC",
+          name: "MATIC",
+          address: "0x0000000000000000000000000000000000000000",
+          decimals: "18"
+        },
+        {
+          symbol: "WETH",
+          name: "Wrapped Ether",
+          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
+          decimals: "18"
+        },
+        {
+          symbol: "BOSON",
+          name: "Boson Token (PoS)",
+          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
+          decimals: "18"
+        },
+        {
+          symbol: "USDC",
+          name: "Mumbai USD Coin",
+          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
+          decimals: "6"
+        },
+        {
+          symbol: "DAI",
+          name: "DAI",
+          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          decimals: "18"
+        },
+        {
+          symbol: "USDT",
+          name: "Tether USD",
+          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
+          decimals: "6"
+        }
+      ],
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -152,6 +228,44 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
       defaultDisputeResolverId: "2",
+      defaultTokens: [
+        {
+          symbol: "MATIC",
+          name: "MATIC",
+          address: "0x0000000000000000000000000000000000000000",
+          decimals: "18"
+        },
+        {
+          symbol: "WETH",
+          name: "Wrapped Ether",
+          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
+          decimals: "18"
+        },
+        {
+          symbol: "BOSON",
+          name: "Boson Token (PoS)",
+          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
+          decimals: "18"
+        },
+        {
+          symbol: "USDC",
+          name: "Mumbai USD Coin",
+          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
+          decimals: "6"
+        },
+        {
+          symbol: "DAI",
+          name: "DAI",
+          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
+          decimals: "18"
+        },
+        {
+          symbol: "USDT",
+          name: "Tether USD",
+          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
+          decimals: "6"
+        }
+      ],
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -182,6 +296,44 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
       defaultDisputeResolverId: "1",
+      defaultTokens: [
+        {
+          symbol: "MATIC",
+          name: "MATIC",
+          address: "0x0000000000000000000000000000000000000000",
+          decimals: "18"
+        },
+        {
+          symbol: "WETH",
+          name: "Wrapped Ether",
+          address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+          decimals: "18"
+        },
+        {
+          symbol: "BOSON",
+          name: "Boson Token (PoS)",
+          address: "0x9B3B0703D392321AD24338Ff1f846650437A43C9",
+          decimals: "18"
+        },
+        {
+          symbol: "USDC",
+          name: "USD Coin (PoS)",
+          address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+          decimals: "6"
+        },
+        {
+          symbol: "DAI",
+          name: "(PoS) Dai Stablecoin",
+          address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+          decimals: "18"
+        },
+        {
+          symbol: "USDT",
+          name: "(PoS) Tether USD",
+          address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+          decimals: "6"
+        }
+      ],
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
