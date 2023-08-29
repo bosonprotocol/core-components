@@ -45,7 +45,7 @@ export type Token = {
 export type ProtocolConfig = {
   envName: EnvironmentType;
   configId: ConfigId;
-  defaultTokens: Token[];
+  defaultTokens: Token[] | undefined;
   defaultDisputeResolverId: string;
   sellersBlackList: string;
   chainId: ChainId;
