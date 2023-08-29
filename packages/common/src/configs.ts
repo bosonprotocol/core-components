@@ -1,86 +1,11 @@
 import { abis } from ".";
-import { EnvironmentType, Lens, ProtocolConfig } from "./types";
-
-const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
-  [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
-  [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
-  [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
-]);
-
-const chainIdToGraphTx = new Map<
-  number,
-  (txHash?: string, isAddress?: boolean) => string
->([
-  [
-    1234,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://explorer.bsn-development-potassium.bosonportal.io/address/${txHash}`;
-      }
-      return `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`;
-    }
-  ],
-  [
-    80001,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://mumbai.polygonscan.com/address/${txHash}`;
-      }
-      return `https://mumbai.polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    137,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://polygonscan.com/address/${txHash}`;
-      }
-      return `https://polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    1,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://etherscan.io/address/${txHash}`;
-      }
-      return `https://etherscan.io/tx/${txHash}`;
-    }
-  ],
-  [31337, (txHash = "") => `${txHash}`] // TODO: add url
-]);
-
-// https://docs.lens.xyz/docs/deployed-contract-addresses
-const chainIdToLensInfo = new Map<number, Lens>([
-  [
-    80001,
-    {
-      LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8",
-      LENS_PROFILES_CONTRACT_ADDRESS:
-        "0x60ae865ee4c725cd04353b5aab364553f56cef82",
-      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
-        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api-mumbai.lens.dev/",
-      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
-    }
-  ],
-  [
-    137,
-    {
-      LENS_HUB_CONTRACT: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
-      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f",
-      LENS_PROFILES_CONTRACT_ADDRESS:
-        "0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
-      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
-        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api.lens.dev",
-      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
-    }
-  ]
-]);
+import {
+  chainIdToDefaultTokens,
+  chainIdToGraphTx,
+  chainIdToInfo,
+  chainIdToLensInfo
+} from "./mappings";
+import { EnvironmentType, ProtocolConfig } from "./types";
 
 export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
   local: [
@@ -90,44 +15,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       configId: "local-31337-0",
       sellersBlackList: "",
       defaultDisputeResolverId: "1",
-      defaultTokens: [
-        {
-          symbol: "MATIC",
-          name: "MATIC",
-          address: "0x0000000000000000000000000000000000000000",
-          decimals: "18"
-        },
-        {
-          symbol: "WETH",
-          name: "Wrapped Ether",
-          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
-          decimals: "18"
-        },
-        {
-          symbol: "BOSON",
-          name: "Boson Token (PoS)",
-          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
-          decimals: "18"
-        },
-        {
-          symbol: "USDC",
-          name: "Mumbai USD Coin",
-          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
-          decimals: "6"
-        },
-        {
-          symbol: "DAI",
-          name: "DAI",
-          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
-          decimals: "18"
-        },
-        {
-          symbol: "USDT",
-          name: "Tether USD",
-          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
-          decimals: "6"
-        }
-      ],
+      defaultTokens: chainIdToDefaultTokens.get(31337),
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
       subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
@@ -160,44 +48,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
       defaultDisputeResolverId: "13",
-      defaultTokens: [
-        {
-          symbol: "MATIC",
-          name: "MATIC",
-          address: "0x0000000000000000000000000000000000000000",
-          decimals: "18"
-        },
-        {
-          symbol: "WETH",
-          name: "Wrapped Ether",
-          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
-          decimals: "18"
-        },
-        {
-          symbol: "BOSON",
-          name: "Boson Token (PoS)",
-          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
-          decimals: "18"
-        },
-        {
-          symbol: "USDC",
-          name: "Mumbai USD Coin",
-          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
-          decimals: "6"
-        },
-        {
-          symbol: "DAI",
-          name: "DAI",
-          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
-          decimals: "18"
-        },
-        {
-          symbol: "USDT",
-          name: "Tether USD",
-          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
-          decimals: "6"
-        }
-      ],
+      defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -228,44 +79,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
       defaultDisputeResolverId: "2",
-      defaultTokens: [
-        {
-          symbol: "MATIC",
-          name: "MATIC",
-          address: "0x0000000000000000000000000000000000000000",
-          decimals: "18"
-        },
-        {
-          symbol: "WETH",
-          name: "Wrapped Ether",
-          address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
-          decimals: "18"
-        },
-        {
-          symbol: "BOSON",
-          name: "Boson Token (PoS)",
-          address: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
-          decimals: "18"
-        },
-        {
-          symbol: "USDC",
-          name: "Mumbai USD Coin",
-          address: "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747",
-          decimals: "6"
-        },
-        {
-          symbol: "DAI",
-          name: "DAI",
-          address: "0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f",
-          decimals: "18"
-        },
-        {
-          symbol: "USDT",
-          name: "Tether USD",
-          address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
-          decimals: "6"
-        }
-      ],
+      defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -296,44 +110,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       sellersBlackList:
         "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
       defaultDisputeResolverId: "1",
-      defaultTokens: [
-        {
-          symbol: "MATIC",
-          name: "MATIC",
-          address: "0x0000000000000000000000000000000000000000",
-          decimals: "18"
-        },
-        {
-          symbol: "WETH",
-          name: "Wrapped Ether",
-          address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-          decimals: "18"
-        },
-        {
-          symbol: "BOSON",
-          name: "Boson Token (PoS)",
-          address: "0x9B3B0703D392321AD24338Ff1f846650437A43C9",
-          decimals: "18"
-        },
-        {
-          symbol: "USDC",
-          name: "USD Coin (PoS)",
-          address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-          decimals: "6"
-        },
-        {
-          symbol: "DAI",
-          name: "(PoS) Dai Stablecoin",
-          address: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
-          decimals: "18"
-        },
-        {
-          symbol: "USDT",
-          name: "(PoS) Tether USD",
-          address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
-          decimals: "6"
-        }
-      ],
+      defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:

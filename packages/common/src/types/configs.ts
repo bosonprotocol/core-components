@@ -31,7 +31,7 @@ export type Lens = LensContracts & {
   ipfsGateway?: string | undefined;
 };
 
-type ChainId = typeof chains[keyof typeof chains];
+export type ChainId = typeof chains[keyof typeof chains];
 
 export type ConfigId = `${EnvironmentType}-${ChainId}-${number}`;
 
