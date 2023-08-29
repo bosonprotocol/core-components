@@ -102,10 +102,22 @@ async function main() {
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
+  // Deploy Seaport contract
   const mockSeaport = await deploySeaport();
   console.log(
     `✅ Seaport Contract has been deployed at ${await mockSeaport.getAddress()}`
   );
+  // Set specific configuration values (needed for tests)
+  const deployer = accounts[0];
+  const configHandler = await ethers.getContractAt(
+    "IBosonConfigHandler",
+    protocolDiamond
+  );
+  const response2 = await configHandler
+    .connect(deployer)
+    .setMinResolutionPeriod("1");
+  await response2.wait();
+  console.log(`✅ Protocol has been configured`);
 }
 
 main()

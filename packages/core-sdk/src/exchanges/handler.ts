@@ -8,11 +8,16 @@ import {
   encodeCompleteExchangeBatch,
   encodeRevokeVoucher,
   encodeExpireVoucher,
-  encodeRedeemVoucher
+  encodeRedeemVoucher,
+  encodeCommitToConditionalOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
-import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
+import {
+  ExchangeFieldsFragment,
+  ExchangeState,
+  OfferFieldsFragment
+} from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
 
 type BaseExchangeHandlerArgs = {
@@ -20,6 +25,28 @@ type BaseExchangeHandlerArgs = {
   subgraphUrl: string;
   web3Lib: Web3LibAdapter;
 };
+
+function checkOfferIsCommittable(offer: OfferFieldsFragment) {
+  if (!offer) {
+    throw new Error(`Offer with id ${offer.id} does not exist`);
+  }
+
+  if (offer.voidedAt) {
+    throw new Error(`Offer with id ${offer.id} has been voided`);
+  }
+
+  if (Date.now() < Number(offer.validFromDate) * 1000) {
+    throw new Error(`Offer with id ${offer.id} is not valid yet`);
+  }
+
+  if (Date.now() >= Number(offer.validUntilDate) * 1000) {
+    throw new Error(`Offer with id ${offer.id} is not valid anymore`);
+  }
+
+  if (Number(offer.quantityAvailable) === 0) {
+    throw new Error(`Offer with id ${offer.id} is sold out`);
+  }
+}
 
 export async function commitToOffer(
   args: BaseExchangeHandlerArgs & {
@@ -29,24 +56,14 @@ export async function commitToOffer(
 ): Promise<TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
-  if (!offer) {
-    throw new Error(`Offer with id ${args.offerId} does not exist`);
-  }
+  await checkOfferIsCommittable(offer);
 
-  if (offer.voidedAt) {
-    throw new Error(`Offer with id ${args.offerId} has been voided`);
-  }
-
-  if (Date.now() < Number(offer.validFromDate) * 1000) {
-    throw new Error(`Offer with id ${args.offerId} is not valid yet`);
-  }
-
-  if (Date.now() >= Number(offer.validUntilDate) * 1000) {
-    throw new Error(`Offer with id ${args.offerId} is not valid anymore`);
-  }
-
-  if (Number(offer.quantityAvailable) === 0) {
-    throw new Error(`Offer with id ${args.offerId} is sold out`);
+  if (offer.condition) {
+    // keep compatibility with previous version
+    return commitToConditionalOffer({
+      ...args,
+      tokenId: offer.condition.minTokenId
+    });
   }
 
   if (offer.exchangeToken.address !== AddressZero) {
@@ -65,6 +82,41 @@ export async function commitToOffer(
     from: args.buyer,
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
+    value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
+  });
+}
+
+export async function commitToConditionalOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
+  const offer = await getOfferById(args.subgraphUrl, args.offerId);
+
+  await checkOfferIsCommittable(offer);
+
+  if (offer.exchangeToken.address !== AddressZero) {
+    const owner = await args.web3Lib.getSignerAddress();
+    // check if we need the committer to approve the token first
+    await ensureAllowance({
+      owner,
+      spender: args.contractAddress,
+      contractAddress: offer.exchangeToken.address,
+      value: offer.price,
+      web3Lib: args.web3Lib
+    });
+  }
+
+  return args.web3Lib.sendTransaction({
+    from: args.buyer,
+    to: args.contractAddress,
+    data: encodeCommitToConditionalOffer(
+      args.buyer,
+      args.offerId,
+      args.tokenId
+    ),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
   });
 }
