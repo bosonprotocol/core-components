@@ -20,7 +20,7 @@ export const ExpireButton = ({
   variant = "secondaryFill",
   ...restProps
 }: IExpireButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

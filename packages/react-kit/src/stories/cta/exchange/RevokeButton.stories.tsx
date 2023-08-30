@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/RevokeButton",
-  component: RevokeButton
+  component: RevokeButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof RevokeButton>;
 
 const Template: ComponentStory<typeof RevokeButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof RevokeButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <RevokeButton web3Provider={provider} {...args} />
+      <RevokeButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -24,7 +35,10 @@ export const Simple: ComponentStory<typeof RevokeButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof RevokeButton> = Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
   disabled: false,
   onPendingSignature: () => {
@@ -46,7 +60,10 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
   extraInfo: "Step 2",
   disabled: false,

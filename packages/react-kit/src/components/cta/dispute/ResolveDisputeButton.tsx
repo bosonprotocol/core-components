@@ -27,7 +27,7 @@ export const ResolveDisputeButton = ({
   variant = "primaryFill",
   ...restProps
 }: IResolveDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
   const signature = utils.splitSignature(proposal.signature);
 
   const actions = [

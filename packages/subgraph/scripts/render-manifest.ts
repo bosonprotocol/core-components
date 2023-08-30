@@ -15,12 +15,14 @@ const { contracts, chainId } = getEnvConfigById(
 
 const envNameToConfig: Record<
   EnvironmentType,
-  Record<
-    ConfigId,
-    {
-      network: string;
-      startBlock: number;
-    }
+  Partial<
+    Record<
+      ConfigId,
+      {
+        network: string;
+        startBlock: number;
+      }
+    >
   >
 > = {
   local: {

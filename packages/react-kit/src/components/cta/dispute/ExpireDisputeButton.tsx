@@ -21,7 +21,7 @@ export const ExpireDisputeButton = ({
   exchangeId,
   ...restProps
 }: IExpireDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

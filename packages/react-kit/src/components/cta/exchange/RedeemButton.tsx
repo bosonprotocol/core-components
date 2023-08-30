@@ -20,7 +20,7 @@ export const RedeemButton = ({
   variant = "primaryFill",
   ...restProps
 }: IRedeemButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

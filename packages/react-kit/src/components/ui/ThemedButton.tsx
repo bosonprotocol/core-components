@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment } from "react";
+import React, { ButtonHTMLAttributes, forwardRef, Fragment } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
 
 import { zIndex } from "./zIndex";
@@ -7,6 +7,7 @@ import * as Styles from "./styles";
 import Typography from "./Typography";
 import { theme } from "../../theme";
 import { Loading } from "../Loading";
+import { ButtonSize } from "./buttonSize";
 
 const colors = theme.colors.light;
 
@@ -304,19 +305,18 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
   };
 };
 
-export interface IButton {
+export type IButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: string | React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-  size?: "small" | "regular" | "large";
+  size?: "small" | "regular" | "large" | ButtonSize;
   theme?: keyof ReturnType<typeof allThemes>;
   type?: "button" | "submit" | "reset" | undefined;
   fill?: boolean;
   step?: number;
   isLoading?: boolean;
   tooltip?: string;
-  [x: string]: unknown;
   withBosonStyle?: boolean;
-}
+};
 
 const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
   (
@@ -338,7 +338,6 @@ const ThemedButton = forwardRef<HTMLButtonElement, IButton>(
     const Wrapper = tooltip !== "" && rest?.disabled ? Tooltip : Fragment;
     const wrapperParams =
       tooltip !== "" && rest?.disabled ? { wrap: false, content: tooltip } : {};
-
     return (
       <>
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}

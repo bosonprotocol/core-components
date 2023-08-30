@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { UpdateSellerArgs } from "@bosonprotocol/common";
+import { ButtonSize } from "../../ui/buttonSize";
+
 export type IUpdateSellerButton = {
   exchangeId: BigNumberish;
   updateSellerArgs: UpdateSellerArgs;
@@ -28,7 +30,8 @@ export const UpdateSellerButton = ({
   size = ButtonSize.Large,
   variant = "accentInverted",
   updateSellerArgs,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: IUpdateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -62,6 +65,7 @@ export const UpdateSellerButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Update Seller"}

@@ -8,7 +8,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Offer/CommitButton",
-  component: CommitButton
+  component: CommitButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CommitButton>;
 
 const Template: ComponentStory<typeof CommitButton> = (args) => {
@@ -17,7 +25,11 @@ const Template: ComponentStory<typeof CommitButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CommitButton web3Provider={provider} {...args} buttonRef={buttonRef} />
+      <CommitButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+        buttonRef={buttonRef}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -29,7 +41,10 @@ export const WithMetaTx: ComponentStory<typeof CommitButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   offerId: "28",
   price: "100",
   exchangeToken: "0x" + "0".repeat(40),
@@ -62,7 +77,10 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   offerId: "52",
   price: "100",
   exchangeToken: "0x" + "0".repeat(40),
@@ -87,7 +105,24 @@ WithStep.args = {
 };
 
 WithMetaTx.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    metaTx: {
+      relayerUrl: "https://api.biconomy.io",
+      apiIds: {
+        "0x785a225ebac1b600ca3170c6c7fa3488a203fc21": {
+          // BOSON PROTOCOL
+          executeMetaTransaction: "eaeff5a5-2efd-4c2b-85f5-b597c79eabf2"
+        },
+        "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0": {
+          // BOSON TOKEN
+          executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
+        }
+      },
+      apiKey: "change-me"
+    }
+  },
   offerId: "19",
   price: "1000000000000000",
   exchangeToken: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
@@ -108,19 +143,5 @@ WithMetaTx.args = {
   onError: (error) => {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
-  },
-  metaTx: {
-    relayerUrl: "https://api.biconomy.io",
-    apiIds: {
-      "0x785a225ebac1b600ca3170c6c7fa3488a203fc21": {
-        // BOSON PROTOCOL
-        executeMetaTransaction: "eaeff5a5-2efd-4c2b-85f5-b597c79eabf2"
-      },
-      "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0": {
-        // BOSON TOKEN
-        executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
-      }
-    },
-    apiKey: "change-me"
   }
 };

@@ -126,6 +126,12 @@ export default function FinanceDeposit({
       <Grid>
         <div />
         <DepositFundsButton
+          coreSdkConfig={{
+            envName: envName,
+            configId: configId,
+            web3Provider: signer?.provider as Provider,
+            metaTx: coreSDK.metaTxConfig
+          }}
           exchangeToken={exchangeToken}
           accountId={accountId}
           amountToDeposit={
@@ -135,11 +141,7 @@ export default function FinanceDeposit({
                   getNumberWithoutDecimals(amountToDeposit, tokenDecimals)
                 )
           }
-          envName={envName}
-          configId={configId}
           disabled={isBeingDeposit || isDepositInvalid}
-          web3Provider={signer?.provider as Provider}
-          metaTx={coreSDK.metaTxConfig}
           onPendingSignature={() => {
             setDepositError(null);
             setIsBeingDeposit(true);

@@ -1,10 +1,11 @@
 import React, { RefObject } from "react";
 import { providers } from "ethers";
 import { CoreSdkConfig } from "../../../hooks/useCoreSdk";
-import { ButtonProps, ButtonSize } from "../../buttons/Button";
+import { ButtonProps } from "../../buttons/Button";
 import { Action } from "../../../hooks/useCtaClickHandler";
 
-export type CtaButtonProps<T> = CoreSdkConfig & {
+export type CtaButtonProps<T> = Omit<ButtonProps, "onError"> & {
+  coreSdkConfig: CoreSdkConfig;
   showLoading?: boolean;
   disabled?: boolean;
   /**
@@ -58,7 +59,6 @@ export type CtaButtonProps<T> = CoreSdkConfig & {
    */
   onError?: (error: Error) => void;
   children?: React.ReactNode;
-  size?: ButtonSize;
   variant?: ButtonProps["variant"];
   className?: string;
   buttonRef?: RefObject<HTMLButtonElement>;

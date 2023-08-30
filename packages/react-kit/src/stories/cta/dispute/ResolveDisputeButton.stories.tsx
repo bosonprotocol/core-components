@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/ResolveDisputeButton",
-  component: ResolveDisputeButton
+  component: ResolveDisputeButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof ResolveDisputeButton>;
 
 const Template: ComponentStory<typeof ResolveDisputeButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof ResolveDisputeButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <ResolveDisputeButton web3Provider={provider} {...args} />
+      <ResolveDisputeButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,16 +37,19 @@ export const WithExtraInfo: ComponentStory<typeof ResolveDisputeButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+    // metaTransactionsApiKey: undefined,
+    // metaTransactionsApiId: "dummyApiId",
+  },
   exchangeId: "28",
-  metaTransactionsApiKey: undefined,
   proposal: {
     signature:
       "0xe18764e41f6791c2aa09234e4487e19e778ede85d6cb5ed7c432f1a8ea91282d25637188d5aab4c4ea9592c92b4c86e3f1b02a0f61795989b3d9fda43f456c871b",
     percentageAmount: "1",
     type: "Refund"
   },
-  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -55,9 +69,12 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+    // metaTransactionsApiKey: undefined,
+  },
   exchangeId: "28",
-  metaTransactionsApiKey: undefined,
   proposal: {
     signature:
       "0xe18764e41f6791c2aa09234e4487e19e778ede85d6cb5ed7c432f1a8ea91282d25637188d5aab4c4ea9592c92b4c86e3f1b02a0f61795989b3d9fda43f456c871b",

@@ -190,8 +190,12 @@ export default function ExpireVoucher({
           <ExpireButton
             variant="primaryFill"
             exchangeId={exchange.id}
-            envName={envName}
-            configId={configId}
+            coreSdkConfig={{
+              envName,
+              configId,
+              web3Provider: signer?.provider as Provider,
+              metaTx: coreSDK.metaTxConfig
+            }}
             disabled={isLoading}
             onError={(...args) => {
               const [error] = args;
@@ -236,8 +240,6 @@ export default function ExpireVoucher({
               setExpireError(null);
               onSuccess?.(...args);
             }}
-            web3Provider={signer?.provider as Provider}
-            metaTx={coreSDK.metaTxConfig}
           >
             <Grid gap="0.5rem">
               Expire Voucher

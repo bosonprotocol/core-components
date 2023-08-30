@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/UpdateDisputeResolverButton",
-  component: UpdateDisputeResolverButton
+  component: UpdateDisputeResolverButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof UpdateDisputeResolverButton>;
 
 const Template: ComponentStory<typeof UpdateDisputeResolverButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof UpdateDisputeResolverButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <UpdateDisputeResolverButton web3Provider={provider} {...args} />
+      <UpdateDisputeResolverButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,7 +37,11 @@ export const WithExtraInfo: ComponentStory<typeof UpdateDisputeResolverButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "28",
   disputeResolverUpdates: {
     assistant: "0x0123456789012345678901234567890123456789",
@@ -36,7 +51,6 @@ Simple.args = {
     metadataUri: "0x0123456789012345678901234567890123456789"
   },
   disputeResolverId: 1,
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -56,7 +70,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "28",
   disputeResolverUpdates: {
     assistant: "0x0123456789012345678901234567890123456789",
@@ -66,7 +84,6 @@ WithExtraInfo.args = {
     metadataUri: "0x0123456789012345678901234567890123456789"
   },
   disputeResolverId: 1,
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
