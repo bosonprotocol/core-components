@@ -54,7 +54,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       }
     }
     return (
-      <ThemedButton {...props} theme={theme} isLoading={loading}></ThemedButton>
+      <ThemedButton
+        {...props}
+        theme={theme}
+        isLoading={loading}
+        ref={ref}
+      ></ThemedButton>
     );
   }
 );

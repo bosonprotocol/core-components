@@ -31,13 +31,23 @@ export type Lens = LensContracts & {
   ipfsGateway?: string | undefined;
 };
 
-type ChainId = typeof chains[keyof typeof chains];
+export type ChainId = typeof chains[keyof typeof chains];
 
 export type ConfigId = `${EnvironmentType}-${ChainId}-${number}`;
+
+export type Token = {
+  symbol: string;
+  name: string;
+  address: string;
+  decimals: string;
+};
 
 export type ProtocolConfig = {
   envName: EnvironmentType;
   configId: ConfigId;
+  defaultTokens: Token[] | undefined;
+  defaultDisputeResolverId: string;
+  sellersBlackList: string;
   chainId: ChainId;
   nativeCoin:
     | undefined

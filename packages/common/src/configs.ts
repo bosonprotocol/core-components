@@ -1,86 +1,11 @@
 import { abis } from ".";
-import { EnvironmentType, Lens, ProtocolConfig } from "./types";
-
-const chainIdToInfo = new Map<number, ProtocolConfig["nativeCoin"]>([
-  [1234, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
-  [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
-  [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
-  [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
-]);
-
-const chainIdToGraphTx = new Map<
-  number,
-  (txHash?: string, isAddress?: boolean) => string
->([
-  [
-    1234,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://explorer.bsn-development-potassium.bosonportal.io/address/${txHash}`;
-      }
-      return `https://explorer.bsn-development-potassium.bosonportal.io/tx/${txHash}`;
-    }
-  ],
-  [
-    80001,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://mumbai.polygonscan.com/address/${txHash}`;
-      }
-      return `https://mumbai.polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    137,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://polygonscan.com/address/${txHash}`;
-      }
-      return `https://polygonscan.com/tx/${txHash}`;
-    }
-  ],
-  [
-    1,
-    (txHash = "", isAddress = false) => {
-      if (isAddress) {
-        return `https://etherscan.io/address/${txHash}`;
-      }
-      return `https://etherscan.io/tx/${txHash}`;
-    }
-  ],
-  [31337, (txHash = "") => `${txHash}`] // TODO: add url
-]);
-
-// https://docs.lens.xyz/docs/deployed-contract-addresses
-const chainIdToLensInfo = new Map<number, Lens>([
-  [
-    80001,
-    {
-      LENS_HUB_CONTRACT: "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82",
-      LENS_PERIPHERY_CONTRACT: "0xD5037d72877808cdE7F669563e9389930AF404E8",
-      LENS_PROFILES_CONTRACT_ADDRESS:
-        "0x60ae865ee4c725cd04353b5aab364553f56cef82",
-      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
-        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api-mumbai.lens.dev/",
-      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
-    }
-  ],
-  [
-    137,
-    {
-      LENS_HUB_CONTRACT: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d",
-      LENS_PERIPHERY_CONTRACT: "0xeff187b4190E551FC25a7fA4dFC6cf7fDeF7194f",
-      LENS_PROFILES_CONTRACT_ADDRESS:
-        "0xdb46d1dc155634fbc732f92e853b10b288ad5a1d",
-      LENS_PROFILES_CONTRACT_PARTIAL_ABI:
-        '[{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event","signature":"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"}]',
-      apiLink: "https://api.lens.dev",
-      ipfsGateway: "https://lens.infura-ipfs.io/ipfs/"
-    }
-  ]
-]);
+import {
+  chainIdToDefaultTokens,
+  chainIdToGraphTx,
+  chainIdToInfo,
+  chainIdToLensInfo
+} from "./mappings";
+import { EnvironmentType, ProtocolConfig } from "./types";
 
 export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
   local: [
@@ -88,6 +13,9 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "local",
       chainId: 31337,
       configId: "local-31337-0",
+      sellersBlackList: "",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(31337),
       nativeCoin: chainIdToInfo.get(31337),
       getTxExplorerUrl: chainIdToGraphTx.get(31337),
       subgraphUrl: "http://127.0.0.1:8000/subgraphs/name/boson/corecomponents",
@@ -117,6 +45,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "testing",
       chainId: 80001,
       configId: "testing-80001-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
+      defaultDisputeResolverId: "13",
+      defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -144,6 +76,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "staging",
       chainId: 80001,
       configId: "staging-80001-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
+      defaultDisputeResolverId: "2",
+      defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
@@ -171,6 +107,10 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       envName: "production",
       chainId: 137,
       configId: "production-137-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
       getTxExplorerUrl: chainIdToGraphTx.get(137),
       subgraphUrl:
