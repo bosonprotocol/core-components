@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const ExtraInfo = styled.span`
   display: flex;
@@ -8,11 +8,6 @@ export const ExtraInfo = styled.span`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  ${(props) =>
-    props.theme?.color &&
-    css`
-      color: color-mix(in srgb, ${props.theme?.color} 50%, black);
-    `};
   opacity: 0.5;
 `;
 
