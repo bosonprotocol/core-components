@@ -21,7 +21,7 @@ export const RefuseDisputeButton = ({
   variant = "secondaryFill",
   ...restProps
 }: IRefuseDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
   const actions = [
     {
       writeContractFn: () => coreSdk.refuseEscalatedDispute(exchangeId)

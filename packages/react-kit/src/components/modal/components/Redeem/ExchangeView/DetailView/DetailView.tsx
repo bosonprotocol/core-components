@@ -15,7 +15,7 @@ import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { Offer } from "../../../../../../types/offer";
 import { Exchange } from "../../../../../../types/exchange";
 import Typography from "../../../../../ui/Typography";
-import { Button, ButtonSize } from "../../../../../buttons/Button";
+import { Button } from "../../../../../buttons/Button";
 import { breakpoint } from "../../../../../../lib/ui/breakpoint";
 import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
 import { getItemFromStorage } from "../../../../../widgets/finance/storage/useLocalStorage";
@@ -48,6 +48,7 @@ import DetailTable from "../detail/DetailTable";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
+import { ButtonSize } from "../../../../../ui/buttonSize";
 
 const colors = theme.colors.light;
 

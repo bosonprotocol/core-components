@@ -1,5 +1,5 @@
-import { ButtonSize } from "./Button";
 import styled, { css } from "styled-components";
+import { ButtonSize } from "../ui/buttonSize";
 
 export const ButtonStyle = styled.button.attrs(
   (props: {

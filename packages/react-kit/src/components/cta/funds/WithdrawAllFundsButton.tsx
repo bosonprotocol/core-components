@@ -19,7 +19,7 @@ export const WithdrawAllFundsButton = ({
   variant = "primaryFill",
   ...restProps
 }: IWithdrawAllFundsButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
   const actions = [
     // Withdraw all funds
     {

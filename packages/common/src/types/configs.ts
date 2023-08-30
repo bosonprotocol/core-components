@@ -33,7 +33,11 @@ export type Lens = LensContracts & {
 
 export type ChainId = typeof chains[keyof typeof chains];
 
-export type ConfigId = `${EnvironmentType}-${ChainId}-${number}`;
+export type ConfigId =
+  | "local-31337-0"
+  | "testing-80001-0"
+  | "staging-80001-0"
+  | "production-137-0";
 
 export type Token = {
   symbol: string;

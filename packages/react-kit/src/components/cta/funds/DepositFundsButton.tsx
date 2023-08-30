@@ -25,8 +25,8 @@ export const DepositFundsButton = ({
   amountToDeposit,
   ...restProps
 }: IDepositFundsButton) => {
-  const coreSdk = useCoreSdk(restProps);
-  const signerAddress = useSignerAddress(restProps.web3Provider);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
+  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
 
   const actions = [
     // Approve exchange token

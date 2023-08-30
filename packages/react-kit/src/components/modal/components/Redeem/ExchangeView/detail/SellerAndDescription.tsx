@@ -47,7 +47,7 @@ export function SellerAndDescription({
       <ThemedButton
         data-description
         theme="blankSecondary"
-        margin="1rem"
+        style={{ margin: "1rem" }}
         onClick={onViewFullDescription}
       >
         <Typography

@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/RemoveFeesDisputeResolver",
-  component: RemoveFeesDisputeResolver
+  component: RemoveFeesDisputeResolver,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof RemoveFeesDisputeResolver>;
 
 const Template: ComponentStory<typeof RemoveFeesDisputeResolver> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof RemoveFeesDisputeResolver> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <RemoveFeesDisputeResolver web3Provider={provider} {...args} />
+      <RemoveFeesDisputeResolver
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,10 +37,13 @@ export const WithExtraInfo: ComponentStory<typeof RemoveFeesDisputeResolver> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: 0,
   feeTokenAddresses: ["0x0123456789012345678901234567890123456789"],
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -49,10 +63,13 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: 0,
   feeTokenAddresses: ["0x0123456789012345678901234567890123456789"],
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

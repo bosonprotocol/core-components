@@ -21,7 +21,7 @@ export const ExpireEscalationDisputeButton = ({
   variant = "secondaryFill",
   ...restProps
 }: IExpireEscalationDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
   const actions = [
     {
       writeContractFn: () => coreSdk.expireEscalatedDispute(exchangeId)

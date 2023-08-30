@@ -8,7 +8,6 @@ export const ExtraInfo = styled.span`
   font-weight: 600;
   font-size: 0.75rem;
   line-height: 150%;
-  color: ${({ theme }) => theme?.colors?.light.black};
   opacity: 0.5;
 `;
 

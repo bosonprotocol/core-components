@@ -171,10 +171,14 @@ export function CancelExchange({
       <ButtonsSection>
         <CancelButtonWrapper>
           <CancelButton
+            coreSdkConfig={{
+              envName: envName,
+              configId: configId,
+              web3Provider: signer?.provider as Provider,
+              metaTx: coreSDK.metaTxConfig
+            }}
             variant="accentInverted"
             exchangeId={exchange.id}
-            envName={envName}
-            configId={configId}
             disabled={isLoading}
             onError={(...args) => {
               const [error] = args;
@@ -225,8 +229,6 @@ export function CancelExchange({
                 />
               ));
             }}
-            web3Provider={signer?.provider as Provider}
-            metaTx={coreSDK.metaTxConfig}
           >
             <Grid gap="0.5rem">
               Confirm cancellation

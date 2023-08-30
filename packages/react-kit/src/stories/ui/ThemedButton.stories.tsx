@@ -41,35 +41,35 @@ export const AccentFiil: ComponentStory<typeof ThemedButton> = Template.bind(
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
   disabled: false,
-  loading: false,
+  isLoading: false,
   theme: "primary",
   withBosonStyle: false
 };
 
 BosonPrimary.args = {
   disabled: false,
-  loading: false,
+  isLoading: false,
   theme: "bosonPrimary",
   withBosonStyle: true
 };
 
 Secondary.args = {
   disabled: false,
-  loading: false,
+  isLoading: false,
   theme: "secondary",
   withBosonStyle: false
 };
 
 BosonSecondary.args = {
   disabled: false,
-  loading: false,
+  isLoading: false,
   theme: "secondary",
   withBosonStyle: true
 };
 
 AccentFiil.args = {
   disabled: false,
-  loading: false,
+  isLoading: false,
   theme: "accentFill",
   withBosonStyle: true
 };

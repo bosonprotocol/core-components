@@ -21,7 +21,7 @@ import { Tooltip } from "../../tooltip/Tooltip";
 import Grid from "../../ui/Grid";
 import Typography from "../../ui/Typography";
 import { theme } from "../../../theme";
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import PaginationPages from "../../pagination/PaginationPages";
 import Loading from "../../ui/loading/Loading";
 import { subgraph } from "@bosonprotocol/core-sdk";
@@ -338,7 +338,7 @@ export default function Finance({
             <Grid justifyContent="flex-end" gap="1rem">
               <WithdrawButton
                 theme="blank"
-                size={ButtonSize.Small}
+                size="small"
                 disabled={!sellerRoles.isClerk}
                 tooltip="This action is restricted to only the clerk wallet" // check
                 onClick={() => {
@@ -363,7 +363,7 @@ export default function Finance({
               </WithdrawButton>
               <BosonButton
                 variant="accentInverted"
-                size={ButtonSize.Small}
+                size="small"
                 onClick={() => {
                   showModal(
                     modalTypes.FINANCE_DEPOSIT_MODAL,
@@ -567,7 +567,7 @@ export default function Finance({
           {pageCount > 1 && (
             <Grid justifyContent="flex-end" gap="1rem">
               <Button
-                size={ButtonSize.Small}
+                size="small"
                 // theme="blank"
                 variant="secondaryFill" // check
                 onClick={() => previousPage()}
@@ -578,7 +578,7 @@ export default function Finance({
               {paginate.map((pageNumber: number) => (
                 <Button
                   key={`page_btn_${pageNumber}`}
-                  size={ButtonSize.Small}
+                  size="small"
                   // theme="blank"
                   variant="secondaryFill" // check
                   style={{
@@ -597,7 +597,7 @@ export default function Finance({
                 </Button>
               ))}
               <Button
-                size={ButtonSize.Small}
+                size="small"
                 // theme="blank"
                 variant="secondaryFill" // check
                 onClick={() => nextPage()}

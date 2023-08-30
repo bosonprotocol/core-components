@@ -145,6 +145,12 @@ export default function FinanceWithdraw({
           <div />
         )}
         <WithdrawFundsButton
+          coreSdkConfig={{
+            envName: envName,
+            configId: configId,
+            web3Provider: signer?.provider as Provider,
+            metaTx: coreSDK.metaTxConfig
+          }}
           accountId={accountId}
           tokensToWithdraw={[
             {
@@ -157,11 +163,7 @@ export default function FinanceWithdraw({
                     )
             }
           ]}
-          envName={envName}
-          configId={configId}
           disabled={isBeingWithdrawn || isWithdrawInvalid}
-          web3Provider={signer?.provider as Provider}
-          metaTx={coreSDK.metaTxConfig}
           onPendingSignature={() => {
             setWithdrawError(null);
             setIsBeingWithdrawn(true);

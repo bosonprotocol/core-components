@@ -20,7 +20,7 @@ export const RevokeButton = ({
   variant = "secondaryFill",
   ...restProps
 }: IRevokeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

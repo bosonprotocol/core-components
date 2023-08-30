@@ -36,8 +36,8 @@ export const CommitButton = ({
   onGetSignerAddress,
   ...restProps
 }: Props) => {
-  const coreSdk = useCoreSdk(restProps);
-  const signerAddress = useSignerAddress(restProps.web3Provider);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
+  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
 
   useEffect(() => {
     if (onGetSignerAddress) {
