@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/CreateDisputeResolver",
-  component: CreateDisputeResolverButton
+  component: CreateDisputeResolverButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateDisputeResolverButton>;
 
 const Template: ComponentStory<typeof CreateDisputeResolverButton> = (args) => {
@@ -39,6 +47,7 @@ Simple.args = {
     escalationResponsePeriodInMS: 3,
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],
@@ -73,6 +82,7 @@ WithExtraInfo.args = {
     escalationResponsePeriodInMS: 3,
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],

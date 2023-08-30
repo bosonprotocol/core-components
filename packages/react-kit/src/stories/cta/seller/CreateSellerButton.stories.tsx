@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Seller/CreateSellerButton",
-  component: CreateSellerButton
+  component: CreateSellerButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateSellerButton>;
 
 const Template: ComponentStory<typeof CreateSellerButton> = (args) => {
@@ -38,6 +46,7 @@ Simple.args = {
   exchangeId: "28",
   createSellerArgs: {
     assistant: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     contractUri: "",
@@ -74,6 +83,7 @@ WithExtraInfo.args = {
   createSellerArgs: {
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     contractUri: "",
     royaltyPercentage: 0,

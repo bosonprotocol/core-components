@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/RemoveFeesDisputeResolver",
-  component: RemoveFeesDisputeResolver
+  component: RemoveFeesDisputeResolver,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof RemoveFeesDisputeResolver>;
 
 const Template: ComponentStory<typeof RemoveFeesDisputeResolver> = (args) => {

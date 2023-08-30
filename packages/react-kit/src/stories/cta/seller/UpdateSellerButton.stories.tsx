@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Seller/UpdateSellerButton",
-  component: UpdateSellerButton
+  component: UpdateSellerButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof UpdateSellerButton>;
 
 const Template: ComponentStory<typeof UpdateSellerButton> = (args) => {
@@ -41,6 +49,7 @@ Simple.args = {
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     authTokenId: 0,
     authTokenType: 0,
     metadataUri: ""
@@ -74,6 +83,7 @@ WithExtraInfo.args = {
     id: 0,
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
+    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     authTokenId: 0,
     authTokenType: 0,

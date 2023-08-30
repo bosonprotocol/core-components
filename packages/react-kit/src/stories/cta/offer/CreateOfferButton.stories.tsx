@@ -9,7 +9,15 @@ import { AuthTokenType } from "@bosonprotocol/common";
 
 export default {
   title: "Visual Components/CTA/Offer/CreateOfferButton",
-  component: CreateOfferButton
+  component: CreateOfferButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateOfferButton>;
 
 const Template: ComponentStory<typeof CreateOfferButton> = (args) => {
@@ -44,6 +52,7 @@ Simple.args = {
   sellerInfo: {
     assistant: "",
     admin: "",
+    clerk: "",
     treasury: "",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
@@ -71,8 +80,7 @@ Simple.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE",
-      metadataHash: "QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE",
-      collectionIndex: 0
+      metadataHash: "QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE"
     },
     {
       price: "100000000000000000",
@@ -90,8 +98,7 @@ Simple.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf",
-      metadataHash: "Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf",
-      collectionIndex: 0
+      metadataHash: "Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf"
     }
   ],
   onPendingSignature: () => {
@@ -126,6 +133,7 @@ WithStep.args = {
     assistant: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     admin: "0x0000000000000000000000000000000000000000",
     treasury: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
+    clerk: "0x0123456789012345678901234567890123456789",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
     authTokenId: "0",
@@ -151,8 +159,7 @@ WithStep.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796",
-      metadataHash: "QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796",
-      collectionIndex: 0
+      metadataHash: "QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796"
     }
   ],
   onPendingSignature: () => {

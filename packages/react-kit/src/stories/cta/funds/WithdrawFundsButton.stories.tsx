@@ -9,7 +9,15 @@ import { BigNumberish } from "ethers";
 
 export default {
   title: "Visual Components/CTA/funds/WithdrawFundsButton",
-  component: WithdrawFundsButton
+  component: WithdrawFundsButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof WithdrawFundsButton>;
 
 const Template: ComponentStory<typeof WithdrawFundsButton> = (args) => {

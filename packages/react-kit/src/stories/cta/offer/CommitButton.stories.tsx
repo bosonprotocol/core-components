@@ -8,7 +8,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Offer/CommitButton",
-  component: CommitButton
+  component: CommitButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CommitButton>;
 
 const Template: ComponentStory<typeof CommitButton> = (args) => {
