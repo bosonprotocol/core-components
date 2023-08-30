@@ -15,7 +15,10 @@ const Template: ComponentStory<typeof RevokeButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <RevokeButton web3Provider={provider} {...args} />
+      <RevokeButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -24,7 +27,10 @@ export const Simple: ComponentStory<typeof RevokeButton> = Template.bind({});
 export const WithStep: ComponentStory<typeof RevokeButton> = Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
   disabled: false,
   onPendingSignature: () => {
@@ -46,7 +52,10 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
   extraInfo: "Step 2",
   disabled: false,

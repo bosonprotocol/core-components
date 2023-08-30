@@ -16,7 +16,10 @@ const Template: ComponentStory<typeof VoidButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <VoidButton web3Provider={provider} {...args} />
+      <VoidButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -27,9 +30,12 @@ export const WithExtraInfo: ComponentStory<typeof VoidButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   offerId: "28",
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -49,7 +55,10 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   offerId: "28",
   extraInfo: "Step x",
   onPendingSignature: () => {

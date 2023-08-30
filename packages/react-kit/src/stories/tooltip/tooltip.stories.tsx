@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Tooltip } from "../../components/tooltip/Tooltip";
 
@@ -9,7 +10,7 @@ export default {
 
 const BASE_ARGS = {
   placement: "top"
-};
+} as const;
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Tooltip> = (args) => (
   <Tooltip {...BASE_ARGS} {...args} />

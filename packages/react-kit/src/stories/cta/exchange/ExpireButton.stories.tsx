@@ -15,7 +15,10 @@ const Template: ComponentStory<typeof ExpireButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <ExpireButton web3Provider={provider} {...args} />
+      <ExpireButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,10 +29,11 @@ export const WithExtraInfo: ComponentStory<typeof ExpireButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
-  metaTransactionsApiKey: undefined,
-  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -49,10 +53,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
-  web3Provider: undefined,
-  metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

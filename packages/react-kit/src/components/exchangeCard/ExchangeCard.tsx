@@ -94,7 +94,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
               <RedeemButtonWrapper>
                 <Button
                   variant="secondaryInverted"
-                  showBorder={false}
                   {...disputeButtonConfig}
                   onClick={(
                     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -128,7 +127,6 @@ export const ExchangeCard = (props: ExchangeCardProps) => {
                 </Button>
                 <Button
                   variant="secondaryInverted"
-                  showBorder={false}
                   {...cancelButtonConfig}
                   onClick={(
                     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

@@ -16,7 +16,10 @@ const Template: ComponentStory<typeof CreateOfferButton> = (args) => {
   const provider = hooks.useProvider();
   return (
     <CtaButtonWrapper>
-      <CreateOfferButton web3Provider={provider} {...args} />
+      <CreateOfferButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -29,23 +32,26 @@ export const WithStep: ComponentStory<typeof CreateOfferButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined,
+    ipfsMetadataStorageHeaders: {
+      authorization: ""
+    }
+  },
   hasSellerAccount: true,
   sellerInfo: {
     assistant: "",
     admin: "",
-    clerk: "",
     treasury: "",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
     authTokenId: "0",
-    authTokenType: AuthTokenType.NONE
+    authTokenType: AuthTokenType.NONE,
+    metadataUri: ""
   },
   isMultiVariant: true,
-  web3Provider: undefined,
-  ipfsMetadataStorageHeaders: {
-    authorization: ""
-  },
   extraInfo: "",
   disabled: false,
   offersToCreate: [
@@ -65,7 +71,8 @@ Simple.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE",
-      metadataHash: "QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE"
+      metadataHash: "QmT5qbKLcowzmzunzrknUXzC5V8Ykq5edXr96cwD2rP2KE",
+      collectionIndex: 0
     },
     {
       price: "100000000000000000",
@@ -83,7 +90,8 @@ Simple.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf",
-      metadataHash: "Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf"
+      metadataHash: "Qmbj7y32TfsPbAKT6aGSPupPXoeBGCqHspHBbPhdnchRBf",
+      collectionIndex: 0
     }
   ],
   onPendingSignature: () => {
@@ -105,21 +113,24 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined,
+    ipfsMetadataStorageHeaders: {
+      authorization: "change-me"
+    }
+  },
   hasSellerAccount: true,
   sellerInfo: {
     assistant: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     admin: "0x0000000000000000000000000000000000000000",
-    clerk: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     treasury: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
     authTokenId: "0",
-    authTokenType: AuthTokenType.NONE
-  },
-  web3Provider: undefined,
-  ipfsMetadataStorageHeaders: {
-    authorization: "change-me"
+    authTokenType: AuthTokenType.NONE,
+    metadataUri: ""
   },
   extraInfo: "Step 1",
   disabled: false,
@@ -140,7 +151,8 @@ WithStep.args = {
       disputeResolverId: "3",
       agentId: 0,
       metadataUri: "ipfs://QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796",
-      metadataHash: "QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796"
+      metadataHash: "QmUQnnx6fA2ZbeWcK1kfnushaVxRVwZzA4RMBFSqWjh796",
+      collectionIndex: 0
     }
   ],
   onPendingSignature: () => {

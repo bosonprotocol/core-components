@@ -207,11 +207,7 @@ function Upload({
           disabled={disabled}
         />
         {trigger ? (
-          <ThemedButton
-            onClick={handleChooseFile}
-            variant="accentInverted"
-            type="button"
-          >
+          <ThemedButton onClick={handleChooseFile} type="button">
             <>{trigger}</>
           </ThemedButton>
         ) : (

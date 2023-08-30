@@ -18,8 +18,8 @@ const Template: ComponentStory<typeof RemoveSellerFromDisputeResolverButton> = (
   return (
     <CtaButtonWrapper>
       <RemoveSellerFromDisputeResolverButton
-        web3Provider={provider}
         {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
       />
     </CtaButtonWrapper>
   );
@@ -33,10 +33,13 @@ export const WithExtraInfo: ComponentStory<
 > = Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: 0,
   sellerAllowList: ["0x0123456789012345678901234567890123456789"],
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -56,10 +59,13 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: 0,
   sellerAllowList: ["0x0123456789012345678901234567890123456789"],
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

@@ -2,12 +2,6 @@ import { forwardRef } from "react";
 import ThemedButton, { IButton } from "../ui/ThemedButton";
 import React from "react";
 
-export enum ButtonSize {
-  Small = "small",
-  Medium = "regular",
-  Large = "large"
-}
-
 export type ButtonProps = IButton & {
   variant?:
     | "primaryFill" // default

@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import metamaskLogo from "../../assets/metamask-logo.svg";
 import FallbackAvatar from "../avatar/fallback-avatar";
-import { Button, ButtonSize } from "../buttons/Button";
+import { Button } from "../buttons/Button";
 import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
@@ -83,7 +83,7 @@ export default function ConnectButton({
                       saveItemInStorage("isConnectWalletFromCommit", false);
                       openConnectModal();
                     }}
-                    size={isLteXS ? ButtonSize.Small : ButtonSize.Medium}
+                    size={isLteXS ? "small" : "regular"}
                     variant="primaryFill"
                     style={{
                       whiteSpace: "pre",

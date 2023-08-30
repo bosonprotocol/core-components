@@ -15,7 +15,10 @@ const Template: ComponentStory<typeof CreateDisputeResolverButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CreateDisputeResolverButton web3Provider={provider} {...args} />
+      <CreateDisputeResolverButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,19 +29,21 @@ export const WithExtraInfo: ComponentStory<typeof CreateDisputeResolverButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "2",
   disputeResolverToCreate: {
     escalationResponsePeriodInMS: 3,
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
-    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],
     sellerAllowList: []
   },
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -58,19 +63,21 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "3",
   disputeResolverToCreate: {
     escalationResponsePeriodInMS: 3,
     assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
-    clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     metadataUri: "0x0123456789012345678901234567890123456789",
     fees: [],
     sellerAllowList: []
   },
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

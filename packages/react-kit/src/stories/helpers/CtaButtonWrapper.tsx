@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 import { connectWallet, hooks, metaMask } from "./connect-wallet";
 

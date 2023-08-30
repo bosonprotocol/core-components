@@ -15,7 +15,10 @@ const Template: ComponentStory<typeof BatchCompleteButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <BatchCompleteButton web3Provider={provider} {...args} />
+      <BatchCompleteButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -27,9 +30,11 @@ export const WithExtraInfo: ComponentStory<typeof BatchCompleteButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeIds: ["1", "2"],
-  metaTransactionsApiKey: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -49,9 +54,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeIds: ["1", "2"],
-  metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

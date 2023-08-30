@@ -17,7 +17,10 @@ const Template: ComponentStory<typeof AddFeesDisputeResolverButton> = (
 
   return (
     <CtaButtonWrapper>
-      <AddFeesDisputeResolverButton web3Provider={provider} {...args} />
+      <AddFeesDisputeResolverButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -29,7 +32,11 @@ export const WithExtraInfo: ComponentStory<
 > = Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: "28",
   fees: [
     {
@@ -38,7 +45,7 @@ Simple.args = {
       feeAmount: 1
     }
   ],
-  web3Provider: undefined,
+
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -58,7 +65,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   disputeResolverId: "28",
   fees: [
     {
@@ -67,7 +78,6 @@ WithExtraInfo.args = {
       feeAmount: 1
     }
   ],
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

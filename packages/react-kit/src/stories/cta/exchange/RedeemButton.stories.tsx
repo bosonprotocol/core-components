@@ -15,7 +15,10 @@ const Template: ComponentStory<typeof RedeemButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <RedeemButton web3Provider={provider} {...args} />
+      <RedeemButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -29,11 +32,12 @@ export const WithExtraInfo: ComponentStory<typeof RedeemButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "92",
   disabled: false,
-  metaTransactionsApiKey: undefined,
-  metaTransactionsApiId: "dummyApiId",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -54,17 +58,24 @@ Simple.args = {
 
 WithBiconomy.args = {
   ...Simple.args,
-  envName: "staging",
-  metaTransactionsApiKey: "vYoPWofBr.e4f3e2f9-69e5-4076-8ce1-3b8e0916e02c",
-  metaTransactionsApiId: "3b8898fa-1e48-4bb2-8afa-aabc84b86ec0"
+  coreSdkConfig: {
+    configId: "staging-80001-0",
+    envName: "staging",
+    metaTx: {
+      apiKey: "vYoPWofBr.e4f3e2f9-69e5-4076-8ce1-3b8e0916e02c"
+      // metaTransactionsApiId: "3b8898fa-1e48-4bb2-8afa-aabc84b86ec0"
+    }
+  }
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "28",
   disabled: false,
-  web3Provider: undefined,
-  metaTransactionsApiKey: undefined,
   extraInfo: "Step 2",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
