@@ -19,12 +19,12 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13,
   createSeaportOrder,
   MOCK_SEAPORT_ADDRESS,
   createSeller,
   updateSellerMetaTx,
-  getSellerMetadataUri
+  getSellerMetadataUri,
+  createOfferWithCondition
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -629,11 +629,6 @@ describe("meta-tx", () => {
     test("non-native exchange token offer", async () => {
       const nonce = Date.now();
 
-      const allowance = await buyerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
-      expect(BigNumber.from(allowance).lt(offerToCommit.price)).toBe(true);
-
       // `Buyer` signs native meta tx for the token approval
       await approveErc20Token(
         buyerCoreSDK,
@@ -652,6 +647,67 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signMetaTxCommitToOffer({
           offerId: offerToCommit.id,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCommitToConditionalOffer()", () => {
+    test("non-native exchange token conditional offer", async () => {
+      const tokenID = Date.now().toString();
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(buyerWallet, tokenID, "5");
+
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const createdOffer = await createOfferWithCondition(
+        sellerCoreSDK,
+        condition,
+        {
+          offerParams: { exchangeToken: MOCK_ERC20_ADDRESS }
+        }
+      );
+      const nonce = Date.now();
+
+      // `Buyer` signs native meta tx for the token approval
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        createdOffer.price
+      );
+
+      const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowanceAfter).gte(createdOffer.price)).toBe(true);
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxCommitToConditionalOffer({
+          offerId: createdOffer.id,
+          tokenId: tokenID,
           nonce
         });
 

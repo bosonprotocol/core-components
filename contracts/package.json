@@ -8,7 +8,7 @@
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#v2.3.0-rc.2",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#meta-tx-conditional-commit",
     "@nomicfoundation/hardhat-ethers": "^3.0.3",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.6",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",

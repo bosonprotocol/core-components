@@ -850,6 +850,65 @@ export async function signMetaTxCommitToOffer(
   };
 }
 
+export async function signMetaTxCommitToConditionalOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+  }
+): Promise<SignedMetaTx> {
+  const functionName = "commitToConditionalOffer(address,uint256,uint256)";
+
+  const offerType = [
+    { name: "buyer", type: "address" },
+    { name: "offerId", type: "uint256" },
+    { name: "tokenId", type: "uint256" }
+  ];
+
+  const metaTransactionType = [
+    { name: "nonce", type: "uint256" },
+    { name: "from", type: "address" },
+    { name: "contractAddress", type: "address" },
+    { name: "functionName", type: "string" },
+    { name: "offerDetails", type: "MetaTxConditionalOfferDetails" }
+  ];
+
+  const customSignatureType = {
+    MetaTxCommitToConditionalOffer: metaTransactionType,
+    MetaTxConditionalOfferDetails: offerType
+  };
+
+  const buyerAddress = await args.web3Lib.getSignerAddress();
+
+  const message = {
+    nonce: args.nonce.toString(),
+    from: buyerAddress,
+    contractAddress: args.metaTxHandlerAddress,
+    functionName,
+    offerDetails: {
+      buyer: buyerAddress,
+      offerId: args.offerId.toString(),
+      tokenId: args.tokenId.toString()
+    }
+  };
+
+  const signatureParams = await prepareDataSignatureParameters({
+    ...args,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
+    primaryType: "MetaTxCommitToConditionalOffer",
+    message
+  });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "commitToConditionalOffer",
+      [buyerAddress, args.offerId, args.tokenId]
+    )
+  };
+}
+
 export async function signMetaTxCancelVoucher(
   args: BaseMetaTxArgs & {
     exchangeId: BigNumberish;

@@ -602,6 +602,25 @@ export class MetaTxMixin extends BaseCoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `commitToConditionalOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCommitToConditionalOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxCommitToConditionalOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `cancelVoucher` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.
