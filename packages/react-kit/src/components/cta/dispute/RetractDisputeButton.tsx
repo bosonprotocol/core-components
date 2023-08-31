@@ -21,7 +21,7 @@ export const RetractDisputeButton = ({
   variant = "primaryFill",
   ...restProps
 }: IRetractDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

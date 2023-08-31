@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
+import { ButtonSize } from "../../ui/buttonSize";
 
 type Props = {
   /**
@@ -30,7 +31,8 @@ export const BatchVoidButton = ({
   size = ButtonSize.Large,
   variant = "secondaryFill",
   children,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -87,6 +89,7 @@ export const BatchVoidButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Batch Void"}

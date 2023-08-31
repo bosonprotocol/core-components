@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Dispute/CreateDisputeResolver",
-  component: CreateDisputeResolverButton
+  component: CreateDisputeResolverButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateDisputeResolverButton>;
 
 const Template: ComponentStory<typeof CreateDisputeResolverButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof CreateDisputeResolverButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CreateDisputeResolverButton web3Provider={provider} {...args} />
+      <CreateDisputeResolverButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -26,7 +37,11 @@ export const WithExtraInfo: ComponentStory<typeof CreateDisputeResolverButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "2",
   disputeResolverToCreate: {
     escalationResponsePeriodInMS: 3,
@@ -38,7 +53,6 @@ Simple.args = {
     fees: [],
     sellerAllowList: []
   },
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -58,7 +72,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "3",
   disputeResolverToCreate: {
     escalationResponsePeriodInMS: 3,
@@ -70,7 +88,6 @@ WithExtraInfo.args = {
     fees: [],
     sellerAllowList: []
   },
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

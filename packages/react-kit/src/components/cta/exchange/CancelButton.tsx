@@ -20,7 +20,7 @@ export const CancelButton = ({
   exchangeId,
   ...restProps
 }: ICancelButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

@@ -23,7 +23,7 @@ export const ExtendDisputeTimeoutButton = ({
   newDisputeTimeout,
   ...restProps
 }: IExtendDisputeTimeoutButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

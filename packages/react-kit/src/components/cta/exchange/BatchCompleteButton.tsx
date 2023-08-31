@@ -23,7 +23,7 @@ export const BatchCompleteButton = ({
   variant = "primaryFill",
   ...restProps
 }: Props) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

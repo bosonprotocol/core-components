@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { Button } from "../../components/buttons/Button";
@@ -12,8 +13,8 @@ const BASE_ARGS = {
   children: "Button Text",
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClick: () => {},
-  size: "medium"
-};
+  size: "regular"
+} as const;
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Button> = (args) => (
   <Button {...BASE_ARGS} {...args} />

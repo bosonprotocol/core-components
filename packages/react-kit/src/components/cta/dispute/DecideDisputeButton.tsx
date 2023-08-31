@@ -23,7 +23,7 @@ export const DecideDisputeButton = ({
   variant = "primaryFill",
   ...restProps
 }: IDecideDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
   const actions = [
     {
       writeContractFn: () => coreSdk.decideDispute(exchangeId, buyerPercent)
