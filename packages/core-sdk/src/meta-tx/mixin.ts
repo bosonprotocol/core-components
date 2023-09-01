@@ -593,6 +593,16 @@ export class MetaTxMixin extends BaseCoreSDK {
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
+    if (offer.condition) {
+      // keep compatibility with previous version
+      return this.signMetaTxCommitToConditionalOffer({
+        ...args,
+        tokenId: offer.condition.minTokenId
+      });
+    }
+
     return handler.signMetaTxCommitToOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
