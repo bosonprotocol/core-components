@@ -128,7 +128,7 @@ export function encodeOptInToDisputeResolverUpdate(
   );
 }
 
-// TODO: add a unit test for collecitonId
+// TODO: add a unit test for collectionId
 export function createSellerArgsToStruct(args: CreateSellerArgs): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
