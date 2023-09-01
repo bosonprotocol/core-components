@@ -23,12 +23,13 @@ import {
 
 export async function burnPremintedVouchers(args: {
   offerId: BigNumberish;
+  amount: BigNumberish;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeBurnPremintedVouchers(args.offerId)
+    data: encodeBurnPremintedVouchers(args.offerId, args.amount)
   });
 }
 

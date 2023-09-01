@@ -64,6 +64,7 @@ export function mockRawOfferFromSubgraph(
 
   return {
     id: "1",
+    collectionIndex: "0",
     disputeResolverId: "1",
     createdAt: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     price: "1",
@@ -160,7 +161,7 @@ export function mockRawExchangeFromSubgraph(
   overrides: Partial<ExchangeFieldsFragment> = {},
   offerOverrides: Partial<OfferFieldsFragment> = {}
 ): ExchangeFieldsFragment {
-  const { buyer = {}, seller = {}, offer = {}, ...restOverrides } = overrides;
+  const { buyer = {}, seller = {}, ...restOverrides } = overrides;
 
   return {
     id: "1",

@@ -427,6 +427,7 @@ type Offer @entity {
   metadataUri: String!
   metadataHash: String!
   voided: Boolean!
+  collectionIndex: BigInt!
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
@@ -747,7 +748,9 @@ type ConditionEntity @entity {
   method: Int!
   tokenType: Int!
   tokenAddress: Bytes!
-  tokenId: BigInt!
+  gatingType: Int!
+  minTokenId: BigInt!
+  maxTokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
 }

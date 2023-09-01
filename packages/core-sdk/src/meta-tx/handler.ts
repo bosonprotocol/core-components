@@ -398,7 +398,7 @@ export async function signMetaTxCreateSeller(
   return signMetaTx({
     ...args,
     functionName:
-      "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256))",
+      "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256,bytes32))",
     functionSignature: encodeCreateSeller(args.createSellerArgs)
   });
 }
@@ -455,7 +455,7 @@ export async function signMetaTxCreateOffer(
   return signMetaTx({
     ...args,
     functionName:
-      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)",
+      "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)",
     functionSignature: encodeCreateOffer(args.createOfferArgs)
   });
 }
@@ -486,7 +486,7 @@ export async function signMetaTxCreateOfferBatch(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])",
+      "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])",
     functionSignature: encodeCreateOfferBatch(args.createOffersArgs)
   });
 }
@@ -605,7 +605,7 @@ export async function signMetaTxCreateGroup(
   return signMetaTx({
     ...args,
     functionName:
-      "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256))",
+      "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256))",
     functionSignature: encodeCreateGroup(args.createGroupArgs)
   });
 }
@@ -786,7 +786,7 @@ export async function signMetaTxCreateOfferWithCondition(
   return signMetaTx({
     ...args,
     functionName:
-      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint256,uint256,uint256),uint256)",
+      "createOfferWithCondition((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256),uint256)",
     functionSignature: encodeCreateOfferWithCondition(
       args.offerToCreate,
       args.condition
@@ -846,6 +846,65 @@ export async function signMetaTxCommitToOffer(
     functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
       "commitToOffer",
       [buyerAddress, args.offerId]
+    )
+  };
+}
+
+export async function signMetaTxCommitToConditionalOffer(
+  args: BaseMetaTxArgs & {
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+  }
+): Promise<SignedMetaTx> {
+  const functionName = "commitToConditionalOffer(address,uint256,uint256)";
+
+  const offerType = [
+    { name: "buyer", type: "address" },
+    { name: "offerId", type: "uint256" },
+    { name: "tokenId", type: "uint256" }
+  ];
+
+  const metaTransactionType = [
+    { name: "nonce", type: "uint256" },
+    { name: "from", type: "address" },
+    { name: "contractAddress", type: "address" },
+    { name: "functionName", type: "string" },
+    { name: "offerDetails", type: "MetaTxConditionalOfferDetails" }
+  ];
+
+  const customSignatureType = {
+    MetaTxCommitToConditionalOffer: metaTransactionType,
+    MetaTxConditionalOfferDetails: offerType
+  };
+
+  const buyerAddress = await args.web3Lib.getSignerAddress();
+
+  const message = {
+    nonce: args.nonce.toString(),
+    from: buyerAddress,
+    contractAddress: args.metaTxHandlerAddress,
+    functionName,
+    offerDetails: {
+      buyer: buyerAddress,
+      offerId: args.offerId.toString(),
+      tokenId: args.tokenId.toString()
+    }
+  };
+
+  const signatureParams = await prepareDataSignatureParameters({
+    ...args,
+    verifyingContractAddress: args.metaTxHandlerAddress,
+    customSignatureType,
+    primaryType: "MetaTxCommitToConditionalOffer",
+    message
+  });
+
+  return {
+    ...signatureParams,
+    functionName,
+    functionSignature: bosonExchangeHandlerIface.encodeFunctionData(
+      "commitToConditionalOffer",
+      [buyerAddress, args.offerId, args.tokenId]
     )
   };
 }
@@ -1193,7 +1252,6 @@ export async function relayMetaTransaction(args: {
 
       const txHash = waitResponse.data.newHash;
       const txReceipt = await args.web3LibAdapter.getTransactionReceipt(txHash);
-      console.log("[relayBiconomyMetaTransaction.wait] txReceipt", txReceipt);
       return {
         to: txReceipt?.to || contractAddress,
         from: txReceipt?.from || metaTx.params.userAddress,

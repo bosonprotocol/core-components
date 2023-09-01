@@ -1,35 +1,47 @@
 # Contracts update
 
-This document provides a checklist for tasks that should be taken into consideration when updating the set of supported smart contracts in the `contracts/protocol-contracts` submodule.
+This document provides a checklist for tasks that should be taken into consideration when updating the set of supported smart contracts in the `contracts/protocol-contracts` folder.
 
 ## Checklist
 
-1. [Update contracts submodule](#1-update-contracts-submodule)
-2. [Inspect diff](#2-inspect-diff)
-3. [Adapt deploy script](#3-adapt-contracts-deploy-script)
-4. [Export ABIs](#4-export-abis)
-5. [Adapt subgraph](#5-adapt-subgraph)
-6. [Adapt core-sdk](#6-adapt-core-sdk)
-7. [Update contract addresses](#7-update-contract-addresses)
-8. [Run sdk e2e tests](#8-run-e2e-tests)
-9. [Adapt UI components](#9-adapt-ui-components)
+- [Contracts update](#contracts-update)
+  - [Checklist](#checklist)
+    - [1. Update contracts dependency](#1-update-contracts-dependency)
+    - [2. Inspect diff](#2-inspect-diff)
+    - [3. Adapt contracts deploy script](#3-adapt-contracts-deploy-script)
+    - [4. Export ABIs](#4-export-abis)
+    - [5. Adapt subgraph](#5-adapt-subgraph)
+    - [6. Adapt core-sdk](#6-adapt-core-sdk)
+      - [6.1. Typechain bindings](#61-typechain-bindings)
+      - [6.2. Contract methods](#62-contract-methods)
+      - [6.3. Subgraph bindings](#63-subgraph-bindings)
+    - [7. Update contract addresses](#7-update-contract-addresses)
+    - [8. Run e2e tests](#8-run-e2e-tests)
+    - [9. Adapt UI components](#9-adapt-ui-components)
 
-### 1. Update contracts submodule
+### 1. Update contracts dependency
 
-First, we need to update the set of contracts in [`protocol-contracts`](../contracts/protocol-contract) submodule:
+First, we need to update the set of contracts in [`protocol-contracts`](../contracts/protocol-contract) folder:
 
 ```bash
 # from root of monorepo
-cd contracts/protocol-contracts
+cd contracts
 
-git checkout <BRANCH | COMMIT_HASH | TAG> # to update to a specific branch/commit/tag
-# OR
-git pull # to pull latest on main
+npm install -D github:bosonprotocol/boson-protocol-contracts#<BRANCH | COMMIT_HASH | TAG> # to update to a specific branch/commit/tag
 
+npm ci
+
+npx hardhat clean
+npx hardhat compile
+```
+
+If the contracts build is failing, this may mean some changes need to be applied to `./hardhat.config.js` in accordance with the changes in the protocol-contracts dependency (inspect `./protocol-contracts/hardhat.config.js` to find out)
+
+```
 cd ..
 
 git add .
-git commit -m "chore: update protocol contracts submodule"
+git commit -m "chore: update protocol contracts dependency"
 ```
 
 ### 2. Inspect diff
@@ -42,8 +54,8 @@ https://github.com/bosonprotocol/boson-protocol-contracts/compare/<PREVIOUS_COMM
 
 ### 3. Adapt contracts deploy script
 
-For our e2e setup contracts deployment, we use a [customized deploy script](../contracts/scripts/deploy.js) that slightly differs from the one of the [`protocol-contracts`](../contracts/protocol-contracts/scripts/deploy-suite.js) submodule.
-This script might need to be adapted based on the changes of the submodule script.
+For our e2e setup contracts deployment, we use a [customized deploy script](../contracts/scripts/deploy.js) that slightly differs from the one of the [`protocol-contracts`](../contracts/protocol-contracts/scripts/deploy-suite.js) folder.
+This script might need to be adapted based on the changes of the folder script.
 
 Additionally, we need to change the image tag in our e2e docker-compose file.
 

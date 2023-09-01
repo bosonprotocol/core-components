@@ -24,6 +24,7 @@ export const ADDRESS = "0x57faFe1fB7C682216FCe44e50946C5249192b9D5";
 export function mockOfferStruct(overrides?: Partial<OfferStruct>): OfferStruct {
   return {
     id: "1",
+    collectionIndex: "0",
     voided: false,
     price: parseEther("1"),
     sellerDeposit: parseEther("1"),
@@ -64,6 +65,7 @@ export function mockCreateOfferArgs(
   overrides?: Partial<CreateOfferArgs>
 ): CreateOfferArgs {
   return {
+    collectionIndex: "0",
     price: parseEther("0.03"),
     sellerDeposit: parseEther("0.01"),
     agentId: "0",

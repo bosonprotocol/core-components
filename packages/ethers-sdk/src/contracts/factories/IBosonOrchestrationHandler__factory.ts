@@ -297,6 +297,43 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "collectionIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "collectionAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "string",
+        name: "externalId",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "CollectionCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
         name: "disputeResolverId",
         type: "uint256",
       },
@@ -692,8 +729,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -704,6 +746,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -778,8 +825,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -790,6 +842,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -874,6 +931,11 @@ const _abi = [
             internalType: "bool",
             name: "voided",
             type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
           },
         ],
         indexed: false,
@@ -1633,6 +1695,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -1761,6 +1828,11 @@ const _abi = [
             internalType: "bool",
             name: "voided",
             type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -1928,6 +2000,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -2005,8 +2082,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -2017,6 +2099,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -2089,6 +2176,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -2166,8 +2258,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -2178,6 +2275,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -2291,6 +2393,11 @@ const _abi = [
             internalType: "bool",
             name: "voided",
             type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -2430,6 +2537,11 @@ const _abi = [
             internalType: "bool",
             name: "voided",
             type: "bool",
+          },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
           },
         ],
         internalType: "struct BosonTypes.Offer",
@@ -2607,6 +2719,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -2694,8 +2811,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -2706,6 +2828,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -2778,6 +2905,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -2865,8 +2997,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -2877,6 +3014,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -3033,6 +3175,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -3120,6 +3267,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -3233,6 +3385,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -3362,6 +3519,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -3475,6 +3637,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -3552,8 +3719,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -3564,6 +3736,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -3599,6 +3776,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -3712,6 +3894,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -3789,8 +3976,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -3801,6 +3993,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -3878,6 +4075,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -3991,6 +4193,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -4088,6 +4295,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -4201,6 +4413,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -4340,6 +4557,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -4453,6 +4675,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -4540,8 +4767,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -4552,6 +4784,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -4587,6 +4824,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -4700,6 +4942,11 @@ const _abi = [
             name: "voided",
             type: "bool",
           },
+          {
+            internalType: "uint256",
+            name: "collectionIndex",
+            type: "uint256",
+          },
         ],
         internalType: "struct BosonTypes.Offer",
         name: "_offer",
@@ -4787,8 +5034,13 @@ const _abi = [
             type: "address",
           },
           {
+            internalType: "enum BosonTypes.GatingType",
+            name: "gating",
+            type: "uint8",
+          },
+          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "minTokenId",
             type: "uint256",
           },
           {
@@ -4799,6 +5051,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "maxCommits",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTokenId",
             type: "uint256",
           },
         ],
@@ -4876,6 +5133,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",

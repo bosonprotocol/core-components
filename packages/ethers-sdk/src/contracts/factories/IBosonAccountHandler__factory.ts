@@ -244,6 +244,43 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
+        name: "sellerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "collectionIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "collectionAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "string",
+        name: "externalId",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "executedBy",
+        type: "address",
+      },
+    ],
+    name: "CollectionCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
         name: "disputeResolverId",
         type: "uint256",
       },
@@ -970,6 +1007,35 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_collectionSalt",
+        type: "bytes32",
+      },
+    ],
+    name: "calculateCollectionAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "collectionAddress",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "isAvailable",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -1117,6 +1183,41 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "_externalId",
+        type: "string",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "contractURI",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "royaltyPercentage",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
+          },
+        ],
+        internalType: "struct BosonTypes.VoucherInitValues",
+        name: "_voucherInitValues",
+        type: "tuple",
+      },
+    ],
+    name: "createNewCollection",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -1186,6 +1287,11 @@ const _abi = [
             internalType: "uint256",
             name: "royaltyPercentage",
             type: "uint256",
+          },
+          {
+            internalType: "bytes32",
+            name: "collectionSalt",
+            type: "bytes32",
           },
         ],
         internalType: "struct BosonTypes.VoucherInitValues",
@@ -1734,6 +1840,66 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256",
+      },
+    ],
+    name: "getSellersCollections",
+    outputs: [
+      {
+        internalType: "address",
+        name: "defaultVoucherAddress",
+        type: "address",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "collectionAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "externalId",
+            type: "string",
+          },
+        ],
+        internalType: "struct BosonTypes.Collection[]",
+        name: "additionalCollections",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_adminAddres",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "_salt",
+        type: "bytes32",
+      },
+    ],
+    name: "isSellerSaltAvailable",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isAvailable",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_disputeResolverId",
         type: "uint256",
       },
@@ -1985,6 +2151,24 @@ const _abi = [
       },
     ],
     name: "updateSeller",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_sellerId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32",
+        name: "_newSalt",
+        type: "bytes32",
+      },
+    ],
+    name: "updateSellerSalt",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

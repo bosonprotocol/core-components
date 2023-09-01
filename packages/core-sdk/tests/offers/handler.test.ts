@@ -12,7 +12,8 @@ import {
 import {
   interceptSubgraph,
   SUBGRAPH_URL,
-  mockRawOfferFromSubgraph
+  mockRawOfferFromSubgraph,
+  ZERO_ADDRESS
 } from "../mocks";
 const sellerMetadataUri =
   "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
@@ -102,7 +103,7 @@ describe("#voidOffer()", () => {
             id: "1",
             assistant: sellerAddress,
             admin: sellerAddress,
-            clerk: sellerAddress,
+            clerk: ZERO_ADDRESS,
             treasury: sellerAddress,
             authTokenId: "0",
             authTokenType: 0,
@@ -136,7 +137,7 @@ describe("#voidOffer()", () => {
             id: "1",
             assistant: ADDRESS,
             admin: ADDRESS,
-            clerk: ADDRESS,
+            clerk: ZERO_ADDRESS,
             treasury: ADDRESS,
             authTokenId: "0",
             authTokenType: 0,
@@ -216,7 +217,7 @@ describe("#voidOfferBatch()", () => {
               id: "1",
               assistant: sellerAddress,
               admin: sellerAddress,
-              clerk: sellerAddress,
+              clerk: ZERO_ADDRESS,
               treasury: sellerAddress,
               authTokenId: "0",
               authTokenType: 0,
@@ -253,7 +254,7 @@ describe("#voidOfferBatch()", () => {
               id: "1",
               assistant: ADDRESS,
               admin: ADDRESS,
-              clerk: ADDRESS,
+              clerk: ZERO_ADDRESS,
               treasury: ADDRESS,
               authTokenId: "0",
               authTokenType: 0,

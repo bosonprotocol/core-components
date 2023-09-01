@@ -101,21 +101,6 @@ export async function getSellerByAdmin(
   return sellers[0];
 }
 
-export async function getSellerByClerk(
-  subgraphUrl: string,
-  clerkAddress: string,
-  queryVars: GetSellersQueryQueryVariables = {}
-): Promise<SellerFieldsFragment> {
-  const sellers = await getSellers(subgraphUrl, {
-    sellersFilter: {
-      ...queryVars.sellersFilter,
-      clerk: clerkAddress.toLowerCase()
-    },
-    ...queryVars
-  });
-  return sellers[0];
-}
-
 export async function getSellerByTreasury(
   subgraphUrl: string,
   treasuryAddress: string,
@@ -153,13 +138,12 @@ export async function getSellerByAddress(
   address: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
-  const [assistant, admin, clerk] = await Promise.all([
+  const [assistant, admin] = await Promise.all([
     getSellerByAssistant(subgraphUrl, address, queryVars),
-    getSellerByAdmin(subgraphUrl, address, queryVars),
-    getSellerByClerk(subgraphUrl, address, queryVars)
+    getSellerByAdmin(subgraphUrl, address, queryVars)
   ]);
 
-  return assistant || admin || clerk;
+  return assistant || admin;
 }
 
 export async function getDisputeResolverById(

@@ -24,11 +24,11 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       ipfsMetadataUrl: "http://127.0.0.1:5001",
       contracts: {
         protocolDiamond: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-        testErc20: "0x998abeb3E57409262aE5b751f60747921B33613E", // Foreign20 contract
-        testErc721: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49", // Foreign721 contract
-        testErc1155: "0x4826533B4897376654Bb4d4AD88B7faFD0C98528", // Foreign1155 contract
+        testErc20: "0x851356ae760d987E095750cCeb3bC6014560891C", // Foreign20 contract
+        testErc721: "0xf5059a5D33d5853360D16C683c16e67980206f36", // Foreign721 contract
+        testErc1155: "0x95401dc811bb5740090279Ba06cfA8fcF6113778", // Foreign1155 contract
         forwarder: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", // MockForwarder contract
-        seaport: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF" // MockSeaport contract
+        seaport: "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49" // MockSeaport contract
       },
       metaTx: {
         relayerUrl: "http://localhost:8888",

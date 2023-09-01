@@ -19,17 +19,17 @@ import {
   ensureMintedERC1155,
   MOCK_ERC1155_ADDRESS,
   initCoreSDKWithFundedWallet,
-  seedWallet13,
   createSeaportOrder,
   MOCK_SEAPORT_ADDRESS,
   createSeller,
   updateSellerMetaTx,
-  getSellerMetadataUri
+  getSellerMetadataUri,
+  createOfferWithCondition
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
 import TokenType from "../../contracts/protocol-contracts/scripts/domain/TokenType";
-import { AuthTokenType } from "@bosonprotocol/common";
+import { AuthTokenType, GatingType } from "@bosonprotocol/common";
 
 const sellerWallet = seedWallet7; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerAddress = sellerWallet.address;
@@ -67,6 +67,7 @@ describe("meta-tx", () => {
       if (existingSeller) {
         // Change all addresses used by the seller to be able to create another one with the original address
         // Useful when repeating the test suite on the same contracts
+        // TODO: call newSellerCoreSDK.updateSellerSalt(existingSeller.id, <randomValue>)
         const { coreSDK: randomSellerCoreSDK, fundedWallet: randomWallet } =
           await initCoreSDKWithFundedWallet(sellerWallet);
         const metadataUri = await getSellerMetadataUri(randomSellerCoreSDK);
@@ -74,7 +75,6 @@ describe("meta-tx", () => {
           id: existingSeller.id,
           admin: randomWallet.address,
           assistant: randomWallet.address,
-          clerk: randomWallet.address,
           treasury: randomWallet.address,
           authTokenId: "0",
           authTokenType: 0,
@@ -86,7 +86,6 @@ describe("meta-tx", () => {
           fieldsToUpdate: {
             admin: true,
             assistant: true,
-            clerk: true,
             authToken: true
           }
         });
@@ -101,13 +100,13 @@ describe("meta-tx", () => {
             assistant: newSellerWallet.address,
             treasury: newSellerWallet.address,
             admin: newSellerWallet.address,
-            clerk: newSellerWallet.address,
             // TODO: replace with correct uri
             contractUri: "ipfs://seller-contract",
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri
+            metadataUri,
+            collectionId: Date.now().toString() // ensure the salt is random to avoid collision
           },
           nonce
         });
@@ -148,7 +147,6 @@ describe("meta-tx", () => {
             assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
-            clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
             metadataUri
@@ -197,7 +195,6 @@ describe("meta-tx", () => {
         {
           admin: randomWallet.address,
           assistant: randomWallet.address,
-          clerk: randomWallet.address,
           treasury: randomWallet.address,
           metadataUri
         },
@@ -206,15 +203,14 @@ describe("meta-tx", () => {
             coreSDK: coreSDK2,
             fieldsToUpdate: {
               admin: true,
-              assistant: true,
-              clerk: true
+              assistant: true
             }
           }
         ]
       );
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
-      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(ZERO_ADDRESS);
       expect(seller.admin).toEqual(randomWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
@@ -244,7 +240,6 @@ describe("meta-tx", () => {
             assistant: randomWallet.address,
             treasury: randomWallet.address,
             admin: randomWallet.address,
-            clerk: randomWallet.address,
             authTokenId: "0",
             authTokenType: 0,
             metadataUri
@@ -391,7 +386,9 @@ describe("meta-tx", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -454,7 +451,9 @@ describe("meta-tx", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -630,11 +629,6 @@ describe("meta-tx", () => {
     test("non-native exchange token offer", async () => {
       const nonce = Date.now();
 
-      const allowance = await buyerCoreSDK.getProtocolAllowance(
-        MOCK_ERC20_ADDRESS
-      );
-      expect(BigNumber.from(allowance).lt(offerToCommit.price)).toBe(true);
-
       // `Buyer` signs native meta tx for the token approval
       await approveErc20Token(
         buyerCoreSDK,
@@ -653,6 +647,67 @@ describe("meta-tx", () => {
       const { r, s, v, functionName, functionSignature } =
         await buyerCoreSDK.signMetaTxCommitToOffer({
           offerId: offerToCommit.id,
+          nonce
+        });
+
+      // `Relayer` executes meta tx on behalf of `Buyer`
+      const metaTx = await buyerCoreSDK.relayMetaTransaction({
+        functionName,
+        functionSignature,
+        nonce,
+        sigR: r,
+        sigS: s,
+        sigV: v
+      });
+      const metaTxReceipt = await metaTx.wait();
+      expect(metaTxReceipt.transactionHash).toBeTruthy();
+      expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
+    });
+  });
+
+  describe("#signMetaTxCommitToConditionalOffer()", () => {
+    test("non-native exchange token conditional offer", async () => {
+      const tokenID = Date.now().toString();
+
+      // Ensure the condition token is minted
+      await ensureMintedERC1155(buyerWallet, tokenID, "5");
+
+      const condition = {
+        method: EvaluationMethod.Threshold,
+        tokenType: TokenType.MultiToken,
+        tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
+        threshold: "1",
+        maxCommits: "3"
+      };
+      const createdOffer = await createOfferWithCondition(
+        sellerCoreSDK,
+        condition,
+        {
+          offerParams: { exchangeToken: MOCK_ERC20_ADDRESS }
+        }
+      );
+      const nonce = Date.now();
+
+      // `Buyer` signs native meta tx for the token approval
+      await approveErc20Token(
+        buyerCoreSDK,
+        MOCK_ERC20_ADDRESS,
+        createdOffer.price
+      );
+
+      const allowanceAfter = await buyerCoreSDK.getProtocolAllowance(
+        MOCK_ERC20_ADDRESS
+      );
+      expect(BigNumber.from(allowanceAfter).gte(createdOffer.price)).toBe(true);
+
+      // `Buyer` signs meta tx
+      const { r, s, v, functionName, functionSignature } =
+        await buyerCoreSDK.signMetaTxCommitToConditionalOffer({
+          offerId: createdOffer.id,
+          tokenId: tokenID,
           nonce
         });
 

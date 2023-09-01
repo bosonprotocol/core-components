@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { BaseContract, BigNumberish, BytesLike, Signer, utils } from "ethers";
-
+import { EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
@@ -24,8 +24,23 @@ export interface ProtocolDiamondInterface extends utils.Interface {
   contractName: "ProtocolDiamond";
   functions: {};
 
-  events: {};
+  events: {
+    "DiamondCut(tuple[],address,bytes)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "DiamondCut"): EventFragment;
 }
+
+export type DiamondCutEvent = TypedEvent<
+  [IDiamondCut.FacetCutStructOutput[], string, string],
+  {
+    _diamondCut: IDiamondCut.FacetCutStructOutput[];
+    _init: string;
+    _calldata: string;
+  }
+>;
+
+export type DiamondCutEventFilter = TypedEventFilter<DiamondCutEvent>;
 
 export interface ProtocolDiamond extends BaseContract {
   contractName: "ProtocolDiamond";
@@ -58,7 +73,18 @@ export interface ProtocolDiamond extends BaseContract {
 
   callStatic: {};
 
-  filters: {};
+  filters: {
+    "DiamondCut(tuple[],address,bytes)"(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null
+    ): DiamondCutEventFilter;
+    DiamondCut(
+      _diamondCut?: null,
+      _init?: null,
+      _calldata?: null
+    ): DiamondCutEventFilter;
+  };
 
   estimateGas: {};
 

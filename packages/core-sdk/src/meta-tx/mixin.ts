@@ -131,7 +131,6 @@ export class MetaTxMixin extends BaseCoreSDK {
     const fieldsToUpdate = {
       assistant:
         currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
-      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
       admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
       authToken:
         pendingSellerUpdate.authTokenType !== undefined &&
@@ -140,7 +139,6 @@ export class MetaTxMixin extends BaseCoreSDK {
     };
     if (
       fieldsToUpdate.assistant ||
-      fieldsToUpdate.clerk ||
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
     ) {
@@ -151,7 +149,6 @@ export class MetaTxMixin extends BaseCoreSDK {
           fieldsToUpdate: {
             assistant:
               currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
-            clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
             admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
             authToken: pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
           }
@@ -596,7 +593,36 @@ export class MetaTxMixin extends BaseCoreSDK {
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
+    if (offer.condition) {
+      // keep compatibility with previous version
+      return this.signMetaTxCommitToConditionalOffer({
+        ...args,
+        tokenId: offer.condition.minTokenId
+      });
+    }
+
     return handler.signMetaTxCommitToOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `commitToConditionalOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCommitToConditionalOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxCommitToConditionalOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,

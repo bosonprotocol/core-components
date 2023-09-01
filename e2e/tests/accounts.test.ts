@@ -47,7 +47,6 @@ describe("CoreSDK - accounts", () => {
         protocolAdminWallet,
         {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -59,7 +58,7 @@ describe("CoreSDK - accounts", () => {
 
       expect(disputeResolver.active).toBeTruthy();
       expect(disputeResolver.admin).toBe(disputeResolverAddress);
-      expect(disputeResolver.clerk).toBe(disputeResolverAddress);
+      expect(disputeResolver.clerk).toBe(ZERO_ADDRESS);
       expect(disputeResolver.assistant).toBe(disputeResolverAddress);
       expect(disputeResolver.treasury).toBe(disputeResolverAddress);
       expect(disputeResolver.metadataUri).toBe(metadataUri);
@@ -79,7 +78,6 @@ describe("CoreSDK - accounts", () => {
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -151,7 +149,6 @@ describe("CoreSDK - accounts", () => {
         protocolAdminWallet,
         {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -208,7 +205,6 @@ describe("CoreSDK - accounts", () => {
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -246,7 +242,6 @@ describe("CoreSDK - accounts", () => {
         protocolAdminWallet,
         {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -281,7 +276,6 @@ describe("CoreSDK - accounts", () => {
       const { disputeResolver: disputeResolverBeforeUpdate } =
         await createDisputeResolver(fundedWallet, protocolAdminWallet, {
           assistant: disputeResolverAddress,
-          clerk: disputeResolverAddress,
           admin: disputeResolverAddress,
           treasury: disputeResolverAddress,
           metadataUri,
@@ -316,7 +310,7 @@ describe("CoreSDK - accounts", () => {
       const seller = await createSeller(coreSDK, fundedWallet.address);
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
-      expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(ZERO_ADDRESS);
       expect(seller.admin).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
@@ -422,7 +416,6 @@ describe("CoreSDK - accounts", () => {
         {
           admin: randomWallet.address,
           assistant: randomWallet.address,
-          clerk: randomWallet.address,
           treasury: randomWallet.address
         },
         [
@@ -430,8 +423,7 @@ describe("CoreSDK - accounts", () => {
             coreSDK: coreSDK2,
             fieldsToUpdate: {
               admin: true,
-              assistant: true,
-              clerk: true
+              assistant: true
             }
           }
         ]
@@ -439,7 +431,7 @@ describe("CoreSDK - accounts", () => {
 
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
-      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(ZERO_ADDRESS);
       expect(seller.admin).toEqual(randomWallet.address.toLowerCase());
       expect(seller.treasury).toEqual(randomWallet.address.toLowerCase());
       expect(BigNumber.from(seller.authTokenId).eq(0)).toBe(true);
@@ -464,7 +456,7 @@ describe("CoreSDK - accounts", () => {
 
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(fundedWallet.address.toLowerCase());
-      expect(seller.clerk).toEqual(fundedWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(ZERO_ADDRESS);
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.admin).toEqual(ZERO_ADDRESS);
       expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);
@@ -489,7 +481,6 @@ describe("CoreSDK - accounts", () => {
         {
           admin: ZERO_ADDRESS,
           assistant: randomWallet.address,
-          clerk: randomWallet.address,
           authTokenType: tokenType,
           authTokenId: tokenId.toString()
         },
@@ -497,8 +488,7 @@ describe("CoreSDK - accounts", () => {
           {
             coreSDK: coreSDK2,
             fieldsToUpdate: {
-              assistant: true,
-              clerk: true
+              assistant: true
             }
           }
         ]
@@ -506,7 +496,7 @@ describe("CoreSDK - accounts", () => {
 
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
-      expect(seller.clerk).toEqual(randomWallet.address.toLowerCase());
+      expect(seller.clerk).toEqual(ZERO_ADDRESS);
       expect(seller.treasury).toEqual(fundedWallet.address.toLowerCase());
       expect(seller.admin).toEqual(ZERO_ADDRESS);
       expect(BigNumber.from(seller.authTokenId).eq(tokenId)).toBe(true);

@@ -29,6 +29,7 @@ export declare namespace BosonTypes {
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
+    collectionIndex: BigNumberish;
   };
 
   export type OfferStructOutput = [
@@ -41,7 +42,8 @@ export declare namespace BosonTypes {
     string,
     string,
     string,
-    boolean
+    boolean,
+    BigNumber
   ] & {
     id: BigNumber;
     sellerId: BigNumber;
@@ -53,6 +55,7 @@ export declare namespace BosonTypes {
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
+    collectionIndex: BigNumber;
   };
 
   export type OfferDatesStruct = {
@@ -119,8 +122,8 @@ export declare namespace BosonTypes {
 export interface IBosonOfferHandlerInterface extends utils.Interface {
   contractName: "IBosonOfferHandler";
   functions: {
-    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
-    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])": FunctionFragment;
+    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
+    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])": FunctionFragment;
     "extendOffer(uint256,uint256)": FunctionFragment;
     "extendOfferBatch(uint256[],uint256)": FunctionFragment;
     "getAgentIdByOffer(uint256)": FunctionFragment;

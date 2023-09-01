@@ -708,18 +708,28 @@ export enum Buyer_OrderBy {
  */
 export type ConditionEntity = {
   __typename?: "ConditionEntity";
+  gatingType: Scalars["Int"];
   id: Scalars["ID"];
   maxCommits: Scalars["BigInt"];
+  maxTokenId: Scalars["BigInt"];
   method: Scalars["Int"];
+  minTokenId: Scalars["BigInt"];
   threshold: Scalars["BigInt"];
   tokenAddress: Scalars["Bytes"];
-  tokenId: Scalars["BigInt"];
   tokenType: Scalars["Int"];
 };
 
 export type ConditionEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  gatingType?: InputMaybe<Scalars["Int"]>;
+  gatingType_gt?: InputMaybe<Scalars["Int"]>;
+  gatingType_gte?: InputMaybe<Scalars["Int"]>;
+  gatingType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  gatingType_lt?: InputMaybe<Scalars["Int"]>;
+  gatingType_lte?: InputMaybe<Scalars["Int"]>;
+  gatingType_not?: InputMaybe<Scalars["Int"]>;
+  gatingType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -736,6 +746,14 @@ export type ConditionEntity_Filter = {
   maxCommits_lte?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_not?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxTokenId?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   method?: InputMaybe<Scalars["Int"]>;
   method_gt?: InputMaybe<Scalars["Int"]>;
   method_gte?: InputMaybe<Scalars["Int"]>;
@@ -744,6 +762,14 @@ export type ConditionEntity_Filter = {
   method_lte?: InputMaybe<Scalars["Int"]>;
   method_not?: InputMaybe<Scalars["Int"]>;
   method_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  minTokenId?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   threshold?: InputMaybe<Scalars["BigInt"]>;
   threshold_gt?: InputMaybe<Scalars["BigInt"]>;
   threshold_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -758,14 +784,6 @@ export type ConditionEntity_Filter = {
   tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  tokenId?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_gt?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_gte?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  tokenId_lt?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_lte?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_not?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   tokenType?: InputMaybe<Scalars["Int"]>;
   tokenType_gt?: InputMaybe<Scalars["Int"]>;
   tokenType_gte?: InputMaybe<Scalars["Int"]>;
@@ -777,12 +795,14 @@ export type ConditionEntity_Filter = {
 };
 
 export enum ConditionEntity_OrderBy {
+  GatingType = "gatingType",
   Id = "id",
   MaxCommits = "maxCommits",
+  MaxTokenId = "maxTokenId",
   Method = "method",
+  MinTokenId = "minTokenId",
   Threshold = "threshold",
   TokenAddress = "tokenAddress",
-  TokenId = "tokenId",
   TokenType = "tokenType"
 }
 
@@ -2798,6 +2818,7 @@ export type Offer = {
   agentFee: Scalars["BigInt"];
   agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
+  collectionIndex: Scalars["BigInt"];
   condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"];
   /** Offer durations */
@@ -2986,6 +3007,14 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex_lt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_lte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   condition?: InputMaybe<Scalars["String"]>;
   condition_?: InputMaybe<ConditionEntity_Filter>;
   condition_contains?: InputMaybe<Scalars["String"]>;
@@ -3335,6 +3364,7 @@ export enum Offer_OrderBy {
   AgentFee = "agentFee",
   AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
+  CollectionIndex = "collectionIndex",
   Condition = "condition",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
@@ -9686,6 +9716,7 @@ export type GetSellerByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -9695,7 +9726,9 @@ export type GetSellerByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -10537,6 +10570,7 @@ export type GetSellersQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -10546,7 +10580,9 @@ export type GetSellersQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -11811,6 +11847,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -11820,7 +11857,9 @@ export type GetDisputeResolverByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -12481,6 +12520,7 @@ export type GetDisputeResolversQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -12490,7 +12530,9 @@ export type GetDisputeResolversQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -13148,6 +13190,7 @@ export type SellerFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -13157,7 +13200,9 @@ export type SellerFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -14278,6 +14323,7 @@ export type DisputeResolverFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -14287,7 +14333,9 @@ export type DisputeResolverFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -15635,6 +15683,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -15644,7 +15693,9 @@ export type GetExchangeTokenByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -16216,6 +16267,7 @@ export type GetExchangeTokensQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -16225,7 +16277,9 @@ export type GetExchangeTokensQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -16775,6 +16829,7 @@ export type ExchangeTokenFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -16784,7 +16839,9 @@ export type ExchangeTokenFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -17513,6 +17570,7 @@ export type GetExchangeByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -17522,7 +17580,9 @@ export type GetExchangeByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -18176,6 +18236,7 @@ export type GetExchangesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -18185,7 +18246,9 @@ export type GetExchangesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -18829,6 +18892,7 @@ export type ExchangeFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -18838,7 +18902,9 @@ export type ExchangeFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -19615,7 +19681,9 @@ export type BaseConditionFieldsFragment = {
   method: number;
   tokenType: number;
   tokenAddress: string;
-  tokenId: string;
+  gatingType: number;
+  minTokenId: string;
+  maxTokenId: string;
   threshold: string;
   maxCommits: string;
 };
@@ -19686,6 +19754,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -19695,7 +19764,9 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -20354,6 +20425,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -20363,7 +20435,9 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -21012,6 +21086,7 @@ export type BaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -21021,7 +21096,9 @@ export type BaseMetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -21665,6 +21742,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -21674,7 +21752,9 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -22562,6 +22642,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -22679,7 +22760,9 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           method: number;
           tokenType: number;
           tokenAddress: string;
-          tokenId: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
           threshold: string;
           maxCommits: string;
         } | null;
@@ -23439,6 +23522,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -23556,7 +23640,9 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           method: number;
           tokenType: number;
           tokenAddress: string;
-          tokenId: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
           threshold: string;
           maxCommits: string;
         } | null;
@@ -24330,6 +24416,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -24447,7 +24534,9 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -25421,6 +25510,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -25538,7 +25628,9 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -26502,6 +26594,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -26619,7 +26712,9 @@ export type ProductV1MetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -27578,6 +27673,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -27695,7 +27791,9 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -28867,6 +28965,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -28984,7 +29083,9 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -29733,6 +29834,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -29850,7 +29952,9 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
@@ -30802,6 +30906,7 @@ export type GetOfferByIdQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -30919,7 +31024,9 @@ export type GetOfferByIdQueryQuery = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -31467,6 +31574,7 @@ export type GetOffersQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -31584,7 +31692,9 @@ export type GetOffersQueryQuery = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
@@ -32116,6 +32226,7 @@ export type OfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -32233,7 +32344,9 @@ export type OfferFieldsFragment = {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: string;
+    gatingType: number;
+    minTokenId: string;
+    maxTokenId: string;
     threshold: string;
     maxCommits: string;
   } | null;
@@ -32764,6 +32877,7 @@ export type BaseOfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -32773,7 +32887,9 @@ export type BaseOfferFieldsFragment = {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: string;
+    gatingType: number;
+    minTokenId: string;
+    maxTokenId: string;
     threshold: string;
     maxCommits: string;
   } | null;
@@ -33420,7 +33536,9 @@ export const BaseConditionFieldsFragmentDoc = gql`
     method
     tokenType
     tokenAddress
-    tokenId
+    gatingType
+    minTokenId
+    maxTokenId
     threshold
     maxCommits
   }
@@ -33684,6 +33802,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
     metadataHash
     voided
     voidedAt
+    collectionIndex
     disputeResolverId
     numberOfCommits
     numberOfRedemptions

@@ -51,23 +51,6 @@ export class AccountsMixin extends BaseCoreSDK {
 
   /**
    * Returns seller entity from subgraph.
-   * @param clerk - Clerk address of seller entity to query for.
-   * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Seller entity from subgraph.
-   */
-  public async getSellerByClerk(
-    clerk: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByClerk(
-      this._subgraphUrl,
-      clerk,
-      queryVars
-    );
-  }
-
-  /**
-   * Returns seller entity from subgraph.
    * @param admin - Admin address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
@@ -324,7 +307,6 @@ export class AccountsMixin extends BaseCoreSDK {
     const fieldsToUpdate = {
       assistant:
         currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
-      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
       admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
       authToken:
         pendingSellerUpdate.tokenType !== undefined &&
@@ -333,7 +315,6 @@ export class AccountsMixin extends BaseCoreSDK {
     };
     if (
       fieldsToUpdate.assistant ||
-      fieldsToUpdate.clerk ||
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
     ) {
@@ -342,7 +323,6 @@ export class AccountsMixin extends BaseCoreSDK {
         fieldsToUpdate: {
           assistant:
             currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
-          clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
           admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
           authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
         }

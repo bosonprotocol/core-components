@@ -1,11 +1,11 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const { task, subtask } = require("hardhat/config");
 const { ACCOUNTS } = require("./accounts");
-require("dotenv").config();
+const dotEnvConfig = require("dotenv");
+dotEnvConfig.config();
 
-require("@nomiclabs/hardhat-waffle");
+require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-abi-exporter");
-require("@nomiclabs/hardhat-etherscan");
 const path = require("node:path");
 const { glob } = require("glob");
 const {
@@ -76,7 +76,7 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.8.9",
+        version: "0.8.21",
         settings: {
           optimizer: {
             enabled: true,
@@ -89,6 +89,9 @@ module.exports = {
       },
       {
         version: "0.8.17"
+      },
+      {
+        version: "0.4.17"
       }
     ]
   },

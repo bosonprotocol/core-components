@@ -8,18 +8,18 @@
     "node": "hardhat node --hostname 0.0.0.0"
   },
   "devDependencies": {
-    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#v2.2.1",
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
-    "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@openzeppelin/contracts": "^4.8.1",
-    "@openzeppelin/contracts-upgradeable": "^4.7.1",
+    "@bosonprotocol/boson-protocol-contracts": "github:bosonprotocol/boson-protocol-contracts#v2.3.0-rc.3",
+    "@nomicfoundation/hardhat-ethers": "^3.0.3",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.6",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^4.9.0",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3",
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.8",
+    "ethers": "^6.6.0",
     "glob": "^9.1.0",
-    "hardhat": "^2.9.7",
+    "hardhat": "^2.14.1",
     "hardhat-abi-exporter": "^2.9.0",
     "seaport": "github:ProjectOpenSea/seaport#a27eff9fa299a14c432666c8dc963aa072437dde"
   }

@@ -7,10 +7,10 @@ async function deploySeaport() {
     "ConduitController"
   );
   const conduitController = await ConduitController.deploy();
-  await conduitController.deployed();
+  await conduitController.waitForDeployment();
   const Seaport = await ethers.getContractFactory("Seaport");
-  const seaport = await Seaport.deploy(conduitController.address);
-  await seaport.deployed();
+  const seaport = await Seaport.deploy(await conduitController.getAddress());
+  await seaport.waitForDeployment();
   return seaport;
 }
 

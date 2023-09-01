@@ -4,9 +4,13 @@ import { BigNumberish } from "@ethersproject/bignumber";
 
 export const bosonVoucherIface = new Interface(abis.IBosonVoucherABI);
 
-export function encodeBurnPremintedVouchers(offerId: BigNumberish) {
+export function encodeBurnPremintedVouchers(
+  offerId: BigNumberish,
+  amount: BigNumberish
+) {
   return bosonVoucherIface.encodeFunctionData("burnPremintedVouchers", [
-    offerId
+    offerId,
+    amount
   ]);
 }
 

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { OfferCreatedDisputeResolutionTermsStruct } from "../../generated/BosonOfferHandler/IBosonOfferHandler";
+import { OfferCreatedDisputeResolutionTermsStruct as OfferCreatedDisputeResolutionTermsStructLegacy } from "../../generated/BosonOfferHandlerLegacy/IBosonOfferHandlerLegacy";
 import { IBosonAccountHandler } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   DisputeResolutionTermsEntity,
@@ -17,6 +19,32 @@ export function getDisputeResolutionTermsId(
 
 export function saveDisputeResolutionTerms(
   disputeResolutionTerms: OfferCreatedDisputeResolutionTermsStruct,
+  offerId: string
+): string | null {
+  const disputeResolutionTermsId = getDisputeResolutionTermsId(
+    disputeResolutionTerms.disputeResolverId.toString(),
+    offerId
+  );
+
+  let terms = DisputeResolutionTermsEntity.load(disputeResolutionTermsId);
+
+  if (!terms) {
+    terms = new DisputeResolutionTermsEntity(disputeResolutionTermsId);
+  }
+
+  terms.escalationResponsePeriod =
+    disputeResolutionTerms.escalationResponsePeriod;
+  terms.buyerEscalationDeposit = disputeResolutionTerms.buyerEscalationDeposit;
+  terms.disputeResolverId = disputeResolutionTerms.disputeResolverId;
+  terms.disputeResolver = disputeResolutionTerms.disputeResolverId.toString();
+  terms.feeAmount = disputeResolutionTerms.feeAmount;
+  terms.save();
+
+  return disputeResolutionTermsId;
+}
+
+export function saveDisputeResolutionTermsLegacy(
+  disputeResolutionTerms: OfferCreatedDisputeResolutionTermsStructLegacy,
   offerId: string
 ): string | null {
   const disputeResolutionTermsId = getDisputeResolutionTermsId(

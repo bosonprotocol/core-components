@@ -146,9 +146,6 @@ export const createSellerArgsSchema = object({
   admin: string()
     .required()
     .test(...addressTestArgs),
-  clerk: string()
-    .required()
-    .test(...addressTestArgs),
   treasury: string()
     .required()
     .test(...addressTestArgs),

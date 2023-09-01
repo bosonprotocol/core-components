@@ -9,7 +9,6 @@ import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
 import { useCurrentSellers } from "../../hooks/useCurrentSellers";
 import { MediaSet } from "../../lib/lens/generated";
-import { Image } from "../image/Image";
 import { getLensImageUrl } from "../../lib/images/images";
 import { getLensProfilePictureUrl } from "../../lib/lens/profile";
 import { getOfferDetails } from "../../lib/offer/getOfferDetails";

@@ -1,8 +1,5 @@
 import { ADDRESS, MockWeb3LibAdapter } from "@bosonprotocol/common/tests/mocks";
-import {
-  withdrawAllAvailableFunds,
-  withdrawFunds
-} from "../../src/funds/handler";
+import { withdrawAllAvailableFunds } from "../../src/funds/handler";
 import { interceptSubgraph, SUBGRAPH_URL } from "../mocks";
 import { AddressZero } from "@ethersproject/constants";
 import { encodeWithdrawFunds } from "../../src/funds/interface";

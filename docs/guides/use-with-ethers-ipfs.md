@@ -82,7 +82,6 @@ If this is the first offer, the connected signer creates, then you first need to
 const txResponse = await coresSDK.createSeller({
   operator: "...",
   admin: "...",
-  clerk: "...",
   treasury: "...",
   contractUri: "...",
   royaltyPercentage: "...",
