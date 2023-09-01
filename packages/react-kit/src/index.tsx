@@ -4,6 +4,7 @@ export * from "@bosonprotocol/ethers-sdk";
 export * from "@bosonprotocol/ipfs-storage";
 export { default as ThemedButton, IButton } from "./components/ui/ThemedButton";
 export * from "./components/ui/zIndex";
+export * from "./components/ui/buttonSize";
 export * from "./components/buttons/Button";
 export * from "./components/cta/exchange/BatchCompleteButton";
 export * from "./components/cta/exchange/CancelButton";
