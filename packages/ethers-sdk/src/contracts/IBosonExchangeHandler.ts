@@ -234,6 +234,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
     "getReceipt(uint256)": FunctionFragment;
+    "isEligibleToCommit(address,uint256,uint256)": FunctionFragment;
     "isExchangeFinalized(uint256)": FunctionFragment;
     "onVoucherTransferred(uint256,address)": FunctionFragment;
     "redeemVoucher(uint256)": FunctionFragment;
@@ -287,6 +288,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getReceipt",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isEligibleToCommit",
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isExchangeFinalized",
@@ -351,6 +356,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "isEligibleToCommit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isExchangeFinalized",
     data: BytesLike
   ): Result;
@@ -369,6 +378,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 
   events: {
     "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)": EventFragment;
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)": EventFragment;
     "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
@@ -387,6 +397,9 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCommitted"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "ConditionalCommitAuthorized"
+  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
@@ -424,6 +437,21 @@ export type BuyerCommittedEvent = TypedEvent<
 >;
 
 export type BuyerCommittedEventFilter = TypedEventFilter<BuyerCommittedEvent>;
+
+export type ConditionalCommitAuthorizedEvent = TypedEvent<
+  [BigNumber, number, string, BigNumber, BigNumber, BigNumber],
+  {
+    offerId: BigNumber;
+    gating: number;
+    buyerAddress: string;
+    tokenId: BigNumber;
+    commitCount: BigNumber;
+    maxCommits: BigNumber;
+  }
+>;
+
+export type ConditionalCommitAuthorizedEventFilter =
+  TypedEventFilter<ConditionalCommitAuthorizedEvent>;
 
 export type ExchangeCompletedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber, string],
@@ -697,6 +725,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       }
     >;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BigNumber, BigNumber] & {
+        isEligible: boolean;
+        commitCount: BigNumber;
+        maxCommits: BigNumber;
+      }
+    >;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -791,6 +832,19 @@ export interface IBosonExchangeHandler extends BaseContract {
     _exchangeId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BosonTypes.ReceiptStructOutput>;
+
+  isEligibleToCommit(
+    _buyer: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [boolean, BigNumber, BigNumber] & {
+      isEligible: boolean;
+      commitCount: BigNumber;
+      maxCommits: BigNumber;
+    }
+  >;
 
   isExchangeFinalized(
     _exchangeId: BigNumberish,
@@ -887,6 +941,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BosonTypes.ReceiptStructOutput>;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BigNumber, BigNumber] & {
+        isEligible: boolean;
+        commitCount: BigNumber;
+        maxCommits: BigNumber;
+      }
+    >;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -926,6 +993,23 @@ export interface IBosonExchangeHandler extends BaseContract {
       voucher?: null,
       executedBy?: null
     ): BuyerCommittedEventFilter;
+
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
+    ConditionalCommitAuthorized(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
 
     "ExchangeCompleted(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
@@ -1189,6 +1273,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -1272,6 +1363,13 @@ export interface IBosonExchangeHandler extends BaseContract {
 
     getReceipt(
       _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
