@@ -1,3 +1,4 @@
+import { GraphQLClient, gql } from "graphql-request";
 import { program } from "commander";
 import { CID } from "multiformats/cid";
 import axios, { AxiosRequestConfig } from "axios";
@@ -8,6 +9,110 @@ import { BaseIpfsStorage } from "../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "../packages/common/src/types/configs";
 import { getEnvConfigById, offers, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
+import {
+  BaseAnimationMetadataFieldsFragmentDoc,
+  BaseConditionFieldsFragmentDoc,
+  BaseDisputeResolutionTermsEntityFieldsFragmentDoc,
+  BaseDisputeResolverFieldsFragmentDoc,
+  BaseExchangeTokenFieldsFragmentDoc,
+  BaseProductV1ExchangePolicyFieldsFragmentDoc,
+  BaseProductV1ProductFieldsFragmentDoc,
+  BaseProductV1SellerFieldsFragmentDoc,
+  BaseProductV1ShippingOptionFieldsFragmentDoc,
+  BaseProductV1VariationFieldsFragmentDoc,
+  BaseRangeFieldsFragmentDoc,
+  BaseSellerFieldsFragmentDoc,
+  GetOffersQueryQuery,
+  defaultWrapper
+} from "../packages/core-sdk/src/subgraph";
+const BaseOfferFieldsFragmentDoc = gql`
+  fragment BaseOfferFields on Offer {
+    id
+    metadata {
+      name
+      description
+      externalUrl
+      animationUrl
+      animationMetadata {
+        ...BaseAnimationMetadataFields
+      }
+      licenseUrl
+      condition
+      schemaUrl
+      type
+      image
+      ... on ProductV1MetadataEntity {
+        attributes {
+          traitType
+          value
+          displayType
+        }
+        createdAt
+        voided
+        validFromDate
+        validUntilDate
+        quantityAvailable
+        uuid
+        product {
+          ...BaseProductV1ProductFields
+        }
+        variations {
+          ...BaseProductV1VariationFields
+        }
+        productV1Seller {
+          ...BaseProductV1SellerFields
+        }
+        exchangePolicy {
+          ...BaseProductV1ExchangePolicyFields
+        }
+        shipping {
+          ...BaseProductV1ShippingOptionFields
+        }
+      }
+    }
+    range {
+      ...BaseRangeFields
+    }
+  }
+  ${BaseConditionFieldsFragmentDoc}
+  ${BaseSellerFieldsFragmentDoc}
+  ${BaseExchangeTokenFieldsFragmentDoc}
+  ${BaseDisputeResolverFieldsFragmentDoc}
+  ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
+  ${BaseAnimationMetadataFieldsFragmentDoc}
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+  ${BaseProductV1SellerFieldsFragmentDoc}
+  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
+  ${BaseProductV1ShippingOptionFieldsFragmentDoc}
+  ${BaseRangeFieldsFragmentDoc}
+`;
+const GetOffersQueryDocument = gql`
+  query getOffersQuery(
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+  ) {
+    offers(
+      skip: $offersSkip
+      first: $offersFirst
+      orderBy: $offersOrderBy
+      orderDirection: $offersOrderDirection
+      where: $offersFilter
+    ) {
+      ...BaseOfferFields
+    }
+  }
+  ${BaseOfferFieldsFragmentDoc}
+`;
 
 const imageIpfsGatewayMap = {
   local: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
@@ -117,21 +222,50 @@ async function main() {
   let offersToProcess: subgraph.OfferFieldsFragment[] = [];
 
   console.log("\n1. Fetching offers to process...");
+  const subgraphUrl = defaultConfig.subgraphUrl;
+  const client = new GraphQLClient(subgraphUrl);
+  const withWrapper = defaultWrapper;
   while (doMoreOffersExist) {
-    const paginatedOffers = await offers.subgraph.getOffers(
-      defaultConfig.subgraphUrl,
-      {
-        offersFirst: first,
-        offersSkip: page * first,
-        offersOrderDirection: subgraph.OrderDirection.Asc,
-        offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
-        offersFilter: {
-          disputeResolverId: envName === "testing" ? "3" : undefined,
-          id_in: list ? list.split(",") : undefined,
-          createdAt_gte: fromTimestampSec
-        }
+    const queryVars = {
+      offersFirst: first,
+      offersSkip: page * first,
+      offersOrderDirection: subgraph.OrderDirection.Asc,
+      offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
+      offersFilter: {
+        disputeResolverId: envName === "testing" ? "3" : undefined,
+        id_in: list ? list.split(",") : undefined,
+        createdAt_gte: fromTimestampSec
       }
-    );
+    };
+    console.log("subgraphUrl", subgraphUrl);
+    console.log("queryVars", queryVars);
+    console.log("GetOffersQueryDocument", GetOffersQueryDocument);
+    const paginatedOffers = (
+      await withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetOffersQueryQuery>(
+            GetOffersQueryDocument,
+            queryVars,
+            {
+              ...wrappedRequestHeaders
+            }
+          ),
+        "getOffersQuery",
+        "query"
+      )
+    ).offers;
+
+    // const paginatedOffers = await offers.subgraph.getOffers(subgraphUrl, {
+    //   offersFirst: first,
+    //   offersSkip: page * first,
+    //   offersOrderDirection: subgraph.OrderDirection.Asc,
+    //   offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
+    //   offersFilter: {
+    //     disputeResolverId: envName === "testing" ? "3" : undefined,
+    //     id_in: list ? list.split(",") : undefined,
+    //     createdAt_gte: fromTimestampSec
+    //   }
+    // });
     offersToProcess = [...offersToProcess, ...paginatedOffers];
 
     if (paginatedOffers.length < first) {
