@@ -237,9 +237,6 @@ async function main() {
         createdAt_gte: fromTimestampSec
       }
     };
-    console.log("subgraphUrl", subgraphUrl);
-    console.log("queryVars", queryVars);
-    console.log("GetOffersQueryDocument", GetOffersQueryDocument);
     const paginatedOffers = (
       await withWrapper(
         (wrappedRequestHeaders) =>
