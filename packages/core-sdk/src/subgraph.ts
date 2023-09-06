@@ -34954,7 +34954,7 @@ export type SdkFunctionWrapper = <T>(
   operationType?: string
 ) => Promise<T>;
 
-const defaultWrapper: SdkFunctionWrapper = (
+export const defaultWrapper: SdkFunctionWrapper = (
   action,
   _operationName,
   _operationType
