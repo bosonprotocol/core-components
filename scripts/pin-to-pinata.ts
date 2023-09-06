@@ -25,6 +25,94 @@ import {
   GetOffersQueryQuery,
   defaultWrapper
 } from "../packages/core-sdk/src/subgraph";
+const BaseOfferFieldsFragmentDoc = gql`
+  fragment BaseOfferFields on Offer {
+    id
+    metadata {
+      name
+      description
+      externalUrl
+      animationUrl
+      animationMetadata {
+        ...BaseAnimationMetadataFields
+      }
+      licenseUrl
+      condition
+      schemaUrl
+      type
+      image
+      ... on ProductV1MetadataEntity {
+        attributes {
+          traitType
+          value
+          displayType
+        }
+        createdAt
+        voided
+        validFromDate
+        validUntilDate
+        quantityAvailable
+        uuid
+        product {
+          ...BaseProductV1ProductFields
+        }
+        variations {
+          ...BaseProductV1VariationFields
+        }
+        productV1Seller {
+          ...BaseProductV1SellerFields
+        }
+        exchangePolicy {
+          ...BaseProductV1ExchangePolicyFields
+        }
+        shipping {
+          ...BaseProductV1ShippingOptionFields
+        }
+      }
+    }
+    range {
+      ...BaseRangeFields
+    }
+  }
+  ${BaseConditionFieldsFragmentDoc}
+  ${BaseSellerFieldsFragmentDoc}
+  ${BaseExchangeTokenFieldsFragmentDoc}
+  ${BaseDisputeResolverFieldsFragmentDoc}
+  ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
+  ${BaseAnimationMetadataFieldsFragmentDoc}
+  ${BaseProductV1ProductFieldsFragmentDoc}
+  ${BaseProductV1VariationFieldsFragmentDoc}
+  ${BaseProductV1SellerFieldsFragmentDoc}
+  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
+  ${BaseProductV1ShippingOptionFieldsFragmentDoc}
+  ${BaseRangeFieldsFragmentDoc}
+`;
+const GetOffersQueryDocument = gql`
+  query getOffersQuery(
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+  ) {
+    offers(
+      skip: $offersSkip
+      first: $offersFirst
+      orderBy: $offersOrderBy
+      orderDirection: $offersOrderDirection
+      where: $offersFilter
+    ) {
+      ...BaseOfferFields
+    }
+  }
+  ${BaseOfferFieldsFragmentDoc}
+`;
 
 const imageIpfsGatewayMap = {
   local: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
@@ -149,12 +237,14 @@ async function main() {
         createdAt_gte: fromTimestampSec
       }
     };
-
+    console.log("subgraphUrl", subgraphUrl);
+    console.log("queryVars", queryVars);
+    console.log("GetOffersQueryDocument", GetOffersQueryDocument);
     const paginatedOffers = (
       await withWrapper(
         (wrappedRequestHeaders) =>
           client.request<GetOffersQueryQuery>(
-            BaseOfferFieldsFragmentDoc,
+            GetOffersQueryDocument,
             queryVars,
             {
               ...wrappedRequestHeaders
@@ -353,66 +443,3 @@ main()
     console.error(e);
     process.exit(1);
   });
-
-const BaseOfferFieldsFragmentDoc = gql`
-  fragment BaseOfferFields on Offer {
-    id
-    metadata {
-      name
-      description
-      externalUrl
-      animationUrl
-      animationMetadata {
-        ...BaseAnimationMetadataFields
-      }
-      licenseUrl
-      condition
-      schemaUrl
-      type
-      image
-      ... on ProductV1MetadataEntity {
-        attributes {
-          traitType
-          value
-          displayType
-        }
-        createdAt
-        voided
-        validFromDate
-        validUntilDate
-        quantityAvailable
-        uuid
-        product {
-          ...BaseProductV1ProductFields
-        }
-        variations {
-          ...BaseProductV1VariationFields
-        }
-        productV1Seller {
-          ...BaseProductV1SellerFields
-        }
-        exchangePolicy {
-          ...BaseProductV1ExchangePolicyFields
-        }
-        shipping {
-          ...BaseProductV1ShippingOptionFields
-        }
-      }
-    }
-    range {
-      ...BaseRangeFields
-    }
-  }
-  ${BaseConditionFieldsFragmentDoc}
-  ${BaseSellerFieldsFragmentDoc}
-  ${BaseExchangeTokenFieldsFragmentDoc}
-  ${BaseDisputeResolverFieldsFragmentDoc}
-  ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
-  ${BaseAnimationMetadataFieldsFragmentDoc}
-  ${BaseProductV1ProductFieldsFragmentDoc}
-  ${BaseProductV1VariationFieldsFragmentDoc}
-  ${BaseProductV1SellerFieldsFragmentDoc}
-  ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
-  ${BaseProductV1ShippingOptionFieldsFragmentDoc}
-  ${BaseRangeFieldsFragmentDoc}
-`;
