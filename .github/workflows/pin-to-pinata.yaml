@@ -39,6 +39,7 @@ jobs:
           echo "Pin for testing env..."
           npm run pin-to-pinata -- \
             -e testing \
+            -c testing-80001-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
@@ -46,6 +47,7 @@ jobs:
           echo "Pin for staging env..."
           npm run pin-to-pinata -- \
             -e staging \
+            -c staging-80001-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
@@ -53,6 +55,7 @@ jobs:
           echo "Pin for production env..."
           npm run pin-to-pinata -- \
             -e production \
+            -c production-137-0 \
             -fd ${{ env.FROM_DATE }} \
             -p ${{ env.PINATA_JWT }} \
             -i ${{ env.INFURA_PROJECT_ID }}/${{ env.INFURA_PROJECT_SECRET }}
