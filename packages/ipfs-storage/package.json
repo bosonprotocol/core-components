@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/ipfs-storage",
-  "version": "1.10.9-alpha.4",
+  "version": "1.10.9-alpha.5",
   "description": "IPFS metadata storage implementation for building on top of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -38,7 +38,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@bosonprotocol/metadata": "^1.12.2-alpha.4",
+    "@bosonprotocol/metadata": "^1.12.2-alpha.5",
     "ipfs-http-client": "^56.0.1",
     "multiformats": "^9.6.4",
     "uint8arrays": "^3.0.0"
