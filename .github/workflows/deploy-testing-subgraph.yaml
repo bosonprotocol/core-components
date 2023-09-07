@@ -34,4 +34,4 @@ jobs:
       - name: Deploy subgraph to mumbai
         run: cd ./packages/subgraph && npm run deploy:testing
       - name: Deploy subgraph to goerli
-        run: npm run deploy:testing:goerli
+        run: cd ./packages/subgraph && npm run deploy:testing:goerli
