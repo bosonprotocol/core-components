@@ -4,6 +4,7 @@ export const chainIdToInfo = new Map<ChainId, ProtocolConfig["nativeCoin"]>([
   [80001, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [137, { decimals: "18", name: "Matic", symbol: "MATIC" }],
   [1, { decimals: "18", name: "Ether", symbol: "ETH" }],
+  [5, { decimals: "18", name: "GTH", symbol: "GTH" }],
   [31337, { decimals: "18", name: "Ether", symbol: "ETH" }]
 ]);
 
@@ -27,6 +28,15 @@ export const chainIdToGraphTx = new Map<
         return `https://polygonscan.com/address/${txHash}`;
       }
       return `https://polygonscan.com/tx/${txHash}`;
+    }
+  ],
+  [
+    5,
+    (txHash = "", isAddress = false) => {
+      if (isAddress) {
+        return `https://goerli.etherscan.io/address/${txHash}`;
+      }
+      return `https://goerli.etherscan.io/tx/${txHash}`;
     }
   ],
   [
@@ -127,6 +137,23 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         name: "Tether USD",
         address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
         decimals: "6"
+      }
+    ]
+  ],
+  [
+    5,
+    [
+      {
+        symbol: "GTH",
+        name: "GTH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token (PoS)",
+        address: "0xe3c811abbd19fbb9fe324eb0f30f32d1f6d20c95",
+        decimals: "18"
       }
     ]
   ],

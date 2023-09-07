@@ -36,6 +36,7 @@ export type ChainId = typeof chains[keyof typeof chains];
 export type ConfigId =
   | "local-31337-0"
   | "testing-80001-0"
+  | "testing-5-0"
   | "staging-80001-0"
   | "production-137-0";
 
@@ -69,5 +70,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
-  lens: Lens;
+  lens: Lens | null;
 };
