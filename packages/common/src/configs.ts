@@ -95,7 +95,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         relayerUrl: "https://api.biconomy.io",
         forwarderAbi: abis.BiconomyForwarderABI
       },
-      lens: null
+      lens: undefined
     }
   ],
   staging: [
