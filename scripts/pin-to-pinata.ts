@@ -121,25 +121,30 @@ const imageIpfsGatewayMap = {
   production: "https://gray-permanent-fly-490.mypinata.cloud/ipfs/"
 } as const;
 
-function extractCID(imageUri: string) {
-  const cidFromUri = imageUri.replaceAll("ipfs://", "");
-
-  try {
-    CID.parse(cidFromUri);
-    return cidFromUri;
-  } catch (error) {
-    // if fails to parse, we assume it could be a gateway url
-    const cidFromUrl = imageUri.split("/").at(-1);
+const getExtractCID =
+  (offerId: string) => (imageUri: string, origin: string) => {
+    const cidFromUri = imageUri
+      .replaceAll("ipfs://", "")
+      .replaceAll("https://bosonprotocol.infura-ipfs.io/ipfs/", "");
 
     try {
-      CID.parse(cidFromUrl || imageUri);
-      return cidFromUrl;
+      CID.parse(cidFromUri);
+      return cidFromUri;
     } catch (error) {
-      console.error(`Failed to parse CID from: ${imageUri}`);
-      return undefined;
+      // if fails to parse, we assume it could be a gateway url
+      const cidFromUrl = imageUri.split("/").at(-1);
+
+      try {
+        CID.parse(cidFromUrl || imageUri);
+        return cidFromUrl;
+      } catch (error) {
+        console.error(
+          `Failed to parse CID from: ${imageUri} (id=${offerId}, ${origin})`
+        );
+        return undefined;
+      }
     }
-  }
-}
+  };
 
 function bufferToStream(buffer) {
   const stream = new Readable();
@@ -291,24 +296,40 @@ async function main() {
             offer.metadata.__typename = "BaseMetadataEntity";
           }
         }
-
+        const offerId = offer.id;
+        const extractCID = getExtractCID(offerId);
         if (offer.metadata?.__typename === "ProductV1MetadataEntity") {
           const metadataImage = offer.metadata.image
-            ? [extractCID(offer.metadata.image)]
+            ? [extractCID(offer.metadata.image, "offer.metadata.image")]
             : [];
           const metadataAnimation = offer.metadata.animationUrl
-            ? [extractCID(offer.metadata.animationUrl)]
+            ? [
+                extractCID(
+                  offer.metadata.animationUrl,
+                  "offer.metadata.animationUrl"
+                )
+              ]
             : [];
           const visualImages = offer.metadata.product.visuals_images.map(
-            (img) => extractCID(img.url)
+            (img, index) =>
+              extractCID(
+                img.url,
+                `offer.metadata.product.visuals_images[${index}]`
+              )
           );
           const visualVideos =
-            offer.metadata.product.visuals_videos?.map((vid) =>
-              extractCID(vid.url)
+            offer.metadata.product.visuals_videos?.map((vid, index) =>
+              extractCID(
+                vid.url,
+                `offer.metadata.product.visuals_videos[${index}]`
+              )
             ) || [];
           const sellerImages =
-            offer.metadata?.productV1Seller?.images?.map((img) =>
-              extractCID(img.url)
+            offer.metadata?.productV1Seller?.images?.map((img, index) =>
+              extractCID(
+                img.url,
+                `offer.metadata?.productV1Seller?.images[${index}]`
+              )
             ) || [];
           const videoCIDs = [...metadataAnimation, ...visualVideos].filter(
             (v) => !!v
@@ -335,7 +356,7 @@ async function main() {
           cids = [...imageCIDs, ...videoCIDs];
         } else if (offer.metadata?.__typename === "BaseMetadataEntity") {
           const metadataImage = offer.metadata.image
-            ? [extractCID(offer.metadata.image)]
+            ? [extractCID(offer.metadata.image, "offer.metadata.image")]
             : [];
           cids = metadataImage;
         }
