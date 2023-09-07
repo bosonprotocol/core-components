@@ -123,9 +123,7 @@ const imageIpfsGatewayMap = {
 
 const getExtractCID =
   (offerId: string) => (imageUri: string, origin: string) => {
-    const cidFromUri = imageUri
-      .replaceAll("ipfs://", "")
-      .replaceAll("https://bosonprotocol.infura-ipfs.io/ipfs/", "");
+    const cidFromUri = imageUri.replaceAll("ipfs://", "");
 
     try {
       CID.parse(cidFromUri);
