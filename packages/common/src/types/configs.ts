@@ -70,5 +70,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
-  lens: Lens | null;
+  lens: Lens | undefined;
 };
