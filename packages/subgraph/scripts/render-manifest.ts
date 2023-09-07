@@ -35,6 +35,10 @@ const envNameToConfig: Record<
     "testing-80001-0": {
       network: "mumbai",
       startBlock: 35370695 // mumbai, this is NOT the block number when the protocol was deployed (manual override as there was an error in the subgraph)
+    },
+    "testing-5-0": {
+      network: "goerli",
+      startBlock: 9618015 // goerli, block number when protocol was deployed https://goerli.etherscan.io/address/0xDA01E28EA66B4294EeE21013bC45a0114E976Da4
     }
   },
   staging: {

@@ -46,7 +46,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 80001,
       configId: "testing-80001-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80001-0/sellers/blacklist.json",
       defaultDisputeResolverId: "13",
       defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
@@ -60,7 +60,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       contracts: {
         // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e08ee49714dd5a4c8d7f3916d27027e699b3b674
         protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
-        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs.biconomy.io/misc/contract-addresses
+        forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: {
         relayerUrl: "https://api.biconomy.io",
@@ -69,6 +69,33 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       lens: {
         ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
       }
+    },
+    {
+      envName: "testing",
+      chainId: 5,
+      configId: "testing-5-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-5-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(5),
+      nativeCoin: chainIdToInfo.get(5),
+      getTxExplorerUrl: chainIdToGraphTx.get(5),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/goerli-testing",
+      jsonRpcUrl:
+        "https://goerli.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/791
+        protocolDiamond: "0xDA01E28EA66B4294EeE21013bC45a0114E976Da4",
+        forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
+      },
+      metaTx: {
+        relayerUrl: "https://api.biconomy.io",
+        forwarderAbi: abis.BiconomyForwarderABI
+      },
+      lens: undefined
     }
   ],
   staging: [
@@ -77,7 +104,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 80001,
       configId: "staging-80001-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80001-0/sellers/blacklist.json",
       defaultDisputeResolverId: "2",
       defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
@@ -108,7 +135,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 137,
       configId: "production-137-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
@@ -152,6 +179,16 @@ export function getEnvConfigs(envName: EnvironmentType): ProtocolConfig[] {
     if (!config.nativeCoin) {
       throw new Error(
         `Native coin has not been set for this chainId=${config.chainId}`
+      );
+    }
+    if (!config.defaultTokens) {
+      throw new Error(
+        `Default tokens have not been set for this chainId=${config.chainId}`
+      );
+    }
+    if (!config.getTxExplorerUrl) {
+      throw new Error(
+        `getTxExplorerUrl has not been set for this chainId=${config.chainId}`
       );
     }
   });

@@ -31,5 +31,7 @@ jobs:
         run: npm run build -- --cache-dir=".turbo"
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_TESTING }}
-      - name: Deploy subgraph
+      - name: Deploy subgraph to mumbai
         run: cd ./packages/subgraph && npm run deploy:testing
+      - name: Deploy subgraph to goerli
+        run: cd ./packages/subgraph && npm run deploy:testing:goerli

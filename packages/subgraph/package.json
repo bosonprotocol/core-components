@@ -17,6 +17,7 @@
     "manifest": "ts-node -P ../../tsconfig.base.json ./scripts/render-manifest.ts",
     "manifest:local": "npm run manifest -- local local-31337-0 && npm run codegen",
     "manifest:testing": "npm run manifest -- testing testing-80001-0 && npm run codegen",
+    "manifest:testing:goerli": "npm run manifest -- testing testing-5-0 && npm run codegen",
     "manifest:staging": "npm run manifest -- staging staging-80001-0 && npm run codegen",
     "manifest:production": "npm run manifest -- production production-137-0 && npm run codegen",
     "codegen": "graph codegen",
@@ -24,6 +25,7 @@
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
     "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-testing",
+    "deploy:testing:goerli": "npm run manifest:testing:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-testing",
     "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-staging",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
     "test": "npm run manifest:local && graph test"
