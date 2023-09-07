@@ -46,7 +46,6 @@ async function main() {
     opts.escalationResponsePeriod || 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
   const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
   const assistant = disputeResolverAdminWallet.address;
-  const clerk = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
   const configId = opts.configId || "testing-80001-0";
@@ -85,7 +84,6 @@ async function main() {
     escalationResponsePeriodInMS,
     admin: disputeResolverAdminWallet.address,
     assistant,
-    clerk,
     treasury,
     metadataUri,
     fees,

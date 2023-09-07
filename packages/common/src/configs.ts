@@ -46,7 +46,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 80001,
       configId: "testing-80001-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-80001-0/sellers/blacklist.json",
       defaultDisputeResolverId: "13",
       defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
@@ -75,7 +75,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 5,
       configId: "testing-5-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing/sellers/blacklist.json", // TODO: change
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/testing-5-0/sellers/blacklist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(5),
       nativeCoin: chainIdToInfo.get(5),
@@ -104,7 +104,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 80001,
       configId: "staging-80001-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-80001-0/sellers/blacklist.json",
       defaultDisputeResolverId: "2",
       defaultTokens: chainIdToDefaultTokens.get(80001),
       nativeCoin: chainIdToInfo.get(80001),
@@ -135,7 +135,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       chainId: 137,
       configId: "production-137-0",
       sellersBlackList:
-        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production/sellers/blacklist.json",
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-137-0/sellers/blacklist.json",
       defaultDisputeResolverId: "1",
       defaultTokens: chainIdToDefaultTokens.get(137),
       nativeCoin: chainIdToInfo.get(137),
