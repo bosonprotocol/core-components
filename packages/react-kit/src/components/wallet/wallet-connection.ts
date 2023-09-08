@@ -1,4 +1,3 @@
-import { EnvironmentType } from "@bosonprotocol/core-sdk";
 import { Chain, connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   metaMaskWallet,
@@ -6,22 +5,22 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { configureChains, createConfig } from "wagmi";
-import { polygon, polygonMumbai } from "wagmi/chains";
+import * as wagmiChains from "wagmi/chains";
+import { useMemo } from "react";
+import { useConfigContext } from "../config/ConfigContext";
 
-const chainPerEnviromnent: Record<EnvironmentType, Chain> = {
-  local: polygonMumbai,
-  testing: polygonMumbai,
-  staging: polygonMumbai,
-  production: polygon
-};
-
-function getChainForEnvironment(envName: EnvironmentType): Array<Chain> {
-  const chain = chainPerEnviromnent[envName];
+function getChain(chainId: number): Array<Chain> {
+  const chain = Object.values(wagmiChains).find(
+    (chain) => chain.id === chainId
+  );
+  if (!chain) {
+    throw new Error(`Cannot find a chain with id ${chainId} in wagmiChains`);
+  }
   return [chain];
 }
 
-const getConfigureChains = (envName: EnvironmentType) =>
-  configureChains(getChainForEnvironment(envName), [
+export function getConnectors(chainId: number, walletConnectProjectId: string) {
+  const { publicClient, chains } = configureChains(getChain(chainId), [
     jsonRpcProvider({
       rpc: (chain: Chain) => {
         return {
@@ -32,11 +31,7 @@ const getConfigureChains = (envName: EnvironmentType) =>
     })
   ]);
 
-export const _getWagmiConfig = (
-  envName: EnvironmentType,
-  projectId: string
-) => {
-  const { publicClient, chains } = getConfigureChains(envName);
+  const projectId = walletConnectProjectId;
   const connectors = connectorsForWallets([
     {
       groupName: "Popular",
@@ -46,12 +41,21 @@ export const _getWagmiConfig = (
       ]
     }
   ]);
-  return {
-    wagmiConfig: createConfig({
+  return { connectors, publicClient, chains };
+}
+
+export const useWagmiConfig = (walletConnectProjectId: string) => {
+  const { config } = useConfigContext();
+  return useMemo(() => {
+    const { connectors, publicClient, chains } = getConnectors(
+      config.chainId,
+      walletConnectProjectId
+    );
+    const wagmiConfig = createConfig({
       autoConnect: true,
       connectors,
       publicClient
-    }),
-    chains
-  };
+    });
+    return { wagmiConfig, chains };
+  }, [config.chainId, walletConnectProjectId]);
 };

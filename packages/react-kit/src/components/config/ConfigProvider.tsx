@@ -1,10 +1,12 @@
 import React, { ReactNode } from "react";
 import { isTruthy } from "../../types/helpers";
 import { Context, ConfigContextProps } from "./ConfigContext";
+import { useEnvContext } from "../environment/EnvironmentContext";
+import { getEnvConfigById } from "@bosonprotocol/core-sdk";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  "defaultCurrency" | "sellerCurationList" | "offerCurationList"
+  "envConfig" | "defaultCurrency" | "sellerCurationList" | "offerCurationList"
 > & {
   children: ReactNode;
   defaultCurrencyTicker: string;
@@ -13,6 +15,8 @@ export type ConfigProviderProps = Omit<
   offerCurationListBetweenCommas?: string;
 };
 export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
+  const { envName, configId } = useEnvContext();
+  const envConfig = getEnvConfigById(envName, configId);
   const sellerCurationList = rest.sellerCurationListBetweenCommas
     ?.split(",")
     .map((item) => item.trim())
@@ -25,6 +29,7 @@ export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
     <Context.Provider
       value={{
         ...rest,
+        config: envConfig,
         sellerCurationList,
         offerCurationList,
         defaultCurrency: {

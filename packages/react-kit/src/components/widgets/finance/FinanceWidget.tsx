@@ -120,7 +120,6 @@ export function FinanceWidget({
       <GlobalStyle />
       <ConfigProvider {...rest}>
         <WalletConnectionProvider
-          envName={envName}
           walletConnectProjectId={walletConnectProjectId}
         >
           <QueryClientProvider client={queryClient}>

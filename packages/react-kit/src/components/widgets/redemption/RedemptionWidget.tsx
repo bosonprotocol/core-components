@@ -85,7 +85,6 @@ export function RedemptionWidget(props: WidgetProps) {
         <ConfigProvider {...props}>
           <QueryClientProvider client={queryClient}>
             <WalletConnectionProvider
-              envName={props.envName}
               walletConnectProjectId={props.walletConnectProjectId}
             >
               <ChatProvider>
