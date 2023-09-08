@@ -6,7 +6,7 @@ import { getEnvConfigById } from "@bosonprotocol/core-sdk";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  "envConfig" | "defaultCurrency" | "sellerCurationList" | "offerCurationList"
+  "config" | "defaultCurrency" | "sellerCurationList" | "offerCurationList"
 > & {
   children: ReactNode;
   defaultCurrencyTicker: string;
