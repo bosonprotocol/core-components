@@ -1,6 +1,8 @@
+import { ProtocolConfig } from "@bosonprotocol/core-sdk";
 import { createContext, useContext } from "react";
 
 export type ConfigContextProps = {
+  config: ProtocolConfig;
   dateFormat: string;
   shortDateFormat: string;
   defaultCurrency: {
