@@ -91,10 +91,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
         protocolDiamond: "0xDA01E28EA66B4294EeE21013bC45a0114E976Da4",
         forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
-      metaTx: {
-        relayerUrl: "https://api.biconomy.io",
-        forwarderAbi: abis.BiconomyForwarderABI
-      },
+      metaTx: undefined,
       lens: undefined
     }
   ],
