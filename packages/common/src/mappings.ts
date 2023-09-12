@@ -144,8 +144,8 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
     5,
     [
       {
-        symbol: "GTH",
-        name: "GTH",
+        symbol: "ETH",
+        name: "ETH",
         address: "0x0000000000000000000000000000000000000000",
         decimals: "18"
       },
