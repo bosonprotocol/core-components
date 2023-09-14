@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
 import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
-import { EnvironmentType } from "@bosonprotocol/core-sdk";
+import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 import { RedemptionBypassMode } from "../../components/modal/components/Redeem/RedeemNonModal";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -31,9 +31,11 @@ const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
 const defaultDisputeResolverId =
   envName === "testing" ? "13" : envName === "staging" ? "2" : "1";
+const envConfig = getEnvConfigs(envName);
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
   envName,
+  configId: envConfig[0].configId,
   tokensList:
     process.env.STORYBOOK_DATA_TOKENS_LIST ||
     '[{"symbol":"MATIC","name":"MATIC","address":"0x0000000000000000000000000000000000000000","decimals":"18"},{"symbol":"WETH","name":"Wrapped Ether","address":"0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa","decimals":"18"},{"symbol":"BOSON","name":"Boson Token (PoS)","address":"0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0","decimals":"18"},{"symbol":"USDC","name":"Mumbai USD Coin","address":"0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747","decimals":"6"},{"symbol":"DAI","name":"DAI","address":"0x001b3b4d0f3714ca98ba10f6042daebf0b1b7b6f","decimals":"18"},{"symbol":"USDT","name":"Tether USD","address":"0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832","decimals":"6"}]',
