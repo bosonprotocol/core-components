@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { log, Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   FundsDeposited,
   FundsReleased,
@@ -93,12 +93,30 @@ function handleDecreasingFundsEvent(
   saveExchangeToken(tokenAddress);
 
   const fundsId = getFundsEntityId(entityId, tokenAddress);
-  const fundsEntity = FundsEntity.load(fundsId);
+  let fundsEntity = FundsEntity.load(fundsId);
 
-  if (fundsEntity) {
+  if (!fundsEntity) {
+    // we can't suppose the fundsEntity is necessary existing. For instance
+    // if an offer has sellerDeposit == 0, the FundsEncumbered event can be raised
+    // when a buyer is committing, even if the seller has never deposited any
+    // fund (in which case amount should be 0)
+    fundsEntity = new FundsEntity(fundsId);
+    fundsEntity.availableAmount = BigInt.zero();
+    if (!amount.isZero()) {
+      // in case amount is not 0, this means a problem
+      log.warning(
+        "Fund '{}' can not be decremented by '{}' because it can not exist",
+        [fundsId, amount.toString()]
+      );
+    }
+    fundsEntity.tokenAddress = tokenAddress;
+    fundsEntity.token = tokenAddress.toHexString();
+    fundsEntity.accountId = entityId;
+    fundsEntity.account = entityId.toString();
+  } else {
     fundsEntity.availableAmount = fundsEntity.availableAmount.minus(amount);
-    fundsEntity.save();
   }
+  fundsEntity.save();
 }
 
 function handleIncreasingFundsEvent(
