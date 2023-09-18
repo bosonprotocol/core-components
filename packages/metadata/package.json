@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/metadata",
-  "version": "1.12.2-alpha.12",
+  "version": "1.12.2-alpha.13",
   "description": "Offer metadata schemas, types and tools of the Boson Protocol.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
