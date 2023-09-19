@@ -23,9 +23,6 @@ export const button = css`
   svg {
     ${transition}
   }
-  svg > *:not(rect[fill="none"]) {
-    stroke: inherit;
-  }
 `;
 export const clamp = css`
   overflow: hidden;
