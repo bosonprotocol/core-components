@@ -138,7 +138,7 @@ To commit to a given offer id, just call
 
 ```ts
 const txResponse = await coreSDK.commitToOffer(createdOfferId);
-const receipt = await coreSDK.wait();
+const receipt = await txResponse.wait();
 const createdExchangeId = coreSDK.getCommittedExchangeIdFromLogs(receipt.logs);
 ```
 

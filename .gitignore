@@ -33,3 +33,6 @@ coverage/
 
 # scripts
 scripts/abi-signatures.csv
+
+# temp directory
+/temp

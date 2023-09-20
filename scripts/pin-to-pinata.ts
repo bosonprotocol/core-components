@@ -192,6 +192,10 @@ program
     "-fd, --from-date <CREATED_FROM>",
     "Start timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
   )
+  .option(
+    "-td, --to-date <CREATED_TO>",
+    "End timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
+  )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
   .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
@@ -202,6 +206,7 @@ async function main() {
     env: envName,
     infura,
     fromDate,
+    toDate,
     list,
     configId = "testing-80001-0"
   } = program.opts();
@@ -217,6 +222,14 @@ async function main() {
   }
   const fromTimestampSec = Math.floor(
     new Date(fromTimestampMS).getTime() / 1000
+  ).toString();
+
+  const toTimestampMS = parseInt(toDate || Date.now());
+  if (isNaN(toTimestampMS)) {
+    throw new Error(`Invalid value provided to --to-date option`);
+  }
+  const toTimestampSec = Math.floor(
+    new Date(toTimestampMS).getTime() / 1000
   ).toString();
 
   const first = 100;
@@ -235,9 +248,10 @@ async function main() {
       offersOrderDirection: subgraph.OrderDirection.Asc,
       offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
       offersFilter: {
-        disputeResolverId: envName === "testing" ? "3" : undefined,
+        disputeResolverId: defaultConfig.defaultDisputeResolverId,
         id_in: list ? list.split(",") : undefined,
-        createdAt_gte: fromTimestampSec
+        createdAt_gte: fromTimestampSec,
+        createdAt_lte: toTimestampSec
       }
     };
     const paginatedOffers = (
