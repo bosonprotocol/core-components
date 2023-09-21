@@ -59,7 +59,8 @@ Redemption.args = {
     console.log("closeWidgetClick()");
   },
   modalMargin: "2%",
-  bypassMode: RedemptionBypassMode.NORMAL
+  bypassMode: RedemptionBypassMode.NORMAL,
+  forcedAccount: ""
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

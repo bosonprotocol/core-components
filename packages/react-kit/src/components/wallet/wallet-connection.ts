@@ -36,7 +36,15 @@ export function getConnectors(chainId: number, walletConnectProjectId: string) {
     {
       groupName: "Popular",
       wallets: [
-        metaMaskWallet({ chains, projectId }),
+        metaMaskWallet({
+          chains,
+          projectId,
+          shimDisconnect: true,
+          UNSTABLE_shimOnConnectSelectAccount: true
+          // shimDisconnect and UNSTABLE_shimOnConnectSelectAccount options required
+          // to really disconnect metamask if the connected wallet if not the expected one,
+          // and let the user chose another account
+        }),
         walletConnectWallet({ chains, projectId })
       ]
     }
