@@ -212,7 +212,7 @@ export default function RedeemNonModal({
   if (
     forcedAccount &&
     address &&
-    forcedAccount.toLowerCase() !== address?.toLowerCase()
+    forcedAccount.toLowerCase() !== address.toLowerCase()
   ) {
     // force disconnection as the current connected wallet is not the forced one
     disconnect();
