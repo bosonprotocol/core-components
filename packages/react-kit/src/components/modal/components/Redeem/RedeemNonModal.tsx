@@ -1,6 +1,12 @@
 import { Form, Formik, FormikProps } from "formik";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useAccount } from "wagmi";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
+import { useAccount, useDisconnect } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
@@ -81,6 +87,7 @@ export type RedeemNonModalProps = {
   expireVoucherViewOnSuccess?: ExpireVoucherViewProps["onSuccess"];
   cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
+  forcedAccount?: string;
 };
 export default function RedeemNonModal({
   exchange: selectedExchange,
@@ -102,7 +109,8 @@ export default function RedeemNonModal({
   exchangeViewOnRaiseDisputeClick,
   expireVoucherViewOnSuccess,
   cancellationViewOnSuccess,
-  confirmationViewOnSuccess
+  confirmationViewOnSuccess,
+  forcedAccount
 }: RedeemNonModalProps) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
@@ -195,6 +203,21 @@ export default function RedeemNonModal({
     }
   }, [currentStep]);
   const { address } = useAccount();
+  const { disconnectAsync, status } = useDisconnect();
+  const disconnect = useCallback(() => {
+    if (disconnectAsync && status !== "loading") {
+      disconnectAsync();
+    }
+  }, [disconnectAsync, status]);
+  if (
+    forcedAccount &&
+    address &&
+    forcedAccount.toLowerCase() !== address.toLowerCase()
+  ) {
+    // force disconnection as the current connected wallet is not the forced one
+    disconnect();
+  }
+
   if (!address) {
     if (currentStep !== ActiveStep.STEPS_OVERVIEW) {
       // reinitialize the wizard step
@@ -214,6 +237,7 @@ export default function RedeemNonModal({
         }}
       >
         <p>Please connect your wallet</p>
+        {forcedAccount && <p>(expected account: {forcedAccount})</p>}
       </NonModal>
     );
   }
