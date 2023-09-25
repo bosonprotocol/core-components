@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM --platform=linux/amd64 node:16-alpine
 
 RUN apk --no-cache add --virtual .builds-deps build-base python3 git
 
