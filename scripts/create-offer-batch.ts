@@ -6,6 +6,8 @@ import { getEnvConfigById } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
+const MAX_OFFERS_PER_BATCH = 10;
+
 program
   .description("Create Offers (batch).")
   .argument(
@@ -66,12 +68,34 @@ async function main() {
     configId
   });
 
-  console.log(`Creating offer on env ${envName} on chain ${chainId}...`);
-  const txResponse1 = await coreSDK.createOfferBatch(offersFullDataJson);
-  console.log(`Tx hash: ${txResponse1.hash}`);
-  const receipt = await txResponse1.wait();
-  const offerId = coreSDK.getCreatedOfferIdFromLogs(receipt.logs);
-  console.log(`Offer with id ${offerId} created.`);
+  let done = 0;
+  let batchOffers = offersFullDataJson.slice(
+    done,
+    done + Math.min(offersFullDataJson.length - done, MAX_OFFERS_PER_BATCH)
+  );
+  while (batchOffers.length > 0) {
+    console.log(
+      `Creating ${batchOffers.length} (${done}...${
+        done + batchOffers.length - 1
+      }/${
+        offersFullDataJson.length
+      }) offers on env ${envName} on chain ${chainId}...`
+    );
+    const txResponse1 = await coreSDK.createOfferBatch(batchOffers);
+    console.log(`Tx hash: ${txResponse1.hash}`);
+    const receipt = await txResponse1.wait();
+    const offerId = coreSDK.getCreatedOfferIdFromLogs(receipt.logs);
+    console.log(`Offer with id ${offerId} created.`);
+    done += batchOffers.length;
+    if (offersFullDataJson.length > done) {
+      batchOffers = offersFullDataJson.slice(
+        done,
+        done + Math.min(offersFullDataJson.length - done, MAX_OFFERS_PER_BATCH)
+      );
+    } else {
+      batchOffers = [];
+    }
+  }
 }
 
 main()
