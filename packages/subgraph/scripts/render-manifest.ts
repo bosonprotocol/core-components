@@ -38,7 +38,7 @@ const envNameToConfig: Record<
     },
     "testing-5-0": {
       network: "goerli",
-      startBlock: 9618015 // goerli, block number when protocol was deployed https://goerli.etherscan.io/address/0xDA01E28EA66B4294EeE21013bC45a0114E976Da4
+      startBlock: 9757131 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x3c51e116a6a1849936e6bd45fcee78017259ce86a93601e5e7c77cbdc25b6f38
     }
   },
   staging: {
@@ -48,7 +48,7 @@ const envNameToConfig: Record<
     },
     "staging-5-0": {
       network: "goerli",
-      startBlock: 9756834 // goerli, block number when protocol was deployed
+      startBlock: 9756834 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x7d4b731fc8b9fe77999f46a52891f2bd13651666bb9a15d7044b33bddd52b355
     }
   },
   production: {
