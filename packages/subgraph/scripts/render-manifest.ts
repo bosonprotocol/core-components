@@ -45,12 +45,20 @@ const envNameToConfig: Record<
     "staging-80001-0": {
       network: "mumbai",
       startBlock: 28566747 // mumbai, block number when protocol was deployed
+    },
+    "staging-5-0": {
+      network: "goerli",
+      startBlock: 9756834 // goerli, block number when protocol was deployed
     }
   },
   production: {
     "production-137-0": {
       network: providers.getNetwork(chainId).name,
       startBlock: 34258150 // polygon, block num when protocol is deployed
+    },
+    "production-1-0": {
+      network: providers.getNetwork(chainId).name,
+      startBlock: 99999999999999 //TODO:  ethereum, block num when protocol is deployed
     }
   }
 };
