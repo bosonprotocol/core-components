@@ -10,4 +10,4 @@ RUN npx hardhat compile
 
 EXPOSE 8545
 
-CMD [ "npm", "run", "node", "--hostname", "0.0.0.0" ]
+CMD [ "npm", "run", "node" ]
