@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.26.0...@bosonprotocol/subgraph@1.27.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* fundsEventLogs shall always contain a fundsEntity reference ([#561](https://github.com/bosonprotocol/core-components/issues/561)) ([fb8f598](https://github.com/bosonprotocol/core-components/commit/fb8f598dd2bdf68bbe6b79e342fd31575fb0924e))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add goerli to the config setup and ci ([#555](https://github.com/bosonprotocol/core-components/issues/555)) ([1181d63](https://github.com/bosonprotocol/core-components/commit/1181d63a9022b5c5cd5d6598e806f09a35990dfd))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+
+
+
+
+
 # [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.25.0...@bosonprotocol/subgraph@1.26.0) (2023-07-05)
 
 

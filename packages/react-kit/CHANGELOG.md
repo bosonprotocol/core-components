@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.19.0...@bosonprotocol/react-kit@0.20.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* adapt opensea link wrt chain used in the env ([#564](https://github.com/bosonprotocol/core-components/issues/564)) ([59c26e9](https://github.com/bosonprotocol/core-components/commit/59c26e941fbe383ef256c80c5cd772a3c330510a))
+* add content-type header when POST message to redeemCallbackUrl ([#537](https://github.com/bosonprotocol/core-components/issues/537)) ([0ee30f3](https://github.com/bosonprotocol/core-components/commit/0ee30f389a9f5c8a2af84441bc2431b65d79c5b7))
+* button ref ([#546](https://github.com/bosonprotocol/core-components/issues/546)) ([125050f](https://github.com/bosonprotocol/core-components/commit/125050f4110458d4491dff3f6a24eee126a866d3))
+* change secondary colour to map dapp colour scheme ([#536](https://github.com/bosonprotocol/core-components/issues/536)) ([68e9f20](https://github.com/bosonprotocol/core-components/commit/68e9f201960afbab47e217b0c4cb8446dce13737))
+* check the exchange is owned by the user and in correct state to be redeemed/cancelled ([#538](https://github.com/bosonprotocol/core-components/issues/538)) ([7fb50bc](https://github.com/bosonprotocol/core-components/commit/7fb50bc8f0b37664437078da76d43639c05f19b9))
+* compilation widgets ([#560](https://github.com/bosonprotocol/core-components/issues/560)) ([faa72e5](https://github.com/bosonprotocol/core-components/commit/faa72e5eddac9d224c2f23a0110bdf5a19577321))
+* type config provider ([#558](https://github.com/bosonprotocol/core-components/issues/558)) ([db9fc9f](https://github.com/bosonprotocol/core-components/commit/db9fc9fe12a4883e9c33b50fad26b284d8969ba4))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add forcedAccount property on RedemptionWidget ([#566](https://github.com/bosonprotocol/core-components/issues/566)) ([fa907fe](https://github.com/bosonprotocol/core-components/commit/fa907fe7be4796d15caa604a53b0294995e633a4))
+* multi chain widget ([#557](https://github.com/bosonprotocol/core-components/issues/557)) ([3301a7c](https://github.com/bosonprotocol/core-components/commit/3301a7c64de1f5d5795c770655326e8271405ae9))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+* new core sdk on config id switch ([#544](https://github.com/bosonprotocol/core-components/issues/544)) ([12a7652](https://github.com/bosonprotocol/core-components/commit/12a7652a55073df4290e21848d108c7e36c71359))
+* remove unused button styles and fix svg hover styles ([#565](https://github.com/bosonprotocol/core-components/issues/565)) ([8879bf2](https://github.com/bosonprotocol/core-components/commit/8879bf21d7c15010c65657d16e917595642b3ff4))
+
+
+
+
+
 # [0.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.18.0...@bosonprotocol/react-kit@0.19.0) (2023-08-14)
 
 

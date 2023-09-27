@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.29.0...@bosonprotocol/core-sdk@1.30.0) (2023-09-27)
+
+
+### Features
+
+* get fewer offer fields pinata ([#552](https://github.com/bosonprotocol/core-components/issues/552)) ([5f12906](https://github.com/bosonprotocol/core-components/commit/5f12906609ae97191e66866a8ececce1e82d738a))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+
+
+
+
+
 # [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.28.0...@bosonprotocol/core-sdk@1.29.0) (2023-08-10)
 
 
