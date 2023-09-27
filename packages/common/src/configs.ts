@@ -58,7 +58,6 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e08ee49714dd5a4c8d7f3916d27027e699b3b674
         protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
         forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
@@ -87,8 +86,8 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/791
-        protocolDiamond: "0xDA01E28EA66B4294EeE21013bC45a0114E976Da4",
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
+        protocolDiamond: "0x76051FC05Ab42D912a737d59a8711f1446712630",
         forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
       },
       metaTx: undefined,
@@ -113,7 +112,6 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
       ipfsMetadataUrl: "https://ipfs.infura.io:5001",
       contracts: {
-        // from https://github.com/bosonprotocol/boson-protocol-contracts/commit/e7668625ef01ce53ee14667b960e858bc33726fb
         protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
         forwarder: "0x69015912AA33720b842dCD6aC059Ed623F28d9f7"
       },
@@ -124,6 +122,30 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       lens: {
         ...(chainIdToLensInfo.has(80001) && chainIdToLensInfo.get(80001))
       }
+    },
+    {
+      envName: "staging",
+      chainId: 5,
+      configId: "staging-5-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/staging-5-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(5),
+      nativeCoin: chainIdToInfo.get(5),
+      getTxExplorerUrl: chainIdToGraphTx.get(5),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/goerli-staging",
+      jsonRpcUrl:
+        "https://goerli.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        // from https://github.com/bosonprotocol/boson-protocol-contracts/pull/807
+        protocolDiamond: "0xf9719c7e641964D83cC50ea2d4d0D4e6C300d50E",
+        forwarder: "0xE041608922d06a4F26C0d4c27d8bCD01daf1f792" // https://docs-gasless.biconomy.io/misc/contract-addresses
+      },
+      metaTx: undefined,
+      lens: undefined
     }
   ],
   production: [
@@ -154,6 +176,29 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       lens: {
         ...(chainIdToLensInfo.has(137) && chainIdToLensInfo.get(137))
       }
+    },
+    {
+      envName: "production",
+      chainId: 1,
+      configId: "production-1-0",
+      sellersBlackList:
+        "https://raw.githubusercontent.com/BAppLimited/curationLists/main/bosonApp.io/production-1-0/sellers/blacklist.json",
+      defaultDisputeResolverId: "1",
+      defaultTokens: chainIdToDefaultTokens.get(1),
+      nativeCoin: chainIdToInfo.get(1),
+      getTxExplorerUrl: chainIdToGraphTx.get(1),
+      subgraphUrl:
+        "https://api.thegraph.com/subgraphs/name/bosonprotocol/ethereum",
+      jsonRpcUrl:
+        "https://mainnet.infura.io/v3/b5b499e704f840b5b84b0580466d658e",
+      theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",
+      ipfsMetadataUrl: "https://ipfs.infura.io:5001",
+      contracts: {
+        protocolDiamond: "0x59A4C19b55193D5a2EAD0065c54af4d516E18Cb5",
+        forwarder: "0x84a0856b038eaAd1cC7E297cF34A7e72685A8693" // https://docs-gasless.biconomy.io/misc/contract-addresses
+      },
+      metaTx: undefined,
+      lens: undefined
     }
   ]
 };

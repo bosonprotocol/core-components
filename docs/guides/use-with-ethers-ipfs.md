@@ -80,13 +80,14 @@ If this is the first offer, the connected signer creates, then you first need to
 
 ```ts
 const txResponse = await coresSDK.createSeller({
-  operator: "...",
+  assistant: "...",
   admin: "...",
   treasury: "...",
   contractUri: "...",
   royaltyPercentage: "...",
   authTokenId: "...",
-  authTokenType: "..."
+  authTokenType: "...",
+  metadataUri: "..."
 });
 const receipt = await txResponse.wait();
 const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(receipt.logs);
@@ -112,7 +113,8 @@ const txResponse = await coresSDK.createOffer({
   exchangeToken: "...",
   disputeResolverId: "...",
   metadataUri: `ipfs://${cid}`, // from step 1.
-  metadataHash: cid // from step 1.
+  metadataHash: cid, // from step 1.
+  collectionIndex: "..."
 });
 const receipt = await txResponse.wait();
 const createdOfferId = coreSDK.getCreatedOfferIdFromLogs(receipt.logs);

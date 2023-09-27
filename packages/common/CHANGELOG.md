@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.4...@bosonprotocol/common@1.23.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* force amd64 platform on dockers ([#569](https://github.com/bosonprotocol/core-components/issues/569)) ([0af20df](https://github.com/bosonprotocol/core-components/commit/0af20df916cc3c603f9c1cdcfd70ca1d67f6f3dc))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add default dispute resolver id and sellers black lists ([#545](https://github.com/bosonprotocol/core-components/issues/545)) ([ec47a68](https://github.com/bosonprotocol/core-components/commit/ec47a680eab80596e9a223392e913a4b152fec17))
+* add default tokens to protocol config ([#548](https://github.com/bosonprotocol/core-components/issues/548)) ([89aa686](https://github.com/bosonprotocol/core-components/commit/89aa6861bdbdbec23ec274a38c3b02ef6734fa3f))
+* add goerli to the config setup and ci ([#555](https://github.com/bosonprotocol/core-components/issues/555)) ([1181d63](https://github.com/bosonprotocol/core-components/commit/1181d63a9022b5c5cd5d6598e806f09a35990dfd))
+* change symbol and name of goerli eth default tokens in common configs ([#559](https://github.com/bosonprotocol/core-components/issues/559)) ([0f075bb](https://github.com/bosonprotocol/core-components/commit/0f075bb0a49ffffd3a91f340d097e9cb39cfd7a3))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+* remove meta tx from goerli ([#556](https://github.com/bosonprotocol/core-components/issues/556)) ([2c19a1d](https://github.com/bosonprotocol/core-components/commit/2c19a1d29b595c5fe910cdb03f898cb05853d10d))
+
+
+
+
+
 ## [1.22.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.3...@bosonprotocol/common@1.22.4) (2023-08-10)
 
 

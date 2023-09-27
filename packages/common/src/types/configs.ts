@@ -38,7 +38,9 @@ export type ConfigId =
   | "testing-80001-0"
   | "testing-5-0"
   | "staging-80001-0"
-  | "production-137-0";
+  | "staging-5-0"
+  | "production-137-0"
+  | "production-1-0";
 
 export type Token = {
   symbol: string;

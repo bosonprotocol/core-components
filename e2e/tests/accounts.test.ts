@@ -562,5 +562,19 @@ describe("CoreSDK - accounts", () => {
       });
       expect(seller.metadataUri).toBe(updatedMetadataUri);
     });
+    test("getSellers", async () => {
+      const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
+        seedWallet3
+      );
+      const before = await coreSDK.getSellers();
+      const seller = await createSeller(coreSDK, fundedWallet.address);
+      expect(seller).toBeTruthy();
+      let exist = before.some((s) => s.id === seller.id);
+      expect(exist).toBe(false);
+      const after = await coreSDK.getSellers();
+      expect(after.length).toEqual(before.length + 1);
+      exist = after.some((s) => s.id === seller.id);
+      expect(exist).toBe(true);
+    });
   });
 });

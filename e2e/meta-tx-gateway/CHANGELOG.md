@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.4.3...meta-tx-gateway@1.5.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* force amd64 platform on dockers ([#569](https://github.com/bosonprotocol/core-components/issues/569)) ([0af20df](https://github.com/bosonprotocol/core-components/commit/0af20df916cc3c603f9c1cdcfd70ca1d67f6f3dc))
+
+
+### Features
+
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+
+
+
+
+
 ## [1.4.3](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.4.2...meta-tx-gateway@1.4.3) (2023-08-10)
 
 

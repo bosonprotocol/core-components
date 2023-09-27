@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.27.0-alpha.21",
+  "version": "1.27.0",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
     "@graphprotocol/graph-ts": "^0.27.0"
@@ -19,7 +19,9 @@
     "manifest:testing": "npm run manifest -- testing testing-80001-0 && npm run codegen",
     "manifest:testing:goerli": "npm run manifest -- testing testing-5-0 && npm run codegen",
     "manifest:staging": "npm run manifest -- staging staging-80001-0 && npm run codegen",
+    "manifest:staging:goerli": "npm run manifest -- staging staging-5-0 && npm run codegen",
     "manifest:production": "npm run manifest -- production production-137-0 && npm run codegen",
+    "manifest:production:ethereum": "npm run manifest -- production production-137-0 && npm run codegen",
     "codegen": "graph codegen",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
@@ -27,7 +29,9 @@
     "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-testing",
     "deploy:testing:goerli": "npm run manifest:testing:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-testing",
     "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-staging",
+    "deploy:staging:goerli": "npm run manifest:staging:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-staging",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
+    "deploy:production:ethereum": "npm run manifest:production:ethereum && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/ethereum",
     "test": "npm run manifest:local && graph test"
   }
 }
