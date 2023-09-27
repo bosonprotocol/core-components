@@ -73,14 +73,17 @@ export class MetadataMixin extends BaseCoreSDK {
     return getProductV1Products(this._subgraphUrl, queryVars);
   }
 
-  public async getProductWithVariants(productUuid: string): Promise<{
+  public async getProductWithVariants(
+    sellerId: string,
+    productUuid: string
+  ): Promise<{
     product: subgraph.BaseProductV1ProductFieldsFragment;
     variants: Array<{
       offer: subgraph.OfferFieldsFragment;
       variations: Array<subgraph.ProductV1Variation>;
     }>;
   } | null> {
-    return getProductWithVariants(this._subgraphUrl, productUuid);
+    return getProductWithVariants(this._subgraphUrl, sellerId, productUuid);
   }
 
   public async getAllProductsWithVariants(
