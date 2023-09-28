@@ -9884,6 +9884,51 @@ export type GetSellerByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -10738,6 +10783,51 @@ export type GetSellersQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12015,6 +12105,51 @@ export type GetDisputeResolverByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12688,6 +12823,51 @@ export type GetDisputeResolversQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13358,6 +13538,47 @@ export type SellerFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -14491,6 +14712,47 @@ export type DisputeResolverFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -15851,6 +16113,51 @@ export type GetExchangeTokenByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -16435,6 +16742,51 @@ export type GetExchangeTokensQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -16997,6 +17349,47 @@ export type ExchangeTokenFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -17738,6 +18131,51 @@ export type GetExchangeByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -18404,6 +18842,51 @@ export type GetExchangesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -19060,6 +19543,47 @@ export type ExchangeFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -19922,6 +20446,51 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -20593,6 +21162,51 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -21254,6 +21868,47 @@ export type BaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -21910,6 +22565,47 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -22918,6 +23614,51 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -23798,6 +24539,51 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -24692,6 +25478,51 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -25786,6 +26617,51 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -26870,6 +27746,47 @@ export type ProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -27949,6 +28866,47 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -29241,6 +30199,51 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -30110,6 +31113,51 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -31182,6 +32230,47 @@ export type GetOfferByIdQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -31850,6 +32939,47 @@ export type GetOffersQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -32502,6 +33632,47 @@ export type OfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        productOverrides?: {
+          __typename?: "ProductV1ProductOverrides";
+          id: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -33045,6 +34216,47 @@ export type BaseOfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        productOverrides?: {
+          __typename?: "ProductV1ProductOverrides";
+          id: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -33595,6 +34807,50 @@ export const BaseProductV1BrandFieldsFragmentDoc = gql`
     name
   }
 `;
+export const BaseProductV1MediaFieldsFragmentDoc = gql`
+  fragment BaseProductV1MediaFields on ProductV1Media {
+    id
+    url
+    tag
+    type
+    width
+    height
+  }
+`;
+export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
+    id
+    version
+    title
+    description
+    identification_sKU
+    identification_productId
+    identification_productIdType
+    productionInformation_brandName
+    brand {
+      ...BaseProductV1BrandFields
+    }
+    productionInformation_manufacturer
+    productionInformation_manufacturerPartNumber
+    productionInformation_modelNumber
+    productionInformation_materials
+    visuals_images {
+      ...BaseProductV1MediaFields
+    }
+    visuals_videos {
+      ...BaseProductV1MediaFields
+    }
+    packaging_packageQuantity
+    packaging_dimensions_length
+    packaging_dimensions_width
+    packaging_dimensions_height
+    packaging_dimensions_unit
+    packaging_weight_value
+    packaging_weight_unit
+  }
+  ${BaseProductV1BrandFieldsFragmentDoc}
+  ${BaseProductV1MediaFieldsFragmentDoc}
+`;
 export const BaseProductV1CategoryFieldsFragmentDoc = gql`
   fragment BaseProductV1CategoryFields on ProductV1Category {
     id
@@ -33617,16 +34873,6 @@ export const BaseProductV1PersonalisationFieldsFragmentDoc = gql`
   fragment BaseProductV1PersonalisationFields on ProductV1Personalisation {
     id
     name
-  }
-`;
-export const BaseProductV1MediaFieldsFragmentDoc = gql`
-  fragment BaseProductV1MediaFields on ProductV1Media {
-    id
-    url
-    tag
-    type
-    width
-    height
   }
 `;
 export const BaseProductV1SellerContactLinkFieldsFragmentDoc = gql`
@@ -33835,6 +35081,9 @@ export const BaseOfferFieldsFragmentDoc = gql`
       type
       image
       ... on ProductV1MetadataEntity {
+        productOverrides {
+          ...BaseProductV1ProductOverridesFields
+        }
         attributes {
           traitType
           value
@@ -33873,6 +35122,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
   ${BaseAnimationMetadataFieldsFragmentDoc}
+  ${BaseProductV1ProductOverridesFieldsFragmentDoc}
   ${BaseProductV1ProductFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
@@ -34309,40 +35559,6 @@ export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
-`;
-export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
-  fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
-    id
-    version
-    title
-    description
-    identification_sKU
-    identification_productId
-    identification_productIdType
-    productionInformation_brandName
-    brand {
-      ...BaseProductV1BrandFields
-    }
-    productionInformation_manufacturer
-    productionInformation_manufacturerPartNumber
-    productionInformation_modelNumber
-    productionInformation_materials
-    visuals_images {
-      ...BaseProductV1MediaFields
-    }
-    visuals_videos {
-      ...BaseProductV1MediaFields
-    }
-    packaging_packageQuantity
-    packaging_dimensions_length
-    packaging_dimensions_width
-    packaging_dimensions_height
-    packaging_dimensions_unit
-    packaging_weight_value
-    packaging_weight_unit
-  }
-  ${BaseProductV1BrandFieldsFragmentDoc}
-  ${BaseProductV1MediaFieldsFragmentDoc}
 `;
 export const OfferFieldsFragmentDoc = gql`
   fragment OfferFields on Offer {
@@ -34954,7 +36170,7 @@ export type SdkFunctionWrapper = <T>(
   operationType?: string
 ) => Promise<T>;
 
-export const defaultWrapper: SdkFunctionWrapper = (
+const defaultWrapper: SdkFunctionWrapper = (
   action,
   _operationName,
   _operationType
