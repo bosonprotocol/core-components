@@ -26,7 +26,9 @@ test("save PRODUCT_V1 metadata product-v1-full.json", () => {
   mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
 
   const offerId = 1;
+  const sellerId = "1";
   const offer = new Offer(offerId.toString());
+  offer.sellerId = BigInt.fromString(sellerId);
   offer.quantityAvailable = BigInt.fromI32(1);
   offer.metadataUri = metadataHash;
   offer.metadataHash = metadataHash;

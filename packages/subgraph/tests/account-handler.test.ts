@@ -232,8 +232,8 @@ test("add/remove product salesChannels", () => {
   const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
 
   // mock creation of ProductV1Product for Product_A and Product_B
-  let productA = mockCreateProduct("Product_A", 1);
-  let productB = mockCreateProduct("Product_B", 5);
+  let productA = mockCreateProduct(sellerId, "Product_A", 1);
+  let productB = mockCreateProduct(sellerId, "Product_B", 5);
 
   // Update the seller to create salesChannel deployments on product_A and _B
   updateSellerMetadata(1, "tests/metadata/seller-updated-1.json");
@@ -291,6 +291,7 @@ test("add/remove product salesChannels", () => {
 
   const offerId = 1;
   const offer = new Offer(offerId.toString());
+  offer.sellerId = BigInt.fromString(sellerId);
   offer.quantityAvailable = BigInt.fromI32(1);
   offer.metadataUri = metadataHash;
   offer.metadataHash = metadataHash;
@@ -299,7 +300,7 @@ test("add/remove product salesChannels", () => {
   const metadataId = getMetadataEntityId(offerId.toString());
   saveMetadata(offer, BigInt.fromI32(1651574093));
   const productId = getProductId(
-    offer.sellerId.toString(),
+    sellerId,
     productUuid,
     productVersion.toString()
   );

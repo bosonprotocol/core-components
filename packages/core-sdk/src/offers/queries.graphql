@@ -104,6 +104,9 @@ fragment BaseOfferFields on Offer {
     type
     image
     ... on ProductV1MetadataEntity {
+      productOverrides {
+        ...BaseProductV1ProductOverridesFields
+      }
       attributes {
         traitType
         value

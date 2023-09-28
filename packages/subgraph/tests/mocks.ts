@@ -860,10 +860,11 @@ export function createBuyerStruct(
 }
 
 export function mockCreateProduct(
+  sellerId: string,
   uuid: string,
   version: i32
 ): ProductV1Product {
-  const productId = getProductId("0", uuid, version.toString());
+  const productId = getProductId(sellerId, uuid, version.toString());
   const product = new ProductV1Product(productId);
   product.uuid = uuid;
   product.version = version;
