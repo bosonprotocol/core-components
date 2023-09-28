@@ -15,7 +15,7 @@ jest.setTimeout(60_000);
 const seedWallet = seedWallet18; // be sure the seedWallet is not used by another test (to allow concurrent run)
 
 describe("core-sdk-set-contract-uri", () => {
-  test.only("Set contract URI", async () => {
+  test("Set contract URI", async () => {
     const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
       seedWallet
     );

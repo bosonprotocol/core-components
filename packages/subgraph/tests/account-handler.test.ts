@@ -298,7 +298,11 @@ test("add/remove product salesChannels", () => {
 
   const metadataId = getMetadataEntityId(offerId.toString());
   saveMetadata(offer, BigInt.fromI32(1651574093));
-  const productId = getProductId(productUuid, productVersion.toString());
+  const productId = getProductId(
+    offer.sellerId.toString(),
+    productUuid,
+    productVersion.toString()
+  );
 
   const product = ProductV1Product.load(productId);
   assert.assertNotNull(product);

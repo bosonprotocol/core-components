@@ -22,7 +22,8 @@ import {
   wait,
   waitForGraphNodeIndexing
 } from "./utils";
-import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
+// import productV1ValidMinimalOffer from "../../packages/metadata/tests/product-v1/valid/minimalOffer.json";
+import productV1ValidMinimalOffer from "../../scripts/assets/offer_1.metadata.json";
 import { SEC_PER_DAY } from "@bosonprotocol/common/src/utils/timestamp";
 import { ProductV1MetadataEntity } from "../../packages/core-sdk/src/subgraph";
 import exchangePolicyRules from "../../packages/core-sdk/tests/exchangePolicy/exchangePolicyRules.local.json";
@@ -276,6 +277,113 @@ describe("ProductV1 e2e tests", () => {
         .contactPreference
     ).toBe("xmtp");
   });
+
+  describe("Seller Y reuses an existing product UUID", () => {
+    let coreSDK1: CoreSDK, coreSDK2: CoreSDK;
+    let sellerWallet1: Wallet, sellerWallet2: Wallet;
+    let offer1: subgraph.OfferFieldsFragment,
+      offer2: subgraph.OfferFieldsFragment;
+    let metadata1: productV1.ProductV1Metadata,
+      metadata2: productV1.ProductV1Metadata;
+    let productUuid1: string;
+
+    beforeEach(async () => {
+      ({ coreSDK: coreSDK1, fundedWallet: sellerWallet1 } =
+        await initCoreSDKWithFundedWallet(seedWallet));
+      ({ coreSDK: coreSDK2, fundedWallet: sellerWallet2 } =
+        await initCoreSDKWithFundedWallet(seedWallet));
+
+      metadata1 = mockProductV1Metadata("dummy");
+      productUuid1 = metadata1.product.uuid;
+      const { offerArgs: offerArgs1 } = await createOfferArgs(
+        coreSDK1,
+        metadata1
+      );
+      resolveDateValidity(offerArgs1);
+
+      offer1 = (await createOffer(
+        coreSDK1,
+        sellerWallet1,
+        offerArgs1
+      )) as subgraph.OfferFieldsFragment;
+      expect(offer1).toBeTruthy();
+      expect(
+        (offer1?.metadata as ProductV1MetadataEntity)?.product?.visuals_images
+          ?.length
+      ).toEqual(3);
+      expect(
+        (offer1?.metadata as ProductV1MetadataEntity)?.product?.visuals_images
+          ?.map((image) => image.url)
+          .sort()
+      ).toEqual(
+        metadata1.product.visuals_images.map((image) => image.url).sort()
+      );
+
+      metadata2 = mockProductV1Metadata("dummy", productUuid1, {
+        product: {
+          visuals_images: [
+            {
+              ...metadata1.product.visuals_images[0],
+              url: "ipfs://QmWJiZrvxs5Z8qXHZWqCvEbahQrfD7aca7x9iGPsa5iEBr",
+              width: 660,
+              height: 433
+            }
+          ]
+        }
+      });
+      const { offerArgs: offerArgs2 } = await createOfferArgs(
+        coreSDK2,
+        metadata2
+      );
+      resolveDateValidity(offerArgs2);
+
+      offer2 = (await createOffer(
+        coreSDK2,
+        sellerWallet2,
+        offerArgs2
+      )) as subgraph.OfferFieldsFragment;
+      expect(offer2).toBeTruthy();
+      expect(offer2?.id).not.toEqual(offer1?.id);
+      expect(
+        (offer2?.metadata as ProductV1MetadataEntity)?.product?.visuals_images
+          ?.length
+      ).toEqual(1);
+      expect(
+        (offer2?.metadata as ProductV1MetadataEntity)?.product?.visuals_images
+          ?.map((image) => image.url)
+          .sort()
+      ).toEqual(
+        metadata2.product.visuals_images.map((image) => image.url).sort()
+      );
+    });
+
+    test("Check the offer1 product metadata has NOT been overridden", async () => {
+      const offer1refresh = await coreSDK1.getOfferById(
+        (offer1 as subgraph.OfferFieldsFragment).id
+      );
+      expect(
+        (offer1refresh?.metadata as ProductV1MetadataEntity)?.product
+          ?.visuals_images?.length
+      ).toEqual(3);
+      expect(
+        (offer1?.metadata as ProductV1MetadataEntity)?.product?.visuals_images
+          ?.map((image) => image.url)
+          .sort()
+      ).toEqual(
+        metadata1.product.visuals_images.map((image) => image.url).sort()
+      );
+    });
+
+    test("Check the product metadata", async () => {
+      const products = await coreSDK1.getProductV1Products({
+        productsFilter: {
+          uuid: productUuid1,
+          sellerId_in: [offer1.seller.id, offer2.seller.id]
+        }
+      });
+      expect(products.length).toEqual(2);
+    });
+  });
 });
 
 describe("Multi-variant offers tests", () => {
@@ -409,7 +517,7 @@ describe("Multi-variant offers tests", () => {
   test("find all offers associated with a product", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
-    await ensureCreatedSeller(sellerWallet);
+    const [seller] = await ensureCreatedSeller(sellerWallet);
     const {
       offerArgs: [offerArgs1, offerArgs2],
       productUuid,
@@ -424,7 +532,10 @@ describe("Multi-variant offers tests", () => {
     // Look for ProductV1MetadataEntities, filtered per productUuid
     const metadataEntities = await coreSDK.getProductV1MetadataEntities({
       metadataFilter: {
-        productUuid
+        productUuid,
+        offer_: {
+          sellerId: seller.id
+        }
       }
     });
     expect(metadataEntities.length).toEqual(2);
@@ -454,7 +565,7 @@ describe("Multi-variant offers tests", () => {
   test("find all offers associated with a product - getProductWithVariants()", async () => {
     const { coreSDK, fundedWallet: sellerWallet } =
       await initCoreSDKWithFundedWallet(seedWallet);
-    await ensureCreatedSeller(sellerWallet);
+    const [seller] = await ensureCreatedSeller(sellerWallet);
     const {
       offerArgs: [offerArgs1, offerArgs2],
       productMetadata,
@@ -468,6 +579,7 @@ describe("Multi-variant offers tests", () => {
     ]);
 
     const productWithVariants = await coreSDK.getProductWithVariants(
+      seller.id,
       productUuid
     );
     expect(productWithVariants).toBeTruthy();
@@ -516,6 +628,7 @@ describe("Multi-variant offers tests", () => {
     expect(offer).toBeTruthy();
 
     const productWithVariants = await coreSDK.getProductWithVariants(
+      offer?.seller.id as string,
       productUuid
     );
     expect(productWithVariants).toBeTruthy();
@@ -570,6 +683,7 @@ describe("Multi-variant offers tests", () => {
     await waitForGraphNodeIndexing();
 
     const productWithVariants = await coreSDK.getProductWithVariants(
+      offer?.seller.id as string,
       productUuid
     );
     expect(productWithVariants).toBeTruthy();
@@ -1079,5 +1193,4 @@ describe("core-sdk-check-exchange-policy", () => {
     expect(result.errors[0].path).toEqual("metadata.exchangePolicy.template");
     expect(result.errors[0].value).toEqual("unfairExchangePolicy");
   });
-
 });

@@ -57,6 +57,7 @@ function removeSalesChannelDeployments(
 }
 
 function saveSalesChannelDeployments(
+  sellerId: string,
   salesChannelId: string,
   deployments: Array<TypedMap<string, JSONValue>>
 ): string[] {
@@ -71,7 +72,7 @@ function saveSalesChannelDeployments(
     if (product) {
       const uuid = convertToString(product.get("uuid"));
       const version = convertToInt(product.get("version"));
-      const productId = getProductId(uuid, version.toString());
+      const productId = getProductId(sellerId, uuid, version.toString());
       // Check the product exist, otherwise do not add the deployment
       const existingProduct = ProductV1Product.load(productId);
       if (!existingProduct) {
@@ -183,6 +184,7 @@ export function saveSalesChannels(
     const link = convertToString(salesChannel.get("link"));
     const deployments = convertToObjectArray(salesChannel.get("deployments"));
     const deploymentsId = saveSalesChannelDeployments(
+      sellerId,
       salesChannelId,
       deployments
     );

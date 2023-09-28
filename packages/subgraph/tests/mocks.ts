@@ -863,7 +863,7 @@ export function mockCreateProduct(
   uuid: string,
   version: i32
 ): ProductV1Product {
-  const productId = getProductId(uuid, version.toString());
+  const productId = getProductId("0", uuid, version.toString());
   const product = new ProductV1Product(productId);
   product.uuid = uuid;
   product.version = version;

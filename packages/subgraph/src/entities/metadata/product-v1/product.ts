@@ -19,8 +19,12 @@ import {
 } from "../../../utils/json";
 import { saveProductV1Medias } from "./media";
 
-export function getProductId(uuid: string, version: string): string {
-  return `${uuid}-${version}`;
+export function getProductId(
+  sellerId: string,
+  uuid: string,
+  version: string
+): string {
+  return `${sellerId}-${uuid}-${version}`;
 }
 
 export function getProductOverridesId(
@@ -263,7 +267,11 @@ function saveProductV1Product(
   variant: string | null,
   offer: Offer
 ): string {
-  const productId = getProductId(uuid, version.toString());
+  const productId = getProductId(
+    offer.sellerId.toString(),
+    uuid,
+    version.toString()
+  );
   let product = ProductV1Product.load(productId);
 
   if (!product) {
