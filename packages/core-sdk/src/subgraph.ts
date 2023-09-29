@@ -33333,6 +33333,71 @@ export type GetOffersQueryQuery = {
   }>;
 };
 
+export type GetOffersMediaQueryQueryVariables = Exact<{
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  exchangesSkip?: InputMaybe<Scalars["Int"]>;
+  exchangesFirst?: InputMaybe<Scalars["Int"]>;
+  exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
+  exchangesOrderDirection?: InputMaybe<OrderDirection>;
+  exchangesFilter?: InputMaybe<Exchange_Filter>;
+  includeExchanges?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetOffersMediaQueryQuery = {
+  __typename?: "Query";
+  offers: Array<{
+    __typename?: "Offer";
+    id: string;
+    metadata?:
+      | {
+          __typename?: "BaseMetadataEntity";
+          type: MetadataType;
+          animationUrl?: string | null;
+          image: string;
+        }
+      | {
+          __typename?: "ProductV1MetadataEntity";
+          type: MetadataType;
+          animationUrl?: string | null;
+          image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          } | null;
+          product: {
+            __typename?: "ProductV1Product";
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          };
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          };
+        }
+      | null;
+  }>;
+};
+
 export type OfferFieldsFragment = {
   __typename?: "Offer";
   id: string;
@@ -36163,6 +36228,59 @@ export const GetOffersQueryDocument = gql`
   }
   ${OfferFieldsFragmentDoc}
 `;
+export const GetOffersMediaQueryDocument = gql`
+  query getOffersMediaQuery(
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+  ) {
+    offers(
+      skip: $offersSkip
+      first: $offersFirst
+      orderBy: $offersOrderBy
+      orderDirection: $offersOrderDirection
+      where: $offersFilter
+    ) {
+      id
+      metadata {
+        type
+        animationUrl
+        image
+        ... on ProductV1MetadataEntity {
+          productOverrides {
+            visuals_images {
+              url
+            }
+            visuals_videos {
+              url
+            }
+          }
+          product {
+            visuals_images {
+              url
+            }
+            visuals_videos {
+              url
+            }
+          }
+          productV1Seller {
+            images {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -36566,6 +36684,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getOffersQuery",
+        "query"
+      );
+    },
+    getOffersMediaQuery(
+      variables?: GetOffersMediaQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetOffersMediaQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetOffersMediaQueryQuery>(
+            GetOffersMediaQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getOffersMediaQuery",
         "query"
       );
     }
