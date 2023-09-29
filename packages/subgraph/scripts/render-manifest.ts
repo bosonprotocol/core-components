@@ -57,7 +57,7 @@ const envNameToConfig: Record<
       startBlock: 34258150 // polygon, block num when protocol is deployed
     },
     "production-1-0": {
-      network: providers.getNetwork(chainId).name,
+      network: "mainnet",
       startBlock: 18240548 // ethereum, block num when protocol is deployed
     }
   }
