@@ -197,5 +197,40 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
         decimals: "6"
       }
     ]
+  ],
+  [
+    1,
+    [
+      {
+        symbol: "ETH",
+        name: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: "18"
+      },
+      {
+        symbol: "BOSON",
+        name: "Boson Token",
+        address: "0xC477D038d5420C6A9e0b031712f61c5120090de9",
+        decimals: "18"
+      },
+      {
+        symbol: "USDC",
+        name: "USDC",
+        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        decimals: "6"
+      },
+      {
+        symbol: "DAI",
+        name: "Dai Stablecoin",
+        address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        decimals: "18"
+      },
+      {
+        symbol: "USDT",
+        name: "Tether USD",
+        address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        decimals: "6"
+      }
+    ]
   ]
 ]);
