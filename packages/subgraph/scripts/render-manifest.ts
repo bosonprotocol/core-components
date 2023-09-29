@@ -58,7 +58,7 @@ const envNameToConfig: Record<
     },
     "production-1-0": {
       network: providers.getNetwork(chainId).name,
-      startBlock: 99999999999999 //TODO:  ethereum, block num when protocol is deployed
+      startBlock: 18240548 // ethereum, block num when protocol is deployed
     }
   }
 };
