@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.23.0...@bosonprotocol/common@1.23.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure pin-to-pinata is working on production ([#577](https://github.com/bosonprotocol/core-components/issues/577)) ([713873b](https://github.com/bosonprotocol/core-components/commit/713873bbcc0c74e0e6adf64f9c55f9cccdff72cb))
+
+
+
+
+
 # [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.4...@bosonprotocol/common@1.23.0) (2023-09-27)
 
 

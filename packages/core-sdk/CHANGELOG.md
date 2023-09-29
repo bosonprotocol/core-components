@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.30.0...@bosonprotocol/core-sdk@1.31.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure pin-to-pinata is working on production ([#577](https://github.com/bosonprotocol/core-components/issues/577)) ([713873b](https://github.com/bosonprotocol/core-components/commit/713873bbcc0c74e0e6adf64f9c55f9cccdff72cb))
+* fix product metadata hack ([#575](https://github.com/bosonprotocol/core-components/issues/575)) ([8df4a08](https://github.com/bosonprotocol/core-components/commit/8df4a088136071fc02ab205b8a527b4fff67665e))
+
+
+### Features
+
+* add productOverrides to queries ([#576](https://github.com/bosonprotocol/core-components/issues/576)) ([7ef7d7b](https://github.com/bosonprotocol/core-components/commit/7ef7d7b679b21cfa95aae1ec9d8f0a18604403c3))
+
+
+
+
+
 # [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.29.0...@bosonprotocol/core-sdk@1.30.0) (2023-09-27)
 
 

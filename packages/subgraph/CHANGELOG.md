@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.27.0...@bosonprotocol/subgraph@1.28.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure identification of ProductV1ProductOverrides is correct ([#574](https://github.com/bosonprotocol/core-components/issues/574)) ([30cb56d](https://github.com/bosonprotocol/core-components/commit/30cb56d980c169cb4c01952670f7d1863fec67b0))
+* fix product metadata hack ([#575](https://github.com/bosonprotocol/core-components/issues/575)) ([8df4a08](https://github.com/bosonprotocol/core-components/commit/8df4a088136071fc02ab205b8a527b4fff67665e))
+
+
+### Features
+
+* add productOverrides to queries ([#576](https://github.com/bosonprotocol/core-components/issues/576)) ([7ef7d7b](https://github.com/bosonprotocol/core-components/commit/7ef7d7b679b21cfa95aae1ec9d8f0a18604403c3))
+
+
+
+
+
 # [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.26.0...@bosonprotocol/subgraph@1.27.0) (2023-09-27)
 
 
