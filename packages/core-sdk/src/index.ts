@@ -31,6 +31,7 @@ export {
   AnyMetadata,
   OfferOrSellerMetadata,
   validateMetadata,
+  METADATA_LENGTH_LIMIT,
   base,
   productV1
 } from "@bosonprotocol/metadata";

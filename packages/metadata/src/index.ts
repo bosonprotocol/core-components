@@ -17,7 +17,7 @@ export interface MetadataStorage {
   storeMetadata(metadata: OfferOrSellerMetadata): Promise<string>;
 }
 
-export const METADATA_LENGTH_LIMIT = 2048;
+const METADATA_LENGTH_LIMIT = 2048;
 function validateIpfsLimits(
   metadata: Record<string, unknown>
 ): string | undefined {
@@ -81,4 +81,4 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
   }
 }
 
-export { validateMetadata, base, productV1, seller };
+export { validateMetadata, base, productV1, seller, METADATA_LENGTH_LIMIT };
