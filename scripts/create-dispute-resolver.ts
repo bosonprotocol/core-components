@@ -42,8 +42,14 @@ async function main() {
   const [disputeResolverAdminPrivateKey] = program.args;
 
   const opts = program.opts();
-  const escalationResponsePeriodInMS =
-    opts.escalationResponsePeriod || 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+  const escalationResponsePeriodInMS = opts.escalationPeriod
+    ? parseInt(opts.escalationPeriod)
+    : 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+  if (isNaN(escalationResponsePeriodInMS)) {
+    throw new Error(
+      `Escalation Period ('${opts.escalationPeriod}') must be a number`
+    );
+  }
   const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
   const assistant = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
@@ -74,7 +80,7 @@ async function main() {
   });
 
   console.log(
-    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId} (protocol address: ${defaultConfig.contracts.protocolDiamond})...`
+    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId} (protocol address: ${defaultConfig.contracts.protocolDiamond}) with escalationPeriod ${escalationResponsePeriodInMS}...`
   );
   if (opts.dryRun) {
     console.log("Done (dry run).");
