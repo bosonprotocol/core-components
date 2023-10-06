@@ -11,23 +11,25 @@ import ConvertionRateContext, {
 } from "./ConvertionRateContext";
 import { useUniswapPools } from "./useUniswapPools";
 import { handleRates } from "./utils";
+import { useConfigContext } from "../../../config/ConfigContext";
 
 export interface ConvertionRateProviderProps {
   children: React.ReactNode;
-  tokensList: string;
 }
 export default function ConvertionRateProvider({
-  children,
-  tokensList
+  children
 }: ConvertionRateProviderProps) {
-  const defaultTokens = getDefaultTokens(tokensList);
+  const { config } = useConfigContext();
+  const defaultTokens = config?.defaultTokens;
   const [store, setStore] = useState(initalState.store);
   const { data: tokens, isLoading: isTokensLoading } = useTokens({
-    enabled: defaultTokens.length > 0
+    enabled: !!defaultTokens && defaultTokens.length > 0
   });
   const appTokens = useMemo(
     () =>
-      defaultTokens.length > 0 ? defaultTokens : ((tokens || []) as Token[]),
+      !!defaultTokens && defaultTokens.length > 0
+        ? defaultTokens
+        : ((tokens || []) as Token[]),
     [tokens, defaultTokens]
   );
 

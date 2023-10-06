@@ -5,7 +5,7 @@ import { useEthersSigner } from "./ethers/useEthersSigner";
 import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
 
 export function useCoreSDKWithContext() {
-  const { envName, configId, tokens, metaTx } = useEnvContext();
+  const { envName, configId, metaTx } = useEnvContext();
   const signer = useEthersSigner();
   const defaultConfig = getEnvConfigById(envName, configId);
 
@@ -18,7 +18,7 @@ export function useCoreSDKWithContext() {
       apiKey: metaTx?.apiKey,
       apiIds: getMetaTxApiIds(
         defaultConfig.contracts.protocolDiamond,
-        tokens,
+        defaultConfig.defaultTokens || [],
         metaTx?.apiIds
       )
     }

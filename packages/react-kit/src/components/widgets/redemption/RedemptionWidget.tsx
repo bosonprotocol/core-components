@@ -76,7 +76,6 @@ export function RedemptionWidget(props: WidgetProps) {
         envName={props.envName}
         configId={props.configId}
         metaTx={props.metaTx}
-        tokensList={props.tokensList}
       >
         {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
@@ -89,7 +88,7 @@ export function RedemptionWidget(props: WidgetProps) {
             >
               <ChatProvider>
                 <IpfsProvider {...props}>
-                  <ConvertionRateProvider tokensList={props.tokensList}>
+                  <ConvertionRateProvider>
                     <ModalProvider>
                       <RedeemModalWithExchange
                         {...props}
