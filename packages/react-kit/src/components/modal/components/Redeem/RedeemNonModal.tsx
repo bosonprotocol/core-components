@@ -43,6 +43,7 @@ import Grid from "../../../ui/Grid";
 import Typography from "../../../ui/Typography";
 import ConnectButton from "../../../wallet/ConnectButton";
 import { BosonFooter } from "./BosonFooter";
+import { useConfigContext } from "../../../config/ConfigContext";
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -69,7 +70,6 @@ export enum RedemptionBypassMode {
 export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
   raiseDisputeForExchangeUrl: string;
   bypassMode?: RedemptionBypassMode;
   hideModal?: NonModalProps["hideModal"];
@@ -92,7 +92,6 @@ export type RedeemNonModalProps = {
 export default function RedeemNonModal({
   exchange: selectedExchange,
   fairExchangePolicyRules,
-  defaultDisputeResolverId,
   raiseDisputeForExchangeUrl,
   bypassMode,
   hideModal,
@@ -166,11 +165,13 @@ export default function RedeemNonModal({
   const {
     store: { tokens: defaultTokens }
   } = useConvertionRate();
+  const { config: coreConfig } = useConfigContext();
+  const defaultDisputeResolverId = coreConfig?.defaultDisputeResolverId;
 
   const exchangePolicyCheckResult = useCheckExchangePolicy({
     offerId: exchange?.offer?.id,
     fairExchangePolicyRules,
-    defaultDisputeResolverId,
+    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
     defaultTokens: defaultTokens || []
   });
 

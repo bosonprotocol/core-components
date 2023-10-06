@@ -29,8 +29,6 @@ export const Redemption: ComponentStory<typeof RedemptionWidget> =
 
 const envName =
   (process.env.STORYBOOK_DATA_ENV_NAME as EnvironmentType) || "testing";
-const defaultDisputeResolverId =
-  envName === "testing" ? "13" : envName === "staging" ? "2" : "1";
 const envConfig = getEnvConfigs(envName);
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Redemption.args = {
@@ -43,7 +41,6 @@ Redemption.args = {
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
     "ipfs://QmV3Wy2wmrFdEXzhyhvvaW25Q8w2wTd2UypFVyhwsdBE8T",
-  defaultDisputeResolverId,
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
