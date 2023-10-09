@@ -5,14 +5,14 @@ import { useEnvContext } from "../../environment/EnvironmentContext";
 
 import { Context } from "./ChatContext";
 import { getChatEnvName } from "./const";
-import { useEthersSigner } from "../../../hooks/ethers/useEthersSigner";
+import { useSigner } from "hooks/connection/connection";
 
 interface Props {
   children: ReactNode;
 }
 
 export default function ChatProvider({ children }: Props) {
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();

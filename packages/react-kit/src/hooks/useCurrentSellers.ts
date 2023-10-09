@@ -2,7 +2,7 @@ import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import { AuthTokenType } from "..";
 import { Profile } from "../lib/lens/generated";
 import { getLensTokenIdDecimal, getLensTokenIdHex } from "../lib/lens/profile";

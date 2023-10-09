@@ -1,31 +1,29 @@
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import { ArrowLeft } from "phosphor-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Exchange } from "../../../../../../types/exchange";
 import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
-import ConnectButton from "../../../../../wallet/ConnectButton";
-import { BosonFooter } from "../../BosonFooter";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
-import NonModal, { NonModalProps } from "../../../../NonModal";
+import { useNonModalContext } from "../../../../nonModal/NonModal";
+import { theme } from "theme";
 
+const colors = theme.colors.light;
 export interface CancellationViewProps {
   exchange: Exchange | null;
   onBackClick: CancelExchangeProps["onBackClick"];
   onSuccess: CancelExchangeProps["onSuccess"];
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export const CancellationView: React.FC<CancellationViewProps> = ({
   exchange,
-  onBackClick,
-  nonModalProps
+  onBackClick
 }) => {
   const { address } = useAccount();
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
           <Grid gap="1rem">
             <ArrowLeft
@@ -36,12 +34,17 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
             <Typography tag="h3" style={{ flex: "1 1" }}>
               Cancel exchange
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+  return (
+    <>
       {!exchange ? (
         <p>Exchange could not be retrieved.</p>
       ) : exchange.buyer?.wallet?.toLowerCase() !== address?.toLowerCase() ? (
@@ -55,6 +58,6 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
           onSuccess={onBackClick}
         />
       )}
-    </NonModal>
+    </>
   );
 };

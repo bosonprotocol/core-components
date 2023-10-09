@@ -1,8 +1,7 @@
 import React from "react";
 import { Image as AccountImage } from "@davatar/react";
 import styled, { css } from "styled-components";
-import { useAccount } from "wagmi";
-
+import { useAccount } from "hooks/connection/connection";
 import Grid, { IGrid } from "../../components/ui/Grid";
 import { theme } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";

@@ -1,42 +1,44 @@
-import { useAccount } from "wagmi";
-import React from "react";
-import Grid from "../../../../ui/Grid";
+import { useAccount } from "hooks/connection/connection";
+import React, { useEffect } from "react";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
 import RedeemForm from "./RedeemForm";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
+import { theme } from "../../../../../theme";
+
+const colors = theme.colors.light;
 
 interface Props {
   exchange: Exchange | null;
   isValid: boolean;
   onNextClick: () => void;
   onBackClick: () => void;
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export default function RedeemFormView({
   exchange,
   isValid,
   onNextClick,
-  onBackClick,
-  nonModalProps
+  onBackClick
 }: Props) {
   const { address } = useAccount();
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+  }, [dispatch]);
+  return (
+    <>
       {!exchange ? (
         <p>Exchange could not be retrieved.</p>
       ) : exchange.buyer?.wallet?.toLowerCase() !== address?.toLowerCase() ? (
@@ -50,6 +52,6 @@ export default function RedeemFormView({
           onBackClick={onBackClick}
         />
       )}
-    </NonModal>
+    </>
   );
 }

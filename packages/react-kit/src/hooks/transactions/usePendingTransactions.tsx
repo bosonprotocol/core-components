@@ -1,6 +1,6 @@
 import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
 import { useCallback } from "react";
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import create from "zustand";
 import { EventLog } from "../../types/transactions";
 

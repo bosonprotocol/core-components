@@ -1,14 +1,17 @@
-import React, { CSSProperties } from "react";
-import { X } from "phosphor-react";
+import React, {
+  useContext,
+  CSSProperties,
+  useReducer,
+  createContext
+} from "react";
+import { theme } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-import { theme } from "../../theme";
-import { Store } from "./ModalContext";
-import Typography from "../ui/Typography";
-import ThemedButton from "../ui/ThemedButton";
-import { breakpoint } from "../../lib/ui/breakpoint";
-import { zIndex } from "../ui/zIndex";
+import { zIndex } from "components/ui/zIndex";
+import { breakpoint } from "lib/ui/breakpoint";
+import Header from "./Header";
+import { Store } from "../ModalContext";
 
 const colors = theme.colors.light;
 const Root = styled.div`
@@ -155,32 +158,8 @@ const Wrapper = styled.div<{
     `};
 `;
 
-const Header = styled(Typography)<{ $title?: string }>`
-  position: relative;
-
-  text-align: left;
-  padding: 1rem 2rem;
-  display: flex;
-  border-bottom: 2px solid ${colors.border};
-  align-items: center;
-  justify-content: ${(props) => {
-    return props.$title ? "space-between" : "flex-end";
-  }};
-  gap: 0.5rem;
-`;
-
 const FooterWrapper = styled.div`
   border-top: 2px solid ${colors.border};
-`;
-
-const HeaderWithTitle = styled(Header)`
-  height: 4.25rem;
-`;
-
-const Close = styled(X)`
-  line {
-    stroke: ${colors.darkGrey};
-  }
 `;
 
 const Content = styled.div<{
@@ -189,9 +168,38 @@ const Content = styled.div<{
   padding: 2rem;
 `;
 
+export enum ActionKind {
+  HEADER = "HEADER",
+  CONTENT_STYLE = "CONTENT_STYLE"
+}
+
+type Action = {
+  payload: State;
+};
+
+type State = Pick<NonModalProps, "headerComponent" | "contentStyle">;
+
+const reducer = (state: State, action: Action): State => {
+  const { payload } = action;
+  return {
+    ...state,
+    ...payload
+  };
+};
+
+const NonModalContext = createContext<React.Dispatch<Action> | undefined>(
+  undefined
+);
+export const useNonModalContext = () => {
+  const context = useContext(NonModalContext);
+  if (!context) {
+    throw new Error("useNonModalContext must be used within NonModalContext");
+  }
+  return context;
+};
+
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
-  title?: string;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;
@@ -205,13 +213,12 @@ export default function NonModal({
   children,
   props: {
     hideModal,
-    title = "",
-    headerComponent: HeaderComponent,
+    headerComponent,
     footerComponent: FooterComponent,
     size = "auto",
     maxWidths = null,
     theme = "light",
-    contentStyle,
+    contentStyle: _contentStyle,
     closable = true
   }
 }: {
@@ -223,30 +230,25 @@ export default function NonModal({
       hideModal();
     }
   };
+  const [{ headerComponent: HeaderComponent, contentStyle }, dispatch] =
+    useReducer(reducer, {
+      headerComponent,
+      contentStyle: _contentStyle
+    });
+
   return (
     <Root data-testid="modal">
       <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
-        {HeaderComponent ? (
-          <Header tag="div" margin="0">
-            {HeaderComponent}
-            {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                <Close size={32} />
-              </ThemedButton>
-            )}
-          </Header>
-        ) : (
-          <HeaderWithTitle tag="h3" $title={title} margin="0">
-            {title}
-            {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                <Close size={32} />
-              </ThemedButton>
-            )}
-          </HeaderWithTitle>
-        )}
+        <Header
+          HeaderComponent={HeaderComponent}
+          closable={closable}
+          handleOnClose={handleOnClose}
+        />
+
         <Content $size={size} style={contentStyle}>
-          {children}
+          <NonModalContext.Provider value={dispatch}>
+            {children}
+          </NonModalContext.Provider>
         </Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>

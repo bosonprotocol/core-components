@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
-import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
 import Grid from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import NonModal, { NonModalProps } from "../../../NonModal";
-import { BosonFooter } from "../BosonFooter";
-import ConnectButton from "../../../../wallet/ConnectButton";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
+import { theme } from "theme";
 
 const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`
@@ -45,23 +43,27 @@ const StyledCommitStepWrapper = styled(CommitStepWrapper)`
 
 interface Props {
   onNextClick: () => void;
-  nonModalProps: Partial<NonModalProps>;
 }
 
-export default function StepsOverview({ onNextClick, nonModalProps }: Props) {
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+export default function StepsOverview({ onNextClick }: Props) {
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+  }, [dispatch]);
+
+  return (
+    <>
       <StyledCommitStepWrapper>
         <CommitStep>
           <Step number={1} title="Provide your address">
@@ -93,6 +95,6 @@ export default function StepsOverview({ onNextClick, nonModalProps }: Props) {
           Next
         </Button>
       </Grid>
-    </NonModal>
+    </>
   );
 }

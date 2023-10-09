@@ -1,23 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
-import { BosonFooter } from "../BosonFooter";
 import { offers } from "@bosonprotocol/core-sdk";
 import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
+import { theme } from "theme";
 
+const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
   onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export function ExchangePolicy({
@@ -25,14 +24,13 @@ export function ExchangePolicy({
   exchange,
   onContractualAgreementClick,
   onLicenseAgreementClick,
-  exchangePolicyCheckResult,
-  nonModalProps
+  exchangePolicyCheckResult
 }: Props) {
   const exchangeName = exchange?.offer.metadata.name || "";
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
           <Grid gap="1rem">
             <ArrowLeft
@@ -43,12 +41,17 @@ export function ExchangePolicy({
             <Typography tag="h3" style={{ flex: "1 1" }}>
               {exchangeName}
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, exchangeName]);
+  return (
+    <>
       {exchange ? (
         <ExchangePolicyDetails
           exchange={exchange}
@@ -59,6 +62,6 @@ export function ExchangePolicy({
       ) : (
         <p>Exchange could not be retrieved</p>
       )}
-    </NonModal>
+    </>
   );
 }

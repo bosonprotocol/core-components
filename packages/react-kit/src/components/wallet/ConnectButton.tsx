@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode, createContext, useMemo } from "react";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import * as Sentry from "@sentry/browser";
 import styled from "styled-components";
@@ -10,6 +10,39 @@ import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
 import { Wallet } from "phosphor-react";
+import { MagicLoginButton } from "components/magicLink/Login";
+import { useAccount, useChainId } from "hooks/connection/connection";
+import { useIsMagicLoggedIn } from "hooks/magic";
+import { useDisconnect } from "hooks/connection/useDisconnect";
+
+const InnerContext = createContext<{
+  isMagicLoggedIn: boolean | undefined;
+  chainId: number | undefined;
+  globalAccount: string | undefined;
+  disconnect: () => void;
+}>({
+  isMagicLoggedIn: undefined,
+  chainId: undefined,
+  globalAccount: undefined,
+  disconnect: () => null
+});
+const InnerProvider = ({ children }: { children: ReactNode }) => {
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+  const chainId = useChainId();
+  const { address: globalAccount } = useAccount();
+  const disconnect = useDisconnect();
+  const value = useMemo(() => {
+    return {
+      isMagicLoggedIn,
+      chainId,
+      globalAccount,
+      disconnect
+    };
+  }, [isMagicLoggedIn, chainId, globalAccount, disconnect]);
+  return (
+    <InnerContext.Provider value={value}>{children}</InnerContext.Provider>
+  );
+};
 
 const MetaMaskLogo = styled.img`
   height: 15px;
@@ -60,112 +93,134 @@ export default function ConnectButton({
             style={{ display: "flex", gap: 12, padding: "10px 0" }}
             {...rest}
           >
-            {(() => {
-              <div
-                {...(!mounted && {
-                  "aria-hidden": true,
-                  style: {
-                    opacity: 0,
-                    pointerEvents: "none",
-                    userSelect: "none"
-                  }
-                })}
-                style={{ display: "flex" }}
-              ></div>;
-              if (!mounted || !account || !chain) {
-                // reset the tag o undefined
-                saveItemInStorage("isChainUnsupported", true);
-                Sentry.setTag("wallet_address", undefined);
+            <InnerProvider>
+              <InnerContext.Consumer>
+                {({ isMagicLoggedIn, chainId, globalAccount, disconnect }) => {
+                  return (() => {
+                    if (
+                      !mounted ||
+                      !globalAccount ||
+                      (!chainId && !isMagicLoggedIn)
+                    ) {
+                      // reset the tag o undefined
+                      saveItemInStorage("isChainUnsupported", true);
+                      Sentry.setTag("wallet_address", undefined);
 
-                return (
-                  <Button
-                    onClick={() => {
-                      saveItemInStorage("isConnectWalletFromCommit", false);
-                      openConnectModal();
-                    }}
-                    size={isLteXS ? "small" : "regular"}
-                    variant="primaryFill"
-                    style={{
-                      whiteSpace: "pre",
-                      ...buttonPropsWhenSideBar,
-                      color: "inherit"
-                    }}
-                  >
-                    Connect Wallet
-                    {!isLteXS && <MetaMaskLogo src={metamaskLogo} />}
-                  </Button>
-                );
-              }
+                      return (
+                        <>
+                          <MagicLoginButton />
+                          <Button
+                            onClick={() => {
+                              saveItemInStorage(
+                                "isConnectWalletFromCommit",
+                                false
+                              );
+                              openConnectModal();
+                            }}
+                            size={isLteXS ? "small" : "regular"}
+                            variant="primaryFill"
+                            style={{
+                              whiteSpace: "pre",
+                              ...buttonPropsWhenSideBar,
+                              color: "inherit"
+                            }}
+                          >
+                            Connect Wallet
+                            {!isLteXS && <MetaMaskLogo src={metamaskLogo} />}
+                          </Button>
+                        </>
+                      );
+                    }
 
-              if (chain.unsupported) {
-                saveItemInStorage("isChainUnsupported", true);
-                return (
-                  <ThemedButton
-                    onClick={openChainModal}
-                    theme="warning"
-                    size={isLteXS ? "small" : "regular"}
-                    style={{
-                      whiteSpace: "pre",
-                      ...buttonPropsWhenSideBar,
-                      color: "inherit"
-                    }}
-                  >
-                    Wrong network
-                  </ThemedButton>
-                );
-              }
-              saveItemInStorage("isChainUnsupported", false);
-              return (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    ...(justifyContent && { justifyContent }),
-                    ...(width && { width })
-                  }}
-                >
-                  {showChangeWallet && (
-                    <Wallet
-                      style={{ cursor: "pointer", height: "100%" }}
-                      size={32}
-                      onClick={async () => {
-                        try {
-                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                          await (window as any).ethereum?.request({
-                            method: "wallet_requestPermissions",
-                            params: [
-                              {
-                                eth_accounts: {}
+                    if (chain?.unsupported) {
+                      saveItemInStorage("isChainUnsupported", true);
+                      return (
+                        <ThemedButton
+                          onClick={openChainModal}
+                          theme="warning"
+                          size={isLteXS ? "small" : "regular"}
+                          style={{
+                            whiteSpace: "pre",
+                            ...buttonPropsWhenSideBar,
+                            color: "inherit"
+                          }}
+                        >
+                          Wrong network
+                        </ThemedButton>
+                      );
+                    }
+                    saveItemInStorage("isChainUnsupported", false);
+                    return (
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 12,
+                          ...(justifyContent && {
+                            justifyContent
+                          }),
+                          ...(width && { width })
+                        }}
+                      >
+                        {showChangeWallet && !isMagicLoggedIn && (
+                          <Wallet
+                            style={{
+                              cursor: "pointer",
+                              height: "100%"
+                            }}
+                            size={32}
+                            onClick={async () => {
+                              try {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                await (window as any).ethereum?.request({
+                                  method: "wallet_requestPermissions",
+                                  params: [
+                                    {
+                                      eth_accounts: {}
+                                    }
+                                  ]
+                                });
+                              } catch (error) {
+                                console.error(error);
                               }
-                            ]
-                          });
-                        } catch (error) {
-                          console.error(error);
-                        }
-                      }}
-                    />
-                  )}
-                  <ThemedButton
-                    onClick={openAccountModal}
-                    theme="outline"
-                    size={isLteXS ? "small" : "regular"}
-                    style={{
-                      whiteSpace: "pre",
-                      ...buttonPropsWhenSideBar,
-                      color: "inherit",
-                      ...(!showAddress && { borderColor: "transparent" })
-                    }}
-                  >
-                    {account.ensAvatar ? (
-                      <ENSAvatar src={account.ensAvatar} />
-                    ) : (
-                      <FallbackAvatar address={account.address} size={18} />
-                    )}
-                    {showAddress && account.displayName}
-                  </ThemedButton>
-                </div>
-              );
-            })()}
+                            }}
+                          />
+                        )}
+                        <ThemedButton
+                          onClick={openAccountModal}
+                          theme="outline"
+                          size={isLteXS ? "small" : "regular"}
+                          style={{
+                            whiteSpace: "pre",
+                            ...buttonPropsWhenSideBar,
+                            color: "inherit",
+                            ...(!showAddress && {
+                              borderColor: "transparent"
+                            })
+                          }}
+                        >
+                          {account?.ensAvatar ? (
+                            <ENSAvatar src={account.ensAvatar} />
+                          ) : (
+                            <FallbackAvatar
+                              address={globalAccount ?? account?.address}
+                              size={18}
+                            />
+                          )}
+                          {showAddress && account?.displayName}
+                        </ThemedButton>
+                        <ThemedButton
+                          theme="outline"
+                          size={isLteXS ? "small" : "regular"}
+                          onClick={disconnect}
+                        >
+                          Disconnect
+                        </ThemedButton>
+                      </div>
+                    );
+                  })();
+                }}
+              </InnerContext.Consumer>
+            </InnerProvider>
           </div>
         );
       }}

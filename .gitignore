@@ -13,6 +13,7 @@ dist/**
 .next/**
 generated
 *.log
+.DS_Store
 
 # yarn
 .pnp.*

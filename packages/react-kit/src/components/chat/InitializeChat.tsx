@@ -1,8 +1,7 @@
 import React from "react";
 import { ChatDots, Warning } from "phosphor-react";
 import styled from "styled-components";
-import { useAccount } from "wagmi";
-
+import { useAccount } from "hooks/connection/connection";
 import Grid from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";

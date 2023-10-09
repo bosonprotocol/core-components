@@ -16,13 +16,13 @@ import {
   ConfigProviderProps
 } from "../../config/ConfigProvider";
 import ChatProvider from "../../chat/ChatProvider/ChatProvider";
-import { useExchanges } from "../../../hooks/useExchanges";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
-import RedeemNonModal, {
-  RedeemNonModalProps
-} from "../../modal/components/Redeem/RedeemNonModal";
+import { RedeemNonModalProps } from "../../modal/components/Redeem/RedeemNonModal";
+import { MagicProvider } from "components/magicLink/MagicContext";
+import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
+import { CONFIG } from "lib/config/config";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -35,7 +35,7 @@ type RedemptionProps = {
 
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
-  ConfigProviderProps &
+  Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;
@@ -47,31 +47,11 @@ const queryClient = new QueryClient({
   }
 });
 
-function WithExchange(
-  WrappedComponent: React.ComponentType<RedeemNonModalProps>
-) {
-  const ComponentWithExchange = (
-    props: Omit<RedeemNonModalProps, "exchange"> & { exchangeId?: string }
-  ) => {
-    const { data: exchanges } = useExchanges(
-      {
-        id: props.exchangeId
-      },
-      {
-        enabled: !!props.exchangeId
-      }
-    );
-    const exchange = exchanges?.[0];
-    return <WrappedComponent {...props} exchange={exchange} />;
-  };
-  return ComponentWithExchange;
-}
-
-const RedeemModalWithExchange = WithExchange(RedeemNonModal);
+const { infuraKey, magicLinkKey } = CONFIG;
 
 export function RedemptionWidget(props: WidgetProps) {
   return (
-    <div style={{ margin: props.modalMargin || "0 0 0 0" }}>
+    <div style={{ margin: props.modalMargin || "0" }}>
       <EnvironmentProvider
         envName={props.envName}
         configId={props.configId}
@@ -81,25 +61,31 @@ export function RedemptionWidget(props: WidgetProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
         <GlobalStyle />
-        <ConfigProvider {...props}>
-          <QueryClientProvider client={queryClient}>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
-            >
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>
-                      <RedeemModalWithExchange
-                        {...props}
-                        hideModal={props.closeWidgetClick}
-                      />
-                    </ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </WalletConnectionProvider>
-          </QueryClientProvider>
+        <ConfigProvider
+          magicLinkKey={magicLinkKey}
+          infuraKey={infuraKey}
+          {...props}
+        >
+          <MagicProvider>
+            <QueryClientProvider client={queryClient}>
+              <WalletConnectionProvider
+                walletConnectProjectId={props.walletConnectProjectId}
+              >
+                <ChatProvider>
+                  <IpfsProvider {...props}>
+                    <ConvertionRateProvider>
+                      <ModalProvider>
+                        <RedeemModalWithExchange
+                          {...props}
+                          hideModal={props.closeWidgetClick}
+                        />
+                      </ModalProvider>
+                    </ConvertionRateProvider>
+                  </IpfsProvider>
+                </ChatProvider>
+              </WalletConnectionProvider>
+            </QueryClientProvider>
+          </MagicProvider>
         </ConfigProvider>
       </EnvironmentProvider>
     </div>
