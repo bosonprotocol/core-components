@@ -32,7 +32,7 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
-import { useEthersSigner } from "../../../../../hooks/ethers/useEthersSigner";
+import { useSigner } from "hooks/connection/connection";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -86,7 +86,7 @@ export default function Confirmation({
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const { values } = useFormikContext<FormType>();
   const [nameField] = useField(FormModel.formFields.name.name);
   const [streetNameAndNumberField] = useField(

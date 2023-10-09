@@ -22,7 +22,7 @@ import Grid from "../../../../../ui/Grid";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import DetailTable from "../detail/DetailTable";
-import { useEthersSigner } from "../../../../../../hooks/ethers/useEthersSigner";
+import { useSigner } from "hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -94,7 +94,7 @@ export function CancelExchange({
   const coreSDK = useCoreSDKWithContext();
 
   const addPendingTransaction = useAddPendingTransactionWithContext();
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const { envName, configId } = useEnvContext();
   const { currency, price, penalty, refund } = useRefundData(
     exchange,

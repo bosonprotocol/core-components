@@ -2,7 +2,7 @@ import React from "react";
 
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
-import { useAccount } from "hooks/connection/connection";
+import { useAccount, useSigner } from "hooks/connection/connection";
 import { useBalance } from "wagmi";
 
 import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
@@ -23,7 +23,6 @@ import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { useEthersSigner } from "../../../../hooks/ethers/useEthersSigner";
 
 interface Props {
   protocolBalance: string;
@@ -51,7 +50,7 @@ export default function FinanceDeposit({
   const [isDepositInvalid, setIsDepositInvalid] = useState<boolean>(true);
   const [depositError, setDepositError] = useState<unknown>(null);
 
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const { address } = useAccount();
 
   const { data: dataBalance, refetch } = useBalance(
