@@ -54,7 +54,8 @@ Redemption.args = {
   },
   modalMargin: "2%",
   bypassMode: RedemptionBypassMode.NORMAL,
-  forcedAccount: ""
+  forcedAccount: "",
+  sellerIds: undefined
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

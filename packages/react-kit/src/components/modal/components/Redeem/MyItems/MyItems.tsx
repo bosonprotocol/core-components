@@ -25,6 +25,7 @@ export type MyItemsProps = {
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
   nonModalProps: Partial<NonModalProps>;
+  sellerIds?: string[];
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -35,7 +36,8 @@ export function MyItems({
   onCancelExchange,
   onRaiseDisputeClick,
   onAvatarClick,
-  nonModalProps
+  nonModalProps,
+  sellerIds
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
@@ -93,6 +95,7 @@ export function MyItems({
 
                 <ExchangesWithData
                   buyerId={buyerId}
+                  sellerIds={sellerIds}
                   {...values}
                   onCardClick={onExchangeCardClick}
                   onRedeemClick={onRedeemClick}

@@ -68,6 +68,7 @@ export enum RedemptionBypassMode {
 }
 
 export type RedeemNonModalProps = {
+  sellerIds?: string[];
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   raiseDisputeForExchangeUrl: string;
@@ -90,6 +91,7 @@ export type RedeemNonModalProps = {
   forcedAccount?: string;
 };
 export default function RedeemNonModal({
+  sellerIds,
   exchange: selectedExchange,
   fairExchangePolicyRules,
   raiseDisputeForExchangeUrl,
@@ -326,6 +328,7 @@ export default function RedeemNonModal({
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
                   nonModalProps={nonModalProps}
+                  sellerIds={sellerIds}
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
