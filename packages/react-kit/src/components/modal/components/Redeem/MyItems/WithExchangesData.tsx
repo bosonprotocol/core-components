@@ -37,22 +37,30 @@ export interface ExchangesStates {
 }
 interface WithExchangesProps extends CommonProps, ExchangesStates {
   buyerId: string;
+  sellerIds?: string[];
 }
 export function WithExchangesData(
   WrappedComponent: React.ComponentType<WrappedComponentProps>
 ) {
   const ComponentWithExchangesData = (props: WithExchangesProps) => {
-    const { buyerId, committed, redeemed, disputed, completed } = props;
+    const { buyerId, committed, redeemed, disputed, completed, sellerIds } = props;
     const { enableCurationLists, offerCurationList, sellerCurationList } =
       useCurationLists();
+    const seller_in = sellerIds
+      ? enableCurationLists && sellerCurationList
+        ? sellerIds.filter((s) => sellerCurationList?.includes(s))
+        : sellerIds
+      : enableCurationLists
+      ? sellerCurationList
+      : undefined;
     const committedExchanges = useExchanges(
       {
         ...orderProps,
         state: ExchangeState.Committed,
         buyer: buyerId,
+        seller_in,
         ...(enableCurationLists && {
-          offer_in: offerCurationList,
-          seller_in: sellerCurationList
+          offer_in: offerCurationList
         })
       },
       { enabled: !!buyerId && committed }
@@ -62,9 +70,9 @@ export function WithExchangesData(
         ...orderProps,
         state: ExchangeState.Cancelled,
         buyer: buyerId,
+        seller_in,
         ...(enableCurationLists && {
-          offer_in: offerCurationList,
-          seller_in: sellerCurationList
+          offer_in: offerCurationList
         })
       },
       { enabled: !!buyerId && committed }
@@ -74,9 +82,9 @@ export function WithExchangesData(
         ...orderProps,
         state: ExchangeState.Disputed,
         buyer: buyerId,
+        seller_in,
         ...(enableCurationLists && {
-          offer_in: offerCurationList,
-          seller_in: sellerCurationList
+          offer_in: offerCurationList
         })
       },
       { enabled: !!buyerId && disputed }
@@ -86,9 +94,9 @@ export function WithExchangesData(
         ...orderProps,
         state: ExchangeState.Redeemed,
         buyer: buyerId,
+        seller_in,
         ...(enableCurationLists && {
-          offer_in: offerCurationList,
-          seller_in: sellerCurationList
+          offer_in: offerCurationList
         })
       },
       { enabled: !!buyerId && redeemed }
@@ -98,9 +106,9 @@ export function WithExchangesData(
         ...orderProps,
         state: ExchangeState.Completed,
         buyer: buyerId,
+        seller_in,
         ...(enableCurationLists && {
-          offer_in: offerCurationList,
-          seller_in: sellerCurationList
+          offer_in: offerCurationList
         })
       },
       { enabled: !!buyerId && completed }
