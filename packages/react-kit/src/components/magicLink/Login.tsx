@@ -1,9 +1,9 @@
-import { Spinner } from "components/ui/loading/Spinner";
-import { Button } from "components/buttons/Button";
-import { useMagic } from "hooks/magic";
 import React, { useState } from "react";
 
 import { useUser } from "./UserContext";
+import { useMagic } from "../../hooks";
+import { Button } from "../buttons/Button";
+import { Spinner } from "../ui/loading/Spinner";
 
 const GoogleLogo = () => {
   return (

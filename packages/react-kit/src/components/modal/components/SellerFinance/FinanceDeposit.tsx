@@ -2,7 +2,6 @@ import React from "react";
 
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
-import { useAccount, useSigner } from "hooks/connection/connection";
 import { useBalance } from "wagmi";
 
 import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
@@ -23,6 +22,7 @@ import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { useAccount, useSigner } from "../../../../hooks/connection/connection";
 
 interface Props {
   protocolBalance: string;

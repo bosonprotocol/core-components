@@ -1,7 +1,7 @@
-import { useMagic } from "hooks/magic";
-import { getMagicLogout } from "lib/magicLink/logout";
-import { getProvider } from "lib/magicLink/provider";
 import React, { ReactNode, useContext, useEffect, useState } from "react";
+import { useMagic } from "../../hooks";
+import { getMagicLogout } from "../../lib/magicLink/logout";
+import { getProvider } from "../../lib/magicLink/provider";
 
 export type SetUser = React.Dispatch<React.SetStateAction<string | undefined>>;
 export const UserContext = React.createContext<{

@@ -2,7 +2,7 @@ import { ArrowLeft } from "phosphor-react";
 import React, { useEffect } from "react";
 import PurchaseOverview from "./PurchaseOverview";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "theme";
+import { theme } from "../../../../../theme";
 
 const colors = theme.colors.light;
 type Props = {

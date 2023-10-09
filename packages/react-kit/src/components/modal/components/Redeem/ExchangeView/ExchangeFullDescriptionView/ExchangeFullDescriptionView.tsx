@@ -5,7 +5,7 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "theme";
+import { theme } from "../../../../../../theme";
 
 const colors = theme.colors.light;
 interface Props {

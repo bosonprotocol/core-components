@@ -1,10 +1,10 @@
 import * as Sentry from "@sentry/browser";
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
-import { useAccount, useSigner } from "hooks/connection/connection";
 import { Offer } from "../../types/offer";
 import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
 import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";
+import { useAccount, useSigner } from "../connection/connection";
 
 interface Props {
   commitProxyAddress?: string | undefined;

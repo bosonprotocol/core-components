@@ -1,8 +1,8 @@
-import { useUser } from "components/magicLink/UserContext";
-import { useMagic, useWalletInfo } from "hooks/magic";
-import { getMagicLogout } from "lib/magicLink/logout";
 import { useCallback } from "react";
 import { disconnect } from "@wagmi/core";
+import { useUser } from "../../components/magicLink/UserContext";
+import { useMagic, useWalletInfo } from "../magic";
+import { getMagicLogout } from "../../lib/magicLink/logout";
 
 export const useDisconnect = () => {
   const { setUser } = useUser();

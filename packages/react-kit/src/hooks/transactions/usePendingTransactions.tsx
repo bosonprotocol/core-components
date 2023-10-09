@@ -1,8 +1,8 @@
 import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
 import { useCallback } from "react";
-import { useAccount } from "hooks/connection/connection";
 import create from "zustand";
 import { EventLog } from "../../types/transactions";
+import { useAccount } from "../connection/connection";
 
 type PendingTransaction = Omit<EventLog, "__typename" | "account"> & {
   accountType: "Buyer" | "Seller" | string;

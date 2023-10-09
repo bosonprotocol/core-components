@@ -40,10 +40,10 @@ import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import Typography from "../../../ui/Typography";
-import { useAccount } from "hooks/connection/connection";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { BosonFooter } from "./BosonFooter";
-import { theme } from "theme";
+import { theme } from "../../../../theme";
+import { useAccount } from "../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 enum ActiveStep {

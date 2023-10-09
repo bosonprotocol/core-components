@@ -10,7 +10,6 @@ import {
 } from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { useAccount } from "hooks/connection/connection";
 import { useBalance } from "wagmi";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { Offer } from "../../../../../../types/offer";
@@ -50,6 +49,7 @@ import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
+import { useAccount } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 

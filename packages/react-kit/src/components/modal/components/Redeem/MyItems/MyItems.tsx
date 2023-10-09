@@ -10,7 +10,7 @@ import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { useAccount } from "hooks/connection/connection";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 

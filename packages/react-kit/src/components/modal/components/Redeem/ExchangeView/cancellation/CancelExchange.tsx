@@ -22,7 +22,7 @@ import Grid from "../../../../../ui/Grid";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import DetailTable from "../detail/DetailTable";
-import { useSigner } from "hooks/connection/connection";
+import { useSigner } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 

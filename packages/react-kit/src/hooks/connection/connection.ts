@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // source: https://wagmi.sh/react/ethers-adapters
 
-import { useUser } from "components/magicLink/UserContext";
-import { useEthersSigner } from "hooks/ethers/useEthersSigner";
+import { useMemo } from "react";
+import { useNetwork, useAccount as useWagmiAccount } from "wagmi";
+import { useUser } from "../../components/magicLink/UserContext";
 import {
   useIsMagicLoggedIn,
   useMagicChainId,
   useMagicProvider
-} from "hooks/magic";
-import { useMemo } from "react";
-import { useNetwork, useAccount as useWagmiAccount } from "wagmi";
+} from "../magic";
+import { useEthersSigner } from "../ethers/useEthersSigner";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();

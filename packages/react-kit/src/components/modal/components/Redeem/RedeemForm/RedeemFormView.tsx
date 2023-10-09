@@ -1,10 +1,10 @@
-import { useAccount } from "hooks/connection/connection";
 import React, { useEffect } from "react";
 import Typography from "../../../../ui/Typography";
 import RedeemForm from "./RedeemForm";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 

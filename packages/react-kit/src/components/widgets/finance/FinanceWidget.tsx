@@ -27,8 +27,8 @@ import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
-import { MagicProvider } from "components/magicLink/MagicContext";
-import { CONFIG } from "lib/config/config";
+import { CONFIG } from "../../../lib/config/config";
+import { MagicProvider } from "../../magicLink/MagicContext";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
