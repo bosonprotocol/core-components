@@ -32,12 +32,7 @@ export function ConfirmationView({
     <NonModal
       props={{
         ...nonModalProps,
-        headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
-        ),
+        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
         footerComponent: <BosonFooter />
       }}
     >

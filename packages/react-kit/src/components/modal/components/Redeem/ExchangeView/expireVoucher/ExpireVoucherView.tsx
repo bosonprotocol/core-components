@@ -26,15 +26,14 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
       props={{
         ...nonModalProps,
         headerComponent: (
-          <Grid>
+          <>
             <ArrowLeft
               onClick={() => onBackClick()}
               size={32}
               style={{ cursor: "pointer" }}
             />
             <Typography tag="h3">Expire voucher</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          </>
         ),
         footerComponent: <BosonFooter />
       }}

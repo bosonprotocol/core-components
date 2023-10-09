@@ -24,6 +24,8 @@ export type ConfigContextProps = {
   redeemCallbackUrl?: string;
   redeemCallbackHeaders?: { [key: string]: string };
   usePendingTransactions?: boolean;
+  magicLinkKey: string;
+  infuraKey: string;
 };
 
 export const Context = createContext<ConfigContextProps | null>(null);

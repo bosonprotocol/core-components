@@ -31,7 +31,6 @@ export function LicenseAgreementView({
               style={{ cursor: "pointer" }}
             />
             <Typography tag="h3">License Agreement</Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />

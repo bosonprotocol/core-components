@@ -1,4 +1,4 @@
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import { ArrowLeft } from "phosphor-react";
 import React from "react";
 import { Exchange } from "../../../../../../types/exchange";
@@ -36,7 +36,6 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
             <Typography tag="h3" style={{ flex: "1 1" }}>
               Cancel exchange
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />

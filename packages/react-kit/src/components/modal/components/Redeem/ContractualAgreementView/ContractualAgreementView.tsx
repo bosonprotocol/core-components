@@ -34,7 +34,6 @@ export function ContractualAgreementView({
               style={{ cursor: "pointer" }}
             />
             <Typography tag="h3">Contractual Agreement</Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />

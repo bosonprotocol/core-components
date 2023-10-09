@@ -33,7 +33,6 @@ export function ExchangeFullDescriptionView({
             <Typography tag="h3">
               {exchange?.offer.metadata.name || ""}
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />

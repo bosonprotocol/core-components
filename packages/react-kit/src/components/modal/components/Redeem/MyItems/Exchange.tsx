@@ -2,8 +2,7 @@ import React from "react";
 import { CameraSlash } from "phosphor-react";
 import { useMemo } from "react";
 import styled from "styled-components";
-import { useAccount } from "wagmi";
-
+import { useAccount } from "hooks/connection/connection";
 import mockedAvatar from "../../../../../assets/frame.png";
 
 import {

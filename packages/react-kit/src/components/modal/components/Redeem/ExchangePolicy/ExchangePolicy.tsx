@@ -43,7 +43,6 @@ export function ExchangePolicy({
             <Typography tag="h3" style={{ flex: "1 1" }}>
               {exchangeName}
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />

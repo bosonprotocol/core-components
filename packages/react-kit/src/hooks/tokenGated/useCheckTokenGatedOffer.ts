@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import { Offer } from "../../types/offer";
 import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
 import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";

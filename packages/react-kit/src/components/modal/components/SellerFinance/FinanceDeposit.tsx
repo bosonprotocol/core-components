@@ -2,7 +2,8 @@ import React from "react";
 
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
+import { useBalance } from "wagmi";
 
 import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
@@ -56,10 +57,10 @@ export default function FinanceDeposit({
   const { data: dataBalance, refetch } = useBalance(
     exchangeToken !== ethers.constants.AddressZero
       ? {
-          address,
+          address: address as `0x${string}`,
           token: exchangeToken as `0x${string}`
         }
-      : { address }
+      : { address: address as `0x${string}` }
   );
 
   const { showModal, hideModal } = useModal();

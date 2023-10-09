@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState
 } from "react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
 import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
@@ -43,6 +43,7 @@ import Grid from "../../../ui/Grid";
 import Typography from "../../../ui/Typography";
 import ConnectButton from "../../../wallet/ConnectButton";
 import { BosonFooter } from "./BosonFooter";
+import { useAccount } from "hooks/connection/connection";
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -227,12 +228,7 @@ export default function RedeemNonModal({
       <NonModal
         props={{
           ...nonModalProps,
-          headerComponent: (
-            <Grid>
-              <Typography tag="h3">Redeem your item</Typography>
-              <ConnectButton showChangeWallet />
-            </Grid>
-          ),
+          headerComponent: <Typography tag="h3">Redeem your item</Typography>,
           footerComponent: <BosonFooter />
         }}
       >
@@ -246,12 +242,7 @@ export default function RedeemNonModal({
       <NonModal
         props={{
           ...nonModalProps,
-          headerComponent: (
-            <Grid>
-              <Typography tag="h3">Redeem your item</Typography>
-              <ConnectButton showChangeWallet />
-            </Grid>
-          ),
+          headerComponent: <Typography tag="h3">Redeem your item</Typography>,
           footerComponent: <BosonFooter />
         }}
       >

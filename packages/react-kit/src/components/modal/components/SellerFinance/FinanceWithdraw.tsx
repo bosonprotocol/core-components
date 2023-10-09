@@ -4,8 +4,8 @@ import { BigNumber, ethers } from "ethers";
 import { Spinner } from "phosphor-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useAccount, useBalance } from "wagmi";
-
+import { useBalance } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals

@@ -143,7 +143,6 @@ export function ExchangeView({
                 {offer.metadata.name}
               </Typography>
             )}
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />,

@@ -16,14 +16,11 @@ export function PurchaseOverviewView({ onBackClick, nonModalProps }: Props) {
       props={{
         ...nonModalProps,
         headerComponent: (
-          <Grid gap="1rem">
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <ArrowLeft
+            onClick={onBackClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
         ),
         footerComponent: <BosonFooter />
       }}

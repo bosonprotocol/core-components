@@ -73,7 +73,6 @@ export function RedeemSuccess({
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
             <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
         footerComponent: <BosonFooter />,

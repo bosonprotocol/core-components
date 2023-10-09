@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React from "react";
-import { useAccount } from "wagmi";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
 import Grid from "../../../../ui/Grid";
@@ -14,6 +13,7 @@ import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
 import NonModal, { NonModalProps } from "../../../NonModal";
+import { useAccount } from "hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -46,12 +46,7 @@ export function MyItems({
     <NonModal
       props={{
         ...nonModalProps,
-        headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
-        ),
+        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
         footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.lightGrey

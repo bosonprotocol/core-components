@@ -9,6 +9,8 @@ import Typography from "../ui/Typography";
 import ThemedButton from "../ui/ThemedButton";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { zIndex } from "../ui/zIndex";
+import ConnectButton from "components/wallet/ConnectButton";
+import Grid from "components/ui/Grid";
 
 const colors = theme.colors.light;
 const Root = styled.div`
@@ -191,7 +193,7 @@ const Content = styled.div<{
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
-  title?: string;
+  // title?: string;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;
@@ -205,7 +207,6 @@ export default function NonModal({
   children,
   props: {
     hideModal,
-    title = "",
     headerComponent: HeaderComponent,
     footerComponent: FooterComponent,
     size = "auto",
@@ -226,25 +227,24 @@ export default function NonModal({
   return (
     <Root data-testid="modal">
       <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
-        {HeaderComponent ? (
-          <Header tag="div" margin="0">
-            {HeaderComponent}
+        <Grid justifyContent="space-between">
+          {HeaderComponent && (
+            <Header tag="div" margin="0">
+              {HeaderComponent}
+            </Header>
+          )}
+          <Grid justifyContent="flex-end">
+            <ConnectButton showChangeWallet />
             {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                <Close size={32} />
-              </ThemedButton>
+              <Grid padding="1rem 2rem" $width="min-content">
+                <ThemedButton data-close theme="blank" onClick={handleOnClose}>
+                  <Close size={32} />
+                </ThemedButton>
+              </Grid>
             )}
-          </Header>
-        ) : (
-          <HeaderWithTitle tag="h3" $title={title} margin="0">
-            {title}
-            {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                <Close size={32} />
-              </ThemedButton>
-            )}
-          </HeaderWithTitle>
-        )}
+          </Grid>
+        </Grid>
+
         <Content $size={size} style={contentStyle}>
           {children}
         </Content>

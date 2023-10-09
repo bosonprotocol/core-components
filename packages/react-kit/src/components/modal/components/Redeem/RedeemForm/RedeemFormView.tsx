@@ -1,4 +1,4 @@
-import { useAccount } from "wagmi";
+import { useAccount } from "hooks/connection/connection";
 import React from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
@@ -28,12 +28,7 @@ export default function RedeemFormView({
     <NonModal
       props={{
         ...nonModalProps,
-        headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
-        ),
+        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
         footerComponent: <BosonFooter />
       }}
     >
