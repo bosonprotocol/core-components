@@ -1,3 +1,5 @@
+import { getRpcUrls } from "lib/constants/networks";
+
 const magicLinkKey = process.env.REACT_APP_MAGIC_API_KEY;
 if (!magicLinkKey) {
   throw new Error("REACT_APP_MAGIC_API_KEY is not defined");
@@ -9,5 +11,6 @@ if (!infuraKey) {
 
 export const CONFIG = {
   magicLinkKey,
-  infuraKey
+  infuraKey,
+  rpcUrls: getRpcUrls(infuraKey)
 } as const;

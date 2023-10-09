@@ -1,8 +1,9 @@
 import { useConfigContext } from "components/config/ConfigContext";
-import { RPC_URLS } from "lib/constants/networks";
 import { Magic } from "magic-sdk";
 import React, { createContext, ReactNode, useMemo } from "react";
 import { UserProvider } from "./UserContext";
+import { getRpcUrls } from "lib/constants/networks";
+import { CONFIG } from "lib/config/config";
 
 export const MagicContext = createContext<
   | (Magic & {
@@ -14,13 +15,36 @@ export const MagicContext = createContext<
 export const MagicProvider = ({ children }: { children: ReactNode }) => {
   const { config, magicLinkKey } = useConfigContext();
   const chainId = config.chainId;
+  return (
+    <InnerMagicProvider
+      chainId={chainId}
+      magicLinkKey={magicLinkKey}
+      rpcUrls={CONFIG.rpcUrls}
+    >
+      {children}
+    </InnerMagicProvider>
+  );
+};
+
+type InnerMagicProviderProps = {
+  children: ReactNode;
+  chainId: number;
+  magicLinkKey: string;
+  rpcUrls: ReturnType<typeof getRpcUrls>;
+};
+export const InnerMagicProvider = ({
+  children,
+  chainId,
+  magicLinkKey,
+  rpcUrls
+}: InnerMagicProviderProps) => {
   const magic = useMemo(() => {
-    if (!chainId || !RPC_URLS[chainId as keyof typeof RPC_URLS]?.[0]) {
+    if (!chainId || !rpcUrls[chainId as keyof typeof rpcUrls]?.[0]) {
       return null;
     }
     const magic = new Magic(magicLinkKey, {
       network: {
-        rpcUrl: RPC_URLS[chainId as keyof typeof RPC_URLS][0],
+        rpcUrl: rpcUrls[chainId as keyof typeof rpcUrls][0],
         chainId: chainId
       }
     });
@@ -30,7 +54,7 @@ export const MagicProvider = ({ children }: { children: ReactNode }) => {
       .then(() => console.info("magic link preloaded"))
       .catch(() => console.info("magic link could not be preloaded"));
     return magic as typeof magic & { uuid: string };
-  }, [chainId, magicLinkKey]);
+  }, [chainId, magicLinkKey, rpcUrls]);
   return (
     <MagicContext.Provider value={magic}>
       <UserProvider>{children}</UserProvider>

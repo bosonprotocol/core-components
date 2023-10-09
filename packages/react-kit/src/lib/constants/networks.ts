@@ -1,7 +1,4 @@
 import { ChainId } from "@uniswap/sdk-core";
-import { CONFIG } from "lib/config/config";
-
-const INFURA_KEY = CONFIG.infuraKey;
 
 // TODO: comment out?
 // const QUICKNODE_BNB_RPC_URL = process.env.REACT_APP_BNB_RPC_URL;
@@ -141,41 +138,41 @@ export const FALLBACK_URLS = {
  * Known JSON-RPC endpoints.
  * These are the URLs used by the interface when there is not another available source of chain data.
  */
-export const RPC_URLS = {
+export const getRpcUrls = (infuraKey: string) => ({
   [ChainId.MAINNET]: [
-    `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.MAINNET]
   ],
   [ChainId.GOERLI]: [
-    `https://goerli.infura.io/v3/${INFURA_KEY}`,
+    `https://goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.GOERLI]
   ],
   [ChainId.SEPOLIA]: [
-    `https://sepolia.infura.io/v3/${INFURA_KEY}`,
+    `https://sepolia.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.SEPOLIA]
   ],
   [ChainId.OPTIMISM]: [
-    `https://optimism-mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.OPTIMISM]
   ],
   [ChainId.OPTIMISM_GOERLI]: [
-    `https://optimism-goerli.infura.io/v3/${INFURA_KEY}`,
+    `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.OPTIMISM_GOERLI]
   ],
   [ChainId.ARBITRUM_ONE]: [
-    `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.ARBITRUM_ONE]
   ],
   [ChainId.ARBITRUM_GOERLI]: [
-    `https://arbitrum-goerli.infura.io/v3/${INFURA_KEY}`,
+    `https://arbitrum-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.ARBITRUM_GOERLI]
   ],
   [ChainId.POLYGON]: [
-    `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.POLYGON]
   ],
   [ChainId.POLYGON_MUMBAI]: [
-    `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
+    `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.POLYGON_MUMBAI]
   ],
   [ChainId.CELO]: FALLBACK_URLS[ChainId.CELO],
@@ -184,19 +181,19 @@ export const RPC_URLS = {
     /*TODO:QUICKNODE_BNB_RPC_URL,*/ ...FALLBACK_URLS[ChainId.BNB]
   ],
   [ChainId.AVALANCHE]: [
-    `https://avalanche-mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.AVALANCHE]
   ],
   [ChainId.BASE]: [
-    `https://base-mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://base-mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.BASE]
   ],
   [ChainId.BASE_GOERLI]: [
-    `https://base-goerli.infura.io/v3/${INFURA_KEY}`,
+    `https://base-goerli.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.BASE_GOERLI]
   ],
   31337: [
-    `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+    `https://mainnet.infura.io/v3/${infuraKey}`,
     ...FALLBACK_URLS[ChainId.MAINNET]
   ]
-};
+});
