@@ -43,7 +43,8 @@ export function WithExchangesData(
   WrappedComponent: React.ComponentType<WrappedComponentProps>
 ) {
   const ComponentWithExchangesData = (props: WithExchangesProps) => {
-    const { buyerId, committed, redeemed, disputed, completed, sellerIds } = props;
+    const { buyerId, committed, redeemed, disputed, completed, sellerIds } =
+      props;
     const { enableCurationLists, offerCurationList, sellerCurationList } =
       useCurationLists();
     const seller_in = sellerIds
