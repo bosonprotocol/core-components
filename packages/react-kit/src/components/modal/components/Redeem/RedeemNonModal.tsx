@@ -69,6 +69,7 @@ export enum RedemptionBypassMode {
 }
 
 export type RedeemNonModalProps = {
+  sellerIds?: string[];
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   raiseDisputeForExchangeUrl: string;
@@ -116,6 +117,7 @@ export default function RedeemWrapper({
 }
 
 function RedeemNonModal({
+  sellerIds,
   exchange: selectedExchange,
   fairExchangePolicyRules,
   raiseDisputeForExchangeUrl,
@@ -322,6 +324,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
+                  sellerIds={sellerIds}
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
