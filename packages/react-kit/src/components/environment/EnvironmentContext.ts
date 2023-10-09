@@ -1,11 +1,9 @@
 import { EnvironmentType, ConfigId } from "@bosonprotocol/core-sdk";
 import { createContext, useContext } from "react";
-import { Token } from "../widgets/finance/convertion-rate/ConvertionRateContext";
 
 export const Context = createContext<{
   envName: EnvironmentType;
   configId: ConfigId;
-  tokens: Token[];
   metaTx?: { apiKey: string; apiIds: string };
 } | null>(null);
 

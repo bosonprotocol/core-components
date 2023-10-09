@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.31.0...@bosonprotocol/core-sdk@1.32.0) (2023-10-03)
+
+
+### Features
+
+* export metadata length limit used in validations ([#579](https://github.com/bosonprotocol/core-components/issues/579)) ([05e1948](https://github.com/bosonprotocol/core-components/commit/05e1948e43312fc9b18e5c3b3641ce790f8d8376))
+
+
+
+
+
 # [1.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.30.0...@bosonprotocol/core-sdk@1.31.0) (2023-09-29)
 
 

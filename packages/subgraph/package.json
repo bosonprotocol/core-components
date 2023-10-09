@@ -1,6 +1,6 @@
 {
   "name": "@bosonprotocol/subgraph",
-  "version": "1.28.0",
+  "version": "1.28.1",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
     "@graphprotocol/graph-ts": "^0.27.0"
@@ -21,7 +21,7 @@
     "manifest:staging": "npm run manifest -- staging staging-80001-0 && npm run codegen",
     "manifest:staging:goerli": "npm run manifest -- staging staging-5-0 && npm run codegen",
     "manifest:production": "npm run manifest -- production production-137-0 && npm run codegen",
-    "manifest:production:ethereum": "npm run manifest -- production production-137-0 && npm run codegen",
+    "manifest:production:ethereum": "npm run manifest -- production production-1-0 && npm run codegen",
     "codegen": "graph codegen",
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",

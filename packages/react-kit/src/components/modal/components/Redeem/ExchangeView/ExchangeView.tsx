@@ -123,7 +123,7 @@ export function ExchangeView({
   const exchangePolicyCheckResult = useCheckExchangePolicy({
     offerId: exchange?.offer?.id,
     fairExchangePolicyRules,
-    defaultDisputeResolverId,
+    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
     defaultTokens: defaultTokens || []
   });
 

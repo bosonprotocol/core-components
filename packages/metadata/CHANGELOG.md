@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.12.2...@bosonprotocol/metadata@1.13.0) (2023-10-03)
+
+
+### Features
+
+* export metadata length limit used in validations ([#579](https://github.com/bosonprotocol/core-components/issues/579)) ([05e1948](https://github.com/bosonprotocol/core-components/commit/05e1948e43312fc9b18e5c3b3641ce790f8d8376))
+
+
+
+
+
 ## [1.12.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/metadata@1.12.1...@bosonprotocol/metadata@1.12.2) (2023-09-27)
 
 **Note:** Version bump only for package @bosonprotocol/metadata

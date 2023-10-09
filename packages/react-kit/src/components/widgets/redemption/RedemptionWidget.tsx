@@ -56,7 +56,6 @@ export function RedemptionWidget(props: WidgetProps) {
         envName={props.envName}
         configId={props.configId}
         metaTx={props.metaTx}
-        tokensList={props.tokensList}
       >
         {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
@@ -67,26 +66,24 @@ export function RedemptionWidget(props: WidgetProps) {
           infuraKey={infuraKey}
           {...props}
         >
-          <MagicProvider>
-            <QueryClientProvider client={queryClient}>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider tokensList={props.tokensList}>
-                      <ModalProvider>
-                        <RedeemModalWithExchange
-                          {...props}
-                          hideModal={props.closeWidgetClick}
-                        />
-                      </ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WalletConnectionProvider>
-            </QueryClientProvider>
-          </MagicProvider>
+          <QueryClientProvider client={queryClient}>
+            <WalletConnectionProvider
+              walletConnectProjectId={props.walletConnectProjectId}
+            >
+              <ChatProvider>
+                <IpfsProvider {...props}>
+                  <ConvertionRateProvider>
+                    <ModalProvider>
+                      <RedeemModalWithExchange
+                        {...props}
+                        hideModal={props.closeWidgetClick}
+                      />
+                    </ModalProvider>
+                  </ConvertionRateProvider>
+                </IpfsProvider>
+              </ChatProvider>
+            </WalletConnectionProvider>
+          </QueryClientProvider>
         </ConfigProvider>
       </EnvironmentProvider>
     </div>
