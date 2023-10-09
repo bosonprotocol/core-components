@@ -21,8 +21,8 @@ export type ConfigContextProps = {
   buyerSellerAgreementTemplate: string;
   licenseTemplate: string;
   contactSellerForExchangeUrl: string;
-  redeemCallbackUrl?: string;
-  redeemCallbackHeaders?: { [key: string]: string };
+  postDeliveryInfoUrl?: string;
+  postDeliveryInfoHeaders?: { [key: string]: string };
   usePendingTransactions?: boolean;
 };
 
