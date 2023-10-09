@@ -8,7 +8,7 @@ import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
-import { theme } from "theme";
+import { theme } from "../../../../../theme";
 
 const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`

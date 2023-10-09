@@ -20,9 +20,9 @@ import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
 import { RedeemNonModalProps } from "../../modal/components/Redeem/RedeemNonModal";
-import { MagicProvider } from "components/magicLink/MagicContext";
 import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
-import { CONFIG } from "lib/config/config";
+import { MagicProvider } from "../../magicLink/MagicContext";
+import { CONFIG } from "../../../lib/config/config";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;

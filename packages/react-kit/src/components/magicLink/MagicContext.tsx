@@ -1,9 +1,9 @@
-import { useConfigContext } from "components/config/ConfigContext";
 import { Magic } from "magic-sdk";
 import React, { createContext, ReactNode, useMemo } from "react";
 import { UserProvider } from "./UserContext";
-import { getRpcUrls } from "lib/constants/networks";
-import { CONFIG } from "lib/config/config";
+import { CONFIG } from "../../lib/config/config";
+import { useConfigContext } from "../config/ConfigContext";
+import type { getRpcUrls } from "../../lib/constants/networks";
 
 export const MagicContext = createContext<
   | (Magic & {

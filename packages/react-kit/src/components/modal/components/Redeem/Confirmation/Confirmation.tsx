@@ -32,7 +32,7 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
-import { useSigner } from "hooks/connection/connection";
+import { useSigner } from "../../../../../hooks/connection/connection";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`

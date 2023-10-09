@@ -8,7 +8,7 @@ import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import { theme } from "theme";
+import { theme } from "../../../../../theme";
 
 const colors = theme.colors.light;
 interface Props {

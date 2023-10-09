@@ -1,4 +1,3 @@
-import { useAccount } from "hooks/connection/connection";
 import { ArrowLeft } from "phosphor-react";
 import React, { useEffect } from "react";
 import { Exchange } from "../../../../../../types/exchange";
@@ -6,7 +5,8 @@ import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "theme";
+import { theme } from "../../../../../../theme";
+import { useAccount } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 export interface CancellationViewProps {

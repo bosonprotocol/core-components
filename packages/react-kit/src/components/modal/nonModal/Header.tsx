@@ -1,11 +1,11 @@
-import Typography from "components/ui/Typography";
 import React, { ReactNode } from "react";
 import { theme } from "../../../theme";
 import styled from "styled-components";
-import Grid from "components/ui/Grid";
-import ConnectButton from "components/wallet/ConnectButton";
-import ThemedButton from "components/ui/ThemedButton";
 import { X } from "phosphor-react";
+import Grid from "../../ui/Grid";
+import ConnectButton from "../../wallet/ConnectButton";
+import ThemedButton from "../../ui/ThemedButton";
+import Typography from "../../ui/Typography";
 
 const colors = theme.colors.light;
 const Wrapper = styled(Typography)<{ $title?: string }>`

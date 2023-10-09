@@ -4,7 +4,7 @@ import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
-import { theme } from "theme";
+import { theme } from "../../../../../../theme";
 
 const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {

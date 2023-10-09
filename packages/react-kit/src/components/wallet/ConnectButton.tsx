@@ -10,10 +10,10 @@ import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
 import { Wallet } from "phosphor-react";
-import { MagicLoginButton } from "components/magicLink/Login";
-import { useAccount, useChainId } from "hooks/connection/connection";
-import { useIsMagicLoggedIn } from "hooks/magic";
-import { useDisconnect } from "hooks/connection/useDisconnect";
+import { useIsMagicLoggedIn } from "../../hooks";
+import { useAccount, useChainId } from "../../hooks/connection/connection";
+import { useDisconnect } from "../../hooks/connection/useDisconnect";
+import { MagicLoginButton } from "../magicLink/Login";
 
 const InnerContext = createContext<{
   isMagicLoggedIn: boolean | undefined;

@@ -8,10 +8,10 @@ import { theme } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-import { zIndex } from "components/ui/zIndex";
-import { breakpoint } from "lib/ui/breakpoint";
 import Header from "./Header";
 import { Store } from "../ModalContext";
+import { zIndex } from "../../ui/zIndex";
+import { breakpoint } from "../../../lib/ui/breakpoint";
 
 const colors = theme.colors.light;
 const Root = styled.div`
