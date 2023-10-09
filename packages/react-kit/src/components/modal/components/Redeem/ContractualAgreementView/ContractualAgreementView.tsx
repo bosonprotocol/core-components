@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 interface Props {
   onBackClick: () => void;
@@ -15,20 +15,23 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
   const offer = exchange?.offer;
   const offerId = offer?.id;
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <Grid>
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer" }}
-          />
-          <Typography tag="h3">Contractual Agreement</Typography>
-        </Grid>
-      )
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Grid>
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer" }}
+            />
+            <Typography tag="h3">Contractual Agreement</Typography>
+          </Grid>
+        )
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
   return (
     <>
       {exchange ? (

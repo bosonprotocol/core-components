@@ -1,11 +1,11 @@
 import { useAccount } from "hooks/connection/connection";
 import { ArrowLeft } from "phosphor-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Exchange } from "../../../../../../types/exchange";
 import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
-import { useNonModalContext } from "../../../../NonModal";
+import { useNonModalContext } from "../../../../nonModal/NonModal";
 
 export interface CancellationViewProps {
   exchange: Exchange | null;
@@ -19,22 +19,25 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
 }) => {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <Grid gap="1rem">
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-          <Typography tag="h3" style={{ flex: "1 1" }}>
-            Cancel exchange
-          </Typography>
-        </Grid>
-      )
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Grid gap="1rem">
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+            />
+            <Typography tag="h3" style={{ flex: "1 1" }}>
+              Cancel exchange
+            </Typography>
+          </Grid>
+        )
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
   return (
     <>
       {!exchange ? (

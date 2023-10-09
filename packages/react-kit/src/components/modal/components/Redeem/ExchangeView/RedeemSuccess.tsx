@@ -1,5 +1,5 @@
 import { CheckCircle, Fire, House } from "phosphor-react";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
@@ -15,7 +15,7 @@ import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
 import GridContainer from "../../../../ui/GridContainer";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 const colors = theme.colors.light;
 
@@ -57,23 +57,28 @@ export function RedeemSuccess({
 
   const offerDetails = offer ? getOfferDetails(offer) : undefined;
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <Grid>
-          <House
-            onClick={onHouseClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-          <Typography tag="h3">Redeem your item</Typography>
-        </Grid>
-      ),
-      contentStyle: {
-        background: colors.lightGrey
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Grid>
+            <House
+              onClick={onHouseClick}
+              size={32}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+            />
+            <Typography tag="h3" $width="100%">
+              Redeem your item
+            </Typography>
+          </Grid>
+        ),
+        contentStyle: {
+          background: colors.lightGrey
+        }
       }
-    }
-  });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
   return (
     <>
       {isFetching ? (

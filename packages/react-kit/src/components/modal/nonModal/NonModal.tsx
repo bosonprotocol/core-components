@@ -4,18 +4,14 @@ import React, {
   useReducer,
   createContext
 } from "react";
-import { X } from "phosphor-react";
+import { theme } from "../../../theme";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-import { theme } from "../../theme";
-import { Store } from "./ModalContext";
-import Typography from "../ui/Typography";
-import ThemedButton from "../ui/ThemedButton";
-import { breakpoint } from "../../lib/ui/breakpoint";
-import { zIndex } from "../ui/zIndex";
-import ConnectButton from "components/wallet/ConnectButton";
-import Grid from "components/ui/Grid";
+import { zIndex } from "components/ui/zIndex";
+import { breakpoint } from "lib/ui/breakpoint";
+import Header from "./Header";
+import { Store } from "../ModalContext";
 
 const colors = theme.colors.light;
 const Root = styled.div`
@@ -162,30 +158,8 @@ const Wrapper = styled.div<{
     `};
 `;
 
-const Header = styled(Typography)<{ $title?: string }>`
-  position: relative;
-
-  text-align: left;
-  padding: 1rem 2rem;
-  display: flex;
-  border-bottom: 2px solid ${colors.border};
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-  > * {
-    width: 100%;
-  }
-`;
-
 const FooterWrapper = styled.div`
   border-top: 2px solid ${colors.border};
-`;
-
-const Close = styled(X)`
-  line {
-    stroke: ${colors.darkGrey};
-  }
 `;
 
 const Content = styled.div<{
@@ -266,19 +240,11 @@ export default function NonModal({
   return (
     <Root data-testid="modal">
       <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
-        {HeaderComponent && (
-          <Header tag="div" margin="0">
-            {HeaderComponent}
-            <Grid justifyContent="flex-end">
-              <ConnectButton showChangeWallet />
-              {closable && (
-                <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                  <Close size={32} />
-                </ThemedButton>
-              )}
-            </Grid>
-          </Header>
-        )}
+        <Header
+          HeaderComponent={HeaderComponent}
+          closable={closable}
+          handleOnClose={handleOnClose}
+        />
 
         <Content $size={size} style={contentStyle}>
           <NonModalContext.Provider value={dispatch}>

@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
 import Loading from "../../../../ui/loading/Loading";
@@ -9,7 +9,7 @@ import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import { useAccount } from "hooks/connection/connection";
 
 const colors = theme.colors.light;
@@ -38,14 +38,20 @@ export function MyItems({
   });
   const buyerId = buyers?.[0]?.id;
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: <Typography tag="h3">Redeem your item</Typography>,
-      contentStyle: {
-        background: colors.lightGrey
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
+        ),
+        contentStyle: {
+          background: colors.lightGrey
+        }
       }
-    }
-  });
+    });
+  }, [dispatch]);
   return (
     <>
       {isLoading ? (

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "../../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
-import { useNonModalContext } from "../../../../NonModal";
+import { useNonModalContext } from "../../../../nonModal/NonModal";
 
 export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
@@ -17,20 +17,23 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   onSuccess
 }) => {
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <>
-          <ArrowLeft
-            onClick={() => onBackClick()}
-            size={32}
-            style={{ cursor: "pointer" }}
-          />
-          <Typography tag="h3">Expire voucher</Typography>
-        </>
-      )
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <>
+            <ArrowLeft
+              onClick={() => onBackClick()}
+              size={32}
+              style={{ cursor: "pointer" }}
+            />
+            <Typography tag="h3">Expire voucher</Typography>
+          </>
+        )
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
   return (
     <>
       {!exchange ? (

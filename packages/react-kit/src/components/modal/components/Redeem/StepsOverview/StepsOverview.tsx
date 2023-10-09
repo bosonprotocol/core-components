@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { theme } from "../../../../../theme";
@@ -7,7 +7,7 @@ import Grid from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import NonModal, { ActionKind, useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
 
 const colors = theme.colors.light;
@@ -47,11 +47,18 @@ interface Props {
 
 export default function StepsOverview({ onNextClick }: Props) {
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: <Typography tag="h3">Redeem your item</Typography>
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
+        )
+      }
+    });
+  }, [dispatch]);
+
   return (
     <>
       <StyledCommitStepWrapper>

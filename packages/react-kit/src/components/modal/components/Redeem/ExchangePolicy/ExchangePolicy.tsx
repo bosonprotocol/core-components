@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
@@ -7,7 +7,7 @@ import { offers } from "@bosonprotocol/core-sdk";
 import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 interface Props {
   onBackClick: () => void;
@@ -26,22 +26,25 @@ export function ExchangePolicy({
 }: Props) {
   const exchangeName = exchange?.offer.metadata.name || "";
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <Grid gap="1rem">
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-          <Typography tag="h3" style={{ flex: "1 1" }}>
-            {exchangeName}
-          </Typography>
-        </Grid>
-      )
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Grid gap="1rem">
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+            />
+            <Typography tag="h3" style={{ flex: "1 1" }}>
+              {exchangeName}
+            </Typography>
+          </Grid>
+        )
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, exchangeName]);
   return (
     <>
       {exchange ? (

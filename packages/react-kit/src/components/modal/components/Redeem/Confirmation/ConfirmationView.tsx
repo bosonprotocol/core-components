@@ -1,8 +1,8 @@
 import { getAddress } from "ethers/lib/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
 
 export interface ConfirmationViewProps {
@@ -24,11 +24,17 @@ export function ConfirmationView({
     ? getAddress(exchange.seller.assistant)
     : "";
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: <Typography tag="h3">Redeem your item</Typography>
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
+        )
+      }
+    });
+  }, [dispatch]);
   return (
     <>
       {exchange ? (

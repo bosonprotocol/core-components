@@ -1,8 +1,8 @@
 import { useAccount } from "hooks/connection/connection";
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "../../../../ui/Typography";
 import RedeemForm from "./RedeemForm";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
 
 interface Props {
@@ -20,11 +20,17 @@ export default function RedeemFormView({
 }: Props) {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: <Typography tag="h3">Redeem your item</Typography>
-    }
-  });
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
+        )
+      }
+    });
+  }, [dispatch]);
   return (
     <>
       {!exchange ? (

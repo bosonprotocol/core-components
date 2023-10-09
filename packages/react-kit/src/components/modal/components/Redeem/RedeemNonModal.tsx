@@ -39,7 +39,7 @@ import { Loading } from "../../../Loading";
 import { ContactPreference } from "./const";
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
-import NonModal, { NonModalProps } from "../../NonModal";
+import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import Typography from "../../../ui/Typography";
 import { useAccount } from "hooks/connection/connection";
 import { useConfigContext } from "../../../config/ConfigContext";
@@ -99,7 +99,11 @@ export default function RedeemWrapper({
     <NonModal
       props={{
         hideModal,
-        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
+        headerComponent: (
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
+        ),
         footerComponent: <BosonFooter />
       }}
     >
@@ -199,7 +203,7 @@ function RedeemNonModal({
       currentStep: newCurrentStep
     }));
   };
-  const goToPreviousStep = () => {
+  const goToPreviousStep = useCallback(() => {
     setStep((prev) => {
       const { previousStep } = prev;
       const currentStep = previousStep.length
@@ -211,7 +215,7 @@ function RedeemNonModal({
         currentStep: currentStep
       };
     });
-  };
+  }, []);
   const formRef = useRef<FormikProps<FormType> | null>(null);
 
   useEffect(() => {

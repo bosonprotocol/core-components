@@ -1,5 +1,5 @@
 import { House } from "phosphor-react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
@@ -18,7 +18,7 @@ import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
 import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
-import { useNonModalContext } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 const colors = theme.colors.light;
 
@@ -123,27 +123,30 @@ export function ExchangeView({
     defaultTokens: defaultTokens || []
   });
   const dispatch = useNonModalContext();
-  dispatch({
-    payload: {
-      headerComponent: (
-        <Grid gap="1rem">
-          <House
-            onClick={onHouseClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-          {offer && (
-            <Typography tag="h3" style={{ flex: "1 1" }}>
-              {offer.metadata.name}
-            </Typography>
-          )}
-        </Grid>
-      ),
-      contentStyle: {
-        background: colors.lightGrey
+  useEffect(() => {
+    dispatch({
+      payload: {
+        headerComponent: (
+          <Grid gap="1rem">
+            <House
+              onClick={onHouseClick}
+              size={32}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+            />
+            {offer && (
+              <Typography tag="h3" style={{ flex: "1 1" }}>
+                {offer.metadata.name}
+              </Typography>
+            )}
+          </Grid>
+        ),
+        contentStyle: {
+          background: colors.lightGrey
+        }
       }
-    }
-  });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, offer]);
   return (
     <>
       {isLoading ? (
