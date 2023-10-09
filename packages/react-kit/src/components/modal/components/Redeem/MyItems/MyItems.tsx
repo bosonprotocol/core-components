@@ -2,17 +2,14 @@ import { Formik } from "formik";
 import React from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
-import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
-import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../NonModal";
 import { useAccount } from "hooks/connection/connection";
 
 const colors = theme.colors.light;
@@ -24,7 +21,6 @@ export type MyItemsProps = {
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
-  nonModalProps: Partial<NonModalProps>;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -34,25 +30,24 @@ export function MyItems({
   onExchangeCardClick,
   onCancelExchange,
   onRaiseDisputeClick,
-  onAvatarClick,
-  nonModalProps
+  onAvatarClick
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
     wallet: address
   });
   const buyerId = buyers?.[0]?.id;
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: <Typography tag="h3">Redeem your item</Typography>,
+      contentStyle: {
+        background: colors.lightGrey
+      }
+    }
+  });
   return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
-        footerComponent: <BosonFooter />,
-        contentStyle: {
-          background: colors.lightGrey
-        }
-      }}
-    >
+    <>
       {isLoading ? (
         <Loading />
       ) : buyerId ? (
@@ -102,6 +97,6 @@ export function MyItems({
       ) : (
         <div>You do not have any exchanges yet</div>
       )}
-    </NonModal>
+    </>
   );
 }

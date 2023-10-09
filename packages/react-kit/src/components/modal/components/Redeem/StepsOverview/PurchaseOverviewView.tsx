@@ -1,31 +1,23 @@
 import { ArrowLeft } from "phosphor-react";
 import React from "react";
-import Grid from "../../../../ui/Grid";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
 import PurchaseOverview from "./PurchaseOverview";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../NonModal";
 
 type Props = {
   onBackClick: () => void;
-  nonModalProps: Partial<NonModalProps>;
 };
-export function PurchaseOverviewView({ onBackClick, nonModalProps }: Props) {
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: (
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
-        ),
-        footerComponent: <BosonFooter />
-      }}
-    >
-      <PurchaseOverview />
-    </NonModal>
-  );
+export function PurchaseOverviewView({ onBackClick }: Props) {
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: (
+        <ArrowLeft
+          onClick={onBackClick}
+          size={32}
+          style={{ cursor: "pointer", flexShrink: 0 }}
+        />
+      )
+    }
+  });
+  return <PurchaseOverview />;
 }

@@ -96,11 +96,6 @@ export default function ConnectButton({
             <InnerProvider>
               <InnerContext.Consumer>
                 {({ isMagicLoggedIn, chainId, globalAccount, disconnect }) => {
-                  console.log({
-                    chainId,
-                    mounted,
-                    globalAccount
-                  });
                   return (() => {
                     if (!mounted || !globalAccount || !chainId) {
                       // reset the tag o undefined

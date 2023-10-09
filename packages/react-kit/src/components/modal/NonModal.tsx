@@ -1,4 +1,9 @@
-import React, { CSSProperties } from "react";
+import React, {
+  useContext,
+  CSSProperties,
+  useReducer,
+  createContext
+} from "react";
 import { X } from "phosphor-react";
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
@@ -165,18 +170,16 @@ const Header = styled(Typography)<{ $title?: string }>`
   display: flex;
   border-bottom: 2px solid ${colors.border};
   align-items: center;
-  justify-content: ${(props) => {
-    return props.$title ? "space-between" : "flex-end";
-  }};
+  justify-content: space-between;
   gap: 0.5rem;
+  width: 100%;
+  > * {
+    width: 100%;
+  }
 `;
 
 const FooterWrapper = styled.div`
   border-top: 2px solid ${colors.border};
-`;
-
-const HeaderWithTitle = styled(Header)`
-  height: 4.25rem;
 `;
 
 const Close = styled(X)`
@@ -190,6 +193,36 @@ const Content = styled.div<{
 }>`
   padding: 2rem;
 `;
+
+export enum ActionKind {
+  HEADER = "HEADER",
+  CONTENT_STYLE = "CONTENT_STYLE"
+}
+
+type Action = {
+  payload: State;
+};
+
+type State = Pick<NonModalProps, "headerComponent" | "contentStyle">;
+
+const reducer = (state: State, action: Action): State => {
+  const { payload } = action;
+  return {
+    ...state,
+    ...payload
+  };
+};
+
+const NonModalContext = createContext<React.Dispatch<Action> | undefined>(
+  undefined
+);
+export const useNonModalContext = () => {
+  const context = useContext(NonModalContext);
+  if (!context) {
+    throw new Error("useNonModalContext must be used within NonModalContext");
+  }
+  return context;
+};
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
@@ -207,12 +240,12 @@ export default function NonModal({
   children,
   props: {
     hideModal,
-    headerComponent: HeaderComponent,
+    headerComponent,
     footerComponent: FooterComponent,
     size = "auto",
     maxWidths = null,
     theme = "light",
-    contentStyle,
+    contentStyle: _contentStyle,
     closable = true
   }
 }: {
@@ -224,29 +257,33 @@ export default function NonModal({
       hideModal();
     }
   };
+  const [{ headerComponent: HeaderComponent, contentStyle }, dispatch] =
+    useReducer(reducer, {
+      headerComponent,
+      contentStyle: _contentStyle
+    });
+
   return (
     <Root data-testid="modal">
       <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
-        <Grid justifyContent="space-between">
-          {HeaderComponent && (
-            <Header tag="div" margin="0">
-              {HeaderComponent}
-            </Header>
-          )}
-          <Grid justifyContent="flex-end">
-            <ConnectButton showChangeWallet />
-            {closable && (
-              <Grid padding="1rem 2rem" $width="min-content">
+        {HeaderComponent && (
+          <Header tag="div" margin="0">
+            {HeaderComponent}
+            <Grid justifyContent="flex-end">
+              <ConnectButton showChangeWallet />
+              {closable && (
                 <ThemedButton data-close theme="blank" onClick={handleOnClose}>
                   <Close size={32} />
                 </ThemedButton>
-              </Grid>
-            )}
-          </Grid>
-        </Grid>
+              )}
+            </Grid>
+          </Header>
+        )}
 
         <Content $size={size} style={contentStyle}>
-          {children}
+          <NonModalContext.Provider value={dispatch}>
+            {children}
+          </NonModalContext.Provider>
         </Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>

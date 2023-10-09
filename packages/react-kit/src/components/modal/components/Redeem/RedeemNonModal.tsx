@@ -4,7 +4,8 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
+  ReactNode
 } from "react";
 import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
@@ -40,9 +41,9 @@ import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
 import NonModal, { NonModalProps } from "../../NonModal";
 import Typography from "../../../ui/Typography";
-import { BosonFooter } from "./BosonFooter";
 import { useAccount } from "hooks/connection/connection";
 import { useConfigContext } from "../../../config/ConfigContext";
+import { BosonFooter } from "./BosonFooter";
 
 enum ActiveStep {
   STEPS_OVERVIEW,
@@ -88,12 +89,30 @@ export type RedeemNonModalProps = {
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
   forcedAccount?: string;
 };
-export default function RedeemNonModal({
+
+export default function RedeemWrapper({
+  children,
+  hideModal,
+  ...props
+}: RedeemNonModalProps & { children: ReactNode }) {
+  return (
+    <NonModal
+      props={{
+        hideModal,
+        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
+        footerComponent: <BosonFooter />
+      }}
+    >
+      <RedeemNonModal {...props}>{children}</RedeemNonModal>
+    </NonModal>
+  );
+}
+
+function RedeemNonModal({
   exchange: selectedExchange,
   fairExchangePolicyRules,
   raiseDisputeForExchangeUrl,
   bypassMode,
-  hideModal,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
   myItemsOnCancelExchange,
@@ -109,7 +128,7 @@ export default function RedeemNonModal({
   cancellationViewOnSuccess,
   confirmationViewOnSuccess,
   forcedAccount
-}: RedeemNonModalProps) {
+}: Omit<RedeemNonModalProps, "hideModal">) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
   const seller = sellers?.[0];
@@ -194,7 +213,6 @@ export default function RedeemNonModal({
     });
   };
   const formRef = useRef<FormikProps<FormType> | null>(null);
-  const nonModalProps: Partial<NonModalProps> = { hideModal };
 
   useEffect(() => {
     // TODO: this should not be necessary as validateOnMount should handle that
@@ -224,30 +242,14 @@ export default function RedeemNonModal({
       setStep({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
     }
     return (
-      <NonModal
-        props={{
-          ...nonModalProps,
-          headerComponent: <Typography tag="h3">Redeem your item</Typography>,
-          footerComponent: <BosonFooter />
-        }}
-      >
+      <>
         <p>Please connect your wallet</p>
         {forcedAccount && <p>(expected account: {forcedAccount})</p>}
-      </NonModal>
+      </>
     );
   }
   if (isLoading) {
-    return (
-      <NonModal
-        props={{
-          ...nonModalProps,
-          headerComponent: <Typography tag="h3">Redeem your item</Typography>,
-          footerComponent: <BosonFooter />
-        }}
-      >
-        <Loading />
-      </NonModal>
-    );
+    return <Loading />;
   }
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
@@ -296,7 +298,6 @@ export default function RedeemNonModal({
             <Form>
               {currentStep === ActiveStep.STEPS_OVERVIEW ? (
                 <StepsOverview
-                  nonModalProps={nonModalProps}
                   onNextClick={() => {
                     if (selectedExchange) {
                       setExchange(selectedExchange);
@@ -314,7 +315,6 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
-                  nonModalProps={nonModalProps}
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
@@ -343,7 +343,6 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_VIEW ? (
                 <ExchangeView
-                  nonModalProps={nonModalProps}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
                   onExchangePolicyClick={() => {
@@ -377,13 +376,11 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
                 <ExchangeFullDescriptionView
-                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                 />
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
-                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange}
                   onSuccess={(...args) => {
@@ -393,7 +390,6 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.CANCELLATION_VIEW ? (
                 <CancellationView
-                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onSuccess={(...args) => {
@@ -402,13 +398,9 @@ export default function RedeemNonModal({
                   }}
                 />
               ) : currentStep === ActiveStep.PURCHASE_OVERVIEW ? (
-                <PurchaseOverviewView
-                  nonModalProps={nonModalProps}
-                  onBackClick={goToPreviousStep}
-                />
+                <PurchaseOverviewView onBackClick={goToPreviousStep} />
               ) : currentStep === ActiveStep.REDEEM_FORM ? (
                 <RedeemFormView
-                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onNextClick={() =>
@@ -418,7 +410,6 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
                 <ExchangePolicy
-                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                   onContractualAgreementClick={() =>
@@ -431,19 +422,16 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
                 <ContractualAgreementView
-                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
                 <LicenseAgreementView
-                  nonModalProps={nonModalProps}
                   exchange={exchange}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (
                 <ConfirmationView
-                  nonModalProps={nonModalProps}
                   onBackClick={goToPreviousStep}
                   onSuccess={(...args) => {
                     setActiveStep(ActiveStep.REDEEM_SUCESS);
@@ -453,7 +441,6 @@ export default function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess
-                  nonModalProps={nonModalProps}
                   onHouseClick={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onClickDone={() => setActiveStep(ActiveStep.MY_ITEMS)}
                   onExchangePolicyClick={() =>

@@ -13,11 +13,9 @@ import { FormType } from "../RedeemFormModel";
 import { theme } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
 import GridContainer from "../../../../ui/GridContainer";
 import { useConfigContext } from "../../../../config/ConfigContext";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -33,14 +31,12 @@ type Props = {
   onHouseClick: () => void;
   onExchangePolicyClick: () => void;
   exchangeId: string;
-  nonModalProps: Partial<NonModalProps>;
 };
 
 export function RedeemSuccess({
   onClickDone,
   onHouseClick,
-  exchangeId,
-  nonModalProps
+  exchangeId
 }: Props) {
   const { redeemCallbackUrl } = useConfigContext();
   const {
@@ -60,27 +56,26 @@ export function RedeemSuccess({
   const offer = exchange?.offer;
 
   const offerDetails = offer ? getOfferDetails(offer) : undefined;
-
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: (
+        <Grid>
+          <House
+            onClick={onHouseClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
+          <Typography tag="h3">Redeem your item</Typography>
+        </Grid>
+      ),
+      contentStyle: {
+        background: colors.lightGrey
+      }
+    }
+  });
   return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: (
-          <Grid>
-            <House
-              onClick={onHouseClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            <Typography tag="h3">Redeem your item</Typography>
-          </Grid>
-        ),
-        footerComponent: <BosonFooter />,
-        contentStyle: {
-          background: colors.lightGrey
-        }
-      }}
-    >
+    <>
       {isFetching ? (
         <Loading />
       ) : !offer ? (
@@ -191,6 +186,6 @@ export function RedeemSuccess({
           </Grid>
         </GridContainer>
       )}
-    </NonModal>
+    </>
   );
 }

@@ -1,15 +1,13 @@
 import React from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
-import { BosonFooter } from "../BosonFooter";
 import { offers } from "@bosonprotocol/core-sdk";
 import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../NonModal";
 
 interface Props {
   onBackClick: () => void;
@@ -17,7 +15,6 @@ interface Props {
   onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export function ExchangePolicy({
@@ -25,29 +22,28 @@ export function ExchangePolicy({
   exchange,
   onContractualAgreementClick,
   onLicenseAgreementClick,
-  exchangePolicyCheckResult,
-  nonModalProps
+  exchangePolicyCheckResult
 }: Props) {
   const exchangeName = exchange?.offer.metadata.name || "";
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: (
+        <Grid gap="1rem">
+          <ArrowLeft
+            onClick={onBackClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
+          <Typography tag="h3" style={{ flex: "1 1" }}>
+            {exchangeName}
+          </Typography>
+        </Grid>
+      )
+    }
+  });
   return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: (
-          <Grid gap="1rem">
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            <Typography tag="h3" style={{ flex: "1 1" }}>
-              {exchangeName}
-            </Typography>
-          </Grid>
-        ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+    <>
       {exchange ? (
         <ExchangePolicyDetails
           exchange={exchange}
@@ -58,6 +54,6 @@ export function ExchangePolicy({
       ) : (
         <p>Exchange could not be retrieved</p>
       )}
-    </NonModal>
+    </>
   );
 }

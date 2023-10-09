@@ -8,19 +8,17 @@ import { VariantV1 } from "../../../../../types/variants";
 import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import DetailOpenSea from "./detail/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
 import VariationSelects from "./VariationSelects";
 import DetailSlider from "./detail/DetailSlider";
 import { isTruthy } from "../../../../../types/helpers";
 import GridContainer from "../../../../ui/GridContainer";
-import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
 import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../NonModal";
 
 const colors = theme.colors.light;
 
@@ -44,7 +42,6 @@ export type ExchangeViewProps = {
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   isValid: boolean;
-  nonModalProps: Partial<NonModalProps>;
 };
 
 const SLIDER_OPTIONS = {
@@ -65,8 +62,7 @@ export function ExchangeView({
   onRaiseDisputeClick,
   exchangeId,
   fairExchangePolicyRules,
-  defaultDisputeResolverId,
-  nonModalProps
+  defaultDisputeResolverId
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -126,31 +122,30 @@ export function ExchangeView({
     defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
     defaultTokens: defaultTokens || []
   });
-
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: (
+        <Grid gap="1rem">
+          <House
+            onClick={onHouseClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
+          {offer && (
+            <Typography tag="h3" style={{ flex: "1 1" }}>
+              {offer.metadata.name}
+            </Typography>
+          )}
+        </Grid>
+      ),
+      contentStyle: {
+        background: colors.lightGrey
+      }
+    }
+  });
   return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: (
-          <Grid gap="1rem">
-            <House
-              onClick={onHouseClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            {offer && (
-              <Typography tag="h3" style={{ flex: "1 1" }}>
-                {offer.metadata.name}
-              </Typography>
-            )}
-          </Grid>
-        ),
-        footerComponent: <BosonFooter />,
-        contentStyle: {
-          background: colors.lightGrey
-        }
-      }}
-    >
+    <>
       {isLoading ? (
         <Loading />
       ) : !offer ? (
@@ -217,6 +212,6 @@ export function ExchangeView({
           </Grid>
         </GridContainer>
       )}
-    </NonModal>
+    </>
   );
 }

@@ -7,9 +7,7 @@ import Grid from "../../../../ui/Grid";
 import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
-import NonModal, { NonModalProps } from "../../../NonModal";
-import { BosonFooter } from "../BosonFooter";
-import ConnectButton from "../../../../wallet/ConnectButton";
+import NonModal, { ActionKind, useNonModalContext } from "../../../NonModal";
 import Typography from "../../../../ui/Typography";
 
 const colors = theme.colors.light;
@@ -45,18 +43,17 @@ const StyledCommitStepWrapper = styled(CommitStepWrapper)`
 
 interface Props {
   onNextClick: () => void;
-  nonModalProps: Partial<NonModalProps>;
 }
 
-export default function StepsOverview({ onNextClick, nonModalProps }: Props) {
+export default function StepsOverview({ onNextClick }: Props) {
+  const dispatch = useNonModalContext();
+  dispatch({
+    payload: {
+      headerComponent: <Typography tag="h3">Redeem your item</Typography>
+    }
+  });
   return (
-    <NonModal
-      props={{
-        ...nonModalProps,
-        headerComponent: <Typography tag="h3">Redeem your item</Typography>,
-        footerComponent: <BosonFooter />
-      }}
-    >
+    <>
       <StyledCommitStepWrapper>
         <CommitStep>
           <Step number={1} title="Provide your address">
@@ -88,6 +85,6 @@ export default function StepsOverview({ onNextClick, nonModalProps }: Props) {
           Next
         </Button>
       </Grid>
-    </NonModal>
+    </>
   );
 }
