@@ -91,10 +91,9 @@ export type RedeemNonModalProps = {
 };
 
 export default function RedeemWrapper({
-  children,
   hideModal,
   ...props
-}: RedeemNonModalProps & { children: ReactNode }) {
+}: RedeemNonModalProps) {
   return (
     <NonModal
       props={{
@@ -107,7 +106,7 @@ export default function RedeemWrapper({
         footerComponent: <BosonFooter />
       }}
     >
-      <RedeemNonModal {...props}>{children}</RedeemNonModal>
+      <RedeemNonModal {...props} />
     </NonModal>
   );
 }

@@ -71,10 +71,10 @@ export default function FinanceWithdraw({
   const { data: dataBalance, refetch } = useBalance(
     exchangeToken !== ethers.constants.AddressZero
       ? {
-          address,
+          address: address as `0x${string}`,
           token: exchangeToken as `0x${string}`
         }
-      : { address }
+      : { address: address as `0x${string}` }
   );
   const { showModal, hideModal } = useModal();
 
