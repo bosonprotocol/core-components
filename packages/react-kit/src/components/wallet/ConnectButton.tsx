@@ -97,7 +97,11 @@ export default function ConnectButton({
               <InnerContext.Consumer>
                 {({ isMagicLoggedIn, chainId, globalAccount, disconnect }) => {
                   return (() => {
-                    if (!mounted || !globalAccount || !chainId) {
+                    if (
+                      !mounted ||
+                      !globalAccount ||
+                      (!chainId && !isMagicLoggedIn)
+                    ) {
                       // reset the tag o undefined
                       saveItemInStorage("isChainUnsupported", true);
                       Sentry.setTag("wallet_address", undefined);

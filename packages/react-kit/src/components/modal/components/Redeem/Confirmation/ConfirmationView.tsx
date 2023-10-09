@@ -4,6 +4,9 @@ import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
+import { theme } from "../../../../../theme";
+
+const colors = theme.colors.light;
 
 export interface ConfirmationViewProps {
   onBackClick: ConfirmationProps["onBackClick"];
@@ -31,7 +34,10 @@ export function ConfirmationView({
           <Typography tag="h3" $width="100%">
             Redeem your item
           </Typography>
-        )
+        ),
+        contentStyle: {
+          background: colors.white
+        }
       }
     });
   }, [dispatch]);

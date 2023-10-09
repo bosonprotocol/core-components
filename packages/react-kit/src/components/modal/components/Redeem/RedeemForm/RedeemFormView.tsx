@@ -4,6 +4,9 @@ import Typography from "../../../../ui/Typography";
 import RedeemForm from "./RedeemForm";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
+import { theme } from "../../../../../theme";
+
+const colors = theme.colors.light;
 
 interface Props {
   exchange: Exchange | null;
@@ -27,7 +30,10 @@ export default function RedeemFormView({
           <Typography tag="h3" $width="100%">
             Redeem your item
           </Typography>
-        )
+        ),
+        contentStyle: {
+          background: colors.white
+        }
       }
     });
   }, [dispatch]);
