@@ -66,24 +66,26 @@ export function RedemptionWidget(props: WidgetProps) {
           infuraKey={infuraKey}
           {...props}
         >
-          <QueryClientProvider client={queryClient}>
-            <WalletConnectionProvider
-              walletConnectProjectId={props.walletConnectProjectId}
-            >
-              <ChatProvider>
-                <IpfsProvider {...props}>
-                  <ConvertionRateProvider>
-                    <ModalProvider>
-                      <RedeemModalWithExchange
-                        {...props}
-                        hideModal={props.closeWidgetClick}
-                      />
-                    </ModalProvider>
-                  </ConvertionRateProvider>
-                </IpfsProvider>
-              </ChatProvider>
-            </WalletConnectionProvider>
-          </QueryClientProvider>
+          <MagicProvider>
+            <QueryClientProvider client={queryClient}>
+              <WalletConnectionProvider
+                walletConnectProjectId={props.walletConnectProjectId}
+              >
+                <ChatProvider>
+                  <IpfsProvider {...props}>
+                    <ConvertionRateProvider>
+                      <ModalProvider>
+                        <RedeemModalWithExchange
+                          {...props}
+                          hideModal={props.closeWidgetClick}
+                        />
+                      </ModalProvider>
+                    </ConvertionRateProvider>
+                  </IpfsProvider>
+                </ChatProvider>
+              </WalletConnectionProvider>
+            </QueryClientProvider>
+          </MagicProvider>
         </ConfigProvider>
       </EnvironmentProvider>
     </div>
