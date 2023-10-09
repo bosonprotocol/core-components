@@ -2,7 +2,12 @@
 // source: https://wagmi.sh/react/ethers-adapters
 
 import { useUser } from "components/magicLink/UserContext";
-import { useMagicChainId } from "hooks/magic";
+import { useEthersSigner } from "hooks/ethers/useEthersSigner";
+import {
+  useIsMagicLoggedIn,
+  useMagicChainId,
+  useMagicProvider
+} from "hooks/magic";
 import { useMemo } from "react";
 import { useNetwork, useAccount as useWagmiAccount } from "wagmi";
 
@@ -17,4 +22,15 @@ export function useChainId() {
   const magicChainId = useMagicChainId();
   const chainIdToReturn = magicChainId ?? chain?.id;
   return chainIdToReturn;
+}
+
+export function useSigner() {
+  const wagmiSigner = useEthersSigner();
+  const magicProvider = useMagicProvider();
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+
+  const signer = useMemo(() => {
+    return isMagicLoggedIn ? magicProvider?.getSigner() : wagmiSigner;
+  }, [wagmiSigner, magicProvider, isMagicLoggedIn]);
+  return signer;
 }

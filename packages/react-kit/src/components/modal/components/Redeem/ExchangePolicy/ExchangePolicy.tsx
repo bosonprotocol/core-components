@@ -8,7 +8,9 @@ import ExchangePolicyDetails, {
   ExchangePolicyDetailsProps
 } from "../../../../exchangePolicy/ExchangePolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
+import { theme } from "theme";
 
+const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
@@ -40,7 +42,10 @@ export function ExchangePolicy({
               {exchangeName}
             </Typography>
           </Grid>
-        )
+        ),
+        contentStyle: {
+          background: colors.white
+        }
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

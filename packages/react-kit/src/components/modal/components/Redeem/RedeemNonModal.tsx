@@ -4,8 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
-  ReactNode
+  useState
 } from "react";
 import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
@@ -44,7 +43,9 @@ import Typography from "../../../ui/Typography";
 import { useAccount } from "hooks/connection/connection";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { BosonFooter } from "./BosonFooter";
+import { theme } from "theme";
 
+const colors = theme.colors.light;
 enum ActiveStep {
   STEPS_OVERVIEW,
   MY_ITEMS,
@@ -103,7 +104,10 @@ export default function RedeemWrapper({
             Redeem your item
           </Typography>
         ),
-        footerComponent: <BosonFooter />
+        footerComponent: <BosonFooter />,
+        contentStyle: {
+          background: colors.white
+        }
       }}
     >
       <RedeemNonModal {...props} />

@@ -200,7 +200,6 @@ export const useNonModalContext = () => {
 
 export interface NonModalProps {
   hideModal?: (data?: unknown | undefined | null) => void;
-  // title?: string;
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   contentStyle?: CSSProperties;

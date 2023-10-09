@@ -6,7 +6,9 @@ import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
 import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
+import { theme } from "theme";
 
+const colors = theme.colors.light;
 export interface CancellationViewProps {
   exchange: Exchange | null;
   onBackClick: CancelExchangeProps["onBackClick"];
@@ -33,7 +35,10 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
               Cancel exchange
             </Typography>
           </Grid>
-        )
+        ),
+        contentStyle: {
+          background: colors.white
+        }
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
