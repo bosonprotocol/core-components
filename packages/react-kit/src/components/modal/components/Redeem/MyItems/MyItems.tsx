@@ -14,6 +14,7 @@ import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
 import NonModal, { NonModalProps } from "../../../NonModal";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 const colors = theme.colors.light;
 
@@ -26,6 +27,7 @@ export type MyItemsProps = {
   isValid: boolean;
   nonModalProps: Partial<NonModalProps>;
   sellerIds?: string[];
+  exchangeState?: subgraph.ExchangeState;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -37,7 +39,8 @@ export function MyItems({
   onRaiseDisputeClick,
   onAvatarClick,
   nonModalProps,
-  sellerIds
+  sellerIds,
+  exchangeState
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
@@ -50,7 +53,7 @@ export function MyItems({
         ...nonModalProps,
         headerComponent: (
           <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
+            <Typography tag="h3">Manage your exchanges</Typography>
             <ConnectButton showChangeWallet />
           </Grid>
         ),
@@ -68,10 +71,12 @@ export function MyItems({
             // empty
           }}
           initialValues={{
-            committed: true,
-            redeemed: false,
-            disputed: false,
-            completed: false
+            committed:
+              !exchangeState ||
+              exchangeState === subgraph.ExchangeState.Committed,
+            redeemed: exchangeState === subgraph.ExchangeState.Redeemed,
+            disputed: exchangeState === subgraph.ExchangeState.Disputed,
+            completed: exchangeState === subgraph.ExchangeState.Completed
           }}
         >
           {({ values }) => {

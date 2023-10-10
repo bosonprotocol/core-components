@@ -16,8 +16,8 @@ import { Button } from "../../../../buttons/Button";
 import ConnectButton from "../../../../wallet/ConnectButton";
 import { BosonFooter } from "../BosonFooter";
 import GridContainer from "../../../../ui/GridContainer";
-import { useConfigContext } from "../../../../config/ConfigContext";
 import NonModal, { NonModalProps } from "../../../NonModal";
+import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 
 const colors = theme.colors.light;
 
@@ -42,7 +42,7 @@ export function RedeemSuccess({
   exchangeId,
   nonModalProps
 }: Props) {
-  const { postDeliveryInfoUrl } = useConfigContext();
+  const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
     data: exchanges,
     isError,

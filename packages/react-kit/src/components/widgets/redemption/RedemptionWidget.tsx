@@ -23,6 +23,8 @@ import ConvertionRateProvider, {
 import RedeemNonModal, {
   RedeemNonModalProps
 } from "../../modal/components/Redeem/RedeemNonModal";
+import { RedemptionContextProps } from "./provider/RedemptionContext";
+import { RedemptionProvider } from "./provider/RedemptionProvider";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -36,6 +38,7 @@ type RedemptionProps = {
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
   ConfigProviderProps &
+  RedemptionContextProps &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;
@@ -90,10 +93,12 @@ export function RedemptionWidget(props: WidgetProps) {
                 <IpfsProvider {...props}>
                   <ConvertionRateProvider>
                     <ModalProvider>
-                      <RedeemModalWithExchange
-                        {...props}
-                        hideModal={props.closeWidgetClick}
-                      />
+                      <RedemptionProvider {...props}>
+                        <RedeemModalWithExchange
+                          {...props}
+                          hideModal={props.closeWidgetClick}
+                        />
+                      </RedemptionProvider>
                     </ModalProvider>
                   </ConvertionRateProvider>
                 </IpfsProvider>

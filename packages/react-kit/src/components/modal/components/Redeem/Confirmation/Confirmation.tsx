@@ -19,7 +19,6 @@ import { theme } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
-import { useConfigContext } from "../../../../config/ConfigContext";
 import {
   RedeemButton,
   IRedeemButton
@@ -33,6 +32,7 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import { useEthersSigner } from "../../../../../hooks/ethers/useEthersSigner";
+import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -71,7 +71,8 @@ export default function Confirmation({
   setIsLoading: setLoading
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
-  const { postDeliveryInfoUrl, postDeliveryInfoHeaders } = useConfigContext();
+  const { postDeliveryInfoUrl, postDeliveryInfoHeaders } =
+    useRedemptionContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -244,7 +245,9 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
         <StyledRedeemButton
           type="button"
           onClick={() => handleRedeem()}
-          disabled={isLoading || (!isInitializationValid && !postDeliveryInfoUrl)}
+          disabled={
+            isLoading || (!isInitializationValid && !postDeliveryInfoUrl)
+          }
         >
           <Grid gap="0.5rem">
             Confirm address and redeem

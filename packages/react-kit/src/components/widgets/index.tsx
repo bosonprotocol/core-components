@@ -1,4 +1,4 @@
-export { RedemptionBypassMode } from "../modal/components/Redeem/RedeemNonModal";
+export { RedemptionWidgetAction } from "./redemption/provider/RedemptionContext";
 
 export * from "./finance/FinanceWidget";
 export * from "./redemption/RedemptionWidget";
