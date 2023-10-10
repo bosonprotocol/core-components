@@ -4,8 +4,7 @@ import { BigNumber, ethers } from "ethers";
 import { Spinner } from "phosphor-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useAccount, useBalance } from "wagmi";
-
+import { useBalance } from "wagmi";
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals
@@ -28,7 +27,7 @@ import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
-import { useEthersSigner } from "../../../../hooks/ethers/useEthersSigner";
+import { useAccount, useSigner } from "../../../../hooks/connection/connection";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -64,17 +63,17 @@ export default function FinanceWithdraw({
   const [isWithdrawInvalid, setIsWithdrawInvalid] = useState<boolean>(true);
   const [withdrawError, setWithdrawError] = useState<unknown>(null);
 
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const { address } = useAccount();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
   const { data: dataBalance, refetch } = useBalance(
     exchangeToken !== ethers.constants.AddressZero
       ? {
-          address,
+          address: address as `0x${string}`,
           token: exchangeToken as `0x${string}`
         }
-      : { address }
+      : { address: address as `0x${string}` }
   );
   const { showModal, hideModal } = useModal();
 

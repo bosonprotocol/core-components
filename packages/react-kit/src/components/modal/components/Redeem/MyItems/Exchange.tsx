@@ -2,8 +2,6 @@ import React from "react";
 import { CameraSlash } from "phosphor-react";
 import { useMemo } from "react";
 import styled from "styled-components";
-import { useAccount } from "wagmi";
-
 import mockedAvatar from "../../../../../assets/frame.png";
 
 import {
@@ -25,6 +23,7 @@ import {
 import { useHandleText } from "../../../../../hooks/useHandleText";
 import { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { Exchange as IExchange } from "../../../../../types/exchange";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 

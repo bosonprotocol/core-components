@@ -20,7 +20,7 @@ import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import Typography from "../../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
-import { useEthersSigner } from "../../../../../../hooks/ethers/useEthersSigner";
+import { useSigner } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -74,7 +74,7 @@ export default function ExpireVoucher({
   const { envName, configId } = useEnvContext();
   const coreSDK = useCoreSDKWithContext();
   const addPendingTransaction = useAddPendingTransactionWithContext();
-  const signer = useEthersSigner();
+  const signer = useSigner();
   const displayFloat = useDisplayFloat();
 
   const { currency, price, penalty, refund } = useRefundData(

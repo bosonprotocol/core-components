@@ -1,9 +1,8 @@
 import { BosonXmtpClient } from "@bosonprotocol/chat-sdk";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import { useEnvContext } from "../environment/EnvironmentContext";
 import { useChatContext } from "./ChatProvider/ChatContext";
-import { getChatEnvName } from "./ChatProvider/const";
+import { useAccount } from "../../hooks/connection/connection";
 
 export type ChatInitializationStatus =
   | "PENDING"

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { isTruthy } from "../../types/helpers";
 import { Context, ConfigContextProps } from "./ConfigContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
@@ -16,15 +16,26 @@ export type ConfigProviderProps = Omit<
 };
 export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
   const { envName, configId } = useEnvContext();
-  const envConfig = getEnvConfigById(envName, configId);
-  const sellerCurationList = rest.sellerCurationListBetweenCommas
-    ?.split(",")
-    .map((item) => item.trim())
-    .filter(isTruthy);
-  const offerCurationList = rest.offerCurationListBetweenCommas
-    ?.split(",")
-    .map((item) => item.trim())
-    .filter(isTruthy);
+  const envConfig = useMemo(
+    () => getEnvConfigById(envName, configId),
+    [envName, configId]
+  );
+  const sellerCurationList = useMemo(
+    () =>
+      rest.sellerCurationListBetweenCommas
+        ?.split(",")
+        .map((item) => item.trim())
+        .filter(isTruthy),
+    [rest.sellerCurationListBetweenCommas]
+  );
+  const offerCurationList = useMemo(
+    () =>
+      rest.offerCurationListBetweenCommas
+        ?.split(",")
+        .map((item) => item.trim())
+        .filter(isTruthy),
+    [rest.offerCurationListBetweenCommas]
+  );
   return (
     <Context.Provider
       value={{

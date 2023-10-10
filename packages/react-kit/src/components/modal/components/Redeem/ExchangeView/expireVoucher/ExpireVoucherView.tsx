@@ -1,44 +1,46 @@
-import React from "react";
-import Grid from "../../../../../ui/Grid";
+import React, { useEffect } from "react";
 import Typography from "../../../../../ui/Typography";
-import ConnectButton from "../../../../../wallet/ConnectButton";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
-import { BosonFooter } from "../../BosonFooter";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
-import NonModal, { NonModalProps } from "../../../../NonModal";
+import { useNonModalContext } from "../../../../nonModal/NonModal";
+import { theme } from "../../../../../../theme";
 
+const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {
   onBackClick: ExpireVoucherProps["onBackClick"];
   onSuccess: ExpireVoucherProps["onSuccess"];
   exchange: Exchange | null;
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
   exchange,
   onBackClick,
-  onSuccess,
-  nonModalProps
+  onSuccess
 }) => {
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid>
+          <>
             <ArrowLeft
               onClick={() => onBackClick()}
               size={32}
               style={{ cursor: "pointer" }}
             />
             <Typography tag="h3">Expire voucher</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          </>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+  return (
+    <>
       {!exchange ? (
         <p>Exchange could not be retrieved</p>
       ) : (
@@ -48,6 +50,6 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
           onSuccess={onSuccess}
         />
       )}
-    </NonModal>
+    </>
   );
 };

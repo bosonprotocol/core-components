@@ -27,6 +27,8 @@ import {
   ConfigProvider,
   ConfigProviderProps
 } from "../../config/ConfigProvider";
+import { CONFIG } from "../../../lib/config/config";
+import { MagicProvider } from "../../magicLink/MagicContext";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
@@ -94,10 +96,12 @@ const queryClient = new QueryClient({
 
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
-} & ConfigProviderProps &
+} & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Parameters<typeof Component>[0];
+
+const { infuraKey, magicLinkKey } = CONFIG;
 export function FinanceWidget({
   envName,
   configId,
@@ -112,18 +116,24 @@ export function FinanceWidget({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
       <GlobalStyle />
-      <ConfigProvider {...rest}>
-        <WalletConnectionProvider
-          walletConnectProjectId={walletConnectProjectId}
-        >
-          <QueryClientProvider client={queryClient}>
-            <ConvertionRateProvider>
-              <ModalProvider>
-                <Component sellerId={sellerId} />
-              </ModalProvider>
-            </ConvertionRateProvider>
-          </QueryClientProvider>
-        </WalletConnectionProvider>
+      <ConfigProvider
+        magicLinkKey={magicLinkKey}
+        infuraKey={infuraKey}
+        {...rest}
+      >
+        <MagicProvider>
+          <WalletConnectionProvider
+            walletConnectProjectId={walletConnectProjectId}
+          >
+            <QueryClientProvider client={queryClient}>
+              <ConvertionRateProvider>
+                <ModalProvider>
+                  <Component sellerId={sellerId} />
+                </ModalProvider>
+              </ConvertionRateProvider>
+            </QueryClientProvider>
+          </WalletConnectionProvider>
+        </MagicProvider>
       </ConfigProvider>
     </EnvironmentProvider>
   );

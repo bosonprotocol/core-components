@@ -1,5 +1,5 @@
 import { CheckCircle, Fire, House } from "phosphor-react";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
@@ -13,11 +13,9 @@ import { FormType } from "../RedeemFormModel";
 import { theme } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
 import GridContainer from "../../../../ui/GridContainer";
-import NonModal, { NonModalProps } from "../../../NonModal";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 const colors = theme.colors.light;
 
@@ -33,14 +31,12 @@ type Props = {
   onHouseClick: () => void;
   onExchangePolicyClick: () => void;
   exchangeId: string;
-  nonModalProps: Partial<NonModalProps>;
 };
 
 export function RedeemSuccess({
   onClickDone,
   onHouseClick,
-  exchangeId,
-  nonModalProps
+  exchangeId
 }: Props) {
   const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
@@ -60,11 +56,10 @@ export function RedeemSuccess({
   const offer = exchange?.offer;
 
   const offerDetails = offer ? getOfferDetails(offer) : undefined;
-
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
           <Grid>
             <House
@@ -72,16 +67,20 @@ export function RedeemSuccess({
               size={32}
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
+            <Typography tag="h3" $width="100%">
+              Redeem your item
+            </Typography>
           </Grid>
         ),
-        footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.lightGrey
         }
-      }}
-    >
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+  return (
+    <>
       {isFetching ? (
         <Loading />
       ) : !offer ? (
@@ -192,6 +191,6 @@ export function RedeemSuccess({
           </Grid>
         </GridContainer>
       )}
-    </NonModal>
+    </>
   );
 }

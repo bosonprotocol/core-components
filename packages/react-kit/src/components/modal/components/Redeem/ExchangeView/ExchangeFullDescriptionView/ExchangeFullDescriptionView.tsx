@@ -1,28 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "../../../../../ui/Grid";
 import Typography from "../../../../../ui/Typography";
-import ConnectButton from "../../../../../wallet/ConnectButton";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
-import { BosonFooter } from "../../BosonFooter";
 import { ExchangeFullDescription } from "./ExchangeFullDescription";
-import NonModal, { NonModalProps } from "../../../../NonModal";
+import { useNonModalContext } from "../../../../nonModal/NonModal";
+import { theme } from "../../../../../../theme";
 
+const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
-  nonModalProps: Partial<NonModalProps>;
 }
 
-export function ExchangeFullDescriptionView({
-  onBackClick,
-  exchange,
-  nonModalProps
-}: Props) {
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
           <Grid>
             <ArrowLeft
@@ -33,17 +28,22 @@ export function ExchangeFullDescriptionView({
             <Typography tag="h3">
               {exchange?.offer.metadata.name || ""}
             </Typography>
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, exchange?.offer.metadata.name]);
+  return (
+    <>
       {!exchange ? (
         <p>Exchange could not be retrieved</p>
       ) : (
         <ExchangeFullDescription exchange={exchange} />
       )}
-    </NonModal>
+    </>
   );
 }

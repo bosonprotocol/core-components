@@ -1,5 +1,5 @@
 import { House } from "phosphor-react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useExchanges } from "../../../../../hooks/useExchanges";
 import { useSellers } from "../../../../../hooks/useSellers";
@@ -8,19 +8,17 @@ import { VariantV1 } from "../../../../../types/variants";
 import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import DetailOpenSea from "./detail/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
 import VariationSelects from "./VariationSelects";
 import DetailSlider from "./detail/DetailSlider";
 import { isTruthy } from "../../../../../types/helpers";
 import GridContainer from "../../../../ui/GridContainer";
-import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import { SellerAndDescription } from "./detail/SellerAndDescription";
 import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
 import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 
 const colors = theme.colors.light;
 
@@ -44,7 +42,6 @@ export type ExchangeViewProps = {
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   isValid: boolean;
-  nonModalProps: Partial<NonModalProps>;
 };
 
 const SLIDER_OPTIONS = {
@@ -65,8 +62,7 @@ export function ExchangeView({
   onRaiseDisputeClick,
   exchangeId,
   fairExchangePolicyRules,
-  defaultDisputeResolverId,
-  nonModalProps
+  defaultDisputeResolverId
 }: ExchangeViewProps) {
   const {
     data: exchanges,
@@ -126,11 +122,10 @@ export function ExchangeView({
     defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
     defaultTokens: defaultTokens || []
   });
-
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
           <Grid gap="1rem">
             <House
@@ -143,15 +138,17 @@ export function ExchangeView({
                 {offer.metadata.name}
               </Typography>
             )}
-            <ConnectButton showChangeWallet />
           </Grid>
         ),
-        footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.lightGrey
         }
-      }}
-    >
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, offer]);
+  return (
+    <>
       {isLoading ? (
         <Loading />
       ) : !offer ? (
@@ -218,6 +215,6 @@ export function ExchangeView({
           </Grid>
         </GridContainer>
       )}
-    </NonModal>
+    </>
   );
 }

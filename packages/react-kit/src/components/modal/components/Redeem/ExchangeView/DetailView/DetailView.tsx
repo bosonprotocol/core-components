@@ -10,7 +10,7 @@ import {
 } from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { useAccount, useBalance } from "wagmi";
+import { useBalance } from "wagmi";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { Offer } from "../../../../../../types/offer";
 import { Exchange } from "../../../../../../types/exchange";
@@ -49,6 +49,7 @@ import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
+import { useAccount } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -348,10 +349,10 @@ const DetailView: React.FC<IDetailWidget> = ({
   const { data: dataBalance } = useBalance(
     offer.exchangeToken.address !== ethers.constants.AddressZero
       ? {
-          address,
+          address: address as `0x${string}`,
           token: offer.exchangeToken.address as `0x${string}`
         }
-      : { address }
+      : { address: address as `0x${string}` }
   );
 
   const isToRedeem =

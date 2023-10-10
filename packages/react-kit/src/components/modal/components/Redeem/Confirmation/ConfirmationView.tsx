@@ -1,25 +1,23 @@
 import { getAddress } from "ethers/lib/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
-import NonModal, { NonModalProps } from "../../../NonModal";
-import Grid from "../../../../ui/Grid";
+import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
+import { theme } from "../../../../../theme";
+
+const colors = theme.colors.light;
 
 export interface ConfirmationViewProps {
   onBackClick: ConfirmationProps["onBackClick"];
   onSuccess: ConfirmationProps["onSuccess"];
   exchange: Exchange | null;
-  nonModalProps: Partial<NonModalProps>;
 }
 
 export function ConfirmationView({
   onBackClick,
   onSuccess,
-  exchange,
-  nonModalProps
+  exchange
 }: ConfirmationViewProps) {
   const offerId = exchange?.offer?.id;
   const offerName = exchange?.offer?.metadata?.name;
@@ -28,19 +26,23 @@ export function ConfirmationView({
   const sellerAddress = exchange?.seller?.assistant
     ? getAddress(exchange.seller.assistant)
     : "";
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid>
-            <Typography tag="h3">Redeem your item</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <Typography tag="h3" $width="100%">
+            Redeem your item
+          </Typography>
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+  }, [dispatch]);
+  return (
+    <>
       {exchange ? (
         <Confirmation
           exchangeId={exchange.id}
@@ -55,6 +57,6 @@ export function ConfirmationView({
       ) : (
         <p>Exchange could not be retrieved</p>
       )}
-    </NonModal>
+    </>
   );
 }

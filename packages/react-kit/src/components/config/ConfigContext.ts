@@ -22,6 +22,8 @@ export type ConfigContextProps = {
   licenseTemplate: string;
   contactSellerForExchangeUrl: string;
   usePendingTransactions?: boolean;
+  magicLinkKey: string;
+  infuraKey: string;
 };
 
 export const Context = createContext<ConfigContextProps | null>(null);

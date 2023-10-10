@@ -1,8 +1,6 @@
 import React from "react";
 import { Image as AccountImage } from "@davatar/react";
 import styled, { css } from "styled-components";
-import { useAccount } from "wagmi";
-
 import Grid, { IGrid } from "../../components/ui/Grid";
 import { theme } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
@@ -13,6 +11,7 @@ import { getLensImageUrl } from "../../lib/images/images";
 import { getLensProfilePictureUrl } from "../../lib/lens/profile";
 import { getOfferDetails } from "../../lib/offer/getOfferDetails";
 import { useIpfsContext } from "../ipfs/IpfsContext";
+import { useAccount } from "../../hooks/connection/connection";
 const colors = theme.colors.light;
 const AddressContainer = styled(Grid)`
   gap: 10px;

@@ -2,7 +2,6 @@ import { CoreSDK, subgraph } from "@bosonprotocol/core-sdk";
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useAccount } from "wagmi";
 import { AuthTokenType } from "..";
 import { Profile } from "../lib/lens/generated";
 import { getLensTokenIdDecimal, getLensTokenIdHex } from "../lib/lens/profile";
@@ -10,6 +9,7 @@ import { fetchSubgraph } from "../lib/subgraph/subgraph";
 import useGetLensProfiles from "./lens/useGetLensProfiles";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
+import { useAccount } from "./connection/connection";
 
 interface Props {
   address?: string;

@@ -1,20 +1,17 @@
 import { Formik } from "formik";
-import React from "react";
-import { useAccount } from "wagmi";
+import React, { useEffect } from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
-import Grid from "../../../../ui/Grid";
 import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
-import ConnectButton from "../../../../wallet/ConnectButton";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
-import { BosonFooter } from "../BosonFooter";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
-import NonModal, { NonModalProps } from "../../../NonModal";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import { useNonModalContext } from "../../../nonModal/NonModal";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -25,7 +22,6 @@ export type MyItemsProps = {
   onRaiseDisputeClick: (exchange: Exchange) => void;
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
-  nonModalProps: Partial<NonModalProps>;
   sellerIds?: string[];
   exchangeState?: subgraph.ExchangeState;
 };
@@ -38,7 +34,6 @@ export function MyItems({
   onCancelExchange,
   onRaiseDisputeClick,
   onAvatarClick,
-  nonModalProps,
   sellerIds,
   exchangeState
 }: MyItemsProps) {
@@ -47,22 +42,23 @@ export function MyItems({
     wallet: address
   });
   const buyerId = buyers?.[0]?.id;
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid>
-            <Typography tag="h3">Manage your exchanges</Typography>
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <Typography tag="h3" $width="100%">
+            Manage your exchanges
+          </Typography>
         ),
-        footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.lightGrey
         }
-      }}
-    >
+      }
+    });
+  }, [dispatch]);
+  return (
+    <>
       {isLoading ? (
         <Loading />
       ) : buyerId ? (
@@ -115,6 +111,6 @@ export function MyItems({
       ) : (
         <div>You do not have any exchanges yet</div>
       )}
-    </NonModal>
+    </>
   );
 }

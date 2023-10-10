@@ -1,34 +1,31 @@
 import { ArrowLeft } from "phosphor-react";
-import React from "react";
-import Grid from "../../../../ui/Grid";
-import ConnectButton from "../../../../wallet/ConnectButton";
-import { BosonFooter } from "../BosonFooter";
+import React, { useEffect } from "react";
 import PurchaseOverview from "./PurchaseOverview";
-import NonModal, { NonModalProps } from "../../../NonModal";
+import { useNonModalContext } from "../../../nonModal/NonModal";
+import { theme } from "../../../../../theme";
 
+const colors = theme.colors.light;
 type Props = {
   onBackClick: () => void;
-  nonModalProps: Partial<NonModalProps>;
 };
-export function PurchaseOverviewView({ onBackClick, nonModalProps }: Props) {
-  return (
-    <NonModal
-      props={{
-        ...nonModalProps,
+export function PurchaseOverviewView({ onBackClick }: Props) {
+  const dispatch = useNonModalContext();
+  useEffect(() => {
+    dispatch({
+      payload: {
         headerComponent: (
-          <Grid gap="1rem">
-            <ArrowLeft
-              onClick={onBackClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
-            <ConnectButton showChangeWallet />
-          </Grid>
+          <ArrowLeft
+            onClick={onBackClick}
+            size={32}
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          />
         ),
-        footerComponent: <BosonFooter />
-      }}
-    >
-      <PurchaseOverview />
-    </NonModal>
-  );
+        contentStyle: {
+          background: colors.white
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+  return <PurchaseOverview />;
 }
