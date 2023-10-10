@@ -4,7 +4,7 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
 import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
-import { RedemptionBypassMode } from "../../components/modal/components/Redeem/RedeemNonModal";
+import { RedemptionBypassMode } from "../../components/modal/components/Redeem/ByassModeProvider/const";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
