@@ -112,7 +112,22 @@ export default function RedeemWrapper({
     </NonModal>
   );
 }
-
+const getInitialStep = (
+  widgetAction: RedemptionWidgetAction,
+  showRedemptionOverview: boolean
+) => {
+  return showRedemptionOverview
+    ? ActiveStep.STEPS_OVERVIEW
+    : widgetAction === RedemptionWidgetAction.SELECT_EXCHANGE
+    ? ActiveStep.MY_ITEMS
+    : widgetAction === RedemptionWidgetAction.REDEEM_FORM
+    ? ActiveStep.REDEEM_FORM
+    : widgetAction === RedemptionWidgetAction.CANCEL_FORM
+    ? ActiveStep.CANCELLATION_VIEW
+    : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
+    ? ActiveStep.EXCHANGE_VIEW
+    : ActiveStep.REDEEM_FORM_CONFIRMATION;
+};
 function RedeemNonModal({
   sellerIds,
   exchange: selectedExchange,
@@ -182,17 +197,7 @@ function RedeemNonModal({
     currentStep: ActiveStep;
   }>({
     previousStep: [],
-    currentStep: showRedemptionOverview
-      ? ActiveStep.STEPS_OVERVIEW
-      : widgetAction === RedemptionWidgetAction.SELECT_EXCHANGE
-      ? ActiveStep.MY_ITEMS
-      : widgetAction === RedemptionWidgetAction.REDEEM_FORM
-      ? ActiveStep.REDEEM_FORM
-      : widgetAction === RedemptionWidgetAction.CANCEL_FORM
-      ? ActiveStep.CANCELLATION_VIEW
-      : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
-      ? ActiveStep.EXCHANGE_VIEW
-      : ActiveStep.REDEEM_FORM_CONFIRMATION
+    currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
   const {
     store: { tokens: defaultTokens }
@@ -241,6 +246,20 @@ function RedeemNonModal({
       disconnectAsync();
     }
   }, [disconnectAsync, status]);
+
+  useEffect(() => {
+    // if the user disconnects their wallet amid redeem, cancellation, etc process, reset current flow
+    if (
+      !address &&
+      currentStep !== getInitialStep(widgetAction, showRedemptionOverview)
+    ) {
+      setStep({
+        previousStep: [],
+        currentStep: getInitialStep(widgetAction, showRedemptionOverview)
+      });
+    }
+  }, [address, currentStep, widgetAction, showRedemptionOverview]);
+
   if (
     forcedAccount &&
     address &&
@@ -251,10 +270,6 @@ function RedeemNonModal({
   }
 
   if (!address) {
-    if (currentStep !== ActiveStep.STEPS_OVERVIEW) {
-      // reinitialize the wizard step
-      setStep({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
-    }
     return (
       <>
         <p>Please connect your wallet</p>
