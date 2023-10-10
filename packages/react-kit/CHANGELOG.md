@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.2...@bosonprotocol/react-kit@0.21.0) (2023-10-10)
+
+
+### Bug Fixes
+
+* adapt widget config ([#581](https://github.com/bosonprotocol/core-components/issues/581)) ([e7b8a44](https://github.com/bosonprotocol/core-components/commit/e7b8a44273044bb7afdceede97c118d15de2acfb))
+
+
+### Features
+
+* add magic link ([#582](https://github.com/bosonprotocol/core-components/issues/582)) ([59cf87e](https://github.com/bosonprotocol/core-components/commit/59cf87ec55763766ea781fb174137aa046983300))
+* add sellerIds for redemption widget ([#583](https://github.com/bosonprotocol/core-components/issues/583)) ([0ad1e76](https://github.com/bosonprotocol/core-components/commit/0ad1e760f43da4c62a9f36bef8a832b96495791d))
+* export magic hooks ([#584](https://github.com/bosonprotocol/core-components/issues/584)) ([2033685](https://github.com/bosonprotocol/core-components/commit/20336852249a3583057e13c9a4d7a980e439f084))
+
+
+
+
+
 ## [0.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.1...@bosonprotocol/react-kit@0.20.2) (2023-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/react-kit
