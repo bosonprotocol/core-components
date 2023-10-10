@@ -7,6 +7,8 @@ import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { useAccount } from "../../../../../../hooks/connection/connection";
+import { useBypassMode } from "../../ByassModeProvider/ByassModeProvider";
+import { RedemptionBypassMode } from "../../ByassModeProvider/const";
 
 const colors = theme.colors.light;
 export interface CancellationViewProps {
@@ -21,10 +23,18 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
 }) => {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
+  const byPassMode = useBypassMode();
+  const isCancelModeOnly = byPassMode === RedemptionBypassMode.CANCEL;
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
+        headerComponent: isCancelModeOnly ? (
+          <Grid gap="1rem">
+            <Typography tag="h3" style={{ flex: "1 1" }}>
+              Cancel exchange
+            </Typography>
+          </Grid>
+        ) : (
           <Grid gap="1rem">
             <ArrowLeft
               onClick={onBackClick}
@@ -42,7 +52,7 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, isCancelModeOnly]);
   return (
     <>
       {!exchange ? (

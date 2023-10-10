@@ -1,6 +1,6 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Provider } from "@bosonprotocol/ethers-sdk";
-import { Info as InfoComponent } from "phosphor-react";
+import { Info as InfoComponent, CheckCircle } from "phosphor-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
@@ -23,6 +23,8 @@ import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import DetailTable from "../detail/DetailTable";
 import { useSigner } from "../../../../../../hooks/connection/connection";
+import { useBypassMode } from "../../ByassModeProvider/ByassModeProvider";
+import { RedemptionBypassMode } from "../../ByassModeProvider/const";
 
 const colors = theme.colors.light;
 
@@ -56,6 +58,10 @@ const InfoIcon = styled(InfoComponent)`
   margin-right: 1.1875rem;
 `;
 
+const SuccessIcon = styled(CheckCircle).attrs({ color: colors.green })`
+  margin-right: 1.1875rem;
+`;
+
 const ButtonsSection = styled.div`
   border-top: 2px solid ${colors.border};
   padding-top: 2rem;
@@ -86,6 +92,7 @@ export function CancelExchange({
   onPendingSignature,
   onPendingTransaction
 }: CancelExchangeProps) {
+  const [cancelSuccess, setCancelSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cancelError, setCancelError] = useState<Error | null>(null);
   const { offer } = exchange;
@@ -100,7 +107,8 @@ export function CancelExchange({
     exchange,
     exchange.offer.price
   );
-
+  const byPassMode = useBypassMode();
+  const isCancelModeOnly = byPassMode === RedemptionBypassMode.CANCEL;
   return (
     <>
       <DetailTable
@@ -163,10 +171,18 @@ export function CancelExchange({
           }
         ]}
       />
-      <Info>
-        <InfoIcon />
-        Your rNFT will be burned after cancellation.
-      </Info>
+
+      {cancelSuccess ? (
+        <Info>
+          <SuccessIcon />
+          Your exchange has been cancelled
+        </Info>
+      ) : (
+        <Info>
+          <InfoIcon />
+          Your rNFT will be burned after cancellation.
+        </Info>
+      )}
       {cancelError && <SimpleError />}
       <ButtonsSection>
         <CancelButtonWrapper>
@@ -179,7 +195,7 @@ export function CancelExchange({
             }}
             variant="accentInverted"
             exchangeId={exchange.id}
-            disabled={isLoading}
+            disabled={isLoading || cancelSuccess}
             onError={(...args) => {
               const [error] = args;
               console.error(error);
@@ -219,6 +235,7 @@ export function CancelExchange({
                 },
                 500
               );
+              setCancelSuccess(true);
               setIsLoading(false);
               setCancelError(null);
               onSuccess?.(...args);
@@ -236,9 +253,11 @@ export function CancelExchange({
             </Grid>
           </CancelButton>
         </CancelButtonWrapper>
-        <ThemedButton theme="blankOutline" onClick={() => onBackClick()}>
-          Back
-        </ThemedButton>
+        {!isCancelModeOnly && (
+          <ThemedButton theme="blankOutline" onClick={() => onBackClick()}>
+            Back
+          </ThemedButton>
+        )}
       </ButtonsSection>
     </>
   );

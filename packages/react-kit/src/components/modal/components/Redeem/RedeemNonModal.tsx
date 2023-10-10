@@ -44,6 +44,8 @@ import { useConfigContext } from "../../../config/ConfigContext";
 import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
+import { RedemptionBypassMode } from "./ByassModeProvider/const";
+import { BypassModeProvider } from "./ByassModeProvider/ByassModeProvider";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -60,12 +62,6 @@ enum ActiveStep {
   EXCHANGE_FULL_DESCRIPTION,
   CANCELLATION_VIEW,
   EXPIRE_VOUCHER_VIEW
-}
-
-export enum RedemptionBypassMode {
-  NORMAL = "NORMAL",
-  REDEEM = "REDEEM",
-  CANCEL = "CANCEL"
 }
 
 export type RedeemNonModalProps = {
@@ -111,7 +107,9 @@ export default function RedeemWrapper({
         }
       }}
     >
-      <RedeemNonModal {...props} />
+      <BypassModeProvider bypassMode={props.bypassMode}>
+        <RedeemNonModal {...props} />
+      </BypassModeProvider>
     </NonModal>
   );
 }
@@ -403,7 +401,10 @@ function RedeemNonModal({
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onSuccess={(...args) => {
-                    goToPreviousStep();
+                    if (bypassMode !== RedemptionBypassMode.CANCEL) {
+                      goToPreviousStep();
+                    }
+
                     cancellationViewOnSuccess?.(...args);
                   }}
                 />
