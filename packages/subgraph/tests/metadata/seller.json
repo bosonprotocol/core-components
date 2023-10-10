@@ -1,0 +1,49 @@
+{
+  "contactLinks": [{ "url": "url", "tag": "tag" }],
+  "contactPreference": "xmtp",
+  "description": "description",
+  "images": [
+    {
+      "url": "url",
+      "tag": "tag",
+      "type": "image/jpeg",
+      "width": 505,
+      "height": 393,
+      "fit": "contain",
+      "position": "21px 33px"
+    }
+  ],
+  "kind": "lens",
+  "legalTradingName": "",
+  "name": "sellerMetadataName",
+  "socialLinks": [{ "url": "url", "tag": "tag" }],
+  "type": "SELLER",
+  "website": "website",
+  "salesChannels": [
+    {
+      "tag": "DCL",
+      "settingsUri": "file://dclsettings",
+      "deployments": []
+    },
+    {
+      "tag": "Opensea",
+      "settingsUri": "file://dclsettings",
+      "deployments": []
+    },
+    {
+      "tag": "CustomStoreFront",
+      "name": "custom1",
+      "deployments": [
+        {
+          "link": "https://custom1",
+          "lastUpdated": "1686133617000"
+        },
+        {
+          "link": "https://custom2",
+          "lastUpdated": "1686133618000"
+        }
+      ]
+    }
+  ]
+}
+

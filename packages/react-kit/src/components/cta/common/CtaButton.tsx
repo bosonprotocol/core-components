@@ -1,13 +1,14 @@
 import React from "react";
 import { providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useCtaClickHandler, Action } from "../../../hooks/useCtaClickHandler";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
+import { ButtonSize } from "../../ui/buttonSize";
 
 type Props<T> = CtaButtonProps<T> & {
   defaultLabel?: string;
@@ -31,7 +32,8 @@ export function CtaButton<T>({
   size = ButtonSize.Large,
   variant = "secondaryFill",
   buttonRef,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: Props<T>) {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
@@ -54,11 +56,12 @@ export function CtaButton<T>({
       size={size}
       disabled={disabled}
       ref={buttonRef}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (!isLoading) {
           clickHandler(e);
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || defaultLabel}

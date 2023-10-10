@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
+import { ButtonSize } from "../../ui/buttonSize";
 export type IRemoveSellerFromDisputeResolverButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
@@ -37,7 +38,8 @@ export const RemoveSellerFromDisputeResolverButton = ({
   buyerPercent,
   disputeResolverId,
   sellerAllowList,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: IRemoveSellerFromDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,7 +49,7 @@ export const RemoveSellerFromDisputeResolverButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async (e) => {
+      onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
           try {
@@ -73,6 +75,7 @@ export const RemoveSellerFromDisputeResolverButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Remove Seller"}

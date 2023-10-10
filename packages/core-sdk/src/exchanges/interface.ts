@@ -13,6 +13,17 @@ export function encodeCommitToOffer(buyer: string, offerId: BigNumberish) {
   ]);
 }
 
+export function encodeCommitToConditionalOffer(
+  buyer: string,
+  offerId: BigNumberish,
+  tokenId: BigNumberish
+) {
+  return bosonExchangeHandlerIface.encodeFunctionData(
+    "commitToConditionalOffer",
+    [buyer, offerId, tokenId]
+  );
+}
+
 export function encodeCompleteExchange(exchangeId: BigNumberish) {
   return bosonExchangeHandlerIface.encodeFunctionData("completeExchange", [
     exchangeId

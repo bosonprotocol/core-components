@@ -1,4 +1,5 @@
 import { Interface } from "@ethersproject/abi";
+import { formatBytes32String } from "@ethersproject/strings";
 import { BigNumberish } from "@ethersproject/bignumber";
 import {
   CreateSellerArgs,
@@ -16,6 +17,7 @@ import {
   OptInToDisputeResolverUpdateArgs,
   DisputeResolverUpdateFields
 } from "./types";
+import { AddressZero } from "@ethersproject/constants";
 
 export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
@@ -126,6 +128,7 @@ export function encodeOptInToDisputeResolverUpdate(
   );
 }
 
+// TODO: add a unit test for collectionId
 export function createSellerArgsToStruct(args: CreateSellerArgs): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
@@ -136,8 +139,10 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     authTokenType,
     contractUri,
     royaltyPercentage,
+    collectionId,
     ...sellerStructArgs
   } = args;
+  const collectionSalt = formatBytes32String(collectionId || "collection-0");
   return {
     sellerStruct: argsToSellerStruct(sellerStructArgs),
     authTokenStruct: {
@@ -146,7 +151,8 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     },
     voucherInitValues: {
       contractURI: contractUri,
-      royaltyPercentage
+      royaltyPercentage,
+      collectionSalt
     }
   };
 }
@@ -163,10 +169,10 @@ export function updateSellerArgsToStruct(args: UpdateSellerArgs) {
 }
 
 function argsToSellerStruct(args: {
-  operator: string;
+  assistant: string;
   admin: string;
-  clerk: string;
   treasury: string;
+  metadataUri: string;
 }): Partial<SellerStruct> {
   return {
     // NOTE: It doesn't matter which values we set for `id` and `active` here
@@ -174,6 +180,7 @@ function argsToSellerStruct(args: {
     // we need to set some arbitrary values.
     id: "0",
     active: true,
+    clerk: AddressZero,
     ...args
   };
 }
@@ -187,6 +194,7 @@ function createDisputeResolverArgsToDisputeResolverStruct(
     // we need to set some arbitrary values.
     id: "0",
     active: true,
+    clerk: AddressZero,
     ...args,
     escalationResponsePeriod: utils.timestamp.msToSec(
       args.escalationResponsePeriodInMS

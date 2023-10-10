@@ -1,4 +1,9 @@
-import { abis, getDefaultConfig, defaultConfigs } from "../src/index";
+import {
+  abis,
+  getEnvConfigs,
+  getEnvConfigById,
+  envConfigs
+} from "../src/index";
 
 describe("index entrypoint", () => {
   test("export abis", () => {
@@ -7,7 +12,8 @@ describe("index entrypoint", () => {
   });
 
   test("export default configs", () => {
-    expect(defaultConfigs).toBeTruthy();
-    expect(getDefaultConfig).toBeTruthy();
+    expect(envConfigs).toBeTruthy();
+    expect(getEnvConfigs).toBeTruthy();
+    expect(getEnvConfigById).toBeTruthy();
   });
 });

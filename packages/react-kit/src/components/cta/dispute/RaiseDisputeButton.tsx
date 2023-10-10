@@ -21,7 +21,7 @@ export const RaiseDisputeButton = ({
   exchangeId,
   ...restProps
 }: IRaiseDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
 
   const actions = [
     {

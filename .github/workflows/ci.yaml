@@ -35,6 +35,45 @@ jobs:
         run: npm run build -- --cache-dir=".turbo"
       - id: test
         run: npm run test -- --cache-dir=".turbo"
+
+  e2e-tests:
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+    needs: [lint-build-test]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          # NOTE: Disabled until https://github.com/actions/setup-node/issues/516 is resolved
+          # cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
+      - run: npm ci
+      - name: Build
+        run: |
+          npm run build -- --cache-dir=".turbo"
+      - run: cd e2e && docker-compose build && cd ..
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+      # Rerun the test to be able to publish all coverage reports in the same flow
+      - name: Run packages test
+        run: npm run test -- --force
+      - name: Run e2e tests
+        run: npm run e2e:suite
       - name: Upload common package coverage
         uses: codecov/codecov-action@v2
         with:
@@ -71,44 +110,12 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/metadata/coverage/coverage-final.json
           flags: unittests,metadata
-
-  e2e-tests:
-    name: Run e2e tests
-    runs-on: ubuntu-latest
-    needs: [lint-build-test]
-    steps:
-      - uses: actions/checkout@v3
+      - name: Upload e2e tests coverage
+        uses: codecov/codecov-action@v2
         with:
-          submodules: "true"
-          token: ${{ secrets.BSNORG_ACTIONS_SECRET }}
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          # NOTE: Disabled until https://github.com/actions/setup-node/issues/516 is resolved
-          # cache: "npm"
-      - name: Turbo Cache
-        id: turbo-cache
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}
-      - run: npm ci
-      - name: Build
-        run: |
-          npm run build -- --cache-dir=".turbo"
-      # Pull the latest image to build, and avoid caching pull-only images.
-      # (docker pull is faster than caching in most cases.)
-      - run: cd e2e && docker-compose pull && cd ..
-      # In this step, this action saves a list of existing images,
-      # the cache is created without them in the post run.
-      # It also restores the cache if it exists.
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
-      - name: Run e2e tests
-        run: npm run e2e:suite
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./e2e/coverage/coverage-final.json
+          flags: e2e
 
   job-summary:
     name: Create Job Summary

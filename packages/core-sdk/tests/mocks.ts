@@ -14,6 +14,8 @@ export const DAY_IN_MIN = 24 * 60;
 export const DAY_IN_SEC = DAY_IN_MIN * 60;
 export const DAY_IN_MS = DAY_IN_SEC * 1000;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+const sellerMetadataUri =
+  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 
 export function interceptSubgraph(operationName?: string) {
   return nock(SUBGRAPH_URL).post("", (body) => {
@@ -32,7 +34,7 @@ export function mockRawSellerFromSubgraph(
     id: "1",
     admin: ZERO_ADDRESS,
     clerk: ZERO_ADDRESS,
-    operator: ZERO_ADDRESS,
+    assistant: ZERO_ADDRESS,
     treasury: ZERO_ADDRESS,
     authTokenId: "0",
     authTokenType: 0,
@@ -43,6 +45,7 @@ export function mockRawSellerFromSubgraph(
     funds: [],
     offers: [],
     exchanges: [],
+    metadataUri: sellerMetadataUri,
     ...overrides
   };
 }
@@ -61,6 +64,7 @@ export function mockRawOfferFromSubgraph(
 
   return {
     id: "1",
+    collectionIndex: "0",
     disputeResolverId: "1",
     createdAt: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     price: "1",
@@ -90,7 +94,7 @@ export function mockRawOfferFromSubgraph(
     numberOfRedemptions: "0",
     seller: {
       id: "1",
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,
@@ -100,6 +104,7 @@ export function mockRawOfferFromSubgraph(
       active: true,
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
+      metadataUri: sellerMetadataUri,
       ...seller
     },
     exchangeToken: {
@@ -140,7 +145,7 @@ export function mockRawOfferFromSubgraph(
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       // TODO: replace with valid uri
       metadataUri: "ipfs://dispute-resolver-uri",
       active: true,
@@ -156,7 +161,7 @@ export function mockRawExchangeFromSubgraph(
   overrides: Partial<ExchangeFieldsFragment> = {},
   offerOverrides: Partial<OfferFieldsFragment> = {}
 ): ExchangeFieldsFragment {
-  const { buyer = {}, seller = {}, offer = {}, ...restOverrides } = overrides;
+  const { buyer = {}, seller = {}, ...restOverrides } = overrides;
 
   return {
     id: "1",
@@ -175,7 +180,7 @@ export function mockRawExchangeFromSubgraph(
     },
     seller: {
       id: "3",
-      operator: ZERO_ADDRESS,
+      assistant: ZERO_ADDRESS,
       admin: ZERO_ADDRESS,
       clerk: ZERO_ADDRESS,
       treasury: ZERO_ADDRESS,
@@ -185,6 +190,7 @@ export function mockRawExchangeFromSubgraph(
       active: true,
       royaltyPercentage: "0",
       contractURI: "ipfs://seller-contract-uri",
+      metadataUri: sellerMetadataUri,
       ...seller
     },
     offer: mockRawOfferFromSubgraph(offerOverrides),

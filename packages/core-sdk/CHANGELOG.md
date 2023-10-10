@@ -3,6 +3,165 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.31.0...@bosonprotocol/core-sdk@1.32.0) (2023-10-03)
+
+
+### Features
+
+* export metadata length limit used in validations ([#579](https://github.com/bosonprotocol/core-components/issues/579)) ([05e1948](https://github.com/bosonprotocol/core-components/commit/05e1948e43312fc9b18e5c3b3641ce790f8d8376))
+
+
+
+
+
+# [1.31.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.30.0...@bosonprotocol/core-sdk@1.31.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure pin-to-pinata is working on production ([#577](https://github.com/bosonprotocol/core-components/issues/577)) ([713873b](https://github.com/bosonprotocol/core-components/commit/713873bbcc0c74e0e6adf64f9c55f9cccdff72cb))
+* fix product metadata hack ([#575](https://github.com/bosonprotocol/core-components/issues/575)) ([8df4a08](https://github.com/bosonprotocol/core-components/commit/8df4a088136071fc02ab205b8a527b4fff67665e))
+
+
+### Features
+
+* add productOverrides to queries ([#576](https://github.com/bosonprotocol/core-components/issues/576)) ([7ef7d7b](https://github.com/bosonprotocol/core-components/commit/7ef7d7b679b21cfa95aae1ec9d8f0a18604403c3))
+
+
+
+
+
+# [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.29.0...@bosonprotocol/core-sdk@1.30.0) (2023-09-27)
+
+
+### Features
+
+* get fewer offer fields pinata ([#552](https://github.com/bosonprotocol/core-components/issues/552)) ([5f12906](https://github.com/bosonprotocol/core-components/commit/5f12906609ae97191e66866a8ececce1e82d738a))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+
+
+
+
+
+# [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.28.0...@bosonprotocol/core-sdk@1.29.0) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+
+
+### Features
+
+* allow checking an offer is compliant with the fair exchange policy ([#520](https://github.com/bosonprotocol/core-components/issues/520)) ([1ad4d0f](https://github.com/bosonprotocol/core-components/commit/1ad4d0f0997032a372cd481e1538590f84ab8ca6))
+* redemption widget ([#460](https://github.com/bosonprotocol/core-components/issues/460)) ([953d9c3](https://github.com/bosonprotocol/core-components/commit/953d9c3ad2caafc0a8028637ad25afbebab7c9e2))
+
+
+
+
+
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.27.0...@bosonprotocol/core-sdk@1.28.0) (2023-07-05)
+
+
+### Features
+
+* add fit and position fields to images in seller metadata ([#517](https://github.com/bosonprotocol/core-components/issues/517)) ([7382fe9](https://github.com/bosonprotocol/core-components/commit/7382fe9c25283e18dc25344037e4a734eafa700a))
+* add fit and position in seller metadata images ([#518](https://github.com/bosonprotocol/core-components/issues/518)) ([5ffbca4](https://github.com/bosonprotocol/core-components/commit/5ffbca4dc61afc1db9102ad32cc17532cc144b64))
+
+
+
+
+
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.26.0...@bosonprotocol/core-sdk@1.27.0) (2023-06-28)
+
+
+### Features
+
+* add name to sales channels ([#514](https://github.com/bosonprotocol/core-components/issues/514)) ([30e3c41](https://github.com/bosonprotocol/core-components/commit/30e3c41ce0cf1668655c90699e1a0d5420dfbe09))
+
+
+
+
+
+# [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.3...@bosonprotocol/core-sdk@1.26.0) (2023-06-22)
+
+
+### Bug Fixes
+
+* convert SalesChannelDeployment.lastUpdated from BigInt to String ([#509](https://github.com/bosonprotocol/core-components/issues/509)) ([1ef97fe](https://github.com/bosonprotocol/core-components/commit/1ef97fed322e90bf05a528f8f5e0bda602cf9068))
+* convert SalesChannelDeployment.lastUpdated from number into BigInt ([#508](https://github.com/bosonprotocol/core-components/issues/508)) ([10ee4db](https://github.com/bosonprotocol/core-components/commit/10ee4dbc070ca8b0e10ee44c0a4e79b6c5975643))
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
+## [1.25.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.2...@bosonprotocol/core-sdk@1.25.3) (2023-05-19)
+
+
+### Bug Fixes
+
+* merge origin/releases/mvfw-2023 ([#504](https://github.com/bosonprotocol/core-components/issues/504)) ([3561d45](https://github.com/bosonprotocol/core-components/commit/3561d453dcc117bf52daf04e66a6be5e0122485d))
+
+
+
+
+
+## [1.25.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.1...@bosonprotocol/core-sdk@1.25.2) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+## [1.25.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.25.0...@bosonprotocol/core-sdk@1.25.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/core-sdk
+
+
+
+
+
+# [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.24.0...@bosonprotocol/core-sdk@1.25.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* dcl loading issue ([#439](https://github.com/bosonprotocol/core-components/issues/439)) ([0021e9f](https://github.com/bosonprotocol/core-components/commit/0021e9fef27b8bffbbbf7b681a6659c2618b5640))
+* images metadata ([#447](https://github.com/bosonprotocol/core-components/issues/447)) ([7e43708](https://github.com/bosonprotocol/core-components/commit/7e437080e0ef1a2af6629702be70111a9dfc3915))
+* omit erc mixins ([#437](https://github.com/bosonprotocol/core-components/issues/437)) ([5315c52](https://github.com/bosonprotocol/core-components/commit/5315c520af7a5a71a9f35c8f409e885a29d2032b))
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+* seller metadata images type ([#495](https://github.com/bosonprotocol/core-components/issues/495)) ([1e4fd5e](https://github.com/bosonprotocol/core-components/commit/1e4fd5e4e2b9d4d49057a363e4618e61c2cd33f8))
+* subgraph 2.2.0 ([#453](https://github.com/bosonprotocol/core-components/issues/453)) ([b5a2518](https://github.com/bosonprotocol/core-components/commit/b5a2518af35b24019b95f9b5757bf0654d2e0aa5))
+
+
+### Features
+
+* adapt biconomy relaying with forwarder ([#458](https://github.com/bosonprotocol/core-components/issues/458)) ([a567fc5](https://github.com/bosonprotocol/core-components/commit/a567fc5fa305746f3757f635206156251d695b98))
+* add erc xxx mixins ([#435](https://github.com/bosonprotocol/core-components/issues/435)) ([5f6db24](https://github.com/bosonprotocol/core-components/commit/5f6db24f05e8e9af59766792e3b4ecffdfe71406))
+* add finance widget to react kit ([#452](https://github.com/bosonprotocol/core-components/issues/452)) ([4740742](https://github.com/bosonprotocol/core-components/commit/474074234fadcf9c3cae5e821c2694e5eafa521e))
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* add offer range in subgraph ([#449](https://github.com/bosonprotocol/core-components/issues/449)) ([c39c153](https://github.com/bosonprotocol/core-components/commit/c39c1531ea9873694d1ad709cb8bb1e5ef6524ac))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* add signMetaTxUpdateSellerAndOptIn ([#493](https://github.com/bosonprotocol/core-components/issues/493)) ([f908574](https://github.com/bosonprotocol/core-components/commit/f908574986a3ecb4f14aa92ea8526049dfe55cb2))
+* add width, height, type and name to images in metadata ([#438](https://github.com/bosonprotocol/core-components/issues/438)) ([f95953f](https://github.com/bosonprotocol/core-components/commit/f95953f402f1d9992c3492e825d622b34f4e6bc2))
+* make seller.metadata name, description and website optional ([#488](https://github.com/bosonprotocol/core-components/issues/488)) ([5b51c44](https://github.com/bosonprotocol/core-components/commit/5b51c4464f42fd6b5a84ca78104fb2f7f7e9f15c))
+* omit web3lib erc mixins ([#436](https://github.com/bosonprotocol/core-components/issues/436)) ([23fcdd8](https://github.com/bosonprotocol/core-components/commit/23fcdd818d3191cff5f18566f5eab9abd65026de))
+* remove seller metadata kind field ([#480](https://github.com/bosonprotocol/core-components/issues/480)) ([175b47e](https://github.com/bosonprotocol/core-components/commit/175b47e72315732b9020ab39ea88c66428d74ec5))
+* store seller metadata uri in the graph ipfs node ([#494](https://github.com/bosonprotocol/core-components/issues/494)) ([f873143](https://github.com/bosonprotocol/core-components/commit/f873143687c0e83513895d04540cac26892867fc))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* update set contract uri of the seller ([#462](https://github.com/bosonprotocol/core-components/issues/462)) ([82833ed](https://github.com/bosonprotocol/core-components/commit/82833ed0e7f70182f4552a83f6e9595fb8d2c429))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 # [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.23.2...@bosonprotocol/core-sdk@1.24.0) (2022-12-23)
 
 

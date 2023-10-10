@@ -6,7 +6,8 @@ import { DisputesMixin } from "./disputes/mixin";
 import { applyMixins, BaseCoreSDK } from "./mixins/base-core-sdk";
 import {
   Web3LibAdapter,
-  getDefaultConfig,
+  getEnvConfigById,
+  ConfigId,
   MetadataStorage,
   MetaTxConfig
 } from "@bosonprotocol/common";
@@ -19,6 +20,9 @@ import { FundsMixin } from "./funds/mixin";
 import { ExchangesMixin } from "./exchanges/mixin";
 import { EventLogsMixin } from "./event-logs/mixin";
 import { VoucherMixin } from "./voucher/mixin";
+import { ERC20Mixin } from "./erc20/mixin";
+import { ERC721Mixin } from "./erc721/mixin";
+import { ERC1155Mixin } from "./erc1155/mixin";
 
 export class CoreSDK extends BaseCoreSDK {
   /**
@@ -40,11 +44,12 @@ export class CoreSDK extends BaseCoreSDK {
   static fromDefaultConfig(args: {
     web3Lib: Web3LibAdapter;
     envName: EnvironmentType;
+    configId: ConfigId;
     metadataStorage?: MetadataStorage;
     theGraphStorage?: MetadataStorage;
     metaTx?: Partial<MetaTxConfig>;
   }) {
-    const defaultConfig = getDefaultConfig(args.envName);
+    const defaultConfig = getEnvConfigById(args.envName, args.configId);
 
     return new CoreSDK({
       web3Lib: args.web3Lib,
@@ -57,9 +62,21 @@ export class CoreSDK extends BaseCoreSDK {
         ...defaultConfig.metaTx,
         ...args.metaTx
       },
-      lensContracts: defaultConfig.lens,
+      lens: defaultConfig.lens,
       contracts: defaultConfig.contracts
     });
+  }
+
+  public get lens() {
+    return this._lens;
+  }
+
+  public get contracts() {
+    return this._contracts;
+  }
+
+  public get subgraphUrl() {
+    return this._subgraphUrl;
   }
 
   public get metaTxConfig() {
@@ -68,6 +85,10 @@ export class CoreSDK extends BaseCoreSDK {
 
   public get isMetaTxConfigSet() {
     return this.checkMetaTxConfigSet();
+  }
+
+  public get getTxExplorerUrl() {
+    return this._getTxExplorerUrl;
   }
 
   public checkMetaTxConfigSet(
@@ -106,7 +127,10 @@ export interface CoreSDK
     GroupsMixin,
     OrchestrationMixin,
     EventLogsMixin,
-    VoucherMixin {}
+    VoucherMixin,
+    ERC20Mixin,
+    ERC721Mixin,
+    ERC1155Mixin {}
 applyMixins(CoreSDK, [
   MetadataMixin,
   AccountsMixin,
@@ -119,5 +143,8 @@ applyMixins(CoreSDK, [
   GroupsMixin,
   OrchestrationMixin,
   EventLogsMixin,
-  VoucherMixin
+  VoucherMixin,
+  ERC20Mixin,
+  ERC721Mixin,
+  ERC1155Mixin
 ]);

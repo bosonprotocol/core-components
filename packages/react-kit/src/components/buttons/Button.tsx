@@ -1,67 +1,59 @@
-import React, { forwardRef } from "react";
-import { Loading } from "../Loading";
+import { forwardRef } from "react";
+import ThemedButton, { IButton } from "../ui/ThemedButton";
+import React from "react";
 
-import { ButtonStyle } from "./Button.styles";
-
-export enum ButtonSize {
-  Small = "small",
-  Medium = "medium",
-  Large = "large"
-}
-
-export interface ButtonProps {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  disabled?: boolean;
-  loading?: boolean;
-  size?: ButtonSize;
+export type ButtonProps = IButton & {
   variant?:
-    | "primaryFill"
-    | "primaryInverted"
-    | "secondaryFill"
-    | "secondaryInverted"
-    | "accentFill"
-    | "accentInverted";
-  className?: string;
-  children?: React.ReactNode;
-  showBorder?: boolean;
-  type?: "submit" | "reset" | "button" | undefined;
-  style?: React.CSSProperties;
-  withBosonStyle?: boolean;
-}
+    | "primaryFill" // default
+    | "primaryInverted" // ?
+    | "secondaryFill" // Dispute - Escalate
+    | "secondaryInverted" // Dispute - Refuse, ProgressBar Cancel, Back to home page, Remove variant, Batch void, Void
+    | "accentFill" // cookie
+    | "accentInverted" // Dispute - Copy email, Upload File, Header Sell/Seller Hub, Create Product Draft - Start Fresh, ...
+    | "accentInvertedNoBorder";
+  loading?: boolean;
+};
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      children,
-      onClick,
-      className,
-      size = ButtonSize.Medium,
-      variant = "primaryFill",
-      showBorder = true,
-      type,
-      style,
-      ...props
-    },
-    ref
-  ) => {
+  ({ variant = "primaryFill", loading = false, ...props }, ref) => {
+    let theme: IButton["theme"] = props.theme;
+    switch (variant) {
+      case "primaryFill": {
+        theme = "primary";
+        break;
+      }
+      case "primaryInverted": {
+        theme = "secondary";
+        break;
+      }
+      case "secondaryFill": {
+        theme = "bosonSecondaryInverse";
+        break;
+      }
+      case "secondaryInverted": {
+        theme = "secondaryInverted";
+        break;
+      }
+      case "accentFill": {
+        theme = "accentFill";
+        break;
+      }
+      case "accentInverted": {
+        theme = "accentInverted";
+        break;
+      }
+      case "accentInvertedNoBorder": {
+        theme = "accentInvertedNoBorder";
+        break;
+      }
+    }
     return (
-      <ButtonStyle
-        variant={variant}
-        className={className}
-        onClick={onClick}
-        size={size}
-        ref={ref}
-        showBorder={showBorder}
-        style={style}
-        type={type}
+      <ThemedButton
         {...props}
-      >
-        {props.loading ? (
-          <Loading data-loading />
-        ) : (
-          <span id="buttonText">{children}</span>
-        )}
-      </ButtonStyle>
+        theme={theme}
+        isLoading={loading}
+        ref={ref}
+      ></ThemedButton>
     );
   }
 );

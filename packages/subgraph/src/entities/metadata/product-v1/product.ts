@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap, BigInt } from "@graphprotocol/graph-ts";
+import { JSONValue, TypedMap, BigInt, log } from "@graphprotocol/graph-ts";
 import {
   ProductV1Product,
   ProductV1Brand,
@@ -19,15 +19,19 @@ import {
 } from "../../../utils/json";
 import { saveProductV1Medias } from "./media";
 
-export function getProductId(uuid: string, version: string): string {
-  return `${uuid}-${version}`;
+export function getProductId(
+  sellerId: string,
+  uuid: string,
+  version: string
+): string {
+  return `${sellerId}-${uuid}-${version}`;
 }
 
 export function getProductOverridesId(
-  productId: string,
-  overridesVersion: string
+  sellerId: string,
+  offerId: string
 ): string {
-  return `${productId}-overrides-${overridesVersion}`;
+  return `${sellerId}-overrides-${offerId}`;
 }
 
 export function getCategoryId(categoryName: string): string {
@@ -198,7 +202,6 @@ export function saveProductV1ProductOrOverrides(
   }
 
   return saveProductV1ProductOverrides(
-    getProductId(uuid, version.toString()),
     version,
     title,
     description,
@@ -219,7 +222,8 @@ export function saveProductV1ProductOrOverrides(
     packaging_dimensions_height,
     packaging_dimensions_unit,
     packaging_weight_value,
-    packaging_weight_unit
+    packaging_weight_unit,
+    offer
   );
 }
 
@@ -263,7 +267,11 @@ function saveProductV1Product(
   variant: string | null,
   offer: Offer
 ): string {
-  const productId = getProductId(uuid, version.toString());
+  const productId = getProductId(
+    offer.sellerId.toString(),
+    uuid,
+    version.toString()
+  );
   let product = ProductV1Product.load(productId);
 
   if (!product) {
@@ -409,7 +417,6 @@ function getMax(num1: BigInt, num2: BigInt): BigInt {
 }
 
 function saveProductV1ProductOverrides(
-  productId: string,
   version: i32,
   title: string,
   description: string,
@@ -430,16 +437,17 @@ function saveProductV1ProductOverrides(
   packaging_dimensions_height: string,
   packaging_dimensions_unit: string,
   packaging_weight_value: string,
-  packaging_weight_unit: string
+  packaging_weight_unit: string,
+  offer: Offer
 ): string {
   const productOverridesId = getProductOverridesId(
-    productId,
-    version.toString()
+    offer.sellerId.toString(),
+    offer.id
   );
-  let productOverrides = ProductV1ProductOverrides.load(productId);
+  let productOverrides = ProductV1ProductOverrides.load(productOverridesId);
 
   if (!productOverrides) {
-    productOverrides = new ProductV1ProductOverrides(productId);
+    productOverrides = new ProductV1ProductOverrides(productOverridesId);
   }
 
   productOverrides.version = version;
@@ -561,4 +569,72 @@ function saveProductV1Sections(sections: string[]): string[] {
   }
 
   return savedSections;
+}
+
+export function removeSalesChannelFromProductV1(
+  productId: string,
+  salesChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSalesChannel(product, salesChannelId);
+    if (!removed) {
+      log.warning(
+        "salesChannel '{}' not found in product '{}' - Unable to remove",
+        [salesChannelId, productId]
+      );
+    }
+    product.save();
+  }
+}
+
+export function addSalesChannelFromProductV1(
+  productId: string,
+  salesChannelId: string
+): void {
+  const product = ProductV1Product.load(productId);
+
+  if (product) {
+    const removed = removeSalesChannel(product, salesChannelId);
+    if (removed) {
+      log.warning("salesChannel '{}' already found in product '{}'", [
+        salesChannelId,
+        productId
+      ]);
+    }
+    let salesChannels: string[] = [];
+    if (product.salesChannels) {
+      salesChannels = product.salesChannels as string[];
+    }
+    salesChannels.push(salesChannelId);
+    product.salesChannels = salesChannels;
+    product.save();
+  } else {
+    log.warning("Product '{}' not found. Unable to update salesChannels", [
+      productId
+    ]);
+  }
+}
+
+function removeSalesChannel(
+  product: ProductV1Product,
+  salesChannelId: string
+): boolean {
+  if (product.salesChannels) {
+    const salesChannels = product.salesChannels as string[];
+    const length = product.salesChannels ? salesChannels.length : 0;
+    const newSalesChannels: string[] = [];
+    for (let i = 0; i < length; i++) {
+      const oldSalesChannelId = salesChannels
+        ? (salesChannels[i] as string)
+        : "";
+      if (oldSalesChannelId != salesChannelId) {
+        newSalesChannels.push(oldSalesChannelId);
+      }
+    }
+    product.salesChannels = newSalesChannels;
+    return newSalesChannels.length < length;
+  }
+  return false;
 }

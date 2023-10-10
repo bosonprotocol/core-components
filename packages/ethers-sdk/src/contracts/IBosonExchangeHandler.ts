@@ -102,15 +102,19 @@ export declare namespace BosonTypes {
     method: BigNumberish;
     tokenType: BigNumberish;
     tokenAddress: string;
-    tokenId: BigNumberish;
+    gating: BigNumberish;
+    minTokenId: BigNumberish;
     threshold: BigNumberish;
     maxCommits: BigNumberish;
+    maxTokenId: BigNumberish;
   };
 
   export type ConditionStructOutput = [
     number,
     number,
     string,
+    number,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
@@ -118,9 +122,11 @@ export declare namespace BosonTypes {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: BigNumber;
+    gating: number;
+    minTokenId: BigNumber;
     threshold: BigNumber;
     maxCommits: BigNumber;
+    maxTokenId: BigNumber;
   };
 
   export type TwinReceiptStruct = {
@@ -217,6 +223,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   contractName: "IBosonExchangeHandler";
   functions: {
     "cancelVoucher(uint256)": FunctionFragment;
+    "commitToConditionalOffer(address,uint256,uint256)": FunctionFragment;
     "commitToOffer(address,uint256)": FunctionFragment;
     "commitToPreMintedOffer(address,uint256,uint256)": FunctionFragment;
     "completeExchange(uint256)": FunctionFragment;
@@ -227,6 +234,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     "getExchangeState(uint256)": FunctionFragment;
     "getNextExchangeId()": FunctionFragment;
     "getReceipt(uint256)": FunctionFragment;
+    "isEligibleToCommit(address,uint256,uint256)": FunctionFragment;
     "isExchangeFinalized(uint256)": FunctionFragment;
     "onVoucherTransferred(uint256,address)": FunctionFragment;
     "redeemVoucher(uint256)": FunctionFragment;
@@ -236,6 +244,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "cancelVoucher",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "commitToConditionalOffer",
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "commitToOffer",
@@ -278,6 +290,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "isEligibleToCommit",
+    values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isExchangeFinalized",
     values: [BigNumberish]
   ): string;
@@ -296,6 +312,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "cancelVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "commitToConditionalOffer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -336,6 +356,10 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "isEligibleToCommit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isExchangeFinalized",
     data: BytesLike
   ): Result;
@@ -354,6 +378,7 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
 
   events: {
     "BuyerCommitted(uint256,uint256,uint256,tuple,tuple,address)": EventFragment;
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)": EventFragment;
     "ExchangeCompleted(uint256,uint256,uint256,address)": EventFragment;
     "FundsEncumbered(uint256,address,uint256,address)": EventFragment;
     "FundsReleased(uint256,uint256,address,uint256,address)": EventFragment;
@@ -372,6 +397,9 @@ export interface IBosonExchangeHandlerInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyerCommitted"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "ConditionalCommitAuthorized"
+  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeCompleted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsEncumbered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundsReleased"): EventFragment;
@@ -409,6 +437,21 @@ export type BuyerCommittedEvent = TypedEvent<
 >;
 
 export type BuyerCommittedEventFilter = TypedEventFilter<BuyerCommittedEvent>;
+
+export type ConditionalCommitAuthorizedEvent = TypedEvent<
+  [BigNumber, number, string, BigNumber, BigNumber, BigNumber],
+  {
+    offerId: BigNumber;
+    gating: number;
+    buyerAddress: string;
+    tokenId: BigNumber;
+    commitCount: BigNumber;
+    maxCommits: BigNumber;
+  }
+>;
+
+export type ConditionalCommitAuthorizedEventFilter =
+  TypedEventFilter<ConditionalCommitAuthorizedEvent>;
 
 export type ExchangeCompletedEvent = TypedEvent<
   [BigNumber, BigNumber, BigNumber, string],
@@ -608,6 +651,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
@@ -675,6 +725,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       }
     >;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BigNumber, BigNumber] & {
+        isEligible: boolean;
+        commitCount: BigNumber;
+        maxCommits: BigNumber;
+      }
+    >;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -700,6 +763,13 @@ export interface IBosonExchangeHandler extends BaseContract {
   cancelVoucher(
     _exchangeId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  commitToConditionalOffer(
+    _buyer: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   commitToOffer(
@@ -763,6 +833,19 @@ export interface IBosonExchangeHandler extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BosonTypes.ReceiptStructOutput>;
 
+  isEligibleToCommit(
+    _buyer: string,
+    _offerId: BigNumberish,
+    _tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [boolean, BigNumber, BigNumber] & {
+      isEligible: boolean;
+      commitCount: BigNumber;
+      maxCommits: BigNumber;
+    }
+  >;
+
   isExchangeFinalized(
     _exchangeId: BigNumberish,
     overrides?: CallOverrides
@@ -787,6 +870,13 @@ export interface IBosonExchangeHandler extends BaseContract {
   callStatic: {
     cancelVoucher(
       _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -851,6 +941,19 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BosonTypes.ReceiptStructOutput>;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, BigNumber, BigNumber] & {
+        isEligible: boolean;
+        commitCount: BigNumber;
+        maxCommits: BigNumber;
+      }
+    >;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -890,6 +993,23 @@ export interface IBosonExchangeHandler extends BaseContract {
       voucher?: null,
       executedBy?: null
     ): BuyerCommittedEventFilter;
+
+    "ConditionalCommitAuthorized(uint256,uint8,address,uint256,uint256,uint256)"(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
+    ConditionalCommitAuthorized(
+      offerId?: BigNumberish | null,
+      gating?: null,
+      buyerAddress?: string | null,
+      tokenId?: BigNumberish | null,
+      commitCount?: null,
+      maxCommits?: null
+    ): ConditionalCommitAuthorizedEventFilter;
 
     "ExchangeCompleted(uint256,uint256,uint256,address)"(
       offerId?: BigNumberish | null,
@@ -1095,6 +1215,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     commitToOffer(
       _buyer: string,
       _offerId: BigNumberish,
@@ -1146,6 +1273,13 @@ export interface IBosonExchangeHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isExchangeFinalized(
       _exchangeId: BigNumberish,
       overrides?: CallOverrides
@@ -1172,6 +1306,13 @@ export interface IBosonExchangeHandler extends BaseContract {
     cancelVoucher(
       _exchangeId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    commitToConditionalOffer(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     commitToOffer(
@@ -1222,6 +1363,13 @@ export interface IBosonExchangeHandler extends BaseContract {
 
     getReceipt(
       _exchangeId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isEligibleToCommit(
+      _buyer: string,
+      _offerId: BigNumberish,
+      _tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

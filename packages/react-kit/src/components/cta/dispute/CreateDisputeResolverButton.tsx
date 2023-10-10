@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { accounts } from "@bosonprotocol/core-sdk";
+import { ButtonSize } from "../../ui/buttonSize";
 export type ICreateDisputeResolverButton = {
   exchangeId: BigNumberish;
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs;
@@ -28,7 +29,8 @@ export const CreateDisputeResolverButton = ({
   size = ButtonSize.Large,
   variant = "primaryFill",
   disputeResolverToCreate,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: ICreateDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,7 +40,7 @@ export const CreateDisputeResolverButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async (e) => {
+      onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
           try {
@@ -62,6 +64,7 @@ export const CreateDisputeResolverButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Create Dispute"}

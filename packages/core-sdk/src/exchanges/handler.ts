@@ -8,11 +8,16 @@ import {
   encodeCompleteExchangeBatch,
   encodeRevokeVoucher,
   encodeExpireVoucher,
-  encodeRedeemVoucher
+  encodeRedeemVoucher,
+  encodeCommitToConditionalOffer
 } from "./interface";
 import { getOfferById } from "../offers/subgraph";
 import { getExchangeById, getExchanges } from "../exchanges/subgraph";
-import { ExchangeFieldsFragment, ExchangeState } from "../subgraph";
+import {
+  ExchangeFieldsFragment,
+  ExchangeState,
+  OfferFieldsFragment
+} from "../subgraph";
 import { ensureAllowance } from "../erc20/handler";
 
 type BaseExchangeHandlerArgs = {
@@ -20,6 +25,31 @@ type BaseExchangeHandlerArgs = {
   subgraphUrl: string;
   web3Lib: Web3LibAdapter;
 };
+
+function checkOfferIsCommittable(
+  offerId: BigNumberish,
+  offer: OfferFieldsFragment
+) {
+  if (!offer) {
+    throw new Error(`Offer with id ${offerId.toString()} does not exist`);
+  }
+
+  if (offer.voidedAt) {
+    throw new Error(`Offer with id ${offerId.toString()} has been voided`);
+  }
+
+  if (Date.now() < Number(offer.validFromDate) * 1000) {
+    throw new Error(`Offer with id ${offerId.toString()} is not valid yet`);
+  }
+
+  if (Date.now() >= Number(offer.validUntilDate) * 1000) {
+    throw new Error(`Offer with id ${offerId.toString()} is not valid anymore`);
+  }
+
+  if (Number(offer.quantityAvailable) === 0) {
+    throw new Error(`Offer with id ${offerId.toString()} is sold out`);
+  }
+}
 
 export async function commitToOffer(
   args: BaseExchangeHandlerArgs & {
@@ -29,24 +59,14 @@ export async function commitToOffer(
 ): Promise<TransactionResponse> {
   const offer = await getOfferById(args.subgraphUrl, args.offerId);
 
-  if (!offer) {
-    throw new Error(`Offer with id ${args.offerId} does not exist`);
-  }
+  await checkOfferIsCommittable(args.offerId, offer);
 
-  if (offer.voidedAt) {
-    throw new Error(`Offer with id ${args.offerId} has been voided`);
-  }
-
-  if (Date.now() < Number(offer.validFromDate) * 1000) {
-    throw new Error(`Offer with id ${args.offerId} is not valid yet`);
-  }
-
-  if (Date.now() >= Number(offer.validUntilDate) * 1000) {
-    throw new Error(`Offer with id ${args.offerId} is not valid anymore`);
-  }
-
-  if (Number(offer.quantityAvailable) === 0) {
-    throw new Error(`Offer with id ${args.offerId} is sold out`);
+  if (offer.condition) {
+    // keep compatibility with previous version
+    return commitToConditionalOffer({
+      ...args,
+      tokenId: offer.condition.minTokenId
+    });
   }
 
   if (offer.exchangeToken.address !== AddressZero) {
@@ -65,6 +85,41 @@ export async function commitToOffer(
     from: args.buyer,
     to: args.contractAddress,
     data: encodeCommitToOffer(args.buyer, args.offerId),
+    value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
+  });
+}
+
+export async function commitToConditionalOffer(
+  args: BaseExchangeHandlerArgs & {
+    buyer: string;
+    offerId: BigNumberish;
+    tokenId: BigNumberish;
+  }
+): Promise<TransactionResponse> {
+  const offer = await getOfferById(args.subgraphUrl, args.offerId);
+
+  await checkOfferIsCommittable(args.offerId, offer);
+
+  if (offer.exchangeToken.address !== AddressZero) {
+    const owner = await args.web3Lib.getSignerAddress();
+    // check if we need the committer to approve the token first
+    await ensureAllowance({
+      owner,
+      spender: args.contractAddress,
+      contractAddress: offer.exchangeToken.address,
+      value: offer.price,
+      web3Lib: args.web3Lib
+    });
+  }
+
+  return args.web3Lib.sendTransaction({
+    from: args.buyer,
+    to: args.contractAddress,
+    data: encodeCommitToConditionalOffer(
+      args.buyer,
+      args.offerId,
+      args.tokenId
+    ),
     value: offer.exchangeToken.address === AddressZero ? offer.price : "0"
   });
 }
@@ -123,7 +178,7 @@ export async function revokeVoucher(
 
   assertExchange(args.exchangeId, exchange);
   assertExchangeState(exchange, ExchangeState.Committed);
-  assertSignerIsOperator(signerAddress, exchange);
+  assertSignerIsAssistant(signerAddress, exchange);
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
@@ -218,13 +273,13 @@ function assertExchangeState(
   }
 }
 
-function assertSignerIsOperator(
+function assertSignerIsAssistant(
   signer: string,
   exchange: ExchangeFieldsFragment
 ) {
-  if (exchange.seller.operator.toLowerCase() !== signer.toLowerCase()) {
+  if (exchange.seller.assistant.toLowerCase() !== signer.toLowerCase()) {
     throw new Error(
-      `Signer ${signer} is not the operator ${exchange.seller.operator}`
+      `Signer ${signer} is not the assistant ${exchange.seller.assistant}`
     );
   }
 }
@@ -237,24 +292,24 @@ function assertSignerIsBuyer(signer: string, exchange: ExchangeFieldsFragment) {
   }
 }
 
-function assertSignerIsBuyerOrOperator(
+function assertSignerIsBuyerOrAssistant(
   signer: string,
   exchange: ExchangeFieldsFragment
 ) {
   const { seller, buyer } = exchange;
   const buyerAddress = buyer.wallet;
-  const operatorAddress = seller.operator;
-  const isSignerOperator =
-    signer.toLowerCase() === operatorAddress.toLowerCase();
+  const assistantAddress = seller.assistant;
+  const isSignerAssistant =
+    signer.toLowerCase() === assistantAddress.toLowerCase();
   const isSignerBuyer = signer.toLowerCase() === buyerAddress.toLowerCase();
 
-  if (!isSignerOperator && !isSignerBuyer) {
+  if (!isSignerAssistant && !isSignerBuyer) {
     throw new Error(
-      `Signer ${signer} is required to be the buyer ${buyerAddress} or operator ${operatorAddress}`
+      `Signer ${signer} is required to be the buyer ${buyerAddress} or assistant ${assistantAddress}`
     );
   }
 
-  return { isSignerBuyer, isSignerOperator };
+  return { isSignerBuyer, isSignerAssistant };
 }
 
 function assertCompletableExchange(
@@ -264,12 +319,12 @@ function assertCompletableExchange(
 ) {
   assertExchange(exchangeId, exchange);
 
-  const { isSignerOperator, isSignerBuyer } = assertSignerIsBuyerOrOperator(
+  const { isSignerAssistant, isSignerBuyer } = assertSignerIsBuyerOrAssistant(
     signer,
     exchange
   );
 
-  if (isSignerOperator && !isSignerBuyer) {
+  if (isSignerAssistant && !isSignerBuyer) {
     const elapsedSinceRedeemMS =
       Date.now() - Number(exchange.redeemedDate || "0") * 1000;
     const didDisputePeriodElapse =

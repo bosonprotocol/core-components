@@ -1,0 +1,138 @@
+{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["SELLER"]
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "legalTradingName": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "fit": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "type"]
+      }
+    },
+    "contactLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "tag"]
+      }
+    },
+    "contactPreference": {
+      "type": "string"
+    },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": ["url", "tag"]
+      }
+    },
+    "salesChannels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "settingsUrl": {
+            "type": "string"
+          },
+          "settingsEditor": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "deployments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": { "type": "string" },
+                    "version": { "type": "number" }
+                  },
+                  "required": []
+                },
+                "status": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "lastUpdated": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            }
+          }
+        },
+        "required": ["tag"]
+      }
+    }
+  },
+  "required": ["type", "kind", "contactPreference"]
+}

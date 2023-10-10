@@ -3,7 +3,9 @@ fragment BaseConditionFields on ConditionEntity {
   method
   tokenType
   tokenAddress
-  tokenId
+  gatingType
+  minTokenId
+  maxTokenId
   threshold
   maxCommits
 }

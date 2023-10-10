@@ -9,7 +9,7 @@ The rNFT entitles its holder(s):
 
 If the holder of the rNFT does not redeem the rNFT before the Redemption Period is over, the holder will no longer be able to benefit from the associated Terms. Instead, upon the Cancel function being called, the current holder of the rNFT will be able to withdraw the funds (i.e. the Item Price minus the Cancellation Penalty).
 
-If the holder of the rNFT does redeem the rNFT before the Redemption Period is over, the holder needs to agree to the Buyer & Seller Agreement (see the link to the agreement below).
+By redeeming the rNFT within the Redemption Period and having received from the Seller the seller's information as required by laws applicable to the Buyer, the holder of the rNFT is deemed to have agreed to the Buyer & Seller Agreement (See the link to the agreement below).
 
 <p align=center><em><sup>*</sup>It is important to note that an rNFT is a voucher that can be redeemed for a digital and/or physical good and it is subject to the rNFTs T&Cs and it is NOT a digital representation of said good.</em></p>
 
@@ -19,7 +19,7 @@ If the holder of the rNFT does redeem the rNFT before the Redemption Period is o
 
 **Cancellation Penalty** means the amount of funds that the holder of an rNFT forfeits when Cancelling the rNFT. This Cancellation Penalty is established by the Seller at the time of creating an Offer. The Cancellation Penalty is set as **_{{buyerCancelPenaltyValue}} {{exchangeTokenSymbol}}_**.
 
-**Item** means the thing being sold or a set of things being sold together in a single Offer.
+**Item** means the good or service being sold or a set of goods and services being sold together in a single Offer.
 
 **Item Price** means the price originally paid by the Primary Buyer for an rNFT with the right to redeem an Item.
 
@@ -29,7 +29,7 @@ If the holder of the rNFT does redeem the rNFT before the Redemption Period is o
 
 **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
 
-**Seller** means a person who offers to sell an Item through a rNFT.
+**Seller** means anyone who offers to sell an Item through an rNFT.
 ___
 
 

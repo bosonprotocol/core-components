@@ -101,6 +101,11 @@ const _abi = [
             name: "lastBurnedTokenId",
             type: "uint256",
           },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
         ],
         indexed: false,
         internalType: "struct IBosonVoucher.Range",
@@ -175,6 +180,31 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "startId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+    ],
+    name: "VouchersPreMinted",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -218,6 +248,11 @@ const _abi = [
         name: "_offerId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
     ],
     name: "burnPremintedVouchers",
     outputs: [],
@@ -228,13 +263,37 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_exchangeId",
+        name: "_tokenId",
         type: "uint256",
       },
     ],
     name: "burnVoucher",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "callExternalContract",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -320,6 +379,11 @@ const _abi = [
             name: "lastBurnedTokenId",
             type: "uint256",
           },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
         ],
         internalType: "struct IBosonVoucher.Range",
         name: "range",
@@ -383,7 +447,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_exchangeId",
+        name: "_tokenId",
         type: "uint256",
       },
       {
@@ -408,6 +472,40 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "onERC721Received",
+    outputs: [
+      {
+        internalType: "bytes4",
+        name: "",
+        type: "bytes4",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -463,6 +561,11 @@ const _abi = [
         internalType: "uint256",
         name: "_length",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
       },
     ],
     name: "reserveRange",
@@ -559,11 +662,29 @@ const _abi = [
       },
       {
         internalType: "bool",
-        name: "_approved",
+        name: "approved",
         type: "bool",
       },
     ],
     name: "setApprovalForAll",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_operator",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "_approved",
+        type: "bool",
+      },
+    ],
+    name: "setApprovalForAllToContract",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -684,32 +805,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_offerId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "_data",
-        type: "bytes",
+        internalType: "address[]",
+        name: "_tokenList",
+        type: "address[]",
       },
     ],
-    name: "transferPremintedFrom",
+    name: "withdrawToProtocol",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

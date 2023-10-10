@@ -3,6 +3,119 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.23.1...@bosonprotocol/common@1.23.2) (2023-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.23.0...@bosonprotocol/common@1.23.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure pin-to-pinata is working on production ([#577](https://github.com/bosonprotocol/core-components/issues/577)) ([713873b](https://github.com/bosonprotocol/core-components/commit/713873bbcc0c74e0e6adf64f9c55f9cccdff72cb))
+
+
+
+
+
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.4...@bosonprotocol/common@1.23.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* force amd64 platform on dockers ([#569](https://github.com/bosonprotocol/core-components/issues/569)) ([0af20df](https://github.com/bosonprotocol/core-components/commit/0af20df916cc3c603f9c1cdcfd70ca1d67f6f3dc))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add default dispute resolver id and sellers black lists ([#545](https://github.com/bosonprotocol/core-components/issues/545)) ([ec47a68](https://github.com/bosonprotocol/core-components/commit/ec47a680eab80596e9a223392e913a4b152fec17))
+* add default tokens to protocol config ([#548](https://github.com/bosonprotocol/core-components/issues/548)) ([89aa686](https://github.com/bosonprotocol/core-components/commit/89aa6861bdbdbec23ec274a38c3b02ef6734fa3f))
+* add goerli to the config setup and ci ([#555](https://github.com/bosonprotocol/core-components/issues/555)) ([1181d63](https://github.com/bosonprotocol/core-components/commit/1181d63a9022b5c5cd5d6598e806f09a35990dfd))
+* change symbol and name of goerli eth default tokens in common configs ([#559](https://github.com/bosonprotocol/core-components/issues/559)) ([0f075bb](https://github.com/bosonprotocol/core-components/commit/0f075bb0a49ffffd3a91f340d097e9cb39cfd7a3))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+* remove meta tx from goerli ([#556](https://github.com/bosonprotocol/core-components/issues/556)) ([2c19a1d](https://github.com/bosonprotocol/core-components/commit/2c19a1d29b595c5fe910cdb03f898cb05853d10d))
+
+
+
+
+
+## [1.22.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.3...@bosonprotocol/common@1.22.4) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+
+
+
+
+
+## [1.22.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.2...@bosonprotocol/common@1.22.3) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.22.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.1...@bosonprotocol/common@1.22.2) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+## [1.22.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.22.0...@bosonprotocol/common@1.22.1) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.21.1...@bosonprotocol/common@1.22.0) (2023-05-17)
+
+
+### Features
+
+* valid from date can be in the past ([#503](https://github.com/bosonprotocol/core-components/issues/503)) ([67b8919](https://github.com/bosonprotocol/core-components/commit/67b89196610fa6f6a7c68d39b9445fc4f664dec5))
+
+
+
+
+
+## [1.21.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.21.0...@bosonprotocol/common@1.21.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/common
+
+
+
+
+
+# [1.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.2...@bosonprotocol/common@1.21.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+
+
+### Features
+
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 ## [1.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.20.1...@bosonprotocol/common@1.20.2) (2022-12-01)
 
 **Note:** Version bump only for package @bosonprotocol/common

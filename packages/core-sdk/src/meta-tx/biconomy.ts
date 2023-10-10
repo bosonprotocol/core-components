@@ -44,12 +44,45 @@ export type GetRetriedHashesArgs = {
   transactionHash: string;
 };
 
+export type ForwarderDomainData = {
+  name: string;
+  version: string;
+  verifyingContract: string;
+  salt: string;
+};
+
 export class Biconomy {
   public constructor(
     private _relayerUrl: string,
-    private _apiKey: string,
-    private _apiId: string
+    private _apiKey?: string,
+    private _apiId?: string
   ) {}
+
+  public async getForwarderDomainDetails(
+    args: { chainId: number },
+    overrides: Partial<{
+      relayerUrl: string;
+      forwarderAddress: string;
+    }> = {}
+  ): Promise<{ [key: string]: ForwarderDomainData }> {
+    const url = `${
+      overrides.relayerUrl || this._relayerUrl
+    }/api/v2/meta-tx/systemInfo?networkId=${args.chainId}`;
+    const response = await fetch(url, { method: "GET" });
+
+    if (!response.ok) {
+      let message;
+      try {
+        const jsonResponse = await response.json();
+        message = JSON.stringify(jsonResponse);
+      } catch {
+        message = response.statusText;
+      }
+      throw new ApiError(response.status, `Failed to relay tx: ${message}`);
+    }
+    const txResponse = await response.json();
+    return txResponse?.forwarderDomainDetails;
+  }
 
   public async relayTransaction(
     args: RelayTransactionArgs,
@@ -136,7 +169,6 @@ export class Biconomy {
         });
       }
     }
-
     return resubmittedResponse;
   }
 }

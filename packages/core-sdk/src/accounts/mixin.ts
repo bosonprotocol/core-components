@@ -34,34 +34,17 @@ export class AccountsMixin extends BaseCoreSDK {
 
   /**
    * Returns seller entity from subgraph.
-   * @param operator - Operator address of seller entity to query for.
+   * @param assistant - Assistant address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
    */
-  public async getSellerByOperator(
-    operator: string,
+  public async getSellerByAssistant(
+    assistant: string,
     queryVars?: subgraph.GetSellersQueryQueryVariables
   ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByOperator(
+    return accounts.subgraph.getSellerByAssistant(
       this._subgraphUrl,
-      operator,
-      queryVars
-    );
-  }
-
-  /**
-   * Returns seller entity from subgraph.
-   * @param clerk - Clerk address of seller entity to query for.
-   * @param queryVars - Optional query variables to skip, order or filter.
-   * @returns Seller entity from subgraph.
-   */
-  public async getSellerByClerk(
-    clerk: string,
-    queryVars?: subgraph.GetSellersQueryQueryVariables
-  ): Promise<subgraph.SellerFieldsFragment> {
-    return accounts.subgraph.getSellerByClerk(
-      this._subgraphUrl,
-      clerk,
+      assistant,
       queryVars
     );
   }
@@ -101,7 +84,7 @@ export class AccountsMixin extends BaseCoreSDK {
   }
 
   /**
-   * Returns seller entity from subgraph. Matches `operator`, `clerk`, `admin` or `treasury`.
+   * Returns seller entity from subgraph. Matches `assistant`, `clerk`, `admin` or `treasury`.
    * @param address - Address of seller entity to query for.
    * @param queryVars - Optional query variables to skip, order or filter.
    * @returns Seller entity from subgraph.
@@ -118,7 +101,7 @@ export class AccountsMixin extends BaseCoreSDK {
       address,
       queryVars
     );
-    if (!seller && this._lensContracts?.LENS_HUB_CONTRACT) {
+    if (!seller && this._lens?.LENS_HUB_CONTRACT) {
       // If seller is not found per address, try to find per authToken
       const tokenType = AuthTokenType.LENS; // only LENS for now
       const tokenIds = await this.fetchUserAuthTokens(address, tokenType);
@@ -151,11 +134,11 @@ export class AccountsMixin extends BaseCoreSDK {
       // only LENS for now
       throw new Error(`Unsupported authTokenType '${tokenType}'`);
     }
-    if (!this._lensContracts || !this._lensContracts?.LENS_HUB_CONTRACT) {
+    if (!this._lens || !this._lens?.LENS_HUB_CONTRACT) {
       throw new Error("LENS contract is not configured in Core-SDK");
     }
     const balance = await erc721.handler.balanceOf({
-      contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+      contractAddress: this._lens?.LENS_HUB_CONTRACT,
       owner: address,
       web3Lib: this._web3Lib
     });
@@ -164,7 +147,7 @@ export class AccountsMixin extends BaseCoreSDK {
     const promises: Promise<string>[] = [];
     for (let index = 0; balanceBN.gt(index); index++) {
       const tokenIdPromise = erc721.handler.tokenOfOwnerByIndex({
-        contractAddress: this._lensContracts?.LENS_HUB_CONTRACT,
+        contractAddress: this._lens?.LENS_HUB_CONTRACT,
         owner: address,
         index,
         web3Lib: this._web3Lib
@@ -225,6 +208,8 @@ export class AccountsMixin extends BaseCoreSDK {
     return accounts.handler.createSeller({
       sellerToCreate,
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
@@ -270,6 +255,8 @@ export class AccountsMixin extends BaseCoreSDK {
     return accounts.handler.updateSeller({
       sellerUpdates,
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
@@ -318,8 +305,8 @@ export class AccountsMixin extends BaseCoreSDK {
       await this._web3Lib.getSignerAddress()
     ).toLowerCase();
     const fieldsToUpdate = {
-      operator: currentAccount === pendingSellerUpdate.operator?.toLowerCase(),
-      clerk: currentAccount === pendingSellerUpdate.clerk?.toLowerCase(),
+      assistant:
+        currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
       admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
       authToken:
         pendingSellerUpdate.tokenType !== undefined &&
@@ -327,17 +314,15 @@ export class AccountsMixin extends BaseCoreSDK {
         pendingSellerUpdate.tokenType !== AuthTokenType.NONE
     };
     if (
-      fieldsToUpdate.operator ||
-      fieldsToUpdate.clerk ||
+      fieldsToUpdate.assistant ||
       fieldsToUpdate.admin ||
       fieldsToUpdate.authToken
     ) {
       return this.optInToSellerUpdate({
         id: sellerUpdates.id,
         fieldsToUpdate: {
-          operator:
-            currentAccount === pendingSellerUpdate.operator.toLowerCase(),
-          clerk: currentAccount === pendingSellerUpdate.clerk.toLowerCase(),
+          assistant:
+            currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
           admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
           authToken: pendingSellerUpdate.tokenType !== AuthTokenType.NONE
         }
@@ -414,7 +399,7 @@ export class AccountsMixin extends BaseCoreSDK {
    * @returns Created exchange id.
    */
   public getPendingSellerUpdateFromLogs(logs: Log[]): {
-    operator: string;
+    assistant: string;
     clerk: string;
     admin: string;
     tokenType: number;
@@ -424,7 +409,7 @@ export class AccountsMixin extends BaseCoreSDK {
     // SellerUpdatePending or SellerUpdateApplied events
     const valuesFromLogs = getValuesFromLogsExt<
       | {
-          operator: string;
+          assistant: string;
           clerk: string;
           admin: string;
         }
@@ -440,7 +425,7 @@ export class AccountsMixin extends BaseCoreSDK {
     });
     const pendingSellerStruct = (
       valuesFromLogs["pendingSeller"] as {
-        operator: string;
+        assistant: string;
         clerk: string;
         admin: string;
       }[]
@@ -452,7 +437,7 @@ export class AccountsMixin extends BaseCoreSDK {
       }[]
     )?.[0];
     return {
-      operator: pendingSellerStruct?.operator,
+      assistant: pendingSellerStruct?.assistant,
       admin: pendingSellerStruct?.admin,
       clerk: pendingSellerStruct?.clerk,
       tokenId: pendingAuthTokenStruct?.tokenId,

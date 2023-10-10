@@ -3,6 +3,129 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.28.0...@bosonprotocol/subgraph@1.28.1) (2023-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+# [1.28.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.27.0...@bosonprotocol/subgraph@1.28.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* ensure identification of ProductV1ProductOverrides is correct ([#574](https://github.com/bosonprotocol/core-components/issues/574)) ([30cb56d](https://github.com/bosonprotocol/core-components/commit/30cb56d980c169cb4c01952670f7d1863fec67b0))
+* fix product metadata hack ([#575](https://github.com/bosonprotocol/core-components/issues/575)) ([8df4a08](https://github.com/bosonprotocol/core-components/commit/8df4a088136071fc02ab205b8a527b4fff67665e))
+
+
+### Features
+
+* add productOverrides to queries ([#576](https://github.com/bosonprotocol/core-components/issues/576)) ([7ef7d7b](https://github.com/bosonprotocol/core-components/commit/7ef7d7b679b21cfa95aae1ec9d8f0a18604403c3))
+
+
+
+
+
+# [1.27.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.26.0...@bosonprotocol/subgraph@1.27.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* fundsEventLogs shall always contain a fundsEntity reference ([#561](https://github.com/bosonprotocol/core-components/issues/561)) ([fb8f598](https://github.com/bosonprotocol/core-components/commit/fb8f598dd2bdf68bbe6b79e342fd31575fb0924e))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add goerli to the config setup and ci ([#555](https://github.com/bosonprotocol/core-components/issues/555)) ([1181d63](https://github.com/bosonprotocol/core-components/commit/1181d63a9022b5c5cd5d6598e806f09a35990dfd))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+
+
+
+
+
+# [1.26.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.25.0...@bosonprotocol/subgraph@1.26.0) (2023-07-05)
+
+
+### Features
+
+* add fit and position fields to images in seller metadata ([#517](https://github.com/bosonprotocol/core-components/issues/517)) ([7382fe9](https://github.com/bosonprotocol/core-components/commit/7382fe9c25283e18dc25344037e4a734eafa700a))
+
+
+
+
+
+# [1.25.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.24.0...@bosonprotocol/subgraph@1.25.0) (2023-06-28)
+
+
+### Features
+
+* add name to sales channels ([#514](https://github.com/bosonprotocol/core-components/issues/514)) ([30e3c41](https://github.com/bosonprotocol/core-components/commit/30e3c41ce0cf1668655c90699e1a0d5420dfbe09))
+* change sales channel id structure ([#515](https://github.com/bosonprotocol/core-components/issues/515)) ([fc5d5d7](https://github.com/bosonprotocol/core-components/commit/fc5d5d7b95d725e89c90abb341e81ae3953b68b2))
+
+
+
+
+
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.23.1...@bosonprotocol/subgraph@1.24.0) (2023-06-22)
+
+
+### Bug Fixes
+
+* convert SalesChannelDeployment.lastUpdated from BigInt to String ([#509](https://github.com/bosonprotocol/core-components/issues/509)) ([1ef97fe](https://github.com/bosonprotocol/core-components/commit/1ef97fed322e90bf05a528f8f5e0bda602cf9068))
+* convert SalesChannelDeployment.lastUpdated from number into BigInt ([#508](https://github.com/bosonprotocol/core-components/issues/508)) ([10ee4db](https://github.com/bosonprotocol/core-components/commit/10ee4dbc070ca8b0e10ee44c0a4e79b6c5975643))
+
+
+### Features
+
+* add saleChannels in seller metadata ([#507](https://github.com/bosonprotocol/core-components/issues/507)) ([4cb6ea9](https://github.com/bosonprotocol/core-components/commit/4cb6ea958cb9c3e1e640c9af3e45d3728b309e5a))
+
+
+
+
+
+## [1.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.23.0...@bosonprotocol/subgraph@1.23.1) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/subgraph
+
+
+
+
+
+# [1.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.22.1...@bosonprotocol/subgraph@1.23.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* images metadata ([#447](https://github.com/bosonprotocol/core-components/issues/447)) ([7e43708](https://github.com/bosonprotocol/core-components/commit/7e437080e0ef1a2af6629702be70111a9dfc3915))
+* override media type in seller images ([#496](https://github.com/bosonprotocol/core-components/issues/496)) ([b7b54c3](https://github.com/bosonprotocol/core-components/commit/b7b54c3c341671a3daf796303777de128336904f))
+* seller metadata images type ([#495](https://github.com/bosonprotocol/core-components/issues/495)) ([1e4fd5e](https://github.com/bosonprotocol/core-components/commit/1e4fd5e4e2b9d4d49057a363e4618e61c2cd33f8))
+* subgraph 2.2.0 ([#453](https://github.com/bosonprotocol/core-components/issues/453)) ([b5a2518](https://github.com/bosonprotocol/core-components/commit/b5a2518af35b24019b95f9b5757bf0654d2e0aa5))
+
+
+### Features
+
+* add minted field in offer.range and update offer.quantityAvailable on reserving a range ([#474](https://github.com/bosonprotocol/core-components/issues/474)) ([4b6f0d1](https://github.com/bosonprotocol/core-components/commit/4b6f0d14dcc1d93c66b2466f04d1a7ff0b10c00a))
+* add offer range in subgraph ([#449](https://github.com/bosonprotocol/core-components/issues/449)) ([c39c153](https://github.com/bosonprotocol/core-components/commit/c39c1531ea9873694d1ad709cb8bb1e5ef6524ac))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* add width, height, type and name to images in metadata ([#438](https://github.com/bosonprotocol/core-components/issues/438)) ([f95953f](https://github.com/bosonprotocol/core-components/commit/f95953f402f1d9992c3492e825d622b34f4e6bc2))
+* make seller.metadata name, description and website optional ([#488](https://github.com/bosonprotocol/core-components/issues/488)) ([5b51c44](https://github.com/bosonprotocol/core-components/commit/5b51c4464f42fd6b5a84ca78104fb2f7f7e9f15c))
+* remove seller metadata kind field ([#480](https://github.com/bosonprotocol/core-components/issues/480)) ([175b47e](https://github.com/bosonprotocol/core-components/commit/175b47e72315732b9020ab39ea88c66428d74ec5))
+* support Biconomy meta tx with Trusted Forwarder ([#428](https://github.com/bosonprotocol/core-components/issues/428)) ([caa7498](https://github.com/bosonprotocol/core-components/commit/caa74982f146c0973f24b7043496768c5f238d68))
+* update set contract uri of the seller ([#462](https://github.com/bosonprotocol/core-components/issues/462)) ([82833ed](https://github.com/bosonprotocol/core-components/commit/82833ed0e7f70182f4552a83f6e9595fb8d2c429))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+### Reverts
+
+* Revert "ci: fix deploy subgraph pipeline (#443)" (#444) ([de4d4da](https://github.com/bosonprotocol/core-components/commit/de4d4daa86f5de66da6f6990ff12533ba6c6b144)), closes [#443](https://github.com/bosonprotocol/core-components/issues/443) [#444](https://github.com/bosonprotocol/core-components/issues/444)
+
+
+
+
+
 ## [1.22.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.22.0...@bosonprotocol/subgraph@1.22.1) (2022-11-22)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph

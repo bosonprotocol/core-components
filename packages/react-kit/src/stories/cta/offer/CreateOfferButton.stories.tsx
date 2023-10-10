@@ -9,14 +9,25 @@ import { AuthTokenType } from "@bosonprotocol/common";
 
 export default {
   title: "Visual Components/CTA/Offer/CreateOfferButton",
-  component: CreateOfferButton
+  component: CreateOfferButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateOfferButton>;
 
 const Template: ComponentStory<typeof CreateOfferButton> = (args) => {
   const provider = hooks.useProvider();
   return (
     <CtaButtonWrapper>
-      <CreateOfferButton web3Provider={provider} {...args} />
+      <CreateOfferButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -29,23 +40,27 @@ export const WithStep: ComponentStory<typeof CreateOfferButton> = Template.bind(
 );
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined,
+    ipfsMetadataStorageHeaders: {
+      authorization: ""
+    }
+  },
   hasSellerAccount: true,
   sellerInfo: {
-    operator: "",
+    assistant: "",
     admin: "",
     clerk: "",
     treasury: "",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
     authTokenId: "0",
-    authTokenType: AuthTokenType.NONE
+    authTokenType: AuthTokenType.NONE,
+    metadataUri: ""
   },
   isMultiVariant: true,
-  web3Provider: undefined,
-  ipfsMetadataStorageHeaders: {
-    authorization: ""
-  },
   extraInfo: "",
   disabled: false,
   offersToCreate: [
@@ -105,21 +120,25 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined,
+    ipfsMetadataStorageHeaders: {
+      authorization: "change-me"
+    }
+  },
   hasSellerAccount: true,
   sellerInfo: {
-    operator: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
+    assistant: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     admin: "0x0000000000000000000000000000000000000000",
-    clerk: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
     treasury: "0x4c9c92860153ca658b2a55c9250c2bc53f11db8b",
+    clerk: "0x0123456789012345678901234567890123456789",
     contractUri: "ipfs://sample",
     royaltyPercentage: "0",
     authTokenId: "0",
-    authTokenType: AuthTokenType.NONE
-  },
-  web3Provider: undefined,
-  ipfsMetadataStorageHeaders: {
-    authorization: "change-me"
+    authTokenType: AuthTokenType.NONE,
+    metadataUri: ""
   },
   extraInfo: "Step 1",
   disabled: false,

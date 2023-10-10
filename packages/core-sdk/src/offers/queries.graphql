@@ -36,6 +36,58 @@ query getOffersQuery(
   }
 }
 
+query getOffersMediaQuery(
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $exchangesSkip: Int
+  $exchangesFirst: Int
+  $exchangesOrderBy: Exchange_orderBy
+  $exchangesOrderDirection: OrderDirection
+  $exchangesFilter: Exchange_filter
+  $includeExchanges: Boolean = false
+) {
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) {
+    id
+    metadata {
+      type
+      animationUrl
+      image
+      ... on ProductV1MetadataEntity {
+        productOverrides {
+          visuals_images {
+            url
+          }
+          visuals_videos {
+            url
+          }
+        }
+        product {
+          visuals_images {
+            url
+          }
+          visuals_videos {
+            url
+          }
+        }
+        productV1Seller {
+          images {
+            url
+          }
+        }
+      }
+    }
+  }
+}
+
 fragment OfferFields on Offer {
   ...BaseOfferFields
   exchanges(
@@ -71,6 +123,7 @@ fragment BaseOfferFields on Offer {
   metadataHash
   voided
   voidedAt
+  collectionIndex
   disputeResolverId
   numberOfCommits
   numberOfRedemptions
@@ -94,12 +147,18 @@ fragment BaseOfferFields on Offer {
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
     type
     image
     ... on ProductV1MetadataEntity {
+      productOverrides {
+        ...BaseProductV1ProductOverridesFields
+      }
       attributes {
         traitType
         value
@@ -128,4 +187,14 @@ fragment BaseOfferFields on Offer {
       }
     }
   }
+  range {
+    ...BaseRangeFields
+  }
+}
+
+fragment BaseRangeFields on RangeEntity {
+  id
+  start
+  end
+  owner
 }

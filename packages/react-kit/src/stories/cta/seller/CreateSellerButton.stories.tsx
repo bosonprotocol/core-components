@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Seller/CreateSellerButton",
-  component: CreateSellerButton
+  component: CreateSellerButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CreateSellerButton>;
 
 const Template: ComponentStory<typeof CreateSellerButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof CreateSellerButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CreateSellerButton web3Provider={provider} {...args} />
+      <CreateSellerButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -27,19 +38,23 @@ export const WithExtraInfo: ComponentStory<typeof CreateSellerButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "28",
   createSellerArgs: {
-    operator: "0x0123456789012345678901234567890123456789",
-    admin: "0x0123456789012345678901234567890123456789",
+    assistant: "0x0123456789012345678901234567890123456789",
     clerk: "0x0123456789012345678901234567890123456789",
+    admin: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     contractUri: "",
     royaltyPercentage: 0,
     authTokenId: 0,
-    authTokenType: 0
+    authTokenType: 0,
+    metadataUri: ""
   },
-  web3Provider: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -59,19 +74,23 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    web3Provider: undefined
+  },
   exchangeId: "28",
   createSellerArgs: {
-    operator: "0x0123456789012345678901234567890123456789",
+    assistant: "0x0123456789012345678901234567890123456789",
     admin: "0x0123456789012345678901234567890123456789",
     clerk: "0x0123456789012345678901234567890123456789",
     treasury: "0x0123456789012345678901234567890123456789",
     contractUri: "",
     royaltyPercentage: 0,
     authTokenId: 0,
-    authTokenType: 0
+    authTokenType: 0,
+    metadataUri: ""
   },
-  web3Provider: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

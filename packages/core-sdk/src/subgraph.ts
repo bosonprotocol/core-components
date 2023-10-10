@@ -168,8 +168,73 @@ export enum Account_OrderBy {
   Logs = "logs"
 }
 
+export type AnimationMetadata = {
+  __typename?: "AnimationMetadata";
+  height?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"];
+  type?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+};
+
+export type AnimationMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  type?: InputMaybe<Scalars["String"]>;
+  type_contains?: InputMaybe<Scalars["String"]>;
+  type_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_ends_with?: InputMaybe<Scalars["String"]>;
+  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_gt?: InputMaybe<Scalars["String"]>;
+  type_gte?: InputMaybe<Scalars["String"]>;
+  type_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_lt?: InputMaybe<Scalars["String"]>;
+  type_lte?: InputMaybe<Scalars["String"]>;
+  type_not?: InputMaybe<Scalars["String"]>;
+  type_not_contains?: InputMaybe<Scalars["String"]>;
+  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_not_starts_with?: InputMaybe<Scalars["String"]>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_starts_with?: InputMaybe<Scalars["String"]>;
+  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum AnimationMetadata_OrderBy {
+  Height = "height",
+  Id = "id",
+  Type = "type",
+  Width = "width"
+}
+
 export type BaseMetadataEntity = MetadataInterface & {
   __typename?: "BaseMetadataEntity";
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -217,6 +282,27 @@ export type BaseMetadataEntityAttributesArgs = {
 export type BaseMetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -514,6 +600,7 @@ export type BaseMetadataEntity_Filter = {
 };
 
 export enum BaseMetadataEntity_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -621,18 +708,28 @@ export enum Buyer_OrderBy {
  */
 export type ConditionEntity = {
   __typename?: "ConditionEntity";
+  gatingType: Scalars["Int"];
   id: Scalars["ID"];
   maxCommits: Scalars["BigInt"];
+  maxTokenId: Scalars["BigInt"];
   method: Scalars["Int"];
+  minTokenId: Scalars["BigInt"];
   threshold: Scalars["BigInt"];
   tokenAddress: Scalars["Bytes"];
-  tokenId: Scalars["BigInt"];
   tokenType: Scalars["Int"];
 };
 
 export type ConditionEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  gatingType?: InputMaybe<Scalars["Int"]>;
+  gatingType_gt?: InputMaybe<Scalars["Int"]>;
+  gatingType_gte?: InputMaybe<Scalars["Int"]>;
+  gatingType_in?: InputMaybe<Array<Scalars["Int"]>>;
+  gatingType_lt?: InputMaybe<Scalars["Int"]>;
+  gatingType_lte?: InputMaybe<Scalars["Int"]>;
+  gatingType_not?: InputMaybe<Scalars["Int"]>;
+  gatingType_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -649,6 +746,14 @@ export type ConditionEntity_Filter = {
   maxCommits_lte?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_not?: InputMaybe<Scalars["BigInt"]>;
   maxCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxTokenId?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  maxTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   method?: InputMaybe<Scalars["Int"]>;
   method_gt?: InputMaybe<Scalars["Int"]>;
   method_gte?: InputMaybe<Scalars["Int"]>;
@@ -657,6 +762,14 @@ export type ConditionEntity_Filter = {
   method_lte?: InputMaybe<Scalars["Int"]>;
   method_not?: InputMaybe<Scalars["Int"]>;
   method_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  minTokenId?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minTokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  minTokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   threshold?: InputMaybe<Scalars["BigInt"]>;
   threshold_gt?: InputMaybe<Scalars["BigInt"]>;
   threshold_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -671,14 +784,6 @@ export type ConditionEntity_Filter = {
   tokenAddress_not?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_contains?: InputMaybe<Scalars["Bytes"]>;
   tokenAddress_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  tokenId?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_gt?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_gte?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
-  tokenId_lt?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_lte?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_not?: InputMaybe<Scalars["BigInt"]>;
-  tokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   tokenType?: InputMaybe<Scalars["Int"]>;
   tokenType_gt?: InputMaybe<Scalars["Int"]>;
   tokenType_gte?: InputMaybe<Scalars["Int"]>;
@@ -690,12 +795,14 @@ export type ConditionEntity_Filter = {
 };
 
 export enum ConditionEntity_OrderBy {
+  GatingType = "gatingType",
   Id = "id",
   MaxCommits = "maxCommits",
+  MaxTokenId = "maxTokenId",
   Method = "method",
+  MinTokenId = "minTokenId",
   Threshold = "threshold",
   TokenAddress = "tokenAddress",
-  TokenId = "tokenId",
   TokenType = "tokenType"
 }
 
@@ -945,6 +1052,7 @@ export type DisputeResolver = Account & {
   __typename?: "DisputeResolver";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
+  assistant: Scalars["Bytes"];
   clerk: Scalars["Bytes"];
   escalationResponsePeriod: Scalars["BigInt"];
   fees: Array<DisputeResolverFee>;
@@ -953,7 +1061,6 @@ export type DisputeResolver = Account & {
   logs: Array<EventLog>;
   metadataUri: Scalars["String"];
   offers: Array<Offer>;
-  operator: Scalars["Bytes"];
   pendingDisputeResolver?: Maybe<PendingDisputeResolver>;
   sellerAllowList: Array<Scalars["BigInt"]>;
   treasury: Scalars["Bytes"];
@@ -1090,6 +1197,12 @@ export type DisputeResolver_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -1141,12 +1254,6 @@ export type DisputeResolver_Filter = {
   metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
   metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   pendingDisputeResolver_?: InputMaybe<PendingDisputeResolver_Filter>;
   sellerAllowList?: InputMaybe<Array<Scalars["BigInt"]>>;
   sellerAllowList_contains?: InputMaybe<Array<Scalars["BigInt"]>>;
@@ -1165,6 +1272,7 @@ export type DisputeResolver_Filter = {
 export enum DisputeResolver_OrderBy {
   Active = "active",
   Admin = "admin",
+  Assistant = "assistant",
   Clerk = "clerk",
   EscalationResponsePeriod = "escalationResponsePeriod",
   Fees = "fees",
@@ -1173,7 +1281,6 @@ export enum DisputeResolver_OrderBy {
   Logs = "logs",
   MetadataUri = "metadataUri",
   Offers = "offers",
-  Operator = "operator",
   PendingDisputeResolver = "pendingDisputeResolver",
   SellerAllowList = "sellerAllowList",
   Treasury = "treasury"
@@ -1514,6 +1621,8 @@ export enum EventType {
   FundsWithdrawn = "FUNDS_WITHDRAWN",
   /** OfferHandler events */
   OfferCreated = "OFFER_CREATED",
+  OfferExtended = "OFFER_EXTENDED",
+  OfferRangeReserved = "OFFER_RANGE_RESERVED",
   OfferVoided = "OFFER_VOIDED",
   /** AccountHandler events */
   SellerCreated = "SELLER_CREATED",
@@ -2306,6 +2415,7 @@ export enum MetadataAttribute_OrderBy {
 }
 
 export type MetadataInterface = {
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -2352,6 +2462,27 @@ export type MetadataInterfaceAttributesArgs = {
 export type MetadataInterface_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -2649,6 +2780,7 @@ export type MetadataInterface_Filter = {
 };
 
 export enum MetadataInterface_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -2686,6 +2818,7 @@ export type Offer = {
   agentFee: Scalars["BigInt"];
   agentId: Scalars["BigInt"];
   buyerCancelPenalty: Scalars["BigInt"];
+  collectionIndex: Scalars["BigInt"];
   condition?: Maybe<ConditionEntity>;
   createdAt: Scalars["BigInt"];
   /** Offer durations */
@@ -2706,6 +2839,8 @@ export type Offer = {
   protocolFee: Scalars["BigInt"];
   quantityAvailable: Scalars["BigInt"];
   quantityInitial: Scalars["BigInt"];
+  /** Range */
+  range?: Maybe<RangeEntity>;
   resolutionPeriodDuration: Scalars["BigInt"];
   seller: Seller;
   sellerDeposit: Scalars["BigInt"];
@@ -2872,6 +3007,14 @@ export type Offer_Filter = {
   buyerCancelPenalty_lte?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not?: InputMaybe<Scalars["BigInt"]>;
   buyerCancelPenalty_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_gte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  collectionIndex_lt?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_lte?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not?: InputMaybe<Scalars["BigInt"]>;
+  collectionIndex_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
   condition?: InputMaybe<Scalars["String"]>;
   condition_?: InputMaybe<ConditionEntity_Filter>;
   condition_contains?: InputMaybe<Scalars["String"]>;
@@ -3097,6 +3240,27 @@ export type Offer_Filter = {
   quantityInitial_lte?: InputMaybe<Scalars["BigInt"]>;
   quantityInitial_not?: InputMaybe<Scalars["BigInt"]>;
   quantityInitial_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  range?: InputMaybe<Scalars["String"]>;
+  range_?: InputMaybe<RangeEntity_Filter>;
+  range_contains?: InputMaybe<Scalars["String"]>;
+  range_contains_nocase?: InputMaybe<Scalars["String"]>;
+  range_ends_with?: InputMaybe<Scalars["String"]>;
+  range_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_gt?: InputMaybe<Scalars["String"]>;
+  range_gte?: InputMaybe<Scalars["String"]>;
+  range_in?: InputMaybe<Array<Scalars["String"]>>;
+  range_lt?: InputMaybe<Scalars["String"]>;
+  range_lte?: InputMaybe<Scalars["String"]>;
+  range_not?: InputMaybe<Scalars["String"]>;
+  range_not_contains?: InputMaybe<Scalars["String"]>;
+  range_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  range_not_ends_with?: InputMaybe<Scalars["String"]>;
+  range_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  range_not_starts_with?: InputMaybe<Scalars["String"]>;
+  range_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  range_starts_with?: InputMaybe<Scalars["String"]>;
+  range_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   resolutionPeriodDuration?: InputMaybe<Scalars["BigInt"]>;
   resolutionPeriodDuration_gt?: InputMaybe<Scalars["BigInt"]>;
   resolutionPeriodDuration_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3200,6 +3364,7 @@ export enum Offer_OrderBy {
   AgentFee = "agentFee",
   AgentId = "agentId",
   BuyerCancelPenalty = "buyerCancelPenalty",
+  CollectionIndex = "collectionIndex",
   Condition = "condition",
   CreatedAt = "createdAt",
   DisputePeriodDuration = "disputePeriodDuration",
@@ -3218,6 +3383,7 @@ export enum Offer_OrderBy {
   ProtocolFee = "protocolFee",
   QuantityAvailable = "quantityAvailable",
   QuantityInitial = "quantityInitial",
+  Range = "range",
   ResolutionPeriodDuration = "resolutionPeriodDuration",
   Seller = "seller",
   SellerDeposit = "sellerDeposit",
@@ -3240,10 +3406,10 @@ export enum OrderDirection {
 export type PendingDisputeResolver = {
   __typename?: "PendingDisputeResolver";
   admin?: Maybe<Scalars["Bytes"]>;
+  assistant?: Maybe<Scalars["Bytes"]>;
   clerk?: Maybe<Scalars["Bytes"]>;
   disputeResolver: DisputeResolver;
   id: Scalars["ID"];
-  operator?: Maybe<Scalars["Bytes"]>;
 };
 
 export type PendingDisputeResolver_Filter = {
@@ -3255,6 +3421,12 @@ export type PendingDisputeResolver_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   clerk?: InputMaybe<Scalars["Bytes"]>;
   clerk_contains?: InputMaybe<Scalars["Bytes"]>;
   clerk_in?: InputMaybe<Array<Scalars["Bytes"]>>;
@@ -3290,30 +3462,25 @@ export type PendingDisputeResolver_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
 };
 
 export enum PendingDisputeResolver_OrderBy {
   Admin = "admin",
+  Assistant = "assistant",
   Clerk = "clerk",
   DisputeResolver = "disputeResolver",
-  Id = "id",
-  Operator = "operator"
+  Id = "id"
 }
 
 export type PendingSeller = {
   __typename?: "PendingSeller";
   admin?: Maybe<Scalars["Bytes"]>;
+  assistant?: Maybe<Scalars["Bytes"]>;
   authTokenId?: Maybe<Scalars["BigInt"]>;
   authTokenType?: Maybe<Scalars["Int"]>;
   clerk?: Maybe<Scalars["Bytes"]>;
   id: Scalars["ID"];
-  operator?: Maybe<Scalars["Bytes"]>;
+  metadataUri: Scalars["String"];
   seller: Seller;
 };
 
@@ -3326,6 +3493,12 @@ export type PendingSeller_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   authTokenId?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -3356,12 +3529,26 @@ export type PendingSeller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   seller?: InputMaybe<Scalars["String"]>;
   seller_?: InputMaybe<Seller_Filter>;
   seller_contains?: InputMaybe<Scalars["String"]>;
@@ -3387,11 +3574,12 @@ export type PendingSeller_Filter = {
 
 export enum PendingSeller_OrderBy {
   Admin = "admin",
+  Assistant = "assistant",
   AuthTokenId = "authTokenId",
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
   Id = "id",
-  Operator = "operator",
+  MetadataUri = "metadataUri",
   Seller = "seller"
 }
 
@@ -3646,10 +3834,12 @@ export enum ProductV1ExchangePolicy_OrderBy {
 
 export type ProductV1Media = {
   __typename?: "ProductV1Media";
+  height?: Maybe<Scalars["Int"]>;
   id: Scalars["ID"];
   tag?: Maybe<Scalars["String"]>;
   type: ProductV1MediaType;
   url: Scalars["String"];
+  width?: Maybe<Scalars["Int"]>;
 };
 
 export enum ProductV1MediaType {
@@ -3660,6 +3850,14 @@ export enum ProductV1MediaType {
 export type ProductV1Media_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
   id?: InputMaybe<Scalars["ID"]>;
   id_gt?: InputMaybe<Scalars["ID"]>;
   id_gte?: InputMaybe<Scalars["ID"]>;
@@ -3712,17 +3910,28 @@ export type ProductV1Media_Filter = {
   url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   url_starts_with?: InputMaybe<Scalars["String"]>;
   url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
 };
 
 export enum ProductV1Media_OrderBy {
+  Height = "height",
   Id = "id",
   Tag = "tag",
   Type = "type",
-  Url = "url"
+  Url = "url",
+  Width = "width"
 }
 
 export type ProductV1MetadataEntity = MetadataInterface & {
   __typename?: "ProductV1MetadataEntity";
+  animationMetadata?: Maybe<AnimationMetadata>;
   animationUrl?: Maybe<Scalars["String"]>;
   attributes?: Maybe<Array<MetadataAttribute>>;
   condition?: Maybe<Scalars["String"]>;
@@ -3791,6 +4000,27 @@ export type ProductV1MetadataEntityVariationsArgs = {
 export type ProductV1MetadataEntity_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  animationMetadata?: InputMaybe<Scalars["String"]>;
+  animationMetadata_?: InputMaybe<AnimationMetadata_Filter>;
+  animationMetadata_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_gte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_lt?: InputMaybe<Scalars["String"]>;
+  animationMetadata_lte?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  animationMetadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with?: InputMaybe<Scalars["String"]>;
+  animationMetadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   animationUrl?: InputMaybe<Scalars["String"]>;
   animationUrl_contains?: InputMaybe<Scalars["String"]>;
   animationUrl_contains_nocase?: InputMaybe<Scalars["String"]>;
@@ -4248,6 +4478,7 @@ export type ProductV1MetadataEntity_Filter = {
 };
 
 export enum ProductV1MetadataEntity_OrderBy {
+  AnimationMetadata = "animationMetadata",
   AnimationUrl = "animationUrl",
   Attributes = "attributes",
   Condition = "condition",
@@ -4388,6 +4619,7 @@ export type ProductV1Product = {
   productionInformation_manufacturerPartNumber?: Maybe<Scalars["String"]>;
   productionInformation_materials?: Maybe<Array<Scalars["String"]>>;
   productionInformation_modelNumber?: Maybe<Scalars["String"]>;
+  salesChannels?: Maybe<Array<SalesChannel>>;
   sections?: Maybe<Array<ProductV1Section>>;
   sellerId: Scalars["BigInt"];
   subCategory?: Maybe<ProductV1Category>;
@@ -4423,6 +4655,14 @@ export type ProductV1ProductPersonalisationArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars["Int"]>;
   where?: InputMaybe<ProductV1Personalisation_Filter>;
+};
+
+export type ProductV1ProductSalesChannelsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SalesChannel_Filter>;
 };
 
 export type ProductV1ProductSectionsArgs = {
@@ -5742,6 +5982,13 @@ export type ProductV1Product_Filter = {
   productionInformation_modelNumber_starts_with_nocase?: InputMaybe<
     Scalars["String"]
   >;
+  salesChannels?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_?: InputMaybe<SalesChannel_Filter>;
+  salesChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
   sections?: InputMaybe<Array<Scalars["String"]>>;
   sections_?: InputMaybe<ProductV1Section_Filter>;
   sections_contains?: InputMaybe<Array<Scalars["String"]>>;
@@ -5914,6 +6161,7 @@ export enum ProductV1Product_OrderBy {
   ProductionInformationManufacturerPartNumber = "productionInformation_manufacturerPartNumber",
   ProductionInformationMaterials = "productionInformation_materials",
   ProductionInformationModelNumber = "productionInformation_modelNumber",
+  SalesChannels = "salesChannels",
   Sections = "sections",
   SellerId = "sellerId",
   SubCategory = "subCategory",
@@ -5974,6 +6222,7 @@ export enum ProductV1Section_OrderBy {
 export type ProductV1Seller = {
   __typename?: "ProductV1Seller";
   contactLinks?: Maybe<Array<ProductV1SellerContactLink>>;
+  contactPreference?: Maybe<Scalars["String"]>;
   defaultVersion: Scalars["Int"];
   description?: Maybe<Scalars["String"]>;
   externalUrl?: Maybe<Scalars["String"]>;
@@ -6081,6 +6330,26 @@ export type ProductV1Seller_Filter = {
   contactLinks_not?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
   contactLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_gt?: InputMaybe<Scalars["String"]>;
+  contactPreference_gte?: InputMaybe<Scalars["String"]>;
+  contactPreference_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_lt?: InputMaybe<Scalars["String"]>;
+  contactPreference_lte?: InputMaybe<Scalars["String"]>;
+  contactPreference_not?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_not_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   defaultVersion?: InputMaybe<Scalars["Int"]>;
   defaultVersion_gt?: InputMaybe<Scalars["Int"]>;
   defaultVersion_gte?: InputMaybe<Scalars["Int"]>;
@@ -6229,6 +6498,7 @@ export type ProductV1Seller_Filter = {
 
 export enum ProductV1Seller_OrderBy {
   ContactLinks = "contactLinks",
+  ContactPreference = "contactPreference",
   DefaultVersion = "defaultVersion",
   Description = "description",
   ExternalUrl = "externalUrl",
@@ -6591,6 +6861,7 @@ export type Query = {
   accountEventLog?: Maybe<AccountEventLog>;
   accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
+  animationMetadata: Array<AnimationMetadata>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
@@ -6662,7 +6933,20 @@ export type Query = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  rangeEntities: Array<RangeEntity>;
+  rangeEntity?: Maybe<RangeEntity>;
+  salesChannel?: Maybe<SalesChannel>;
+  salesChannelDeployment?: Maybe<SalesChannelDeployment>;
+  salesChannelDeployments: Array<SalesChannelDeployment>;
+  salesChannels: Array<SalesChannel>;
   seller?: Maybe<Seller>;
+  sellerContactLink?: Maybe<SellerContactLink>;
+  sellerContactLinks: Array<SellerContactLink>;
+  sellerMetadata: Array<SellerMetadata>;
+  sellerMetadataMedia?: Maybe<SellerMetadataMedia>;
+  sellerMetadataMedias: Array<SellerMetadataMedia>;
+  sellerSocialLink?: Maybe<SellerSocialLink>;
+  sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
 };
 
@@ -6700,6 +6984,16 @@ export type QueryAccountsArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Account_Filter>;
+};
+
+export type QueryAnimationMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AnimationMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AnimationMetadata_Filter>;
 };
 
 export type QueryBaseMetadataEntitiesArgs = {
@@ -7272,10 +7566,116 @@ export type QueryProductV1VariationsArgs = {
   where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
+export type QueryRangeEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RangeEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RangeEntity_Filter>;
+};
+
+export type QueryRangeEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySalesChannelArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySalesChannelDeploymentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySalesChannelDeploymentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
+};
+
+export type QuerySalesChannelsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SalesChannel_Filter>;
+};
+
 export type QuerySellerArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type QuerySellerMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadata_Filter>;
+};
+
+export type QuerySellerMetadataMediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerMetadataMediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type QuerySellerSocialLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QuerySellerSocialLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerSocialLink_Filter>;
 };
 
 export type QuerySellersArgs = {
@@ -7288,10 +7688,335 @@ export type QuerySellersArgs = {
   where?: InputMaybe<Seller_Filter>;
 };
 
+/**
+ * Offer Ranges
+ *
+ */
+export type RangeEntity = {
+  __typename?: "RangeEntity";
+  end: Scalars["BigInt"];
+  id: Scalars["ID"];
+  minted: Scalars["BigInt"];
+  owner: Scalars["Bytes"];
+  start: Scalars["BigInt"];
+};
+
+export type RangeEntity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  end?: InputMaybe<Scalars["BigInt"]>;
+  end_gt?: InputMaybe<Scalars["BigInt"]>;
+  end_gte?: InputMaybe<Scalars["BigInt"]>;
+  end_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  end_lt?: InputMaybe<Scalars["BigInt"]>;
+  end_lte?: InputMaybe<Scalars["BigInt"]>;
+  end_not?: InputMaybe<Scalars["BigInt"]>;
+  end_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  minted?: InputMaybe<Scalars["BigInt"]>;
+  minted_gt?: InputMaybe<Scalars["BigInt"]>;
+  minted_gte?: InputMaybe<Scalars["BigInt"]>;
+  minted_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  minted_lt?: InputMaybe<Scalars["BigInt"]>;
+  minted_lte?: InputMaybe<Scalars["BigInt"]>;
+  minted_not?: InputMaybe<Scalars["BigInt"]>;
+  minted_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  owner?: InputMaybe<Scalars["Bytes"]>;
+  owner_contains?: InputMaybe<Scalars["Bytes"]>;
+  owner_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  owner_not?: InputMaybe<Scalars["Bytes"]>;
+  owner_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  owner_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  start?: InputMaybe<Scalars["BigInt"]>;
+  start_gt?: InputMaybe<Scalars["BigInt"]>;
+  start_gte?: InputMaybe<Scalars["BigInt"]>;
+  start_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  start_lt?: InputMaybe<Scalars["BigInt"]>;
+  start_lte?: InputMaybe<Scalars["BigInt"]>;
+  start_not?: InputMaybe<Scalars["BigInt"]>;
+  start_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+};
+
+export enum RangeEntity_OrderBy {
+  End = "end",
+  Id = "id",
+  Minted = "minted",
+  Owner = "owner",
+  Start = "start"
+}
+
+export type SalesChannel = {
+  __typename?: "SalesChannel";
+  deployments?: Maybe<Array<SalesChannelDeployment>>;
+  id: Scalars["ID"];
+  link?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  settingsEditor?: Maybe<Scalars["String"]>;
+  settingsUri?: Maybe<Scalars["String"]>;
+  tag: Scalars["String"];
+};
+
+export type SalesChannelDeploymentsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
+};
+
+export type SalesChannelDeployment = {
+  __typename?: "SalesChannelDeployment";
+  id: Scalars["ID"];
+  lastUpdated?: Maybe<Scalars["String"]>;
+  link?: Maybe<Scalars["String"]>;
+  product?: Maybe<ProductV1Product>;
+  status?: Maybe<Scalars["String"]>;
+};
+
+export type SalesChannelDeployment_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  lastUpdated?: InputMaybe<Scalars["String"]>;
+  lastUpdated_contains?: InputMaybe<Scalars["String"]>;
+  lastUpdated_contains_nocase?: InputMaybe<Scalars["String"]>;
+  lastUpdated_ends_with?: InputMaybe<Scalars["String"]>;
+  lastUpdated_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  lastUpdated_gt?: InputMaybe<Scalars["String"]>;
+  lastUpdated_gte?: InputMaybe<Scalars["String"]>;
+  lastUpdated_in?: InputMaybe<Array<Scalars["String"]>>;
+  lastUpdated_lt?: InputMaybe<Scalars["String"]>;
+  lastUpdated_lte?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_contains?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_ends_with?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  lastUpdated_not_starts_with?: InputMaybe<Scalars["String"]>;
+  lastUpdated_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  lastUpdated_starts_with?: InputMaybe<Scalars["String"]>;
+  lastUpdated_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  link?: InputMaybe<Scalars["String"]>;
+  link_contains?: InputMaybe<Scalars["String"]>;
+  link_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_ends_with?: InputMaybe<Scalars["String"]>;
+  link_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_gt?: InputMaybe<Scalars["String"]>;
+  link_gte?: InputMaybe<Scalars["String"]>;
+  link_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_lt?: InputMaybe<Scalars["String"]>;
+  link_lte?: InputMaybe<Scalars["String"]>;
+  link_not?: InputMaybe<Scalars["String"]>;
+  link_not_contains?: InputMaybe<Scalars["String"]>;
+  link_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_not_starts_with?: InputMaybe<Scalars["String"]>;
+  link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_starts_with?: InputMaybe<Scalars["String"]>;
+  link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  product?: InputMaybe<Scalars["String"]>;
+  product_?: InputMaybe<ProductV1Product_Filter>;
+  product_contains?: InputMaybe<Scalars["String"]>;
+  product_contains_nocase?: InputMaybe<Scalars["String"]>;
+  product_ends_with?: InputMaybe<Scalars["String"]>;
+  product_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_gt?: InputMaybe<Scalars["String"]>;
+  product_gte?: InputMaybe<Scalars["String"]>;
+  product_in?: InputMaybe<Array<Scalars["String"]>>;
+  product_lt?: InputMaybe<Scalars["String"]>;
+  product_lte?: InputMaybe<Scalars["String"]>;
+  product_not?: InputMaybe<Scalars["String"]>;
+  product_not_contains?: InputMaybe<Scalars["String"]>;
+  product_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  product_not_ends_with?: InputMaybe<Scalars["String"]>;
+  product_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  product_not_starts_with?: InputMaybe<Scalars["String"]>;
+  product_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  product_starts_with?: InputMaybe<Scalars["String"]>;
+  product_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  status?: InputMaybe<Scalars["String"]>;
+  status_contains?: InputMaybe<Scalars["String"]>;
+  status_contains_nocase?: InputMaybe<Scalars["String"]>;
+  status_ends_with?: InputMaybe<Scalars["String"]>;
+  status_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  status_gt?: InputMaybe<Scalars["String"]>;
+  status_gte?: InputMaybe<Scalars["String"]>;
+  status_in?: InputMaybe<Array<Scalars["String"]>>;
+  status_lt?: InputMaybe<Scalars["String"]>;
+  status_lte?: InputMaybe<Scalars["String"]>;
+  status_not?: InputMaybe<Scalars["String"]>;
+  status_not_contains?: InputMaybe<Scalars["String"]>;
+  status_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  status_not_ends_with?: InputMaybe<Scalars["String"]>;
+  status_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  status_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  status_not_starts_with?: InputMaybe<Scalars["String"]>;
+  status_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  status_starts_with?: InputMaybe<Scalars["String"]>;
+  status_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SalesChannelDeployment_OrderBy {
+  Id = "id",
+  LastUpdated = "lastUpdated",
+  Link = "link",
+  Product = "product",
+  Status = "status"
+}
+
+export type SalesChannel_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  deployments?: InputMaybe<Array<Scalars["String"]>>;
+  deployments_?: InputMaybe<SalesChannelDeployment_Filter>;
+  deployments_contains?: InputMaybe<Array<Scalars["String"]>>;
+  deployments_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  deployments_not?: InputMaybe<Array<Scalars["String"]>>;
+  deployments_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  deployments_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  link?: InputMaybe<Scalars["String"]>;
+  link_contains?: InputMaybe<Scalars["String"]>;
+  link_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_ends_with?: InputMaybe<Scalars["String"]>;
+  link_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_gt?: InputMaybe<Scalars["String"]>;
+  link_gte?: InputMaybe<Scalars["String"]>;
+  link_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_lt?: InputMaybe<Scalars["String"]>;
+  link_lte?: InputMaybe<Scalars["String"]>;
+  link_not?: InputMaybe<Scalars["String"]>;
+  link_not_contains?: InputMaybe<Scalars["String"]>;
+  link_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with?: InputMaybe<Scalars["String"]>;
+  link_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  link_not_starts_with?: InputMaybe<Scalars["String"]>;
+  link_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  link_starts_with?: InputMaybe<Scalars["String"]>;
+  link_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor?: InputMaybe<Scalars["String"]>;
+  settingsEditor_contains?: InputMaybe<Scalars["String"]>;
+  settingsEditor_contains_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor_ends_with?: InputMaybe<Scalars["String"]>;
+  settingsEditor_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor_gt?: InputMaybe<Scalars["String"]>;
+  settingsEditor_gte?: InputMaybe<Scalars["String"]>;
+  settingsEditor_in?: InputMaybe<Array<Scalars["String"]>>;
+  settingsEditor_lt?: InputMaybe<Scalars["String"]>;
+  settingsEditor_lte?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_contains?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_ends_with?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  settingsEditor_not_starts_with?: InputMaybe<Scalars["String"]>;
+  settingsEditor_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsEditor_starts_with?: InputMaybe<Scalars["String"]>;
+  settingsEditor_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri?: InputMaybe<Scalars["String"]>;
+  settingsUri_contains?: InputMaybe<Scalars["String"]>;
+  settingsUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri_ends_with?: InputMaybe<Scalars["String"]>;
+  settingsUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri_gt?: InputMaybe<Scalars["String"]>;
+  settingsUri_gte?: InputMaybe<Scalars["String"]>;
+  settingsUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  settingsUri_lt?: InputMaybe<Scalars["String"]>;
+  settingsUri_lte?: InputMaybe<Scalars["String"]>;
+  settingsUri_not?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_contains?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  settingsUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  settingsUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  settingsUri_starts_with?: InputMaybe<Scalars["String"]>;
+  settingsUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SalesChannel_OrderBy {
+  Deployments = "deployments",
+  Id = "id",
+  Link = "link",
+  Name = "name",
+  SettingsEditor = "settingsEditor",
+  SettingsUri = "settingsUri",
+  Tag = "tag"
+}
+
 export type Seller = Account & {
   __typename?: "Seller";
   active: Scalars["Boolean"];
   admin: Scalars["Bytes"];
+  assistant: Scalars["Bytes"];
   authTokenId: Scalars["BigInt"];
   authTokenType: Scalars["Int"];
   clerk: Scalars["Bytes"];
@@ -7300,8 +8025,9 @@ export type Seller = Account & {
   funds: Array<FundsEntity>;
   id: Scalars["ID"];
   logs: Array<EventLog>;
+  metadata?: Maybe<SellerMetadata>;
+  metadataUri: Scalars["String"];
   offers: Array<Offer>;
-  operator: Scalars["Bytes"];
   pendingSeller?: Maybe<PendingSeller>;
   /** Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100% */
   royaltyPercentage: Scalars["BigInt"];
@@ -7342,6 +8068,532 @@ export type SellerOffersArgs = {
   where?: InputMaybe<Offer_Filter>;
 };
 
+export type SellerContactLink = {
+  __typename?: "SellerContactLink";
+  id: Scalars["ID"];
+  tag: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export type SellerContactLink_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerContactLink_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Url = "url"
+}
+
+export type SellerMetadata = {
+  __typename?: "SellerMetadata";
+  contactLinks?: Maybe<Array<SellerContactLink>>;
+  contactPreference: Scalars["String"];
+  createdAt: Scalars["BigInt"];
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  images?: Maybe<Array<SellerMetadataMedia>>;
+  kind: Scalars["String"];
+  legalTradingName?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  salesChannels?: Maybe<Array<SalesChannel>>;
+  socialLinks?: Maybe<Array<SellerSocialLink>>;
+  type: SellerMetadataType;
+  website?: Maybe<Scalars["String"]>;
+};
+
+export type SellerMetadataContactLinksArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type SellerMetadataImagesArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type SellerMetadataSalesChannelsArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SalesChannel_Filter>;
+};
+
+export type SellerMetadataSocialLinksArgs = {
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  where?: InputMaybe<SellerSocialLink_Filter>;
+};
+
+export type SellerMetadataMedia = {
+  __typename?: "SellerMetadataMedia";
+  fit?: Maybe<Scalars["String"]>;
+  height?: Maybe<Scalars["Int"]>;
+  id: Scalars["ID"];
+  position?: Maybe<Scalars["String"]>;
+  tag?: Maybe<Scalars["String"]>;
+  type: Scalars["String"];
+  url: Scalars["String"];
+  width?: Maybe<Scalars["Int"]>;
+};
+
+export type SellerMetadataMedia_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  fit?: InputMaybe<Scalars["String"]>;
+  fit_contains?: InputMaybe<Scalars["String"]>;
+  fit_contains_nocase?: InputMaybe<Scalars["String"]>;
+  fit_ends_with?: InputMaybe<Scalars["String"]>;
+  fit_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_gt?: InputMaybe<Scalars["String"]>;
+  fit_gte?: InputMaybe<Scalars["String"]>;
+  fit_in?: InputMaybe<Array<Scalars["String"]>>;
+  fit_lt?: InputMaybe<Scalars["String"]>;
+  fit_lte?: InputMaybe<Scalars["String"]>;
+  fit_not?: InputMaybe<Scalars["String"]>;
+  fit_not_contains?: InputMaybe<Scalars["String"]>;
+  fit_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  fit_not_ends_with?: InputMaybe<Scalars["String"]>;
+  fit_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  fit_not_starts_with?: InputMaybe<Scalars["String"]>;
+  fit_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  fit_starts_with?: InputMaybe<Scalars["String"]>;
+  fit_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  height?: InputMaybe<Scalars["Int"]>;
+  height_gt?: InputMaybe<Scalars["Int"]>;
+  height_gte?: InputMaybe<Scalars["Int"]>;
+  height_in?: InputMaybe<Array<Scalars["Int"]>>;
+  height_lt?: InputMaybe<Scalars["Int"]>;
+  height_lte?: InputMaybe<Scalars["Int"]>;
+  height_not?: InputMaybe<Scalars["Int"]>;
+  height_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  position?: InputMaybe<Scalars["String"]>;
+  position_contains?: InputMaybe<Scalars["String"]>;
+  position_contains_nocase?: InputMaybe<Scalars["String"]>;
+  position_ends_with?: InputMaybe<Scalars["String"]>;
+  position_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_gt?: InputMaybe<Scalars["String"]>;
+  position_gte?: InputMaybe<Scalars["String"]>;
+  position_in?: InputMaybe<Array<Scalars["String"]>>;
+  position_lt?: InputMaybe<Scalars["String"]>;
+  position_lte?: InputMaybe<Scalars["String"]>;
+  position_not?: InputMaybe<Scalars["String"]>;
+  position_not_contains?: InputMaybe<Scalars["String"]>;
+  position_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  position_not_ends_with?: InputMaybe<Scalars["String"]>;
+  position_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  position_not_starts_with?: InputMaybe<Scalars["String"]>;
+  position_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  position_starts_with?: InputMaybe<Scalars["String"]>;
+  position_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<Scalars["String"]>;
+  type_contains?: InputMaybe<Scalars["String"]>;
+  type_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_ends_with?: InputMaybe<Scalars["String"]>;
+  type_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_gt?: InputMaybe<Scalars["String"]>;
+  type_gte?: InputMaybe<Scalars["String"]>;
+  type_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_lt?: InputMaybe<Scalars["String"]>;
+  type_lte?: InputMaybe<Scalars["String"]>;
+  type_not?: InputMaybe<Scalars["String"]>;
+  type_not_contains?: InputMaybe<Scalars["String"]>;
+  type_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with?: InputMaybe<Scalars["String"]>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  type_not_starts_with?: InputMaybe<Scalars["String"]>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  type_starts_with?: InputMaybe<Scalars["String"]>;
+  type_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  width?: InputMaybe<Scalars["Int"]>;
+  width_gt?: InputMaybe<Scalars["Int"]>;
+  width_gte?: InputMaybe<Scalars["Int"]>;
+  width_in?: InputMaybe<Array<Scalars["Int"]>>;
+  width_lt?: InputMaybe<Scalars["Int"]>;
+  width_lte?: InputMaybe<Scalars["Int"]>;
+  width_not?: InputMaybe<Scalars["Int"]>;
+  width_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+};
+
+export enum SellerMetadataMedia_OrderBy {
+  Fit = "fit",
+  Height = "height",
+  Id = "id",
+  Position = "position",
+  Tag = "tag",
+  Type = "type",
+  Url = "url",
+  Width = "width"
+}
+
+export enum SellerMetadataType {
+  Seller = "SELLER"
+}
+
+export type SellerMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  contactLinks?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_?: InputMaybe<SellerContactLink_Filter>;
+  contactLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  contactLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_gt?: InputMaybe<Scalars["String"]>;
+  contactPreference_gte?: InputMaybe<Scalars["String"]>;
+  contactPreference_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_lt?: InputMaybe<Scalars["String"]>;
+  contactPreference_lte?: InputMaybe<Scalars["String"]>;
+  contactPreference_not?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  contactPreference_not_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with?: InputMaybe<Scalars["String"]>;
+  contactPreference_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  createdAt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  createdAt_lt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_lte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  images?: InputMaybe<Array<Scalars["String"]>>;
+  images_?: InputMaybe<SellerMetadataMedia_Filter>;
+  images_contains?: InputMaybe<Array<Scalars["String"]>>;
+  images_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  images_not?: InputMaybe<Array<Scalars["String"]>>;
+  images_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  images_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  kind?: InputMaybe<Scalars["String"]>;
+  kind_contains?: InputMaybe<Scalars["String"]>;
+  kind_contains_nocase?: InputMaybe<Scalars["String"]>;
+  kind_ends_with?: InputMaybe<Scalars["String"]>;
+  kind_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_gt?: InputMaybe<Scalars["String"]>;
+  kind_gte?: InputMaybe<Scalars["String"]>;
+  kind_in?: InputMaybe<Array<Scalars["String"]>>;
+  kind_lt?: InputMaybe<Scalars["String"]>;
+  kind_lte?: InputMaybe<Scalars["String"]>;
+  kind_not?: InputMaybe<Scalars["String"]>;
+  kind_not_contains?: InputMaybe<Scalars["String"]>;
+  kind_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  kind_not_ends_with?: InputMaybe<Scalars["String"]>;
+  kind_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  kind_not_starts_with?: InputMaybe<Scalars["String"]>;
+  kind_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  kind_starts_with?: InputMaybe<Scalars["String"]>;
+  kind_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName?: InputMaybe<Scalars["String"]>;
+  legalTradingName_contains?: InputMaybe<Scalars["String"]>;
+  legalTradingName_contains_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_ends_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_gt?: InputMaybe<Scalars["String"]>;
+  legalTradingName_gte?: InputMaybe<Scalars["String"]>;
+  legalTradingName_in?: InputMaybe<Array<Scalars["String"]>>;
+  legalTradingName_lt?: InputMaybe<Scalars["String"]>;
+  legalTradingName_lte?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_contains?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_ends_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  legalTradingName_not_starts_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  legalTradingName_starts_with?: InputMaybe<Scalars["String"]>;
+  legalTradingName_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  salesChannels?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_?: InputMaybe<SalesChannel_Filter>;
+  salesChannels_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  salesChannels_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_?: InputMaybe<SellerSocialLink_Filter>;
+  socialLinks_contains?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  socialLinks_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  type?: InputMaybe<SellerMetadataType>;
+  type_in?: InputMaybe<Array<SellerMetadataType>>;
+  type_not?: InputMaybe<SellerMetadataType>;
+  type_not_in?: InputMaybe<Array<SellerMetadataType>>;
+  website?: InputMaybe<Scalars["String"]>;
+  website_contains?: InputMaybe<Scalars["String"]>;
+  website_contains_nocase?: InputMaybe<Scalars["String"]>;
+  website_ends_with?: InputMaybe<Scalars["String"]>;
+  website_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_gt?: InputMaybe<Scalars["String"]>;
+  website_gte?: InputMaybe<Scalars["String"]>;
+  website_in?: InputMaybe<Array<Scalars["String"]>>;
+  website_lt?: InputMaybe<Scalars["String"]>;
+  website_lte?: InputMaybe<Scalars["String"]>;
+  website_not?: InputMaybe<Scalars["String"]>;
+  website_not_contains?: InputMaybe<Scalars["String"]>;
+  website_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  website_not_ends_with?: InputMaybe<Scalars["String"]>;
+  website_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  website_not_starts_with?: InputMaybe<Scalars["String"]>;
+  website_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  website_starts_with?: InputMaybe<Scalars["String"]>;
+  website_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerMetadata_OrderBy {
+  ContactLinks = "contactLinks",
+  ContactPreference = "contactPreference",
+  CreatedAt = "createdAt",
+  Description = "description",
+  Id = "id",
+  Images = "images",
+  Kind = "kind",
+  LegalTradingName = "legalTradingName",
+  Name = "name",
+  SalesChannels = "salesChannels",
+  SocialLinks = "socialLinks",
+  Type = "type",
+  Website = "website"
+}
+
+export type SellerSocialLink = {
+  __typename?: "SellerSocialLink";
+  id: Scalars["ID"];
+  tag: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export type SellerSocialLink_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tag_contains?: InputMaybe<Scalars["String"]>;
+  tag_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_gt?: InputMaybe<Scalars["String"]>;
+  tag_gte?: InputMaybe<Scalars["String"]>;
+  tag_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_lt?: InputMaybe<Scalars["String"]>;
+  tag_lte?: InputMaybe<Scalars["String"]>;
+  tag_not?: InputMaybe<Scalars["String"]>;
+  tag_not_contains?: InputMaybe<Scalars["String"]>;
+  tag_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with?: InputMaybe<Scalars["String"]>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  tag_not_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  tag_starts_with?: InputMaybe<Scalars["String"]>;
+  tag_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url?: InputMaybe<Scalars["String"]>;
+  url_contains?: InputMaybe<Scalars["String"]>;
+  url_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_ends_with?: InputMaybe<Scalars["String"]>;
+  url_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_gt?: InputMaybe<Scalars["String"]>;
+  url_gte?: InputMaybe<Scalars["String"]>;
+  url_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_lt?: InputMaybe<Scalars["String"]>;
+  url_lte?: InputMaybe<Scalars["String"]>;
+  url_not?: InputMaybe<Scalars["String"]>;
+  url_not_contains?: InputMaybe<Scalars["String"]>;
+  url_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with?: InputMaybe<Scalars["String"]>;
+  url_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  url_not_starts_with?: InputMaybe<Scalars["String"]>;
+  url_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  url_starts_with?: InputMaybe<Scalars["String"]>;
+  url_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum SellerSocialLink_OrderBy {
+  Id = "id",
+  Tag = "tag",
+  Url = "url"
+}
+
 export type Seller_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -7355,6 +8607,12 @@ export type Seller_Filter = {
   admin_not?: InputMaybe<Scalars["Bytes"]>;
   admin_not_contains?: InputMaybe<Scalars["Bytes"]>;
   admin_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant?: InputMaybe<Scalars["Bytes"]>;
+  assistant_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_in?: InputMaybe<Array<Scalars["Bytes"]>>;
+  assistant_not?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_contains?: InputMaybe<Scalars["Bytes"]>;
+  assistant_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   authTokenId?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gt?: InputMaybe<Scalars["BigInt"]>;
   authTokenId_gte?: InputMaybe<Scalars["BigInt"]>;
@@ -7407,13 +8665,48 @@ export type Seller_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadata?: InputMaybe<Scalars["String"]>;
+  metadataUri?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_gt?: InputMaybe<Scalars["String"]>;
+  metadataUri_gte?: InputMaybe<Scalars["String"]>;
+  metadataUri_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_lt?: InputMaybe<Scalars["String"]>;
+  metadataUri_lte?: InputMaybe<Scalars["String"]>;
+  metadataUri_not?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadataUri_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with?: InputMaybe<Scalars["String"]>;
+  metadataUri_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_?: InputMaybe<SellerMetadata_Filter>;
+  metadata_contains?: InputMaybe<Scalars["String"]>;
+  metadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_gt?: InputMaybe<Scalars["String"]>;
+  metadata_gte?: InputMaybe<Scalars["String"]>;
+  metadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_lt?: InputMaybe<Scalars["String"]>;
+  metadata_lte?: InputMaybe<Scalars["String"]>;
+  metadata_not?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
-  operator?: InputMaybe<Scalars["Bytes"]>;
-  operator_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_in?: InputMaybe<Array<Scalars["Bytes"]>>;
-  operator_not?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_contains?: InputMaybe<Scalars["Bytes"]>;
-  operator_not_in?: InputMaybe<Array<Scalars["Bytes"]>>;
   pendingSeller_?: InputMaybe<PendingSeller_Filter>;
   royaltyPercentage?: InputMaybe<Scalars["BigInt"]>;
   royaltyPercentage_gt?: InputMaybe<Scalars["BigInt"]>;
@@ -7448,6 +8741,7 @@ export type Seller_Filter = {
 export enum Seller_OrderBy {
   Active = "active",
   Admin = "admin",
+  Assistant = "assistant",
   AuthTokenId = "authTokenId",
   AuthTokenType = "authTokenType",
   Clerk = "clerk",
@@ -7456,8 +8750,9 @@ export enum Seller_OrderBy {
   Funds = "funds",
   Id = "id",
   Logs = "logs",
+  Metadata = "metadata",
+  MetadataUri = "metadataUri",
   Offers = "offers",
-  Operator = "operator",
   PendingSeller = "pendingSeller",
   RoyaltyPercentage = "royaltyPercentage",
   SellerId = "sellerId",
@@ -7473,6 +8768,7 @@ export type Subscription = {
   accountEventLog?: Maybe<AccountEventLog>;
   accountEventLogs: Array<AccountEventLog>;
   accounts: Array<Account>;
+  animationMetadata: Array<AnimationMetadata>;
   baseMetadataEntities: Array<BaseMetadataEntity>;
   baseMetadataEntity?: Maybe<BaseMetadataEntity>;
   buyer?: Maybe<Buyer>;
@@ -7544,7 +8840,20 @@ export type Subscription = {
   productV1Variants: Array<ProductV1Variant>;
   productV1Variation?: Maybe<ProductV1Variation>;
   productV1Variations: Array<ProductV1Variation>;
+  rangeEntities: Array<RangeEntity>;
+  rangeEntity?: Maybe<RangeEntity>;
+  salesChannel?: Maybe<SalesChannel>;
+  salesChannelDeployment?: Maybe<SalesChannelDeployment>;
+  salesChannelDeployments: Array<SalesChannelDeployment>;
+  salesChannels: Array<SalesChannel>;
   seller?: Maybe<Seller>;
+  sellerContactLink?: Maybe<SellerContactLink>;
+  sellerContactLinks: Array<SellerContactLink>;
+  sellerMetadata: Array<SellerMetadata>;
+  sellerMetadataMedia?: Maybe<SellerMetadataMedia>;
+  sellerMetadataMedias: Array<SellerMetadataMedia>;
+  sellerSocialLink?: Maybe<SellerSocialLink>;
+  sellerSocialLinks: Array<SellerSocialLink>;
   sellers: Array<Seller>;
 };
 
@@ -7582,6 +8891,16 @@ export type SubscriptionAccountsArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Account_Filter>;
+};
+
+export type SubscriptionAnimationMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<AnimationMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AnimationMetadata_Filter>;
 };
 
 export type SubscriptionBaseMetadataEntitiesArgs = {
@@ -8154,10 +9473,116 @@ export type SubscriptionProductV1VariationsArgs = {
   where?: InputMaybe<ProductV1Variation_Filter>;
 };
 
+export type SubscriptionRangeEntitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<RangeEntity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<RangeEntity_Filter>;
+};
+
+export type SubscriptionRangeEntityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSalesChannelArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSalesChannelDeploymentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSalesChannelDeploymentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannelDeployment_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SalesChannelDeployment_Filter>;
+};
+
+export type SubscriptionSalesChannelsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SalesChannel_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SalesChannel_Filter>;
+};
+
 export type SubscriptionSellerArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerContactLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerContactLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerContactLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerContactLink_Filter>;
+};
+
+export type SubscriptionSellerMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadata_Filter>;
+};
+
+export type SubscriptionSellerMetadataMediaArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerMetadataMediasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerMetadataMedia_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerMetadataMedia_Filter>;
+};
+
+export type SubscriptionSellerSocialLinkArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionSellerSocialLinksArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<SellerSocialLink_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<SellerSocialLink_Filter>;
 };
 
 export type SubscriptionSellersArgs = {
@@ -8235,7 +9660,7 @@ export type GetSellerByIdQueryQuery = {
   seller?: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -8245,9 +9670,10 @@ export type GetSellerByIdQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
       authTokenId?: string | null;
@@ -8290,6 +9716,7 @@ export type GetSellerByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -8299,14 +9726,16 @@ export type GetSellerByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -8316,6 +9745,64 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8332,7 +9819,7 @@ export type GetSellerByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -8372,6 +9859,13 @@ export type GetSellerByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -8390,6 +9884,51 @@ export type GetSellerByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -8467,6 +10006,8 @@ export type GetSellerByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -8474,6 +10015,8 @@ export type GetSellerByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -8484,12 +10027,15 @@ export type GetSellerByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -8500,7 +10046,7 @@ export type GetSellerByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -8510,8 +10056,88 @@ export type GetSellerByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -8528,12 +10154,15 @@ export type GetSellerByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -8544,7 +10173,7 @@ export type GetSellerByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -8554,6 +10183,64 @@ export type GetSellerByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -8580,8 +10267,22 @@ export type GetSellerByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -8621,7 +10322,7 @@ export type GetSellerByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -8631,6 +10332,64 @@ export type GetSellerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -8703,6 +10462,63 @@ export type GetSellerByIdQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   } | null;
 };
 
@@ -8743,7 +10559,7 @@ export type GetSellersQueryQuery = {
   sellers: Array<{
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -8753,9 +10569,10 @@ export type GetSellersQueryQuery = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
     pendingSeller?: {
       __typename?: "PendingSeller";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
       authTokenId?: string | null;
@@ -8798,6 +10615,7 @@ export type GetSellersQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -8807,14 +10625,16 @@ export type GetSellersQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -8824,6 +10644,64 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -8840,7 +10718,7 @@ export type GetSellersQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -8880,6 +10758,13 @@ export type GetSellersQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -8898,6 +10783,51 @@ export type GetSellersQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -8975,6 +10905,8 @@ export type GetSellersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -8982,6 +10914,8 @@ export type GetSellersQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -8992,12 +10926,15 @@ export type GetSellersQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -9008,7 +10945,7 @@ export type GetSellersQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -9018,8 +10955,88 @@ export type GetSellersQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -9036,12 +11053,15 @@ export type GetSellersQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -9052,7 +11072,7 @@ export type GetSellersQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -9062,6 +11082,64 @@ export type GetSellersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -9088,8 +11166,22 @@ export type GetSellersQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     exchanges?: Array<{
       __typename?: "Exchange";
@@ -9129,7 +11221,7 @@ export type GetSellersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9139,6 +11231,64 @@ export type GetSellersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9211,6 +11361,63 @@ export type GetSellersQueryQuery = {
             | { __typename?: "Seller"; id: string };
         }
     >;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   }>;
 };
 
@@ -9295,7 +11502,7 @@ export type GetBuyerByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9305,6 +11512,64 @@ export type GetBuyerByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9471,7 +11736,7 @@ export type GetBuyersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9481,6 +11746,64 @@ export type GetBuyersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     logs?: Array<
@@ -9581,13 +11904,13 @@ export type GetDisputeResolverByIdQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
     pendingDisputeResolver?: {
       __typename?: "PendingDisputeResolver";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
     } | null;
@@ -9614,6 +11937,7 @@ export type GetDisputeResolverByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -9623,14 +11947,16 @@ export type GetDisputeResolverByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -9640,6 +11966,64 @@ export type GetDisputeResolverByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -9656,7 +12040,7 @@ export type GetDisputeResolverByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -9696,6 +12080,13 @@ export type GetDisputeResolverByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -9714,6 +12105,51 @@ export type GetDisputeResolverByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -9791,6 +12227,8 @@ export type GetDisputeResolverByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -9798,6 +12236,8 @@ export type GetDisputeResolverByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -9808,12 +12248,15 @@ export type GetDisputeResolverByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -9824,7 +12267,7 @@ export type GetDisputeResolverByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -9834,8 +12277,88 @@ export type GetDisputeResolverByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -9852,12 +12375,15 @@ export type GetDisputeResolverByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -9868,7 +12394,7 @@ export type GetDisputeResolverByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -9878,6 +12404,64 @@ export type GetDisputeResolverByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -9904,8 +12488,22 @@ export type GetDisputeResolverByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -10024,13 +12622,13 @@ export type GetDisputeResolversQueryQuery = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
     pendingDisputeResolver?: {
       __typename?: "PendingDisputeResolver";
-      operator?: string | null;
+      assistant?: string | null;
       admin?: string | null;
       clerk?: string | null;
     } | null;
@@ -10057,6 +12655,7 @@ export type GetDisputeResolversQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -10066,14 +12665,16 @@ export type GetDisputeResolversQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -10083,6 +12684,64 @@ export type GetDisputeResolversQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10099,7 +12758,7 @@ export type GetDisputeResolversQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -10139,6 +12798,13 @@ export type GetDisputeResolversQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -10157,6 +12823,51 @@ export type GetDisputeResolversQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -10234,6 +12945,8 @@ export type GetDisputeResolversQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -10241,6 +12954,8 @@ export type GetDisputeResolversQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -10251,12 +12966,15 @@ export type GetDisputeResolversQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -10267,7 +12985,7 @@ export type GetDisputeResolversQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -10277,8 +12995,88 @@ export type GetDisputeResolversQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -10295,12 +13093,15 @@ export type GetDisputeResolversQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -10311,7 +13112,7 @@ export type GetDisputeResolversQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -10321,6 +13122,64 @@ export type GetDisputeResolversQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -10347,8 +13206,22 @@ export type GetDisputeResolversQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     logs?: Array<
       | {
@@ -10441,7 +13314,7 @@ export type GetDisputeResolversQueryQuery = {
 export type SellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -10451,9 +13324,10 @@ export type SellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
   pendingSeller?: {
     __typename?: "PendingSeller";
-    operator?: string | null;
+    assistant?: string | null;
     admin?: string | null;
     clerk?: string | null;
     authTokenId?: string | null;
@@ -10496,6 +13370,7 @@ export type SellerFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -10505,14 +13380,16 @@ export type SellerFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -10522,6 +13399,64 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -10538,7 +13473,7 @@ export type SellerFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -10578,6 +13513,13 @@ export type SellerFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -10596,6 +13538,47 @@ export type SellerFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -10669,6 +13652,8 @@ export type SellerFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -10676,6 +13661,8 @@ export type SellerFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -10686,12 +13673,15 @@ export type SellerFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -10702,7 +13692,7 @@ export type SellerFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -10712,8 +13702,88 @@ export type SellerFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -10730,12 +13800,15 @@ export type SellerFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -10746,7 +13819,7 @@ export type SellerFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -10756,6 +13829,64 @@ export type SellerFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -10782,8 +13913,22 @@ export type SellerFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   exchanges?: Array<{
     __typename?: "Exchange";
@@ -10823,7 +13968,7 @@ export type SellerFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -10833,6 +13978,64 @@ export type SellerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   }>;
   logs?: Array<
@@ -10905,12 +14108,118 @@ export type SellerFieldsFragment = {
           | { __typename?: "Seller"; id: string };
       }
   >;
+  metadata?: {
+    __typename?: "SellerMetadata";
+    id: string;
+    createdAt: string;
+    name?: string | null;
+    description?: string | null;
+    legalTradingName?: string | null;
+    type: SellerMetadataType;
+    kind: string;
+    website?: string | null;
+    contactPreference: string;
+    images?: Array<{
+      __typename?: "SellerMetadataMedia";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: string;
+      width?: number | null;
+      height?: number | null;
+      fit?: string | null;
+      position?: string | null;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    socialLinks?: Array<{
+      __typename?: "SellerSocialLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
+  } | null;
+};
+
+export type SellerMetadataMediaFieldsFragment = {
+  __typename?: "SellerMetadataMedia";
+  id: string;
+  url: string;
+  tag?: string | null;
+  type: string;
+  width?: number | null;
+  height?: number | null;
+  fit?: string | null;
+  position?: string | null;
+};
+
+export type SellerContactLinkFieldsFragment = {
+  __typename?: "SellerContactLink";
+  id: string;
+  url: string;
+  tag: string;
+};
+
+export type SellerSocialLinkFieldsFragment = {
+  __typename?: "SellerSocialLink";
+  id: string;
+  url: string;
+  tag: string;
+};
+
+export type SalesChannelFieldsFragment = {
+  __typename?: "SalesChannel";
+  id: string;
+  tag: string;
+  name?: string | null;
+  settingsUri?: string | null;
+  settingsEditor?: string | null;
+  link?: string | null;
+  deployments?: Array<{
+    __typename?: "SalesChannelDeployment";
+    id: string;
+    status?: string | null;
+    link?: string | null;
+    lastUpdated?: string | null;
+    product?: {
+      __typename?: "ProductV1Product";
+      id: string;
+      uuid: string;
+      version: number;
+    } | null;
+  }> | null;
 };
 
 export type BaseSellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
-  operator: string;
+  assistant: string;
   admin: string;
   clerk: string;
   treasury: string;
@@ -10920,11 +14229,69 @@ export type BaseSellerFieldsFragment = {
   active: boolean;
   contractURI: string;
   royaltyPercentage: string;
+  metadataUri: string;
+  metadata?: {
+    __typename?: "SellerMetadata";
+    id: string;
+    createdAt: string;
+    name?: string | null;
+    description?: string | null;
+    legalTradingName?: string | null;
+    type: SellerMetadataType;
+    kind: string;
+    website?: string | null;
+    contactPreference: string;
+    images?: Array<{
+      __typename?: "SellerMetadataMedia";
+      id: string;
+      url: string;
+      tag?: string | null;
+      type: string;
+      width?: number | null;
+      height?: number | null;
+      fit?: string | null;
+      position?: string | null;
+    }> | null;
+    contactLinks?: Array<{
+      __typename?: "SellerContactLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    socialLinks?: Array<{
+      __typename?: "SellerSocialLink";
+      id: string;
+      url: string;
+      tag: string;
+    }> | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
+  } | null;
 };
 
 export type PendingSellerFieldsFragment = {
   __typename?: "PendingSeller";
-  operator?: string | null;
+  assistant?: string | null;
   admin?: string | null;
   clerk?: string | null;
   authTokenId?: string | null;
@@ -10988,7 +14355,7 @@ export type BuyerFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -10998,6 +14365,64 @@ export type BuyerFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   }>;
   logs?: Array<
@@ -11086,13 +14511,13 @@ export type DisputeResolverFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
-  operator: string;
+  assistant: string;
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
   pendingDisputeResolver?: {
     __typename?: "PendingDisputeResolver";
-    operator?: string | null;
+    assistant?: string | null;
     admin?: string | null;
     clerk?: string | null;
   } | null;
@@ -11119,6 +14544,7 @@ export type DisputeResolverFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -11128,14 +14554,16 @@ export type DisputeResolverFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11145,6 +14573,64 @@ export type DisputeResolverFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -11161,7 +14647,7 @@ export type DisputeResolverFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -11201,6 +14687,13 @@ export type DisputeResolverFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -11219,6 +14712,47 @@ export type DisputeResolverFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -11292,6 +14826,8 @@ export type DisputeResolverFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -11299,6 +14835,8 @@ export type DisputeResolverFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -11309,12 +14847,15 @@ export type DisputeResolverFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -11325,7 +14866,7 @@ export type DisputeResolverFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -11335,8 +14876,88 @@ export type DisputeResolverFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -11353,12 +14974,15 @@ export type DisputeResolverFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -11369,7 +14993,7 @@ export type DisputeResolverFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -11379,6 +15003,64 @@ export type DisputeResolverFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -11405,8 +15087,22 @@ export type DisputeResolverFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   logs?: Array<
     | {
@@ -11502,7 +15198,7 @@ export type BaseDisputeResolverFieldsFragment = {
   admin: string;
   clerk: string;
   treasury: string;
-  operator: string;
+  assistant: string;
   metadataUri: string;
   active: boolean;
   sellerAllowList: Array<string>;
@@ -11525,7 +15221,7 @@ export type BaseDisputeResolverFieldsFragment = {
 
 export type PendingDisputeResolverFieldsFragment = {
   __typename?: "PendingDisputeResolver";
-  operator?: string | null;
+  assistant?: string | null;
   admin?: string | null;
   clerk?: string | null;
 };
@@ -11619,7 +15315,7 @@ export type GetDisputeByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -11629,12 +15325,70 @@ export type GetDisputeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11644,6 +15398,64 @@ export type GetDisputeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     buyer: {
       __typename?: "Buyer";
@@ -11716,7 +15528,7 @@ export type GetDisputesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -11726,12 +15538,70 @@ export type GetDisputesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11741,6 +15611,64 @@ export type GetDisputesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     buyer: {
       __typename?: "Buyer";
@@ -11803,7 +15731,7 @@ export type DisputeFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -11813,12 +15741,70 @@ export type DisputeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   };
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -11828,6 +15814,64 @@ export type DisputeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   buyer: { __typename?: "Buyer"; id: string; wallet: string; active: boolean };
 };
@@ -11901,6 +15945,7 @@ export type GetExchangeTokenByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -11910,14 +15955,16 @@ export type GetExchangeTokenByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -11927,6 +15974,64 @@ export type GetExchangeTokenByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -11943,7 +16048,7 @@ export type GetExchangeTokenByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -11983,6 +16088,13 @@ export type GetExchangeTokenByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -12001,6 +16113,51 @@ export type GetExchangeTokenByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12078,6 +16235,8 @@ export type GetExchangeTokenByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -12085,6 +16244,8 @@ export type GetExchangeTokenByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -12095,12 +16256,15 @@ export type GetExchangeTokenByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -12111,7 +16275,7 @@ export type GetExchangeTokenByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -12121,8 +16285,88 @@ export type GetExchangeTokenByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -12139,12 +16383,15 @@ export type GetExchangeTokenByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -12155,7 +16402,7 @@ export type GetExchangeTokenByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -12165,6 +16412,64 @@ export type GetExchangeTokenByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -12191,8 +16496,22 @@ export type GetExchangeTokenByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -12255,6 +16574,7 @@ export type GetExchangeTokensQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -12264,14 +16584,16 @@ export type GetExchangeTokensQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -12281,6 +16603,64 @@ export type GetExchangeTokensQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12297,7 +16677,7 @@ export type GetExchangeTokensQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -12337,6 +16717,13 @@ export type GetExchangeTokensQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -12355,6 +16742,51 @@ export type GetExchangeTokensQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -12432,6 +16864,8 @@ export type GetExchangeTokensQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -12439,6 +16873,8 @@ export type GetExchangeTokensQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -12449,12 +16885,15 @@ export type GetExchangeTokensQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -12465,7 +16904,7 @@ export type GetExchangeTokensQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -12475,8 +16914,88 @@ export type GetExchangeTokensQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -12493,12 +17012,15 @@ export type GetExchangeTokensQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -12509,7 +17031,7 @@ export type GetExchangeTokensQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -12519,6 +17041,64 @@ export type GetExchangeTokensQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -12545,8 +17125,22 @@ export type GetExchangeTokensQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     }>;
     funds?: Array<{
       __typename?: "FundsEntity";
@@ -12587,6 +17181,7 @@ export type ExchangeTokenFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -12596,14 +17191,16 @@ export type ExchangeTokenFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -12613,6 +17210,64 @@ export type ExchangeTokenFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -12629,7 +17284,7 @@ export type ExchangeTokenFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -12669,6 +17324,13 @@ export type ExchangeTokenFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -12687,6 +17349,47 @@ export type ExchangeTokenFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -12760,6 +17463,8 @@ export type ExchangeTokenFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -12767,6 +17472,8 @@ export type ExchangeTokenFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -12777,12 +17484,15 @@ export type ExchangeTokenFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -12793,7 +17503,7 @@ export type ExchangeTokenFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -12803,8 +17513,88 @@ export type ExchangeTokenFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -12821,12 +17611,15 @@ export type ExchangeTokenFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -12837,7 +17630,7 @@ export type ExchangeTokenFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -12847,6 +17640,64 @@ export type ExchangeTokenFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -12873,8 +17724,22 @@ export type ExchangeTokenFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   }>;
   funds?: Array<{
     __typename?: "FundsEntity";
@@ -13098,6 +17963,7 @@ export type GetExchangeByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -13107,14 +17973,16 @@ export type GetExchangeByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -13124,6 +17992,64 @@ export type GetExchangeByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13140,7 +18066,7 @@ export type GetExchangeByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -13180,6 +18106,13 @@ export type GetExchangeByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -13198,6 +18131,51 @@ export type GetExchangeByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13275,6 +18253,8 @@ export type GetExchangeByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -13282,6 +18262,8 @@ export type GetExchangeByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -13292,12 +18274,15 @@ export type GetExchangeByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -13308,7 +18293,7 @@ export type GetExchangeByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -13318,8 +18303,88 @@ export type GetExchangeByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -13336,12 +18401,15 @@ export type GetExchangeByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -13352,7 +18420,7 @@ export type GetExchangeByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -13362,6 +18430,64 @@ export type GetExchangeByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -13388,8 +18514,22 @@ export type GetExchangeByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     dispute?: {
       __typename?: "Dispute";
@@ -13415,7 +18555,7 @@ export type GetExchangeByIdQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -13425,6 +18565,64 @@ export type GetExchangeByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   } | null;
 };
@@ -13476,6 +18674,7 @@ export type GetExchangesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -13485,14 +18684,16 @@ export type GetExchangesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -13502,6 +18703,64 @@ export type GetExchangesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13518,7 +18777,7 @@ export type GetExchangesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -13558,6 +18817,13 @@ export type GetExchangesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -13576,6 +18842,51 @@ export type GetExchangesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -13653,6 +18964,8 @@ export type GetExchangesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -13660,6 +18973,8 @@ export type GetExchangesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -13670,12 +18985,15 @@ export type GetExchangesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -13686,7 +19004,7 @@ export type GetExchangesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -13696,8 +19014,88 @@ export type GetExchangesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -13714,12 +19112,15 @@ export type GetExchangesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -13730,7 +19131,7 @@ export type GetExchangesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -13740,6 +19141,64 @@ export type GetExchangesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -13766,8 +19225,22 @@ export type GetExchangesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     dispute?: {
       __typename?: "Dispute";
@@ -13793,7 +19266,7 @@ export type GetExchangesQueryQuery = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -13803,6 +19276,64 @@ export type GetExchangesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   }>;
 };
@@ -13844,6 +19375,7 @@ export type ExchangeFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -13853,14 +19385,16 @@ export type ExchangeFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -13870,6 +19404,64 @@ export type ExchangeFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -13886,7 +19478,7 @@ export type ExchangeFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -13926,6 +19518,13 @@ export type ExchangeFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -13944,6 +19543,47 @@ export type ExchangeFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -14017,6 +19657,8 @@ export type ExchangeFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -14024,6 +19666,8 @@ export type ExchangeFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -14034,12 +19678,15 @@ export type ExchangeFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -14050,7 +19697,7 @@ export type ExchangeFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -14060,8 +19707,88 @@ export type ExchangeFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -14078,12 +19805,15 @@ export type ExchangeFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -14094,7 +19824,7 @@ export type ExchangeFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -14104,6 +19834,64 @@ export type ExchangeFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -14130,8 +19918,22 @@ export type ExchangeFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   dispute?: {
     __typename?: "Dispute";
@@ -14152,7 +19954,7 @@ export type ExchangeFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -14162,6 +19964,64 @@ export type ExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
 };
 
@@ -14198,7 +20058,7 @@ export type BaseExchangeFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -14208,6 +20068,64 @@ export type BaseExchangeFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
 };
 
@@ -14287,7 +20205,9 @@ export type BaseConditionFieldsFragment = {
   method: number;
   tokenType: number;
   tokenAddress: string;
-  tokenId: string;
+  gatingType: number;
+  minTokenId: string;
+  maxTokenId: string;
   threshold: string;
   maxCommits: string;
 };
@@ -14322,6 +20242,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
     quantityAvailable: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -14351,6 +20278,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -14360,14 +20288,16 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -14377,6 +20307,64 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14393,7 +20381,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -14433,6 +20421,13 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -14451,6 +20446,51 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -14528,6 +20568,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -14535,6 +20577,8 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -14545,12 +20589,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -14561,7 +20608,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -14571,8 +20618,88 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -14589,12 +20716,15 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -14605,7 +20735,7 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -14615,6 +20745,64 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -14641,13 +20829,27 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -14657,6 +20859,64 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -14698,6 +20958,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
     quantityAvailable: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -14727,6 +20994,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -14736,14 +21004,16 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -14753,6 +21023,64 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14769,7 +21097,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -14809,6 +21137,13 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -14827,6 +21162,51 @@ export type GetBaseMetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -14904,6 +21284,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -14911,6 +21293,8 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -14921,12 +21305,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -14937,7 +21324,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -14947,8 +21334,88 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -14965,12 +21432,15 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -14981,7 +21451,7 @@ export type GetBaseMetadataEntitiesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -14991,6 +21461,64 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -15017,13 +21545,27 @@ export type GetBaseMetadataEntitiesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15033,6 +21575,64 @@ export type GetBaseMetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15064,6 +21664,13 @@ export type BaseMetadataEntityFieldsFragment = {
   quantityAvailable: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -15093,6 +21700,7 @@ export type BaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -15102,14 +21710,16 @@ export type BaseMetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15119,6 +21729,64 @@ export type BaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15135,7 +21803,7 @@ export type BaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -15175,6 +21843,13 @@ export type BaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -15193,6 +21868,47 @@ export type BaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -15266,6 +21982,8 @@ export type BaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -15273,6 +21991,8 @@ export type BaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -15283,12 +22003,15 @@ export type BaseMetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15299,7 +22022,7 @@ export type BaseMetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -15309,8 +22032,88 @@ export type BaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -15327,12 +22130,15 @@ export type BaseMetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -15343,7 +22149,7 @@ export type BaseMetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -15353,6 +22159,64 @@ export type BaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -15379,13 +22243,27 @@ export type BaseMetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -15395,6 +22273,64 @@ export type BaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -15425,6 +22361,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
   quantityAvailable: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -15454,6 +22397,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -15463,14 +22407,16 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -15480,6 +22426,64 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15496,7 +22500,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -15536,6 +22540,13 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -15554,6 +22565,47 @@ export type BaseBaseMetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -15627,6 +22679,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -15634,6 +22688,8 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -15644,12 +22700,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -15660,7 +22719,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -15670,8 +22729,88 @@ export type BaseBaseMetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -15688,12 +22827,15 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -15704,7 +22846,7 @@ export type BaseBaseMetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -15714,6 +22856,64 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -15740,13 +22940,27 @@ export type BaseBaseMetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -15756,6 +22970,64 @@ export type BaseBaseMetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -15861,6 +23133,8 @@ export type GetProductV1ProductsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -15868,6 +23142,8 @@ export type GetProductV1ProductsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -15878,12 +23154,15 @@ export type GetProductV1ProductsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -15894,7 +23173,7 @@ export type GetProductV1ProductsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -15904,8 +23183,88 @@ export type GetProductV1ProductsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -15979,6 +23338,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -16020,7 +23380,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -16030,6 +23390,64 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
           };
         }>;
         condition?: {
@@ -16038,14 +23456,16 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           method: number;
           tokenType: number;
           tokenAddress: string;
-          tokenId: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
           threshold: string;
           maxCommits: string;
         } | null;
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -16055,6 +23475,64 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -16071,7 +23549,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           admin: string;
           clerk: string;
           treasury: string;
-          operator: string;
+          assistant: string;
           metadataUri: string;
           active: boolean;
           sellerAllowList: Array<string>;
@@ -16111,6 +23589,13 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
@@ -16129,6 +23614,51 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -16206,6 +23736,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }>;
                 visuals_videos?: Array<{
                   __typename?: "ProductV1Media";
@@ -16213,6 +23745,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 productV1Seller?: {
                   __typename?: "ProductV1Seller";
@@ -16223,12 +23757,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   externalUrl?: string | null;
                   tokenId?: string | null;
                   sellerId?: string | null;
+                  contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
                     id: string;
                     url: string;
                     tag?: string | null;
                     type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "ProductV1SellerContactLink";
@@ -16239,7 +23776,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   seller: {
                     __typename?: "Seller";
                     id: string;
-                    operator: string;
+                    assistant: string;
                     admin: string;
                     clerk: string;
                     treasury: string;
@@ -16249,8 +23786,88 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
                   };
                 } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
               };
               variations?: Array<{
                 __typename?: "ProductV1Variation";
@@ -16267,12 +23884,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -16283,7 +23903,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -16293,6 +23913,64 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               };
               exchangePolicy: {
@@ -16319,8 +23997,22 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
                   deliveryTime: string;
                 }> | null;
               } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
       };
       variations?: Array<{
         __typename?: "ProductV1Variation";
@@ -16366,6 +24058,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -16373,6 +24067,8 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -16383,12 +24079,15 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -16399,7 +24098,7 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -16409,8 +24108,88 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -16484,6 +24263,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         metadataHash: string;
         voided: boolean;
         voidedAt?: string | null;
+        collectionIndex: string;
         disputeResolverId: string;
         numberOfCommits: string;
         numberOfRedemptions: string;
@@ -16525,7 +24305,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -16535,6 +24315,64 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
           };
         }>;
         condition?: {
@@ -16543,14 +24381,16 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           method: number;
           tokenType: number;
           tokenAddress: string;
-          tokenId: string;
+          gatingType: number;
+          minTokenId: string;
+          maxTokenId: string;
           threshold: string;
           maxCommits: string;
         } | null;
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -16560,6 +24400,64 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -16576,7 +24474,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           admin: string;
           clerk: string;
           treasury: string;
-          operator: string;
+          assistant: string;
           metadataUri: string;
           active: boolean;
           sellerAllowList: Array<string>;
@@ -16616,6 +24514,13 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | {
               __typename?: "ProductV1MetadataEntity";
@@ -16634,6 +24539,51 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
               schemaUrl: string;
               type: MetadataType;
               image: string;
+              productOverrides?: {
+                __typename?: "ProductV1ProductOverrides";
+                id: string;
+                version: number;
+                title: string;
+                description: string;
+                identification_sKU?: string | null;
+                identification_productId?: string | null;
+                identification_productIdType?: string | null;
+                productionInformation_brandName: string;
+                productionInformation_manufacturer?: string | null;
+                productionInformation_manufacturerPartNumber?: string | null;
+                productionInformation_modelNumber?: string | null;
+                productionInformation_materials?: Array<string> | null;
+                packaging_packageQuantity?: string | null;
+                packaging_dimensions_length?: string | null;
+                packaging_dimensions_width?: string | null;
+                packaging_dimensions_height?: string | null;
+                packaging_dimensions_unit?: string | null;
+                packaging_weight_value?: string | null;
+                packaging_weight_unit?: string | null;
+                brand: {
+                  __typename?: "ProductV1Brand";
+                  id: string;
+                  name: string;
+                };
+                visuals_images: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }>;
+                visuals_videos?: Array<{
+                  __typename?: "ProductV1Media";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
+                }> | null;
+              } | null;
               attributes?: Array<{
                 __typename?: "MetadataAttribute";
                 traitType: string;
@@ -16711,6 +24661,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }>;
                 visuals_videos?: Array<{
                   __typename?: "ProductV1Media";
@@ -16718,6 +24670,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 productV1Seller?: {
                   __typename?: "ProductV1Seller";
@@ -16728,12 +24682,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   externalUrl?: string | null;
                   tokenId?: string | null;
                   sellerId?: string | null;
+                  contactPreference?: string | null;
                   images?: Array<{
                     __typename?: "ProductV1Media";
                     id: string;
                     url: string;
                     tag?: string | null;
                     type: ProductV1MediaType;
+                    width?: number | null;
+                    height?: number | null;
                   }> | null;
                   contactLinks?: Array<{
                     __typename?: "ProductV1SellerContactLink";
@@ -16744,7 +24701,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   seller: {
                     __typename?: "Seller";
                     id: string;
-                    operator: string;
+                    assistant: string;
                     admin: string;
                     clerk: string;
                     treasury: string;
@@ -16754,8 +24711,88 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                     active: boolean;
                     contractURI: string;
                     royaltyPercentage: string;
+                    metadataUri: string;
+                    metadata?: {
+                      __typename?: "SellerMetadata";
+                      id: string;
+                      createdAt: string;
+                      name?: string | null;
+                      description?: string | null;
+                      legalTradingName?: string | null;
+                      type: SellerMetadataType;
+                      kind: string;
+                      website?: string | null;
+                      contactPreference: string;
+                      images?: Array<{
+                        __typename?: "SellerMetadataMedia";
+                        id: string;
+                        url: string;
+                        tag?: string | null;
+                        type: string;
+                        width?: number | null;
+                        height?: number | null;
+                        fit?: string | null;
+                        position?: string | null;
+                      }> | null;
+                      contactLinks?: Array<{
+                        __typename?: "SellerContactLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      socialLinks?: Array<{
+                        __typename?: "SellerSocialLink";
+                        id: string;
+                        url: string;
+                        tag: string;
+                      }> | null;
+                      salesChannels?: Array<{
+                        __typename?: "SalesChannel";
+                        id: string;
+                        tag: string;
+                        name?: string | null;
+                        settingsUri?: string | null;
+                        settingsEditor?: string | null;
+                        link?: string | null;
+                        deployments?: Array<{
+                          __typename?: "SalesChannelDeployment";
+                          id: string;
+                          status?: string | null;
+                          link?: string | null;
+                          lastUpdated?: string | null;
+                          product?: {
+                            __typename?: "ProductV1Product";
+                            id: string;
+                            uuid: string;
+                            version: number;
+                          } | null;
+                        }> | null;
+                      }> | null;
+                    } | null;
                   };
                 } | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
               };
               variations?: Array<{
                 __typename?: "ProductV1Variation";
@@ -16772,12 +24809,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -16788,7 +24828,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -16798,6 +24838,64 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               };
               exchangePolicy: {
@@ -16824,8 +24922,22 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
                   deliveryTime: string;
                 }> | null;
               } | null;
+              animationMetadata?: {
+                __typename?: "AnimationMetadata";
+                id: string;
+                width?: number | null;
+                height?: number | null;
+                type?: string | null;
+              } | null;
             }
           | null;
+        range?: {
+          __typename?: "RangeEntity";
+          id: string;
+          start: string;
+          end: string;
+          owner: string;
+        } | null;
       };
       variations?: Array<{
         __typename?: "ProductV1Variation";
@@ -16871,6 +24983,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -16878,6 +24992,8 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -16888,12 +25004,15 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -16904,7 +25023,7 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -16914,8 +25033,88 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
   }>;
 };
 
@@ -16967,6 +25166,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
     numberOfCommits: string;
     numberOfRedemptions: string;
     uuid: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -16996,6 +25202,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -17037,7 +25244,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -17047,6 +25254,64 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -17055,14 +25320,16 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17072,6 +25339,64 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -17088,7 +25413,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -17128,6 +25453,13 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -17146,6 +25478,51 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -17223,6 +25600,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -17230,6 +25609,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -17240,12 +25621,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -17256,7 +25640,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -17266,8 +25650,88 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -17284,12 +25748,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -17300,7 +25767,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -17310,6 +25777,64 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -17336,13 +25861,27 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -17352,6 +25891,64 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -17428,6 +26025,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }>;
       visuals_videos?: Array<{
         __typename?: "ProductV1Media";
@@ -17435,6 +26034,8 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       productV1Seller?: {
         __typename?: "ProductV1Seller";
@@ -17445,12 +26046,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         externalUrl?: string | null;
         tokenId?: string | null;
         sellerId?: string | null;
+        contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
           id: string;
           url: string;
           tag?: string | null;
           type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "ProductV1SellerContactLink";
@@ -17461,7 +26065,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -17471,8 +26075,88 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       } | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -17489,12 +26173,15 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -17505,7 +26192,7 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17515,6 +26202,64 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     };
     exchangePolicy: {
@@ -17560,6 +26305,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
     numberOfCommits: string;
     numberOfRedemptions: string;
     uuid: string;
+    animationMetadata?: {
+      __typename?: "AnimationMetadata";
+      id: string;
+      width?: number | null;
+      height?: number | null;
+      type?: string | null;
+    } | null;
     attributes?: Array<{
       __typename?: "MetadataAttribute";
       traitType: string;
@@ -17589,6 +26341,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -17630,7 +26383,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -17640,6 +26393,64 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -17648,14 +26459,16 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -17665,6 +26478,64 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -17681,7 +26552,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -17721,6 +26592,13 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -17739,6 +26617,51 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -17816,6 +26739,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -17823,6 +26748,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -17833,12 +26760,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -17849,7 +26779,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -17859,8 +26789,88 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -17877,12 +26887,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -17893,7 +26906,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -17903,6 +26916,64 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -17929,13 +27000,27 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -17945,6 +27030,64 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18021,6 +27164,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }>;
       visuals_videos?: Array<{
         __typename?: "ProductV1Media";
@@ -18028,6 +27173,8 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       productV1Seller?: {
         __typename?: "ProductV1Seller";
@@ -18038,12 +27185,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         externalUrl?: string | null;
         tokenId?: string | null;
         sellerId?: string | null;
+        contactPreference?: string | null;
         images?: Array<{
           __typename?: "ProductV1Media";
           id: string;
           url: string;
           tag?: string | null;
           type: ProductV1MediaType;
+          width?: number | null;
+          height?: number | null;
         }> | null;
         contactLinks?: Array<{
           __typename?: "ProductV1SellerContactLink";
@@ -18054,7 +27204,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -18064,8 +27214,88 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       } | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -18082,12 +27312,15 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -18098,7 +27331,7 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18108,6 +27341,64 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     };
     exchangePolicy: {
@@ -18143,6 +27434,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
   numberOfCommits: string;
   numberOfRedemptions: string;
   uuid: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -18172,6 +27470,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -18213,7 +27512,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18223,6 +27522,64 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -18231,14 +27588,16 @@ export type ProductV1MetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -18248,6 +27607,64 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18264,7 +27681,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -18304,6 +27721,13 @@ export type ProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -18322,6 +27746,47 @@ export type ProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -18395,6 +27860,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -18402,6 +27869,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -18412,12 +27881,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -18428,7 +27900,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -18438,8 +27910,88 @@ export type ProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -18456,12 +28008,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -18472,7 +28027,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -18482,6 +28037,64 @@ export type ProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -18508,13 +28121,27 @@ export type ProductV1MetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -18524,6 +28151,64 @@ export type ProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -18600,6 +28285,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -18607,6 +28294,8 @@ export type ProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -18617,12 +28306,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -18633,7 +28325,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18643,8 +28335,88 @@ export type ProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
   };
   variations?: Array<{
     __typename?: "ProductV1Variation";
@@ -18661,12 +28433,15 @@ export type ProductV1MetadataEntityFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -18677,7 +28452,7 @@ export type ProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -18687,6 +28462,64 @@ export type ProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   };
   exchangePolicy: {
@@ -18721,6 +28554,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
   numberOfCommits: string;
   numberOfRedemptions: string;
   uuid: string;
+  animationMetadata?: {
+    __typename?: "AnimationMetadata";
+    id: string;
+    width?: number | null;
+    height?: number | null;
+    type?: string | null;
+  } | null;
   attributes?: Array<{
     __typename?: "MetadataAttribute";
     traitType: string;
@@ -18750,6 +28590,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -18791,7 +28632,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -18801,6 +28642,64 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -18809,14 +28708,16 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -18826,6 +28727,64 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -18842,7 +28801,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -18882,6 +28841,13 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -18900,6 +28866,47 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -18973,6 +28980,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -18980,6 +28989,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -18990,12 +29001,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -19006,7 +29020,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -19016,8 +29030,88 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -19034,12 +29128,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -19050,7 +29147,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -19060,6 +29157,64 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -19086,13 +29241,27 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   };
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -19102,6 +29271,64 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -19178,6 +29405,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }>;
     visuals_videos?: Array<{
       __typename?: "ProductV1Media";
@@ -19185,6 +29414,8 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     productV1Seller?: {
       __typename?: "ProductV1Seller";
@@ -19195,12 +29426,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       externalUrl?: string | null;
       tokenId?: string | null;
       sellerId?: string | null;
+      contactPreference?: string | null;
       images?: Array<{
         __typename?: "ProductV1Media";
         id: string;
         url: string;
         tag?: string | null;
         type: ProductV1MediaType;
+        width?: number | null;
+        height?: number | null;
       }> | null;
       contactLinks?: Array<{
         __typename?: "ProductV1SellerContactLink";
@@ -19211,7 +29445,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19221,8 +29455,88 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     } | null;
+    salesChannels?: Array<{
+      __typename?: "SalesChannel";
+      id: string;
+      tag: string;
+      name?: string | null;
+      settingsUri?: string | null;
+      settingsEditor?: string | null;
+      link?: string | null;
+      deployments?: Array<{
+        __typename?: "SalesChannelDeployment";
+        id: string;
+        status?: string | null;
+        link?: string | null;
+        lastUpdated?: string | null;
+        product?: {
+          __typename?: "ProductV1Product";
+          id: string;
+          uuid: string;
+          version: number;
+        } | null;
+      }> | null;
+    }> | null;
   };
   variations?: Array<{
     __typename?: "ProductV1Variation";
@@ -19239,12 +29553,15 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -19255,7 +29572,7 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19265,6 +29582,64 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   };
   exchangePolicy: {
@@ -19277,6 +29652,14 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
     sellerContactMethod: string;
     disputeResolverContactMethod: string;
   };
+};
+
+export type BaseAnimationMetadataFieldsFragment = {
+  __typename?: "AnimationMetadata";
+  id: string;
+  width?: number | null;
+  height?: number | null;
+  type?: string | null;
 };
 
 export type BaseProductV1ProductFieldsFragment = {
@@ -19346,6 +29729,8 @@ export type BaseProductV1ProductFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -19353,6 +29738,8 @@ export type BaseProductV1ProductFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -19363,12 +29750,15 @@ export type BaseProductV1ProductFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -19379,7 +29769,7 @@ export type BaseProductV1ProductFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19389,8 +29779,88 @@ export type BaseProductV1ProductFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    name?: string | null;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    link?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      lastUpdated?: string | null;
+      product?: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      } | null;
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1ProductWithVariantsFieldsFragment = {
@@ -19453,6 +29923,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -19494,7 +29965,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -19504,6 +29975,64 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -19512,14 +30041,16 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -19529,6 +30060,64 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -19545,7 +30134,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -19585,6 +30174,13 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -19603,6 +30199,51 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -19680,6 +30321,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -19687,6 +30330,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -19697,12 +30342,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -19713,7 +30361,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -19723,8 +30371,88 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -19741,12 +30469,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -19757,7 +30488,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -19767,6 +30498,64 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -19793,8 +30582,22 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -19840,6 +30643,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -19847,6 +30652,8 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -19857,12 +30664,15 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -19873,7 +30683,7 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -19883,8 +30693,88 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    name?: string | null;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    link?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      lastUpdated?: string | null;
+      product?: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      } | null;
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
@@ -19947,6 +30837,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       metadataHash: string;
       voided: boolean;
       voidedAt?: string | null;
+      collectionIndex: string;
       disputeResolverId: string;
       numberOfCommits: string;
       numberOfRedemptions: string;
@@ -19988,7 +30879,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         seller: {
           __typename?: "Seller";
           id: string;
-          operator: string;
+          assistant: string;
           admin: string;
           clerk: string;
           treasury: string;
@@ -19998,6 +30889,64 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
           active: boolean;
           contractURI: string;
           royaltyPercentage: string;
+          metadataUri: string;
+          metadata?: {
+            __typename?: "SellerMetadata";
+            id: string;
+            createdAt: string;
+            name?: string | null;
+            description?: string | null;
+            legalTradingName?: string | null;
+            type: SellerMetadataType;
+            kind: string;
+            website?: string | null;
+            contactPreference: string;
+            images?: Array<{
+              __typename?: "SellerMetadataMedia";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: string;
+              width?: number | null;
+              height?: number | null;
+              fit?: string | null;
+              position?: string | null;
+            }> | null;
+            contactLinks?: Array<{
+              __typename?: "SellerContactLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            socialLinks?: Array<{
+              __typename?: "SellerSocialLink";
+              id: string;
+              url: string;
+              tag: string;
+            }> | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
+          } | null;
         };
       }>;
       condition?: {
@@ -20006,14 +30955,16 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         method: number;
         tokenType: number;
         tokenAddress: string;
-        tokenId: string;
+        gatingType: number;
+        minTokenId: string;
+        maxTokenId: string;
         threshold: string;
         maxCommits: string;
       } | null;
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -20023,6 +30974,64 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -20039,7 +31048,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         admin: string;
         clerk: string;
         treasury: string;
-        operator: string;
+        assistant: string;
         metadataUri: string;
         active: boolean;
         sellerAllowList: Array<string>;
@@ -20079,6 +31088,13 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | {
             __typename?: "ProductV1MetadataEntity";
@@ -20097,6 +31113,51 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
             schemaUrl: string;
             type: MetadataType;
             image: string;
+            productOverrides?: {
+              __typename?: "ProductV1ProductOverrides";
+              id: string;
+              version: number;
+              title: string;
+              description: string;
+              identification_sKU?: string | null;
+              identification_productId?: string | null;
+              identification_productIdType?: string | null;
+              productionInformation_brandName: string;
+              productionInformation_manufacturer?: string | null;
+              productionInformation_manufacturerPartNumber?: string | null;
+              productionInformation_modelNumber?: string | null;
+              productionInformation_materials?: Array<string> | null;
+              packaging_packageQuantity?: string | null;
+              packaging_dimensions_length?: string | null;
+              packaging_dimensions_width?: string | null;
+              packaging_dimensions_height?: string | null;
+              packaging_dimensions_unit?: string | null;
+              packaging_weight_value?: string | null;
+              packaging_weight_unit?: string | null;
+              brand: {
+                __typename?: "ProductV1Brand";
+                id: string;
+                name: string;
+              };
+              visuals_images: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }>;
+              visuals_videos?: Array<{
+                __typename?: "ProductV1Media";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
+              }> | null;
+            } | null;
             attributes?: Array<{
               __typename?: "MetadataAttribute";
               traitType: string;
@@ -20174,6 +31235,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }>;
               visuals_videos?: Array<{
                 __typename?: "ProductV1Media";
@@ -20181,6 +31244,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               productV1Seller?: {
                 __typename?: "ProductV1Seller";
@@ -20191,12 +31256,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 externalUrl?: string | null;
                 tokenId?: string | null;
                 sellerId?: string | null;
+                contactPreference?: string | null;
                 images?: Array<{
                   __typename?: "ProductV1Media";
                   id: string;
                   url: string;
                   tag?: string | null;
                   type: ProductV1MediaType;
+                  width?: number | null;
+                  height?: number | null;
                 }> | null;
                 contactLinks?: Array<{
                   __typename?: "ProductV1SellerContactLink";
@@ -20207,7 +31275,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 seller: {
                   __typename?: "Seller";
                   id: string;
-                  operator: string;
+                  assistant: string;
                   admin: string;
                   clerk: string;
                   treasury: string;
@@ -20217,8 +31285,88 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                   active: boolean;
                   contractURI: string;
                   royaltyPercentage: string;
+                  metadataUri: string;
+                  metadata?: {
+                    __typename?: "SellerMetadata";
+                    id: string;
+                    createdAt: string;
+                    name?: string | null;
+                    description?: string | null;
+                    legalTradingName?: string | null;
+                    type: SellerMetadataType;
+                    kind: string;
+                    website?: string | null;
+                    contactPreference: string;
+                    images?: Array<{
+                      __typename?: "SellerMetadataMedia";
+                      id: string;
+                      url: string;
+                      tag?: string | null;
+                      type: string;
+                      width?: number | null;
+                      height?: number | null;
+                      fit?: string | null;
+                      position?: string | null;
+                    }> | null;
+                    contactLinks?: Array<{
+                      __typename?: "SellerContactLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    socialLinks?: Array<{
+                      __typename?: "SellerSocialLink";
+                      id: string;
+                      url: string;
+                      tag: string;
+                    }> | null;
+                    salesChannels?: Array<{
+                      __typename?: "SalesChannel";
+                      id: string;
+                      tag: string;
+                      name?: string | null;
+                      settingsUri?: string | null;
+                      settingsEditor?: string | null;
+                      link?: string | null;
+                      deployments?: Array<{
+                        __typename?: "SalesChannelDeployment";
+                        id: string;
+                        status?: string | null;
+                        link?: string | null;
+                        lastUpdated?: string | null;
+                        product?: {
+                          __typename?: "ProductV1Product";
+                          id: string;
+                          uuid: string;
+                          version: number;
+                        } | null;
+                      }> | null;
+                    }> | null;
+                  } | null;
                 };
               } | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
             };
             variations?: Array<{
               __typename?: "ProductV1Variation";
@@ -20235,12 +31383,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -20251,7 +31402,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -20261,6 +31412,64 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             };
             exchangePolicy: {
@@ -20287,8 +31496,22 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
                 deliveryTime: string;
               }> | null;
             } | null;
+            animationMetadata?: {
+              __typename?: "AnimationMetadata";
+              id: string;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+            } | null;
           }
         | null;
+      range?: {
+        __typename?: "RangeEntity";
+        id: string;
+        start: string;
+        end: string;
+        owner: string;
+      } | null;
     };
     variations?: Array<{
       __typename?: "ProductV1Variation";
@@ -20334,6 +31557,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -20341,6 +31566,8 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }> | null;
   productV1Seller?: {
     __typename?: "ProductV1Seller";
@@ -20351,12 +31578,15 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     externalUrl?: string | null;
     tokenId?: string | null;
     sellerId?: string | null;
+    contactPreference?: string | null;
     images?: Array<{
       __typename?: "ProductV1Media";
       id: string;
       url: string;
       tag?: string | null;
       type: ProductV1MediaType;
+      width?: number | null;
+      height?: number | null;
     }> | null;
     contactLinks?: Array<{
       __typename?: "ProductV1SellerContactLink";
@@ -20367,7 +31597,7 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -20377,8 +31607,88 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   } | null;
+  salesChannels?: Array<{
+    __typename?: "SalesChannel";
+    id: string;
+    tag: string;
+    name?: string | null;
+    settingsUri?: string | null;
+    settingsEditor?: string | null;
+    link?: string | null;
+    deployments?: Array<{
+      __typename?: "SalesChannelDeployment";
+      id: string;
+      status?: string | null;
+      link?: string | null;
+      lastUpdated?: string | null;
+      product?: {
+        __typename?: "ProductV1Product";
+        id: string;
+        uuid: string;
+        version: number;
+      } | null;
+    }> | null;
+  }> | null;
 };
 
 export type BaseProductV1BrandFieldsFragment = {
@@ -20411,6 +31721,8 @@ export type BaseProductV1MediaFieldsFragment = {
   url: string;
   tag?: string | null;
   type: ProductV1MediaType;
+  width?: number | null;
+  height?: number | null;
 };
 
 export type BaseProductV1PersonalisationFieldsFragment = {
@@ -20435,12 +31747,15 @@ export type BaseProductV1SellerFieldsFragment = {
   externalUrl?: string | null;
   tokenId?: string | null;
   sellerId?: string | null;
+  contactPreference?: string | null;
   images?: Array<{
     __typename?: "ProductV1Media";
     id: string;
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }> | null;
   contactLinks?: Array<{
     __typename?: "ProductV1SellerContactLink";
@@ -20451,7 +31766,7 @@ export type BaseProductV1SellerFieldsFragment = {
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -20461,6 +31776,64 @@ export type BaseProductV1SellerFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
 };
 
@@ -20532,6 +31905,8 @@ export type BaseProductV1ProductOverridesFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }>;
   visuals_videos?: Array<{
     __typename?: "ProductV1Media";
@@ -20539,6 +31914,8 @@ export type BaseProductV1ProductOverridesFieldsFragment = {
     url: string;
     tag?: string | null;
     type: ProductV1MediaType;
+    width?: number | null;
+    height?: number | null;
   }> | null;
 };
 
@@ -20577,6 +31954,7 @@ export type GetOfferByIdQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -20618,7 +31996,7 @@ export type GetOfferByIdQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -20628,6 +32006,64 @@ export type GetOfferByIdQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -20636,14 +32072,16 @@ export type GetOfferByIdQueryQuery = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -20653,6 +32091,64 @@ export type GetOfferByIdQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -20669,7 +32165,7 @@ export type GetOfferByIdQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -20709,6 +32205,13 @@ export type GetOfferByIdQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -20727,6 +32230,47 @@ export type GetOfferByIdQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -20800,6 +32344,8 @@ export type GetOfferByIdQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -20807,6 +32353,8 @@ export type GetOfferByIdQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -20817,12 +32365,15 @@ export type GetOfferByIdQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -20833,7 +32384,7 @@ export type GetOfferByIdQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -20843,8 +32394,88 @@ export type GetOfferByIdQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -20861,12 +32492,15 @@ export type GetOfferByIdQueryQuery = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -20877,7 +32511,7 @@ export type GetOfferByIdQueryQuery = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -20887,6 +32521,64 @@ export type GetOfferByIdQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -20913,8 +32605,22 @@ export type GetOfferByIdQueryQuery = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
   } | null;
 };
 
@@ -20957,6 +32663,7 @@ export type GetOffersQueryQuery = {
     metadataHash: string;
     voided: boolean;
     voidedAt?: string | null;
+    collectionIndex: string;
     disputeResolverId: string;
     numberOfCommits: string;
     numberOfRedemptions: string;
@@ -20998,7 +32705,7 @@ export type GetOffersQueryQuery = {
       seller: {
         __typename?: "Seller";
         id: string;
-        operator: string;
+        assistant: string;
         admin: string;
         clerk: string;
         treasury: string;
@@ -21008,6 +32715,64 @@ export type GetOffersQueryQuery = {
         active: boolean;
         contractURI: string;
         royaltyPercentage: string;
+        metadataUri: string;
+        metadata?: {
+          __typename?: "SellerMetadata";
+          id: string;
+          createdAt: string;
+          name?: string | null;
+          description?: string | null;
+          legalTradingName?: string | null;
+          type: SellerMetadataType;
+          kind: string;
+          website?: string | null;
+          contactPreference: string;
+          images?: Array<{
+            __typename?: "SellerMetadataMedia";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: string;
+            width?: number | null;
+            height?: number | null;
+            fit?: string | null;
+            position?: string | null;
+          }> | null;
+          contactLinks?: Array<{
+            __typename?: "SellerContactLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          socialLinks?: Array<{
+            __typename?: "SellerSocialLink";
+            id: string;
+            url: string;
+            tag: string;
+          }> | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
+        } | null;
       };
     }>;
     condition?: {
@@ -21016,14 +32781,16 @@ export type GetOffersQueryQuery = {
       method: number;
       tokenType: number;
       tokenAddress: string;
-      tokenId: string;
+      gatingType: number;
+      minTokenId: string;
+      maxTokenId: string;
       threshold: string;
       maxCommits: string;
     } | null;
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -21033,6 +32800,64 @@ export type GetOffersQueryQuery = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -21049,7 +32874,7 @@ export type GetOffersQueryQuery = {
       admin: string;
       clerk: string;
       treasury: string;
-      operator: string;
+      assistant: string;
       metadataUri: string;
       active: boolean;
       sellerAllowList: Array<string>;
@@ -21089,6 +32914,13 @@ export type GetOffersQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
         }
       | {
           __typename?: "ProductV1MetadataEntity";
@@ -21107,6 +32939,47 @@ export type GetOffersQueryQuery = {
           schemaUrl: string;
           type: MetadataType;
           image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            id: string;
+            version: number;
+            title: string;
+            description: string;
+            identification_sKU?: string | null;
+            identification_productId?: string | null;
+            identification_productIdType?: string | null;
+            productionInformation_brandName: string;
+            productionInformation_manufacturer?: string | null;
+            productionInformation_manufacturerPartNumber?: string | null;
+            productionInformation_modelNumber?: string | null;
+            productionInformation_materials?: Array<string> | null;
+            packaging_packageQuantity?: string | null;
+            packaging_dimensions_length?: string | null;
+            packaging_dimensions_width?: string | null;
+            packaging_dimensions_height?: string | null;
+            packaging_dimensions_unit?: string | null;
+            packaging_weight_value?: string | null;
+            packaging_weight_unit?: string | null;
+            brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              id: string;
+              url: string;
+              tag?: string | null;
+              type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
+            }> | null;
+          } | null;
           attributes?: Array<{
             __typename?: "MetadataAttribute";
             traitType: string;
@@ -21180,6 +33053,8 @@ export type GetOffersQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }>;
             visuals_videos?: Array<{
               __typename?: "ProductV1Media";
@@ -21187,6 +33062,8 @@ export type GetOffersQueryQuery = {
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             productV1Seller?: {
               __typename?: "ProductV1Seller";
@@ -21197,12 +33074,15 @@ export type GetOffersQueryQuery = {
               externalUrl?: string | null;
               tokenId?: string | null;
               sellerId?: string | null;
+              contactPreference?: string | null;
               images?: Array<{
                 __typename?: "ProductV1Media";
                 id: string;
                 url: string;
                 tag?: string | null;
                 type: ProductV1MediaType;
+                width?: number | null;
+                height?: number | null;
               }> | null;
               contactLinks?: Array<{
                 __typename?: "ProductV1SellerContactLink";
@@ -21213,7 +33093,7 @@ export type GetOffersQueryQuery = {
               seller: {
                 __typename?: "Seller";
                 id: string;
-                operator: string;
+                assistant: string;
                 admin: string;
                 clerk: string;
                 treasury: string;
@@ -21223,8 +33103,88 @@ export type GetOffersQueryQuery = {
                 active: boolean;
                 contractURI: string;
                 royaltyPercentage: string;
+                metadataUri: string;
+                metadata?: {
+                  __typename?: "SellerMetadata";
+                  id: string;
+                  createdAt: string;
+                  name?: string | null;
+                  description?: string | null;
+                  legalTradingName?: string | null;
+                  type: SellerMetadataType;
+                  kind: string;
+                  website?: string | null;
+                  contactPreference: string;
+                  images?: Array<{
+                    __typename?: "SellerMetadataMedia";
+                    id: string;
+                    url: string;
+                    tag?: string | null;
+                    type: string;
+                    width?: number | null;
+                    height?: number | null;
+                    fit?: string | null;
+                    position?: string | null;
+                  }> | null;
+                  contactLinks?: Array<{
+                    __typename?: "SellerContactLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  socialLinks?: Array<{
+                    __typename?: "SellerSocialLink";
+                    id: string;
+                    url: string;
+                    tag: string;
+                  }> | null;
+                  salesChannels?: Array<{
+                    __typename?: "SalesChannel";
+                    id: string;
+                    tag: string;
+                    name?: string | null;
+                    settingsUri?: string | null;
+                    settingsEditor?: string | null;
+                    link?: string | null;
+                    deployments?: Array<{
+                      __typename?: "SalesChannelDeployment";
+                      id: string;
+                      status?: string | null;
+                      link?: string | null;
+                      lastUpdated?: string | null;
+                      product?: {
+                        __typename?: "ProductV1Product";
+                        id: string;
+                        uuid: string;
+                        version: number;
+                      } | null;
+                    }> | null;
+                  }> | null;
+                } | null;
               };
             } | null;
+            salesChannels?: Array<{
+              __typename?: "SalesChannel";
+              id: string;
+              tag: string;
+              name?: string | null;
+              settingsUri?: string | null;
+              settingsEditor?: string | null;
+              link?: string | null;
+              deployments?: Array<{
+                __typename?: "SalesChannelDeployment";
+                id: string;
+                status?: string | null;
+                link?: string | null;
+                lastUpdated?: string | null;
+                product?: {
+                  __typename?: "ProductV1Product";
+                  id: string;
+                  uuid: string;
+                  version: number;
+                } | null;
+              }> | null;
+            }> | null;
           };
           variations?: Array<{
             __typename?: "ProductV1Variation";
@@ -21241,12 +33201,15 @@ export type GetOffersQueryQuery = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21257,7 +33220,7 @@ export type GetOffersQueryQuery = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -21267,6 +33230,64 @@ export type GetOffersQueryQuery = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           };
           exchangePolicy: {
@@ -21293,6 +33314,85 @@ export type GetOffersQueryQuery = {
               deliveryTime: string;
             }> | null;
           } | null;
+          animationMetadata?: {
+            __typename?: "AnimationMetadata";
+            id: string;
+            width?: number | null;
+            height?: number | null;
+            type?: string | null;
+          } | null;
+        }
+      | null;
+    range?: {
+      __typename?: "RangeEntity";
+      id: string;
+      start: string;
+      end: string;
+      owner: string;
+    } | null;
+  }>;
+};
+
+export type GetOffersMediaQueryQueryVariables = Exact<{
+  offersSkip?: InputMaybe<Scalars["Int"]>;
+  offersFirst?: InputMaybe<Scalars["Int"]>;
+  offersOrderBy?: InputMaybe<Offer_OrderBy>;
+  offersOrderDirection?: InputMaybe<OrderDirection>;
+  offersFilter?: InputMaybe<Offer_Filter>;
+  exchangesSkip?: InputMaybe<Scalars["Int"]>;
+  exchangesFirst?: InputMaybe<Scalars["Int"]>;
+  exchangesOrderBy?: InputMaybe<Exchange_OrderBy>;
+  exchangesOrderDirection?: InputMaybe<OrderDirection>;
+  exchangesFilter?: InputMaybe<Exchange_Filter>;
+  includeExchanges?: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetOffersMediaQueryQuery = {
+  __typename?: "Query";
+  offers: Array<{
+    __typename?: "Offer";
+    id: string;
+    metadata?:
+      | {
+          __typename?: "BaseMetadataEntity";
+          type: MetadataType;
+          animationUrl?: string | null;
+          image: string;
+        }
+      | {
+          __typename?: "ProductV1MetadataEntity";
+          type: MetadataType;
+          animationUrl?: string | null;
+          image: string;
+          productOverrides?: {
+            __typename?: "ProductV1ProductOverrides";
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          } | null;
+          product: {
+            __typename?: "ProductV1Product";
+            visuals_images: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }>;
+            visuals_videos?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          };
+          productV1Seller: {
+            __typename?: "ProductV1Seller";
+            images?: Array<{
+              __typename?: "ProductV1Media";
+              url: string;
+            }> | null;
+          };
         }
       | null;
   }>;
@@ -21321,6 +33421,7 @@ export type OfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -21362,7 +33463,7 @@ export type OfferFieldsFragment = {
     seller: {
       __typename?: "Seller";
       id: string;
-      operator: string;
+      assistant: string;
       admin: string;
       clerk: string;
       treasury: string;
@@ -21372,6 +33473,64 @@ export type OfferFieldsFragment = {
       active: boolean;
       contractURI: string;
       royaltyPercentage: string;
+      metadataUri: string;
+      metadata?: {
+        __typename?: "SellerMetadata";
+        id: string;
+        createdAt: string;
+        name?: string | null;
+        description?: string | null;
+        legalTradingName?: string | null;
+        type: SellerMetadataType;
+        kind: string;
+        website?: string | null;
+        contactPreference: string;
+        images?: Array<{
+          __typename?: "SellerMetadataMedia";
+          id: string;
+          url: string;
+          tag?: string | null;
+          type: string;
+          width?: number | null;
+          height?: number | null;
+          fit?: string | null;
+          position?: string | null;
+        }> | null;
+        contactLinks?: Array<{
+          __typename?: "SellerContactLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        socialLinks?: Array<{
+          __typename?: "SellerSocialLink";
+          id: string;
+          url: string;
+          tag: string;
+        }> | null;
+        salesChannels?: Array<{
+          __typename?: "SalesChannel";
+          id: string;
+          tag: string;
+          name?: string | null;
+          settingsUri?: string | null;
+          settingsEditor?: string | null;
+          link?: string | null;
+          deployments?: Array<{
+            __typename?: "SalesChannelDeployment";
+            id: string;
+            status?: string | null;
+            link?: string | null;
+            lastUpdated?: string | null;
+            product?: {
+              __typename?: "ProductV1Product";
+              id: string;
+              uuid: string;
+              version: number;
+            } | null;
+          }> | null;
+        }> | null;
+      } | null;
     };
   }>;
   condition?: {
@@ -21380,14 +33539,16 @@ export type OfferFieldsFragment = {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: string;
+    gatingType: number;
+    minTokenId: string;
+    maxTokenId: string;
     threshold: string;
     maxCommits: string;
   } | null;
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -21397,6 +33558,64 @@ export type OfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -21413,7 +33632,7 @@ export type OfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
@@ -21453,6 +33672,13 @@ export type OfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
@@ -21471,6 +33697,47 @@ export type OfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        productOverrides?: {
+          __typename?: "ProductV1ProductOverrides";
+          id: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -21544,6 +33811,8 @@ export type OfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }>;
           visuals_videos?: Array<{
             __typename?: "ProductV1Media";
@@ -21551,6 +33820,8 @@ export type OfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }> | null;
           productV1Seller?: {
             __typename?: "ProductV1Seller";
@@ -21561,12 +33832,15 @@ export type OfferFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21577,7 +33851,7 @@ export type OfferFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -21587,8 +33861,88 @@ export type OfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           } | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
         };
         variations?: Array<{
           __typename?: "ProductV1Variation";
@@ -21605,12 +33959,15 @@ export type OfferFieldsFragment = {
           externalUrl?: string | null;
           tokenId?: string | null;
           sellerId?: string | null;
+          contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
             id: string;
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "ProductV1SellerContactLink";
@@ -21621,7 +33978,7 @@ export type OfferFieldsFragment = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -21631,6 +33988,64 @@ export type OfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
           };
         };
         exchangePolicy: {
@@ -21657,8 +34072,22 @@ export type OfferFieldsFragment = {
             deliveryTime: string;
           }> | null;
         } | null;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | null;
+  range?: {
+    __typename?: "RangeEntity";
+    id: string;
+    start: string;
+    end: string;
+    owner: string;
+  } | null;
 };
 
 export type BaseOfferFieldsFragment = {
@@ -21684,6 +34113,7 @@ export type BaseOfferFieldsFragment = {
   metadataHash: string;
   voided: boolean;
   voidedAt?: string | null;
+  collectionIndex: string;
   disputeResolverId: string;
   numberOfCommits: string;
   numberOfRedemptions: string;
@@ -21693,14 +34123,16 @@ export type BaseOfferFieldsFragment = {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: string;
+    gatingType: number;
+    minTokenId: string;
+    maxTokenId: string;
     threshold: string;
     maxCommits: string;
   } | null;
   seller: {
     __typename?: "Seller";
     id: string;
-    operator: string;
+    assistant: string;
     admin: string;
     clerk: string;
     treasury: string;
@@ -21710,6 +34142,64 @@ export type BaseOfferFieldsFragment = {
     active: boolean;
     contractURI: string;
     royaltyPercentage: string;
+    metadataUri: string;
+    metadata?: {
+      __typename?: "SellerMetadata";
+      id: string;
+      createdAt: string;
+      name?: string | null;
+      description?: string | null;
+      legalTradingName?: string | null;
+      type: SellerMetadataType;
+      kind: string;
+      website?: string | null;
+      contactPreference: string;
+      images?: Array<{
+        __typename?: "SellerMetadataMedia";
+        id: string;
+        url: string;
+        tag?: string | null;
+        type: string;
+        width?: number | null;
+        height?: number | null;
+        fit?: string | null;
+        position?: string | null;
+      }> | null;
+      contactLinks?: Array<{
+        __typename?: "SellerContactLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      socialLinks?: Array<{
+        __typename?: "SellerSocialLink";
+        id: string;
+        url: string;
+        tag: string;
+      }> | null;
+      salesChannels?: Array<{
+        __typename?: "SalesChannel";
+        id: string;
+        tag: string;
+        name?: string | null;
+        settingsUri?: string | null;
+        settingsEditor?: string | null;
+        link?: string | null;
+        deployments?: Array<{
+          __typename?: "SalesChannelDeployment";
+          id: string;
+          status?: string | null;
+          link?: string | null;
+          lastUpdated?: string | null;
+          product?: {
+            __typename?: "ProductV1Product";
+            id: string;
+            uuid: string;
+            version: number;
+          } | null;
+        }> | null;
+      }> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -21726,7 +34216,7 @@ export type BaseOfferFieldsFragment = {
     admin: string;
     clerk: string;
     treasury: string;
-    operator: string;
+    assistant: string;
     metadataUri: string;
     active: boolean;
     sellerAllowList: Array<string>;
@@ -21766,6 +34256,13 @@ export type BaseOfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | {
         __typename?: "ProductV1MetadataEntity";
@@ -21784,6 +34281,47 @@ export type BaseOfferFieldsFragment = {
         schemaUrl: string;
         type: MetadataType;
         image: string;
+        productOverrides?: {
+          __typename?: "ProductV1ProductOverrides";
+          id: string;
+          version: number;
+          title: string;
+          description: string;
+          identification_sKU?: string | null;
+          identification_productId?: string | null;
+          identification_productIdType?: string | null;
+          productionInformation_brandName: string;
+          productionInformation_manufacturer?: string | null;
+          productionInformation_manufacturerPartNumber?: string | null;
+          productionInformation_modelNumber?: string | null;
+          productionInformation_materials?: Array<string> | null;
+          packaging_packageQuantity?: string | null;
+          packaging_dimensions_length?: string | null;
+          packaging_dimensions_width?: string | null;
+          packaging_dimensions_height?: string | null;
+          packaging_dimensions_unit?: string | null;
+          packaging_weight_value?: string | null;
+          packaging_weight_unit?: string | null;
+          brand: { __typename?: "ProductV1Brand"; id: string; name: string };
+          visuals_images: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }>;
+          visuals_videos?: Array<{
+            __typename?: "ProductV1Media";
+            id: string;
+            url: string;
+            tag?: string | null;
+            type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
+          }> | null;
+        } | null;
         attributes?: Array<{
           __typename?: "MetadataAttribute";
           traitType: string;
@@ -21857,6 +34395,8 @@ export type BaseOfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }>;
           visuals_videos?: Array<{
             __typename?: "ProductV1Media";
@@ -21864,6 +34404,8 @@ export type BaseOfferFieldsFragment = {
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }> | null;
           productV1Seller?: {
             __typename?: "ProductV1Seller";
@@ -21874,12 +34416,15 @@ export type BaseOfferFieldsFragment = {
             externalUrl?: string | null;
             tokenId?: string | null;
             sellerId?: string | null;
+            contactPreference?: string | null;
             images?: Array<{
               __typename?: "ProductV1Media";
               id: string;
               url: string;
               tag?: string | null;
               type: ProductV1MediaType;
+              width?: number | null;
+              height?: number | null;
             }> | null;
             contactLinks?: Array<{
               __typename?: "ProductV1SellerContactLink";
@@ -21890,7 +34435,7 @@ export type BaseOfferFieldsFragment = {
             seller: {
               __typename?: "Seller";
               id: string;
-              operator: string;
+              assistant: string;
               admin: string;
               clerk: string;
               treasury: string;
@@ -21900,8 +34445,88 @@ export type BaseOfferFieldsFragment = {
               active: boolean;
               contractURI: string;
               royaltyPercentage: string;
+              metadataUri: string;
+              metadata?: {
+                __typename?: "SellerMetadata";
+                id: string;
+                createdAt: string;
+                name?: string | null;
+                description?: string | null;
+                legalTradingName?: string | null;
+                type: SellerMetadataType;
+                kind: string;
+                website?: string | null;
+                contactPreference: string;
+                images?: Array<{
+                  __typename?: "SellerMetadataMedia";
+                  id: string;
+                  url: string;
+                  tag?: string | null;
+                  type: string;
+                  width?: number | null;
+                  height?: number | null;
+                  fit?: string | null;
+                  position?: string | null;
+                }> | null;
+                contactLinks?: Array<{
+                  __typename?: "SellerContactLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                socialLinks?: Array<{
+                  __typename?: "SellerSocialLink";
+                  id: string;
+                  url: string;
+                  tag: string;
+                }> | null;
+                salesChannels?: Array<{
+                  __typename?: "SalesChannel";
+                  id: string;
+                  tag: string;
+                  name?: string | null;
+                  settingsUri?: string | null;
+                  settingsEditor?: string | null;
+                  link?: string | null;
+                  deployments?: Array<{
+                    __typename?: "SalesChannelDeployment";
+                    id: string;
+                    status?: string | null;
+                    link?: string | null;
+                    lastUpdated?: string | null;
+                    product?: {
+                      __typename?: "ProductV1Product";
+                      id: string;
+                      uuid: string;
+                      version: number;
+                    } | null;
+                  }> | null;
+                }> | null;
+              } | null;
             };
           } | null;
+          salesChannels?: Array<{
+            __typename?: "SalesChannel";
+            id: string;
+            tag: string;
+            name?: string | null;
+            settingsUri?: string | null;
+            settingsEditor?: string | null;
+            link?: string | null;
+            deployments?: Array<{
+              __typename?: "SalesChannelDeployment";
+              id: string;
+              status?: string | null;
+              link?: string | null;
+              lastUpdated?: string | null;
+              product?: {
+                __typename?: "ProductV1Product";
+                id: string;
+                uuid: string;
+                version: number;
+              } | null;
+            }> | null;
+          }> | null;
         };
         variations?: Array<{
           __typename?: "ProductV1Variation";
@@ -21918,12 +34543,15 @@ export type BaseOfferFieldsFragment = {
           externalUrl?: string | null;
           tokenId?: string | null;
           sellerId?: string | null;
+          contactPreference?: string | null;
           images?: Array<{
             __typename?: "ProductV1Media";
             id: string;
             url: string;
             tag?: string | null;
             type: ProductV1MediaType;
+            width?: number | null;
+            height?: number | null;
           }> | null;
           contactLinks?: Array<{
             __typename?: "ProductV1SellerContactLink";
@@ -21934,7 +34562,7 @@ export type BaseOfferFieldsFragment = {
           seller: {
             __typename?: "Seller";
             id: string;
-            operator: string;
+            assistant: string;
             admin: string;
             clerk: string;
             treasury: string;
@@ -21944,6 +34572,64 @@ export type BaseOfferFieldsFragment = {
             active: boolean;
             contractURI: string;
             royaltyPercentage: string;
+            metadataUri: string;
+            metadata?: {
+              __typename?: "SellerMetadata";
+              id: string;
+              createdAt: string;
+              name?: string | null;
+              description?: string | null;
+              legalTradingName?: string | null;
+              type: SellerMetadataType;
+              kind: string;
+              website?: string | null;
+              contactPreference: string;
+              images?: Array<{
+                __typename?: "SellerMetadataMedia";
+                id: string;
+                url: string;
+                tag?: string | null;
+                type: string;
+                width?: number | null;
+                height?: number | null;
+                fit?: string | null;
+                position?: string | null;
+              }> | null;
+              contactLinks?: Array<{
+                __typename?: "SellerContactLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              socialLinks?: Array<{
+                __typename?: "SellerSocialLink";
+                id: string;
+                url: string;
+                tag: string;
+              }> | null;
+              salesChannels?: Array<{
+                __typename?: "SalesChannel";
+                id: string;
+                tag: string;
+                name?: string | null;
+                settingsUri?: string | null;
+                settingsEditor?: string | null;
+                link?: string | null;
+                deployments?: Array<{
+                  __typename?: "SalesChannelDeployment";
+                  id: string;
+                  status?: string | null;
+                  link?: string | null;
+                  lastUpdated?: string | null;
+                  product?: {
+                    __typename?: "ProductV1Product";
+                    id: string;
+                    uuid: string;
+                    version: number;
+                  } | null;
+                }> | null;
+              }> | null;
+            } | null;
           };
         };
         exchangePolicy: {
@@ -21970,14 +34656,83 @@ export type BaseOfferFieldsFragment = {
             deliveryTime: string;
           }> | null;
         } | null;
+        animationMetadata?: {
+          __typename?: "AnimationMetadata";
+          id: string;
+          width?: number | null;
+          height?: number | null;
+          type?: string | null;
+        } | null;
       }
     | null;
+  range?: {
+    __typename?: "RangeEntity";
+    id: string;
+    start: string;
+    end: string;
+    owner: string;
+  } | null;
 };
 
+export type BaseRangeFieldsFragment = {
+  __typename?: "RangeEntity";
+  id: string;
+  start: string;
+  end: string;
+  owner: string;
+};
+
+export const SellerMetadataMediaFieldsFragmentDoc = gql`
+  fragment SellerMetadataMediaFields on SellerMetadataMedia {
+    id
+    url
+    tag
+    type
+    width
+    height
+    fit
+    position
+  }
+`;
+export const SellerContactLinkFieldsFragmentDoc = gql`
+  fragment SellerContactLinkFields on SellerContactLink {
+    id
+    url
+    tag
+  }
+`;
+export const SellerSocialLinkFieldsFragmentDoc = gql`
+  fragment SellerSocialLinkFields on SellerSocialLink {
+    id
+    url
+    tag
+  }
+`;
+export const SalesChannelFieldsFragmentDoc = gql`
+  fragment SalesChannelFields on SalesChannel {
+    id
+    tag
+    name
+    settingsUri
+    settingsEditor
+    link
+    deployments {
+      id
+      product {
+        id
+        uuid
+        version
+      }
+      status
+      link
+      lastUpdated
+    }
+  }
+`;
 export const BaseSellerFieldsFragmentDoc = gql`
   fragment BaseSellerFields on Seller {
     id
-    operator
+    assistant
     admin
     clerk
     treasury
@@ -21987,11 +34742,39 @@ export const BaseSellerFieldsFragmentDoc = gql`
     active
     contractURI
     royaltyPercentage
+    metadataUri
+    metadata {
+      id
+      createdAt
+      name
+      description
+      legalTradingName
+      type
+      kind
+      website
+      images {
+        ...SellerMetadataMediaFields
+      }
+      contactLinks {
+        ...SellerContactLinkFields
+      }
+      contactPreference
+      socialLinks {
+        ...SellerSocialLinkFields
+      }
+      salesChannels {
+        ...SalesChannelFields
+      }
+    }
   }
+  ${SellerMetadataMediaFieldsFragmentDoc}
+  ${SellerContactLinkFieldsFragmentDoc}
+  ${SellerSocialLinkFieldsFragmentDoc}
+  ${SalesChannelFieldsFragmentDoc}
 `;
 export const PendingSellerFieldsFragmentDoc = gql`
   fragment PendingSellerFields on PendingSeller {
-    operator
+    assistant
     admin
     clerk
     authTokenId
@@ -22030,7 +34813,9 @@ export const BaseConditionFieldsFragmentDoc = gql`
     method
     tokenType
     tokenAddress
-    tokenId
+    gatingType
+    minTokenId
+    maxTokenId
     threshold
     maxCommits
   }
@@ -22054,7 +34839,7 @@ export const BaseDisputeResolverFieldsFragmentDoc = gql`
     admin
     clerk
     treasury
-    operator
+    assistant
     metadataUri
     active
     sellerAllowList
@@ -22073,11 +34858,63 @@ export const BaseDisputeResolutionTermsEntityFieldsFragmentDoc = gql`
     buyerEscalationDeposit
   }
 `;
+export const BaseAnimationMetadataFieldsFragmentDoc = gql`
+  fragment BaseAnimationMetadataFields on AnimationMetadata {
+    id
+    width
+    height
+    type
+  }
+`;
 export const BaseProductV1BrandFieldsFragmentDoc = gql`
   fragment BaseProductV1BrandFields on ProductV1Brand {
     id
     name
   }
+`;
+export const BaseProductV1MediaFieldsFragmentDoc = gql`
+  fragment BaseProductV1MediaFields on ProductV1Media {
+    id
+    url
+    tag
+    type
+    width
+    height
+  }
+`;
+export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
+  fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
+    id
+    version
+    title
+    description
+    identification_sKU
+    identification_productId
+    identification_productIdType
+    productionInformation_brandName
+    brand {
+      ...BaseProductV1BrandFields
+    }
+    productionInformation_manufacturer
+    productionInformation_manufacturerPartNumber
+    productionInformation_modelNumber
+    productionInformation_materials
+    visuals_images {
+      ...BaseProductV1MediaFields
+    }
+    visuals_videos {
+      ...BaseProductV1MediaFields
+    }
+    packaging_packageQuantity
+    packaging_dimensions_length
+    packaging_dimensions_width
+    packaging_dimensions_height
+    packaging_dimensions_unit
+    packaging_weight_value
+    packaging_weight_unit
+  }
+  ${BaseProductV1BrandFieldsFragmentDoc}
+  ${BaseProductV1MediaFieldsFragmentDoc}
 `;
 export const BaseProductV1CategoryFieldsFragmentDoc = gql`
   fragment BaseProductV1CategoryFields on ProductV1Category {
@@ -22103,14 +34940,6 @@ export const BaseProductV1PersonalisationFieldsFragmentDoc = gql`
     name
   }
 `;
-export const BaseProductV1MediaFieldsFragmentDoc = gql`
-  fragment BaseProductV1MediaFields on ProductV1Media {
-    id
-    url
-    tag
-    type
-  }
-`;
 export const BaseProductV1SellerContactLinkFieldsFragmentDoc = gql`
   fragment BaseProductV1SellerContactLinkFields on ProductV1SellerContactLink {
     id
@@ -22133,6 +34962,7 @@ export const BaseProductV1SellerFieldsFragmentDoc = gql`
     contactLinks {
       ...BaseProductV1SellerContactLinkFields
     }
+    contactPreference
     seller {
       ...BaseSellerFields
     }
@@ -22201,6 +35031,9 @@ export const BaseProductV1ProductFieldsFragmentDoc = gql`
     productV1Seller {
       ...BaseProductV1SellerFields
     }
+    salesChannels {
+      ...SalesChannelFields
+    }
   }
   ${BaseProductV1BrandFieldsFragmentDoc}
   ${BaseProductV1CategoryFieldsFragmentDoc}
@@ -22209,6 +35042,7 @@ export const BaseProductV1ProductFieldsFragmentDoc = gql`
   ${BaseProductV1PersonalisationFieldsFragmentDoc}
   ${BaseProductV1MediaFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
+  ${SalesChannelFieldsFragmentDoc}
 `;
 export const BaseProductV1VariationFieldsFragmentDoc = gql`
   fragment BaseProductV1VariationFields on ProductV1Variation {
@@ -22248,6 +35082,14 @@ export const BaseProductV1ShippingOptionFieldsFragmentDoc = gql`
   }
   ${BaseProductV1ShippingJurisdictionFieldsFragmentDoc}
 `;
+export const BaseRangeFieldsFragmentDoc = gql`
+  fragment BaseRangeFields on RangeEntity {
+    id
+    start
+    end
+    owner
+  }
+`;
 export const BaseOfferFieldsFragmentDoc = gql`
   fragment BaseOfferFields on Offer {
     id
@@ -22271,6 +35113,7 @@ export const BaseOfferFieldsFragmentDoc = gql`
     metadataHash
     voided
     voidedAt
+    collectionIndex
     disputeResolverId
     numberOfCommits
     numberOfRedemptions
@@ -22294,12 +35137,18 @@ export const BaseOfferFieldsFragmentDoc = gql`
       description
       externalUrl
       animationUrl
+      animationMetadata {
+        ...BaseAnimationMetadataFields
+      }
       licenseUrl
       condition
       schemaUrl
       type
       image
       ... on ProductV1MetadataEntity {
+        productOverrides {
+          ...BaseProductV1ProductOverridesFields
+        }
         attributes {
           traitType
           value
@@ -22328,17 +35177,23 @@ export const BaseOfferFieldsFragmentDoc = gql`
         }
       }
     }
+    range {
+      ...BaseRangeFields
+    }
   }
   ${BaseConditionFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
   ${BaseDisputeResolverFieldsFragmentDoc}
   ${BaseDisputeResolutionTermsEntityFieldsFragmentDoc}
+  ${BaseAnimationMetadataFieldsFragmentDoc}
+  ${BaseProductV1ProductOverridesFieldsFragmentDoc}
   ${BaseProductV1ProductFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
   ${BaseProductV1SellerFieldsFragmentDoc}
   ${BaseProductV1ExchangePolicyFieldsFragmentDoc}
   ${BaseProductV1ShippingOptionFieldsFragmentDoc}
+  ${BaseRangeFieldsFragmentDoc}
 `;
 export const BaseDisputeFieldsFragmentDoc = gql`
   fragment BaseDisputeFields on Dispute {
@@ -22514,7 +35369,7 @@ export const BuyerFieldsFragmentDoc = gql`
 `;
 export const PendingDisputeResolverFieldsFragmentDoc = gql`
   fragment PendingDisputeResolverFields on PendingDisputeResolver {
-    operator
+    assistant
     admin
     clerk
   }
@@ -22610,6 +35465,9 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
@@ -22637,6 +35495,7 @@ export const BaseBaseMetadataEntityFieldsFragmentDoc = gql`
     numberOfCommits
     numberOfRedemptions
   }
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
   ${BaseExchangeTokenFieldsFragmentDoc}
@@ -22654,6 +35513,9 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
     description
     externalUrl
     animationUrl
+    animationMetadata {
+      ...BaseAnimationMetadataFields
+    }
     licenseUrl
     condition
     schemaUrl
@@ -22697,6 +35559,7 @@ export const BaseProductV1MetadataEntityFieldsFragmentDoc = gql`
       ...BaseProductV1ExchangePolicyFields
     }
   }
+  ${BaseAnimationMetadataFieldsFragmentDoc}
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseSellerFieldsFragmentDoc}
@@ -22761,40 +35624,6 @@ export const BaseProductV1ProductWithNotVoidedVariantsFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseExchangeFieldsFragmentDoc}
   ${BaseProductV1VariationFieldsFragmentDoc}
-`;
-export const BaseProductV1ProductOverridesFieldsFragmentDoc = gql`
-  fragment BaseProductV1ProductOverridesFields on ProductV1ProductOverrides {
-    id
-    version
-    title
-    description
-    identification_sKU
-    identification_productId
-    identification_productIdType
-    productionInformation_brandName
-    brand {
-      ...BaseProductV1BrandFields
-    }
-    productionInformation_manufacturer
-    productionInformation_manufacturerPartNumber
-    productionInformation_modelNumber
-    productionInformation_materials
-    visuals_images {
-      ...BaseProductV1MediaFields
-    }
-    visuals_videos {
-      ...BaseProductV1MediaFields
-    }
-    packaging_packageQuantity
-    packaging_dimensions_length
-    packaging_dimensions_width
-    packaging_dimensions_height
-    packaging_dimensions_unit
-    packaging_weight_value
-    packaging_weight_unit
-  }
-  ${BaseProductV1BrandFieldsFragmentDoc}
-  ${BaseProductV1MediaFieldsFragmentDoc}
 `;
 export const OfferFieldsFragmentDoc = gql`
   fragment OfferFields on Offer {
@@ -23399,6 +36228,59 @@ export const GetOffersQueryDocument = gql`
   }
   ${OfferFieldsFragmentDoc}
 `;
+export const GetOffersMediaQueryDocument = gql`
+  query getOffersMediaQuery(
+    $offersSkip: Int
+    $offersFirst: Int
+    $offersOrderBy: Offer_orderBy
+    $offersOrderDirection: OrderDirection
+    $offersFilter: Offer_filter
+    $exchangesSkip: Int
+    $exchangesFirst: Int
+    $exchangesOrderBy: Exchange_orderBy
+    $exchangesOrderDirection: OrderDirection
+    $exchangesFilter: Exchange_filter
+    $includeExchanges: Boolean = false
+  ) {
+    offers(
+      skip: $offersSkip
+      first: $offersFirst
+      orderBy: $offersOrderBy
+      orderDirection: $offersOrderDirection
+      where: $offersFilter
+    ) {
+      id
+      metadata {
+        type
+        animationUrl
+        image
+        ... on ProductV1MetadataEntity {
+          productOverrides {
+            visuals_images {
+              url
+            }
+            visuals_videos {
+              url
+            }
+          }
+          product {
+            visuals_images {
+              url
+            }
+            visuals_videos {
+              url
+            }
+          }
+          productV1Seller {
+            images {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -23802,6 +36684,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getOffersQuery",
+        "query"
+      );
+    },
+    getOffersMediaQuery(
+      variables?: GetOffersMediaQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetOffersMediaQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetOffersMediaQueryQuery>(
+            GetOffersMediaQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getOffersMediaQuery",
         "query"
       );
     }

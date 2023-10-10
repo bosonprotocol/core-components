@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/BatchCompleteButton",
-  component: BatchCompleteButton
+  component: BatchCompleteButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof BatchCompleteButton>;
 
 const Template: ComponentStory<typeof BatchCompleteButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof BatchCompleteButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <BatchCompleteButton web3Provider={provider} {...args} />
+      <BatchCompleteButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -27,9 +38,11 @@ export const WithExtraInfo: ComponentStory<typeof BatchCompleteButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeIds: ["1", "2"],
-  metaTransactionsApiKey: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -49,9 +62,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeIds: ["1", "2"],
-  metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

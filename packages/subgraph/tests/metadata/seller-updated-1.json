@@ -1,0 +1,46 @@
+{
+  "contactLinks": [{ "url": "url", "tag": "tag" }],
+  "contactPreference": "xmtp",
+  "description": "description",
+  "images": [
+    {
+      "url": "url",
+      "tag": "tag",
+      "type": "image/jpeg",
+      "width": 505,
+      "height": 393
+    }
+  ],
+  "kind": "lens",
+  "legalTradingName": "",
+  "name": "sellerMetadataName",
+  "socialLinks": [{ "url": "url", "tag": "tag" }],
+  "type": "SELLER",
+  "website": "website",
+  "salesChannels": [
+    {
+      "tag": "DCL",
+      "settingsUri": "file://dclsettings",
+      "deployments": [
+        {
+          "product": {"uuid": "Product_A", "version": 1},
+          "status": "in-progress"
+        },
+        {
+          "product": {"uuid": "Product_B", "version": 5},
+          "link": "https://play.decentraland.org/?position=-75%2C114"
+        }
+      ]
+    },
+    {
+      "tag": "Opensea",
+      "settingsUri": "file://dclsettings",
+      "deployments": [
+        {
+          "product": {"uuid": "Product_A", "version": 1}
+        }
+      ]
+    }
+  ]
+}
+

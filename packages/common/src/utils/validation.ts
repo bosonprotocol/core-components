@@ -42,7 +42,6 @@ export const createOfferArgsSchema = object({
   validFromDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
-    .test(...futureDateTestArgs)
     .test(
       "is-before-valid-until-date",
       "${path} has to be before validUntilDate",
@@ -68,7 +67,6 @@ export const createOfferArgsSchema = object({
   voucherRedeemableFromDateInMS: string()
     .required()
     .test(...positiveIntTestArgs)
-    .test(...futureDateTestArgs)
     .when("voucherRedeemableUntilDateInMS", {
       is: isNotZero,
       then: string().test(
@@ -142,13 +140,10 @@ export const createOfferArgsSchema = object({
 });
 
 export const createSellerArgsSchema = object({
-  operator: string()
+  assistant: string()
     .required()
     .test(...addressTestArgs),
   admin: string()
-    .required()
-    .test(...addressTestArgs),
-  clerk: string()
     .required()
     .test(...addressTestArgs),
   treasury: string()

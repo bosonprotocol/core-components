@@ -1,4 +1,5 @@
 import { BigNumberish, providers, Signer } from "ethers";
+import { TypedDataSigner } from "@ethersproject/abstract-signer";
 import {
   TransactionResponse,
   Web3LibAdapter,
@@ -73,7 +74,11 @@ export class EthersAdapter implements Web3LibAdapter {
       const [signerAddress, dataToSign] = payload as [string, string];
       const { types, domain, message: value } = JSON.parse(dataToSign);
       delete types["EIP712Domain"];
-      return this._signer["_signTypedData"](domain, types, value);
+      return (this._signer as TypedDataSigner)["_signTypedData"](
+        domain,
+        types,
+        value
+      );
     }
     return this._provider.send(rpcMethod, payload);
   }

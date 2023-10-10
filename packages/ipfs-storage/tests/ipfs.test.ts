@@ -9,11 +9,11 @@ const { Response } = jest.requireActual("cross-fetch");
 
 import * as uint8arrays from "uint8arrays";
 jest.mock("uint8arrays");
-const mockedUint8arrays = jest.mocked(uint8arrays, true);
+const mockedUint8arrays = jest.mocked(uint8arrays, { shallow: true });
 
 import * as ipfsHttpClient from "ipfs-http-client";
 jest.mock("ipfs-http-client");
-const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, true);
+const mockedIpfsHttpClient = jest.mocked(ipfsHttpClient, { shallow: true });
 const { create } = jest.requireActual("ipfs-http-client");
 
 const IPFS_URL = "https://ipfs.api.com:5001";

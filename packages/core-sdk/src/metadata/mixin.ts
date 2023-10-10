@@ -1,6 +1,6 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as subgraph from "../subgraph";
-import { AnyMetadata } from "..";
+import { OfferOrSellerMetadata } from "..";
 import {
   getBaseMetadataEntities,
   getProductV1MetadataEntities,
@@ -21,7 +21,7 @@ export class MetadataMixin extends BaseCoreSDK {
    * @param metadata - Offer metadata of type `BASE` or `PRODUCT_V1`.
    * @returns Metadata hash / identifier.
    */
-  public async storeMetadata(metadata: AnyMetadata): Promise<string> {
+  public async storeMetadata(metadata: OfferOrSellerMetadata): Promise<string> {
     if (!this._metadataStorage) {
       throw new Error("No metadata storage set");
     }
@@ -35,7 +35,9 @@ export class MetadataMixin extends BaseCoreSDK {
    * storage instance.
    * @returns Offer metadata.
    */
-  public async getMetadata(metadataHashOrUri: string): Promise<AnyMetadata> {
+  public async getMetadata(
+    metadataHashOrUri: string
+  ): Promise<OfferOrSellerMetadata> {
     if (!this._metadataStorage) {
       throw new Error("No metadata storage set");
     }
@@ -71,14 +73,17 @@ export class MetadataMixin extends BaseCoreSDK {
     return getProductV1Products(this._subgraphUrl, queryVars);
   }
 
-  public async getProductWithVariants(productUuid: string): Promise<{
+  public async getProductWithVariants(
+    sellerId: string,
+    productUuid: string
+  ): Promise<{
     product: subgraph.BaseProductV1ProductFieldsFragment;
     variants: Array<{
       offer: subgraph.OfferFieldsFragment;
       variations: Array<subgraph.ProductV1Variation>;
     }>;
   } | null> {
-    return getProductWithVariants(this._subgraphUrl, productUuid);
+    return getProductWithVariants(this._subgraphUrl, sellerId, productUuid);
   }
 
   public async getAllProductsWithVariants(

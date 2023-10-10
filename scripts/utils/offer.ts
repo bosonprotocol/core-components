@@ -18,6 +18,7 @@ type Offer = {
   metadataUri: string;
   metadataHash: string;
   voided: boolean;
+  collectionIndex: string;
 };
 
 type ExtendedOffer = Offer & {
@@ -71,7 +72,8 @@ function offerFromStruct(struct: Array<any>): Offer {
     exchangeToken,
     metadataUri,
     metadataHash,
-    voided
+    voided,
+    collectionIndex
   ] = struct;
   return {
     id: id.toString(),
@@ -83,7 +85,8 @@ function offerFromStruct(struct: Array<any>): Offer {
     exchangeToken,
     metadataUri,
     metadataHash,
-    voided
+    voided,
+    collectionIndex
   };
 }
 

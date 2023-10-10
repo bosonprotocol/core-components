@@ -112,6 +112,49 @@ const _abi = [
         type: "uint256",
       },
       {
+        indexed: false,
+        internalType: "enum BosonTypes.GatingType",
+        name: "gating",
+        type: "uint8",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "buyerAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "commitCount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "maxCommits",
+        type: "uint256",
+      },
+    ],
+    name: "ConditionalCommitAuthorized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "offerId",
+        type: "uint256",
+      },
+      {
         indexed: true,
         internalType: "uint256",
         name: "buyerId",
@@ -635,6 +678,29 @@ const _abi = [
         name: "_offerId",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "commitToConditionalOffer",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address payable",
+        name: "_buyer",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
     ],
     name: "commitToOffer",
     outputs: [],
@@ -933,8 +999,13 @@ const _abi = [
                 type: "address",
               },
               {
+                internalType: "enum BosonTypes.GatingType",
+                name: "gating",
+                type: "uint8",
+              },
+              {
                 internalType: "uint256",
-                name: "tokenId",
+                name: "minTokenId",
                 type: "uint256",
               },
               {
@@ -945,6 +1016,11 @@ const _abi = [
               {
                 internalType: "uint256",
                 name: "maxCommits",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "maxTokenId",
                 type: "uint256",
               },
             ],
@@ -1023,6 +1099,45 @@ const _abi = [
         internalType: "struct BosonTypes.Receipt",
         name: "receipt",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_buyer",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "isEligibleToCommit",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isEligible",
+        type: "bool",
+      },
+      {
+        internalType: "uint256",
+        name: "commitCount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "maxCommits",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

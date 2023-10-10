@@ -146,7 +146,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Voids an existing offer by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator`.
+   * This transaction only succeeds if the connected signer is the `assistant`.
    * @param offerId - ID of offer to void.
    * @param overrides - Optional overrides.
    * @returns Transaction response.
@@ -167,7 +167,7 @@ export class OfferMixin extends BaseCoreSDK {
 
   /**
    * Voids a batch of existing offers by calling the `OfferHandlerFacet` contract.
-   * This transaction only succeeds if the connected signer is the `operator` of all
+   * This transaction only succeeds if the connected signer is the `assistant` of all
    * provided offers.
    * @param offerIds - IDs of offers to void.
    * @param overrides - Optional overrides.
@@ -181,6 +181,55 @@ export class OfferMixin extends BaseCoreSDK {
   ): Promise<TransactionResponse> {
     return offers.handler.voidOfferBatch({
       offerIds,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
+   * Extends an existing offer by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `assistant`.
+   * @param offerId - ID of offer to void.
+   * @param validUntil - new validity date.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async extendOffer(
+    offerId: BigNumberish,
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.extendOffer({
+      offerId,
+      validUntil,
+      web3Lib: this._web3Lib,
+      subgraphUrl: this._subgraphUrl,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  /**
+   * Extends a batch of existing offers by calling the `OfferHandlerFacet` contract.
+   * This transaction only succeeds if the connected signer is the `assistant` of all
+   * provided offers.
+   * @param offerIds - IDs of offers to void.
+   * @param validUntil - new validity date.
+   * @param overrides - Optional overrides.
+   * @returns Transaction response.
+   */
+  public async extendOfferBatch(
+    offerIds: BigNumberish[],
+    validUntil: BigNumberish,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return offers.handler.extendOfferBatch({
+      offerIds,
+      validUntil,
       web3Lib: this._web3Lib,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond
@@ -255,13 +304,19 @@ export class OfferMixin extends BaseCoreSDK {
   public async reserveRange(
     offerId: BigNumberish,
     length: BigNumberish,
+    to: "seller" | "contract",
     overrides: Partial<{
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    const offer = await this.getOfferById(offerId);
     return offers.handler.reserveRange({
       offerId,
       length,
+      to:
+        to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.assistant,
       subgraphUrl: this._subgraphUrl,
       contractAddress: overrides.contractAddress || this._protocolDiamond,
       web3Lib: this._web3Lib
@@ -353,8 +408,13 @@ export class OfferMixin extends BaseCoreSDK {
     offerCondition: subgraph.OfferFieldsFragment["condition"],
     buyerAddress: string
   ): Promise<boolean> {
-    const { tokenId, tokenType, threshold, method, tokenAddress } =
-      offerCondition;
+    const {
+      minTokenId: tokenId,
+      tokenType,
+      threshold,
+      method,
+      tokenAddress
+    } = offerCondition;
     if (tokenType === TokenType.FungibleToken) {
       const balance: string = await erc20.handler.balanceOf({
         contractAddress: tokenAddress,
@@ -394,5 +454,21 @@ export class OfferMixin extends BaseCoreSDK {
       return BigNumber.from(balance).gte(threshold);
     }
     throw new Error(`Unsupported tokenType=${tokenType}`);
+  }
+
+  /**
+   * Check a given offer meets ExchangePolicy rules.
+   * @param offerId - Id of offer to render agreement for.
+   * @returns Contractual agreement as string.
+   */
+  public async checkExchangePolicy(
+    offerId: BigNumberish,
+    rules: offers.CheckExchangePolicyRules
+  ): Promise<offers.CheckExchangePolicyResult> {
+    const offerData = await offers.subgraph.getOfferById(
+      this._subgraphUrl,
+      offerId
+    );
+    return offers.checkExchangePolicy(offerData, rules);
   }
 }

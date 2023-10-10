@@ -1,26 +1,18 @@
 import React, { useState } from "react";
 import { providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { offers } from "@bosonprotocol/core-sdk";
+import { offers, accounts } from "@bosonprotocol/core-sdk";
+import { ButtonSize } from "../../ui/buttonSize";
 
 type Props = {
   hasSellerAccount: boolean;
-  sellerInfo?: {
-    operator: string;
-    admin: string;
-    treasury: string;
-    clerk: string;
-    contractUri: string;
-    royaltyPercentage: string;
-    authTokenId: string;
-    authTokenType: number;
-  };
+  sellerInfo?: accounts.CreateSellerArgs;
   isMultiVariant: boolean;
   offersToCreate: offers.CreateOfferArgs[];
 } & CtaButtonProps<{
@@ -43,7 +35,8 @@ export const CreateOfferButton = ({
   hasSellerAccount,
   sellerInfo,
   offersToCreate,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: Props) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
@@ -177,6 +170,7 @@ export const CreateOfferButton = ({
       size={size}
       disabled={disabled}
       onClick={handleCreateOffer}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Create offer"}

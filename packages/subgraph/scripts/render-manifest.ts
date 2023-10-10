@@ -1,39 +1,68 @@
-import { EnvironmentType } from "./../../common/src/types/configs";
+import { EnvironmentType, ConfigId } from "./../../common/src/types/configs";
 import fs from "fs";
 import handlebars from "handlebars";
 import { providers } from "ethers";
-import { getDefaultConfig } from "../../common/src/configs";
+import { getEnvConfigById } from "../../common/src/configs";
 
 const generatedManifestsDir = __dirname + "/../generated/manifests";
 
 const envName = process.argv[2];
-const { contracts, chainId } = getDefaultConfig(envName as EnvironmentType);
+const configId = process.argv[3];
+const { contracts, chainId } = getEnvConfigById(
+  envName as EnvironmentType,
+  configId as ConfigId
+);
 
 const envNameToConfig: Record<
-  string,
-  {
-    network: string;
-    startBlock: number;
-  }
+  EnvironmentType,
+  Partial<
+    Record<
+      ConfigId,
+      {
+        network: string;
+        startBlock: number;
+      }
+    >
+  >
 > = {
   local: {
-    network: "localhost",
-    startBlock: 0
+    "local-31337-0": {
+      network: "localhost",
+      startBlock: 0
+    }
   },
   testing: {
-    network: "mumbai",
-    startBlock: 28566210 // mumbai, NOT block num when protocol is deployed (manual override)
+    "testing-80001-0": {
+      network: "mumbai",
+      startBlock: 35370695 // mumbai, this is NOT the block number when the protocol was deployed (manual override as there was an error in the subgraph)
+    },
+    "testing-5-0": {
+      network: "goerli",
+      startBlock: 9757131 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x3c51e116a6a1849936e6bd45fcee78017259ce86a93601e5e7c77cbdc25b6f38
+    }
   },
   staging: {
-    network: "mumbai",
-    startBlock: 28563076 // mumbai, block num when protocol is deployed
+    "staging-80001-0": {
+      network: "mumbai",
+      startBlock: 28566747 // mumbai, block number when protocol was deployed
+    },
+    "staging-5-0": {
+      network: "goerli",
+      startBlock: 9756834 // goerli, block number when protocol was deployed https://goerli.etherscan.io/tx/0x7d4b731fc8b9fe77999f46a52891f2bd13651666bb9a15d7044b33bddd52b355
+    }
   },
   production: {
-    network: providers.getNetwork(chainId).name,
-    startBlock: 34258150 // polygon, block num when protocol is deployed
+    "production-137-0": {
+      network: providers.getNetwork(chainId).name,
+      startBlock: 34258150 // polygon, block num when protocol is deployed
+    },
+    "production-1-0": {
+      network: "mainnet",
+      startBlock: 18240548 // ethereum, block num when protocol is deployed
+    }
   }
 };
-const { network, startBlock } = envNameToConfig[envName] || {
+const { network, startBlock } = envNameToConfig[envName][configId] || {
   network: "",
   startBlock: 0
 };

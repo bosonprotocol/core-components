@@ -1,0 +1,19 @@
+{
+  "price": "1000000000000000000",
+  "sellerDeposit": "500000000000000000",
+  "agentId": "0",
+  "buyerCancelPenalty": "500000000000000000",
+  "quantityAvailable": "10",
+  "validFromDateInMS": "1695204460000",
+  "validUntilDateInMS": "1735689599000",
+  "voucherRedeemableFromDateInMS": "1695204460000",
+  "voucherRedeemableUntilDateInMS": "1735689599000",
+  "voucherValidDurationInMS": 0,
+  "disputePeriodDurationInMS": "2592000000",
+  "resolutionPeriodDurationInMS": 1296000000,
+  "exchangeToken": "0x0000000000000000000000000000000000000000",
+  "disputeResolverId": 1,
+  "collectionIndex": "0",
+  "metadataUri": "ipfs://QmPfqwj6YdKTDc46t36fGaw77EqaVYDpjV6MeCF9eLWKPV",
+  "metadataHash": "QmPfqwj6YdKTDc46t36fGaw77EqaVYDpjV6MeCF9eLWKPV"
+}

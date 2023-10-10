@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext", "es5", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "preserveSymlinks": true,
+    "preserveWatchOutput": true,
+    "pretty": false,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "target": "es5",
+    "outDir": "dist",
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    "packages/**/tests/**",
+    "packages/**/dist/**",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "dist"
+  ]
+}

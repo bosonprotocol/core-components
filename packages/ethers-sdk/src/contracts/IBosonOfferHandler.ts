@@ -29,6 +29,7 @@ export declare namespace BosonTypes {
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
+    collectionIndex: BigNumberish;
   };
 
   export type OfferStructOutput = [
@@ -41,7 +42,8 @@ export declare namespace BosonTypes {
     string,
     string,
     string,
-    boolean
+    boolean,
+    BigNumber
   ] & {
     id: BigNumber;
     sellerId: BigNumber;
@@ -53,6 +55,7 @@ export declare namespace BosonTypes {
     metadataUri: string;
     metadataHash: string;
     voided: boolean;
+    collectionIndex: BigNumber;
   };
 
   export type OfferDatesStruct = {
@@ -119,15 +122,15 @@ export declare namespace BosonTypes {
 export interface IBosonOfferHandlerInterface extends utils.Interface {
   contractName: "IBosonOfferHandler";
   functions: {
-    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
-    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])": FunctionFragment;
+    "createOffer((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256)": FunctionFragment;
+    "createOfferBatch((uint256,uint256,uint256,uint256,uint256,uint256,address,string,string,bool,uint256)[],(uint256,uint256,uint256,uint256)[],(uint256,uint256,uint256)[],uint256[],uint256[])": FunctionFragment;
     "extendOffer(uint256,uint256)": FunctionFragment;
     "extendOfferBatch(uint256[],uint256)": FunctionFragment;
     "getAgentIdByOffer(uint256)": FunctionFragment;
     "getNextOfferId()": FunctionFragment;
     "getOffer(uint256)": FunctionFragment;
     "isOfferVoided(uint256)": FunctionFragment;
-    "reserveRange(uint256,uint256)": FunctionFragment;
+    "reserveRange(uint256,uint256,address)": FunctionFragment;
     "voidOffer(uint256)": FunctionFragment;
     "voidOfferBatch(uint256[])": FunctionFragment;
   };
@@ -178,7 +181,7 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "reserveRange",
-    values: [BigNumberish, BigNumberish]
+    values: [BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "voidOffer",
@@ -232,7 +235,7 @@ export interface IBosonOfferHandlerInterface extends utils.Interface {
     "OfferCreated(uint256,uint256,tuple,tuple,tuple,tuple,tuple,uint256,address)": EventFragment;
     "OfferExtended(uint256,uint256,uint256,address)": EventFragment;
     "OfferVoided(uint256,uint256,address)": EventFragment;
-    "RangeReserved(uint256,uint256,uint256,uint256,address)": EventFragment;
+    "RangeReserved(uint256,uint256,uint256,uint256,address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "OfferCreated"): EventFragment;
@@ -288,12 +291,13 @@ export type OfferVoidedEvent = TypedEvent<
 export type OfferVoidedEventFilter = TypedEventFilter<OfferVoidedEvent>;
 
 export type RangeReservedEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, BigNumber, string],
+  [BigNumber, BigNumber, BigNumber, BigNumber, string, string],
   {
     offerId: BigNumber;
     sellerId: BigNumber;
     startExchangeId: BigNumber;
     endExchangeId: BigNumber;
+    owner: string;
     executedBy: string;
   }
 >;
@@ -396,6 +400,7 @@ export interface IBosonOfferHandler extends BaseContract {
     reserveRange(
       _offerId: BigNumberish,
       _length: BigNumberish,
+      _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -476,6 +481,7 @@ export interface IBosonOfferHandler extends BaseContract {
   reserveRange(
     _offerId: BigNumberish,
     _length: BigNumberish,
+    _to: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -556,6 +562,7 @@ export interface IBosonOfferHandler extends BaseContract {
     reserveRange(
       _offerId: BigNumberish,
       _length: BigNumberish,
+      _to: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -615,11 +622,12 @@ export interface IBosonOfferHandler extends BaseContract {
       executedBy?: string | null
     ): OfferVoidedEventFilter;
 
-    "RangeReserved(uint256,uint256,uint256,uint256,address)"(
+    "RangeReserved(uint256,uint256,uint256,uint256,address,address)"(
       offerId?: BigNumberish | null,
       sellerId?: BigNumberish | null,
       startExchangeId?: null,
       endExchangeId?: null,
+      owner?: null,
       executedBy?: string | null
     ): RangeReservedEventFilter;
     RangeReserved(
@@ -627,6 +635,7 @@ export interface IBosonOfferHandler extends BaseContract {
       sellerId?: BigNumberish | null,
       startExchangeId?: null,
       endExchangeId?: null,
+      owner?: null,
       executedBy?: string | null
     ): RangeReservedEventFilter;
   };
@@ -682,6 +691,7 @@ export interface IBosonOfferHandler extends BaseContract {
     reserveRange(
       _offerId: BigNumberish,
       _length: BigNumberish,
+      _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -747,6 +757,7 @@ export interface IBosonOfferHandler extends BaseContract {
     reserveRange(
       _offerId: BigNumberish,
       _length: BigNumberish,
+      _to: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

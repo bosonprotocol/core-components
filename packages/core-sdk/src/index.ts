@@ -13,11 +13,14 @@ export * as subgraph from "./subgraph";
 export * as groups from "./groups";
 export * as forwarder from "./forwarder";
 export * as voucher from "./voucher";
+export * as seaport from "./seaport";
 
 export {
-  defaultConfigs,
-  getDefaultConfig,
+  envConfigs,
+  getEnvConfigs,
+  getEnvConfigById,
   EnvironmentType,
+  ConfigId,
   MetaTxConfig,
   ProtocolConfig,
   abis
@@ -26,7 +29,9 @@ export {
 export {
   MetadataType,
   AnyMetadata,
+  OfferOrSellerMetadata,
   validateMetadata,
+  METADATA_LENGTH_LIMIT,
   base,
   productV1
 } from "@bosonprotocol/metadata";

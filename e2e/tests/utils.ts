@@ -1,8 +1,9 @@
+import { AddressZero } from "@ethersproject/constants";
 import {
   ConditionStruct,
   CreateSellerArgs,
   TransactionResponse
-} from "@bosonprotocol/common";
+} from "../../packages/common/src/index";
 import {
   providers,
   Wallet,
@@ -11,11 +12,8 @@ import {
   BigNumber,
   BigNumberish
 } from "ethers";
-import {
-  CoreSDK,
-  getDefaultConfig,
-  accounts
-} from "../../packages/core-sdk/src";
+import { CoreSDK, getEnvConfigs, accounts } from "../../packages/core-sdk/src";
+import { base, seller } from "../../packages/metadata/src";
 import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
@@ -35,7 +33,10 @@ import {
   ACCOUNT_12,
   ACCOUNT_13,
   ACCOUNT_14,
-  ACCOUNT_15
+  ACCOUNT_15,
+  ACCOUNT_16,
+  ACCOUNT_17,
+  ACCOUNT_18
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -43,37 +44,86 @@ import {
   MOCK_ERC721_ABI,
   MOCK_NFT_AUTH_721_ABI
 } from "./mockAbis";
-import { BaseMetadata } from "@bosonprotocol/metadata/src/base";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
 
+const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
+  getEnvConfigs(arg0)[0];
+
 export const MOCK_ERC20_ADDRESS =
-  getDefaultConfig("local").contracts.testErc20 ||
+  getFirstEnvConfig("local").contracts.testErc20 ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC721_ADDRESS =
-  getDefaultConfig("local").contracts.testErc721 ||
+  getFirstEnvConfig("local").contracts.testErc721 ||
   "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
 
 export const MOCK_ERC1155_ADDRESS =
-  getDefaultConfig("local").contracts.testErc1155 ||
+  getFirstEnvConfig("local").contracts.testErc1155 ||
   "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
 export const MOCK_FORWARDER_ADDRESS =
-  getDefaultConfig("local").contracts.forwarder ||
+  getFirstEnvConfig("local").contracts.forwarder ||
   "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+
+export const MOCK_SEAPORT_ADDRESS =
+  getFirstEnvConfig("local").contracts.seaport ||
+  "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
 
 export const metadata = {
   name: "name",
   description: "description",
   externalUrl: "external-url.com",
   animationUrl: "animation-url.com",
+  animationMetadata: {
+    height: 720,
+    width: 404,
+    type: "video/mp4"
+  },
   licenseUrl: "license-url.com",
   schemaUrl: "schema-url.com"
 };
+export const sellerMetadata = {
+  name: "sellerMetadataName",
+  description: "description",
+  legalTradingName: "legalTradingName",
+  type: "SELLER" as const,
+  kind: "lens",
+  website: "website",
+  images: [
+    {
+      url: "url",
+      tag: "tag",
+      type: "image/jpeg",
+      width: 505,
+      height: 393
+    }
+  ],
+  contactLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ],
+  contactPreference: "xmtp",
+  socialLinks: [
+    {
+      url: "url",
+      tag: "tag"
+    }
+  ],
+  salesChannels: [
+    {
+      tag: "DCL",
+      settingsUri: "file://dclsettings",
+      settingsEditor: "https://jsonformatter.org/json-editor",
+      deployments: []
+    }
+  ]
+};
 export const sellerFundsDepositInEth = "5";
 
-export const defaultConfig = getDefaultConfig("local");
+export const defaultConfig = getFirstEnvConfig("local");
 
 export const provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
 // seedWallets used by accounts test
@@ -97,6 +147,11 @@ export const seedWallet10 = new Wallet(ACCOUNT_10.privateKey, provider);
 // seedWallets used by core-sdk-premint test
 export const seedWallet14 = new Wallet(ACCOUNT_14.privateKey, provider);
 export const seedWallet15 = new Wallet(ACCOUNT_15.privateKey, provider);
+// seedWallets used by core-sdk-extend-offer test
+export const seedWallet16 = new Wallet(ACCOUNT_16.privateKey, provider);
+export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
+// seedWallets used by core-sdk-set-contract-uri
+export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -144,7 +199,8 @@ export async function initCoreSDKWithFundedWallet(seedWallet: Wallet) {
 
 export function initCoreSDKWithWallet(wallet: Wallet) {
   const envName = "local";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId = "local-31337-0";
+  const defaultConfig = getFirstEnvConfig(envName);
   const protocolAddress = defaultConfig.contracts.protocolDiamond;
   const testErc20Address = defaultConfig.contracts.testErc20 as string;
   const apiIds = {
@@ -157,6 +213,7 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
   };
   return CoreSDK.fromDefaultConfig({
     envName,
+    configId,
     web3Lib: new EthersAdapter(provider, wallet),
     metadataStorage: ipfsMetadataStorage,
     theGraphStorage: graphMetadataStorage,
@@ -195,18 +252,19 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerAddress = sellerWallet.address;
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
+  const sellerMetadataUri = await getSellerMetadataUri(sellerCoreSDK);
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
-      operator: sellerAddress,
+      assistant: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       // TODO: replace with correct uri
       contractUri: "ipfs://seller-contract",
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
     });
     await tx.wait();
     await waitForGraphNodeIndexing();
@@ -335,7 +393,7 @@ export async function createOfferWithCondition(
   condition: ConditionStruct,
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
-    metadata?: Partial<BaseMetadata>;
+    metadata?: Partial<base.BaseMetadata>;
   } = {}
 ) {
   const metadataHash = await coreSDK.storeMetadata({
@@ -372,30 +430,36 @@ export async function createSellerAndOfferWithCondition(
   condition: ConditionStruct,
   overrides: {
     offerParams?: Partial<CreateOfferArgs>;
-    metadata?: Partial<BaseMetadata>;
+    metadata?: Partial<base.BaseMetadata>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
   } = {}
 ) {
-  const metadataHash = await coreSDK.storeMetadata({
+  const contractHash = await coreSDK.storeMetadata({
     ...metadata,
     type: "BASE",
     ...overrides.metadata
+  });
+  const contractUri = "ipfs://" + contractHash;
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
   });
   const metadataUri = "ipfs://" + metadataHash;
 
   const createOfferTxResponse = await coreSDK.createSellerAndOfferWithCondition(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       treasury: sellerAddress,
-      contractUri: metadataUri,
+      contractUri: contractUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: metadataUri
     },
     mockCreateOfferArgs({
-      metadataHash,
-      metadataUri,
+      metadataHash: contractHash,
+      metadataUri: contractUri,
       ...overrides.offerParams
     }),
     condition
@@ -416,19 +480,27 @@ export async function createSellerAndOfferWithCondition(
 export async function createSeller(
   coreSDK: CoreSDK,
   sellerAddress: string,
-  sellerParams?: Partial<CreateSellerArgs>
+  overrides: {
+    sellerParams?: Partial<CreateSellerArgs>;
+    sellerMetadata?: Partial<seller.SellerMetadata>;
+  } = {}
 ) {
+  const metadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata,
+    ...overrides.sellerMetadata
+  });
+  const metadataUri = "ipfs://" + metadataHash;
   const contractUri = "ipfs://0123456789abcdef";
   const createSellerTxResponse = await coreSDK.createSeller({
-    operator: sellerAddress,
+    assistant: sellerAddress,
     admin: sellerAddress,
-    clerk: sellerAddress,
     treasury: sellerAddress,
     contractUri,
     royaltyPercentage: "0",
     authTokenId: "0",
     authTokenType: 0,
-    ...sellerParams
+    metadataUri,
+    ...overrides.sellerParams
   });
   const createSellerTxReceipt = await createSellerTxResponse.wait();
   const createdSellerId = coreSDK.getCreatedSellerIdFromLogs(
@@ -451,7 +523,7 @@ export async function updateSeller(
   optInSequence: {
     coreSDK: CoreSDK;
     fieldsToUpdate: {
-      operator?: boolean;
+      assistant?: boolean;
       clerk?: boolean;
       admin?: boolean;
       authToken?: boolean;
@@ -478,6 +550,60 @@ export async function updateSeller(
   return updatedSeller;
 }
 
+export async function updateSellerMetaTx(
+  coreSDK: CoreSDK,
+  seller: SellerFieldsFragment,
+  sellerParams: Partial<CreateSellerArgs>,
+  optInSequence: {
+    coreSDK: CoreSDK;
+    fieldsToUpdate: {
+      assistant?: boolean;
+      clerk?: boolean;
+      admin?: boolean;
+      authToken?: boolean;
+    };
+  }[] = []
+) {
+  const updatedSellerTxResponse = await coreSDK.signMetaTxUpdateSellerAndOptIn({
+    ...seller,
+    ...sellerParams
+  });
+  await updatedSellerTxResponse.wait();
+  const optInTxs: TransactionResponse[] = [];
+  for (const optIn of optInSequence) {
+    const nonce = Date.now();
+    const optInMetaTx = await optIn.coreSDK.signMetaTxOptInToSellerUpdate({
+      optInToSellerUpdateArgs: {
+        id: seller.id,
+        fieldsToUpdate: optIn.fieldsToUpdate
+      },
+      nonce
+    });
+    optInTxs.push(
+      await optIn.coreSDK.relayMetaTransaction({
+        functionName: optInMetaTx.functionName,
+        functionSignature: optInMetaTx.functionSignature,
+        sigR: optInMetaTx.r,
+        sigS: optInMetaTx.s,
+        sigV: optInMetaTx.v,
+        nonce
+      })
+    );
+  }
+  await Promise.all(optInTxs.map((tx) => tx.wait()));
+  await waitForGraphNodeIndexing();
+  const updatedSeller = await coreSDK.getSellerById(seller.id as string);
+  return updatedSeller;
+}
+
+export async function getSellerMetadataUri(coreSDK: CoreSDK) {
+  const sellerMetadataHash = await coreSDK.storeMetadata({
+    ...sellerMetadata
+  });
+  const sellerMetadataUri = "ipfs://" + sellerMetadataHash;
+  return sellerMetadataUri;
+}
+
 export async function createSellerAndOffer(
   coreSDK: CoreSDK,
   sellerAddress: string,
@@ -488,17 +614,17 @@ export async function createSellerAndOffer(
     type: "BASE"
   });
   const metadataUri = "ipfs://" + metadataHash;
-
+  const sellerMetadataUri = await getSellerMetadataUri(coreSDK);
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
-      operator: sellerAddress,
+      assistant: sellerAddress,
       admin: sellerAddress,
-      clerk: sellerAddress,
       treasury: sellerAddress,
       contractUri: metadataUri,
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: 0
+      authTokenType: 0,
+      metadataUri: sellerMetadataUri
     },
     mockCreateOfferArgs({
       metadataHash,
@@ -523,7 +649,7 @@ export async function mintLensToken(
   wallet: Wallet,
   to: string
 ): Promise<BigNumberish> {
-  const defaultConfig = getDefaultConfig("local");
+  const defaultConfig = getFirstEnvConfig("local");
   const lensContractAddress = defaultConfig.lens?.LENS_HUB_CONTRACT as string;
 
   const lensContract = new Contract(
@@ -548,4 +674,58 @@ export async function mintLensToken(
   await tx.wait();
 
   return tokenId;
+}
+
+export function createSeaportOrder(args: {
+  offerer: string;
+  token: string;
+  tokenId: string;
+  openseaTreasury: string;
+}) {
+  const offers = [
+    {
+      itemType: 2,
+      token: args.token,
+      identifierOrCriteria: args.tokenId,
+      startAmount: "1",
+      endAmount: "1"
+    }
+  ];
+  const considerations = [
+    {
+      itemType: 0,
+      token: AddressZero,
+      identifierOrCriteria: 0,
+      startAmount: "97500000000000000",
+      endAmount: "97500000000000000",
+      recipient: args.offerer
+    },
+    {
+      itemType: 0,
+      token: AddressZero,
+      identifierOrCriteria: 0,
+      startAmount: "2500000000000000",
+      endAmount: "2500000000000000",
+      recipient: args.openseaTreasury
+    }
+  ];
+  return {
+    parameters: {
+      offerer: args.offerer,
+      zone: AddressZero,
+      offer: offers,
+      consideration: considerations,
+      orderType: 0,
+      startTime: "1675770013",
+      endTime: "1678735278",
+      zoneHash:
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      salt: "0x000000001af963065187d481",
+      conduitKey:
+        "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+      totalOriginalConsiderationItems: considerations.length,
+      counter: 0
+    },
+    signature: "0x" // no signature required if the transaction is sent by the offerer
+  };
 }

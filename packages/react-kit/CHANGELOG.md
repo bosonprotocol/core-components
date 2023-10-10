@@ -3,6 +3,171 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.2...@bosonprotocol/react-kit@0.21.0) (2023-10-10)
+
+
+### Bug Fixes
+
+* adapt widget config ([#581](https://github.com/bosonprotocol/core-components/issues/581)) ([e7b8a44](https://github.com/bosonprotocol/core-components/commit/e7b8a44273044bb7afdceede97c118d15de2acfb))
+
+
+### Features
+
+* add magic link ([#582](https://github.com/bosonprotocol/core-components/issues/582)) ([59cf87e](https://github.com/bosonprotocol/core-components/commit/59cf87ec55763766ea781fb174137aa046983300))
+* add sellerIds for redemption widget ([#583](https://github.com/bosonprotocol/core-components/issues/583)) ([0ad1e76](https://github.com/bosonprotocol/core-components/commit/0ad1e760f43da4c62a9f36bef8a832b96495791d))
+* export magic hooks ([#584](https://github.com/bosonprotocol/core-components/issues/584)) ([2033685](https://github.com/bosonprotocol/core-components/commit/20336852249a3583057e13c9a4d7a980e439f084))
+
+
+
+
+
+## [0.20.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.1...@bosonprotocol/react-kit@0.20.2) (2023-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.20.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.0...@bosonprotocol/react-kit@0.20.1) (2023-09-29)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+# [0.20.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.19.0...@bosonprotocol/react-kit@0.20.0) (2023-09-27)
+
+
+### Bug Fixes
+
+* adapt opensea link wrt chain used in the env ([#564](https://github.com/bosonprotocol/core-components/issues/564)) ([59c26e9](https://github.com/bosonprotocol/core-components/commit/59c26e941fbe383ef256c80c5cd772a3c330510a))
+* add content-type header when POST message to redeemCallbackUrl ([#537](https://github.com/bosonprotocol/core-components/issues/537)) ([0ee30f3](https://github.com/bosonprotocol/core-components/commit/0ee30f389a9f5c8a2af84441bc2431b65d79c5b7))
+* button ref ([#546](https://github.com/bosonprotocol/core-components/issues/546)) ([125050f](https://github.com/bosonprotocol/core-components/commit/125050f4110458d4491dff3f6a24eee126a866d3))
+* change secondary colour to map dapp colour scheme ([#536](https://github.com/bosonprotocol/core-components/issues/536)) ([68e9f20](https://github.com/bosonprotocol/core-components/commit/68e9f201960afbab47e217b0c4cb8446dce13737))
+* check the exchange is owned by the user and in correct state to be redeemed/cancelled ([#538](https://github.com/bosonprotocol/core-components/issues/538)) ([7fb50bc](https://github.com/bosonprotocol/core-components/commit/7fb50bc8f0b37664437078da76d43639c05f19b9))
+* compilation widgets ([#560](https://github.com/bosonprotocol/core-components/issues/560)) ([faa72e5](https://github.com/bosonprotocol/core-components/commit/faa72e5eddac9d224c2f23a0110bdf5a19577321))
+* type config provider ([#558](https://github.com/bosonprotocol/core-components/issues/558)) ([db9fc9f](https://github.com/bosonprotocol/core-components/commit/db9fc9fe12a4883e9c33b50fad26b284d8969ba4))
+
+
+### Features
+
+* add coreSdkConfig prop to cta button ([#550](https://github.com/bosonprotocol/core-components/issues/550)) ([087c7f9](https://github.com/bosonprotocol/core-components/commit/087c7f9cb68b5911bb427ca3ff604abe5be02194))
+* add forcedAccount property on RedemptionWidget ([#566](https://github.com/bosonprotocol/core-components/issues/566)) ([fa907fe](https://github.com/bosonprotocol/core-components/commit/fa907fe7be4796d15caa604a53b0294995e633a4))
+* multi chain widget ([#557](https://github.com/bosonprotocol/core-components/issues/557)) ([3301a7c](https://github.com/bosonprotocol/core-components/commit/3301a7c64de1f5d5795c770655326e8271405ae9))
+* multiple configs per env ([#542](https://github.com/bosonprotocol/core-components/issues/542)) ([9221cfd](https://github.com/bosonprotocol/core-components/commit/9221cfd47d766b9079d04bcb271e79578d6e3798))
+* new core sdk on config id switch ([#544](https://github.com/bosonprotocol/core-components/issues/544)) ([12a7652](https://github.com/bosonprotocol/core-components/commit/12a7652a55073df4290e21848d108c7e36c71359))
+* remove unused button styles and fix svg hover styles ([#565](https://github.com/bosonprotocol/core-components/issues/565)) ([8879bf2](https://github.com/bosonprotocol/core-components/commit/8879bf21d7c15010c65657d16e917595642b3ff4))
+
+
+
+
+
+# [0.19.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.18.0...@bosonprotocol/react-kit@0.19.0) (2023-08-14)
+
+
+### Features
+
+* redemption widget - allow to switch direct to redeem or cancel … ([#535](https://github.com/bosonprotocol/core-components/issues/535)) ([aa7c7f9](https://github.com/bosonprotocol/core-components/commit/aa7c7f96a64ff4d4f27d2a0118163f0d98fc8c2f))
+
+
+
+
+
+# [0.18.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.6...@bosonprotocol/react-kit@0.18.0) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+* opensea link is not correct ([#523](https://github.com/bosonprotocol/core-components/issues/523)) ([45354d6](https://github.com/bosonprotocol/core-components/commit/45354d6eb86746d4c5c5cd9158532e35313cf0a9))
+* redemption widget - direct click on Redeem exchange ([#531](https://github.com/bosonprotocol/core-components/issues/531)) ([3412855](https://github.com/bosonprotocol/core-components/commit/3412855006938c998c938cfd4eb64947b252815b))
+* redemption widget: change initialise button colour ([#529](https://github.com/bosonprotocol/core-components/issues/529)) ([5771c51](https://github.com/bosonprotocol/core-components/commit/5771c51edfa52f865a45b1ab5fa53c6b5b705c82))
+* report check exchange policy in Redemption Widget ([#525](https://github.com/bosonprotocol/core-components/issues/525)) ([1fadde5](https://github.com/bosonprotocol/core-components/commit/1fadde5b2ecf1afe34c1d888483e473f459b4396))
+* upgrade chat-sdk version in react-kit ([#526](https://github.com/bosonprotocol/core-components/issues/526)) ([5d6f996](https://github.com/bosonprotocol/core-components/commit/5d6f996e57a9f6fb453151b9347b1fc8495003cd))
+
+
+### Features
+
+* add biconomy metaTx configuration to widgets ([#532](https://github.com/bosonprotocol/core-components/issues/532)) ([90790bb](https://github.com/bosonprotocol/core-components/commit/90790bb520761fe0dcad005487e58940a241bda8))
+* change redemption widget to be the redeem form instead of the redeem button ([#527](https://github.com/bosonprotocol/core-components/issues/527)) ([512260a](https://github.com/bosonprotocol/core-components/commit/512260a2cefea2868953727c8537bc6dd7407ba1))
+* link "raise dispute" button to dr center according to env ([#533](https://github.com/bosonprotocol/core-components/issues/533)) ([ce6533f](https://github.com/bosonprotocol/core-components/commit/ce6533f3a8e4e011056722cff8fd2ecbd06014a1))
+* redemption widget - allow to hide modal ([#534](https://github.com/bosonprotocol/core-components/issues/534)) ([276eb8e](https://github.com/bosonprotocol/core-components/commit/276eb8e9620d81ed4047b881b4fba6049d3ac942))
+* redemption widget ([#460](https://github.com/bosonprotocol/core-components/issues/460)) ([953d9c3](https://github.com/bosonprotocol/core-components/commit/953d9c3ad2caafc0a8028637ad25afbebab7c9e2))
+* reinitialize the redeem modal steps when switching wallet ([#528](https://github.com/bosonprotocol/core-components/issues/528)) ([dc9521b](https://github.com/bosonprotocol/core-components/commit/dc9521b4738292f7a6ac00164d4920270d351e53))
+
+
+
+
+
+## [0.17.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.5...@bosonprotocol/react-kit@0.17.6) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.17.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.4...@bosonprotocol/react-kit@0.17.5) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.17.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.3...@bosonprotocol/react-kit@0.17.4) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.17.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.2...@bosonprotocol/react-kit@0.17.3) (2023-05-19)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.17.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.1...@bosonprotocol/react-kit@0.17.2) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+## [0.17.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.17.0...@bosonprotocol/react-kit@0.17.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+# [0.17.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.1...@bosonprotocol/react-kit@0.17.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* attempt to fix core-sdk prototype ([#457](https://github.com/bosonprotocol/core-components/issues/457)) ([68c6631](https://github.com/bosonprotocol/core-components/commit/68c66319ab9f60c8d88ed48daeba3d05b4fbb7ab))
+* build ([#455](https://github.com/bosonprotocol/core-components/issues/455)) ([bcab586](https://github.com/bosonprotocol/core-components/commit/bcab5869a4a4752912afb1006bc2383f68df93b4))
+
+
+### Features
+
+* add finance widget to react kit ([#452](https://github.com/bosonprotocol/core-components/issues/452)) ([4740742](https://github.com/bosonprotocol/core-components/commit/474074234fadcf9c3cae5e821c2694e5eafa521e))
+* add seller metadata ([#479](https://github.com/bosonprotocol/core-components/issues/479)) ([c988d5b](https://github.com/bosonprotocol/core-components/commit/c988d5b336f6813a0848033d27c88d451c0b86c1))
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 ## [0.16.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.16.0...@bosonprotocol/react-kit@0.16.1) (2022-12-23)
 
 

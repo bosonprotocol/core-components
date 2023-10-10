@@ -12,6 +12,7 @@ interface MetadataInterface {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -36,6 +37,75 @@ interface MetadataInterface {
   numberOfRedemptions: BigInt!
 }
 
+type SellerContactLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+type SellerSocialLink @entity {
+  id: ID!
+  url: String!
+  tag: String!
+}
+
+
+type SellerMetadataMedia @entity {
+  id: ID!
+  url: String!
+  tag: String
+  type: String!
+  width: Int
+  height: Int
+  fit: String
+  position: String
+}
+
+enum SellerMetadataType {
+  SELLER
+}
+
+type SalesChannelDeployment @entity {
+  id: ID!
+  product: ProductV1Product
+  status: String
+  link: String
+  lastUpdated: String
+}
+
+type SalesChannel @entity {
+  id: ID!
+  tag: String!
+  name: String
+  settingsUri: String
+  settingsEditor: String
+  link: String
+  deployments: [SalesChannelDeployment!]
+}
+
+type SellerMetadata @entity {
+  id: ID!
+  type: SellerMetadataType!
+  createdAt: BigInt!
+  name: String
+  description: String
+  legalTradingName: String
+  kind: String!
+  website: String
+  images: [SellerMetadataMedia!]
+  contactLinks: [SellerContactLink!]
+  contactPreference: String!
+  socialLinks: [SellerSocialLink!]
+  salesChannels: [SalesChannel!]
+}
+
+type AnimationMetadata @entity {
+  id: ID!
+  height: Int
+  type: String
+  width: Int
+}
+
 type MetadataAttribute @entity {
   id: ID!
   traitType: String!
@@ -52,6 +122,7 @@ type BaseMetadataEntity implements MetadataInterface @entity {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -86,6 +157,7 @@ type ProductV1MetadataEntity implements MetadataInterface @entity {
   description: String!
   externalUrl: String! # Arbitrary URL which is linked to metadata
   animationUrl: String # Arbitrary URL which is linked to metadata
+  animationMetadata: AnimationMetadata
   licenseUrl: String! # Arbitrary URL which is linked to the rNFT license
   condition: String
   schemaUrl: String! # JSON schema URL
@@ -182,6 +254,7 @@ type ProductV1Product @entity {
   """
   productV1Seller: ProductV1Seller
   sellerId: BigInt!
+  salesChannels: [SalesChannel!]
   """
   PRODUCT_V1 specific fields
   """
@@ -220,6 +293,8 @@ type ProductV1Media @entity {
   url: String!
   tag: String
   type: ProductV1MediaType!
+  width: Int
+  height: Int
 }
 
 type ProductV1Personalisation @entity {
@@ -249,6 +324,7 @@ type ProductV1Seller @entity {
   sellerId: String
   images: [ProductV1Media!]
   contactLinks: [ProductV1SellerContactLink!]
+  contactPreference: String
   """
   Refs
   """
@@ -351,6 +427,7 @@ type Offer @entity {
   metadataUri: String!
   metadataHash: String!
   voided: Boolean!
+  collectionIndex: BigInt!
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
@@ -361,6 +438,9 @@ type Offer @entity {
   voidedAt: BigInt
   exchanges: [Exchange!]! @derivedFrom(field: "offer")
   condition: ConditionEntity
+
+  "Range"
+  range: RangeEntity
 
   "Stats"
   numberOfCommits: BigInt!
@@ -410,12 +490,13 @@ interface Account {
 
 type PendingSeller @entity {
   id: ID!
-  operator: Bytes
+  assistant: Bytes
   admin: Bytes
   clerk: Bytes
   authTokenId: BigInt
   authTokenType: Int
   seller: Seller!
+  metadataUri: String!
 }
 
 type Seller implements Account @entity {
@@ -423,7 +504,7 @@ type Seller implements Account @entity {
   sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
   exchanges: [Exchange!]! @derivedFrom(field: "seller")
-  operator: Bytes!
+  assistant: Bytes!
   admin: Bytes!
   clerk: Bytes!
   treasury: Bytes!
@@ -437,6 +518,8 @@ type Seller implements Account @entity {
   "Percentage as integer, to get decimals divide by 10000. E.g. 1 = 0.01%, 10000 = 100%"
   royaltyPercentage: BigInt!
   pendingSeller: PendingSeller @derivedFrom(field: "seller")
+  metadataUri: String!
+  metadata: SellerMetadata
 }
 
 type Buyer implements Account @entity {
@@ -450,7 +533,7 @@ type Buyer implements Account @entity {
 
 type PendingDisputeResolver @entity {
   id: ID!
-  operator: Bytes
+  assistant: Bytes
   admin: Bytes
   clerk: Bytes
   disputeResolver: DisputeResolver!
@@ -462,7 +545,7 @@ type DisputeResolver implements Account @entity {
   admin: Bytes!
   clerk: Bytes!
   treasury: Bytes!
-  operator: Bytes!
+  assistant: Bytes!
   metadataUri: String!
   fees: [DisputeResolverFee!]!
   sellerAllowList: [BigInt!]!
@@ -567,6 +650,8 @@ enum EventType {
   "OfferHandler events"
   OFFER_CREATED
   OFFER_VOIDED
+  OFFER_EXTENDED
+  OFFER_RANGE_RESERVED
   "ExchangeHandler events"
   BUYER_COMMITTED
   VOUCHER_EXTENDED
@@ -663,7 +748,20 @@ type ConditionEntity @entity {
   method: Int!
   tokenType: Int!
   tokenAddress: Bytes!
-  tokenId: BigInt!
+  gatingType: Int!
+  minTokenId: BigInt!
+  maxTokenId: BigInt!
   threshold: BigInt!
   maxCommits: BigInt!
+}
+
+"""
+Offer Ranges
+"""
+type RangeEntity @entity {
+  id: ID! # rangeId
+  start: BigInt!
+  end: BigInt!
+  owner: Bytes!
+  minted: BigInt!
 }

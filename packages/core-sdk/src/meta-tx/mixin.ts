@@ -1,12 +1,17 @@
-import { MetaTxConfig, TransactionResponse } from "@bosonprotocol/common";
+import {
+  AuthTokenType,
+  MetaTxConfig,
+  TransactionResponse
+} from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { BytesLike } from "@ethersproject/bytes";
 import { handler } from ".";
 import { getOfferById } from "../offers/subgraph";
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import { GetRetriedHashesData } from "./biconomy";
-import { getNonce } from "../forwarder/handler";
 import { accounts } from "..";
+import { AccountsMixin } from "../accounts/mixin";
+import { SellerFieldsFragment } from "../subgraph";
 export class MetaTxMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
   /*                           Meta Tx related methods                          */
@@ -44,6 +49,8 @@ export class MetaTxMixin extends BaseCoreSDK {
   ) {
     return handler.signMetaTxCreateSeller({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
@@ -58,6 +65,8 @@ export class MetaTxMixin extends BaseCoreSDK {
   ) {
     return handler.signMetaTxUpdateSeller({
       web3Lib: this._web3Lib,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
       ...args
@@ -76,6 +85,87 @@ export class MetaTxMixin extends BaseCoreSDK {
       chainId: this._chainId,
       ...args
     });
+  }
+
+  public async signMetaTxUpdateSellerAndOptIn(
+    sellerUpdates: accounts.UpdateSellerArgs
+  ): Promise<TransactionResponse> {
+    let nonce = Date.now();
+    const updateMetaTx = await this.signMetaTxUpdateSeller({
+      updateSellerArgs: sellerUpdates,
+      nonce,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage
+    });
+    const updateTx = await this.relayMetaTransaction({
+      functionName: updateMetaTx.functionName,
+      functionSignature: updateMetaTx.functionSignature,
+      sigR: updateMetaTx.r,
+      sigS: updateMetaTx.s,
+      sigV: updateMetaTx.v,
+      nonce
+    });
+    await updateTx.wait();
+    let seller: SellerFieldsFragment | undefined;
+    let count = 200;
+    while ((!seller || !seller.pendingSeller) && count-- > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      type getSellerById = typeof AccountsMixin.prototype.getSellerById;
+      seller = await (this["getSellerById"] as getSellerById)(sellerUpdates.id);
+    }
+    if (!seller) {
+      throw new Error(
+        "[signMetaTxUpdateSellerAndOptIn] seller could not be retrieved in time"
+      );
+    }
+    const pendingSellerUpdate = seller.pendingSeller;
+    if (!pendingSellerUpdate) {
+      throw new Error(
+        "[signMetaTxUpdateSellerAndOptIn] seller.pendingSeller could not be retrieved in time"
+      );
+    }
+    // Find all updates that can be opted in by the current account
+    const currentAccount = (
+      await this._web3Lib.getSignerAddress()
+    ).toLowerCase();
+    const fieldsToUpdate = {
+      assistant:
+        currentAccount === pendingSellerUpdate.assistant?.toLowerCase(),
+      admin: currentAccount === pendingSellerUpdate.admin?.toLowerCase(),
+      authToken:
+        pendingSellerUpdate.authTokenType !== undefined &&
+        pendingSellerUpdate.authTokenType !== null &&
+        pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
+    };
+    if (
+      fieldsToUpdate.assistant ||
+      fieldsToUpdate.admin ||
+      fieldsToUpdate.authToken
+    ) {
+      nonce = Date.now();
+      const optInMetaTx = await this.signMetaTxOptInToSellerUpdate({
+        optInToSellerUpdateArgs: {
+          id: sellerUpdates.id,
+          fieldsToUpdate: {
+            assistant:
+              currentAccount === pendingSellerUpdate.assistant.toLowerCase(),
+            admin: currentAccount === pendingSellerUpdate.admin.toLowerCase(),
+            authToken: pendingSellerUpdate.authTokenType !== AuthTokenType.NONE
+          }
+        },
+        nonce
+      });
+      return this.relayMetaTransaction({
+        functionName: optInMetaTx.functionName,
+        functionSignature: optInMetaTx.functionSignature,
+        sigR: optInMetaTx.r,
+        sigS: optInMetaTx.s,
+        sigV: optInMetaTx.v,
+        nonce
+      });
+    }
+    // If there is nothing to optIn from the current account, then return the response from updateSeller
+    return updateTx;
   }
 
   /**
@@ -142,14 +232,20 @@ export class MetaTxMixin extends BaseCoreSDK {
   public async signMetaTxReserveRange(
     args: Omit<
       Parameters<typeof handler.signMetaTxReserveRange>[0],
-      "web3Lib" | "metaTxHandlerAddress" | "chainId"
-    >
+      "web3Lib" | "metaTxHandlerAddress" | "chainId" | "to"
+    > & { to: "seller" | "contract" }
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
     return handler.signMetaTxReserveRange({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,
-      ...args
+      ...args,
+      to:
+        args.to === "contract"
+          ? offer.seller.voucherCloneAddress
+          : offer.seller.assistant
     });
   }
 
@@ -159,25 +255,17 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "web3Lib"
       | "bosonVoucherAddress"
       | "chainId"
-      | "nonce"
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId: BigNumberish;
     }> = {}
   ) {
-    const signerAddress = await this._web3Lib.getSignerAddress();
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: signerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
     const offerFromSubgraph = await getOfferById(
       this._subgraphUrl,
       args.offerId
@@ -186,10 +274,10 @@ export class MetaTxMixin extends BaseCoreSDK {
       web3Lib: this._web3Lib,
       bosonVoucherAddress: offerFromSubgraph.seller.voucherCloneAddress,
       chainId: this._chainId,
-      nonce,
       forwarderAddress,
       batchId,
       forwarderAbi: this._metaTxConfig.forwarderAbi,
+      relayerUrl: this._metaTxConfig.relayerUrl,
       ...args
     });
   }
@@ -204,6 +292,7 @@ export class MetaTxMixin extends BaseCoreSDK {
       | "forwarderAddress"
       | "batchId"
       | "forwarderAbi"
+      | "relayerUrl"
     >,
     overrides: Partial<{
       batchId: BigNumberish;
@@ -216,24 +305,101 @@ export class MetaTxMixin extends BaseCoreSDK {
     );
     const forwarderAddress = this._contracts.forwarder;
     const batchId = overrides.batchId || 0;
-    const nonce = await getNonce({
-      contractAddress: forwarderAddress,
-      user: sellerAddress,
-      web3Lib: this._web3Lib,
-      batchId,
-      forwarderAbi: this._metaTxConfig.forwarderAbi
-    });
 
     return handler.signMetaTxSetApprovalForAll({
       web3Lib: this._web3Lib,
       bosonVoucherAddress: seller.voucherCloneAddress,
       chainId: this._chainId,
-      nonce,
       forwarderAddress,
       batchId,
       forwarderAbi: this._metaTxConfig.forwarderAbi,
+      relayerUrl: this._metaTxConfig.relayerUrl,
       ...args
     });
+  }
+
+  public async signMetaTxSetApprovalForAllToContract(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxSetApprovalForAllToContract>[0],
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
+      | "batchId"
+      | "forwarderAbi"
+      | "relayerUrl"
+    >,
+    overrides: Partial<{
+      batchId?: BigNumberish;
+      txGas?: number;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
+
+    return handler.signMetaTxSetApprovalForAllToContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        relayerUrl: this._metaTxConfig.relayerUrl,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
+  }
+
+  public async signMetaTxCallExternalContract(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCallExternalContract>[0],
+      | "web3Lib"
+      | "bosonVoucherAddress"
+      | "chainId"
+      | "nonce"
+      | "forwarderAddress"
+      | "batchId"
+      | "forwarderAbi"
+      | "relayerUrl"
+    >,
+    overrides: Partial<{
+      batchId?: BigNumberish;
+      txGas?: number;
+    }> = {}
+  ) {
+    const sellerAddress = await this._web3Lib.getSignerAddress();
+    const seller = await accounts.subgraph.getSellerByAddress(
+      this._subgraphUrl,
+      sellerAddress
+    );
+    const forwarderAddress = this._contracts.forwarder;
+    const batchId = overrides.batchId || 0;
+
+    return handler.signMetaTxCallExternalContract(
+      {
+        web3Lib: this._web3Lib,
+        bosonVoucherAddress: seller.voucherCloneAddress,
+        chainId: this._chainId,
+        forwarderAddress,
+        batchId,
+        forwarderAbi: this._metaTxConfig.forwarderAbi,
+        relayerUrl: this._metaTxConfig.relayerUrl,
+        ...args
+      },
+      {
+        txGas: overrides.txGas
+      }
+    );
   }
 
   public async relayBiconomyMetaTransaction(
@@ -341,6 +507,44 @@ export class MetaTxMixin extends BaseCoreSDK {
   }
 
   /**
+   * Encodes and signs a meta transaction for `extendOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExtendOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxExtendOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `extendOfferBatch` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxExtendOfferBatch(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxExtendOfferBatch>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxExtendOfferBatch({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
    * Encodes and signs a meta transaction for `completeExchangeBatch` that can be relayed.
    * @param args - Meta transaction args.
    * @returns Signature.
@@ -389,7 +593,36 @@ export class MetaTxMixin extends BaseCoreSDK {
       "web3Lib" | "metaTxHandlerAddress" | "chainId"
     >
   ) {
+    const offer = await getOfferById(this._subgraphUrl, args.offerId);
+
+    if (offer.condition) {
+      // keep compatibility with previous version
+      return this.signMetaTxCommitToConditionalOffer({
+        ...args,
+        tokenId: offer.condition.minTokenId
+      });
+    }
+
     return handler.signMetaTxCommitToOffer({
+      web3Lib: this._web3Lib,
+      metaTxHandlerAddress: this._protocolDiamond,
+      chainId: this._chainId,
+      ...args
+    });
+  }
+
+  /**
+   * Encodes and signs a meta transaction for `commitToConditionalOffer` that can be relayed.
+   * @param args - Meta transaction args.
+   * @returns Signature.
+   */
+  public async signMetaTxCommitToConditionalOffer(
+    args: Omit<
+      Parameters<typeof handler.signMetaTxCommitToConditionalOffer>[0],
+      "web3Lib" | "metaTxHandlerAddress" | "chainId"
+    >
+  ) {
+    return handler.signMetaTxCommitToConditionalOffer({
       web3Lib: this._web3Lib,
       metaTxHandlerAddress: this._protocolDiamond,
       chainId: this._chainId,

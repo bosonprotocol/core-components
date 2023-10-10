@@ -26,8 +26,8 @@ export const WithdrawFundsButton = ({
   tokensToWithdraw,
   ...restProps
 }: IWithdrawFundsButton) => {
-  const coreSdk = useCoreSdk(restProps);
-  const signerAddress = useSignerAddress(restProps.web3Provider);
+  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
+  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
   const tokenList = useMemo(
     () => tokensToWithdraw.map((t) => t.address),
     [tokensToWithdraw]

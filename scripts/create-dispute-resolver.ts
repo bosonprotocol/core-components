@@ -1,7 +1,7 @@
 import { EnvironmentType } from "./../packages/common/src/types/configs";
 import { Wallet, providers } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig } from "../packages/common/src";
+import { getEnvConfigById } from "../packages/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 import {
@@ -11,12 +11,12 @@ import {
 
 program
   .description("Creates and activates a dispute resolver.")
-  .argument("<PROTOCOL_ADMIN_PK>", "Private key of account with ADMIN role.")
   .argument(
     "<DR_ADMIN_PK>",
-    "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and operator."
+    "Private key of Admin address of dispute resolver. Same address will be used for clerk, treasury and assistant."
   )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option(
     "-esc, --escalation-period <PERIOD_IN_MS>",
     "Escalation response period in milliseconds."
@@ -35,21 +35,27 @@ program
     "-s, --sellers <...SELLERS>",
     "Comma-separated list of allowed seller IDs."
   )
+  .option("--dryRun", "Simulation. Do not send the transaction.")
   .parse(process.argv);
 
 async function main() {
-  const [protocolAdminPrivateKey, disputeResolverAdminPrivateKey] =
-    program.args;
+  const [disputeResolverAdminPrivateKey] = program.args;
 
   const opts = program.opts();
-  const escalationResponsePeriodInMS =
-    opts.escalationResponsePeriod || 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+  const escalationResponsePeriodInMS = opts.escalationPeriod
+    ? parseInt(opts.escalationPeriod)
+    : 90 * MSEC_PER_DAY - 1 * MSEC_PER_SEC;
+  if (isNaN(escalationResponsePeriodInMS)) {
+    throw new Error(
+      `Escalation Period ('${opts.escalationPeriod}') must be a number`
+    );
+  }
   const disputeResolverAdminWallet = new Wallet(disputeResolverAdminPrivateKey);
-  const operator = disputeResolverAdminWallet.address;
-  const clerk = disputeResolverAdminWallet.address;
+  const assistant = disputeResolverAdminWallet.address;
   const treasury = disputeResolverAdminWallet.address;
   const envName = (opts.env as EnvironmentType) || "testing";
-  const defaultConfig = getDefaultConfig(envName);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName, configId);
   const chainId = defaultConfig.chainId;
   const metadataUri = opts.metadata;
   const fees = opts.fees
@@ -69,25 +75,21 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       disputeResolverAdminWallet
     ),
-    envName
-  });
-  const protocolAdminWallet = new Wallet(protocolAdminPrivateKey);
-  const coreSDKProtocolAdmin = CoreSDK.fromDefaultConfig({
-    web3Lib: new EthersAdapter(
-      new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
-      protocolAdminWallet
-    ),
-    envName
+    envName,
+    configId
   });
 
   console.log(
-    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId}...`
+    `Creating dispute resolver for address ${disputeResolverAdminWallet.address} on env ${envName} on chain ${chainId} (protocol address: ${defaultConfig.contracts.protocolDiamond}) with escalationPeriod ${escalationResponsePeriodInMS}...`
   );
+  if (opts.dryRun) {
+    console.log("Done (dry run).");
+    return;
+  }
   const txResponse1 = await coreSDKDRAdmin.createDisputeResolver({
     escalationResponsePeriodInMS,
     admin: disputeResolverAdminWallet.address,
-    operator,
-    clerk,
+    assistant,
     treasury,
     metadataUri,
     fees,

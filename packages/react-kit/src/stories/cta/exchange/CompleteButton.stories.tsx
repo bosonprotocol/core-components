@@ -7,7 +7,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/Exchange/CompleteButton",
-  component: CompleteButton
+  component: CompleteButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof CompleteButton>;
 
 const Template: ComponentStory<typeof CompleteButton> = (args) => {
@@ -15,7 +23,10 @@ const Template: ComponentStory<typeof CompleteButton> = (args) => {
 
   return (
     <CtaButtonWrapper>
-      <CompleteButton web3Provider={provider} {...args} />
+      <CompleteButton
+        {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
+      />
     </CtaButtonWrapper>
   );
 };
@@ -25,9 +36,11 @@ export const WithExtraInfo: ComponentStory<typeof CompleteButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
-  metaTransactionsApiKey: undefined,
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");
   },
@@ -47,9 +60,11 @@ Simple.args = {
 };
 
 WithExtraInfo.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeId: "28",
-  metaTransactionsApiKey: undefined,
   extraInfo: "Step X",
   onPendingSignature: () => {
     console.log("----------ON PENDING SIGNATURE-------------");

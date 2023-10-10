@@ -3,6 +3,97 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.9](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.8...@bosonprotocol/ethers-sdk@1.12.9) (2023-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.7...@bosonprotocol/ethers-sdk@1.12.8) (2023-09-29)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.6...@bosonprotocol/ethers-sdk@1.12.7) (2023-09-27)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.5...@bosonprotocol/ethers-sdk@1.12.6) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+
+
+
+
+
+## [1.12.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.4...@bosonprotocol/ethers-sdk@1.12.5) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.3...@bosonprotocol/ethers-sdk@1.12.4) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.2...@bosonprotocol/ethers-sdk@1.12.3) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.1...@bosonprotocol/ethers-sdk@1.12.2) (2023-05-17)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+## [1.12.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.12.0...@bosonprotocol/ethers-sdk@1.12.1) (2023-05-15)
+
+**Note:** Version bump only for package @bosonprotocol/ethers-sdk
+
+
+
+
+
+# [1.12.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.11.0...@bosonprotocol/ethers-sdk@1.12.0) (2023-05-12)
+
+
+### Bug Fixes
+
+* preMint with forwarder ([#422](https://github.com/bosonprotocol/core-components/issues/422)) ([700658a](https://github.com/bosonprotocol/core-components/commit/700658a9590e311f1b270bc972b62687bba9590c))
+
+
+### Features
+
+* upgrade to contracts v2.2.0 ([#450](https://github.com/bosonprotocol/core-components/issues/450)) ([039d41e](https://github.com/bosonprotocol/core-components/commit/039d41e37caa067ca48f9d47bb8bc336ddfbafca))
+
+
+
+
+
 # [1.11.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ethers-sdk@1.10.3...@bosonprotocol/ethers-sdk@1.11.0) (2022-12-01)
 
 

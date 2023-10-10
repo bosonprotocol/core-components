@@ -1,12 +1,14 @@
 name: Deploy subgraph to staging env
 
 on:
+  workflow_dispatch:
+    branches: [main]
   release:
     types: [published]
 
 jobs:
   deploy:
-    if: startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, '@bosonprotocol/subgraph@')
     runs-on: ubuntu-latest
     name: Deploy subgraph
     steps:
@@ -15,8 +17,20 @@ jobs:
         with:
           node-version: "16"
           cache: "npm"
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}
       - run: npm ci
+      - id: build
+        run: npm run build -- --cache-dir=".turbo"
       - name: Authenticate The Graph CLI
         run: npx graph auth --product hosted-service ${{ secrets.THE_GRAPH_ACCESS_TOKEN_STAGING }}
-      - name: Deploy subgraph
+      - name: Deploy subgraph to mumbai
         run: cd ./packages/subgraph && npm run deploy:staging
+      - name: Deploy subgraph to goerli
+        run: cd ./packages/subgraph && npm run deploy:staging:goerli

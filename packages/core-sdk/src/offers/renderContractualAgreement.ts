@@ -4,7 +4,6 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { utils } from "@bosonprotocol/common";
 import Mustache from "mustache";
 import { formatUnits } from "@ethersproject/units";
-import { productV1 } from "@bosonprotocol/metadata";
 
 import { CreateOfferArgs } from "./types";
 import {
@@ -292,21 +291,18 @@ export async function renderContractualAgreementForOffer(
       `Invalid Offer Metadata: Type is not supported: '${existingOfferData.metadata.type}'`
     );
   }
-  if (
-    !(existingOfferData.metadata as productV1.ProductV1Metadata).exchangePolicy
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!(existingOfferData.metadata as any).exchangePolicy) {
     throw new Error(`Invalid Offer Metadata: exchangePolicy is not defined`);
   }
-  if (
-    !(existingOfferData.metadata as productV1.ProductV1Metadata).exchangePolicy
-      .template
-  ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!(existingOfferData.metadata as any).exchangePolicy.template) {
     throw new Error(
       `Invalid Offer Metadata: exchangePolicy.template is not defined`
     );
   }
-  const template = (existingOfferData.metadata as productV1.ProductV1Metadata)
-    .exchangePolicy.template;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const template = (existingOfferData.metadata as any).exchangePolicy.template;
   const convertedOfferArgs = convertExistingOfferData(existingOfferData);
   return renderContractualAgreement(
     template,

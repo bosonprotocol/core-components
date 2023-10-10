@@ -73,6 +73,7 @@ export async function reserveRange(args: {
   subgraphUrl: string;
   offerId: BigNumberish;
   length: BigNumberish;
+  to: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
   const offerFromSubgraph = await getOfferById(args.subgraphUrl, args.offerId);
@@ -87,7 +88,7 @@ export async function reserveRange(args: {
 
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeReserveRange(args.offerId, args.length)
+    data: encodeReserveRange(args.offerId, args.length, args.to)
   });
 }
 
@@ -145,6 +146,38 @@ export async function voidOfferBatch(args: {
   });
 }
 
+export async function extendOffer(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerId: BigNumberish;
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: bosonOfferHandlerIface.encodeFunctionData("extendOffer", [
+      args.offerId,
+      args.validUntil
+    ])
+  });
+}
+
+export async function extendOfferBatch(args: {
+  contractAddress: string;
+  subgraphUrl: string;
+  offerIds: BigNumberish[];
+  validUntil: BigNumberish;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: bosonOfferHandlerIface.encodeFunctionData("extendOfferBatch", [
+      args.offerIds,
+      args.validUntil
+    ])
+  });
+}
+
 function checkIfOfferVoidable(
   offerId: BigNumberish,
   signerAddress: string,
@@ -159,11 +192,11 @@ function checkIfOfferVoidable(
   }
 
   if (
-    offerFromSubgraph.seller.operator.toLowerCase() !==
+    offerFromSubgraph.seller.assistant.toLowerCase() !==
     signerAddress.toLowerCase()
   ) {
     throw new Error(
-      `Signer with address "${signerAddress}" is not the operator "${offerFromSubgraph.seller.operator}" of offer with id "${offerId}"`
+      `Signer with address "${signerAddress}" is not the assistant "${offerFromSubgraph.seller.assistant}" of offer with id "${offerId}"`
     );
   }
 }

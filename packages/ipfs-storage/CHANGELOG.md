@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.10](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.9...@bosonprotocol/ipfs-storage@1.10.10) (2023-10-03)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.10.9](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.8...@bosonprotocol/ipfs-storage@1.10.9) (2023-09-27)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.10.8](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.7...@bosonprotocol/ipfs-storage@1.10.8) (2023-08-10)
+
+
+### Bug Fixes
+
+* ensure connection with wallet connect (upgrade wagmi / rainbowkit) ([#524](https://github.com/bosonprotocol/core-components/issues/524)) ([4b372ea](https://github.com/bosonprotocol/core-components/commit/4b372ea1e9a448764d9eda50e38c2093219e5ccd))
+
+
+
+
+
+## [1.10.7](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.6...@bosonprotocol/ipfs-storage@1.10.7) (2023-07-05)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.10.6](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.5...@bosonprotocol/ipfs-storage@1.10.6) (2023-06-28)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.10.5](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.4...@bosonprotocol/ipfs-storage@1.10.5) (2023-06-22)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
+## [1.10.4](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.3...@bosonprotocol/ipfs-storage@1.10.4) (2023-05-12)
+
+**Note:** Version bump only for package @bosonprotocol/ipfs-storage
+
+
+
+
+
 ## [1.10.3](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/ipfs-storage@1.10.2...@bosonprotocol/ipfs-storage@1.10.3) (2022-12-01)
 
 **Note:** Version bump only for package @bosonprotocol/ipfs-storage

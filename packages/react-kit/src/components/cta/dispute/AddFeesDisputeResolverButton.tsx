@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
+import { ButtonSize } from "../../ui/buttonSize";
 export type IAddFeesDisputeResolverButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
@@ -35,7 +36,8 @@ export const AddFeesDisputeResolverButton = ({
   buyerPercent,
   disputeResolverId,
   fees,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: IAddFeesDisputeResolverButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,7 +47,7 @@ export const AddFeesDisputeResolverButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async (e) => {
+      onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
           try {
@@ -70,6 +72,7 @@ export const AddFeesDisputeResolverButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Add Fees"}

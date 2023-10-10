@@ -21,6 +21,8 @@ const {
   deployAndMintMockNFTAuthTokens,
   deployMockTokens
 } = require("../protocol-contracts/scripts/util/deploy-mock-tokens.js");
+const { deploySeaport } = require("./deploy-seaport");
+const { ZeroAddress } = require("ethers");
 
 async function main() {
   const { addresses } = await deployAndMintMockNFTAuthTokens();
@@ -28,7 +30,7 @@ async function main() {
   process.env.ENS_ADDRESS = addresses[1];
   const MockForwarder = await ethers.getContractFactory("MockForwarder");
   const forwarder = await MockForwarder.deploy();
-  process.env.FORWARDER_ADDRESS = forwarder.address;
+  process.env.FORWARDER_ADDRESS = await forwarder.getAddress();
   console.log(
     "deployed forwarder",
     "process.env.FORWARDER_ADDRESS",
@@ -40,10 +42,12 @@ async function main() {
   let foreign20Token;
   for (const [index, mockToken] of Object.entries(mockTokens)) {
     console.log(
-      `✅ Mock token ${mockToken} has been deployed at ${deployedTokens[index].address}`
+      `✅ Mock token ${mockToken} has been deployed at ${await deployedTokens[
+        index
+      ].getAddress()}`
     );
     if (mockToken === "Foreign20") {
-      foreign20Token = deployedTokens[index].address;
+      foreign20Token = await deployedTokens[index].getAddress();
     }
   }
   const file = await fs.readFile(
@@ -68,9 +72,9 @@ async function main() {
       {
         id: "1",
         escalationResponsePeriod: oneMonth.toString(),
-        operator: disputeResolver,
+        assistant: disputeResolver,
         admin: disputeResolver,
-        clerk: disputeResolver,
+        clerk: ZeroAddress,
         treasury: disputeResolver,
         // TODO: use valid uri
         metadataUri: `ipfs://disputeResolver1`,
@@ -78,7 +82,7 @@ async function main() {
       },
       [
         {
-          tokenAddress: ethers.constants.AddressZero,
+          tokenAddress: ZeroAddress,
           tokenName: "Native",
           feeAmount: "0"
         },
@@ -91,13 +95,29 @@ async function main() {
       []
     );
   const receipt = await response.wait();
-  const event = receipt.events.find(
-    (event) => event.event === "DisputeResolverCreated"
+  const event = receipt.logs.find(
+    (eventLog) => eventLog.eventName === "DisputeResolverCreated"
   );
   const disputeResolverId = event.args.disputeResolverId;
   console.log(
     `✅ Dispute resolver created. ID: ${disputeResolverId} Wallet: ${disputeResolver}`
   );
+  // Deploy Seaport contract
+  const mockSeaport = await deploySeaport();
+  console.log(
+    `✅ Seaport Contract has been deployed at ${await mockSeaport.getAddress()}`
+  );
+  // Set specific configuration values (needed for tests)
+  const deployer = accounts[0];
+  const configHandler = await ethers.getContractAt(
+    "IBosonConfigHandler",
+    protocolDiamond
+  );
+  const response2 = await configHandler
+    .connect(deployer)
+    .setMinResolutionPeriod("1");
+  await response2.wait();
+  console.log(`✅ Protocol has been configured`);
 }
 
 main()

@@ -7,6 +7,7 @@ export * as storage from "./storage";
 export * from "./types";
 export * from "./getOfferStatus";
 export * from "./renderContractualAgreement";
+export * from "./checkExchangePolicy";
 
 export const validation: {
   createOfferArgsSchema: typeof utils.validation.createOfferArgsSchema;

@@ -233,9 +233,52 @@ fragment SellerFields on Seller {
   }
 }
 
+fragment SellerMetadataMediaFields on SellerMetadataMedia {
+  id
+  url
+  tag
+  type
+  width
+  height
+  fit
+  position
+}
+
+fragment SellerContactLinkFields on SellerContactLink {
+  id
+  url
+  tag
+}
+
+fragment SellerSocialLinkFields on SellerSocialLink {
+  id
+  url
+  tag
+}
+
+fragment SalesChannelFields on SalesChannel {
+  id
+  tag
+  name
+  settingsUri
+  settingsEditor
+  link
+  deployments {
+    id
+    product {
+      id
+      uuid
+      version
+    }
+    status
+    link
+    lastUpdated
+  }
+}
+
 fragment BaseSellerFields on Seller {
   id
-  operator
+  assistant
   admin
   clerk
   treasury
@@ -245,10 +288,34 @@ fragment BaseSellerFields on Seller {
   active
   contractURI
   royaltyPercentage
+  metadataUri
+  metadata {
+    id
+    createdAt
+    name
+    description
+    legalTradingName
+    type
+    kind
+    website
+    images {
+      ...SellerMetadataMediaFields
+    }
+    contactLinks {
+      ...SellerContactLinkFields
+    }
+    contactPreference
+    socialLinks {
+      ...SellerSocialLinkFields
+    }
+    salesChannels {
+      ...SalesChannelFields
+    }
+  }
 }
 
 fragment PendingSellerFields on PendingSeller {
-  operator
+  assistant
   admin
   clerk
   authTokenId
@@ -323,7 +390,7 @@ fragment BaseDisputeResolverFields on DisputeResolver {
   admin
   clerk
   treasury
-  operator
+  assistant
   metadataUri
   active
   sellerAllowList
@@ -333,7 +400,7 @@ fragment BaseDisputeResolverFields on DisputeResolver {
 }
 
 fragment PendingDisputeResolverFields on PendingDisputeResolver {
-  operator
+  assistant
   admin
   clerk
 }

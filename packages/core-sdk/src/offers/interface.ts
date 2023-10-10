@@ -132,10 +132,12 @@ export function argsToOfferDurationsStruct(
 
 export function encodeReserveRange(
   offerId: BigNumberish,
-  length: BigNumberish
+  length: BigNumberish,
+  to: string
 ) {
   return bosonOfferHandlerIface.encodeFunctionData("reserveRange", [
     offerId,
-    length
+    length,
+    to
   ]);
 }

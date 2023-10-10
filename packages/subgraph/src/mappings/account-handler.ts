@@ -1,12 +1,9 @@
 import {
   SellerCreated,
-  SellerUpdated,
   SellerUpdatePending,
   SellerUpdateApplied,
   BuyerCreated,
   DisputeResolverCreated,
-  DisputeResolverActivated,
-  DisputeResolverUpdated,
   AllowedSellersAdded,
   AllowedSellersRemoved,
   DisputeResolverFeesAdded,
@@ -14,6 +11,14 @@ import {
   DisputeResolverUpdateApplied,
   DisputeResolverUpdatePending
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
+import {
+  SellerCreated as SellerCreatedLegacy,
+  SellerUpdated,
+  SellerUpdatePending as SellerUpdatePendingLegacy,
+  DisputeResolverActivated,
+  DisputeResolverUpdated,
+  SellerUpdateApplied as SellerUpdateAppliedLegacy
+} from "../../generated/BosonAccountHandlerLegacy/IBosonAccountHandlerLegacy";
 import { IBosonVoucher } from "../../generated/BosonAccountHandler/IBosonVoucher";
 import {
   Seller,
@@ -22,14 +27,18 @@ import {
   DisputeResolver,
   PendingDisputeResolver
 } from "../../generated/schema";
-
+import { BosonVoucher } from "../../generated/templates";
 import {
   getAndSaveDisputeResolver,
   getAndSaveDisputeResolverFees
 } from "../entities/dispute-resolution";
 import { saveAccountEventLog } from "../entities/event-log";
+import { saveSellerMetadata } from "../entities/metadata/handler";
+import { getSellerMetadataEntityId } from "../entities/metadata/seller";
 
-export function handleSellerCreatedEvent(event: SellerCreated): void {
+export function handleSellerCreatedEventWithoutMetadataUri(
+  event: SellerCreatedLegacy
+): void {
   const sellerFromEvent = event.params.seller;
   const authTokenFromEvent = event.params.authToken;
   const sellerId = event.params.sellerId.toString();
@@ -45,7 +54,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   }
 
   seller.sellerId = event.params.sellerId;
-  seller.operator = sellerFromEvent.operator;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
@@ -65,6 +74,49 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
     event.params.executedBy,
     sellerId
   );
+  BosonVoucher.create(event.params.voucherCloneAddress);
+}
+
+export function handleSellerCreatedEvent(event: SellerCreated): void {
+  const sellerFromEvent = event.params.seller;
+  const authTokenFromEvent = event.params.authToken;
+  const sellerId = event.params.sellerId.toString();
+
+  const bosonVoucherContract = IBosonVoucher.bind(
+    event.params.voucherCloneAddress
+  );
+
+  let seller = Seller.load(sellerId);
+
+  if (!seller) {
+    seller = new Seller(sellerId);
+  }
+
+  seller.sellerId = event.params.sellerId;
+  seller.assistant = sellerFromEvent.assistant;
+  seller.admin = sellerFromEvent.admin;
+  seller.clerk = sellerFromEvent.clerk;
+  seller.treasury = sellerFromEvent.treasury;
+  seller.voucherCloneAddress = event.params.voucherCloneAddress;
+  seller.authTokenId = authTokenFromEvent.tokenId;
+  seller.authTokenType = authTokenFromEvent.tokenType;
+  seller.active = true;
+  seller.contractURI = bosonVoucherContract.contractURI();
+  seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
+  seller.metadataUri = sellerFromEvent.metadataUri || "";
+  seller.metadata = getSellerMetadataEntityId(seller.id.toString());
+  seller.save();
+
+  saveSellerMetadata(seller, event.block.timestamp);
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_CREATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    sellerId
+  );
+  BosonVoucher.create(event.params.voucherCloneAddress);
 }
 
 // Keep handleSellerUpdatedEvent for compatibility with v2.0.0
@@ -79,13 +131,14 @@ export function handleSellerUpdatedEvent(event: SellerUpdated): void {
     seller = new Seller(sellerId);
   }
 
-  seller.operator = sellerFromEvent.operator;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
   seller.authTokenId = authTokenFromEvent.tokenId;
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = sellerFromEvent.active;
+  seller.metadataUri = "";
   seller.save();
 
   saveAccountEventLog(
@@ -118,7 +171,36 @@ export function handleSellerUpdatePendingEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingSeller.operator = pendingSellerFromEvent.operator;
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
+  pendingSeller.clerk = pendingSellerFromEvent.clerk;
+  pendingSeller.admin = pendingSellerFromEvent.admin;
+  pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
+  pendingSeller.authTokenId = pendingAuthTokenFromEvent.tokenId;
+  pendingSeller.metadataUri = pendingSellerFromEvent.metadataUri || "";
+  pendingSeller.save();
+}
+
+export function handleSellerUpdatePendingEventLegacy(
+  event: SellerUpdatePendingLegacy
+): void {
+  const pendingSellerFromEvent = event.params.pendingSeller;
+  const pendingAuthTokenFromEvent = event.params.pendingAuthToken;
+  const sellerId = event.params.sellerId.toString();
+
+  let seller = Seller.load(sellerId);
+
+  if (!seller) {
+    seller = new Seller(sellerId);
+  }
+
+  let pendingSeller = PendingSeller.load(seller.id);
+  if (!pendingSeller) {
+    pendingSeller = new PendingSeller(seller.id);
+    pendingSeller.seller = seller.id;
+  }
+
+  // TODO: delete the property when set to 0
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
   pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
@@ -141,14 +223,18 @@ export function handleSellerUpdateAppliedEvent(
     seller = new Seller(sellerId);
   }
 
-  seller.operator = sellerFromEvent.operator;
+  seller.assistant = sellerFromEvent.assistant;
   seller.admin = sellerFromEvent.admin;
   seller.clerk = sellerFromEvent.clerk;
   seller.treasury = sellerFromEvent.treasury;
   seller.authTokenId = authTokenFromEvent.tokenId;
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = sellerFromEvent.active;
+  seller.metadataUri = sellerFromEvent.metadataUri || "";
+  seller.metadata = getSellerMetadataEntityId(seller.id.toString());
   seller.save();
+  saveSellerMetadata(seller, event.block.timestamp);
+
   let pendingSeller = PendingSeller.load(seller.id);
   if (!pendingSeller) {
     pendingSeller = new PendingSeller(seller.id);
@@ -156,7 +242,56 @@ export function handleSellerUpdateAppliedEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingSeller.operator = pendingSellerFromEvent.operator;
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
+  pendingSeller.clerk = pendingSellerFromEvent.clerk;
+  pendingSeller.admin = pendingSellerFromEvent.admin;
+  pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
+  pendingSeller.authTokenId = pendingAuthTokenFromEvent.tokenId;
+  pendingSeller.metadataUri = pendingSellerFromEvent.metadataUri || "";
+  pendingSeller.save();
+
+  saveAccountEventLog(
+    event.transaction.hash.toHexString(),
+    event.logIndex,
+    "SELLER_UPDATED",
+    event.block.timestamp,
+    event.params.executedBy,
+    sellerId
+  );
+}
+
+export function handleSellerUpdateAppliedEventLegacy(
+  event: SellerUpdateAppliedLegacy
+): void {
+  const sellerFromEvent = event.params.seller;
+  const pendingSellerFromEvent = event.params.pendingSeller;
+  const authTokenFromEvent = event.params.authToken;
+  const pendingAuthTokenFromEvent = event.params.pendingAuthToken;
+  const sellerId = event.params.sellerId.toString();
+
+  let seller = Seller.load(sellerId);
+
+  if (!seller) {
+    seller = new Seller(sellerId);
+  }
+
+  seller.assistant = sellerFromEvent.assistant;
+  seller.admin = sellerFromEvent.admin;
+  seller.clerk = sellerFromEvent.clerk;
+  seller.treasury = sellerFromEvent.treasury;
+  seller.authTokenId = authTokenFromEvent.tokenId;
+  seller.authTokenType = authTokenFromEvent.tokenType;
+  seller.active = sellerFromEvent.active;
+  seller.save();
+
+  let pendingSeller = PendingSeller.load(seller.id);
+  if (!pendingSeller) {
+    pendingSeller = new PendingSeller(seller.id);
+    pendingSeller.seller = seller.id;
+  }
+
+  // TODO: delete the property when set to 0
+  pendingSeller.assistant = pendingSellerFromEvent.assistant;
   pendingSeller.clerk = pendingSellerFromEvent.clerk;
   pendingSeller.admin = pendingSellerFromEvent.admin;
   pendingSeller.authTokenType = pendingAuthTokenFromEvent.tokenType;
@@ -252,7 +387,7 @@ export function handleDisputeResolverUpdatePendingEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.operator;
+  pendingDisputeResolver.assistant = pendingDisputeResolverFromEvent.assistant;
   pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
   pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
   pendingDisputeResolver.save();
@@ -274,7 +409,7 @@ export function handleDisputeResolverUpdateAppliedEvent(
 
   disputeResolver.escalationResponsePeriod =
     disputeResolverFromEvent.escalationResponsePeriod;
-  disputeResolver.operator = disputeResolverFromEvent.operator;
+  disputeResolver.assistant = disputeResolverFromEvent.assistant;
   disputeResolver.admin = disputeResolverFromEvent.admin;
   disputeResolver.clerk = disputeResolverFromEvent.clerk;
   disputeResolver.treasury = disputeResolverFromEvent.treasury;
@@ -294,7 +429,7 @@ export function handleDisputeResolverUpdateAppliedEvent(
   }
 
   // TODO: delete the property when set to 0
-  pendingDisputeResolver.operator = pendingDisputeResolverFromEvent.operator;
+  pendingDisputeResolver.assistant = pendingDisputeResolverFromEvent.assistant;
   pendingDisputeResolver.clerk = pendingDisputeResolverFromEvent.clerk;
   pendingDisputeResolver.admin = pendingDisputeResolverFromEvent.admin;
   pendingDisputeResolver.save();

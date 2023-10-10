@@ -1,12 +1,12 @@
 const webpack = require("webpack");
 
-
 module.exports = {
-  "stories": [
-    "../src/**/*.stories.mdx",
-    "../src/**/*.stories.@(js|jsx|ts|tsx)"
-  ],
-  "addons": [
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  typescript: {
+    // Fix https://github.com/hipstersmoothie/react-docgen-typescript-plugin/issues/78#issuecomment-1409224863
+    reactDocgen: 'react-docgen-typescript-plugin'
+  },
+  addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
@@ -14,14 +14,14 @@ module.exports = {
     "storybook-addon-styled-component-theme/dist/preset",
     "@storybook/addon-viewport"
   ],
-  "framework": "@storybook/react",
-  "core": {
+  framework: "@storybook/react",
+  core: {
     builder: {
-      name: 'webpack5',
+      name: "webpack5",
       options: {
-        lazyCompilation: true,
-      },
-    },
+        lazyCompilation: true
+      }
+    }
   },
 
   webpackFinal: async (config) => {
@@ -30,14 +30,24 @@ module.exports = {
       fallback: {
         ...config.resolve.fallback,
         stream: false,
-        crypto: false,
+        crypto: false
       }
     };
     config.plugins.push(
       new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
+        Buffer: ["buffer", "Buffer"]
       })
     );
+    // TODO: remove this code so that ESLintWebpackPlugin is enabled again. Without this, the build did not succeed to eslint useGetLensProfiles -> packages/react-kit/src/lib/lens/generated.ts
+    const indexOfEsLint = config.plugins.findIndex((plugin) => {
+      return plugin.key === "ESLintWebpackPlugin";
+    });
+    if (indexOfEsLint === -1) {
+      throw new Error("could not delete ESLintWebpackPlugin");
+    }
+    delete config.plugins[indexOfEsLint];
+
+    config.plugins = config.plugins.filter((plugin) => !!plugin);
     return config;
-  },
-}
+  }
+};

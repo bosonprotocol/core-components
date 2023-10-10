@@ -1,0 +1,38 @@
+{
+  "contactLinks": [{ "url": "url", "tag": "tag" }],
+  "contactPreference": "xmtp",
+  "description": "description",
+  "images": [
+    {
+      "url": "url",
+      "tag": "tag",
+      "type": "image/jpeg",
+      "width": 505,
+      "height": 393
+    }
+  ],
+  "kind": "lens",
+  "legalTradingName": "",
+  "name": "sellerMetadataName",
+  "socialLinks": [{ "url": "url", "tag": "tag" }],
+  "type": "SELLER",
+  "website": "website",
+  "salesChannels": [
+    {
+      "tag": "DCL",
+      "settingsUri": "file://dclsettings",
+      "deployments": [
+        {
+          "product": {"uuid": "77593bb2-f797-11ec-b939-0242ac120002", "version": 1},
+          "status": "in-progress"
+        },
+        {
+          "product": {"uuid": "Product_B", "version": 5},
+          "status": "in-progress",
+          "link": "https://play.decentraland.org/?position=-75%2C114"
+        }
+      ]
+    }
+  ]
+}
+

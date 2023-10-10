@@ -12,9 +12,11 @@ import {
 import {
   interceptSubgraph,
   SUBGRAPH_URL,
-  mockRawOfferFromSubgraph
+  mockRawOfferFromSubgraph,
+  ZERO_ADDRESS
 } from "../mocks";
-
+const sellerMetadataUri =
+  "ipfs://Qmcp1cqzUu62CggNpA45p4LmQuExYjoW4yazv11JdEMESj";
 describe("#createOffer()", () => {
   test("throw for invalid args", () => {
     expect(() =>
@@ -99,16 +101,17 @@ describe("#voidOffer()", () => {
         offer: mockRawOfferFromSubgraph({
           seller: {
             id: "1",
-            operator: sellerAddress,
+            assistant: sellerAddress,
             admin: sellerAddress,
-            clerk: sellerAddress,
+            clerk: ZERO_ADDRESS,
             treasury: sellerAddress,
             authTokenId: "0",
             authTokenType: 0,
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
             royaltyPercentage: "0",
-            contractURI: "ipfs://seller-contract-uri"
+            contractURI: "ipfs://seller-contract-uri",
+            metadataUri: sellerMetadataUri
           }
         })
       }
@@ -123,7 +126,7 @@ describe("#voidOffer()", () => {
           getSignerAddress: signerAddress
         })
       })
-    ).rejects.toThrow(/not the operator/);
+    ).rejects.toThrow(/not the assistant/);
   });
 
   test("return tx response", async () => {
@@ -132,16 +135,17 @@ describe("#voidOffer()", () => {
         offer: mockRawOfferFromSubgraph({
           seller: {
             id: "1",
-            operator: ADDRESS,
+            assistant: ADDRESS,
             admin: ADDRESS,
-            clerk: ADDRESS,
+            clerk: ZERO_ADDRESS,
             treasury: ADDRESS,
             authTokenId: "0",
             authTokenType: 0,
             voucherCloneAddress: "0x0000111122223333444455556666777788889999",
             active: true,
             royaltyPercentage: "0",
-            contractURI: "ipfs://seller-contract-uri"
+            contractURI: "ipfs://seller-contract-uri",
+            metadataUri: sellerMetadataUri
           }
         })
       }
@@ -211,16 +215,17 @@ describe("#voidOfferBatch()", () => {
             id: "1",
             seller: {
               id: "1",
-              operator: sellerAddress,
+              assistant: sellerAddress,
               admin: sellerAddress,
-              clerk: sellerAddress,
+              clerk: ZERO_ADDRESS,
               treasury: sellerAddress,
               authTokenId: "0",
               authTokenType: 0,
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
               royaltyPercentage: "0",
-              contractURI: "ipfs://seller-contract-uri"
+              contractURI: "ipfs://seller-contract-uri",
+              metadataUri: sellerMetadataUri
             }
           })
         ]
@@ -236,7 +241,7 @@ describe("#voidOfferBatch()", () => {
           getSignerAddress: signerAddress
         })
       })
-    ).rejects.toThrow(/not the operator/);
+    ).rejects.toThrow(/not the assistant/);
   });
 
   test("return tx response", async () => {
@@ -247,16 +252,17 @@ describe("#voidOfferBatch()", () => {
             id: "1",
             seller: {
               id: "1",
-              operator: ADDRESS,
+              assistant: ADDRESS,
               admin: ADDRESS,
-              clerk: ADDRESS,
+              clerk: ZERO_ADDRESS,
               treasury: ADDRESS,
               authTokenId: "0",
               authTokenType: 0,
               voucherCloneAddress: "0x0000111122223333444455556666777788889999",
               active: true,
               royaltyPercentage: "0",
-              contractURI: "ipfs://seller-contract-uri"
+              contractURI: "ipfs://seller-contract-uri",
+              metadataUri: sellerMetadataUri
             }
           })
         ]

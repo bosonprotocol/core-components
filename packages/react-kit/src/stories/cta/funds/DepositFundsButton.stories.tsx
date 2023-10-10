@@ -8,7 +8,15 @@ import { CtaButtonWrapper } from "../../helpers/CtaButtonWrapper";
 
 export default {
   title: "Visual Components/CTA/funds/DepositFundsButton",
-  component: DepositFundsButton
+  component: DepositFundsButton,
+  parameters: {
+    // TODO: delete once storybook doesnt freeze if an arg is an object https://github.com/storybookjs/storybook/issues/17098
+    docs: {
+      source: {
+        type: "code"
+      }
+    }
+  }
 } as ComponentMeta<typeof DepositFundsButton>;
 
 const Template: ComponentStory<typeof DepositFundsButton> = (args) => {
@@ -17,8 +25,8 @@ const Template: ComponentStory<typeof DepositFundsButton> = (args) => {
   return (
     <CtaButtonWrapper>
       <DepositFundsButton
-        web3Provider={provider}
         {...args}
+        coreSdkConfig={{ ...args.coreSdkConfig, web3Provider: provider }}
         buttonRef={buttonRef}
       />
     </CtaButtonWrapper>
@@ -34,7 +42,10 @@ export const WithMetaTx: ComponentStory<typeof DepositFundsButton> =
   Template.bind({});
 
 Simple.args = {
-  envName: "testing",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   accountId: "",
   exchangeToken: "0x" + "0".repeat(40),
   amountToDeposit: 100,
@@ -43,11 +54,7 @@ Simple.args = {
     console.log("----------ON PENDING SIGNATURE-------------");
     console.log(actionName, "actionName");
   },
-  onPendingTransaction: (
-    txHash: string,
-    isMetaTx: boolean,
-    actionName: string
-  ) => {
+  onPendingTransaction: (txHash, isMetaTx, actionName) => {
     console.log("----------ON PENDING TRANSACTION-------------");
     console.log({ txHash, isMetaTx, actionName });
   },
@@ -83,9 +90,10 @@ Simple.args = {
 };
 
 WithStep.args = {
-  envName: "testing",
-  offerId: "52",
-  price: "100",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing"
+  },
   exchangeToken: "0x" + "0".repeat(40),
   extraInfo: "Step 1",
   disabled: false,
@@ -108,9 +116,24 @@ WithStep.args = {
 };
 
 WithMetaTx.args = {
-  envName: "testing",
-  offerId: "19",
-  price: "1000000000000000",
+  coreSdkConfig: {
+    configId: "testing-80001-0",
+    envName: "testing",
+    metaTx: {
+      relayerUrl: "https://api.biconomy.io",
+      apiIds: {
+        "0x785a225ebac1b600ca3170c6c7fa3488a203fc21": {
+          // BOSON PROTOCOL
+          executeMetaTransaction: "eaeff5a5-2efd-4c2b-85f5-b597c79eabf2"
+        },
+        "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0": {
+          // BOSON TOKEN
+          executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
+        }
+      },
+      apiKey: "change-me"
+    }
+  },
   exchangeToken: "0x1f5431E8679630790E8EbA3a9b41d1BB4d41aeD0",
   extraInfo: "",
   disabled: false,
@@ -129,19 +152,5 @@ WithMetaTx.args = {
   onError: (error) => {
     console.log("----------ON ERROR-------------");
     console.log("error", error);
-  },
-  metaTx: {
-    relayerUrl: "https://api.biconomy.io",
-    apiIds: {
-      "0x785a225ebac1b600ca3170c6c7fa3488a203fc21": {
-        // BOSON PROTOCOL
-        executeMetaTransaction: "eaeff5a5-2efd-4c2b-85f5-b597c79eabf2"
-      },
-      "0x1f5431e8679630790e8eba3a9b41d1bb4d41aed0": {
-        // BOSON TOKEN
-        executeMetaTransaction: "0cfeee86-a304-4761-a1fd-dcf63ffd153c"
-      }
-    },
-    apiKey: "change-me"
   }
 };

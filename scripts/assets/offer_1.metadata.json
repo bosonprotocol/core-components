@@ -1,0 +1,88 @@
+{
+  "schemaUrl": "https://json-schema.org",
+  "type": "PRODUCT_V1",
+  "uuid": "00312816-0ca5-4ac4-bfcc-85e3ae62a409",
+  "name": "Boson Test Product",
+  "description": "This product is the absolute best things you need in your life... Trust me!",
+  "externalUrl": "http://localhost:3000/#/offer-uuid/00312816-0ca5-4ac4-bfcc-85e3ae62a409",
+  "licenseUrl": "http://localhost:3000/#/license/00312816-0ca5-4ac4-bfcc-85e3ae62a409",
+  "image": "ipfs://Qmeoh9wqZGPKv6SPRxgWQfyJcoyDv62j1yYV4nk9chqxFW",
+  "attributes": [
+    {
+      "trait_type": "Redeemable Until",
+      "display_type": "date",
+      "value": "1735689599"
+    },
+    {
+      "trait_type": "Offer Category",
+      "value": "PHYSICAL"
+    }
+  ],
+  "product": {
+    "uuid": "dd7871dc-3c00-490c-8a72-641eaf95b5bc",
+    "version": 1,
+    "title": "Boson Test Product",
+    "description": "This product is the absolute best things you need in your life... Trust me!",
+    "productionInformation_brandName": "Best Brand Ever",
+    "details_offerCategory": "PHYSICAL",
+    "visuals_images": [
+      {
+        "url": "ipfs://Qmeoh9wqZGPKv6SPRxgWQfyJcoyDv62j1yYV4nk9chqxFW",
+        "tag": "product_image",
+        "height": 150,
+        "width": 128,
+        "type": "image/jpeg"
+      },
+      {
+        "url": "ipfs://QmbGG4tMJcAuxK7s1zBrRgsQyxgrjfedPA3Xg9P4WK7mt9",
+        "tag": "product_image",
+        "height": 150,
+        "width": 128,
+        "type": "image/jpeg"
+      },
+      {
+        "url": "ipfs://Qmdk5Qd8BG1UnRNoXj3zzdsUW2ivYUQYMR5myLXF6hbiaT",
+        "tag": "product_image",
+        "height": 150,
+        "width": 128,
+        "type": "image/jpeg"
+      }
+    ]
+  },
+  "seller": {
+    "name": "Best Brand Ever",
+    "defaultVersion": 1,
+    "contactLinks": [
+      {
+        "url": "support@bestbrand.com",
+        "tag": "email"
+      }
+    ],
+    "images": [
+      {
+        "url": "ipfs://Qmdk5Qd8BG1UnRNoXj3zzdsUW2ivYUQYMR5myLXF6hbiaT",
+        "tag": "profile",
+        "height": 150,
+        "width": 128
+      },
+      {
+        "url": "ipfs://Qmdk5Qd8BG1UnRNoXj3zzdsUW2ivYUQYMR5myLXF6hbiaT",
+        "tag": "cover",
+        "height": 150,
+        "width": 128
+      }
+    ],
+    "contactPreference": "xmtp"
+  },
+  "shipping": {
+    "returnPeriod": "14"
+  },
+  "exchangePolicy": {
+    "uuid": "1e82f742-5639-427f-87b2-b91a7e51e40a",
+    "version": 1,
+    "template": "ipfs://QmQ8ZTmmRV15rFaWG9KRyjFRrpaD1o2sDwZoYiWgBaAto6",
+    "sellerContactMethod": "DAPP_CHAT",
+    "disputeResolverContactMethod": "EMAIL",
+    "label": "Fair Exchange Policy"
+  }
+}

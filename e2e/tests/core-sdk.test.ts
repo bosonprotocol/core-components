@@ -35,7 +35,7 @@ import {
   createSeller,
   createSellerAndOffer
 } from "./utils";
-import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
+import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
 
 const seedWallet = seedWallet4; // be sure the seedWallet is not used by another test (to allow concurrent run)
 const sellerWallet2 = seedWallet5; // be sure the seedWallet is not used by another test (to allow concurrent run)
@@ -58,7 +58,7 @@ describe("core-sdk", () => {
       expect(createdOffer).toBeTruthy();
       expect(createdOffer.metadata).toMatchObject(metadata);
       expect(createdOffer.seller).toBeTruthy();
-      expect(createdOffer.seller.operator.toLowerCase()).toBe(
+      expect(createdOffer.seller.assistant.toLowerCase()).toBe(
         fundedWallet.address.toLowerCase()
       );
       expect(createdOffer.disputeResolver.fees.length > 0).toBeTruthy();
@@ -204,7 +204,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -242,7 +244,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -283,7 +287,9 @@ describe("core-sdk", () => {
         method: EvaluationMethod.Threshold,
         tokenType: TokenType.MultiToken,
         tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-        tokenId: tokenID,
+        gatingType: GatingType.PerAddress,
+        minTokenId: tokenID,
+        maxTokenId: tokenID,
         threshold: "1",
         maxCommits: "3"
       };
@@ -316,7 +322,7 @@ describe("core-sdk", () => {
     test.each(["ERC721", "ERC1155", "ERC20"])(
       `create an group on %p token and try to commit outside of that group`,
       async (token) => {
-        const tokenID = Date.now().toString();
+        const tokenId = Date.now().toString();
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
           await initSellerAndBuyerSDKs(seedWallet);
 
@@ -333,14 +339,17 @@ describe("core-sdk", () => {
 
         let groupToCreate;
         let condition;
+        let tokenToCommitWith = tokenId;
 
         if (token === "ERC721") {
-          await ensureMintedERC721(sellerWallet, tokenID);
+          await ensureMintedERC721(sellerWallet, tokenId);
           condition = {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -350,12 +359,14 @@ describe("core-sdk", () => {
           };
         }
         if (token === "ERC1155") {
-          await ensureMintedERC1155(sellerWallet, tokenID, "5");
+          await ensureMintedERC1155(sellerWallet, tokenId, "5");
           condition = {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "1",
             maxCommits: "3"
           };
@@ -370,7 +381,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS.toLowerCase(),
-            tokenId: tokenID,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0", // Fungible token cannot have token id range
+            maxTokenId: "0",
             threshold: "1",
             maxCommits: "1"
           };
@@ -378,6 +391,7 @@ describe("core-sdk", () => {
             offerIds: [createdOffer.id],
             ...condition
           };
+          tokenToCommitWith = "0";
         }
 
         const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
@@ -397,10 +411,11 @@ describe("core-sdk", () => {
         expect(conditionClone).toEqual(condition);
 
         await expect(
-          commitToOffer({
+          commitToConditionalOffer({
             buyerCoreSDK,
             sellerCoreSDK,
-            offerId: createdOffer.id
+            offerId: createdOffer.id,
+            tokenId: tokenToCommitWith
           })
         ).rejects.toThrow(/Caller cannot commit/);
       }
@@ -428,6 +443,7 @@ describe("core-sdk", () => {
         });
 
         let groupToCreate;
+        let tokenToCommitWith = tokenId;
 
         if (token === "ERC721") {
           await ensureMintedERC721(buyerWallet, tokenId);
@@ -436,7 +452,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -448,7 +466,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -460,20 +480,26 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0", // Fungible token cannot have token id range
+            maxTokenId: "0",
             threshold: "1",
             maxCommits: "1"
           };
+          tokenToCommitWith = "0";
         }
 
         const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
 
         await createdGroupTx.wait();
 
-        const exchange = await commitToOffer({
+        await waitForGraphNodeIndexing();
+
+        const exchange = await commitToConditionalOffer({
           buyerCoreSDK,
           sellerCoreSDK,
-          offerId: createdOffer.id
+          offerId: createdOffer.id,
+          tokenId: tokenToCommitWith
         });
 
         expect(exchange).toBeTruthy();
@@ -503,6 +529,7 @@ describe("core-sdk", () => {
         });
 
         let conditionToCreate;
+        let tokenToCommitWith = tokenId;
 
         if (token === "ERC721") {
           await ensureMintedERC721(buyerWallet, tokenId);
@@ -510,7 +537,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -521,7 +550,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -532,10 +563,13 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "1",
             maxCommits: "1"
           };
+          tokenToCommitWith = "0";
         }
 
         const createOfferCondTx = await sellerCoreSDK.createOfferWithCondition(
@@ -553,10 +587,11 @@ describe("core-sdk", () => {
           createOfferCond.logs
         );
 
-        const exchange = await commitToOffer({
+        const exchange = await commitToConditionalOffer({
           buyerCoreSDK,
           sellerCoreSDK,
-          offerId: offerId || "1"
+          offerId: offerId || "1",
+          tokenId: tokenToCommitWith
         });
 
         expect(exchange).toBeTruthy();
@@ -586,6 +621,7 @@ describe("core-sdk", () => {
         });
 
         let conditionToCreate;
+        let tokenToCommitWith = tokenId;
 
         if (token === "ERC721") {
           await ensureMintedERC721(sellerWallet, tokenId);
@@ -593,7 +629,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -604,7 +642,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -615,10 +655,13 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "1",
             maxCommits: "1"
           };
+          tokenToCommitWith = "0";
         }
 
         const createOfferCondTx = await sellerCoreSDK.createOfferWithCondition(
@@ -637,10 +680,11 @@ describe("core-sdk", () => {
         );
 
         await expect(
-          commitToOffer({
+          commitToConditionalOffer({
             buyerCoreSDK,
             sellerCoreSDK,
-            offerId: offerId || "1"
+            offerId: offerId || "1",
+            tokenId: tokenToCommitWith
           })
         ).rejects.toThrow(/Caller cannot commit/);
       }
@@ -678,7 +722,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "2",
             maxCommits: "3"
           };
@@ -688,7 +734,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -698,7 +746,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -708,7 +758,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "1",
             maxCommits: "1"
           };
@@ -765,7 +817,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "2",
             maxCommits: "3"
           };
@@ -775,7 +829,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.SpecificToken,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "0",
             maxCommits: "3"
           };
@@ -785,7 +841,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
           };
@@ -795,7 +853,9 @@ describe("core-sdk", () => {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.FungibleToken,
             tokenAddress: MOCK_ERC20_ADDRESS,
-            tokenId: tokenId,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
             threshold: "7000000000000000000",
             maxCommits: "1"
           };
@@ -1356,6 +1416,28 @@ async function commitToOffer(args: {
   const commitToOfferTxResponse = await args.buyerCoreSDK.commitToOffer(
     args.offerId
   );
+  const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
+  const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
+    commitToOfferTxReceipt.logs
+  );
+  await waitForGraphNodeIndexing();
+  const exchange = await args.sellerCoreSDK.getExchangeById(
+    exchangeId as string
+  );
+  return exchange;
+}
+
+async function commitToConditionalOffer(args: {
+  buyerCoreSDK: CoreSDK;
+  sellerCoreSDK: CoreSDK;
+  offerId: BigNumberish;
+  tokenId: BigNumberish;
+}) {
+  const commitToOfferTxResponse =
+    await args.buyerCoreSDK.commitToConditionalOffer(
+      args.offerId,
+      args.tokenId
+    );
   const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
   const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
     commitToOfferTxReceipt.logs

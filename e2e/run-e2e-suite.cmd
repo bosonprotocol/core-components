@@ -1,4 +1,8 @@
 @echo off
+echo [92m*** Install protocol and dependencies... ***[0m
+cd contracts
+call npm ci
+cd ..
 cd e2e
 
 docker-compose up -d
@@ -9,11 +13,19 @@ echo.
 
 echo [92m*** Deploying contracts... ***[0m
 docker-compose exec hardhat-node npm run deploy
+if %ERRORLEVEL% NEQ 0 (
+  echo Contracts couldn't be deployed
+  exit /B 1
+)
 echo [92m*** Successfully deployed contracts ***[0m
 echo.
 
 echo [92m*** Deploying subgraph... ***[0m
 call npm run subgraph:deploy:local
+if %ERRORLEVEL% NEQ 0 (
+  echo Subgraph couldn't be deployed
+  exit /B 1
+)
 echo [92m*** Successfully deployed subgraph ***[0m
 echo.
 

@@ -1,0 +1,106 @@
+{
+  "yupSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Boson Protocol - Exchange Policy Rules",
+    "description": "Rules to check whether the exchange policy of an offer is fair or not",
+    "type": "object",
+    "properties": {
+      "disputePeriodDuration": {
+        "description": "Dispute Period Duration",
+        "type": "number",
+        "min": 2592000,
+        "required": true
+      },
+      "disputeResolverId": {
+        "description": "Dispute Resolver",
+        "type": "string",
+        "matches": "^(1)$",
+        "required": true
+      },
+      "exchangeToken": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "description": "Exchange Token",
+            "type": "string",
+            "flags": "i",
+            "pattern": "^(0x0000000000000000000000000000000000000000)$",
+            "required": true
+          }
+        },
+        "required": true
+      },
+      "resolutionPeriodDuration": {
+        "description": "Resolution Period Duration",
+        "type": "number",
+        "min": 1296000,
+        "required": true
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Metadata Type",
+            "type": "string",
+            "matches": "^PRODUCT_V1$",
+            "required": true
+          },
+          "exchangePolicy": {
+            "type": "object",
+            "properties": {
+              "template": {
+                "description": "Buyer/Seller Agreement Template",
+                "type": "string",
+                "flags": "i",
+                "pattern": "^(fairExchangePolicy|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz)$",
+                "required": true
+              }
+            },
+            "required": true
+          },
+          "shipping": {
+            "type": "object",
+            "properties": {
+              "returnPeriodInDays": {
+                "description": "Return Period (in days)",
+                "type": "number",
+                "min": 15,
+                "required": true
+              }
+            },
+            "required": true
+          }
+        },
+        "required": true
+      }
+    }
+  },
+  "yupConfig": {
+    "errMessages": {
+      "disputePeriodDuration": {
+        "min": "Dispute Period Duration is less than 30 days"
+      },
+      "disputeResolverId": {
+        "matches": "Dispute Resolver is not whitelisted"
+      },
+      "address": {
+        "pattern": "Currency Token is not whitelisted"
+      },
+      "resolutionPeriodDuration": {
+        "min": "Resolution Period Duration is less than 15 days"
+      },
+      "type": {
+        "matches": "Metadata Type is not PRODUCT_V1 standard",
+        "required": "Metadata Type is not specified"
+      },
+      "template": {
+        "pattern": "Buyer/Seller Agreement Template is not standard",
+        "required": "Buyer/Seller Agreement Template is not specified"
+      },
+      "returnPeriodInDays": {
+        "min": "Return Period is less than 15 days",
+        "required": "Return Period is not specified"
+      }
+    }
+  }
+}

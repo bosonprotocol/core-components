@@ -6,8 +6,10 @@ import { Readable } from "stream";
 
 import { BaseIpfsStorage } from "../packages/ipfs-storage/src/ipfs/base";
 import { EnvironmentType } from "../packages/common/src/types/configs";
-import { getDefaultConfig, offers, subgraph } from "../packages/core-sdk/src";
+import { getEnvConfigById, subgraph } from "../packages/core-sdk/src";
 import { buildInfuraHeaders } from "./utils/infura";
+
+import { getSubgraphSdk } from "../packages/core-sdk/src/utils/graphql";
 
 const imageIpfsGatewayMap = {
   local: "https://test-permanent-fly-490.mypinata.cloud/ipfs/",
@@ -16,24 +18,28 @@ const imageIpfsGatewayMap = {
   production: "https://gray-permanent-fly-490.mypinata.cloud/ipfs/"
 } as const;
 
-function extractCID(imageUri: string) {
-  const cidFromUri = imageUri.replaceAll("ipfs://", "");
-
-  try {
-    CID.parse(cidFromUri);
-    return cidFromUri;
-  } catch (error) {
-    // if fails to parse, we assume it could be a gateway url
-    const cidFromUrl = imageUri.split("/").at(-1);
+const getExtractCID =
+  (offerId: string) => (imageUri: string, origin: string) => {
+    const cidFromUri = imageUri.replaceAll("ipfs://", "");
 
     try {
-      CID.parse(cidFromUrl || imageUri);
-      return cidFromUrl;
+      CID.parse(cidFromUri);
+      return cidFromUri;
     } catch (error) {
-      throw new Error(`Failed to parse CID from: ${imageUri}`);
+      // if fails to parse, we assume it could be a gateway url
+      const cidFromUrl = imageUri.split("/").at(-1);
+
+      try {
+        CID.parse(cidFromUrl || imageUri);
+        return cidFromUrl;
+      } catch (error) {
+        console.error(
+          `Failed to parse CID from: ${imageUri} (id=${offerId}, ${origin})`
+        );
+        return undefined;
+      }
     }
-  }
-}
+  };
 
 function bufferToStream(buffer) {
   const stream = new Readable();
@@ -83,12 +89,25 @@ program
     "-fd, --from-date <CREATED_FROM>",
     "Start timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
   )
+  .option(
+    "-td, --to-date <CREATED_TO>",
+    "End timestamp in milliseconds of offer creation. Can be used to only process a subset of offer images."
+  )
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {
-  const { pinata, env: envName, infura, fromDate, list } = program.opts();
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const {
+    pinata,
+    env: envName,
+    infura,
+    fromDate,
+    toDate,
+    list,
+    configId = "testing-80001-0"
+  } = program.opts();
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const ipfsStorage = new BaseIpfsStorage({
     url: defaultConfig.ipfsMetadataUrl,
     headers: infura ? buildInfuraHeaders(infura) : undefined
@@ -102,27 +121,42 @@ async function main() {
     new Date(fromTimestampMS).getTime() / 1000
   ).toString();
 
+  const toTimestampMS = parseInt(toDate || Date.now());
+  if (isNaN(toTimestampMS)) {
+    throw new Error(`Invalid value provided to --to-date option`);
+  }
+  const toTimestampSec = Math.floor(
+    new Date(toTimestampMS).getTime() / 1000
+  ).toString();
+
   const first = 100;
   let page = 0;
   let doMoreOffersExist = true;
-  let offersToProcess: subgraph.OfferFieldsFragment[] = [];
 
   console.log("\n1. Fetching offers to process...");
+  const subgraphUrl = defaultConfig.subgraphUrl;
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  let offersToProcess: Awaited<
+    ReturnType<typeof subgraphSdk.getOffersMediaQuery>
+  >["offers"] = [];
+  // const withWrapper = defaultWrapper;
   while (doMoreOffersExist) {
-    const paginatedOffers = await offers.subgraph.getOffers(
-      defaultConfig.subgraphUrl,
-      {
-        offersFirst: first,
-        offersSkip: page * first,
-        offersOrderDirection: subgraph.OrderDirection.Asc,
-        offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
-        offersFilter: {
-          disputeResolverId: envName === "testing" ? "3" : undefined,
-          id_in: list ? list.split(",") : undefined,
-          createdAt_gte: fromTimestampSec
-        }
+    const queryVars = {
+      offersFirst: first,
+      offersSkip: page * first,
+      offersOrderDirection: subgraph.OrderDirection.Asc,
+      offersOrderBy: subgraph.Offer_OrderBy.CreatedAt,
+      offersFilter: {
+        disputeResolverId: defaultConfig.defaultDisputeResolverId,
+        id_in: list ? list.split(",") : undefined,
+        createdAt_gte: fromTimestampSec,
+        createdAt_lte: toTimestampSec
       }
+    };
+    const { offers: paginatedOffers } = await subgraphSdk.getOffersMediaQuery(
+      queryVars
     );
+
     offersToProcess = [...offersToProcess, ...paginatedOffers];
 
     if (paginatedOffers.length < first) {
@@ -151,31 +185,49 @@ async function main() {
             offer.metadata.__typename = "BaseMetadataEntity";
           }
         }
-
+        const offerId = offer.id;
+        const extractCID = getExtractCID(offerId);
         if (offer.metadata?.__typename === "ProductV1MetadataEntity") {
           const metadataImage = offer.metadata.image
-            ? [extractCID(offer.metadata.image)]
+            ? [extractCID(offer.metadata.image, "offer.metadata.image")]
             : [];
           const metadataAnimation = offer.metadata.animationUrl
-            ? [extractCID(offer.metadata.animationUrl)]
+            ? [
+                extractCID(
+                  offer.metadata.animationUrl,
+                  "offer.metadata.animationUrl"
+                )
+              ]
             : [];
           const visualImages = offer.metadata.product.visuals_images.map(
-            (img) => extractCID(img.url)
+            (img, index) =>
+              extractCID(
+                img.url,
+                `offer.metadata.product.visuals_images[${index}]`
+              )
           );
           const visualVideos =
-            offer.metadata.product.visuals_videos?.map((vid) =>
-              extractCID(vid.url)
+            offer.metadata.product.visuals_videos?.map((vid, index) =>
+              extractCID(
+                vid.url,
+                `offer.metadata.product.visuals_videos[${index}]`
+              )
             ) || [];
           const sellerImages =
-            offer.metadata?.productV1Seller?.images?.map((img) =>
-              extractCID(img.url)
+            offer.metadata?.productV1Seller?.images?.map((img, index) =>
+              extractCID(
+                img.url,
+                `offer.metadata?.productV1Seller?.images[${index}]`
+              )
             ) || [];
-          const videoCIDs = [...metadataAnimation, ...visualVideos];
+          const videoCIDs = [...metadataAnimation, ...visualVideos].filter(
+            (v) => !!v
+          );
           const imageCIDs = [
             ...metadataImage,
             ...visualImages,
             ...sellerImages
-          ];
+          ].filter((v) => !!v);
 
           // save some metadata for later usage
           for (const videoCID of videoCIDs) {
@@ -193,7 +245,7 @@ async function main() {
           cids = [...imageCIDs, ...videoCIDs];
         } else if (offer.metadata?.__typename === "BaseMetadataEntity") {
           const metadataImage = offer.metadata.image
-            ? [extractCID(offer.metadata.image)]
+            ? [extractCID(offer.metadata.image, "offer.metadata.image")]
             : [];
           cids = metadataImage;
         }
@@ -239,11 +291,22 @@ async function main() {
       );
     }
 
-    const fileChunks = ipfsStorage.ipfsClient.cat(cid);
-
-    let content: number[] = [];
-    for await (const chunk of fileChunks) {
-      content = [...content, ...chunk];
+    const content: number[] = [];
+    let fetchChunks = true;
+    const maxChunkSize = 10485760;
+    let read = 0;
+    while (fetchChunks) {
+      const fileChunks = ipfsStorage.ipfsClient.cat(cid, {
+        offset: content.length,
+        length: maxChunkSize
+      });
+      await (async () => {
+        for await (const chunk of fileChunks) {
+          content.push(...chunk);
+        }
+      })();
+      fetchChunks = content.length > read;
+      read = content.length;
     }
 
     const formData = new FormData();

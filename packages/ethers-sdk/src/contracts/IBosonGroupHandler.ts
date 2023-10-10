@@ -34,15 +34,19 @@ export declare namespace BosonTypes {
     method: BigNumberish;
     tokenType: BigNumberish;
     tokenAddress: string;
-    tokenId: BigNumberish;
+    gating: BigNumberish;
+    minTokenId: BigNumberish;
     threshold: BigNumberish;
     maxCommits: BigNumberish;
+    maxTokenId: BigNumberish;
   };
 
   export type ConditionStructOutput = [
     number,
     number,
     string,
+    number,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
@@ -50,9 +54,11 @@ export declare namespace BosonTypes {
     method: number;
     tokenType: number;
     tokenAddress: string;
-    tokenId: BigNumber;
+    gating: number;
+    minTokenId: BigNumber;
     threshold: BigNumber;
     maxCommits: BigNumber;
+    maxTokenId: BigNumber;
   };
 }
 
@@ -60,11 +66,11 @@ export interface IBosonGroupHandlerInterface extends utils.Interface {
   contractName: "IBosonGroupHandler";
   functions: {
     "addOffersToGroup(uint256,uint256[])": FunctionFragment;
-    "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint256,uint256,uint256))": FunctionFragment;
+    "createGroup((uint256,uint256,uint256[]),(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256))": FunctionFragment;
     "getGroup(uint256)": FunctionFragment;
     "getNextGroupId()": FunctionFragment;
     "removeOffersFromGroup(uint256,uint256[])": FunctionFragment;
-    "setGroupCondition(uint256,(uint8,uint8,address,uint256,uint256,uint256))": FunctionFragment;
+    "setGroupCondition(uint256,(uint8,uint8,address,uint8,uint256,uint256,uint256,uint256))": FunctionFragment;
   };
 
   encodeFunctionData(

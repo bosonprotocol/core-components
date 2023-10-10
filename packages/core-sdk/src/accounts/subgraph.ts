@@ -71,15 +71,15 @@ export async function getSellers(
   return sellers;
 }
 
-export async function getSellerByOperator(
+export async function getSellerByAssistant(
   subgraphUrl: string,
-  operatorAddress: string,
+  assistantAddress: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment | undefined> {
   const sellers = await getSellers(subgraphUrl, {
     sellersFilter: {
       ...queryVars.sellersFilter,
-      operator: operatorAddress.toLowerCase()
+      assistant: assistantAddress.toLowerCase()
     },
     ...queryVars
   });
@@ -95,21 +95,6 @@ export async function getSellerByAdmin(
     sellersFilter: {
       ...queryVars.sellersFilter,
       admin: adminAddress.toLowerCase()
-    },
-    ...queryVars
-  });
-  return sellers[0];
-}
-
-export async function getSellerByClerk(
-  subgraphUrl: string,
-  clerkAddress: string,
-  queryVars: GetSellersQueryQueryVariables = {}
-): Promise<SellerFieldsFragment> {
-  const sellers = await getSellers(subgraphUrl, {
-    sellersFilter: {
-      ...queryVars.sellersFilter,
-      clerk: clerkAddress.toLowerCase()
     },
     ...queryVars
   });
@@ -153,13 +138,12 @@ export async function getSellerByAddress(
   address: string,
   queryVars: GetSellersQueryQueryVariables = {}
 ): Promise<SellerFieldsFragment> {
-  const [operator, admin, clerk] = await Promise.all([
-    getSellerByOperator(subgraphUrl, address, queryVars),
-    getSellerByAdmin(subgraphUrl, address, queryVars),
-    getSellerByClerk(subgraphUrl, address, queryVars)
+  const [assistant, admin] = await Promise.all([
+    getSellerByAssistant(subgraphUrl, address, queryVars),
+    getSellerByAdmin(subgraphUrl, address, queryVars)
   ]);
 
-  return operator || admin || clerk;
+  return assistant || admin;
 }
 
 export async function getDisputeResolverById(

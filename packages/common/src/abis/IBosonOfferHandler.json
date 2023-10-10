@@ -65,6 +65,11 @@
             "internalType": "bool",
             "name": "voided",
             "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collectionIndex",
+            "type": "uint256"
           }
         ],
         "indexed": false,
@@ -269,6 +274,12 @@
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "executedBy",
@@ -331,6 +342,11 @@
             "internalType": "bool",
             "name": "voided",
             "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collectionIndex",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BosonTypes.Offer",
@@ -455,6 +471,11 @@
             "internalType": "bool",
             "name": "voided",
             "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collectionIndex",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BosonTypes.Offer[]",
@@ -665,6 +686,11 @@
             "internalType": "bool",
             "name": "voided",
             "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collectionIndex",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BosonTypes.Offer",
@@ -803,6 +829,11 @@
         "internalType": "uint256",
         "name": "_length",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       }
     ],
     "name": "reserveRange",

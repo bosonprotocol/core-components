@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
-import { Button, ButtonSize } from "../../buttons/Button";
+import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs } from "@bosonprotocol/common";
+import { ButtonSize } from "../../ui/buttonSize";
 export type ICreateSellerButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
@@ -29,7 +30,8 @@ export const CreateSellerButton = ({
   size = ButtonSize.Large,
   variant = "accentInverted",
   createSellerArgs,
-  ...coreSdkConfig
+  coreSdkConfig,
+  ...rest
 }: ICreateSellerButton) => {
   const coreSdk = useCoreSdk(coreSdkConfig);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,7 +43,7 @@ export const CreateSellerButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
-      onClick={async (e) => {
+      onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
           try {
@@ -84,6 +86,7 @@ export const CreateSellerButton = ({
           }
         }
       }}
+      {...rest}
     >
       <ButtonTextWrapper>
         {children || "Create Seller"}

@@ -1,7 +1,8 @@
 import {
   Web3LibAdapter,
   TransactionResponse,
-  utils
+  utils,
+  MetadataStorage
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { DisputeResolverFieldsFragment } from "../subgraph";
@@ -27,12 +28,20 @@ import {
   OptInToSellerUpdateArgs,
   OptInToDisputeResolverUpdateArgs
 } from "./types";
+import { storeMetadataOnTheGraph } from "../offers/storage";
 
 export async function createSeller(args: {
   sellerToCreate: CreateSellerArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  metadataStorage?: MetadataStorage;
+  theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.sellerToCreate.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSeller(args.sellerToCreate)
@@ -43,7 +52,14 @@ export async function updateSeller(args: {
   sellerUpdates: UpdateSellerArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  metadataStorage: MetadataStorage;
+  theGraphStorage: MetadataStorage;
 }): Promise<TransactionResponse> {
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.sellerUpdates.metadataUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeUpdateSeller(args.sellerUpdates)

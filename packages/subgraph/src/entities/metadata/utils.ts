@@ -3,8 +3,8 @@ import { JSONValue, TypedMap } from "@graphprotocol/graph-ts";
 import { MetadataAttribute } from "../../../generated/schema";
 import { convertToString } from "../../utils/json";
 
-export function getMetadataEntityId(offerId: string): string {
-  return `${offerId}-metadata`;
+export function getMetadataEntityId(id: string): string {
+  return `${id}-metadata`;
 }
 
 export function getMetadataAttributeId(

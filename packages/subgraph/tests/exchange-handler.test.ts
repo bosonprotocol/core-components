@@ -23,7 +23,9 @@ test("handle BuyerCommittedEvent", () => {
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
 
   const offerId = 1;
+  const sellerId = "1";
   const offer = new Offer(offerId.toString());
+  offer.sellerId = BigInt.fromString(sellerId);
   offer.quantityAvailable = BigInt.fromI32(1);
   offer.numberOfCommits = BigInt.fromI32(0);
   offer.metadataUri = metadataHash;

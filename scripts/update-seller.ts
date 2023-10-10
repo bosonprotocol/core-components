@@ -3,7 +3,7 @@ import fs from "fs";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
 import { providers, Contract, Wallet } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig, UpdateSellerArgs } from "@bosonprotocol/common/src";
+import { getEnvConfigById, UpdateSellerArgs } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 import { abis, TransactionResponse } from "@bosonprotocol/common";
@@ -17,13 +17,15 @@ program
   )
   .option("-d, --data <SELLER_DATA>", "JSON file with the Seller parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .option("--id <SELLER_ID>", "SellerId")
   .option("--admin <ADMIN>", "New admin address")
   .option("--treasury <TREASURY>", "New treasury address")
   .option("--clerk <CLERK>", "New clerk address")
-  .option("--operator <OPERATOR>", "New operator address")
+  .option("--assistant <ASSISTANT>", "New assistant address")
   .option("--authTokenId <AUTH_TOKEN_ID>", "New Auth Token Id")
   .option("--authTokenType <AUTH_TOKEN_TYPE>", "New Auth Token Type")
+  .option("--metadataUri <METADATA_URI>", "New metadata URI")
   .option(
     "--privateKeys <PRIVATE_KEYS>",
     "Comma-separated list of private keys used for opting in the update"
@@ -35,7 +37,8 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const web3Provider = new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl);
   const sellerWallet = new Wallet(sellerPrivateKey);
@@ -56,8 +59,7 @@ async function main() {
       sdk: CoreSDK;
       fields: {
         admin: boolean;
-        operator: boolean;
-        clerk: boolean;
+        assistant: boolean;
         authToken: boolean;
       };
     }
@@ -65,8 +67,7 @@ async function main() {
   if (opts.privateKeys) {
     const defaultFields = {
       admin: false,
-      operator: false,
-      clerk: false,
+      assistant: false,
       authToken: false
     };
     (opts.privateKeys as string).split(",").forEach((privKey) => {
@@ -76,7 +77,8 @@ async function main() {
           new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
           wallet
         ),
-        envName
+        envName,
+        configId
       });
       optInSigners.set(wallet.address.toLowerCase(), {
         sdk,
@@ -100,10 +102,9 @@ async function main() {
 
   sellerDataJson = {
     id: opts.id || sellerDataJson.id,
-    operator:
-      opts.operator || sellerDataJson.operator || sellerData.seller.operator,
+    assistant:
+      opts.assistant || sellerDataJson.assistant || sellerData.seller.assistant,
     admin: opts.admin || sellerDataJson.admin || sellerData.seller.admin,
-    clerk: opts.clerk || sellerDataJson.clerk || sellerData.seller.clerk,
     treasury:
       opts.treasury || sellerDataJson.treasury || sellerData.seller.treasury,
     authTokenId:
@@ -113,11 +114,15 @@ async function main() {
     authTokenType:
       opts.authTokenType ||
       sellerDataJson.authTokenType ||
-      sellerData.authToken.tokenType
+      sellerData.authToken.tokenType,
+    metadataUri:
+      opts.metadataUri ||
+      sellerDataJson.metadataUri ||
+      sellerData.seller.metadataUri
   };
 
   let modif = false;
-  for (const key of ["operator", "clerk", "treasury", "admin"]) {
+  for (const key of ["assistant", "clerk", "treasury", "admin"]) {
     if (sellerDataJson[key] !== sellerData.seller[key]) {
       modif = true;
       break;
@@ -126,7 +131,8 @@ async function main() {
   modif =
     modif ||
     sellerDataJson.authTokenId !== sellerData.authToken.tokenId ||
-    sellerDataJson.authTokenType !== sellerData.authToken.tokenType;
+    sellerDataJson.authTokenType !== sellerData.authToken.tokenType ||
+    sellerDataJson.metadataUri !== sellerData.seller.metadataUri;
 
   if (!modif) {
     throw `No updated value specified`;
@@ -139,7 +145,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       sellerWallet
     ),
-    envName
+    envName,
+    configId
   });
 
   console.log(`Updating seller on env ${envName} on chain ${chainId}...`);
@@ -151,7 +158,7 @@ async function main() {
   );
   let updateComplete = true;
   console.log(`Pending Seller Updates: ${JSON.stringify(pendingSellerUpdate)}`);
-  for (const key of ["operator", "clerk", "admin", "tokenType"]) {
+  for (const key of ["assistant", "clerk", "admin", "tokenType"]) {
     if (pendingSellerUpdate[key] && pendingSellerUpdate[key] !== AddressZero) {
       const address = pendingSellerUpdate[key].toLowerCase();
       if (optInSigners.has(address)) {
@@ -168,7 +175,7 @@ async function main() {
   for (const [account, optInSigner] of optInSigners.entries()) {
     if (
       optInSigner.fields.admin ||
-      optInSigner.fields.operator ||
+      optInSigner.fields.assistant ||
       optInSigner.fields.clerk ||
       optInSigner.fields.authToken
     ) {

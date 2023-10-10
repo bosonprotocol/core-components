@@ -2,7 +2,7 @@ import fs from "fs";
 import { EnvironmentType } from "@bosonprotocol/common/src/types/configs";
 import { providers, Contract, Wallet } from "ethers";
 import { program } from "commander";
-import { getDefaultConfig } from "@bosonprotocol/common/src";
+import { getEnvConfigById } from "@bosonprotocol/common/src";
 import { CoreSDK } from "../packages/core-sdk/src";
 import { EthersAdapter } from "../packages/ethers-sdk/src";
 
@@ -10,10 +10,11 @@ program
   .description("Create a Seller.")
   .argument(
     "<SELLER_PRIVATE_KEY>",
-    "Private key of the Seller account (operator role)."
+    "Private key of the Seller account (assistant role)."
   )
   .option("-d, --data <SELLER_DATA>", "JSON file with the Seller parameters")
   .option("-e, --env <ENV_NAME>", "Target environment", "testing")
+  .option("-c, --configId <CONFIG_ID>", "Config id", "testing-80001-0")
   .parse(process.argv);
 
 async function main() {
@@ -21,7 +22,8 @@ async function main() {
 
   const opts = program.opts();
   const envName = opts.env || "testing";
-  const defaultConfig = getDefaultConfig(envName as EnvironmentType);
+  const configId = opts.configId || "testing-80001-0";
+  const defaultConfig = getEnvConfigById(envName as EnvironmentType, configId);
   const chainId = defaultConfig.chainId;
   const sellerWallet = new Wallet(sellerPrivateKey);
 
@@ -31,14 +33,14 @@ async function main() {
     sellerDataJson = JSON.parse(rawData.toString());
   } else {
     sellerDataJson = {
-      operator: sellerWallet.address,
+      assistant: sellerWallet.address,
       admin: sellerWallet.address,
-      clerk: sellerWallet.address,
       treasury: sellerWallet.address,
       contractUri: "",
       royaltyPercentage: "0",
       authTokenId: "0",
-      authTokenType: "0"
+      authTokenType: "0",
+      metadataUri: ""
     };
   }
 
@@ -50,7 +52,8 @@ async function main() {
       new providers.JsonRpcProvider(defaultConfig.jsonRpcUrl),
       sellerWallet
     ),
-    envName
+    envName,
+    configId
   });
 
   console.log(`Creating seller on env ${envName} on chain ${chainId}...`);

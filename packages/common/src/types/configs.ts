@@ -1,4 +1,5 @@
 import { abis } from "..";
+import type { chains } from "../chains";
 
 export type ContractAddresses = {
   protocolDiamond: string;
@@ -6,6 +7,7 @@ export type ContractAddresses = {
   testErc20?: string;
   testErc1155?: string;
   forwarder: string;
+  seaport?: string;
 };
 
 export type EnvironmentType = "local" | "testing" | "staging" | "production";
@@ -29,9 +31,31 @@ export type Lens = LensContracts & {
   ipfsGateway?: string | undefined;
 };
 
+export type ChainId = typeof chains[keyof typeof chains];
+
+export type ConfigId =
+  | "local-31337-0"
+  | "testing-80001-0"
+  | "testing-5-0"
+  | "staging-80001-0"
+  | "staging-5-0"
+  | "production-137-0"
+  | "production-1-0";
+
+export type Token = {
+  symbol: string;
+  name: string;
+  address: string;
+  decimals: string;
+};
+
 export type ProtocolConfig = {
   envName: EnvironmentType;
-  chainId: number;
+  configId: ConfigId;
+  defaultTokens: Token[] | undefined;
+  defaultDisputeResolverId: string;
+  sellersBlackList: string;
+  chainId: ChainId;
   nativeCoin:
     | undefined
     | {
@@ -48,5 +72,5 @@ export type ProtocolConfig = {
   ipfsMetadataUrl: string;
   contracts: ContractAddresses;
   metaTx?: Partial<MetaTxConfig>;
-  lens: Lens;
+  lens: Lens | undefined;
 };

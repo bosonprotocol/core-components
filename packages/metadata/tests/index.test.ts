@@ -1,6 +1,8 @@
-import { validateMetadata, AnyMetadata } from "../src/index";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { validateMetadata, AnyMetadata, productV1 } from "../src/index";
 import productV1ValidFullOffer from "./product-v1/valid/fullOffer.json";
 import productV1ValidMinimalOffer from "./product-v1/valid/minimalOffer.json";
+import cloneDeep from "clone-deep";
 
 const productMissingArguments = [
   {
@@ -267,6 +269,20 @@ describe("#validateMetadata()", () => {
         })
       ).toBeTruthy();
     });
+
+    test("throw for too long value", () => {
+      expect(() =>
+        validateMetadata({
+          schemaUrl: "example.com",
+          type: "BASE",
+          name: "name",
+          description: "description",
+          externalUrl: new Array(10000).join(","),
+          animationUrl: "animationUrl.com",
+          licenseUrl: "license.com"
+        } as any as AnyMetadata)
+      ).toThrow("Key externalUrl of metadata exceeds 2048 characters");
+    });
   });
 
   describe("PRODUCT_V1", () => {
@@ -288,6 +304,20 @@ describe("#validateMetadata()", () => {
       expect(
         validateMetadata(productV1ValidMinimalOffer as unknown as AnyMetadata)
       ).toBeTruthy();
+    });
+
+    test("throw for too long value", () => {
+      const metadata = cloneDeep(
+        productV1ValidFullOffer as unknown as productV1.ProductV1Metadata
+      );
+
+      const imageIndex = metadata.product.visuals_images.length;
+      metadata.product.visuals_images.push({
+        url: new Array(10000).join(",")
+      });
+      expect(() => validateMetadata(metadata)).toThrow(
+        `Key product.visuals_images.${imageIndex}.url of metadata exceeds 2048 characters`
+      );
     });
 
     test.each(productMissingArguments)(

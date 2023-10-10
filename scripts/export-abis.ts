@@ -46,7 +46,9 @@ async function main() {
 
 function getAbiImportVarName(jsonFileName: string | null) {
   const [contractName] = (jsonFileName || "").split(".json");
-  return `${contractName.replace("Mock", "")}ABI`;
+  return contractName === "MockForwarder"
+    ? `${contractName}ABI`
+    : `${contractName.replace("Mock", "")}ABI`;
 }
 
 main()
