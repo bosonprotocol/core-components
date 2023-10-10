@@ -113,7 +113,11 @@ export default function RedeemWrapper({
     </NonModal>
   );
 }
-
+const getInitialStep = (bypassMode: RedemptionBypassMode | undefined) => {
+  return bypassMode === RedemptionBypassMode.CANCEL
+    ? ActiveStep.CANCELLATION_VIEW
+    : ActiveStep.STEPS_OVERVIEW;
+};
 function RedeemNonModal({
   sellerIds,
   exchange: selectedExchange,
@@ -182,10 +186,7 @@ function RedeemNonModal({
     currentStep: ActiveStep;
   }>({
     previousStep: [],
-    currentStep:
-      bypassMode === RedemptionBypassMode.CANCEL
-        ? ActiveStep.CANCELLATION_VIEW
-        : ActiveStep.STEPS_OVERVIEW
+    currentStep: getInitialStep(bypassMode)
   });
   const {
     store: { tokens: defaultTokens }
@@ -234,6 +235,14 @@ function RedeemNonModal({
       disconnectAsync();
     }
   }, [disconnectAsync, status]);
+
+  useEffect(() => {
+    // if the user disconnects their wallet amid redeem, cancellation, etc process, reset current flow
+    if (!address && currentStep !== getInitialStep(bypassMode)) {
+      setStep({ previousStep: [], currentStep: getInitialStep(bypassMode) });
+    }
+  }, [address, currentStep, bypassMode]);
+
   if (
     forcedAccount &&
     address &&
@@ -244,10 +253,6 @@ function RedeemNonModal({
   }
 
   if (!address) {
-    if (currentStep !== ActiveStep.STEPS_OVERVIEW) {
-      // reinitialize the wizard step
-      setStep({ previousStep: [], currentStep: ActiveStep.STEPS_OVERVIEW });
-    }
     return (
       <>
         <p>Please connect your wallet</p>
