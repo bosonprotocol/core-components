@@ -9,6 +9,7 @@ import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
 import GridContainer from "../../../../ui/GridContainer";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { useAccount } from "../../../../../hooks/connection/connection";
 
@@ -22,6 +23,7 @@ export type MyItemsProps = {
   onAvatarClick: (exchange: Exchange) => void;
   isValid: boolean;
   sellerIds?: string[];
+  exchangeState?: subgraph.ExchangeState;
 };
 
 const ExchangesWithData = WithExchangesData(Exchanges);
@@ -32,7 +34,8 @@ export function MyItems({
   onCancelExchange,
   onRaiseDisputeClick,
   onAvatarClick,
-  sellerIds
+  sellerIds,
+  exchangeState
 }: MyItemsProps) {
   const { address } = useAccount();
   const { data: buyers, isLoading } = useBuyers({
@@ -45,7 +48,7 @@ export function MyItems({
       payload: {
         headerComponent: (
           <Typography tag="h3" $width="100%">
-            Redeem your item
+            Manage your exchanges
           </Typography>
         ),
         contentStyle: {
@@ -64,10 +67,12 @@ export function MyItems({
             // empty
           }}
           initialValues={{
-            committed: true,
-            redeemed: false,
-            disputed: false,
-            completed: false
+            committed:
+              !exchangeState ||
+              exchangeState === subgraph.ExchangeState.Committed,
+            redeemed: exchangeState === subgraph.ExchangeState.Redeemed,
+            disputed: exchangeState === subgraph.ExchangeState.Disputed,
+            completed: exchangeState === subgraph.ExchangeState.Completed
           }}
         >
           {({ values }) => {

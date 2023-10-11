@@ -23,8 +23,10 @@ import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import DetailTable from "../detail/DetailTable";
 import { useSigner } from "../../../../../../hooks/connection/connection";
-import { useBypassMode } from "../../ByassModeProvider/ByassModeProvider";
-import { RedemptionBypassMode } from "../../ByassModeProvider/const";
+import {
+  RedemptionWidgetAction,
+  useRedemptionContext
+} from "../../../../../widgets/redemption/provider/RedemptionContext";
 
 const colors = theme.colors.light;
 
@@ -107,8 +109,8 @@ export function CancelExchange({
     exchange,
     exchange.offer.price
   );
-  const byPassMode = useBypassMode();
-  const isCancelModeOnly = byPassMode === RedemptionBypassMode.CANCEL;
+  const { widgetAction } = useRedemptionContext();
+  const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   return (
     <>
       <DetailTable

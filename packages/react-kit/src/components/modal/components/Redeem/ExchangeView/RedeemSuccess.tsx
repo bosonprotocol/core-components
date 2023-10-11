@@ -14,7 +14,7 @@ import { theme } from "../../../../../theme";
 import Video from "../../../../ui/Video";
 import { Button } from "../../../../buttons/Button";
 import GridContainer from "../../../../ui/GridContainer";
-import { useConfigContext } from "../../../../config/ConfigContext";
+import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 
 const colors = theme.colors.light;
@@ -38,7 +38,7 @@ export function RedeemSuccess({
   onHouseClick,
   exchangeId
 }: Props) {
-  const { redeemCallbackUrl } = useConfigContext();
+  const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
     data: exchanges,
     isError,
@@ -130,9 +130,9 @@ export function RedeemSuccess({
                 </Typography>
 
                 <p>
-                  {redeemCallbackUrl
-                    ? `Your item is on its way to the provided address. Please check your email for the shipping confirmation. Thank you for using our service.`
-                    : `Your item is on its way to the provided address. Please check the chat for the shipping confirmation. Thank you for using our service.`}
+                  {`Your item is on its way to the provided address. Please check ${
+                    postDeliveryInfoUrl ? "your email" : "the chat"
+                  } for the shipping confirmation. Thank you for using our service.`}
                 </p>
               </Grid>
             </Grid>
@@ -165,7 +165,7 @@ export function RedeemSuccess({
                 <div>
                   <Typography fontWeight="600">What's next?</Typography>
                   <Typography tag="p">
-                    {redeemCallbackUrl
+                    {postDeliveryInfoUrl
                       ? `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via email.`
                       : `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via chat.`}
                   </Typography>

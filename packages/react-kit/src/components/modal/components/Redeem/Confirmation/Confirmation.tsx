@@ -19,7 +19,6 @@ import { theme } from "../../../../../theme";
 import { useChatContext } from "../../../../chat/ChatProvider/ChatContext";
 import InitializeChatWithSuccess from "../../../../chat/InitializeChatWithSuccess";
 import { useChatStatus } from "../../../../chat/useChatStatus";
-import { useConfigContext } from "../../../../config/ConfigContext";
 import {
   RedeemButton,
   IRedeemButton
@@ -32,6 +31,7 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
+import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { useSigner } from "../../../../../hooks/connection/connection";
 const colors = theme.colors.light;
 
@@ -71,7 +71,8 @@ export default function Confirmation({
   setIsLoading: setLoading
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
-  const { redeemCallbackUrl, redeemCallbackHeaders } = useConfigContext();
+  const { postDeliveryInfoUrl, postDeliveryInfoHeaders } =
+    useRedemptionContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -81,7 +82,7 @@ export default function Confirmation({
   const showSuccessInitialization =
     chatInitializationStatus === "INITIALIZED" &&
     bosonXmtp &&
-    !redeemCallbackUrl;
+    !postDeliveryInfoUrl;
   const isInitializationValid =
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
@@ -99,10 +100,10 @@ export default function Confirmation({
   const [countryField] = useField(FormModel.formFields.country.name);
   const [emailField] = useField(FormModel.formFields.email.name);
   const [phoneField] = useField(FormModel.formFields.phone.name);
-  const callRedeemCallback = async () => {
-    if (!redeemCallbackUrl) {
+  const postDeliveryInfoCallback = async () => {
+    if (!postDeliveryInfoUrl) {
       throw new Error(
-        "[callredeemCallbackUrl] redeemCallbackUrl is not defined"
+        "[postDeliveryInfoCallback] postDeliveryInfoUrl is not defined"
       );
     }
     // add wallet signature in the message (must be verifiable by the backend)
@@ -118,7 +119,7 @@ export default function Confirmation({
     const signature = signer
       ? await signer.signMessage(JSON.stringify(message))
       : undefined;
-    await fetch(redeemCallbackUrl, {
+    await fetch(postDeliveryInfoUrl, {
       method: "POST",
       body: JSON.stringify({
         message,
@@ -126,14 +127,14 @@ export default function Confirmation({
       }),
       headers: {
         "content-type": "application/json;charset=UTF-8",
-        ...redeemCallbackHeaders
+        ...postDeliveryInfoHeaders
       }
     });
   };
   const handleRedeem = async () => {
     try {
-      if (redeemCallbackUrl) {
-        await callRedeemCallback();
+      if (postDeliveryInfoUrl) {
+        await postDeliveryInfoCallback();
       } else {
         await sendDeliveryDetailsToChat();
       }
@@ -223,7 +224,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           </ThemedButton>
         </Grid>
       </Grid>
-      {!redeemCallbackUrl && <InitializeChatWithSuccess />}
+      {!postDeliveryInfoUrl && <InitializeChatWithSuccess />}
       {showSuccessInitialization && (
         <div>
           <StyledGrid
@@ -244,7 +245,9 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
         <StyledRedeemButton
           type="button"
           onClick={() => handleRedeem()}
-          disabled={isLoading || (!isInitializationValid && !redeemCallbackUrl)}
+          disabled={
+            isLoading || (!isInitializationValid && !postDeliveryInfoUrl)
+          }
         >
           <Grid gap="0.5rem">
             Confirm address and redeem
@@ -265,7 +268,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               metaTx: coreSDK.metaTxConfig
             }}
             disabled={
-              isLoading || (!isInitializationValid && !redeemCallbackUrl)
+              isLoading || (!isInitializationValid && !postDeliveryInfoUrl)
             }
             exchangeId={exchangeId}
             onError={(...args) => {

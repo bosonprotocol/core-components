@@ -19,6 +19,8 @@ import ChatProvider from "../../chat/ChatProvider/ChatProvider";
 import ConvertionRateProvider, {
   ConvertionRateProviderProps
 } from "../finance/convertion-rate/ConvertionRateProvider";
+import { RedemptionContextProps } from "./provider/RedemptionContext";
+import { RedemptionProvider } from "./provider/RedemptionProvider";
 import { RedeemNonModalProps } from "../../modal/components/Redeem/RedeemNonModal";
 import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
 import { MagicProvider } from "../../magicLink/MagicContext";
@@ -36,6 +38,7 @@ type RedemptionProps = {
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
+  RedemptionContextProps &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;
@@ -75,10 +78,12 @@ export function RedemptionWidget(props: WidgetProps) {
                   <IpfsProvider {...props}>
                     <ConvertionRateProvider>
                       <ModalProvider>
-                        <RedeemModalWithExchange
-                          {...props}
-                          hideModal={props.closeWidgetClick}
-                        />
+                        <RedemptionProvider {...props}>
+                          <RedeemModalWithExchange
+                            {...props}
+                            hideModal={props.closeWidgetClick}
+                          />
+                        </RedemptionProvider>
                       </ModalProvider>
                     </ConvertionRateProvider>
                   </IpfsProvider>

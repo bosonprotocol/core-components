@@ -7,8 +7,10 @@ import { CancelExchange, CancelExchangeProps } from "./CancelExchange";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
 import { useAccount } from "../../../../../../hooks/connection/connection";
-import { useBypassMode } from "../../ByassModeProvider/ByassModeProvider";
-import { RedemptionBypassMode } from "../../ByassModeProvider/const";
+import {
+  RedemptionWidgetAction,
+  useRedemptionContext
+} from "../../../../../widgets/redemption/provider/RedemptionContext";
 
 const colors = theme.colors.light;
 export interface CancellationViewProps {
@@ -23,8 +25,8 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
 }) => {
   const { address } = useAccount();
   const dispatch = useNonModalContext();
-  const byPassMode = useBypassMode();
-  const isCancelModeOnly = byPassMode === RedemptionBypassMode.CANCEL;
+  const { widgetAction } = useRedemptionContext();
+  const isCancelModeOnly = widgetAction === RedemptionWidgetAction.CANCEL_FORM;
   useEffect(() => {
     dispatch({
       payload: {

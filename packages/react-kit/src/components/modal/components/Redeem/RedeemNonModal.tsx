@@ -41,11 +41,13 @@ import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useC
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import Typography from "../../../ui/Typography";
 import { useConfigContext } from "../../../config/ConfigContext";
+import {
+  RedemptionWidgetAction,
+  useRedemptionContext
+} from "../../../widgets/redemption/provider/RedemptionContext";
 import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
-import { RedemptionBypassMode } from "./ByassModeProvider/const";
-import { BypassModeProvider } from "./ByassModeProvider/ByassModeProvider";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -69,7 +71,6 @@ export type RedeemNonModalProps = {
   exchange?: Exchange;
   fairExchangePolicyRules: string;
   raiseDisputeForExchangeUrl: string;
-  bypassMode?: RedemptionBypassMode;
   hideModal?: NonModalProps["hideModal"];
   myItemsOnExchangeCardClick?: MyItemsProps["onExchangeCardClick"];
   myItemsOnRedeemClick?: MyItemsProps["onRedeemClick"];
@@ -107,23 +108,31 @@ export default function RedeemWrapper({
         }
       }}
     >
-      <BypassModeProvider bypassMode={props.bypassMode}>
-        <RedeemNonModal {...props} />
-      </BypassModeProvider>
+      <RedeemNonModal {...props} />
     </NonModal>
   );
 }
-const getInitialStep = (bypassMode: RedemptionBypassMode | undefined) => {
-  return bypassMode === RedemptionBypassMode.CANCEL
+const getInitialStep = (
+  widgetAction: RedemptionWidgetAction,
+  showRedemptionOverview: boolean
+) => {
+  return showRedemptionOverview
+    ? ActiveStep.STEPS_OVERVIEW
+    : widgetAction === RedemptionWidgetAction.SELECT_EXCHANGE
+    ? ActiveStep.MY_ITEMS
+    : widgetAction === RedemptionWidgetAction.REDEEM_FORM
+    ? ActiveStep.REDEEM_FORM
+    : widgetAction === RedemptionWidgetAction.CANCEL_FORM
     ? ActiveStep.CANCELLATION_VIEW
-    : ActiveStep.STEPS_OVERVIEW;
+    : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
+    ? ActiveStep.EXCHANGE_VIEW
+    : ActiveStep.REDEEM_FORM_CONFIRMATION;
 };
 function RedeemNonModal({
   sellerIds,
   exchange: selectedExchange,
   fairExchangePolicyRules,
   raiseDisputeForExchangeUrl,
-  bypassMode,
   myItemsOnExchangeCardClick,
   myItemsOnRedeemClick,
   myItemsOnCancelExchange,
@@ -142,6 +151,8 @@ function RedeemNonModal({
 }: Omit<RedeemNonModalProps, "hideModal">) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
+  const { showRedemptionOverview, widgetAction, exchangeState } =
+    useRedemptionContext();
   const seller = sellers?.[0];
   const emailPreference =
     seller?.metadata?.contactPreference === ContactPreference.XMTP_AND_EMAIL ||
@@ -186,7 +197,7 @@ function RedeemNonModal({
     currentStep: ActiveStep;
   }>({
     previousStep: [],
-    currentStep: getInitialStep(bypassMode)
+    currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
   const {
     store: { tokens: defaultTokens }
@@ -238,10 +249,16 @@ function RedeemNonModal({
 
   useEffect(() => {
     // if the user disconnects their wallet amid redeem, cancellation, etc process, reset current flow
-    if (!address && currentStep !== getInitialStep(bypassMode)) {
-      setStep({ previousStep: [], currentStep: getInitialStep(bypassMode) });
+    if (
+      !address &&
+      currentStep !== getInitialStep(widgetAction, showRedemptionOverview)
+    ) {
+      setStep({
+        previousStep: [],
+        currentStep: getInitialStep(widgetAction, showRedemptionOverview)
+      });
     }
-  }, [address, currentStep, bypassMode]);
+  }, [address, currentStep, widgetAction, showRedemptionOverview]);
 
   if (
     forcedAccount &&
@@ -313,10 +330,16 @@ function RedeemNonModal({
                   onNextClick={() => {
                     if (selectedExchange) {
                       setExchange(selectedExchange);
-                      if (bypassMode === RedemptionBypassMode.REDEEM) {
+                      if (widgetAction === RedemptionWidgetAction.REDEEM_FORM) {
                         setActiveStep(ActiveStep.REDEEM_FORM);
-                      } else if (bypassMode === RedemptionBypassMode.CANCEL) {
+                      } else if (
+                        widgetAction === RedemptionWidgetAction.CANCEL_FORM
+                      ) {
                         setActiveStep(ActiveStep.CANCELLATION_VIEW);
+                      } else if (
+                        widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+                      ) {
+                        setActiveStep(ActiveStep.REDEEM_FORM_CONFIRMATION);
                       } else {
                         setActiveStep(ActiveStep.EXCHANGE_VIEW);
                       }
@@ -328,6 +351,7 @@ function RedeemNonModal({
               ) : currentStep === ActiveStep.MY_ITEMS ? (
                 <MyItems
                   sellerIds={sellerIds}
+                  exchangeState={exchangeState}
                   onExchangeCardClick={(exchange) => {
                     setActiveStep(ActiveStep.EXCHANGE_VIEW);
                     setExchange(exchange);
@@ -379,7 +403,7 @@ function RedeemNonModal({
                     exchangeViewOnExpireVoucherClick?.();
                   }}
                   isValid={isRedeemFormOK}
-                  exchangeId={exchange?.id || ""}
+                  exchangeId={exchange?.id || selectedExchange?.id || ""}
                   onRaiseDisputeClick={() => {
                     handleRaiseDispute(exchange?.id);
                     exchangeViewOnRaiseDisputeClick?.();
@@ -390,7 +414,7 @@ function RedeemNonModal({
               ) : currentStep === ActiveStep.EXCHANGE_FULL_DESCRIPTION ? (
                 <ExchangeFullDescriptionView
                   onBackClick={goToPreviousStep}
-                  exchange={exchange}
+                  exchange={exchange || selectedExchange || null}
                 />
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView
@@ -406,7 +430,7 @@ function RedeemNonModal({
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
                   onSuccess={(...args) => {
-                    if (bypassMode !== RedemptionBypassMode.CANCEL) {
+                    if (widgetAction !== RedemptionWidgetAction.CANCEL_FORM) {
                       goToPreviousStep();
                     }
 
@@ -453,7 +477,7 @@ function RedeemNonModal({
                     setActiveStep(ActiveStep.REDEEM_SUCESS);
                     confirmationViewOnSuccess?.(...args);
                   }}
-                  exchange={exchange}
+                  exchange={exchange || selectedExchange || null}
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess

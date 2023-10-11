@@ -3,8 +3,12 @@ import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import { RedemptionWidget } from "../../components/widgets/redemption/RedemptionWidget";
 import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
-import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
-import { RedemptionBypassMode } from "../../components/modal/components/Redeem/ByassModeProvider/const";
+import {
+  EnvironmentType,
+  getEnvConfigs,
+  subgraph
+} from "@bosonprotocol/core-sdk";
+import { RedemptionWidgetAction } from "../../components/widgets/redemption/provider/RedemptionContext";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: "Widgets/Redemption",
@@ -53,7 +57,9 @@ Redemption.args = {
     console.log("closeWidgetClick()");
   },
   modalMargin: "2%",
-  bypassMode: RedemptionBypassMode.NORMAL,
+  widgetAction: RedemptionWidgetAction.SELECT_EXCHANGE,
+  showRedemptionOverview: true,
+  exchangeState: subgraph.ExchangeState.Committed,
   forcedAccount: "",
   sellerIds: undefined
 };
