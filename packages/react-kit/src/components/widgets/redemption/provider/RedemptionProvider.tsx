@@ -1,17 +1,17 @@
 import React, { ReactNode } from "react";
-import { Context, RedemptionContextProps } from "./RedemptionContext";
+import { RedemptionContext, RedemptionContextProps } from "./RedemptionContext";
 
 export function RedemptionProvider({
   children,
   ...rest
 }: RedemptionContextProps & { children: ReactNode }) {
   return (
-    <Context.Provider
+    <RedemptionContext.Provider
       value={{
         ...rest
       }}
     >
       {children}
-    </Context.Provider>
+    </RedemptionContext.Provider>
   );
 }

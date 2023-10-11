@@ -35,14 +35,12 @@ export type RedemptionContextProps = {
   postRedemptionReceiptHeaders?: { [key: string]: string };
 };
 
-export const Context = createContext<RedemptionContextProps>({
-  showRedemptionOverview: true,
-  widgetAction: RedemptionWidgetAction.SELECT_EXCHANGE,
-  exchangeState: subgraph.ExchangeState.Committed
-});
+export const RedemptionContext = createContext<
+  RedemptionContextProps | undefined
+>(undefined);
 
 export const useRedemptionContext = () => {
-  const contextValue = useContext(Context);
+  const contextValue = useContext(RedemptionContext);
   if (!contextValue) {
     throw new Error(
       "You need to use RedemptionProvider before using useRedemptionContext"
