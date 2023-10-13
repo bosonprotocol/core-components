@@ -51,8 +51,7 @@ import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheck
 import { ButtonSize } from "../../../../../ui/buttonSize";
 import {
   useAccount,
-  useChainId,
-  useIsChainUnsupported
+  useIsConnectedToWrongChain
 } from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
@@ -338,7 +337,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     openseaLinkToOriginalMainnetCollection,
     contactSellerForExchangeUrl
   } = config;
-  const isChainUnsupported = useIsChainUnsupported();
+  const isInWrongChain = useIsConnectedToWrongChain();
   const displayFloat = useDisplayFloat();
   const { address } = useAccount();
   const isBuyer = exchange?.buyer.wallet === address?.toLowerCase();
@@ -542,9 +541,7 @@ const DetailView: React.FC<IDetailWidget> = ({
               <RedeemButton
                 variant="primaryFill"
                 size={ButtonSize.Large}
-                disabled={
-                  isChainUnsupported || isOffer || isPreview || !isBuyer
-                }
+                disabled={isInWrongChain || isOffer || isPreview || !isBuyer}
                 onClick={() => {
                   onRedeem();
                 }}
@@ -624,7 +621,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                 type="button"
                 style={{ fontSize: "0.875rem" }}
                 disabled={
-                  isChainUnsupported || !isBuyer || !contactSellerForExchangeUrl
+                  isInWrongChain || !isBuyer || !contactSellerForExchangeUrl
                 }
               >
                 Contact seller
@@ -646,7 +643,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                       theme="blank"
                       type="button"
                       style={{ fontSize: "0.875rem" }}
-                      disabled={isChainUnsupported || !isBuyer}
+                      disabled={isInWrongChain || !isBuyer}
                     >
                       Cancel
                     </StyledCancelButton>
@@ -662,7 +659,11 @@ const DetailView: React.FC<IDetailWidget> = ({
                       type="button"
                       theme="blank"
                       style={{ fontSize: "0.875rem" }}
-                      disabled={exchange?.state !== "REDEEMED" || !isBuyer}
+                      disabled={
+                        exchange?.state !== "REDEEMED" ||
+                        !isBuyer ||
+                        isInWrongChain
+                      }
                     >
                       Raise a problem
                       <Question size={18} />

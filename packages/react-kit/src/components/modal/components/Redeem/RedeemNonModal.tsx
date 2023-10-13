@@ -285,11 +285,11 @@ function RedeemNonModal({
     : undefined;
 
   const handleRaiseDispute = (exchangeId: string | undefined) => {
-    const raiseDisputeForExchangeUrlWithId = raiseDisputeForExchangeUrl.replace(
-      "{id}",
-      exchangeId || ""
-    );
-    window.open(raiseDisputeForExchangeUrlWithId, "_blank");
+    const raiseDisputeForExchangeUrlWithId =
+      raiseDisputeForExchangeUrl?.replace("{id}", exchangeId || "");
+    if (raiseDisputeForExchangeUrlWithId) {
+      window.open(raiseDisputeForExchangeUrlWithId, "_blank");
+    }
   };
 
   return (

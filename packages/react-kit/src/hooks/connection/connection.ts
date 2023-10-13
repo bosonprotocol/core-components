@@ -21,20 +21,16 @@ export function useAccount() {
 export function useChainId() {
   const { chain } = useNetwork();
   const magicChainId = useMagicChainId();
-  const chainIdToReturn = magicChainId ?? chain?.id;
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+  const chainIdToReturn = isMagicLoggedIn ? magicChainId : chain?.id;
   return chainIdToReturn;
 }
 
-export function useIsChainUnsupported(): boolean {
-  const { supportedChains } = useConfigContext();
+export function useIsConnectedToWrongChain(): boolean {
+  const { config } = useConfigContext();
   const chainId = useChainId();
-  if (!chainId) {
-    return false;
-  }
-  const isChainUnsupported = supportedChains.some(
-    (supportedChainId) => supportedChainId === chainId
-  );
-  return isChainUnsupported;
+  const connectedToWrongChain = config.chainId !== chainId;
+  return connectedToWrongChain;
 }
 
 export function useSigner() {

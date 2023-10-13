@@ -33,7 +33,7 @@ import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import {
-  useIsChainUnsupported,
+  useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
 const colors = theme.colors.light;
@@ -74,7 +74,7 @@ export default function Confirmation({
   setIsLoading: setLoading
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
-  const isChainUnsupported = useIsChainUnsupported();
+  const isInWrongChain = useIsConnectedToWrongChain();
   const { postDeliveryInfoUrl, postDeliveryInfoHeaders } =
     useRedemptionContext();
   const coreSDK = useCoreSDKWithContext();
@@ -252,7 +252,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           disabled={
             isLoading ||
             (!isInitializationValid && !postDeliveryInfoUrl) ||
-            isChainUnsupported
+            isInWrongChain
           }
         >
           <Grid gap="0.5rem">
