@@ -32,7 +32,10 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
-import { useSigner } from "../../../../../hooks/connection/connection";
+import {
+  useIsChainUnsupported,
+  useSigner
+} from "../../../../../hooks/connection/connection";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -71,6 +74,7 @@ export default function Confirmation({
   setIsLoading: setLoading
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
+  const isChainUnsupported = useIsChainUnsupported();
   const { postDeliveryInfoUrl, postDeliveryInfoHeaders } =
     useRedemptionContext();
   const coreSDK = useCoreSDKWithContext();
@@ -246,7 +250,9 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           type="button"
           onClick={() => handleRedeem()}
           disabled={
-            isLoading || (!isInitializationValid && !postDeliveryInfoUrl)
+            isLoading ||
+            (!isInitializationValid && !postDeliveryInfoUrl) ||
+            isChainUnsupported
           }
         >
           <Grid gap="0.5rem">

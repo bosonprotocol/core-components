@@ -103,7 +103,6 @@ export default function ConnectButton({
                       (!chainId && !isMagicLoggedIn)
                     ) {
                       // reset the tag o undefined
-                      saveItemInStorage("isChainUnsupported", true);
                       Sentry.setTag("wallet_address", undefined);
 
                       return (
@@ -133,7 +132,6 @@ export default function ConnectButton({
                     }
 
                     if (chain?.unsupported) {
-                      saveItemInStorage("isChainUnsupported", true);
                       return (
                         <ThemedButton
                           onClick={openChainModal}
@@ -149,7 +147,6 @@ export default function ConnectButton({
                         </ThemedButton>
                       );
                     }
-                    saveItemInStorage("isChainUnsupported", false);
                     return (
                       <div
                         style={{

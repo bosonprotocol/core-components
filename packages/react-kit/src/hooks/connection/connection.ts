@@ -10,6 +10,7 @@ import {
   useMagicProvider
 } from "../magic";
 import { useEthersSigner } from "../ethers/useEthersSigner";
+import { useConfigContext } from "../../components/config/ConfigContext";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();
@@ -22,6 +23,18 @@ export function useChainId() {
   const magicChainId = useMagicChainId();
   const chainIdToReturn = magicChainId ?? chain?.id;
   return chainIdToReturn;
+}
+
+export function useIsChainUnsupported(): boolean {
+  const { supportedChains } = useConfigContext();
+  const chainId = useChainId();
+  if (!chainId) {
+    return false;
+  }
+  const isChainUnsupported = supportedChains.some(
+    (supportedChainId) => supportedChainId === chainId
+  );
+  return isChainUnsupported;
 }
 
 export function useSigner() {

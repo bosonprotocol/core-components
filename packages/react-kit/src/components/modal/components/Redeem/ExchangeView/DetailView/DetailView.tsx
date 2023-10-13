@@ -49,7 +49,11 @@ import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
-import { useAccount } from "../../../../../../hooks/connection/connection";
+import {
+  useAccount,
+  useChainId,
+  useIsChainUnsupported
+} from "../../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -334,6 +338,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     openseaLinkToOriginalMainnetCollection,
     contactSellerForExchangeUrl
   } = config;
+  const isChainUnsupported = useIsChainUnsupported();
   const displayFloat = useDisplayFloat();
   const { address } = useAccount();
   const isBuyer = exchange?.buyer.wallet === address?.toLowerCase();
@@ -417,8 +422,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   const totalHours = voucherRedeemableUntilDate.diff(nowDate, "hours");
   const redeemableDays = Math.floor(totalHours / 24);
   const redeemableHours = totalHours - redeemableDays * 24;
-
-  const isChainUnsupported = getItemFromStorage("isChainUnsupported", false);
 
   const handleCancel = () => {
     if (!exchange) {
