@@ -108,7 +108,7 @@ export default function RedeemWrapper({
         }
       }}
     >
-      <RedeemNonModal {...props} />
+      <RedeemNonModal hideModal={hideModal} {...props} />
     </NonModal>
   );
 }
@@ -127,6 +127,14 @@ const getInitialStep = (
     : widgetAction === RedemptionWidgetAction.EXCHANGE_DETAILS
     ? ActiveStep.EXCHANGE_VIEW
     : ActiveStep.REDEEM_FORM_CONFIRMATION;
+};
+const getPreviousSteps = (
+  widgetAction: RedemptionWidgetAction,
+  showRedemptionOverview: boolean
+) => {
+  return widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+    ? [ActiveStep.REDEEM_FORM]
+    : [];
 };
 function RedeemNonModal({
   sellerIds,
@@ -147,12 +155,17 @@ function RedeemNonModal({
   expireVoucherViewOnSuccess,
   cancellationViewOnSuccess,
   confirmationViewOnSuccess,
-  forcedAccount
-}: Omit<RedeemNonModalProps, "hideModal">) {
+  forcedAccount,
+  hideModal
+}: RedeemNonModalProps) {
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
-  const { showRedemptionOverview, widgetAction, exchangeState } =
-    useRedemptionContext();
+  const {
+    showRedemptionOverview,
+    widgetAction,
+    exchangeState,
+    deliveryInfo: initialDeliveryInfo
+  } = useRedemptionContext();
   const seller = sellers?.[0];
   const emailPreference =
     seller?.metadata?.contactPreference === ContactPreference.XMTP_AND_EMAIL ||
@@ -196,7 +209,7 @@ function RedeemNonModal({
     previousStep: ActiveStep[];
     currentStep: ActiveStep;
   }>({
-    previousStep: [],
+    previousStep: getPreviousSteps(widgetAction, showRedemptionOverview),
     currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
   const {
@@ -299,6 +312,7 @@ function RedeemNonModal({
         validationSchema={validationSchema}
         onSubmit={() => {}} // eslint-disable-line @typescript-eslint/no-empty-function
         initialValues={
+          initialDeliveryInfo ||
           mockedDeliveryAddress || {
             [FormModel.formFields.name.name]: "",
             [FormModel.formFields.streetNameAndNumber.name]: "",
@@ -478,6 +492,7 @@ function RedeemNonModal({
                     confirmationViewOnSuccess?.(...args);
                   }}
                   exchange={exchange || selectedExchange || null}
+                  hideModal={hideModal}
                 />
               ) : currentStep === ActiveStep.REDEEM_SUCESS ? (
                 <RedeemSuccess

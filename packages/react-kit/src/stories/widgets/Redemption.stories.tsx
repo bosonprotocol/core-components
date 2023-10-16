@@ -65,3 +65,66 @@ Redemption.args = {
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];
+
+export const RedemptionCallbacks: ComponentStory<typeof RedemptionWidget> =
+  Template.bind({});
+
+RedemptionCallbacks.args = {
+  ...Redemption.args,
+  postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksThenClose: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksThenClose.args = {
+  ...Redemption.args,
+  postDeliveryInfoUrl: "http://localhost:3666/deliveryInfoThenClose",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksRedeemConfirm: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksRedeemConfirm.args = {
+  ...Redemption.args,
+  showRedemptionOverview: false,
+  widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
+  exchangeId: "133",
+  deliveryInfo: process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
+    ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
+    : undefined,
+  postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksFailure: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksFailure.args = {
+  ...Redemption.args,
+  postDeliveryInfoUrl: "http://localhost:3666/fail",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksFailure2: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksFailure2.args = {
+  ...Redemption.args,
+  showRedemptionOverview: false,
+  widgetAction: RedemptionWidgetAction.REDEEM_FORM,
+  exchangeId: "133",
+  postDeliveryInfoUrl: "http://localhost:3666/fail2",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
