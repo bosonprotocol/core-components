@@ -718,6 +718,21 @@ type ExchangeEventLog implements EventLog @entity {
   exchange: Exchange!
 }
 
+type ConditionalCommitAuthorizedEventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  executedBy: Bytes!
+  
+  offerId: String!
+  groupId: String!
+  tokenId: BigInt!
+  gating: Int!
+  commitCount: BigInt!
+  maxCommits: BigInt!
+}
+
 type FundsEventLog implements EventLog @entity {
   id: ID!
   hash: String!
