@@ -50,6 +50,7 @@ import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
 import { useAccount } from "../../../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 
 const colors = theme.colors.light;
 
@@ -327,6 +328,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   onRedeem,
   exchangePolicyCheckResult
 }) => {
+  const core = useCoreSDKWithContext();
   const { isLteXS } = useBreakpoints();
   const config = useConfigContext();
   const {
@@ -588,6 +590,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         <Break />
         {offer.condition && (
           <TokenGated
+            coreSDK={core}
             offer={offer}
             commitProxyAddress={commitProxyAddress}
             openseaLinkToOriginalMainnetCollection={
