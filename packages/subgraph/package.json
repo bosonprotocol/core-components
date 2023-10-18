@@ -32,6 +32,6 @@
     "deploy:staging:goerli": "npm run manifest:staging:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-staging",
     "deploy:production": "npm run manifest:production && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/polygon",
     "deploy:production:ethereum": "npm run manifest:production:ethereum && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/ethereum",
-    "test": "npm run manifest:local && graph test"
+    "test": "npm run manifest:local && graph test -v 0.5.4"
   }
 }
