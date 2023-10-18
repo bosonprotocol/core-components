@@ -38,7 +38,7 @@ type RedemptionProps = {
 type WidgetProps = RedemptionProps &
   IpfsProviderProps &
   Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
-  RedemptionContextProps &
+  Omit<RedemptionContextProps, "setWidgetAction"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;

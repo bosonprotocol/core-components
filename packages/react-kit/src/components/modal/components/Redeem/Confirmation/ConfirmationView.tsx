@@ -5,6 +5,7 @@ import Confirmation, { ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
 import { theme } from "../../../../../theme";
+import { useAccount } from "wagmi";
 
 const colors = theme.colors.light;
 
@@ -29,6 +30,7 @@ export function ConfirmationView({
     ? getAddress(exchange.seller.assistant)
     : "";
   const dispatch = useNonModalContext();
+  const { address } = useAccount();
   useEffect(() => {
     dispatch({
       payload: {
@@ -45,7 +47,13 @@ export function ConfirmationView({
   }, [dispatch]);
   return (
     <>
-      {exchange ? (
+      {!exchange ? (
+        <p>Exchange could not be retrieved.</p>
+      ) : exchange.buyer?.wallet?.toLowerCase() !== address?.toLowerCase() ? (
+        <p>You do not own this exchange.</p>
+      ) : exchange.state !== "COMMITTED" ? (
+        <p>Invalid exchange state.</p>
+      ) : (
         <Confirmation
           exchangeId={exchange.id}
           offerId={offerId as string}
@@ -57,8 +65,6 @@ export function ConfirmationView({
           onSuccess={onSuccess}
           hideModal={hideModal}
         />
-      ) : (
-        <p>Exchange could not be retrieved</p>
       )}
     </>
   );

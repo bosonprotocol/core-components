@@ -95,7 +95,7 @@ RedemptionCallbacksRedeemConfirm.args = {
   ...Redemption.args,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
-  exchangeId: "133",
+  exchangeId: "149",
   deliveryInfo: process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)
     : undefined,
@@ -123,8 +123,56 @@ RedemptionCallbacksFailure2.args = {
   ...Redemption.args,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.REDEEM_FORM,
-  exchangeId: "133",
+  exchangeId: "149",
   postDeliveryInfoUrl: "http://localhost:3666/fail2",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksFailure3: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksFailure3.args = {
+  ...Redemption.args,
+  showRedemptionOverview: false,
+  widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
+  exchangeId: "149",
+  deliveryInfo: {
+    name: "TOTO",
+    streetNameAndNumber: "1 grand place",
+    city: "LILLE",
+    state: "NORD",
+    zip: "59000",
+    country: "FR",
+    email: "toto@mail.com",
+    phone: "+33123456789"
+  },
+  postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
+  postRedemptionSubmittedUrl: "http://localhost:3666/fail3",
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+};
+
+export const RedemptionCallbacksFailure4: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionCallbacksFailure4.args = {
+  ...Redemption.args,
+  showRedemptionOverview: false,
+  widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
+  exchangeId: "149",
+  deliveryInfo: {
+    name: "TOTO",
+    streetNameAndNumber: "1 grand place",
+    city: "LILLE",
+    state: "NORD",
+    zip: "59000",
+    country: "FR",
+    email: "toto@mail.com",
+    phone: "+33123456789"
+  },
+  postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
+  postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
+  postRedemptionConfirmedUrl: "http://localhost:3666/fail4"
 };

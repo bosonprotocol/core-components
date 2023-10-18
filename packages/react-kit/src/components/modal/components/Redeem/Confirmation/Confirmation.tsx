@@ -371,13 +371,13 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               console.error("Error while redeeming", error);
               // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
               if (isTxPending) {
-                postRedemptionSubmitted?.({
+                postRedemptionConfirmed?.({
                   redemptionInfo,
                   isError: true,
                   error: { ...error }
                 });
               } else {
-                postRedemptionConfirmed?.({
+                postRedemptionSubmitted?.({
                   redemptionInfo,
                   isError: true,
                   error: { ...error }

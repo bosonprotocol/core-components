@@ -43,6 +43,56 @@ export type DeliveryInfoCallbackResponse = {
   resume: boolean;
 };
 
+export type RedeemTransactionSubmittedCallbackResponse = {
+  accepted: boolean;
+  reason: string;
+};
+
+export type RedeemTransactionConfirmedCallbackResponse = {
+  accepted: boolean;
+  reason: string;
+};
+
+async function fetchAndReadResponse(
+  step: "deliveryInfo" | "redemptionSubmitted" | "redemptionConfirmed",
+  input: RequestInfo | URL,
+  init?: RequestInit | undefined
+): Promise<
+  | DeliveryInfoCallbackResponse
+  | RedeemTransactionSubmittedCallbackResponse
+  | RedeemTransactionConfirmedCallbackResponse
+> {
+  try {
+    const response = await fetch(input, init);
+    const isTrueOrOkOrYes = (s: string) =>
+      !!s && ["true", "ok", "yes"].includes(s.toLowerCase());
+    let responseBody;
+    try {
+      responseBody = await response.json();
+    } catch {}
+    const accepted =
+      response.ok && isTrueOrOkOrYes(responseBody?.accepted?.toString());
+    if (!accepted) {
+      throw new Error(responseBody?.reason?.toString() || response.statusText);
+    }
+    return {
+      accepted,
+      resume:
+        step !== "deliveryInfo"
+          ? undefined
+          : isTrueOrOkOrYes(responseBody?.resume?.toString()),
+      reason: ""
+    };
+  } catch (error) {
+    console.error(`An error happened when posting ${step}: ${error}`);
+    return {
+      accepted: false,
+      reason: (error as Error).toString(),
+      resume: step !== "deliveryInfo" ? undefined : false
+    };
+  }
+}
+
 function postDeliveryInfoCallback(
   postDeliveryInfoUrl: string,
   postDeliveryInfoHeaders: { [key: string]: string } | undefined
@@ -60,43 +110,18 @@ function postDeliveryInfoCallback(
     const signature = signer
       ? await signer.signMessage(JSON.stringify(message))
       : undefined;
-    try {
-      const response = await fetch(postDeliveryInfoUrl, {
-        method: "POST",
-        body: JSON.stringify({
-          message,
-          signature
-        }),
-        headers: {
-          "content-type": "application/json;charset=UTF-8",
-          ...postDeliveryInfoHeaders
-        }
-      });
-      const isTrueOrOkOrYes = (s: string) =>
-        !!s && ["true", "ok", "yes"].includes(s.toLowerCase());
-      let responseBody;
-      try {
-        responseBody = await response.json();
-      } catch {}
-      const accepted =
-        response.ok && isTrueOrOkOrYes(responseBody?.accepted?.toString());
-      const resume =
-        accepted && isTrueOrOkOrYes(responseBody?.resume?.toString());
-      const reason = accepted
-        ? ""
-        : responseBody?.reason?.toString() || response.statusText;
-      return {
-        accepted,
-        resume,
-        reason
-      };
-    } catch (error) {
-      return {
-        accepted: false,
-        reason: (error as Error).toString(),
-        resume: false
-      };
-    }
+    return fetchAndReadResponse("deliveryInfo", postDeliveryInfoUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        step: "deliveryInfo",
+        message,
+        signature
+      }),
+      headers: {
+        "content-type": "application/json;charset=UTF-8",
+        ...postDeliveryInfoHeaders
+      }
+    }) as Promise<DeliveryInfoCallbackResponse>;
   };
 }
 
@@ -104,21 +129,29 @@ function postRedemptionSubmittedCallback(
   postRedemptionSubmittedUrl: string,
   postRedemptionSubmittedHeaders: { [key: string]: string } | undefined
 ) {
-  return async (message: RedeemTransactionSubmittedMessage) => {
+  return async (
+    message: RedeemTransactionSubmittedMessage
+  ): Promise<RedeemTransactionConfirmedCallbackResponse> => {
     if (!postRedemptionSubmittedUrl) {
       throw new Error(
         "[postRedemptionSubmittedCallback] postRedemptionSubmittedUrl is not defined"
       );
     }
-    // TODO: get response from server and throw exception in case of an error
-    await fetch(postRedemptionSubmittedUrl, {
-      method: "POST",
-      body: JSON.stringify(message),
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-        ...postRedemptionSubmittedHeaders
+    return fetchAndReadResponse(
+      "redemptionSubmitted",
+      postRedemptionSubmittedUrl,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          step: "redemptionSubmitted",
+          message
+        }),
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+          ...postRedemptionSubmittedHeaders
+        }
       }
-    });
+    ) as Promise<RedeemTransactionConfirmedCallbackResponse>;
   };
 }
 
@@ -126,21 +159,29 @@ function postRedemptionConfirmedCallback(
   postRedemptionConfirmedUrl: string,
   postRedemptionConfirmedHeaders: { [key: string]: string } | undefined
 ) {
-  return async (message: RedeemTransactionConfirmedMessage) => {
+  return async (
+    message: RedeemTransactionConfirmedMessage
+  ): Promise<RedeemTransactionSubmittedCallbackResponse> => {
     if (!postRedemptionConfirmedUrl) {
       throw new Error(
-        "[postDeliveryInfoCallback] postDeliveryInfoUrl is not defined"
+        "[postRedemptionConfirmedCallback] postRedemptionConfirmedUrl is not defined"
       );
     }
-    // TODO: get response from server and throw exception in case of an error
-    await fetch(postRedemptionConfirmedUrl, {
-      method: "POST",
-      body: JSON.stringify(message),
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-        ...postRedemptionConfirmedHeaders
+    return fetchAndReadResponse(
+      "redemptionConfirmed",
+      postRedemptionConfirmedUrl,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          step: "redemptionConfirmed",
+          message
+        }),
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+          ...postRedemptionConfirmedHeaders
+        }
       }
-    });
+    ) as Promise<RedeemTransactionSubmittedCallbackResponse>;
   };
 }
 

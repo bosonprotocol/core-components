@@ -4,7 +4,7 @@ import { RedemptionContext, RedemptionContextProps } from "./RedemptionContext";
 export function RedemptionProvider({
   children,
   ...rest
-}: RedemptionContextProps & { children: ReactNode }) {
+}: Omit<RedemptionContextProps, "setWidgetAction"> & { children: ReactNode }) {
   const [widgetAction, setWidgetAction] = useState(rest.widgetAction);
   return (
     <RedemptionContext.Provider
