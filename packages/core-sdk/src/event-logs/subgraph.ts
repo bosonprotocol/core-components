@@ -20,7 +20,7 @@ export async function getConditionalCommitAuthorizedEventLogs(
   queryVars: GetConditionalCommitAuthorizedEventLogsQueryQueryVariables = {}
 ): Promise<BaseConditionalCommitAuthorizedEventLogsFieldsFragment[]> {
   const subgraphSdk = getSubgraphSdk(subgraphUrl);
-  const { conditionalCommitAuthorizedEventLogs = [] } = await subgraphSdk.getConditionalCommitAuthorizedEventLogsQuery(queryVars);
+  const { conditionalCommitAuthorizedEventLogs = [] } =
+    await subgraphSdk.getConditionalCommitAuthorizedEventLogsQuery(queryVars);
   return conditionalCommitAuthorizedEventLogs;
 }
-

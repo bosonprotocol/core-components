@@ -1,6 +1,9 @@
 import { BaseCoreSDK } from "./../mixins/base-core-sdk";
 import * as subgraph from "../subgraph";
-import { getEventLogs, getConditionalCommitAuthorizedEventLogs } from "./subgraph";
+import {
+  getEventLogs,
+  getConditionalCommitAuthorizedEventLogs
+} from "./subgraph";
 
 export class EventLogsMixin extends BaseCoreSDK {
   /**
@@ -21,6 +24,9 @@ export class EventLogsMixin extends BaseCoreSDK {
   public async getConditionalCommitAuthorizedEventLogs(
     queryVars?: subgraph.GetConditionalCommitAuthorizedEventLogsQueryQueryVariables
   ) {
-    return getConditionalCommitAuthorizedEventLogs(this._subgraphUrl, queryVars);
+    return getConditionalCommitAuthorizedEventLogs(
+      this._subgraphUrl,
+      queryVars
+    );
   }
 }
