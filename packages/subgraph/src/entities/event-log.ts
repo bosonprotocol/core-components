@@ -254,7 +254,7 @@ export function saveConditionalCommitAuthorizedEventLog(
   eventLog.hash = txHash;
   eventLog.type = type;
   eventLog.timestamp = timestamp;
-  eventLog.executedBy = changetype<Bytes>(buyerAddress.toString());
+  eventLog.buyerAddress = buyerAddress.toString();
   eventLog.commitCount = commitCount;
   eventLog.maxCommits = maxCommits;
   eventLog.gating = gating;

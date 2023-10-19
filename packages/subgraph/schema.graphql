@@ -676,6 +676,7 @@ enum EventType {
   DISPUTE_DECIDED
   ESCALATED_DISPUTE_REFUSED
   ESCALATED_DISPUTE_EXPIRED
+  CONDITIONAL_COMMIT
 }
 
 interface EventLog {
@@ -723,7 +724,7 @@ type ConditionalCommitAuthorizedEventLog @entity {
   hash: String!
   type: EventType!
   timestamp: BigInt!
-  executedBy: Bytes!
+  buyerAddress: String!
   
   offerId: String!
   groupId: String!
