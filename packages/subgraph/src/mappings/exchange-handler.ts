@@ -7,12 +7,16 @@ import {
   VoucherExtended,
   VoucherTransferred,
   ExchangeCompleted,
-  VoucherExpired
+  VoucherExpired,
+  ConditionalCommitAuthorized
 } from "../../generated/BosonExchangeHandler/IBosonExchangeHandler";
-import { Exchange, Offer } from "../../generated/schema";
+import { ConditionEntity, Exchange, Offer } from "../../generated/schema";
 
 import { saveMetadata } from "../entities/metadata/handler";
-import { saveExchangeEventLogs } from "../entities/event-log";
+import {
+  saveConditionalCommitAuthorizedEventLog,
+  saveExchangeEventLogs
+} from "../entities/event-log";
 
 export function handleBuyerCommittedEvent(event: BuyerCommitted): void {
   const exchangeFromEvent = event.params.exchange;
@@ -221,5 +225,30 @@ export function handleExchangeCompletedEvent(event: ExchangeCompleted): void {
       event.params.executedBy,
       exchangeId.toString()
     );
+  }
+}
+
+export function handleConditionalCommitAuthorizedEvent(
+  event: ConditionalCommitAuthorized
+): void {
+  const offer = Offer.load(event.params.offerId.toString());
+
+  if (offer && offer.condition) {
+    const offerCondition = ConditionEntity.load(offer.condition as string);
+    if (offerCondition) {
+      saveConditionalCommitAuthorizedEventLog(
+        event.transaction.hash.toHexString(),
+        event.logIndex,
+        "CONDITIONAL_COMMIT",
+        event.block.timestamp,
+        event.params.buyerAddress,
+        event.params.offerId,
+        event.params.commitCount,
+        event.params.maxCommits,
+        event.params.gating,
+        event.params.tokenId,
+        offerCondition.id
+      );
+    }
   }
 }
