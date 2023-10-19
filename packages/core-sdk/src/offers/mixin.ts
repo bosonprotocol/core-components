@@ -476,8 +476,6 @@ export class OfferMixin extends BaseCoreSDK {
       const [product] = products; // it should be only one
       const productOffers = product.variants.map((variant) => variant.offer.id);
 
-      // commits per wallet of an offer = num of exchanges of the groupId
-      // commits per token = num of conditionalCommitLogs with that tokenId
       const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
         exchangesFilter: {
           offer_in: productOffers,
