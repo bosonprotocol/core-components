@@ -344,7 +344,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(sellerWallet, tokenId);
           condition = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS.toLowerCase(),
             gatingType: GatingType.PerAddress,
@@ -449,7 +449,7 @@ describe("core-sdk", () => {
           await ensureMintedERC721(buyerWallet, tokenId);
           groupToCreate = {
             offerIds: [createdOffer.id],
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -534,7 +534,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(buyerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -626,7 +626,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(sellerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -731,7 +731,7 @@ describe("core-sdk", () => {
         } else if (token === "ERC721-specific") {
           await ensureMintedERC721(buyerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -826,7 +826,7 @@ describe("core-sdk", () => {
         } else if (token === "ERC721-specific") {
           await ensureMintedERC721(sellerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
