@@ -1,7 +1,9 @@
 import { getSubgraphSdk } from "../utils/graphql";
 import {
   GetEventLogsQueryQueryVariables,
-  BaseEventLogFieldsFragment
+  BaseEventLogFieldsFragment,
+  GetConditionalCommitAuthorizedEventLogsQueryQueryVariables,
+  BaseConditionalCommitAuthorizedEventLogsFieldsFragment
 } from "../subgraph";
 
 export async function getEventLogs(
@@ -12,3 +14,13 @@ export async function getEventLogs(
   const { eventLogs = [] } = await subgraphSdk.getEventLogsQuery(queryVars);
   return eventLogs;
 }
+
+export async function getConditionalCommitAuthorizedEventLogs(
+  subgraphUrl: string,
+  queryVars: GetConditionalCommitAuthorizedEventLogsQueryQueryVariables = {}
+): Promise<BaseConditionalCommitAuthorizedEventLogsFieldsFragment[]> {
+  const subgraphSdk = getSubgraphSdk(subgraphUrl);
+  const { conditionalCommitAuthorizedEventLogs = [] } = await subgraphSdk.getConditionalCommitAuthorizedEventLogsQuery(queryVars);
+  return conditionalCommitAuthorizedEventLogs;
+}
+

@@ -473,7 +473,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   ]);
   const { isConditionMet } = useCheckTokenGatedOffer({
     commitProxyAddress,
-    condition: offer.condition
+    offer
   });
   return (
     <>

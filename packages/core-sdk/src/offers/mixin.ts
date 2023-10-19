@@ -14,12 +14,14 @@ import {
   EvaluationMethod,
   GatingType
 } from "@bosonprotocol/common";
+import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
-import { batchTasks, processPromisesBatch } from "../utils/promises";
+import { batchTasks } from "../utils/promises";
 import { ExchangesMixin } from "../exchanges/mixin";
 import { EventLogsMixin } from "../event-logs/mixin";
+import { MetadataMixin } from "../metadata/mixin";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -412,26 +414,81 @@ export class OfferMixin extends BaseCoreSDK {
     offerId: subgraph.OfferFieldsFragment["id"],
     buyerAddress: string
   ): Promise<boolean> {
-    // commits per wallet = num of exchanges
-    // commits per token =
-    const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
-      exchangesFilter: {
-        offer: offerId
-      }
-    });
-    // exchanges?.[0].
-    await (this as unknown as EventLogsMixin).getEventLogs({
-      logsFilter: {}
-    });
-    const offer = exchanges?.[0]
-      ? exchanges[0].offer
-      : await this.getOfferById(offerId);
+    const offer = await this.getOfferById(offerId);
 
     if (!offer.condition) {
       return true;
     }
+    const getCanTokenIdBeUsedToCommit = async (): Promise<
+      (tokenId: string) => boolean
+    > => {
+      const conditionalCommitLogs = await (
+        this as unknown as EventLogsMixin
+      ).getConditionalCommitAuthorizedEventLogs({
+        conditionalCommitAuthorizedLogsFilter: {
+          groupId: offer.condition.id, // all offers of the same product have the same condition.id
+          buyerAddress
+        }
+      });
 
-    const currentCommits = exchanges.length;
+      const tokenIdMapWithMultipleEntries = groupBy(
+        conditionalCommitLogs,
+        (log) => log.tokenId
+      );
+      type TokenId = string;
+      // build a map of tokenId -> log with the min available commits (or the most recent log) in all the logs
+      const tokenIdToAvailableCommitsMap = new Map<
+        TokenId,
+        subgraph.BaseConditionalCommitAuthorizedEventLogsFieldsFragment
+      >();
+      Object.entries(tokenIdMapWithMultipleEntries).forEach(
+        ([tokenId, logs]) => {
+          let logWithMinAvailableCommits = logs[0];
+          for (const log of logs) {
+            const currentAvailableCommits =
+              Number(log.maxCommits) - Number(log.commitCount);
+            const savedAvailableCommits =
+              Number(logWithMinAvailableCommits.maxCommits) -
+              Number(logWithMinAvailableCommits.commitCount);
+            if (currentAvailableCommits < savedAvailableCommits) {
+              logWithMinAvailableCommits = log;
+            }
+          }
+          tokenIdToAvailableCommitsMap.set(tokenId, logWithMinAvailableCommits);
+        }
+      );
+      const canTokenIdBeUsedToCommit = (tokenId: TokenId): boolean => {
+        const log = tokenIdToAvailableCommitsMap.get(tokenId);
+        return Number(log.maxCommits) - Number(log.commitCount) > 0;
+      };
+      return canTokenIdBeUsedToCommit;
+    };
+
+    const getCurrentCommits = async (): Promise<number> => {
+      const products = await (
+        this as unknown as MetadataMixin
+      ).getAllProductsWithVariants({
+        productsFilter: {
+          variants: [`variant-${offer.id}`]
+        }
+      });
+
+      const [product] = products; // it should be only one
+      const productOffers = product.variants.map((variant) => variant.offer.id);
+
+      // commits per wallet of an offer = num of exchanges of the groupId
+      // commits per token = num of conditionalCommitLogs with that tokenId
+      const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
+        exchangesFilter: {
+          offer_in: productOffers,
+          buyer: buyerAddress
+        }
+      });
+
+      const currentCommits = exchanges.length;
+      return currentCommits;
+    };
+
     const concurrencyLimit = 5;
     const {
       minTokenId: _minTokenId,
@@ -454,6 +511,7 @@ export class OfferMixin extends BaseCoreSDK {
       if (!BigNumber.from(balance).gte(threshold)) {
         return false;
       }
+      const currentCommits = await getCurrentCommits();
       return currentCommits < maxCommits;
     }
 
@@ -468,7 +526,11 @@ export class OfferMixin extends BaseCoreSDK {
             owner: buyerAddress,
             web3Lib: this._web3Lib
           });
-          return BigNumber.from(balance).gte(threshold);
+          if (!BigNumber.from(balance).gte(threshold)) {
+            return false;
+          }
+          const currentCommits = await getCurrentCommits();
+          return currentCommits < maxCommits;
         }
         if (method === EvaluationMethod.TokenRange) {
           const promises: (() => Promise<string>)[] = [];
@@ -482,12 +544,13 @@ export class OfferMixin extends BaseCoreSDK {
               })
             );
           }
+          const currentCommits = await getCurrentCommits();
           for await (const owners of batchTasks(promises, concurrencyLimit)) {
-            if (owners.some((owner) => owner !== buyerAddress)) {
-              return false;
+            if (owners.some((owner) => owner === buyerAddress)) {
+              return currentCommits < maxCommits;
             }
           }
-          return true;
+          return false;
         }
         throw new Error(
           `Unsupported method=${method} for this tokenType=${tokenType} and gatingType=${gatingType}`
@@ -495,7 +558,26 @@ export class OfferMixin extends BaseCoreSDK {
       }
       if (gatingType === GatingType.PerTokenId) {
         if (method === EvaluationMethod.TokenRange) {
-          // TODO: implement
+          const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
+          const promises: (() => Promise<string>)[] = [];
+          for (let i = minTokenId; i <= maxTokenId; i++) {
+            const tokenId = i;
+            promises.push(() =>
+              erc721.handler.ownerOf({
+                contractAddress: tokenAddress,
+                tokenId,
+                web3Lib: this._web3Lib
+              })
+            );
+          }
+          let tokenId = minTokenId;
+          for await (const owners of batchTasks(promises, concurrencyLimit)) {
+            if (owners.some((owner) => owner === buyerAddress)) {
+              return canTokenIdBeUsedToCommit(tokenId.toString());
+            }
+            tokenId++;
+          }
+          return false;
         }
         throw new Error(
           `Unsupported method=${method} for this tokenType=${tokenType} and gatingType=${gatingType}`
@@ -521,15 +603,37 @@ export class OfferMixin extends BaseCoreSDK {
         }
         for await (const balances of batchTasks(promises, concurrencyLimit)) {
           if (
-            balances.some((balance) => !BigNumber.from(balance).gte(threshold))
+            balances.some((balance) => BigNumber.from(balance).gte(threshold))
           ) {
-            return false;
+            return true;
           }
         }
-        return true;
+        return false;
       }
       if (gatingType === GatingType.PerTokenId) {
-        // TODO: implement
+        const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
+        const promises: (() => Promise<string>)[] = [];
+        for (let i = minTokenId; i <= maxTokenId; i++) {
+          const tokenId = i;
+          promises.push(() =>
+            erc1155.handler.balanceOf({
+              contractAddress: tokenAddress,
+              tokenId,
+              owner: buyerAddress,
+              web3Lib: this._web3Lib
+            })
+          );
+        }
+        let tokenId = minTokenId;
+        for await (const balances of batchTasks(promises, concurrencyLimit)) {
+          if (
+            balances.some((balance) => BigNumber.from(balance).gte(threshold))
+          ) {
+            return canTokenIdBeUsedToCommit(tokenId.toString());
+          }
+          tokenId++;
+        }
+        return false;
       }
       throw new Error(
         `Unsupported gatingType=${gatingType} for this tokenType=${tokenType}`
