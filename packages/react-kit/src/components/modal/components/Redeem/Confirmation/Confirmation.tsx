@@ -149,7 +149,6 @@ export default function Confirmation({
         }
       });
       console.error("Error while confirming Redeem", error);
-      throw error;
     }
   };
   const handleConfirmRedemptionInfoWithXMTP = async () => {
@@ -158,7 +157,6 @@ export default function Confirmation({
       handleConfirmRedeem();
       setRedemptionInfoError(null);
     } catch (error) {
-      setIsLoading(false);
       Sentry.captureException(error, {
         extra: {
           action: "redeem",
@@ -175,7 +173,8 @@ export default function Confirmation({
         error
       );
       setRedemptionInfoError(error as Error);
-      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleConfirmRedemptionInfoWithCallback = async () => {
@@ -209,7 +208,6 @@ export default function Confirmation({
         setResumeRedemption(true);
       }
     } catch (error) {
-      setIsLoading(false);
       Sentry.captureException(error, {
         extra: {
           action: "redeem",
@@ -223,7 +221,8 @@ export default function Confirmation({
       });
       console.error("Error while calling deliveryInfo callback", error);
       setRedemptionInfoError(error as Error);
-      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleOnBackClick = () => {
@@ -329,10 +328,6 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                 : handleConfirmRedemptionInfoWithCallback()
               : handleConfirmRedemptionInfoWithXMTP()
           }
-          // Button should be disabled if:
-          // - isLoading
-          // - OR !postDeliveryInfo and !isInitializationValid
-          // - OR postDeliveryInfo and redemptionInfoAccepted and !resumeRedemption
           disabled={
             isLoading ||
             (!isInitializationValid && !postDeliveryInfo) ||
