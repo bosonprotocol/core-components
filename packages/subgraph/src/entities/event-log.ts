@@ -254,12 +254,13 @@ export function saveConditionalCommitAuthorizedEventLog(
   eventLog.hash = txHash;
   eventLog.type = type;
   eventLog.timestamp = timestamp;
-  eventLog.buyerAddress = buyerAddress.toString();
+  eventLog.buyerAddress = buyerAddress;
   eventLog.commitCount = commitCount;
   eventLog.maxCommits = maxCommits;
   eventLog.gating = gating;
   eventLog.tokenId = tokenId;
   eventLog.groupId = groupId;
+  eventLog.offerId = offerId.toString();
   eventLog.save();
 
   return eventLogId;

@@ -416,7 +416,7 @@ export class OfferMixin extends BaseCoreSDK {
   ): Promise<boolean> {
     const offer = await this.getOfferById(offerId);
 
-    if (!offer.condition) {
+    if (!offer?.condition) {
       return true;
     }
     const getCanTokenIdBeUsedToCommit = async (): Promise<
@@ -458,6 +458,9 @@ export class OfferMixin extends BaseCoreSDK {
         }
       );
       const canTokenIdBeUsedToCommit = (tokenId: TokenId): boolean => {
+        if (!tokenIdToAvailableCommitsMap.has(tokenId)) {
+          return true;
+        }
         const log = tokenIdToAvailableCommitsMap.get(tokenId);
         return Number(log.maxCommits) - Number(log.commitCount) > 0;
       };
@@ -465,21 +468,12 @@ export class OfferMixin extends BaseCoreSDK {
     };
 
     const getCurrentCommits = async (): Promise<number> => {
-      const products = await (
-        this as unknown as MetadataMixin
-      ).getAllProductsWithVariants({
-        productsFilter: {
-          variants: [`variant-${offer.id}`]
-        }
-      });
-
-      const [product] = products; // it should be only one
-      const productOffers = product.variants.map((variant) => variant.offer.id);
-
       const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
         exchangesFilter: {
-          offer_in: productOffers,
-          buyer: buyerAddress
+          buyer: buyerAddress,
+          offer_: {
+            condition: offer.condition.id
+          }
         }
       });
 
@@ -570,8 +564,11 @@ export class OfferMixin extends BaseCoreSDK {
           }
           let tokenId = minTokenId;
           for await (const owners of batchTasks(promises, concurrencyLimit)) {
-            if (owners.some((owner) => owner === buyerAddress)) {
-              return canTokenIdBeUsedToCommit(tokenId.toString());
+            if (
+              owners.some((owner) => owner === buyerAddress) &&
+              canTokenIdBeUsedToCommit(tokenId.toString())
+            ) {
+              return true;
             }
             tokenId++;
           }
@@ -625,9 +622,12 @@ export class OfferMixin extends BaseCoreSDK {
         let tokenId = minTokenId;
         for await (const balances of batchTasks(promises, concurrencyLimit)) {
           if (
-            balances.some((balance) => BigNumber.from(balance).gte(threshold))
+            balances.some((balance) =>
+              BigNumber.from(balance).gte(threshold)
+            ) &&
+            canTokenIdBeUsedToCommit(tokenId.toString())
           ) {
-            return canTokenIdBeUsedToCommit(tokenId.toString());
+            return true;
           }
           tokenId++;
         }
