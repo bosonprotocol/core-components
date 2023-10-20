@@ -11,11 +11,17 @@ import {
   TransactionResponse,
   Log,
   TokenType,
-  EvaluationMethod
+  EvaluationMethod,
+  GatingType
 } from "@bosonprotocol/common";
+import groupBy from "lodash/groupBy";
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
+import { batchTasks } from "../utils/promises";
+import { ExchangesMixin } from "../exchanges/mixin";
+import { EventLogsMixin } from "../event-logs/mixin";
+import { MetadataMixin } from "../metadata/mixin";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -405,53 +411,231 @@ export class OfferMixin extends BaseCoreSDK {
   }
 
   public async checkTokenGatedCondition(
-    offerCondition: subgraph.OfferFieldsFragment["condition"],
+    offerId: subgraph.OfferFieldsFragment["id"],
     buyerAddress: string
   ): Promise<boolean> {
+    const offer = await this.getOfferById(offerId);
+
+    if (!offer?.condition) {
+      return true;
+    }
+    const getCanTokenIdBeUsedToCommit = async (): Promise<
+      (tokenId: string) => boolean
+    > => {
+      const conditionalCommitLogs = await (
+        this as unknown as EventLogsMixin
+      ).getConditionalCommitAuthorizedEventLogs({
+        conditionalCommitAuthorizedLogsFilter: {
+          groupId: offer.condition.id, // all offers of the same product have the same condition.id
+          buyerAddress
+        }
+      });
+
+      const tokenIdMapWithMultipleEntries = groupBy(
+        conditionalCommitLogs,
+        (log) => log.tokenId
+      );
+      type TokenId = string;
+      // build a map of tokenId -> log with the min available commits (or the most recent log) in all the logs
+      const tokenIdToAvailableCommitsMap = new Map<
+        TokenId,
+        subgraph.BaseConditionalCommitAuthorizedEventLogsFieldsFragment
+      >();
+      Object.entries(tokenIdMapWithMultipleEntries).forEach(
+        ([tokenId, logs]) => {
+          let logWithMinAvailableCommits = logs[0];
+          for (const log of logs) {
+            const currentAvailableCommits =
+              Number(log.maxCommits) - Number(log.commitCount);
+            const savedAvailableCommits =
+              Number(logWithMinAvailableCommits.maxCommits) -
+              Number(logWithMinAvailableCommits.commitCount);
+            if (currentAvailableCommits < savedAvailableCommits) {
+              logWithMinAvailableCommits = log;
+            }
+          }
+          tokenIdToAvailableCommitsMap.set(tokenId, logWithMinAvailableCommits);
+        }
+      );
+      const canTokenIdBeUsedToCommit = (tokenId: TokenId): boolean => {
+        if (!tokenIdToAvailableCommitsMap.has(tokenId)) {
+          return true;
+        }
+        const log = tokenIdToAvailableCommitsMap.get(tokenId);
+        return Number(log.maxCommits) - Number(log.commitCount) > 0;
+      };
+      return canTokenIdBeUsedToCommit;
+    };
+
+    const getCurrentCommits = async (): Promise<number> => {
+      const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
+        exchangesFilter: {
+          buyer: buyerAddress,
+          offer_: {
+            condition: offer.condition.id
+          }
+        }
+      });
+
+      const currentCommits = exchanges.length;
+      return currentCommits;
+    };
+
+    const concurrencyLimit = 5;
     const {
-      minTokenId: tokenId,
+      minTokenId: _minTokenId,
+      maxTokenId: _maxTokenId,
       tokenType,
       threshold,
       method,
-      tokenAddress
-    } = offerCondition;
+      tokenAddress,
+      gatingType,
+      maxCommits: _maxCommits
+    } = offer.condition;
+    const maxCommits = Number(_maxCommits);
+
     if (tokenType === TokenType.FungibleToken) {
       const balance: string = await erc20.handler.balanceOf({
         contractAddress: tokenAddress,
         owner: buyerAddress,
         web3Lib: this._web3Lib
       });
-      return BigNumber.from(balance).gte(threshold);
-    }
-    if (tokenType === TokenType.NonFungibleToken) {
-      if (method === EvaluationMethod.Threshold) {
-        const balance: string = await erc721.handler.balanceOf({
-          contractAddress: tokenAddress,
-          owner: buyerAddress,
-          web3Lib: this._web3Lib
-        });
-        return BigNumber.from(balance).gte(threshold);
+      if (!BigNumber.from(balance).gte(threshold)) {
+        return false;
       }
-      if (method === EvaluationMethod.SpecificToken) {
-        const owner: string = await erc721.handler.ownerOf({
-          contractAddress: tokenAddress,
-          tokenId,
-          web3Lib: this._web3Lib
-        });
-        return owner === buyerAddress;
+      const currentCommits = await getCurrentCommits();
+      return currentCommits < maxCommits;
+    }
+
+    const minTokenId = Number(_minTokenId);
+    const maxTokenId = Number(_maxTokenId);
+
+    if (tokenType === TokenType.NonFungibleToken) {
+      if (gatingType === GatingType.PerAddress) {
+        if (method === EvaluationMethod.Threshold) {
+          const balance: string = await erc721.handler.balanceOf({
+            contractAddress: tokenAddress,
+            owner: buyerAddress,
+            web3Lib: this._web3Lib
+          });
+          if (!BigNumber.from(balance).gte(threshold)) {
+            return false;
+          }
+          const currentCommits = await getCurrentCommits();
+          return currentCommits < maxCommits;
+        }
+        if (method === EvaluationMethod.TokenRange) {
+          const promises: (() => Promise<string>)[] = [];
+          for (let i = minTokenId; i <= maxTokenId; i++) {
+            const tokenId = i;
+            promises.push(() =>
+              erc721.handler.ownerOf({
+                contractAddress: tokenAddress,
+                tokenId,
+                web3Lib: this._web3Lib
+              })
+            );
+          }
+          const currentCommits = await getCurrentCommits();
+          for await (const owners of batchTasks(promises, concurrencyLimit)) {
+            if (owners.some((owner) => owner === buyerAddress)) {
+              return currentCommits < maxCommits;
+            }
+          }
+          return false;
+        }
+        throw new Error(
+          `Unsupported method=${method} for this tokenType=${tokenType} and gatingType=${gatingType}`
+        );
+      }
+      if (gatingType === GatingType.PerTokenId) {
+        if (method === EvaluationMethod.TokenRange) {
+          const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
+          const promises: (() => Promise<string>)[] = [];
+          for (let i = minTokenId; i <= maxTokenId; i++) {
+            const tokenId = i;
+            promises.push(() =>
+              erc721.handler.ownerOf({
+                contractAddress: tokenAddress,
+                tokenId,
+                web3Lib: this._web3Lib
+              })
+            );
+          }
+          let tokenId = minTokenId;
+          for await (const owners of batchTasks(promises, concurrencyLimit)) {
+            if (
+              owners.some((owner) => owner === buyerAddress) &&
+              canTokenIdBeUsedToCommit(tokenId.toString())
+            ) {
+              return true;
+            }
+            tokenId++;
+          }
+          return false;
+        }
+        throw new Error(
+          `Unsupported method=${method} for this tokenType=${tokenType} and gatingType=${gatingType}`
+        );
       }
       throw new Error(
-        `Unsupported method=${method} for this tokenType=${tokenType}`
+        `Unsupported gatingType=${gatingType} for this tokenType=${tokenType}`
       );
     }
     if (tokenType === TokenType.MultiToken) {
-      const balance: string = await erc1155.handler.balanceOf({
-        contractAddress: tokenAddress,
-        tokenId,
-        owner: buyerAddress,
-        web3Lib: this._web3Lib
-      });
-      return BigNumber.from(balance).gte(threshold);
+      if (gatingType === GatingType.PerAddress) {
+        const promises: (() => Promise<string>)[] = [];
+        for (let i = minTokenId; i <= maxTokenId; i++) {
+          const tokenId = i;
+          promises.push(() =>
+            erc1155.handler.balanceOf({
+              contractAddress: tokenAddress,
+              tokenId,
+              owner: buyerAddress,
+              web3Lib: this._web3Lib
+            })
+          );
+        }
+        for await (const balances of batchTasks(promises, concurrencyLimit)) {
+          if (
+            balances.some((balance) => BigNumber.from(balance).gte(threshold))
+          ) {
+            return true;
+          }
+        }
+        return false;
+      }
+      if (gatingType === GatingType.PerTokenId) {
+        const canTokenIdBeUsedToCommit = await getCanTokenIdBeUsedToCommit();
+        const promises: (() => Promise<string>)[] = [];
+        for (let i = minTokenId; i <= maxTokenId; i++) {
+          const tokenId = i;
+          promises.push(() =>
+            erc1155.handler.balanceOf({
+              contractAddress: tokenAddress,
+              tokenId,
+              owner: buyerAddress,
+              web3Lib: this._web3Lib
+            })
+          );
+        }
+        let tokenId = minTokenId;
+        for await (const balances of batchTasks(promises, concurrencyLimit)) {
+          if (
+            balances.some((balance) =>
+              BigNumber.from(balance).gte(threshold)
+            ) &&
+            canTokenIdBeUsedToCommit(tokenId.toString())
+          ) {
+            return true;
+          }
+          tokenId++;
+        }
+        return false;
+      }
+      throw new Error(
+        `Unsupported gatingType=${gatingType} for this tokenType=${tokenType}`
+      );
     }
     throw new Error(`Unsupported tokenType=${tokenType}`);
   }

@@ -724,7 +724,7 @@ type ConditionalCommitAuthorizedEventLog @entity {
   hash: String!
   type: EventType!
   timestamp: BigInt!
-  buyerAddress: String!
+  buyerAddress: Bytes!
   
   offerId: String!
   groupId: String!

@@ -1,9 +1,8 @@
-import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
+import { EvaluationMethod, TokenType, GatingType } from "@bosonprotocol/common";
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { Check, X } from "phosphor-react";
 import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import { theme } from "../../../../../../theme";
 import { Offer } from "../../../../../../types/offer";
@@ -19,6 +18,7 @@ interface Props {
   openseaLinkToOriginalMainnetCollection?: string;
   isConditionMet?: boolean;
   style?: CSSProperties;
+  coreSDK: CoreSDK;
 }
 
 interface Condition {
@@ -49,30 +49,41 @@ interface TokenInfo {
 }
 
 const buildMessage = (
-  coreSDK: CoreSDK,
+  getTxExplorerUrl: (
+    txHash?: string | undefined,
+    isAddress?: boolean | undefined
+  ) => string,
   condition: Condition,
   tokenInfo: TokenInfo
 ) => {
   const {
     method,
     tokenType,
-    minTokenId: tokenId,
+    minTokenId,
+    maxTokenId,
+    gatingType,
     tokenAddress,
     threshold
   } = condition;
 
+  const perWalletOrPerToken =
+    gatingType === GatingType.PerAddress ? " (per wallet)" : " (per token)";
+
+  const TokenLink = (
+    <a
+      href={getTxExplorerUrl?.(tokenAddress, true)}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {tokenAddress.slice(0, 10)}...
+    </a>
+  );
+
   if (tokenType === TokenType.FungibleToken) {
     return (
       <>
-        {tokenInfo.convertedValue.price} {tokenInfo.symbol} tokens (
-        <a
-          href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tokenAddress.slice(0, 10)}...
-        </a>
-        )
+        {tokenInfo.convertedValue.price} {tokenInfo.symbol} tokens
+        {TokenLink}
       </>
     );
   }
@@ -80,47 +91,43 @@ const buildMessage = (
     if (method === EvaluationMethod.Threshold) {
       return (
         <>
-          {threshold} tokens from{" "}
-          <a
-            href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {tokenAddress.slice(0, 10)}...
-          </a>
+          {threshold} tokens {perWalletOrPerToken} from {TokenLink}
         </>
       );
     }
-    if (method === EvaluationMethod.SpecificToken) {
+    if (method === EvaluationMethod.TokenRange) {
+      if (minTokenId === maxTokenId) {
+        return (
+          <>
+            Token ID {perWalletOrPerToken}: {minTokenId} from {TokenLink}
+          </>
+        );
+      }
       return (
         <>
-          Token ID: {tokenId} from{" "}
-          <a
-            href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {tokenAddress.slice(0, 15)}...
-          </a>
+          From token ID {minTokenId} to token ID {maxTokenId}{" "}
+          {perWalletOrPerToken} from {TokenLink}
         </>
       );
     }
   }
   if (tokenType === TokenType.MultiToken) {
+    if (minTokenId === maxTokenId) {
+      return (
+        <>
+          {threshold} x token(s) with id: {minTokenId} {perWalletOrPerToken}{" "}
+          from {TokenLink}
+        </>
+      );
+    }
     return (
       <>
-        {threshold} x token(s) with id: {tokenId} from{" "}
-        <a
-          href={coreSDK.getTxExplorerUrl?.(tokenAddress, true)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tokenAddress.slice(0, 10)}...
-        </a>
+        {threshold} x token(s) from token ID {minTokenId} to token ID{" "}
+        {maxTokenId} {perWalletOrPerToken} from {TokenLink}
       </>
     );
   }
-  return "";
+  return <></>;
 };
 
 const TokenGated = ({
@@ -128,10 +135,10 @@ const TokenGated = ({
   commitProxyAddress,
   openseaLinkToOriginalMainnetCollection,
   isConditionMet,
-  style
+  style,
+  coreSDK
 }: Props) => {
   const { condition } = offer;
-  const core = useCoreSDKWithContext();
   const [tokenInfo, setTokenInfo] = useState({
     name: "",
     decimals: "18",
@@ -150,7 +157,7 @@ const TokenGated = ({
     (async () => {
       if (condition?.tokenAddress && condition?.tokenType === 0) {
         try {
-          const { name, decimals, symbol } = await core.getExchangeTokenInfo(
+          const { name, decimals, symbol } = await coreSDK.getExchangeTokenInfo(
             condition.tokenAddress
           );
           setTokenInfo({ name, decimals: decimals?.toString(), symbol });
@@ -159,7 +166,7 @@ const TokenGated = ({
         }
       }
     })();
-  }, [condition, core]);
+  }, [condition, coreSDK]);
 
   const convertedValue = useConvertedPrice({
     value: condition?.threshold || "",
@@ -170,7 +177,7 @@ const TokenGated = ({
   if (!condition) {
     return null;
   }
-  const displayMessage = buildMessage(core, condition, {
+  const displayMessage = buildMessage(coreSDK.getTxExplorerUrl, condition, {
     convertedValue: convertedValue,
     symbol: tokenInfo.symbol
   });

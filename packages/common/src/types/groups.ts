@@ -9,7 +9,7 @@ export type GroupStruct = {
 export enum EvaluationMethod {
   None = 0,
   Threshold = 1,
-  SpecificToken = 2
+  TokenRange = 2
 }
 
 export enum GatingType {

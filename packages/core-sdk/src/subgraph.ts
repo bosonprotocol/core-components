@@ -13514,6 +13514,32 @@ export type GetDisputeResolversQueryQuery = {
   }>;
 };
 
+export type GetConditionalCommitAuthorizedEventLogsQueryQueryVariables = Exact<{
+  conditionalCommitAuthorizedLogsSkip?: InputMaybe<Scalars["Int"]>;
+  conditionalCommitAuthorizedLogsFirst?: InputMaybe<Scalars["Int"]>;
+  conditionalCommitAuthorizedLogsOrderBy?: InputMaybe<ConditionalCommitAuthorizedEventLog_OrderBy>;
+  conditionalCommitAuthorizedLogsOrderDirection?: InputMaybe<OrderDirection>;
+  conditionalCommitAuthorizedLogsFilter?: InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>;
+}>;
+
+export type GetConditionalCommitAuthorizedEventLogsQueryQuery = {
+  __typename?: "Query";
+  conditionalCommitAuthorizedEventLogs: Array<{
+    __typename?: "ConditionalCommitAuthorizedEventLog";
+    id: string;
+    hash: string;
+    groupId: string;
+    gating: number;
+    commitCount: string;
+    buyerAddress: string;
+    maxCommits: string;
+    offerId: string;
+    timestamp: string;
+    tokenId: string;
+    type: EventType;
+  }>;
+};
+
 export type SellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
@@ -15452,6 +15478,21 @@ export type BaseDisputeResolutionTermsEntityFieldsFragment = {
   escalationResponsePeriod: string;
   feeAmount: string;
   buyerEscalationDeposit: string;
+};
+
+export type BaseConditionalCommitAuthorizedEventLogsFieldsFragment = {
+  __typename?: "ConditionalCommitAuthorizedEventLog";
+  id: string;
+  hash: string;
+  groupId: string;
+  gating: number;
+  commitCount: string;
+  buyerAddress: string;
+  maxCommits: string;
+  offerId: string;
+  timestamp: string;
+  tokenId: string;
+  type: EventType;
 };
 
 export type GetDisputeByIdQueryQueryVariables = Exact<{
@@ -35607,6 +35648,21 @@ export const DisputeResolverFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
+export const BaseConditionalCommitAuthorizedEventLogsFieldsFragmentDoc = gql`
+  fragment BaseConditionalCommitAuthorizedEventLogsFields on ConditionalCommitAuthorizedEventLog {
+    id
+    hash
+    groupId
+    gating
+    commitCount
+    buyerAddress
+    maxCommits
+    offerId
+    timestamp
+    tokenId
+    type
+  }
+`;
 export const DisputeFieldsFragmentDoc = gql`
   fragment DisputeFields on Dispute {
     ...BaseDisputeFields
@@ -36047,6 +36103,26 @@ export const GetDisputeResolversQueryDocument = gql`
     }
   }
   ${DisputeResolverFieldsFragmentDoc}
+`;
+export const GetConditionalCommitAuthorizedEventLogsQueryDocument = gql`
+  query getConditionalCommitAuthorizedEventLogsQuery(
+    $conditionalCommitAuthorizedLogsSkip: Int
+    $conditionalCommitAuthorizedLogsFirst: Int
+    $conditionalCommitAuthorizedLogsOrderBy: ConditionalCommitAuthorizedEventLog_orderBy
+    $conditionalCommitAuthorizedLogsOrderDirection: OrderDirection
+    $conditionalCommitAuthorizedLogsFilter: ConditionalCommitAuthorizedEventLog_filter
+  ) {
+    conditionalCommitAuthorizedEventLogs(
+      skip: $conditionalCommitAuthorizedLogsSkip
+      first: $conditionalCommitAuthorizedLogsFirst
+      orderBy: $conditionalCommitAuthorizedLogsOrderBy
+      orderDirection: $conditionalCommitAuthorizedLogsOrderDirection
+      where: $conditionalCommitAuthorizedLogsFilter
+    ) {
+      ...BaseConditionalCommitAuthorizedEventLogsFields
+    }
+  }
+  ${BaseConditionalCommitAuthorizedEventLogsFieldsFragmentDoc}
 `;
 export const GetDisputeByIdQueryDocument = gql`
   query getDisputeByIdQuery(
@@ -36589,6 +36665,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getDisputeResolversQuery",
+        "query"
+      );
+    },
+    getConditionalCommitAuthorizedEventLogsQuery(
+      variables?: GetConditionalCommitAuthorizedEventLogsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetConditionalCommitAuthorizedEventLogsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetConditionalCommitAuthorizedEventLogsQueryQuery>(
+            GetConditionalCommitAuthorizedEventLogsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getConditionalCommitAuthorizedEventLogsQuery",
         "query"
       );
     },

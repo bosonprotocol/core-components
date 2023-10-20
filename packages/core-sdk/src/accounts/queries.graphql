@@ -190,6 +190,24 @@ query getDisputeResolversQuery(
   }
 }
 
+query getConditionalCommitAuthorizedEventLogsQuery(
+  $conditionalCommitAuthorizedLogsSkip: Int
+  $conditionalCommitAuthorizedLogsFirst: Int
+  $conditionalCommitAuthorizedLogsOrderBy: ConditionalCommitAuthorizedEventLog_orderBy
+  $conditionalCommitAuthorizedLogsOrderDirection: OrderDirection
+  $conditionalCommitAuthorizedLogsFilter: ConditionalCommitAuthorizedEventLog_filter
+) {
+  conditionalCommitAuthorizedEventLogs(
+    skip: $conditionalCommitAuthorizedLogsSkip
+    first: $conditionalCommitAuthorizedLogsFirst
+    orderBy: $conditionalCommitAuthorizedLogsOrderBy
+    orderDirection: $conditionalCommitAuthorizedLogsOrderDirection
+    where: $conditionalCommitAuthorizedLogsFilter
+  ) {
+    ...BaseConditionalCommitAuthorizedEventLogsFields
+  }
+}
+
 fragment SellerFields on Seller {
   ...BaseSellerFields
   pendingSeller {
@@ -421,4 +439,18 @@ fragment BaseDisputeResolutionTermsEntityFields on DisputeResolutionTermsEntity 
   escalationResponsePeriod
   feeAmount
   buyerEscalationDeposit
+}
+
+fragment BaseConditionalCommitAuthorizedEventLogsFields on ConditionalCommitAuthorizedEventLog {
+  id
+  hash
+  groupId
+  gating
+  commitCount
+  buyerAddress
+  maxCommits
+  offerId
+  timestamp
+  tokenId
+  type
 }
