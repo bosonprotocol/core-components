@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import { useField, useFormikContext } from "formik";
 import { GlobeHemisphereWest } from "phosphor-react";
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import type { Country as CountryCode } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input";
 import Select, { components } from "react-select";
@@ -112,13 +112,22 @@ type Props = InputProps & {
 
 export function CountrySelect({ name, countries, ...props }: Props) {
   const { status } = useFormikContext();
-  const [, meta, helpers] = useField(name);
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [field, meta, helpers] = useField(name);
   const errorText = meta.error || status?.[name];
   const errorMessage = errorText && meta.touched ? errorText : "";
   const displayError =
     typeof errorMessage === typeof "string" && errorMessage !== "";
   const [phone, setPhone] = useState<string | undefined>(undefined);
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>();
+
+  useEffect(() => {
+    if (!initialized && field.value) {
+      setCountryCode(field.value as CountryCode);
+      setInitialized(true);
+    }
+  }, [field.value, initialized]); // eslint-disable-line
+
   return (
     <>
       <PhoneWrapper>
