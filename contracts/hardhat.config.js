@@ -68,7 +68,7 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS, async (_, { config }) => {
 const accountsFromEnv = process.env.DEPLOYER_PK
   ? [process.env.DEPLOYER_PK]
   : [];
-
+console.log("HARDHAAAAAAT!", ACCOUNTS);
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */

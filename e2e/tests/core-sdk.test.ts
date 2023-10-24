@@ -33,7 +33,8 @@ import {
   createOfferWithCondition,
   createSellerAndOfferWithCondition,
   createSeller,
-  createSellerAndOffer
+  createSellerAndOffer,
+  commitToOffer
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
 
@@ -92,53 +93,6 @@ describe("core-sdk", () => {
       expect(
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
-    });
-
-    describe("deposit funds", () => {
-      test("ETH", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id
-        });
-
-        expect(funds).toBeTruthy();
-        expect(funds.availableAmount).toBe(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-        expect(funds.token.symbol.toUpperCase()).toBe("ETH");
-      });
-
-      test("ERC20", async () => {
-        const sellerFundsDeposit = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDeposit,
-          sellerId: seller.id,
-          fundsTokenAddress: MOCK_ERC20_ADDRESS
-        });
-
-        expect(funds).toBeTruthy();
-        expect(funds.availableAmount).toBe(
-          utils.parseEther(sellerFundsDeposit).toString()
-        );
-        expect(funds.token.symbol.toUpperCase()).toBe("20TEST");
-      });
     });
 
     test("void offer", async () => {
@@ -1138,90 +1092,6 @@ describe("core-sdk", () => {
       expect(exchangesAfterComplete[1].completedDate).toBeTruthy();
     });
 
-    describe("withdraw funds", () => {
-      test("ETH", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id
-        });
-        expect(funds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        const tokenAddress = funds.token.address;
-
-        const updatedFunds = await withdrawFunds({
-          coreSDK,
-          sellerId: seller.id,
-          tokenAddresses: [tokenAddress],
-          amountsInEth: [sellerFundsDepositInEth]
-        });
-
-        expect(updatedFunds[0].availableAmount).toEqual("0");
-      });
-
-      test("ETH and ERC20", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const ethFunds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id,
-          fundsTokenAddress: constants.AddressZero
-        });
-        expect(ethFunds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        await ensureMintedAndAllowedTokens(
-          [fundedWallet],
-          sellerFundsDepositInEth
-        );
-
-        const mockErc20Funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id,
-          fundsTokenAddress: MOCK_ERC20_ADDRESS
-        });
-
-        expect(mockErc20Funds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        const updatedFunds = await withdrawFunds({
-          coreSDK,
-          sellerId: seller.id,
-          tokenAddresses: [constants.AddressZero, MOCK_ERC20_ADDRESS],
-          amountsInEth: [sellerFundsDepositInEth, sellerFundsDepositInEth]
-        });
-
-        const ethFundsAvailable = updatedFunds.find(
-          (fund) => fund.token.address === constants.AddressZero
-        )?.availableAmount;
-        const mockErc20FundsAvailable = updatedFunds.find(
-          (fund) =>
-            fund.token.address.toLowerCase() ===
-            MOCK_ERC20_ADDRESS.toLowerCase()
-        )?.availableAmount;
-        expect(ethFundsAvailable).toEqual("0");
-        expect(mockErc20FundsAvailable).toEqual("0");
-      });
-    });
-
     describe("disputes", () => {
       let exchange: ExchangeFieldsFragment;
       const sellerWallet = sellerWallet2;
@@ -1465,48 +1335,6 @@ async function depositFunds(args: {
   if (!depositedFunds) throw new Error(`No funds found for ${tokenAddress}`);
 
   return depositedFunds;
-}
-
-async function withdrawFunds(args: {
-  coreSDK: CoreSDK;
-  sellerId: string;
-  tokenAddresses: Array<string>;
-  amountsInEth: Array<string>;
-}): Promise<Array<FundsEntityFieldsFragment>> {
-  const withdrawResponse = await args.coreSDK.withdrawFunds(
-    args.sellerId,
-    args.tokenAddresses,
-    args.amountsInEth.map((amount) => utils.parseEther(amount))
-  );
-  await withdrawResponse.wait();
-  await waitForGraphNodeIndexing();
-
-  const funds = await args.coreSDK.getFunds({
-    fundsFilter: {
-      accountId: args.sellerId
-    }
-  });
-
-  return funds;
-}
-
-async function commitToOffer(args: {
-  buyerCoreSDK: CoreSDK;
-  sellerCoreSDK: CoreSDK;
-  offerId: BigNumberish;
-}) {
-  const commitToOfferTxResponse = await args.buyerCoreSDK.commitToOffer(
-    args.offerId
-  );
-  const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
-  const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
-    commitToOfferTxReceipt.logs
-  );
-  await waitForGraphNodeIndexing();
-  const exchange = await args.sellerCoreSDK.getExchangeById(
-    exchangeId as string
-  );
-  return exchange;
 }
 
 async function commitToConditionalOffer(args: {
