@@ -69,6 +69,7 @@ export function handleVoucherRevokedEvent(event: VoucherRevoked): void {
   if (exchange) {
     exchange.state = "REVOKED";
     exchange.revokedDate = event.block.timestamp;
+    exchange.finalizedDate = event.block.timestamp;
     exchange.save();
 
     saveExchangeEventLogs(
@@ -91,6 +92,7 @@ export function handleVoucherExpiredEvent(event: VoucherExpired): void {
     exchange.state = "CANCELLED";
     exchange.expired = true;
     exchange.cancelledDate = event.block.timestamp;
+    exchange.finalizedDate = event.block.timestamp;
     exchange.save();
 
     saveExchangeEventLogs(
@@ -132,6 +134,7 @@ export function handleVoucherCanceledEvent(event: VoucherCanceled): void {
   if (exchange) {
     exchange.state = "CANCELLED";
     exchange.cancelledDate = event.block.timestamp;
+    exchange.finalizedDate = event.block.timestamp;
     exchange.save();
 
     saveExchangeEventLogs(
@@ -215,6 +218,7 @@ export function handleExchangeCompletedEvent(event: ExchangeCompleted): void {
   if (exchange) {
     exchange.state = "COMPLETED";
     exchange.completedDate = event.block.timestamp;
+    exchange.finalizedDate = event.block.timestamp;
     exchange.save();
 
     saveExchangeEventLogs(

@@ -36,7 +36,8 @@ import {
   ACCOUNT_15,
   ACCOUNT_16,
   ACCOUNT_17,
-  ACCOUNT_18
+  ACCOUNT_18,
+  ACCOUNT_19
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -152,6 +153,8 @@ export const seedWallet16 = new Wallet(ACCOUNT_16.privateKey, provider);
 export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
 // seedWallets used by core-sdk-set-contract-uri
 export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);
+// seedWallets used by core-sdk-set-contract-uri
+export const seedWallet19 = new Wallet(ACCOUNT_19.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -728,4 +731,24 @@ export function createSeaportOrder(args: {
     },
     signature: "0x" // no signature required if the transaction is sent by the offerer
   };
+}
+
+export async function commitToOffer(args: {
+  buyerCoreSDK: CoreSDK;
+  sellerCoreSDK: CoreSDK;
+  offerId: BigNumberish;
+}) {
+  const commitToOfferTxResponse = await args.buyerCoreSDK.commitToOffer(
+    args.offerId
+  );
+  const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
+  const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
+    commitToOfferTxReceipt.logs
+  );
+  if (!exchangeId) {
+    throw new Error("exchangeId is not defined");
+  }
+  await waitForGraphNodeIndexing();
+  const exchange = await args.buyerCoreSDK.getExchangeById(exchangeId);
+  return exchange;
 }
