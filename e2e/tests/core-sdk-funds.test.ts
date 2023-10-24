@@ -249,12 +249,10 @@ describe("core-sdk-funds", () => {
           account: buyer.id
         }
       });
-      const [firstSeller] = await sellerCoreSDK.getSellers({
-        sellersFilter: {
-          id: seller.id
-        },
-        includeExchanges: true
-      });
+      const firstSeller = await sellerCoreSDK.getSellerById(
+        seller.id,
+        { includeExchanges: true }
+      );
       const offers = await sellerCoreSDK.getExchanges({
         exchangesFilter: {
           id_in: firstSeller.exchanges
