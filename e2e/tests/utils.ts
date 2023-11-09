@@ -52,23 +52,23 @@ const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
   getEnvConfigs(arg0)[0];
 
 export const MOCK_ERC20_ADDRESS =
-  getFirstEnvConfig("local").contracts.testErc20 ||
+  (getFirstEnvConfig("local").contracts.testErc20 as string) ||
   "0x998abeb3E57409262aE5b751f60747921B33613E";
 
 export const MOCK_ERC721_ADDRESS =
-  getFirstEnvConfig("local").contracts.testErc721 ||
+  (getFirstEnvConfig("local").contracts.testErc721 as string) ||
   "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
 
 export const MOCK_ERC1155_ADDRESS =
-  getFirstEnvConfig("local").contracts.testErc1155 ||
+  (getFirstEnvConfig("local").contracts.testErc1155 as string) ||
   "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
 export const MOCK_FORWARDER_ADDRESS =
-  getFirstEnvConfig("local").contracts.forwarder ||
+  (getFirstEnvConfig("local").contracts.forwarder as string) ||
   "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export const MOCK_SEAPORT_ADDRESS =
-  getFirstEnvConfig("local").contracts.seaport ||
+  (getFirstEnvConfig("local").contracts.seaport as string) ||
   "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF";
 
 export const metadata = {

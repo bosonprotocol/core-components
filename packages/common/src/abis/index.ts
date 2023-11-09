@@ -4,6 +4,7 @@ import BiconomyForwarderABI from "./BiconomyForwarder.json";
 import ERC1155ABI from "./ERC1155.json";
 import ERC20ABI from "./ERC20.json";
 import ERC721EnumerableABI from "./ERC721Enumerable.json";
+import ERC165ABI from "./ERC165.json";
 import IBosonAccountHandlerABI from "./IBosonAccountHandler.json";
 import IBosonAccountHandlerLegacyABI from "./IBosonAccountHandlerLegacy.json";
 import IBosonDisputeHandlerABI from "./IBosonDisputeHandler.json";
@@ -24,6 +25,7 @@ export {
   BiconomyForwarderABI,
   ERC1155ABI,
   ERC20ABI,
+  ERC165ABI,
   ERC721EnumerableABI,
   IBosonAccountHandlerABI,
   IBosonAccountHandlerLegacyABI,
