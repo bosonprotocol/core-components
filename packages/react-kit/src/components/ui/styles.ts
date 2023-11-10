@@ -53,7 +53,7 @@ export const buttonText = css`
 `;
 
 export const small = css`
-  height: 2.125rem;
+  min-height: 2.125rem;
   padding: 0.5rem 1rem;
   > * {
     font-size: 12px !important;
@@ -63,7 +63,7 @@ export const small = css`
   }
 `;
 export const regular = css`
-  height: 2.813rem;
+  min-height: 2.813rem;
   padding: 0.75rem 1.5rem;
   > * {
     font-size: 16px !important;
@@ -78,7 +78,7 @@ export const regular = css`
   }
 `;
 export const large = css`
-  height: 3.5rem;
+  min-height: 3.5rem;
   padding: 1rem 2rem;
   > * {
     font-size: 18px !important;
