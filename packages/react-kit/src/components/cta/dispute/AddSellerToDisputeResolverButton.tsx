@@ -6,7 +6,7 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { CreateSellerArgs } from "@bosonprotocol/common";
+import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
 import { ButtonSize } from "../../ui/buttonSize";
 export type IAddSellerToDisputeResolver = {
@@ -52,15 +52,16 @@ export const AddSellerToDisputeResolver = ({
       onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
+
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse =
-              await coreSdk.addSellersToDisputeResolverAllowList(
-                disputeResolverId,
-                sellerAllowList
-              );
+            txResponse = await coreSdk.addSellersToDisputeResolverAllowList(
+              disputeResolverId,
+              sellerAllowList
+            );
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -69,7 +70,9 @@ export const AddSellerToDisputeResolver = ({
               exchangeId
             });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }

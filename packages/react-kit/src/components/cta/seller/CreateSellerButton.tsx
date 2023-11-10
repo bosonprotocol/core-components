@@ -7,7 +7,7 @@ import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { CreateSellerArgs } from "@bosonprotocol/common";
+import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
 export type ICreateSellerButton = {
   exchangeId: BigNumberish;
@@ -46,11 +46,10 @@ export const CreateSellerButton = ({
       onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
           try {
             setIsLoading(true);
             onPendingSignature?.();
-
-            let txResponse;
 
             if (coreSdk.isMetaTxConfigSet && signerAddress) {
               const nonce = Date.now();
@@ -80,7 +79,9 @@ export const CreateSellerButton = ({
               exchangeId
             });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }

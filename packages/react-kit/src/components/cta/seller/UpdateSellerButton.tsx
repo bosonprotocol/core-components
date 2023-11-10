@@ -6,7 +6,7 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { UpdateSellerArgs } from "@bosonprotocol/common";
+import { UpdateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
 
 export type IUpdateSellerButton = {
@@ -44,13 +44,12 @@ export const UpdateSellerButton = ({
       onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.updateSellerAndOptIn(
-              updateSellerArgs
-            );
+            txResponse = await coreSdk.updateSellerAndOptIn(updateSellerArgs);
 
             onPendingTransaction?.(txResponse.hash);
             const receipt = await txResponse.wait(waitBlocks);
@@ -59,7 +58,9 @@ export const UpdateSellerButton = ({
               exchangeId
             });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }
