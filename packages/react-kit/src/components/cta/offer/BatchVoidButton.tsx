@@ -8,6 +8,7 @@ import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
+import { TransactionResponse } from "@bosonprotocol/common";
 
 type Props = {
   /**
@@ -46,11 +47,11 @@ export const BatchVoidButton = ({
       size={size}
       onClick={async () => {
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
-            let txResponse;
             const isMetaTx = Boolean(
               coreSdk.isMetaTxConfigSet && signerAddress
             );
@@ -83,7 +84,9 @@ export const BatchVoidButton = ({
               offerIds
             });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }
