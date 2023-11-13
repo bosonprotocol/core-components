@@ -1,4 +1,4 @@
-import { Provider } from "@bosonprotocol/react-kit";
+import { Provider } from "@bosonprotocol/ethers-sdk";
 import * as Sentry from "@sentry/browser";
 import getRevertReason from "eth-revert-reason";
 import { providers } from "ethers";
