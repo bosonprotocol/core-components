@@ -18,7 +18,6 @@ import Typography from "../../../../../ui/Typography";
 import { Button } from "../../../../../buttons/Button";
 import { breakpoint } from "../../../../../../lib/ui/breakpoint";
 import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
-import { getItemFromStorage } from "../../../../../widgets/finance/storage/useLocalStorage";
 import { theme } from "../../../../../../theme";
 import Grid from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
@@ -53,6 +52,7 @@ import {
   useAccount,
   useIsConnectedToWrongChain
 } from "../../../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 
 const colors = theme.colors.light;
 
@@ -330,6 +330,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   onRedeem,
   exchangePolicyCheckResult
 }) => {
+  const core = useCoreSDKWithContext();
   const { isLteXS } = useBreakpoints();
   const config = useConfigContext();
   const {
@@ -473,7 +474,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   ]);
   const { isConditionMet } = useCheckTokenGatedOffer({
     commitProxyAddress,
-    condition: offer.condition
+    offer
   });
   return (
     <>
@@ -588,6 +589,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         <Break />
         {offer.condition && (
           <TokenGated
+            coreSDK={core}
             offer={offer}
             commitProxyAddress={commitProxyAddress}
             openseaLinkToOriginalMainnetCollection={

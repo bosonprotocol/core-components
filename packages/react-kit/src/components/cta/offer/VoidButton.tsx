@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
+import { TransactionResponse } from "@bosonprotocol/common";
 
 import { Button } from "../../buttons/Button";
 import { useCoreSdk } from "../../../hooks/useCoreSdk";
@@ -46,11 +47,11 @@ export const VoidButton = ({
       size={size}
       onClick={async () => {
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
-            let txResponse;
             const isMetaTx = Boolean(
               coreSdk.isMetaTxConfigSet && signerAddress
             );
@@ -81,7 +82,9 @@ export const VoidButton = ({
 
             onSuccess?.(receipt as providers.TransactionReceipt, { offerId });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }

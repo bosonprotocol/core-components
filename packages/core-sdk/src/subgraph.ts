@@ -806,6 +806,172 @@ export enum ConditionEntity_OrderBy {
   TokenType = "tokenType"
 }
 
+export type ConditionalCommitAuthorizedEventLog = {
+  __typename?: "ConditionalCommitAuthorizedEventLog";
+  buyerAddress: Scalars["String"];
+  commitCount: Scalars["BigInt"];
+  gating: Scalars["Int"];
+  groupId: Scalars["String"];
+  hash: Scalars["String"];
+  id: Scalars["ID"];
+  maxCommits: Scalars["BigInt"];
+  offerId: Scalars["String"];
+  timestamp: Scalars["BigInt"];
+  tokenId: Scalars["BigInt"];
+  type: EventType;
+};
+
+export type ConditionalCommitAuthorizedEventLog_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  buyerAddress?: InputMaybe<Scalars["String"]>;
+  buyerAddress_contains?: InputMaybe<Scalars["String"]>;
+  buyerAddress_contains_nocase?: InputMaybe<Scalars["String"]>;
+  buyerAddress_ends_with?: InputMaybe<Scalars["String"]>;
+  buyerAddress_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyerAddress_gt?: InputMaybe<Scalars["String"]>;
+  buyerAddress_gte?: InputMaybe<Scalars["String"]>;
+  buyerAddress_in?: InputMaybe<Array<Scalars["String"]>>;
+  buyerAddress_lt?: InputMaybe<Scalars["String"]>;
+  buyerAddress_lte?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_contains?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_ends_with?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  buyerAddress_not_starts_with?: InputMaybe<Scalars["String"]>;
+  buyerAddress_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  buyerAddress_starts_with?: InputMaybe<Scalars["String"]>;
+  buyerAddress_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  commitCount?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_gt?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_gte?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  commitCount_lt?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_lte?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_not?: InputMaybe<Scalars["BigInt"]>;
+  commitCount_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  gating?: InputMaybe<Scalars["Int"]>;
+  gating_gt?: InputMaybe<Scalars["Int"]>;
+  gating_gte?: InputMaybe<Scalars["Int"]>;
+  gating_in?: InputMaybe<Array<Scalars["Int"]>>;
+  gating_lt?: InputMaybe<Scalars["Int"]>;
+  gating_lte?: InputMaybe<Scalars["Int"]>;
+  gating_not?: InputMaybe<Scalars["Int"]>;
+  gating_not_in?: InputMaybe<Array<Scalars["Int"]>>;
+  groupId?: InputMaybe<Scalars["String"]>;
+  groupId_contains?: InputMaybe<Scalars["String"]>;
+  groupId_contains_nocase?: InputMaybe<Scalars["String"]>;
+  groupId_ends_with?: InputMaybe<Scalars["String"]>;
+  groupId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  groupId_gt?: InputMaybe<Scalars["String"]>;
+  groupId_gte?: InputMaybe<Scalars["String"]>;
+  groupId_in?: InputMaybe<Array<Scalars["String"]>>;
+  groupId_lt?: InputMaybe<Scalars["String"]>;
+  groupId_lte?: InputMaybe<Scalars["String"]>;
+  groupId_not?: InputMaybe<Scalars["String"]>;
+  groupId_not_contains?: InputMaybe<Scalars["String"]>;
+  groupId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  groupId_not_ends_with?: InputMaybe<Scalars["String"]>;
+  groupId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  groupId_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  groupId_not_starts_with?: InputMaybe<Scalars["String"]>;
+  groupId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  groupId_starts_with?: InputMaybe<Scalars["String"]>;
+  groupId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["String"]>;
+  hash_contains?: InputMaybe<Scalars["String"]>;
+  hash_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_gt?: InputMaybe<Scalars["String"]>;
+  hash_gte?: InputMaybe<Scalars["String"]>;
+  hash_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_lt?: InputMaybe<Scalars["String"]>;
+  hash_lte?: InputMaybe<Scalars["String"]>;
+  hash_not?: InputMaybe<Scalars["String"]>;
+  hash_not_contains?: InputMaybe<Scalars["String"]>;
+  hash_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with?: InputMaybe<Scalars["String"]>;
+  hash_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  hash_not_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  hash_starts_with?: InputMaybe<Scalars["String"]>;
+  hash_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  maxCommits?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_gte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  maxCommits_lt?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_lte?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not?: InputMaybe<Scalars["BigInt"]>;
+  maxCommits_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  offerId?: InputMaybe<Scalars["String"]>;
+  offerId_contains?: InputMaybe<Scalars["String"]>;
+  offerId_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offerId_ends_with?: InputMaybe<Scalars["String"]>;
+  offerId_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offerId_gt?: InputMaybe<Scalars["String"]>;
+  offerId_gte?: InputMaybe<Scalars["String"]>;
+  offerId_in?: InputMaybe<Array<Scalars["String"]>>;
+  offerId_lt?: InputMaybe<Scalars["String"]>;
+  offerId_lte?: InputMaybe<Scalars["String"]>;
+  offerId_not?: InputMaybe<Scalars["String"]>;
+  offerId_not_contains?: InputMaybe<Scalars["String"]>;
+  offerId_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  offerId_not_ends_with?: InputMaybe<Scalars["String"]>;
+  offerId_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  offerId_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  offerId_not_starts_with?: InputMaybe<Scalars["String"]>;
+  offerId_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  offerId_starts_with?: InputMaybe<Scalars["String"]>;
+  offerId_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  timestamp?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_gte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  timestamp_lt?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_lte?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not?: InputMaybe<Scalars["BigInt"]>;
+  timestamp_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenId?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_gte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  tokenId_lt?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_lte?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not?: InputMaybe<Scalars["BigInt"]>;
+  tokenId_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  type?: InputMaybe<EventType>;
+  type_in?: InputMaybe<Array<EventType>>;
+  type_not?: InputMaybe<EventType>;
+  type_not_in?: InputMaybe<Array<EventType>>;
+};
+
+export enum ConditionalCommitAuthorizedEventLog_OrderBy {
+  BuyerAddress = "buyerAddress",
+  CommitCount = "commitCount",
+  Gating = "gating",
+  GroupId = "groupId",
+  Hash = "hash",
+  Id = "id",
+  MaxCommits = "maxCommits",
+  OfferId = "offerId",
+  Timestamp = "timestamp",
+  TokenId = "tokenId",
+  Type = "type"
+}
+
 export type Dispute = {
   __typename?: "Dispute";
   buyer: Buyer;
@@ -1598,6 +1764,7 @@ export enum EventType {
   /** ExchangeHandler events */
   BuyerCommitted = "BUYER_COMMITTED",
   BuyerCreated = "BUYER_CREATED",
+  ConditionalCommit = "CONDITIONAL_COMMIT",
   DisputeDecided = "DISPUTE_DECIDED",
   DisputeEscalated = "DISPUTE_ESCALATED",
   DisputeExpired = "DISPUTE_EXPIRED",
@@ -6868,6 +7035,8 @@ export type Query = {
   buyers: Array<Buyer>;
   conditionEntities: Array<ConditionEntity>;
   conditionEntity?: Maybe<ConditionEntity>;
+  conditionalCommitAuthorizedEventLog?: Maybe<ConditionalCommitAuthorizedEventLog>;
+  conditionalCommitAuthorizedEventLogs: Array<ConditionalCommitAuthorizedEventLog>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -7042,6 +7211,22 @@ export type QueryConditionEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryConditionalCommitAuthorizedEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type QueryConditionalCommitAuthorizedEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionalCommitAuthorizedEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>;
 };
 
 export type QueryDisputeArgs = {
@@ -8775,6 +8960,8 @@ export type Subscription = {
   buyers: Array<Buyer>;
   conditionEntities: Array<ConditionEntity>;
   conditionEntity?: Maybe<ConditionEntity>;
+  conditionalCommitAuthorizedEventLog?: Maybe<ConditionalCommitAuthorizedEventLog>;
+  conditionalCommitAuthorizedEventLogs: Array<ConditionalCommitAuthorizedEventLog>;
   dispute?: Maybe<Dispute>;
   disputeEventLog?: Maybe<DisputeEventLog>;
   disputeEventLogs: Array<DisputeEventLog>;
@@ -8949,6 +9136,22 @@ export type SubscriptionConditionEntityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars["ID"];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionConditionalCommitAuthorizedEventLogArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars["ID"];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+export type SubscriptionConditionalCommitAuthorizedEventLogsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<ConditionalCommitAuthorizedEventLog_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>;
 };
 
 export type SubscriptionDisputeArgs = {
@@ -13311,6 +13514,32 @@ export type GetDisputeResolversQueryQuery = {
   }>;
 };
 
+export type GetConditionalCommitAuthorizedEventLogsQueryQueryVariables = Exact<{
+  conditionalCommitAuthorizedLogsSkip?: InputMaybe<Scalars["Int"]>;
+  conditionalCommitAuthorizedLogsFirst?: InputMaybe<Scalars["Int"]>;
+  conditionalCommitAuthorizedLogsOrderBy?: InputMaybe<ConditionalCommitAuthorizedEventLog_OrderBy>;
+  conditionalCommitAuthorizedLogsOrderDirection?: InputMaybe<OrderDirection>;
+  conditionalCommitAuthorizedLogsFilter?: InputMaybe<ConditionalCommitAuthorizedEventLog_Filter>;
+}>;
+
+export type GetConditionalCommitAuthorizedEventLogsQueryQuery = {
+  __typename?: "Query";
+  conditionalCommitAuthorizedEventLogs: Array<{
+    __typename?: "ConditionalCommitAuthorizedEventLog";
+    id: string;
+    hash: string;
+    groupId: string;
+    gating: number;
+    commitCount: string;
+    buyerAddress: string;
+    maxCommits: string;
+    offerId: string;
+    timestamp: string;
+    tokenId: string;
+    type: EventType;
+  }>;
+};
+
 export type SellerFieldsFragment = {
   __typename?: "Seller";
   id: string;
@@ -15249,6 +15478,21 @@ export type BaseDisputeResolutionTermsEntityFieldsFragment = {
   escalationResponsePeriod: string;
   feeAmount: string;
   buyerEscalationDeposit: string;
+};
+
+export type BaseConditionalCommitAuthorizedEventLogsFieldsFragment = {
+  __typename?: "ConditionalCommitAuthorizedEventLog";
+  id: string;
+  hash: string;
+  groupId: string;
+  gating: number;
+  commitCount: string;
+  buyerAddress: string;
+  maxCommits: string;
+  offerId: string;
+  timestamp: string;
+  tokenId: string;
+  type: EventType;
 };
 
 export type GetDisputeByIdQueryQueryVariables = Exact<{
@@ -35404,6 +35648,21 @@ export const DisputeResolverFieldsFragmentDoc = gql`
   ${BaseOfferFieldsFragmentDoc}
   ${BaseEventLogFieldsFragmentDoc}
 `;
+export const BaseConditionalCommitAuthorizedEventLogsFieldsFragmentDoc = gql`
+  fragment BaseConditionalCommitAuthorizedEventLogsFields on ConditionalCommitAuthorizedEventLog {
+    id
+    hash
+    groupId
+    gating
+    commitCount
+    buyerAddress
+    maxCommits
+    offerId
+    timestamp
+    tokenId
+    type
+  }
+`;
 export const DisputeFieldsFragmentDoc = gql`
   fragment DisputeFields on Dispute {
     ...BaseDisputeFields
@@ -35844,6 +36103,26 @@ export const GetDisputeResolversQueryDocument = gql`
     }
   }
   ${DisputeResolverFieldsFragmentDoc}
+`;
+export const GetConditionalCommitAuthorizedEventLogsQueryDocument = gql`
+  query getConditionalCommitAuthorizedEventLogsQuery(
+    $conditionalCommitAuthorizedLogsSkip: Int
+    $conditionalCommitAuthorizedLogsFirst: Int
+    $conditionalCommitAuthorizedLogsOrderBy: ConditionalCommitAuthorizedEventLog_orderBy
+    $conditionalCommitAuthorizedLogsOrderDirection: OrderDirection
+    $conditionalCommitAuthorizedLogsFilter: ConditionalCommitAuthorizedEventLog_filter
+  ) {
+    conditionalCommitAuthorizedEventLogs(
+      skip: $conditionalCommitAuthorizedLogsSkip
+      first: $conditionalCommitAuthorizedLogsFirst
+      orderBy: $conditionalCommitAuthorizedLogsOrderBy
+      orderDirection: $conditionalCommitAuthorizedLogsOrderDirection
+      where: $conditionalCommitAuthorizedLogsFilter
+    ) {
+      ...BaseConditionalCommitAuthorizedEventLogsFields
+    }
+  }
+  ${BaseConditionalCommitAuthorizedEventLogsFieldsFragmentDoc}
 `;
 export const GetDisputeByIdQueryDocument = gql`
   query getDisputeByIdQuery(
@@ -36386,6 +36665,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getDisputeResolversQuery",
+        "query"
+      );
+    },
+    getConditionalCommitAuthorizedEventLogsQuery(
+      variables?: GetConditionalCommitAuthorizedEventLogsQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetConditionalCommitAuthorizedEventLogsQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetConditionalCommitAuthorizedEventLogsQueryQuery>(
+            GetConditionalCommitAuthorizedEventLogsQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getConditionalCommitAuthorizedEventLogsQuery",
         "query"
       );
     },

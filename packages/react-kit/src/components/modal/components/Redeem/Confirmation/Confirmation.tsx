@@ -31,11 +31,17 @@ import { Spinner } from "../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../ui/ThemedButton";
 import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
-import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import {
+  useAccount,
   useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
+import { useRedemptionCallbacks } from "../../../../../hooks/callbacks/useRedemptionCallbacks";
+import { NonModalProps } from "../../../nonModal/NonModal";
+import {
+  RedemptionWidgetAction,
+  useRedemptionContext
+} from "../../../../widgets/redemption/provider/RedemptionContext";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -57,6 +63,7 @@ export interface ConfirmationProps
   sellerAddress: string;
   onBackClick: () => void;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+  hideModal?: NonModalProps["hideModal"];
 }
 
 export default function Confirmation({
@@ -71,27 +78,39 @@ export default function Confirmation({
   onError,
   onPendingSignature,
   onPendingTransaction,
-  setIsLoading: setLoading
+  setIsLoading: setLoading,
+  hideModal
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
+  const { widgetAction, setWidgetAction } = useRedemptionContext();
+  const { postDeliveryInfo, postRedemptionConfirmed, postRedemptionSubmitted } =
+    useRedemptionCallbacks();
   const isInWrongChain = useIsConnectedToWrongChain();
-  const { postDeliveryInfoUrl, postDeliveryInfoHeaders } =
-    useRedemptionContext();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
-  const [chatError, setChatError] = useState<Error | null>(null);
+  const [redemptionInfoError, setRedemptionInfoError] = useState<Error | null>(
+    null
+  );
   const [redeemError, setRedeemError] = useState<Error | null>(null);
+  const [redemptionInfoAccepted, setRedemptionInfoAccepted] = useState<boolean>(
+    widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+  );
+  const [resumeRedemption, setResumeRedemption] = useState<boolean>(
+    widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM
+  );
   const { chatInitializationStatus } = useChatStatus();
   const showSuccessInitialization =
     chatInitializationStatus === "INITIALIZED" &&
     bosonXmtp &&
-    !postDeliveryInfoUrl;
+    !postDeliveryInfo;
   const isInitializationValid =
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isTxPending, setIsTxPending] = useState<boolean>(false);
   const signer = useSigner();
+  const { address } = useAccount();
   const { values } = useFormikContext<FormType>();
   const [nameField] = useField(FormModel.formFields.name.name);
   const [streetNameAndNumberField] = useField(
@@ -104,45 +123,16 @@ export default function Confirmation({
   const [countryField] = useField(FormModel.formFields.country.name);
   const [emailField] = useField(FormModel.formFields.email.name);
   const [phoneField] = useField(FormModel.formFields.phone.name);
-  const postDeliveryInfoCallback = async () => {
-    if (!postDeliveryInfoUrl) {
-      throw new Error(
-        "[postDeliveryInfoCallback] postDeliveryInfoUrl is not defined"
-      );
-    }
-    // add wallet signature in the message (must be verifiable by the backend)
-    const message = {
-      deliveryDetails: values,
-      exchangeId,
-      offerId,
-      buyerId,
-      sellerId,
-      sellerAddress,
-      buyerAddress: await signer?.getAddress()
-    };
-    const signature = signer
-      ? await signer.signMessage(JSON.stringify(message))
-      : undefined;
-    await fetch(postDeliveryInfoUrl, {
-      method: "POST",
-      body: JSON.stringify({
-        message,
-        signature
-      }),
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-        ...postDeliveryInfoHeaders
-      }
-    });
+  const redemptionInfo = {
+    exchangeId,
+    offerId,
+    buyerId,
+    sellerId,
+    sellerAddress,
+    buyerAddress: address || ""
   };
-  const handleRedeem = async () => {
+  const handleConfirmRedeem = () => {
     try {
-      if (postDeliveryInfoUrl) {
-        await postDeliveryInfoCallback();
-      } else {
-        await sendDeliveryDetailsToChat();
-      }
-      setChatError(null);
       const child =
         (redeemRef.current?.firstChild as HTMLButtonElement) ?? null;
       if (child) {
@@ -157,16 +147,92 @@ export default function Confirmation({
           buyerId,
           sellerId,
           sellerAddress,
-          buyerAddress: await signer?.getAddress()
+          buyerAddress: address
+        }
+      });
+      console.error("Error while confirming Redeem", error);
+    }
+  };
+  const handleConfirmRedemptionInfoWithXMTP = async () => {
+    try {
+      await sendDeliveryDetailsToChat();
+      handleConfirmRedeem();
+      setRedemptionInfoError(null);
+    } catch (error) {
+      Sentry.captureException(error, {
+        extra: {
+          action: "redeem",
+          location: "redeem-modal",
+          exchangeId,
+          buyerId,
+          sellerId,
+          sellerAddress,
+          buyerAddress: address
         }
       });
       console.error(
         "Error while sending a message with the delivery details",
         error
       );
-      setChatError(error as Error);
-      throw error;
+      setRedemptionInfoError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+  const handleConfirmRedemptionInfoWithCallback = async () => {
+    const message = {
+      deliveryDetails: values,
+      ...redemptionInfo
+    };
+    try {
+      setIsLoading(true);
+      if (!postDeliveryInfo) {
+        throw new Error(`postDeliveryInfo is undefined`);
+      }
+      const response = await postDeliveryInfo(message, signer);
+      setIsLoading(false);
+      if (!response.accepted) {
+        setRedemptionInfoError(
+          new Error(
+            `Redemption information has not been accepted: ${response.reason}`
+          )
+        );
+        setRedemptionInfoAccepted(false);
+        setResumeRedemption(false);
+      } else if (!response.resume) {
+        setRedemptionInfoError(new Error(`Redemption Widget may be closed`));
+        setRedemptionInfoAccepted(true);
+        setResumeRedemption(false);
+        hideModal?.();
+      } else {
+        setRedemptionInfoError(null);
+        setRedemptionInfoAccepted(true);
+        setResumeRedemption(true);
+      }
+    } catch (error) {
+      Sentry.captureException(error, {
+        extra: {
+          action: "redeem",
+          location: "redeem-modal",
+          exchangeId,
+          buyerId,
+          sellerId,
+          sellerAddress,
+          buyerAddress: address
+        }
+      });
+      console.error("Error while calling deliveryInfo callback", error);
+      setRedemptionInfoError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleOnBackClick = () => {
+    if (widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM) {
+      // As the redemption will be edited again, switch the widgetAction to REDEEM_FORM
+      setWidgetAction(RedemptionWidgetAction.REDEEM_FORM);
+    }
+    onBackClick();
   };
 
   const sendDeliveryDetailsToChat = async () => {
@@ -223,12 +289,18 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           <div>{phoneField.value}</div>
         </Grid>
         <Grid flexDirection="row" flexBasis="0">
-          <ThemedButton theme="blankSecondary" onClick={() => onBackClick()}>
+          <ThemedButton
+            theme="blankSecondary"
+            onClick={handleOnBackClick}
+            disabled={
+              isLoading || (redemptionInfoAccepted && !resumeRedemption)
+            }
+          >
             Edit
           </ThemedButton>
         </Grid>
       </Grid>
-      {!postDeliveryInfoUrl && <InitializeChatWithSuccess />}
+      {!postDeliveryInfo && <InitializeChatWithSuccess />}
       {showSuccessInitialization && (
         <div>
           <StyledGrid
@@ -244,19 +316,33 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           </StyledGrid>
         </div>
       )}
-      {(chatError || redeemError) && <SimpleError />}
+      {redemptionInfoError && (
+        <SimpleError errorMessage={redemptionInfoError?.message} />
+      )}
+      {redeemError && <SimpleError errorMessage={redeemError?.message} />}
       <Grid padding="2rem 0 0 0" justifyContent="space-between">
         <StyledRedeemButton
           type="button"
-          onClick={() => handleRedeem()}
+          onClick={() =>
+            postDeliveryInfo
+              ? redemptionInfoAccepted
+                ? handleConfirmRedeem()
+                : handleConfirmRedemptionInfoWithCallback()
+              : handleConfirmRedemptionInfoWithXMTP()
+          }
           disabled={
             isLoading ||
-            (!isInitializationValid && !postDeliveryInfoUrl) ||
-            isInWrongChain
+            (!isInitializationValid && !postDeliveryInfo) ||
+            isInWrongChain ||
+            (postDeliveryInfo && redemptionInfoAccepted && !resumeRedemption)
           }
         >
           <Grid gap="0.5rem">
-            Confirm address and redeem
+            {postDeliveryInfo
+              ? redemptionInfoAccepted
+                ? "Confirm redemption"
+                : "Confirm delivery information"
+              : "Confirm address and redeem"}
             {isLoading && <Spinner size="20" />}
           </Grid>
         </StyledRedeemButton>
@@ -274,12 +360,27 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               metaTx: coreSDK.metaTxConfig
             }}
             disabled={
-              isLoading || (!isInitializationValid && !postDeliveryInfoUrl)
+              // ensure the button is disabled if postDeliveryInfo has failed
+              isLoading || (!isInitializationValid && !postDeliveryInfo)
             }
             exchangeId={exchangeId}
             onError={(...args) => {
               const [error] = args;
               console.error("Error while redeeming", error);
+              // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
+              if (isTxPending) {
+                postRedemptionConfirmed?.({
+                  redemptionInfo,
+                  isError: true,
+                  error: { ...error }
+                });
+              } else {
+                postRedemptionSubmitted?.({
+                  redemptionInfo,
+                  isError: true,
+                  error: { ...error }
+                });
+              }
               setRedeemError(error);
               setIsLoading(false);
               setLoading?.(false);
@@ -292,6 +393,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               onPendingSignature?.(...args);
             }}
             onPendingTransaction={(...args) => {
+              // call postRedemptionSubmitted with transaction details
               const [hash, isMetaTx] = args;
               onPendingTransaction?.(...args);
               addPendingTransaction({
@@ -306,9 +408,15 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                   }
                 }
               });
+              setIsTxPending(true);
+              postRedemptionSubmitted?.({
+                redemptionInfo,
+                isError: false,
+                redeemTx: { hash }
+              });
             }}
             onSuccess={async (...args) => {
-              const [, { exchangeId }] = args;
+              const [receipt, { exchangeId }] = args;
               let createdExchange: subgraph.ExchangeFieldsFragment;
               await poll(
                 async () => {
@@ -329,15 +437,27 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                 />
               ));
               onSuccess?.(...args);
+              postRedemptionConfirmed?.({
+                redemptionInfo,
+                isError: false,
+                redeemTx: {
+                  hash: receipt.transactionHash,
+                  blockNumber: receipt.blockNumber
+                }
+              });
             }}
           >
             <Grid gap="0.5rem">
-              Confirm address and redeem
+              Confirm Redemption
               {isLoading && <Spinner size="20" />}
             </Grid>
           </RedeemButton>
         </div>
-        <ThemedButton theme="outline" onClick={() => onBackClick()}>
+        <ThemedButton
+          theme="outline"
+          onClick={handleOnBackClick}
+          disabled={isLoading || (redemptionInfoAccepted && !resumeRedemption)}
+        >
           Back
         </ThemedButton>
       </Grid>

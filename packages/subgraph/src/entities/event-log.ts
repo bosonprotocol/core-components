@@ -1,11 +1,14 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+/* eslint-disable @typescript-eslint/ban-types */
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   AccountEventLog,
   OfferEventLog,
   ExchangeEventLog,
   FundsEventLog,
   DisputeEventLog,
-  Exchange
+  Exchange,
+  ConditionalCommitAuthorizedEventLog,
+  Buyer
 } from "../../generated/schema";
 
 export function getEventLogId(
@@ -222,6 +225,42 @@ function saveDisputeEventLog(
   eventLog.executedBy = executedBy;
   eventLog.account = accountId;
   eventLog.dispute = disputeId;
+  eventLog.save();
+
+  return eventLogId;
+}
+
+export function saveConditionalCommitAuthorizedEventLog(
+  txHash: string,
+  logIndex: BigInt,
+  type: string,
+  timestamp: BigInt,
+  buyerAddress: Address,
+  offerId: BigInt,
+  commitCount: BigInt,
+  maxCommits: BigInt,
+  gating: i32,
+  tokenId: BigInt,
+  groupId: string
+): string {
+  const eventLogId = getEventLogId(txHash, logIndex, offerId.toString());
+
+  let eventLog = ConditionalCommitAuthorizedEventLog.load(eventLogId);
+
+  if (!eventLog) {
+    eventLog = new ConditionalCommitAuthorizedEventLog(eventLogId);
+  }
+
+  eventLog.hash = txHash;
+  eventLog.type = type;
+  eventLog.timestamp = timestamp;
+  eventLog.buyerAddress = buyerAddress;
+  eventLog.commitCount = commitCount;
+  eventLog.maxCommits = maxCommits;
+  eventLog.gating = gating;
+  eventLog.tokenId = tokenId;
+  eventLog.groupId = groupId;
+  eventLog.offerId = offerId.toString();
   eventLog.save();
 
   return eventLogId;

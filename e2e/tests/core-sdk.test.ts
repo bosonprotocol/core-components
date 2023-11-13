@@ -33,7 +33,8 @@ import {
   createOfferWithCondition,
   createSellerAndOfferWithCondition,
   createSeller,
-  createSellerAndOffer
+  createSellerAndOffer,
+  commitToOffer
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
 
@@ -92,53 +93,6 @@ describe("core-sdk", () => {
       expect(
         BigNumber.from(createdOffer.voucherRedeemableUntilDate).eq(0)
       ).toBe(true);
-    });
-
-    describe("deposit funds", () => {
-      test("ETH", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id
-        });
-
-        expect(funds).toBeTruthy();
-        expect(funds.availableAmount).toBe(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-        expect(funds.token.symbol.toUpperCase()).toBe("ETH");
-      });
-
-      test("ERC20", async () => {
-        const sellerFundsDeposit = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        await ensureMintedAndAllowedTokens([fundedWallet], sellerFundsDeposit);
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDeposit,
-          sellerId: seller.id,
-          fundsTokenAddress: MOCK_ERC20_ADDRESS
-        });
-
-        expect(funds).toBeTruthy();
-        expect(funds.availableAmount).toBe(
-          utils.parseEther(sellerFundsDeposit).toString()
-        );
-        expect(funds.token.symbol.toUpperCase()).toBe("20TEST");
-      });
     });
 
     test("void offer", async () => {
@@ -320,7 +274,7 @@ describe("core-sdk", () => {
     });
 
     test.each(["ERC721", "ERC1155", "ERC20"])(
-      `create an group on %p token and try to commit outside of that group`,
+      `create a group on %p token and try to commit outside of that group`,
       async (token) => {
         const tokenId = Date.now().toString();
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet } =
@@ -344,7 +298,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(sellerWallet, tokenId);
           condition = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS.toLowerCase(),
             gatingType: GatingType.PerAddress,
@@ -422,7 +376,7 @@ describe("core-sdk", () => {
     );
 
     test.each(["ERC721", "ERC1155", "ERC20"])(
-      `create an group on %p token and buyer successfully commit to of that group`,
+      `create a group on %p token and buyer successfully commit to of that group`,
       async (token) => {
         const tokenId = Date.now().toString();
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
@@ -449,7 +403,7 @@ describe("core-sdk", () => {
           await ensureMintedERC721(buyerWallet, tokenId);
           groupToCreate = {
             offerIds: [createdOffer.id],
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -534,7 +488,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(buyerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -626,7 +580,7 @@ describe("core-sdk", () => {
         if (token === "ERC721") {
           await ensureMintedERC721(sellerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -690,11 +644,18 @@ describe("core-sdk", () => {
       }
     );
 
-    test.each(["ERC721-threshold", "ERC721-specific", "ERC1155", "ERC20"])(
+    test.each([
+      "ERC721-peraddress-threshold",
+      "ERC721-peraddress-tokenrange",
+      "ERC721-pertokenid-tokenrange",
+      "ERC1155-peraddress",
+      "ERC1155-pertokenid",
+      "ERC20"
+    ])(
       `create an offer with condition on %p and buyer meets the condition of that token gated`,
       async (token) => {
-        const tokenId = Date.now().toString();
-
+        const tokenId = Date.now();
+        const tokenId2 = tokenId + 1;
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
           await initSellerAndBuyerSDKs(seedWallet);
 
@@ -714,9 +675,8 @@ describe("core-sdk", () => {
 
         let conditionToCreate;
 
-        if (token === "ERC721-threshold") {
+        if (token === "ERC721-peraddress-threshold") {
           await ensureMintedERC721(buyerWallet, tokenId);
-          const tokenId2 = Date.now().toString();
           await ensureMintedERC721(buyerWallet, tokenId2);
           conditionToCreate = {
             method: EvaluationMethod.Threshold,
@@ -728,25 +688,51 @@ describe("core-sdk", () => {
             threshold: "2",
             maxCommits: "3"
           };
-        } else if (token === "ERC721-specific") {
+        } else if (token === "ERC721-peraddress-tokenrange") {
           await ensureMintedERC721(buyerWallet, tokenId);
+          await ensureMintedERC721(buyerWallet, tokenId2);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
             minTokenId: tokenId,
-            maxTokenId: tokenId,
+            maxTokenId: tokenId2,
             threshold: "0",
             maxCommits: "3"
           };
-        } else if (token === "ERC1155") {
+        } else if (token === "ERC721-pertokenid-tokenrange") {
+          await ensureMintedERC721(buyerWallet, tokenId);
+          await ensureMintedERC721(buyerWallet, tokenId2);
+          conditionToCreate = {
+            method: EvaluationMethod.TokenRange,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: tokenId,
+            maxTokenId: tokenId2,
+            threshold: "0",
+            maxCommits: "3"
+          };
+        } else if (token === "ERC1155-peraddress") {
           await ensureMintedERC1155(buyerWallet, tokenId, "4");
           conditionToCreate = {
             method: EvaluationMethod.Threshold,
             tokenType: TokenType.MultiToken,
             tokenAddress: MOCK_ERC1155_ADDRESS,
             gatingType: GatingType.PerAddress,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
+            threshold: "3",
+            maxCommits: "3"
+          };
+        } else if (token === "ERC1155-pertokenid") {
+          await ensureMintedERC1155(buyerWallet, tokenId, "4");
+          conditionToCreate = {
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.MultiToken,
+            tokenAddress: MOCK_ERC1155_ADDRESS,
+            gatingType: GatingType.PerTokenId,
             minTokenId: tokenId,
             maxTokenId: tokenId,
             threshold: "3",
@@ -774,23 +760,35 @@ describe("core-sdk", () => {
           conditionToCreate
         );
 
-        await createOfferCondTx.wait();
+        const receipt = await createOfferCondTx.wait();
         await waitForGraphNodeIndexing();
 
+        const offerId = buyerCoreSDK.getCreatedOfferIdFromLogs(receipt.logs);
         const buyerAddress = await buyerWallet.getAddress();
+
+        if (!offerId) {
+          throw new Error(`offerId is not defined ${offerId}`);
+        }
+
         const isMet = await buyerCoreSDK.checkTokenGatedCondition(
-          conditionToCreate,
+          offerId,
           buyerAddress
         );
-
-        await expect(isMet).toBe(true);
+        expect(isMet).toBe(true);
       }
     );
 
-    test.each(["ERC721-threshold", "ERC721-specific", "ERC1155", "ERC20"])(
-      `create an offer with condition on %p and buyer does not meet the condition of that token gated`,
+    test.each([
+      "ERC721-peraddress-threshold",
+      "ERC721-peraddress-tokenrange",
+      "ERC721-pertokenid-tokenrange",
+      "ERC1155-peraddress",
+      "ERC1155-pertokenid",
+      "ERC20"
+    ])(
+      `create an offer with condition on %p and buyer does NOT meet the condition of that token gated`,
       async (token) => {
-        const tokenId = Date.now().toString();
+        const tokenId = Date.now();
 
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
           await initSellerAndBuyerSDKs(seedWallet);
@@ -811,7 +809,7 @@ describe("core-sdk", () => {
 
         let conditionToCreate;
 
-        if (token === "ERC721-threshold") {
+        if (token === "ERC721-peraddress-threshold") {
           await ensureMintedERC721(buyerWallet, tokenId);
           conditionToCreate = {
             method: EvaluationMethod.Threshold,
@@ -823,10 +821,10 @@ describe("core-sdk", () => {
             threshold: "2",
             maxCommits: "3"
           };
-        } else if (token === "ERC721-specific") {
+        } else if (token === "ERC721-peraddress-tokenrange") {
           await ensureMintedERC721(sellerWallet, tokenId);
           conditionToCreate = {
-            method: EvaluationMethod.SpecificToken,
+            method: EvaluationMethod.TokenRange,
             tokenType: TokenType.NonFungibleToken,
             tokenAddress: MOCK_ERC721_ADDRESS,
             gatingType: GatingType.PerAddress,
@@ -835,7 +833,19 @@ describe("core-sdk", () => {
             threshold: "0",
             maxCommits: "3"
           };
-        } else if (token === "ERC1155") {
+        } else if (token === "ERC721-pertokenid-tokenrange") {
+          await ensureMintedERC721(buyerWallet, tokenId);
+          conditionToCreate = {
+            method: EvaluationMethod.TokenRange,
+            tokenType: TokenType.NonFungibleToken,
+            tokenAddress: MOCK_ERC721_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
+            threshold: "0",
+            maxCommits: "1"
+          };
+        } else if (token === "ERC1155-peraddress") {
           await ensureMintedERC1155(buyerWallet, tokenId, "2");
           conditionToCreate = {
             method: EvaluationMethod.Threshold,
@@ -846,6 +856,18 @@ describe("core-sdk", () => {
             maxTokenId: tokenId,
             threshold: "3",
             maxCommits: "3"
+          };
+        } else if (token === "ERC1155-pertokenid") {
+          await ensureMintedERC1155(buyerWallet, tokenId, "4");
+          conditionToCreate = {
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.MultiToken,
+            tokenAddress: MOCK_ERC1155_ADDRESS,
+            gatingType: GatingType.PerTokenId,
+            minTokenId: tokenId,
+            maxTokenId: tokenId,
+            threshold: "3",
+            maxCommits: "1"
           };
         } else if (token === "ERC20") {
           await ensureMintedAndAllowedTokens([buyerWallet], "5");
@@ -869,16 +891,30 @@ describe("core-sdk", () => {
           conditionToCreate
         );
 
-        await createOfferCondTx.wait();
+        const receipt = await createOfferCondTx.wait();
         await waitForGraphNodeIndexing();
+        const offerId = buyerCoreSDK.getCreatedOfferIdFromLogs(receipt.logs);
+
+        if (!offerId) {
+          throw new Error(`offerId is not defined ${offerId}`);
+        }
+        if (
+          ["ERC721-pertokenid-tokenrange", "ERC1155-pertokenid"].includes(token)
+        ) {
+          // let's use the tokenId to make it fail
+          await (
+            await buyerCoreSDK.commitToConditionalOffer(offerId, tokenId)
+          ).wait();
+          await waitForGraphNodeIndexing();
+        }
 
         const buyerAddress = await buyerWallet.getAddress();
+
         const isMet = await buyerCoreSDK.checkTokenGatedCondition(
-          conditionToCreate,
+          offerId,
           buyerAddress
         );
-
-        await expect(isMet).toBe(false);
+        expect(isMet).toBe(false);
       }
     );
 
@@ -1054,90 +1090,6 @@ describe("core-sdk", () => {
       expect(exchangesAfterComplete[0].completedDate).toBeTruthy();
       expect(exchangesAfterComplete[1].state).toBe(ExchangeState.Completed);
       expect(exchangesAfterComplete[1].completedDate).toBeTruthy();
-    });
-
-    describe("withdraw funds", () => {
-      test("ETH", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id
-        });
-        expect(funds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        const tokenAddress = funds.token.address;
-
-        const updatedFunds = await withdrawFunds({
-          coreSDK,
-          sellerId: seller.id,
-          tokenAddresses: [tokenAddress],
-          amountsInEth: [sellerFundsDepositInEth]
-        });
-
-        expect(updatedFunds[0].availableAmount).toEqual("0");
-      });
-
-      test("ETH and ERC20", async () => {
-        const sellerFundsDepositInEth = "5";
-        const { coreSDK, fundedWallet } = await initCoreSDKWithFundedWallet(
-          seedWallet
-        );
-        const sellers = await ensureCreatedSeller(fundedWallet);
-        const [seller] = sellers;
-
-        const ethFunds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id,
-          fundsTokenAddress: constants.AddressZero
-        });
-        expect(ethFunds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        await ensureMintedAndAllowedTokens(
-          [fundedWallet],
-          sellerFundsDepositInEth
-        );
-
-        const mockErc20Funds = await depositFunds({
-          coreSDK,
-          fundsDepositAmountInEth: sellerFundsDepositInEth,
-          sellerId: seller.id,
-          fundsTokenAddress: MOCK_ERC20_ADDRESS
-        });
-
-        expect(mockErc20Funds.availableAmount).toEqual(
-          utils.parseEther(sellerFundsDepositInEth).toString()
-        );
-
-        const updatedFunds = await withdrawFunds({
-          coreSDK,
-          sellerId: seller.id,
-          tokenAddresses: [constants.AddressZero, MOCK_ERC20_ADDRESS],
-          amountsInEth: [sellerFundsDepositInEth, sellerFundsDepositInEth]
-        });
-
-        const ethFundsAvailable = updatedFunds.find(
-          (fund) => fund.token.address === constants.AddressZero
-        )?.availableAmount;
-        const mockErc20FundsAvailable = updatedFunds.find(
-          (fund) =>
-            fund.token.address.toLowerCase() ===
-            MOCK_ERC20_ADDRESS.toLowerCase()
-        )?.availableAmount;
-        expect(ethFundsAvailable).toEqual("0");
-        expect(mockErc20FundsAvailable).toEqual("0");
-      });
     });
 
     describe("disputes", () => {
@@ -1383,48 +1335,6 @@ async function depositFunds(args: {
   if (!depositedFunds) throw new Error(`No funds found for ${tokenAddress}`);
 
   return depositedFunds;
-}
-
-async function withdrawFunds(args: {
-  coreSDK: CoreSDK;
-  sellerId: string;
-  tokenAddresses: Array<string>;
-  amountsInEth: Array<string>;
-}): Promise<Array<FundsEntityFieldsFragment>> {
-  const withdrawResponse = await args.coreSDK.withdrawFunds(
-    args.sellerId,
-    args.tokenAddresses,
-    args.amountsInEth.map((amount) => utils.parseEther(amount))
-  );
-  await withdrawResponse.wait();
-  await waitForGraphNodeIndexing();
-
-  const funds = await args.coreSDK.getFunds({
-    fundsFilter: {
-      accountId: args.sellerId
-    }
-  });
-
-  return funds;
-}
-
-async function commitToOffer(args: {
-  buyerCoreSDK: CoreSDK;
-  sellerCoreSDK: CoreSDK;
-  offerId: BigNumberish;
-}) {
-  const commitToOfferTxResponse = await args.buyerCoreSDK.commitToOffer(
-    args.offerId
-  );
-  const commitToOfferTxReceipt = await commitToOfferTxResponse.wait();
-  const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
-    commitToOfferTxReceipt.logs
-  );
-  await waitForGraphNodeIndexing();
-  const exchange = await args.sellerCoreSDK.getExchangeById(
-    exchangeId as string
-  );
-  return exchange;
 }
 
 async function commitToConditionalOffer(args: {

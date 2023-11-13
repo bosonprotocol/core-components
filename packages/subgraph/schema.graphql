@@ -676,6 +676,7 @@ enum EventType {
   DISPUTE_DECIDED
   ESCALATED_DISPUTE_REFUSED
   ESCALATED_DISPUTE_EXPIRED
+  CONDITIONAL_COMMIT
 }
 
 interface EventLog {
@@ -716,6 +717,21 @@ type ExchangeEventLog implements EventLog @entity {
   account: Account!
 
   exchange: Exchange!
+}
+
+type ConditionalCommitAuthorizedEventLog @entity {
+  id: ID!
+  hash: String!
+  type: EventType!
+  timestamp: BigInt!
+  buyerAddress: Bytes!
+  
+  offerId: String!
+  groupId: String!
+  tokenId: BigInt!
+  gating: Int!
+  commitCount: BigInt!
+  maxCommits: BigInt!
 }
 
 type FundsEventLog implements EventLog @entity {

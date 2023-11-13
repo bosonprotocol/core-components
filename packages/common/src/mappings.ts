@@ -94,7 +94,7 @@ export const chainIdToDefaultTokens = new Map<ChainId, Token[]>([
       {
         symbol: "TETH",
         name: "testErc20",
-        address: "0x998abeb3E57409262aE5b751f60747921B33613E",
+        address: "0x851356ae760d987E095750cCeb3bC6014560891C",
         decimals: "18"
       }
     ]
