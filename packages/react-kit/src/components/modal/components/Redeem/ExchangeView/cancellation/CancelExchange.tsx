@@ -186,7 +186,7 @@ export function CancelExchange({
           Your rNFT will be burned after cancellation.
         </Info>
       )}
-      {cancelError && <SimpleError />}
+      {cancelError && <SimpleError errorMessage={cancelError.message} />}
       <ButtonsSection>
         <CancelButtonWrapper>
           <CancelButton
