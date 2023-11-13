@@ -21,6 +21,7 @@ import ThemedButton from "../../../../../ui/ThemedButton";
 import Typography from "../../../../../ui/Typography";
 import DetailTable from "../detail/DetailTable";
 import { useSigner } from "../../../../../../hooks/connection/connection";
+import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 
 const colors = theme.colors.light;
 
@@ -177,7 +178,7 @@ export default function ExpireVoucher({
               }
             ]}
           />
-          {expireError && <SimpleError />}
+          {expireError && <SimpleError errorMessage={expireError.message} />}
         </Content>
       </Grid>
       <ButtonsWrapper>
@@ -197,9 +198,18 @@ export default function ExpireVoucher({
               metaTx: coreSDK.metaTxConfig
             }}
             disabled={isLoading}
-            onError={(...args) => {
-              const [error] = args;
-              console.error(error);
+            onError={async (...args) => {
+              const [error, context] = args;
+              const errorMessage = await extractUserFriendlyError(error, {
+                txResponse: context.txResponse,
+                provider: signer?.provider
+              });
+              console.error(
+                "Error while expiring voucher",
+                error,
+                errorMessage
+              );
+              error.message = errorMessage;
               setExpireError(error);
               setIsLoading(false);
               onError?.(...args);

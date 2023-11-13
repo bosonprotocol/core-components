@@ -3,7 +3,7 @@ import React, { createContext, ReactNode, useMemo } from "react";
 import { UserProvider } from "./UserContext";
 import { CONFIG } from "../../lib/config/config";
 import { useConfigContext } from "../config/ConfigContext";
-import type { getRpcUrls } from "../../lib/constants/networks";
+import type { getRpcUrls } from "../../lib/const/networks";
 
 export const MagicContext = createContext<
   | (Magic & {

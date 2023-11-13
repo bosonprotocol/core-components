@@ -1,4 +1,5 @@
 import React from "react";
+import * as Sentry from "@sentry/browser";
 
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
@@ -23,6 +24,10 @@ import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useAccount, useSigner } from "../../../../hooks/connection/connection";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 
 interface Props {
   protocolBalance: string;
@@ -188,13 +193,23 @@ export default function FinanceDeposit({
             setIsBeingDeposit(false);
             hideModal();
           }}
-          onError={(error) => {
-            console.error("onError", error);
-            const hasUserRejectedTx =
-              "code" in error &&
-              (error as unknown as { code: string }).code === "ACTION_REJECTED";
+          onError={async (...args) => {
+            const [error, context] = args;
+            const errorMessage = await extractUserFriendlyError(error, {
+              txResponse: context.txResponse,
+              provider: signer?.provider
+            });
+            console.error("Error while depositing funds", error, errorMessage);
+            error.message = errorMessage;
+            const hasUserRejectedTx = getHasUserRejectedTx(error);
             if (hasUserRejectedTx) {
               showModal("CONFIRMATION_FAILED");
+            } else {
+              Sentry.captureException(error);
+              showModal("CONFIRMATION_FAILED", {
+                errorMessage: "Something went wrong",
+                detailedErrorMessage: errorMessage
+              });
             }
             setDepositError(error);
             reload();

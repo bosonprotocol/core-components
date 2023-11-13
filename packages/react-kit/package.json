@@ -26,6 +26,7 @@
     "@tippyjs/react": "4.2.6",
     "@uniswap/sdk-core": "^4.0.7",
     "dayjs": "1.11.7",
+    "eth-revert-reason": "^1.0.3",
     "formik": "2.2.9",
     "graphql-request": "5.2.0",
     "lodash.merge": "4.6.2",
