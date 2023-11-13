@@ -33,6 +33,7 @@ import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import {
   useAccount,
+  useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
 import { useRedemptionCallbacks } from "../../../../../hooks/callbacks/useRedemptionCallbacks";
@@ -84,6 +85,7 @@ export default function Confirmation({
   const { widgetAction, setWidgetAction } = useRedemptionContext();
   const { postDeliveryInfo, postRedemptionConfirmed, postRedemptionSubmitted } =
     useRedemptionCallbacks();
+  const isInWrongChain = useIsConnectedToWrongChain();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -331,6 +333,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           disabled={
             isLoading ||
             (!isInitializationValid && !postDeliveryInfo) ||
+            isInWrongChain ||
             (postDeliveryInfo && redemptionInfoAccepted && !resumeRedemption)
           }
         >

@@ -23,7 +23,10 @@ import {
 import { useHandleText } from "../../../../../hooks/useHandleText";
 import { ExtendedExchange } from "../../../../../hooks/useExchanges";
 import { Exchange as IExchange } from "../../../../../types/exchange";
-import { useAccount } from "../../../../../hooks/connection/connection";
+import {
+  useAccount,
+  useIsConnectedToWrongChain
+} from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -88,6 +91,8 @@ export default function Exchange({
     [offer.exchangeToken.decimals, offer.price]
   );
 
+  const isInWrongChain = useIsConnectedToWrongChain();
+
   const handleOnCardClick = () => {
     onCardClick(exchange);
   };
@@ -109,7 +114,8 @@ export default function Exchange({
             onClick: handleDispute,
             variant: "secondaryInverted" as const,
             showBorder: false,
-            type: "button"
+            type: "button",
+            disabled: isInWrongChain
           } as const
         };
       }
@@ -134,11 +140,13 @@ export default function Exchange({
           bottomText: handleText,
           redeemButtonConfig: {
             onClick: handleRedeem,
-            type: "button"
+            type: "button",
+            disabled: isInWrongChain
           } as const,
           cancelButtonConfig: {
             onClick: handleCancel,
-            type: "button"
+            type: "button",
+            disabled: isInWrongChain
           } as const
         };
       }

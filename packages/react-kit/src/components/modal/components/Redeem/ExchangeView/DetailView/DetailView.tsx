@@ -18,7 +18,6 @@ import Typography from "../../../../../ui/Typography";
 import { Button } from "../../../../../buttons/Button";
 import { breakpoint } from "../../../../../../lib/ui/breakpoint";
 import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
-import { getItemFromStorage } from "../../../../../widgets/finance/storage/useLocalStorage";
 import { theme } from "../../../../../../theme";
 import Grid from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
@@ -49,7 +48,10 @@ import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
-import { useAccount } from "../../../../../../hooks/connection/connection";
+import {
+  useAccount,
+  useIsConnectedToWrongChain
+} from "../../../../../../hooks/connection/connection";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
 
 const colors = theme.colors.light;
@@ -336,6 +338,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     openseaLinkToOriginalMainnetCollection,
     contactSellerForExchangeUrl
   } = config;
+  const isInWrongChain = useIsConnectedToWrongChain();
   const displayFloat = useDisplayFloat();
   const { address } = useAccount();
   const isBuyer = exchange?.buyer.wallet === address?.toLowerCase();
@@ -419,8 +422,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   const totalHours = voucherRedeemableUntilDate.diff(nowDate, "hours");
   const redeemableDays = Math.floor(totalHours / 24);
   const redeemableHours = totalHours - redeemableDays * 24;
-
-  const isChainUnsupported = getItemFromStorage("isChainUnsupported", false);
 
   const handleCancel = () => {
     if (!exchange) {
@@ -541,9 +542,7 @@ const DetailView: React.FC<IDetailWidget> = ({
               <RedeemButton
                 variant="primaryFill"
                 size={ButtonSize.Large}
-                disabled={
-                  isChainUnsupported || isOffer || isPreview || !isBuyer
-                }
+                disabled={isInWrongChain || isOffer || isPreview || !isBuyer}
                 onClick={() => {
                   onRedeem();
                 }}
@@ -624,7 +623,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                 type="button"
                 style={{ fontSize: "0.875rem" }}
                 disabled={
-                  isChainUnsupported || !isBuyer || !contactSellerForExchangeUrl
+                  isInWrongChain || !isBuyer || !contactSellerForExchangeUrl
                 }
               >
                 Contact seller
@@ -646,7 +645,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                       theme="blank"
                       type="button"
                       style={{ fontSize: "0.875rem" }}
-                      disabled={isChainUnsupported || !isBuyer}
+                      disabled={isInWrongChain || !isBuyer}
                     >
                       Cancel
                     </StyledCancelButton>
@@ -662,7 +661,11 @@ const DetailView: React.FC<IDetailWidget> = ({
                       type="button"
                       theme="blank"
                       style={{ fontSize: "0.875rem" }}
-                      disabled={exchange?.state !== "REDEEMED" || !isBuyer}
+                      disabled={
+                        exchange?.state !== "REDEEMED" ||
+                        !isBuyer ||
+                        isInWrongChain
+                      }
                     >
                       Raise a problem
                       <Question size={18} />
