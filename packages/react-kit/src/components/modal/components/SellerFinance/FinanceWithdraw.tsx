@@ -1,4 +1,5 @@
 import React from "react";
+import * as Sentry from "@sentry/browser";
 
 import { BigNumber, ethers } from "ethers";
 import { Spinner } from "phosphor-react";
@@ -28,6 +29,10 @@ import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useAccount, useSigner } from "../../../../hooks/connection/connection";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -198,13 +203,23 @@ export default function FinanceWithdraw({
             reload();
             setIsBeingWithdrawn(false);
           }}
-          onError={(error) => {
-            console.error("onError", error);
-            const hasUserRejectedTx =
-              "code" in error &&
-              (error as unknown as { code: string }).code === "ACTION_REJECTED";
+          onError={async (...args) => {
+            const [error, context] = args;
+            const errorMessage = await extractUserFriendlyError(error, {
+              txResponse: context.txResponse,
+              provider: signer?.provider
+            });
+            console.error("Error while withdrawing funds", error, errorMessage);
+            error.message = errorMessage;
+            const hasUserRejectedTx = getHasUserRejectedTx(error);
             if (hasUserRejectedTx) {
               showModal("CONFIRMATION_FAILED");
+            } else {
+              Sentry.captureException(error);
+              showModal("CONFIRMATION_FAILED", {
+                errorMessage: "Something went wrong",
+                detailedErrorMessage: errorMessage
+              });
             }
             setWithdrawError(error);
             reload();

@@ -134,6 +134,8 @@ export function useCtaClickHandler<T>({
                 );
                 receipt = error.receipt;
               }
+            } else {
+              throw error;
             }
           }
         }

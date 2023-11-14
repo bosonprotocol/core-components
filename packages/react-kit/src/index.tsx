@@ -44,4 +44,5 @@ export * from "./components/magicLink/MagicContext";
 export * from "./components/magicLink/UserContext";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
-export * from "./lib/constants/networks";
+export * from "./lib/const/networks";
+export * from "./lib/errors/transactions";

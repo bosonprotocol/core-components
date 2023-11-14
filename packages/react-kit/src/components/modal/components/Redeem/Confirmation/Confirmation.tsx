@@ -42,6 +42,7 @@ import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../../widgets/redemption/provider/RedemptionContext";
+import { extractUserFriendlyError } from "../../../../../lib/errors/transactions";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -317,9 +318,9 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
         </div>
       )}
       {redemptionInfoError && (
-        <SimpleError errorMessage={redemptionInfoError?.message} />
+        <SimpleError errorMessage={redemptionInfoError.message} />
       )}
-      {redeemError && <SimpleError errorMessage={redeemError?.message} />}
+      {redeemError && <SimpleError errorMessage={redeemError.message} />}
       <Grid padding="2rem 0 0 0" justifyContent="space-between">
         <StyledRedeemButton
           type="button"
@@ -364,9 +365,14 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               isLoading || (!isInitializationValid && !postDeliveryInfo)
             }
             exchangeId={exchangeId}
-            onError={(...args) => {
-              const [error] = args;
-              console.error("Error while redeeming", error);
+            onError={async (...args) => {
+              const [error, context] = args;
+              const errorMessage = await extractUserFriendlyError(error, {
+                txResponse: context.txResponse,
+                provider: signer?.provider
+              });
+              console.error("Error while redeeming", error, errorMessage);
+              error.message = errorMessage;
               // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
               if (isTxPending) {
                 postRedemptionConfirmed?.({
