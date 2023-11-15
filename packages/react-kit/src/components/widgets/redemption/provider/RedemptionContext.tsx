@@ -46,7 +46,7 @@ export type RedemptionContextProps = {
   // In case the redemption submission shall be handle in frontend
   redemptionSubmittedHandler?: (
     message: RedeemTransactionSubmittedMessage
-  ) => RedeemTransactionSubmittedCallbackResponse;
+  ) => Promise<RedeemTransactionSubmittedCallbackResponse>;
   // Url to POST the callback after a Redeem/Cancel transaction has been submitted, or an error if the submission failed
   postRedemptionSubmittedUrl?: string;
   // Request headers to POST the postRedemptionSubmittedUrl callback
@@ -54,7 +54,7 @@ export type RedemptionContextProps = {
   // In case the redemption confirmation shall be handle in frontend
   redemptionConfirmedHandler?: (
     message: RedeemTransactionConfirmedMessage
-  ) => RedeemTransactionConfirmedCallbackResponse;
+  ) => Promise<RedeemTransactionConfirmedCallbackResponse>;
   // Url to POST the callback after a Redeem/Cancel transaction has been confirmed, or an error if the confirmation failed
   postRedemptionConfirmedUrl?: string;
   // Request headers to POST the postRedemptionConfirmedUrl callback

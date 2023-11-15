@@ -89,6 +89,8 @@ export default function Confirmation({
     widgetAction,
     setWidgetAction,
     deliveryInfoHandler,
+    redemptionSubmittedHandler,
+    redemptionConfirmedHandler,
     sendDeliveryInfoThroughXMTP
   } = useRedemptionContext();
   const { postDeliveryInfo, postRedemptionConfirmed, postRedemptionSubmitted } =
@@ -413,26 +415,41 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
               metaTx: coreSDK.metaTxConfig
             }}
             exchangeId={exchangeId}
-            onError={(...args) => {
+            onError={async (...args) => {
               const [error] = args;
               console.error("Error while redeeming", error);
-              // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
-              if (isTxPending) {
-                postRedemptionConfirmed?.({
-                  redemptionInfo,
-                  isError: true,
-                  error: { ...error }
-                });
-              } else {
-                postRedemptionSubmitted?.({
-                  redemptionInfo,
-                  isError: true,
-                  error: { ...error }
-                });
-              }
+              const message = {
+                redemptionInfo,
+                isError: true,
+                error: { ...error }
+              };
               setRedeemError(error);
               setIsLoading(false);
               setLoading?.(false);
+              // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
+              if (isTxPending) {
+                try {
+                  await redemptionConfirmedHandler?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+                try {
+                  await postRedemptionConfirmed?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+              } else {
+                try {
+                  await redemptionSubmittedHandler?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+                try {
+                  await postRedemptionSubmitted?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+              }
               onError?.(...args);
             }}
             onPendingSignature={(...args) => {
@@ -441,9 +458,14 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
               setLoading?.(true);
               onPendingSignature?.(...args);
             }}
-            onPendingTransaction={(...args) => {
+            onPendingTransaction={async (...args) => {
               // call postRedemptionSubmitted with transaction details
               const [hash, isMetaTx] = args;
+              const message = {
+                redemptionInfo,
+                isError: false,
+                redeemTx: { hash }
+              };
               onPendingTransaction?.(...args);
               addPendingTransaction({
                 type: subgraph.EventType.VoucherRedeemed,
@@ -458,14 +480,27 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
                 }
               });
               setIsTxPending(true);
-              postRedemptionSubmitted?.({
-                redemptionInfo,
-                isError: false,
-                redeemTx: { hash }
-              });
+              try {
+                await redemptionSubmittedHandler?.(message);
+              } catch (e) {
+                console.error(e);
+              }
+              try {
+                await postRedemptionSubmitted?.(message);
+              } catch (e) {
+                console.error(e);
+              }
             }}
             onSuccess={async (...args) => {
               const [receipt, { exchangeId }] = args;
+              const message = {
+                redemptionInfo,
+                isError: false,
+                redeemTx: {
+                  hash: receipt.transactionHash,
+                  blockNumber: receipt.blockNumber
+                }
+              };
               let createdExchange: subgraph.ExchangeFieldsFragment;
               await poll(
                 async () => {
@@ -485,15 +520,17 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
                   action={`Redeemed exchange: ${offerName}`}
                 />
               ));
+              try {
+                await redemptionConfirmedHandler?.(message);
+              } catch (e) {
+                console.error(e);
+              }
+              try {
+                await postRedemptionConfirmed?.(message);
+              } catch (e) {
+                console.error(e);
+              }
               onSuccess?.(...args);
-              postRedemptionConfirmed?.({
-                redemptionInfo,
-                isError: false,
-                redeemTx: {
-                  hash: receipt.transactionHash,
-                  blockNumber: receipt.blockNumber
-                }
-              });
             }}
           >
             <Grid gap="0.5rem">

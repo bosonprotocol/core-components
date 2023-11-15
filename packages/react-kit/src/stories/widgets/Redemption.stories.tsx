@@ -198,6 +198,20 @@ RedemptionHandlers.args = {
       reason: "",
       resume: true
     };
+  },
+  redemptionConfirmedHandler: async (message) => {
+    console.log(`redemptionConfirmedHandler: ${JSON.stringify(message)}`);
+    return {
+      accepted: true,
+      reason: ""
+    };
+  },
+  redemptionSubmittedHandler: async (message) => {
+    console.log(`redemptionSubmittedHandler: ${JSON.stringify(message)}`);
+    return {
+      accepted: true,
+      reason: ""
+    };
   }
 };
 
@@ -241,6 +255,48 @@ RedemptionHandlersFailure2.args = {
   ...Redemption.args,
   deliveryInfoHandler: async (message, signature) => {
     console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    throw new Error("Redemption handler is throwing an exception");
+  }
+};
+
+export const RedemptionHandlersFailure3: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionHandlersFailure3.args = {
+  ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    return {
+      accepted: true,
+      reason: "",
+      resume: true
+    };
+  },
+  redemptionSubmittedHandler: async (message) => {
+    console.log(`redemptionSubmittedHandler: ${JSON.stringify(message)}`);
+    throw new Error("Redemption handler is throwing an exception");
+  }
+};
+
+export const RedemptionHandlersFailure4: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionHandlersFailure4.args = {
+  ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    return {
+      accepted: true,
+      reason: "",
+      resume: true
+    };
+  },
+  redemptionConfirmedHandler: async (message) => {
+    console.log(`redemptionConfirmedHandler: ${JSON.stringify(message)}`);
     throw new Error("Redemption handler is throwing an exception");
   }
 };
