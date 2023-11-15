@@ -40,8 +40,7 @@
     "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
     "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts",
     "update-contract-uri": "ts-node -P tsconfig.base.json ./scripts/change-contract-uri.ts",
-    "check-offer-exchange-policy": "ts-node -P tsconfig.base.json ./scripts/checkOfferExchangePolicy.ts",
-    "postinstall": "patch-package"
+    "check-offer-exchange-policy": "ts-node -P tsconfig.base.json ./scripts/checkOfferExchangePolicy.ts"
   },
   "repository": {
     "type": "git",
@@ -85,7 +84,6 @@
     "npm": "8.11.0"
   },
   "dependencies": {
-    "clone-deep": "^4.0.1",
-    "patch-package": "^8.0.0"
+    "clone-deep": "^4.0.1"
   }
 }
