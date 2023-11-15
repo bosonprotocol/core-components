@@ -60,6 +60,7 @@ Redemption.args = {
   widgetAction: RedemptionWidgetAction.SELECT_EXCHANGE,
   showRedemptionOverview: true,
   exchangeState: subgraph.ExchangeState.Committed,
+  sendDeliveryInfoThroughXMTP: true,
   forcedAccount: "",
   sellerIds: undefined
 };
@@ -71,6 +72,7 @@ export const RedemptionCallbacks: ComponentStory<typeof RedemptionWidget> =
 
 RedemptionCallbacks.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
@@ -82,6 +84,7 @@ export const RedemptionCallbacksThenClose: ComponentStory<
 
 RedemptionCallbacksThenClose.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   postDeliveryInfoUrl: "http://localhost:3666/deliveryInfoThenClose",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
@@ -93,6 +96,7 @@ export const RedemptionCallbacksRedeemConfirm: ComponentStory<
 
 RedemptionCallbacksRedeemConfirm.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
   exchangeId: "149",
@@ -110,6 +114,7 @@ export const RedemptionCallbacksFailure: ComponentStory<
 
 RedemptionCallbacksFailure.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   postDeliveryInfoUrl: "http://localhost:3666/fail",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
@@ -121,6 +126,7 @@ export const RedemptionCallbacksFailure2: ComponentStory<
 
 RedemptionCallbacksFailure2.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.REDEEM_FORM,
   exchangeId: "149",
@@ -135,6 +141,7 @@ export const RedemptionCallbacksFailure3: ComponentStory<
 
 RedemptionCallbacksFailure3.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
   exchangeId: "149",
@@ -159,6 +166,7 @@ export const RedemptionCallbacksFailure4: ComponentStory<
 
 RedemptionCallbacksFailure4.args = {
   ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
   showRedemptionOverview: false,
   widgetAction: RedemptionWidgetAction.CONFIRM_REDEEM,
   exchangeId: "149",
@@ -175,4 +183,64 @@ RedemptionCallbacksFailure4.args = {
   postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
   postRedemptionConfirmedUrl: "http://localhost:3666/fail4"
+};
+
+export const RedemptionHandlers: ComponentStory<typeof RedemptionWidget> =
+  Template.bind({});
+
+RedemptionHandlers.args = {
+  ...Redemption.args,
+  sendDeliveryInfoThroughXMTP: false,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    return {
+      accepted: true,
+      reason: "",
+      resume: true
+    };
+  }
+};
+
+export const RedemptionHandlersNoResume: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionHandlersNoResume.args = {
+  ...Redemption.args,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    return {
+      accepted: true,
+      reason: "",
+      resume: false
+    };
+  }
+};
+
+export const RedemptionHandlersFailure1: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionHandlersFailure1.args = {
+  ...Redemption.args,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    return {
+      accepted: false,
+      reason: "Redemption handler is failing",
+      resume: false
+    };
+  }
+};
+
+export const RedemptionHandlersFailure2: ComponentStory<
+  typeof RedemptionWidget
+> = Template.bind({});
+
+RedemptionHandlersFailure2.args = {
+  ...Redemption.args,
+  deliveryInfoHandler: async (message, signature) => {
+    console.log(`deliveryInfoHandler: ${JSON.stringify(message)} ${signature}`);
+    throw new Error("Redemption handler is throwing an exception");
+  }
 };
