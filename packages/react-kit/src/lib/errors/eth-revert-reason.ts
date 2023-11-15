@@ -72,7 +72,12 @@ async function validateInputPostProvider(
   if (network === "kovan") {
     try {
       const tx = await provider.getTransaction(txHash);
-      getCode(tx, network, blockNumber, provider);
+      getCode(
+        tx as ethers.providers.TransactionRequest,
+        network,
+        blockNumber,
+        provider
+      );
     } catch (err) {
       throw new Error(
         "Please use a provider that exposes the Parity trace methods to decode the revert reason."
@@ -137,7 +142,7 @@ function decodeMessage(code: string, network: string) {
   return ethers.utils.toUtf8String(codeString);
 }
 async function getCode(
-  tx: ethers.providers.TransactionResponse,
+  tx: ethers.providers.TransactionRequest,
   network: string,
   blockNumber: string | number,
   provider: ethers.providers.Provider
