@@ -40,7 +40,8 @@
     "pin-to-pinata": "ts-node -P tsconfig.base.json ./scripts/pin-to-pinata.ts",
     "complete-exchange": "ts-node -P tsconfig.base.json ./scripts/complete-exchange.ts",
     "update-contract-uri": "ts-node -P tsconfig.base.json ./scripts/change-contract-uri.ts",
-    "check-offer-exchange-policy": "ts-node -P tsconfig.base.json ./scripts/checkOfferExchangePolicy.ts"
+    "check-offer-exchange-policy": "ts-node -P tsconfig.base.json ./scripts/checkOfferExchangePolicy.ts",
+    "get-buyers": "ts-node -P tsconfig.base.json ./scripts/get-buyers.ts"
   },
   "repository": {
     "type": "git",
