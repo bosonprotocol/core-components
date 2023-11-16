@@ -2,11 +2,15 @@ import React, { ReactNode, useMemo } from "react";
 import { isTruthy } from "../../types/helpers";
 import { Context, ConfigContextProps } from "./ConfigContext";
 import { useEnvContext } from "../environment/EnvironmentContext";
-import { getEnvConfigById } from "@bosonprotocol/core-sdk";
+import { getEnvConfigById, getEnvConfigs } from "@bosonprotocol/core-sdk";
 
 export type ConfigProviderProps = Omit<
   ConfigContextProps,
-  "config" | "defaultCurrency" | "sellerCurationList" | "offerCurationList"
+  | "config"
+  | "defaultCurrency"
+  | "sellerCurationList"
+  | "offerCurationList"
+  | "supportedChains"
 > & {
   children: ReactNode;
   defaultCurrencyTicker: string;
@@ -36,6 +40,9 @@ export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
         .filter(isTruthy),
     [rest.offerCurationListBetweenCommas]
   );
+  const supportedChains = getEnvConfigs(envName).map(
+    (config) => config.chainId as number
+  );
   return (
     <Context.Provider
       value={{
@@ -58,7 +65,8 @@ export function ConfigProvider({ children, ...rest }: ConfigProviderProps) {
           "ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ",
         licenseTemplate:
           rest.licenseTemplate ||
-          "ipfs://QmeYsxxy4aDvC5ocMEDrBj5xjSKobnRNw9VDN8DBzqqdmj"
+          "ipfs://QmeYsxxy4aDvC5ocMEDrBj5xjSKobnRNw9VDN8DBzqqdmj",
+        supportedChains
       }}
     >
       {children}

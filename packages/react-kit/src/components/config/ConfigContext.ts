@@ -24,6 +24,7 @@ export type ConfigContextProps = {
   usePendingTransactions?: boolean;
   magicLinkKey: string;
   infuraKey: string;
+  supportedChains: number[];
 };
 
 export const Context = createContext<ConfigContextProps | null>(null);

@@ -10,6 +10,7 @@ import {
   useMagicProvider
 } from "../magic";
 import { useEthersSigner } from "../ethers/useEthersSigner";
+import { useConfigContext } from "../../components/config/ConfigContext";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();
@@ -20,8 +21,16 @@ export function useAccount() {
 export function useChainId() {
   const { chain } = useNetwork();
   const magicChainId = useMagicChainId();
-  const chainIdToReturn = magicChainId ?? chain?.id;
+  const isMagicLoggedIn = useIsMagicLoggedIn();
+  const chainIdToReturn = isMagicLoggedIn ? magicChainId : chain?.id;
   return chainIdToReturn;
+}
+
+export function useIsConnectedToWrongChain(): boolean {
+  const { config } = useConfigContext();
+  const chainId = useChainId();
+  const connectedToWrongChain = config.chainId !== chainId;
+  return connectedToWrongChain;
 }
 
 export function useSigner() {

@@ -27,6 +27,7 @@ import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../../../widgets/redemption/provider/RedemptionContext";
+import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 
 const colors = theme.colors.light;
 
@@ -185,7 +186,7 @@ export function CancelExchange({
           Your rNFT will be burned after cancellation.
         </Info>
       )}
-      {cancelError && <SimpleError />}
+      {cancelError && <SimpleError errorMessage={cancelError.message} />}
       <ButtonsSection>
         <CancelButtonWrapper>
           <CancelButton
@@ -198,9 +199,14 @@ export function CancelExchange({
             variant="accentInverted"
             exchangeId={exchange.id}
             disabled={isLoading || cancelSuccess}
-            onError={(...args) => {
-              const [error] = args;
-              console.error(error);
+            onError={async (...args) => {
+              const [error, context] = args;
+              const errorMessage = await extractUserFriendlyError(error, {
+                txResponse: context.txResponse,
+                provider: signer?.provider
+              });
+              console.error("Error while cancelling", error, errorMessage);
+              error.message = errorMessage;
               setCancelError(error);
               setIsLoading(false);
               onError?.(...args);

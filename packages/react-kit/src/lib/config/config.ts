@@ -1,4 +1,4 @@
-import { getRpcUrls } from "../constants/networks";
+import { getRpcUrls } from "../const/networks";
 
 const magicLinkKey = process.env.REACT_APP_MAGIC_API_KEY;
 if (!magicLinkKey) {

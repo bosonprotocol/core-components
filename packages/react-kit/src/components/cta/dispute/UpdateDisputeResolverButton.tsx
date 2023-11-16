@@ -6,7 +6,7 @@ import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
-import { CreateSellerArgs } from "@bosonprotocol/common";
+import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { accounts } from "@bosonprotocol/core-sdk";
 import { ButtonSize } from "../../ui/buttonSize";
 export type IUpdateDisputeResolverButton = {
@@ -48,11 +48,12 @@ export const UpdateDisputeResolverButton = ({
       onClick={async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         if (!isLoading) {
+          let txResponse: TransactionResponse | undefined = undefined;
           try {
             setIsLoading(true);
             onPendingSignature?.();
 
-            const txResponse = await coreSdk.updateDisputeResolver(
+            txResponse = await coreSdk.updateDisputeResolver(
               disputeResolverId,
               disputeResolverUpdates
             );
@@ -64,7 +65,9 @@ export const UpdateDisputeResolverButton = ({
               exchangeId
             });
           } catch (error) {
-            onError?.(error as Error);
+            onError?.(error as Error, {
+              txResponse: txResponse as providers.TransactionResponse
+            });
           } finally {
             setIsLoading(false);
           }

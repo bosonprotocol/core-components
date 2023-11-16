@@ -1,4 +1,4 @@
-import { TransactionResponse } from "@bosonprotocol/common";
+import { TransactionResponse, TransactionReceipt } from "@bosonprotocol/common";
 import { CoreSDK, metaTx } from "@bosonprotocol/core-sdk";
 import { errors, providers } from "ethers";
 import { useState } from "react";
@@ -52,7 +52,8 @@ export function useCtaClickHandler<T>({
   ) => {
     e.stopPropagation();
 
-    let txResponse, receipt;
+    let txResponse: TransactionResponse | undefined = undefined;
+    let receipt: TransactionReceipt | undefined = undefined;
 
     try {
       setIsLoading(true);
@@ -133,6 +134,8 @@ export function useCtaClickHandler<T>({
                 );
                 receipt = error.receipt;
               }
+            } else {
+              throw error;
             }
           }
         }
@@ -146,7 +149,9 @@ export function useCtaClickHandler<T>({
         onSuccess?.(receipt as providers.TransactionReceipt, payload);
       }
     } catch (error) {
-      onError?.(error as Error);
+      onError?.(error as Error, {
+        txResponse: txResponse as providers.TransactionResponse
+      });
     } finally {
       setIsLoading(false);
     }

@@ -57,7 +57,12 @@ export type CtaButtonProps<T> = Omit<ButtonProps, "onError"> & {
   /**
    * Optional callback to invoke if an error happened.
    */
-  onError?: (error: Error) => void;
+  onError?: (
+    error: Error,
+    context: {
+      txResponse: providers.TransactionResponse | undefined;
+    }
+  ) => void;
   children?: React.ReactNode;
   variant?: ButtonProps["variant"];
   className?: string;

@@ -33,6 +33,7 @@ import Typography from "../../../../ui/Typography";
 import { FormModel, FormType } from "../RedeemFormModel";
 import {
   useAccount,
+  useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
 import {
@@ -45,6 +46,7 @@ import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../../widgets/redemption/provider/RedemptionContext";
+import { extractUserFriendlyError } from "../../../../../lib/errors/transactions";
 const colors = theme.colors.light;
 
 const StyledGrid = styled(Grid)`
@@ -95,6 +97,7 @@ export default function Confirmation({
   } = useRedemptionContext();
   const { postDeliveryInfo, postRedemptionConfirmed, postRedemptionSubmitted } =
     useRedemptionCallbacks();
+  const isInWrongChain = useIsConnectedToWrongChain();
   const coreSDK = useCoreSDKWithContext();
   const redeemRef = useRef<HTMLDivElement | null>(null);
   const { bosonXmtp } = useChatContext();
@@ -332,9 +335,9 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
         </div>
       )}
       {redemptionInfoError && (
-        <SimpleError errorMessage={redemptionInfoError?.message} />
+        <SimpleError errorMessage={redemptionInfoError.message} />
       )}
-      {redeemError && <SimpleError errorMessage={redeemError?.message} />}
+      {redeemError && <SimpleError errorMessage={redeemError.message} />}
       <Grid padding="2rem 0 0 0" justifyContent="space-between">
         <StyledRedeemButton
           type="button"
@@ -389,6 +392,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
           disabled={
             isLoading ||
             (!isInitializationValid && sendDeliveryInfoThroughXMTP) ||
+            isInWrongChain ||
             (redemptionInfoAccepted && !resumeRedemption)
           }
         >
@@ -416,8 +420,13 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
             }}
             exchangeId={exchangeId}
             onError={async (...args) => {
-              const [error] = args;
-              console.error("Error while redeeming", error);
+              const [error, context] = args;
+              const errorMessage = await extractUserFriendlyError(error, {
+                txResponse: context.txResponse,
+                provider: signer?.provider
+              });
+              console.error("Error while redeeming", error, errorMessage);
+              error.message = errorMessage;
               const message = {
                 redemptionInfo,
                 isError: true,

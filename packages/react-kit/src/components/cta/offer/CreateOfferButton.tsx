@@ -8,6 +8,7 @@ import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { offers, accounts } from "@bosonprotocol/core-sdk";
+import { TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
 
 type Props = {
@@ -45,12 +46,12 @@ export const CreateOfferButton = ({
 
   const handleCreateOffer = async () => {
     if (!isLoading) {
+      let txResponse: TransactionResponse | undefined = undefined;
       try {
         setIsLoading(true);
         onPendingSignature?.();
         const isMetaTx = Boolean(coreSdk.isMetaTxConfigSet && signerAddress);
         const seller = signerAddress && sellerInfo ? sellerInfo : null;
-        let txResponse;
         if (isMultiVariant) {
           if (!hasSellerAccount && seller) {
             if (isMetaTx) {
@@ -157,7 +158,9 @@ export const CreateOfferButton = ({
           });
         }
       } catch (error) {
-        onError?.(error as Error);
+        onError?.(error as Error, {
+          txResponse: txResponse as providers.TransactionResponse
+        });
       } finally {
         setIsLoading(false);
       }

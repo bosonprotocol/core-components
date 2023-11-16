@@ -12,13 +12,12 @@ import { getDateTimestamp } from "../../../lib/dates/getDateTimestamp";
 import { Offer } from "../../../types/offer";
 dayjs.extend(isBetween);
 
+const THRESHOLD = 15;
 export default function useOffersBacked({
   funds: fundsData,
   exchangesTokens: exchangesTokensData,
   sellerDeposit: sellerDepositData
 }: Pick<Props, "funds" | "exchangesTokens" | "sellerDeposit">) {
-  const THRESHOLD = 15;
-
   const { funds } = fundsData;
   const { data: exchangesTokens } = exchangesTokensData;
   const { data: sellersData } = sellerDepositData;
@@ -38,8 +37,6 @@ export default function useOffersBacked({
           return isNotExpired && !offer.voided;
         }
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore // TODO: check
       const sumValue = notExpiredAndNotVoidedOffers?.reduce((acc, data) => {
         const { sellerDeposit, quantityAvailable } = data;
         acc = acc
@@ -95,17 +92,14 @@ export default function useOffersBacked({
   }, [sellersData]);
 
   const offersBackedFn = useCallback(
-    (fund: subgraph.FundsEntityFieldsFragment) => {
+    (fund: subgraph.FundsEntityFieldsFragment): number | null => {
       let result = null;
       const backedFund = calcOffersBacked[fund.token.symbol];
-      if (fund.availableAmount && backedFund !== "") {
+      if (fund.availableAmount && backedFund) {
         result = Number(
-          (
-            (Number(fund.availableAmount) /
-              Number(calcOffersBacked[fund.token.symbol])) *
-            100
-          ).toFixed(2)
+          ((Number(fund.availableAmount) / Number(backedFund)) * 100).toFixed(2)
         );
+        result = Number.isNaN(result) ? 100 : result;
       }
       return result;
     },
