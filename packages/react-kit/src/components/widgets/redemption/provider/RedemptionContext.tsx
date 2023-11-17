@@ -51,7 +51,7 @@ export type RedemptionContextProps = {
   postRedemptionSubmittedUrl?: string;
   // Request headers to POST the postRedemptionSubmittedUrl callback
   postRedemptionSubmittedHeaders?: { [key: string]: string };
-  // In case the redemption confirmation shall be handle in frontend
+  // In case the redemption confirmation shall be handled in frontend
   redemptionConfirmedHandler?: (
     message: RedeemTransactionConfirmedMessage
   ) => Promise<RedeemTransactionConfirmedCallbackResponse>;
