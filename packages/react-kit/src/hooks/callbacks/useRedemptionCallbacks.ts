@@ -99,17 +99,13 @@ function postDeliveryInfoCallback(
 ) {
   return async (
     message: DeliveryInfoMessage,
-    signer: providers.JsonRpcSigner | undefined
+    signature: string | undefined
   ): Promise<DeliveryInfoCallbackResponse> => {
     if (!postDeliveryInfoUrl) {
       throw new Error(
         "[postDeliveryInfoCallback] postDeliveryInfoUrl is not defined"
       );
     }
-    // add wallet signature in the message (must be verifiable by the backend)
-    const signature = signer
-      ? await signer.signMessage(JSON.stringify(message))
-      : undefined;
     return fetchAndReadResponse("deliveryInfo", postDeliveryInfoUrl, {
       method: "POST",
       body: JSON.stringify({

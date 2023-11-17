@@ -36,7 +36,11 @@ import {
   useIsConnectedToWrongChain,
   useSigner
 } from "../../../../../hooks/connection/connection";
-import { useRedemptionCallbacks } from "../../../../../hooks/callbacks/useRedemptionCallbacks";
+import {
+  DeliveryInfoCallbackResponse,
+  DeliveryInfoMessage,
+  useRedemptionCallbacks
+} from "../../../../../hooks/callbacks/useRedemptionCallbacks";
 import { NonModalProps } from "../../../nonModal/NonModal";
 import {
   RedemptionWidgetAction,
@@ -83,7 +87,14 @@ export default function Confirmation({
   hideModal
 }: ConfirmationProps) {
   const { envName, configId } = useEnvContext();
-  const { widgetAction, setWidgetAction } = useRedemptionContext();
+  const {
+    widgetAction,
+    setWidgetAction,
+    deliveryInfoHandler,
+    redemptionSubmittedHandler,
+    redemptionConfirmedHandler,
+    sendDeliveryInfoThroughXMTP
+  } = useRedemptionContext();
   const { postDeliveryInfo, postRedemptionConfirmed, postRedemptionSubmitted } =
     useRedemptionCallbacks();
   const isInWrongChain = useIsConnectedToWrongChain();
@@ -104,7 +115,7 @@ export default function Confirmation({
   const showSuccessInitialization =
     chatInitializationStatus === "INITIALIZED" &&
     bosonXmtp &&
-    !postDeliveryInfo;
+    sendDeliveryInfoThroughXMTP;
   const isInitializationValid =
     !!bosonXmtp &&
     ["INITIALIZED", "ALREADY_INITIALIZED"].includes(chatInitializationStatus);
@@ -154,61 +165,48 @@ export default function Confirmation({
       console.error("Error while confirming Redeem", error);
     }
   };
-  const handleConfirmRedemptionInfoWithXMTP = async () => {
-    try {
-      await sendDeliveryDetailsToChat();
-      handleConfirmRedeem();
-      setRedemptionInfoError(null);
-    } catch (error) {
-      Sentry.captureException(error, {
-        extra: {
-          action: "redeem",
-          location: "redeem-modal",
-          exchangeId,
-          buyerId,
-          sellerId,
-          sellerAddress,
-          buyerAddress: address
-        }
-      });
-      console.error(
-        "Error while sending a message with the delivery details",
-        error
-      );
-      setRedemptionInfoError(error as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const handleConfirmRedemptionInfoWithCallback = async () => {
-    const message = {
-      deliveryDetails: values,
-      ...redemptionInfo
-    };
+  const handleSendRedemptionInfo: (
+    handler: (
+      message: DeliveryInfoMessage,
+      signature?: string
+    ) => Promise<DeliveryInfoCallbackResponse>,
+    message: DeliveryInfoMessage,
+    signature?: string
+  ) => Promise<{
+    resume: boolean;
+  }> = async (handler, message, signature) => {
+    let resume = true;
     try {
       setIsLoading(true);
-      if (!postDeliveryInfo) {
-        throw new Error(`postDeliveryInfo is undefined`);
-      }
-      const response = await postDeliveryInfo(message, signer);
-      setIsLoading(false);
-      if (!response.accepted) {
-        setRedemptionInfoError(
-          new Error(
-            `Redemption information has not been accepted: ${response.reason}`
-          )
-        );
-        setRedemptionInfoAccepted(false);
-        setResumeRedemption(false);
-      } else if (!response.resume) {
-        setRedemptionInfoError(new Error(`Redemption Widget may be closed`));
-        setRedemptionInfoAccepted(true);
-        setResumeRedemption(false);
-        hideModal?.();
-      } else {
-        setRedemptionInfoError(null);
-        setRedemptionInfoAccepted(true);
-        setResumeRedemption(true);
+      if (handler) {
+        const response = await handler(message, signature);
+        if (response) {
+          if (!response.accepted) {
+            setRedemptionInfoError(
+              new Error(
+                `Redemption information has not been accepted: ${response.reason}`
+              )
+            );
+            setRedemptionInfoAccepted(false);
+            setResumeRedemption(false);
+            resume = false;
+            setIsLoading(false); // to allow trying with another delivery info
+          } else if (!response.resume) {
+            setRedemptionInfoError(
+              new Error(`Redemption Widget may be closed`)
+            );
+            setRedemptionInfoAccepted(true);
+            setResumeRedemption(false);
+            resume = false;
+            hideModal?.();
+          } else {
+            setRedemptionInfoError(null);
+            setRedemptionInfoAccepted(true);
+            setResumeRedemption(true);
+          }
+        } else {
+          throw new Error("Error while calling deliveryInfo handler"); // will be catch just below
+        }
       }
     } catch (error) {
       Sentry.captureException(error, {
@@ -222,11 +220,12 @@ export default function Confirmation({
           buyerAddress: address
         }
       });
-      console.error("Error while calling deliveryInfo callback", error);
+      console.error("Error while calling deliveryInfo handler", error);
       setRedemptionInfoError(error as Error);
-    } finally {
+      resume = false;
       setIsLoading(false);
     }
+    return { resume };
   };
   const handleOnBackClick = () => {
     if (widgetAction === RedemptionWidgetAction.CONFIRM_REDEEM) {
@@ -236,32 +235,46 @@ export default function Confirmation({
     onBackClick();
   };
 
-  const sendDeliveryDetailsToChat = async () => {
-    const value = `DELIVERY ADDRESS:
+  const sendDeliveryDetailsToChat = async (message: DeliveryInfoMessage) => {
+    let resume = true;
+    const accepted = true;
+    let reason = "";
+    try {
+      const value = `DELIVERY ADDRESS:
 
-${FormModel.formFields.name.placeholder}: ${nameField.value}
-${FormModel.formFields.streetNameAndNumber.placeholder}: ${streetNameAndNumberField.value}
-${FormModel.formFields.city.placeholder}: ${cityField.value}
-${FormModel.formFields.state.placeholder}: ${stateField.value}
-${FormModel.formFields.zip.placeholder}: ${zipField.value}
-${FormModel.formFields.country.placeholder}: ${countryField.value}
-${FormModel.formFields.email.placeholder}: ${emailField.value}
-${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
+${FormModel.formFields.name.placeholder}: ${message.deliveryDetails.name}
+${FormModel.formFields.streetNameAndNumber.placeholder}: ${message.deliveryDetails.streetNameAndNumber}
+${FormModel.formFields.city.placeholder}: ${message.deliveryDetails.city}
+${FormModel.formFields.state.placeholder}: ${message.deliveryDetails.state}
+${FormModel.formFields.zip.placeholder}: ${message.deliveryDetails.zip}
+${FormModel.formFields.country.placeholder}: ${message.deliveryDetails.country}
+${FormModel.formFields.email.placeholder}: ${message.deliveryDetails.email}
+${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
 
-    const newMessage = {
-      threadId: {
-        exchangeId,
-        buyerId,
-        sellerId
-      },
-      content: {
-        value
-      },
-      contentType: MessageType.String,
-      version
-    } as const;
-    const destinationAddress = utils.getAddress(sellerAddress);
-    await bosonXmtp?.encodeAndSendMessage(newMessage, destinationAddress);
+      const newMessage = {
+        threadId: {
+          exchangeId,
+          buyerId,
+          sellerId
+        },
+        content: {
+          value
+        },
+        contentType: MessageType.String,
+        version
+      } as const;
+      const destinationAddress = utils.getAddress(sellerAddress);
+      await bosonXmtp?.encodeAndSendMessage(newMessage, destinationAddress);
+    } catch (e) {
+      resume = false;
+      reason = e instanceof Error ? e.message : String(e);
+    }
+
+    return {
+      accepted,
+      resume,
+      reason
+    };
   };
 
   return (
@@ -301,7 +314,7 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
           </ThemedButton>
         </Grid>
       </Grid>
-      {!postDeliveryInfo && <InitializeChatWithSuccess />}
+      {sendDeliveryInfoThroughXMTP && <InitializeChatWithSuccess />}
       {showSuccessInitialization && (
         <div>
           <StyledGrid
@@ -324,18 +337,59 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
       <Grid padding="2rem 0 0 0" justifyContent="space-between">
         <StyledRedeemButton
           type="button"
-          onClick={() =>
-            postDeliveryInfo
-              ? redemptionInfoAccepted
-                ? handleConfirmRedeem()
-                : handleConfirmRedemptionInfoWithCallback()
-              : handleConfirmRedemptionInfoWithXMTP()
-          }
+          onClick={async () => {
+            let resume = true;
+            let signature;
+            const message = {
+              deliveryDetails: values,
+              ...redemptionInfo
+            };
+            if (!redemptionInfoAccepted) {
+              setIsLoading(true);
+              setRedemptionInfoError(null);
+              if (sendDeliveryInfoThroughXMTP) {
+                ({ resume } = await handleSendRedemptionInfo(
+                  sendDeliveryDetailsToChat,
+                  message
+                ));
+              }
+              if (resume && deliveryInfoHandler) {
+                if (!signature) {
+                  // add wallet signature in the message (must be verifiable by the receiver)
+                  signature = signer
+                    ? await signer.signMessage(JSON.stringify(message))
+                    : undefined;
+                }
+                ({ resume } = await handleSendRedemptionInfo(
+                  deliveryInfoHandler,
+                  message,
+                  signature
+                ));
+              }
+              if (resume && postDeliveryInfo) {
+                if (!signature) {
+                  // add wallet signature in the message (must be verifiable by the receiver)
+                  signature = signer
+                    ? await signer.signMessage(JSON.stringify(message))
+                    : undefined;
+                }
+                ({ resume } = await handleSendRedemptionInfo(
+                  postDeliveryInfo,
+                  message,
+                  signature
+                ));
+              }
+              setIsLoading(false);
+            }
+            if (resume) {
+              handleConfirmRedeem();
+            }
+          }}
           disabled={
             isLoading ||
-            (!isInitializationValid && !postDeliveryInfo) ||
+            (!isInitializationValid && sendDeliveryInfoThroughXMTP) ||
             isInWrongChain ||
-            (postDeliveryInfo && redemptionInfoAccepted && !resumeRedemption)
+            (redemptionInfoAccepted && !resumeRedemption)
           }
         >
           <Grid gap="0.5rem">
@@ -360,10 +414,6 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               web3Provider: signer?.provider as Provider,
               metaTx: coreSDK.metaTxConfig
             }}
-            disabled={
-              // ensure the button is disabled if postDeliveryInfo has failed
-              isLoading || (!isInitializationValid && !postDeliveryInfo)
-            }
             exchangeId={exchangeId}
             onError={async (...args) => {
               const [error, context] = args;
@@ -373,23 +423,38 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               });
               console.error("Error while redeeming", error, errorMessage);
               error.message = errorMessage;
-              // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
-              if (isTxPending) {
-                postRedemptionConfirmed?.({
-                  redemptionInfo,
-                  isError: true,
-                  error: { ...error }
-                });
-              } else {
-                postRedemptionSubmitted?.({
-                  redemptionInfo,
-                  isError: true,
-                  error: { ...error }
-                });
-              }
+              const message = {
+                redemptionInfo,
+                isError: true,
+                error: { ...error }
+              };
               setRedeemError(error);
               setIsLoading(false);
               setLoading?.(false);
+              // call postRedemptionSubmitted if error before the transaction is submitted OR postRedemptionConfirmed if error after
+              if (isTxPending) {
+                try {
+                  await redemptionConfirmedHandler?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+                try {
+                  await postRedemptionConfirmed?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+              } else {
+                try {
+                  await redemptionSubmittedHandler?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+                try {
+                  await postRedemptionSubmitted?.(message);
+                } catch (e) {
+                  console.error(e);
+                }
+              }
               onError?.(...args);
             }}
             onPendingSignature={(...args) => {
@@ -398,9 +463,14 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
               setLoading?.(true);
               onPendingSignature?.(...args);
             }}
-            onPendingTransaction={(...args) => {
+            onPendingTransaction={async (...args) => {
               // call postRedemptionSubmitted with transaction details
               const [hash, isMetaTx] = args;
+              const message = {
+                redemptionInfo,
+                isError: false,
+                redeemTx: { hash }
+              };
               onPendingTransaction?.(...args);
               addPendingTransaction({
                 type: subgraph.EventType.VoucherRedeemed,
@@ -415,14 +485,27 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                 }
               });
               setIsTxPending(true);
-              postRedemptionSubmitted?.({
-                redemptionInfo,
-                isError: false,
-                redeemTx: { hash }
-              });
+              try {
+                await redemptionSubmittedHandler?.(message);
+              } catch (e) {
+                console.error(e);
+              }
+              try {
+                await postRedemptionSubmitted?.(message);
+              } catch (e) {
+                console.error(e);
+              }
             }}
             onSuccess={async (...args) => {
               const [receipt, { exchangeId }] = args;
+              const message = {
+                redemptionInfo,
+                isError: false,
+                redeemTx: {
+                  hash: receipt.transactionHash,
+                  blockNumber: receipt.blockNumber
+                }
+              };
               let createdExchange: subgraph.ExchangeFieldsFragment;
               await poll(
                 async () => {
@@ -442,15 +525,17 @@ ${FormModel.formFields.phone.placeholder}: ${phoneField.value}`;
                   action={`Redeemed exchange: ${offerName}`}
                 />
               ));
+              try {
+                await redemptionConfirmedHandler?.(message);
+              } catch (e) {
+                console.error(e);
+              }
+              try {
+                await postRedemptionConfirmed?.(message);
+              } catch (e) {
+                console.error(e);
+              }
               onSuccess?.(...args);
-              postRedemptionConfirmed?.({
-                redemptionInfo,
-                isError: false,
-                redeemTx: {
-                  hash: receipt.transactionHash,
-                  blockNumber: receipt.blockNumber
-                }
-              });
             }}
           >
             <Grid gap="0.5rem">
