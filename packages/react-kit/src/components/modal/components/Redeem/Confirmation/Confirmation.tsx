@@ -265,9 +265,9 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
       } as const;
       const destinationAddress = utils.getAddress(sellerAddress);
       await bosonXmtp?.encodeAndSendMessage(newMessage, destinationAddress);
-    } catch (e: unknown) {
+    } catch (e) {
       resume = false;
-      reason = String(e);
+      reason = e instanceof Error ? e.message : String(e);
     }
 
     return {
