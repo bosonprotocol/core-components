@@ -179,34 +179,34 @@ export default function Confirmation({
     try {
       setIsLoading(true);
       if (handler) {
-          const response = await handler(message, signature);
-          if (response) {
-            if (!response.accepted) {
-              setRedemptionInfoError(
-                new Error(
-                  `Redemption information has not been accepted: ${response.reason}`
-                )
-              );
-              setRedemptionInfoAccepted(false);
-              setResumeRedemption(false);
-              resume = false;
-              setIsLoading(false); // to allow trying with another delivery info
-            } else if (!response.resume) {
-              setRedemptionInfoError(
-                new Error(`Redemption Widget may be closed`)
-              );
-              setRedemptionInfoAccepted(true);
-              setResumeRedemption(false);
-              resume = false;
-              hideModal?.();
-            } else {
-              setRedemptionInfoError(null);
-              setRedemptionInfoAccepted(true);
-              setResumeRedemption(true);
-            }
+        const response = await handler(message, signature);
+        if (response) {
+          if (!response.accepted) {
+            setRedemptionInfoError(
+              new Error(
+                `Redemption information has not been accepted: ${response.reason}`
+              )
+            );
+            setRedemptionInfoAccepted(false);
+            setResumeRedemption(false);
+            resume = false;
+            setIsLoading(false); // to allow trying with another delivery info
+          } else if (!response.resume) {
+            setRedemptionInfoError(
+              new Error(`Redemption Widget may be closed`)
+            );
+            setRedemptionInfoAccepted(true);
+            setResumeRedemption(false);
+            resume = false;
+            hideModal?.();
           } else {
-            throw new Error("Error while calling deliveryInfo handler"); // will be catch just below
+            setRedemptionInfoError(null);
+            setRedemptionInfoAccepted(true);
+            setResumeRedemption(true);
           }
+        } else {
+          throw new Error("Error while calling deliveryInfo handler"); // will be catch just below
+        }
       }
     } catch (error) {
       Sentry.captureException(error, {
