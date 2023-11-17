@@ -43,7 +43,7 @@ export type RedemptionContextProps = {
   postDeliveryInfoUrl?: string;
   // Request headers to POST the postDeliveryInfoUrl callback
   postDeliveryInfoHeaders?: { [key: string]: string };
-  // In case the redemption submission shall be handle in frontend
+  // In case the redemption submission shall be handled in frontend
   redemptionSubmittedHandler?: (
     message: RedeemTransactionSubmittedMessage
   ) => Promise<RedeemTransactionSubmittedCallbackResponse>;
