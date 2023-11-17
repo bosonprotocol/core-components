@@ -179,7 +179,6 @@ export default function Confirmation({
     try {
       setIsLoading(true);
       if (handler) {
-        await (async () => {
           const response = await handler(message, signature);
           if (response) {
             if (!response.accepted) {
@@ -208,9 +207,6 @@ export default function Confirmation({
           } else {
             throw new Error("Error while calling deliveryInfo handler"); // will be catch just below
           }
-        })().catch((e) => {
-          throw e; // will be catch just below
-        });
       }
     } catch (error) {
       Sentry.captureException(error, {
