@@ -21,7 +21,6 @@ import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 import { batchTasks } from "../utils/promises";
 import { ExchangesMixin } from "../exchanges/mixin";
 import { EventLogsMixin } from "../event-logs/mixin";
-import { MetadataMixin } from "../metadata/mixin";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -361,7 +360,7 @@ export class OfferMixin extends BaseCoreSDK {
    */
   public async getExchangeTokenInfo(
     exchangeToken: string
-  ): Promise<ITokenInfo> {
+  ): Promise<ITokenInfo | undefined> {
     if (this._tokenInfoManager === undefined) {
       this._tokenInfoManager = new TokenInfoManager(
         this._chainId,
@@ -419,6 +418,7 @@ export class OfferMixin extends BaseCoreSDK {
     if (!offer?.condition) {
       return true;
     }
+    const offerConditionId = offer.condition.id;
     const getCanTokenIdBeUsedToCommit = async (): Promise<
       (tokenId: string) => boolean
     > => {
@@ -426,7 +426,7 @@ export class OfferMixin extends BaseCoreSDK {
         this as unknown as EventLogsMixin
       ).getConditionalCommitAuthorizedEventLogs({
         conditionalCommitAuthorizedLogsFilter: {
-          groupId: offer.condition.id, // all offers of the same product have the same condition.id
+          groupId: offerConditionId, // all offers of the same product have the same condition.id
           buyerAddress
         }
       });
@@ -462,6 +462,9 @@ export class OfferMixin extends BaseCoreSDK {
           return true;
         }
         const log = tokenIdToAvailableCommitsMap.get(tokenId);
+        if (!log) {
+          return true;
+        }
         return Number(log.maxCommits) - Number(log.commitCount) > 0;
       };
       return canTokenIdBeUsedToCommit;
@@ -472,7 +475,7 @@ export class OfferMixin extends BaseCoreSDK {
         exchangesFilter: {
           buyer: buyerAddress,
           offer_: {
-            condition: offer.condition.id
+            condition: offerConditionId
           }
         }
       });
