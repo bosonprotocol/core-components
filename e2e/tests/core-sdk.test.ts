@@ -784,11 +784,12 @@ describe("core-sdk", () => {
       "ERC721-pertokenid-tokenrange",
       "ERC1155-peraddress",
       "ERC1155-pertokenid",
-      "ERC20"
+      "ERC20-threshold",
+      "ERC20-commits"
     ])(
       `create an offer with condition on %p and buyer does NOT meet the condition of that token gated`,
       async (token) => {
-        const tokenId = Date.now();
+        let tokenId = Date.now();
 
         const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
           await initSellerAndBuyerSDKs(seedWallet);
@@ -869,7 +870,8 @@ describe("core-sdk", () => {
             threshold: "3",
             maxCommits: "1"
           };
-        } else if (token === "ERC20") {
+        } else if (token === "ERC20-threshold") {
+          tokenId = 0;
           await ensureMintedAndAllowedTokens([buyerWallet], "5");
           conditionToCreate = {
             method: EvaluationMethod.Threshold,
@@ -879,6 +881,19 @@ describe("core-sdk", () => {
             minTokenId: "0",
             maxTokenId: "0",
             threshold: "7000000000000000000",
+            maxCommits: "1"
+          };
+        } else if (token === "ERC20-commits") {
+          tokenId = 0;
+          await ensureMintedAndAllowedTokens([buyerWallet], "5");
+          conditionToCreate = {
+            method: EvaluationMethod.Threshold,
+            tokenType: TokenType.FungibleToken,
+            tokenAddress: MOCK_ERC20_ADDRESS,
+            gatingType: GatingType.PerAddress,
+            minTokenId: "0",
+            maxTokenId: "0",
+            threshold: "1",
             maxCommits: "1"
           };
         }
@@ -899,7 +914,11 @@ describe("core-sdk", () => {
           throw new Error(`offerId is not defined ${offerId}`);
         }
         if (
-          ["ERC721-pertokenid-tokenrange", "ERC1155-pertokenid"].includes(token)
+          [
+            "ERC721-pertokenid-tokenrange",
+            "ERC1155-pertokenid",
+            "ERC20-commits"
+          ].includes(token)
         ) {
           // let's use the tokenId to make it fail
           await (

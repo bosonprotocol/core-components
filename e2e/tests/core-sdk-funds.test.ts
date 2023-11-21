@@ -152,7 +152,7 @@ describe("core-sdk-funds", () => {
   });
 
   describe("locked funds", () => {
-    test("completed exchanges should be excluded when coputing the locked funds value", async () => {
+    test("completed exchanges should be excluded when computing the locked funds value", async () => {
       const { sellerCoreSDK, buyerCoreSDK, sellerWallet, buyerWallet } =
         await initSellerAndBuyerSDKs(seedWallet);
       const sellers = await ensureCreatedSeller(sellerWallet);
