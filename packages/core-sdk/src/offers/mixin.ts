@@ -21,6 +21,7 @@ import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 import { batchTasks } from "../utils/promises";
 import { ExchangesMixin } from "../exchanges/mixin";
 import { EventLogsMixin } from "../event-logs/mixin";
+import { AccountsMixin } from "../accounts/mixin";
 
 export class OfferMixin extends BaseCoreSDK {
   /* -------------------------------------------------------------------------- */
@@ -471,17 +472,19 @@ export class OfferMixin extends BaseCoreSDK {
     };
 
     const getCurrentCommits = async (): Promise<number> => {
-      const exchanges = await (this as unknown as ExchangesMixin).getExchanges({
+      const buyers = await (this as unknown as AccountsMixin).getBuyers({
+        buyersFilter: {
+          wallet: buyerAddress
+        },
+        includeExchanges: true,
         exchangesFilter: {
-          buyer: buyerAddress,
           offer_: {
             condition: offerConditionId
           }
         }
       });
-
-      const currentCommits = exchanges.length;
-      return currentCommits;
+      const [buyer] = buyers ?? [];
+      return buyer?.exchanges?.length ?? 0;
     };
 
     const concurrencyLimit = 5;
