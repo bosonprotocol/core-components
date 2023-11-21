@@ -52,7 +52,7 @@ export const envConfigs: Record<EnvironmentType, ProtocolConfig[]> = {
       nativeCoin: chainIdToInfo.get(80001),
       getTxExplorerUrl: chainIdToGraphTx.get(80001),
       subgraphUrl:
-        "https://api.thegraph.com/subgraphs/name/bosonprotocol/mumbai-testing",
+        "https://subgraph.satsuma-prod.com/b9015c7ba76e/ludos-team--3951256/testing-mumbai/api",
       jsonRpcUrl:
         "https://polygon-mumbai.infura.io/v3/b832a48b9bce4aa6bd9da86eb0126300",
       theGraphIpfsUrl: "https://api.thegraph.com/ipfs/api/v0",

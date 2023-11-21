@@ -26,7 +26,7 @@
     "create:local": "graph create --node http://localhost:8020/ boson/corecomponents",
     "remove:local": "graph remove --node http://localhost:8020/ boson/corecomponents",
     "deploy:local": "npm run manifest:local && npm run create:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 boson/corecomponents -l 0.0.1",
-    "deploy:testing": "npm run manifest:testing && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-testing",
+    "deploy:testing": "npm run manifest:testing && graph deploy testing-mumbai --version-label v0.0.1-new-version --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key yv1IMOSrtXTa7 --ipfs https://ipfs.satsuma.xyz",
     "deploy:testing:goerli": "npm run manifest:testing:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-testing",
     "deploy:staging": "npm run manifest:staging && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/mumbai-staging",
     "deploy:staging:goerli": "npm run manifest:staging:goerli && graph deploy --node https://api.thegraph.com/deploy/ --product hosted-service --ipfs https://api.thegraph.com/ipfs/ bosonprotocol/goerli-staging",
