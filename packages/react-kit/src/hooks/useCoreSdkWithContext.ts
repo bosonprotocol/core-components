@@ -3,26 +3,34 @@ import { getEnvConfigById, hooks } from "..";
 import { useEnvContext } from "../components/environment/EnvironmentContext";
 import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
 import { useSigner } from "./connection/connection";
+import { useMemo } from "react";
+import { useExternalSigner } from "../components/signer/useExternalSigner";
 
 export function useCoreSDKWithContext() {
   const { envName, configId, metaTx } = useEnvContext();
+  const externalSigner = useExternalSigner();
   const signer = useSigner();
   const defaultConfig = getEnvConfigById(envName, configId);
-
-  return hooks.useCoreSdk({
-    envName,
-    configId,
-    web3Provider: signer?.provider as providers.Web3Provider,
-    metaTx: {
-      ...defaultConfig.metaTx,
-      apiKey: metaTx?.apiKey,
-      apiIds: getMetaTxApiIds(
-        defaultConfig.contracts.protocolDiamond,
-        defaultConfig.defaultTokens || [],
-        metaTx?.apiIds
-      )
-    }
-  });
+  const overrides = useMemo(() => {
+    return externalSigner ? { web3Lib: externalSigner } : undefined;
+  }, [externalSigner]);
+  return hooks.useCoreSdk(
+    {
+      envName,
+      configId,
+      web3Provider: signer?.provider as providers.Web3Provider,
+      metaTx: {
+        ...defaultConfig.metaTx,
+        apiKey: metaTx?.apiKey,
+        apiIds: getMetaTxApiIds(
+          defaultConfig.contracts.protocolDiamond,
+          defaultConfig.defaultTokens || [],
+          metaTx?.apiIds
+        )
+      }
+    },
+    overrides
+  );
 }
 
 function getMetaTxApiIds(
