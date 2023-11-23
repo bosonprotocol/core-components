@@ -3,12 +3,7 @@ import isBetween from "dayjs/plugin/isBetween";
 
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import {
-  Web3LibAdapter,
-  TransactionRequest,
-  TransactionResponse,
-  TransactionReceipt
-} from "@bosonprotocol/common";
+import { Web3LibAdapter } from "@bosonprotocol/common";
 import useOffersBacked from "./useOffersBacked";
 import Loading from "../../ui/loading/Loading";
 import Finance, { Props } from "./Finance";
@@ -34,9 +29,8 @@ import {
 } from "../../config/ConfigProvider";
 import { CONFIG } from "../../../lib/config/config";
 import { MagicProvider } from "../../magicLink/MagicContext";
-import { useAccount } from "../../../hooks/connection/connection";
 import { SignerProvider } from "../../signer/SignerContext";
-import { BigNumberish } from "ethers";
+import { getExternalSignerListener } from "../../../lib/signer/externalSigner";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
@@ -47,7 +41,6 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
   const ComponentWithSellerData = (props: Pick<Props, "sellerId">) => {
     const sellerId = props.sellerId;
     const sellerRoles = useSellerRoles(sellerId || "");
-    console.log(useAccount());
     const {
       store: { tokens }
     } = useConvertionRate();
@@ -105,102 +98,39 @@ const queryClient = new QueryClient({
 
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
+  parentOrigin: `http${string}`;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Parameters<typeof Component>[0];
 
 const { infuraKey, magicLinkKey } = CONFIG;
-const externalSignerListener: Web3LibAdapter = {
-  getSignerAddress: (): Promise<string> => {
-    return new Promise<string>((resolve) => {
-      window.parent.postMessage({
-        function: "getSignerAddress",
-        args: undefined
-      });
-      function onMessageReceived(event: MessageEvent) {
-        if (event.origin === "localhost:3000") {
-          console.log("data received", event.data);
-          if (event.data.function === "getSignerAddress") {
-            resolve(event.data.result);
-          }
-        }
-      }
-      window.addEventListener("message", onMessageReceived);
-      // return () => {
-      //   window.removeEventListener("message", onMessageReceived);
-      // };
-    });
-  },
-  getChainId: async (): Promise<number> => {
-    console.log("getChainId not implemented");
-    return 0;
-  },
-  getBalance: async (
-    addressOrName: string,
-    blockNumber?: string | number
-  ): Promise<BigNumberish> => {
-    console.log("getBalance not implemented", { addressOrName, blockNumber });
-    return "0";
-  },
-  sendTransaction: async (
-    transactionRequest: TransactionRequest
-  ): Promise<TransactionResponse> => {
-    console.log("sendTransaction not implemented", { transactionRequest });
-    return {
-      hash: "",
-      wait: () =>
-        Promise.resolve({
-          effectiveGasPrice: "",
-          from: "",
-          to: "",
-          logs: [],
-          transactionHash: "",
-          status: undefined
-        })
-    };
-  },
-  call: async (transactionRequest: TransactionRequest): Promise<string> => {
-    console.log("call not implemented", { transactionRequest });
-    return "";
-  },
-  send: async (rpcMethod: string, payload: unknown[]): Promise<string> => {
-    console.log("send not implemented", { rpcMethod, payload });
-    return "";
-  },
-  getTransactionReceipt: async (
-    txHash: string
-  ): Promise<TransactionReceipt> => {
-    console.log("getTransactionReceipt not implemented", { txHash });
-    return {
-      effectiveGasPrice: "",
-      from: "",
-      to: "",
-      logs: [],
-      transactionHash: "",
-      status: undefined
-    };
-  }
-};
+
 export function FinanceWidget({
   envName,
   configId,
   walletConnectProjectId,
   sellerId,
   metaTx,
+  parentOrigin,
   ...rest
 }: FinanceWidgetProps) {
+  const externalSignerListener = useMemo(
+    () => getExternalSignerListener({ parentOrigin }),
+    [parentOrigin]
+  );
   const [externalSigner, setExternalSigner] = useState<
     Web3LibAdapter | undefined
   >();
   useEffect(() => {
     function onMessageReceived(event: MessageEvent) {
-      if (event.origin === "localhost:3000") {
-        console.log("data received", event.data);
-        if (event.data.hasSigner) {
-          setExternalSigner(undefined);
-        } else {
-          setExternalSigner(externalSignerListener);
+      if (event.origin === parentOrigin) {
+        if ([true, false].includes(event.data.hasSigner)) {
+          if (event.data.hasSigner) {
+            setExternalSigner(externalSignerListener);
+          } else {
+            setExternalSigner(undefined);
+          }
         }
       }
     }
@@ -208,7 +138,7 @@ export function FinanceWidget({
     return () => {
       window.removeEventListener("message", onMessageReceived);
     };
-  }, [externalSigner]);
+  }, [externalSigner, externalSignerListener, parentOrigin]);
   return (
     <EnvironmentProvider envName={envName} configId={configId} metaTx={metaTx}>
       {

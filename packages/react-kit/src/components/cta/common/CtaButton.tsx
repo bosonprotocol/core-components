@@ -2,16 +2,13 @@ import React from "react";
 import { providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
-import {
-  useSignerAddress,
-  useSignerAddress2
-} from "../../../hooks/useSignerAddress";
+import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { useCtaClickHandler, Action } from "../../../hooks/useCtaClickHandler";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type Props<T> = CtaButtonProps<T> & {
   defaultLabel?: string;
@@ -38,8 +35,8 @@ export function CtaButton<T>({
   coreSdkConfig,
   ...rest
 }: Props<T>) {
-  const coreSdk = useCoreSdk(coreSdkConfig);
-  const signerAddress = useSignerAddress2(coreSdk.web3Lib);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   const { clickHandler, isLoading } = useCtaClickHandler<T>({
     waitBlocks,

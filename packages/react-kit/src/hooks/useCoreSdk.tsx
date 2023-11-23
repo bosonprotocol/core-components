@@ -63,7 +63,7 @@ export type CoreSdkConfig = {
   lensContracts?: LensContracts;
 };
 
-type CoreSdkOverrides = { web3Lib: Web3LibAdapter };
+type CoreSdkOverrides = { web3Lib?: Web3LibAdapter };
 
 /**
  * Hook that initializes an instance of `CoreSDK` from the `@bosonprotocol/core-sdk`

@@ -3,12 +3,12 @@ import { BigNumberish, providers } from "ethers";
 import { TransactionResponse } from "@bosonprotocol/common";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type Props = {
   /**
@@ -35,10 +35,10 @@ export const VoidButton = ({
   coreSdkConfig,
   ...rest
 }: Props) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   return (
     <Button

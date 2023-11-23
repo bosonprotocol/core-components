@@ -100,9 +100,11 @@ export function useCtaClickHandler<T>({
                 nonce
               });
         } else {
+          console.log("before writeContractFn", name);
+
           txResponse = await writeContractFn();
         }
-
+        console.log("txResponse", txResponse);
         if (txResponse) {
           try {
             onPendingTransaction?.(txResponse.hash, isMetaTx, name);

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { accounts } from "@bosonprotocol/core-sdk";
 import { ButtonSize } from "../../ui/buttonSize";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 export type ICreateDisputeResolverButton = {
   exchangeId: BigNumberish;
   disputeResolverToCreate: accounts.CreateDisputeResolverArgs;
@@ -33,7 +33,7 @@ export const CreateDisputeResolverButton = ({
   coreSdkConfig,
   ...rest
 }: ICreateDisputeResolverButton) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
