@@ -86,9 +86,7 @@ export const getExternalSignerListener = ({
                   ): Promise<TransactionReceipt> => {
                     return new Promise<TransactionReceipt>(
                       (resolve, reject) => {
-                        function onContinuationMessageReceived(
-                          event: MessageEvent
-                        ) {
+                        function onWaitMessageReceived(event: MessageEvent) {
                           if (event.origin === parentOrigin) {
                             if (
                               event.data.function === "wait" &&
@@ -101,14 +99,14 @@ export const getExternalSignerListener = ({
                               }
                               window.removeEventListener(
                                 "message",
-                                onContinuationMessageReceived
+                                onWaitMessageReceived
                               );
                             }
                           }
                         }
                         window.addEventListener(
                           "message",
-                          onContinuationMessageReceived
+                          onWaitMessageReceived
                         );
                         window.parent.postMessage(
                           {
