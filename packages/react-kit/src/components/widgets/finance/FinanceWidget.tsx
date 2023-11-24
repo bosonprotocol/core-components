@@ -1,9 +1,8 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Web3LibAdapter } from "@bosonprotocol/common";
 import useOffersBacked from "./useOffersBacked";
 import Loading from "../../ui/loading/Loading";
 import Finance, { Props } from "./Finance";
@@ -34,6 +33,8 @@ import ConnectButton from "../../wallet/ConnectButton";
 import Grid from "../../ui/Grid";
 import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
 import { useAccount } from "../../../hooks/connection/connection";
+import { useDisconnect } from "../../../hooks/connection/useDisconnect";
+import { ethers } from "ethers";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
@@ -50,7 +51,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
       enabled: !sellerId
     });
     const sellerIdToUse = sellerId || sellerIds?.[0] || "";
-    const sellerRoles = useSellerRoles(sellerIdToUse);
+    const { sellerRoles, seller } = useSellerRoles(sellerIdToUse);
     const {
       store: { tokens }
     } = useConvertionRate();
@@ -82,6 +83,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
     );
 
     const offersBacked = useOffersBacked({ ...newProps });
+    const disconnect = useDisconnect();
 
     if (exchangesTokens.isLoading || sellerDeposit.isLoading) {
       return (
@@ -90,6 +92,28 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         </Wrapper>
       );
     }
+    const forcedAccount =
+      sellerId && !sellerRoles.isAssistant ? seller?.assistant : "";
+    if (
+      forcedAccount &&
+      address &&
+      forcedAccount.toLowerCase() !== address.toLowerCase()
+    ) {
+      // force disconnection as the current connected wallet is not the forced one
+      disconnect();
+    }
+
+    if (forcedAccount) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Please connect this wallet account{" "}
+          <strong>{ethers.utils.getAddress(forcedAccount)}</strong> (which is
+          linked to the <strong>assistant</strong> role of the seller id{" "}
+          <strong>{sellerId}</strong>)
+        </p>
+      );
+    }
+
     return (
       <WrappedComponent {...props} {...newProps} offersBacked={offersBacked} />
     );
@@ -110,11 +134,10 @@ type FinanceWidgetProps = {
   walletConnectProjectId: string;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
-  ConvertionRateProviderProps &
-  (
-    | { parentOrigin: `http${string}`; sellerId: undefined }
-    | { parentOrigin: undefined | null; sellerId: string }
-  );
+  ConvertionRateProviderProps & {
+    parentOrigin: `http${string}` | undefined | null;
+    sellerId: string | null | undefined;
+  };
 
 const { infuraKey, magicLinkKey } = CONFIG;
 
@@ -151,7 +174,7 @@ export function FinanceWidget({
                         <ConnectButton showChangeWallet />
                       </Grid>
                     )}
-                    <Component sellerId={sellerId} />
+                    <Component sellerId={sellerId ?? undefined} />
                   </ModalProvider>
                 </ConvertionRateProvider>
               </QueryClientProvider>
