@@ -37,6 +37,10 @@ import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { ethers } from "ethers";
 dayjs.extend(isBetween);
 
+const StyledConnectButton = styled(ConnectButton)`
+  padding: 10px;
+`;
+
 const Wrapper = styled.div`
   text-align: center;
 `;
@@ -90,6 +94,13 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         <Wrapper>
           <Loading />
         </Wrapper>
+      );
+    }
+    if (address && !sellerIdToUse) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Connect a wallet that has a seller account
+        </p>
       );
     }
     const forcedAccount =
@@ -171,7 +182,7 @@ export function FinanceWidget({
                   <ModalProvider>
                     {!parentOrigin && (
                       <Grid justifyContent="flex-end">
-                        <ConnectButton showChangeWallet />
+                        <StyledConnectButton showChangeWallet />
                       </Grid>
                     )}
                     <Component sellerId={sellerId ?? undefined} />

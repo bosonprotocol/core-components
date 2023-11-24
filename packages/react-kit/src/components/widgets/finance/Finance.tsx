@@ -453,6 +453,10 @@ export default function Finance({
     );
   }, [pageCount, pageIndex]);
 
+  if (!address) {
+    return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+  }
+
   if (!isFundsInitialized || isLoadingSellerData || isLoadingExchangesTokens) {
     return <Loading />;
   }
