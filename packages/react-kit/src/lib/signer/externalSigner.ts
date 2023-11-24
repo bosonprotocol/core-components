@@ -25,12 +25,11 @@ const getDefaultHandleSignerFunction = <R>({
           } else if (event.data.result) {
             resolve(event.data.result);
           }
+          window.removeEventListener("message", onMessageReceived);
         }
       }
     }
-    window.addEventListener("message", onMessageReceived, {
-      once: true
-    });
+    window.addEventListener("message", onMessageReceived);
     window.parent.postMessage(
       {
         function: functionName,

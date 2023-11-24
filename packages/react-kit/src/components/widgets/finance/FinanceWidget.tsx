@@ -96,7 +96,11 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         </Wrapper>
       );
     }
-    if (address && !sellerIdToUse) {
+    if (!address) {
+      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+    }
+
+    if (!sellerIdToUse) {
       return (
         <p style={{ textAlign: "center" }}>
           Connect a wallet that has a seller account
@@ -120,7 +124,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
           Please connect this wallet account{" "}
           <strong>{ethers.utils.getAddress(forcedAccount)}</strong> (which is
           linked to the <strong>assistant</strong> role of the seller id{" "}
-          <strong>{sellerId}</strong>)
+          <strong>{sellerId}</strong>). The connected address is {address}
         </p>
       );
     }
