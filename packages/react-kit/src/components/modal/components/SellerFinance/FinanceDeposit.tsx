@@ -182,7 +182,6 @@ export default function FinanceDeposit({
             }
           }}
           onSuccess={async (...args) => {
-            console.log("onSuccess deposit", { ...args });
             await poll(
               async () => {
                 const balance = await refetch();

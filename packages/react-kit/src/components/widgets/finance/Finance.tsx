@@ -29,118 +29,10 @@ import {
   Currencies,
   CurrencyDisplay
 } from "../../currencyDisplay/CurrencyDisplay";
-import ThemedButton from "../../ui/ThemedButton";
 import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 dayjs.extend(isBetween);
+const colors = theme.colors.light;
 const BosonButton = Button;
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  th {
-    font-weight: 600;
-    color: ${theme.colors.light.darkGrey};
-    :not([data-sortable]) {
-      cursor: default !important;
-    }
-    [data-sortable] {
-      cursor: pointer !important;
-    }
-  }
-  td {
-    font-weight: 400;
-    color: ${theme.colors.light.black};
-  }
-  th,
-  td {
-    font-family: "Plus Jakarta Sans";
-    font-style: normal;
-    font-size: 0.75rem;
-    line-height: 1.5;
-  }
-  thead {
-    tr {
-      th {
-        border-bottom: 2px solid ${theme.colors.light.border};
-        text-align: left;
-        padding: 0.5rem;
-        &:first-child {
-          padding-left: 0.5rem;
-        }
-        &:last-child {
-          text-align: right;
-        }
-      }
-    }
-  }
-  tbody {
-    tr {
-      :hover {
-        td {
-          background-color: ${theme.colors.light.darkGrey}08;
-          cursor: pointer;
-        }
-      }
-      &:not(:last-child) {
-        td {
-          border-bottom: 1px solid ${theme.colors.light.border};
-        }
-      }
-      td {
-        text-align: left;
-        padding: 0.5rem;
-        &:first-child {
-        }
-        &:last-child {
-          text-align: right;
-          > button {
-            display: inline-block;
-          }
-        }
-      }
-    }
-  }
-  [data-testid="price"] {
-    transform: scale(0.75);
-  }
-`;
-const CurrencyName = styled(Typography)`
-  > div > *:not(svg) {
-    display: none;
-  }
-`;
-const HeaderSorter = styled.span`
-  margin-left: 0.5rem;
-`;
-const Pagination = styled.div`
-  width: 100%;
-  padding-top: 1rem;
-  border-top: 2px solid ${theme.colors.light.border};
-
-  select {
-    padding: 0.5rem;
-    border: 1px solid ${theme.colors.light.border};
-    background: ${theme.colors.light.white};
-    margin: 0 1rem;
-  }
-`;
-const Span = styled.span`
-  font-size: 0.75rem;
-  color: ${theme.colors.light.darkGrey};
-  &:not(:last-of-type) {
-    margin-right: 1rem;
-  }
-`;
-
-const WithdrawButton = styled(ThemedButton)`
-  color: ${theme.colors.light.secondary};
-  border-color: transparent;
-`;
-const WarningWrapper = styled(Grid)`
-  svg {
-    color: ${theme.colors.light.orange};
-  }
-`;
-
 interface QueryProps {
   isLoading: boolean;
   isError: boolean;
@@ -206,6 +98,113 @@ export type Props = {
   };
 };
 
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  th {
+    font-weight: 600;
+    color: ${colors.darkGrey};
+    :not([data-sortable]) {
+      cursor: default !important;
+    }
+    [data-sortable] {
+      cursor: pointer !important;
+    }
+  }
+  td {
+    font-weight: 400;
+    color: ${colors.black};
+  }
+  th,
+  td {
+    font-style: normal;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  thead {
+    tr {
+      th {
+        border-bottom: 2px solid ${colors.border};
+        text-align: left;
+        padding: 0.5rem;
+        &:first-child {
+          padding-left: 0.5rem;
+        }
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      :hover {
+        td {
+          background-color: ${colors.darkGrey}08;
+          cursor: pointer;
+        }
+      }
+      &:not(:last-child) {
+        td {
+          border-bottom: 1px solid ${colors.border};
+        }
+      }
+      td {
+        text-align: left;
+        padding: 0.5rem;
+        &:first-child {
+        }
+        &:last-child {
+          text-align: right;
+          > button {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+  [data-testid="price"] {
+    transform: scale(0.75);
+  }
+`;
+const CurrencyName = styled(Typography)`
+  > div > *:not(svg) {
+    display: none;
+  }
+`;
+const HeaderSorter = styled.span`
+  margin-left: 0.5rem;
+`;
+const Pagination = styled.div`
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 2px solid ${colors.border};
+
+  select {
+    padding: 0.5rem;
+    border: 1px solid ${colors.border};
+    background: ${colors.white};
+    margin: 0 1rem;
+  }
+`;
+const Span = styled.span`
+  font-size: 0.75rem;
+  color: ${colors.darkGrey};
+  &:not(:last-of-type) {
+    margin-right: 1rem;
+  }
+`;
+
+const WithdrawButton = styled(Button)`
+  color: ${colors.secondary};
+  border-color: transparent;
+`;
+const WarningWrapper = styled(Grid)`
+  svg {
+    color: ${colors.orange};
+  }
+`;
+
 export default function Finance({
   sellerId,
   funds: fundsData,
@@ -214,7 +213,7 @@ export default function Finance({
   offersBacked,
   sellerRoles
 }: Props) {
-  const { showModal, modalTypes } = useModal();
+  const { showModal } = useModal();
   const { funds, reload, fundStatus } = fundsData;
   const {
     isLoading: isLoadingExchangesTokens,
@@ -282,7 +281,7 @@ export default function Finance({
   const offersBackedCell = useCallback(
     (value: number | null) => {
       if (value === null) {
-        return "";
+        return null;
       }
       if (Number(value) < threshold) {
         return (
@@ -337,13 +336,13 @@ export default function Finance({
           action: (
             <Grid justifyContent="flex-end" gap="1rem">
               <WithdrawButton
-                theme="blank"
+                theme="outline"
                 size="small"
-                disabled={!sellerRoles.isClerk}
-                tooltip="This action is restricted to only the clerk wallet" // check
+                disabled={!sellerRoles.isAssistant}
+                tooltip="This action is restricted to only the assistant wallet"
                 onClick={() => {
                   showModal(
-                    modalTypes.FINANCE_WITHDRAW_MODAL,
+                    "FINANCE_WITHDRAW_MODAL",
                     {
                       title: `Withdraw ${fund.token.symbol}`,
                       protocolBalance: withdrawable,
@@ -366,7 +365,7 @@ export default function Finance({
                 size="small"
                 onClick={() => {
                   showModal(
-                    modalTypes.FINANCE_DEPOSIT_MODAL,
+                    "FINANCE_DEPOSIT_MODAL",
                     {
                       title: `Deposit ${fund.token.symbol}`,
                       protocolBalance: withdrawable,
@@ -388,16 +387,14 @@ export default function Finance({
         };
       }),
     [
-      funds,
-      sellerLockedFunds,
       offersBackedCell,
-      offersBackedFn,
-      sellerRoles.isClerk,
-      showModal,
-      modalTypes.FINANCE_WITHDRAW_MODAL,
-      modalTypes.FINANCE_DEPOSIT_MODAL,
+      reloadData,
       sellerId,
-      reloadData
+      sellerLockedFunds,
+      showModal,
+      funds,
+      sellerRoles,
+      offersBackedFn
     ]
   );
 
@@ -469,7 +466,7 @@ export default function Finance({
               {headerGroup.headers.map((column, i) => {
                 return (
                   <th
-                    // @ts-ignore// TODO: check
+                  // @ts-ignore// TODO: check
                     data-sortable={column.disableSortBy}
                     // @ts-ignore// TODO: check
                     {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -510,17 +507,16 @@ export default function Finance({
                 >
                   {
                     // @ts-ignore// TODO: check
-                    row.cells.map((cell, key) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          key={`seller_table_finances_tbody_td_${id}-${key}`}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })
-                  }
+                  row.cells.map((cell, key) => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        key={`seller_table_finances_tbody_td_${id}-${key}`}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })) || (
@@ -568,8 +564,7 @@ export default function Finance({
             <Grid justifyContent="flex-end" gap="1rem">
               <Button
                 size="small"
-                // theme="blank"
-                variant="secondaryFill" // check
+                theme="blank"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
@@ -579,16 +574,15 @@ export default function Finance({
                 <Button
                   key={`page_btn_${pageNumber}`}
                   size="small"
-                  // theme="blank"
-                  variant="secondaryFill" // check
+                  theme="blank"
                   style={{
                     color:
                       pageNumber === pageIndex
-                        ? theme.colors.light.secondary
-                        : theme.colors.light.black,
+                        ? colors.secondary
+                        : colors.black,
                     background:
                       pageNumber === pageIndex
-                        ? theme.colors.light.lightGrey
+                        ? colors.lightGrey
                         : "transparent"
                   }}
                   onClick={() => gotoPage(pageNumber)}
@@ -598,8 +592,7 @@ export default function Finance({
               ))}
               <Button
                 size="small"
-                // theme="blank"
-                variant="secondaryFill" // check
+                theme="blank"
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >

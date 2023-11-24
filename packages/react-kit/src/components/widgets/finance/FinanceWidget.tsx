@@ -98,7 +98,7 @@ const queryClient = new QueryClient({
 
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
-  parentOrigin: `http${string}`;
+  parentOrigin?: `http${string}`;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
@@ -116,7 +116,8 @@ export function FinanceWidget({
   ...rest
 }: FinanceWidgetProps) {
   const externalSignerListener = useMemo(
-    () => getExternalSignerListener({ parentOrigin }),
+    () =>
+      parentOrigin ? getExternalSignerListener({ parentOrigin }) : undefined,
     [parentOrigin]
   );
   const [externalSigner, setExternalSigner] = useState<
