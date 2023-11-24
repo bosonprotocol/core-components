@@ -30,6 +30,8 @@ import {
   CurrencyDisplay
 } from "../../currencyDisplay/CurrencyDisplay";
 import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
+import ThemedButton from "../../ui/ThemedButton";
+import { useAccount } from "../../../hooks/connection/connection";
 dayjs.extend(isBetween);
 const colors = theme.colors.light;
 const BosonButton = Button;
@@ -131,7 +133,7 @@ const Span = styled.span`
   }
 `;
 
-const WithdrawButton = styled(Button)`
+const WithdrawButton = styled(ThemedButton)`
   color: ${colors.secondary};
   border-color: transparent;
 `;
@@ -214,6 +216,7 @@ export default function Finance({
   offersBacked,
   sellerRoles
 }: Props) {
+  const { address } = useAccount();
   const { showModal } = useModal();
   const { funds, reload, fundStatus } = fundsData;
   const {
@@ -339,8 +342,12 @@ export default function Finance({
               <WithdrawButton
                 theme="outline"
                 size="small"
-                disabled={!sellerRoles.isAssistant}
-                tooltip="This action is restricted to only the assistant wallet"
+                disabled={!sellerRoles.isAssistant || !address}
+                tooltip={
+                  address
+                    ? "This action is restricted to only the assistant wallet"
+                    : "Please connect your wallet"
+                }
                 onClick={() => {
                   showModal(
                     "FINANCE_WITHDRAW_MODAL",
@@ -364,6 +371,8 @@ export default function Finance({
               <BosonButton
                 variant="accentInverted"
                 size="small"
+                disabled={!address}
+                tooltip={"Please connect your wallet"}
                 onClick={() => {
                   showModal(
                     "FINANCE_DEPOSIT_MODAL",
@@ -395,7 +404,8 @@ export default function Finance({
       showModal,
       funds,
       sellerRoles,
-      offersBackedFn
+      offersBackedFn,
+      address
     ]
   );
 

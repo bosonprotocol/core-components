@@ -58,18 +58,15 @@ export default function FinanceDeposit({
   const [depositError, setDepositError] = useState<unknown>(null);
 
   const signer = useSigner();
-  const externalSigner = useExternalSigner();
-  const externalAddress = useSignerAddress(externalSigner);
   const { address } = useAccount();
-  const signerAddress = address ?? externalAddress;
 
   const { data: dataBalance, refetch } = useBalance(
     exchangeToken !== ethers.constants.AddressZero
       ? {
-          address: signerAddress as `0x${string}`,
+          address: address as `0x${string}`,
           token: exchangeToken as `0x${string}`
         }
-      : { address: signerAddress as `0x${string}` }
+      : { address: address as `0x${string}` }
   );
 
   const { showModal, hideModal } = useModal();

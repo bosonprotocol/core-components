@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode } from "react";
 import { Web3LibAdapter } from "@bosonprotocol/common";
+import { useProvideExternalSigner } from "../../lib/signer/externalSigner";
 
 export const SignerContext = createContext<Web3LibAdapter | undefined>(
   undefined
@@ -7,12 +8,15 @@ export const SignerContext = createContext<Web3LibAdapter | undefined>(
 
 type SignerProviderProps = {
   children: ReactNode;
-  externalSigner: Web3LibAdapter | undefined;
+  parentOrigin: `http${string}` | null | undefined;
 };
 export const SignerProvider = ({
   children,
-  externalSigner
+  parentOrigin
 }: SignerProviderProps) => {
+  const externalSigner = useProvideExternalSigner({
+    parentOrigin
+  });
   return (
     <SignerContext.Provider value={externalSigner}>
       {children}

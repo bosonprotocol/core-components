@@ -5,6 +5,7 @@ import {
   TransactionReceipt
 } from "@bosonprotocol/common";
 import { BigNumberish } from "ethers";
+import { useEffect, useMemo, useState } from "react";
 
 const getDefaultHandleSignerFunction = <R>({
   parentOrigin,
@@ -40,7 +41,7 @@ const getDefaultHandleSignerFunction = <R>({
   });
 };
 
-export const getExternalSignerListener = ({
+const getExternalSignerListener = ({
   parentOrigin
 }: {
   parentOrigin: `http${string}`;
@@ -159,4 +160,37 @@ export const getExternalSignerListener = ({
       });
     }
   };
+};
+
+export const useProvideExternalSigner = ({
+  parentOrigin
+}: {
+  parentOrigin: `http${string}` | null | undefined;
+}) => {
+  const externalSignerListener = useMemo(
+    () =>
+      parentOrigin ? getExternalSignerListener({ parentOrigin }) : undefined,
+    [parentOrigin]
+  );
+  const [externalSigner, setExternalSigner] = useState<
+    Web3LibAdapter | undefined
+  >();
+  useEffect(() => {
+    function onMessageReceived(event: MessageEvent) {
+      if (event.origin === parentOrigin) {
+        if ([true, false].includes(event.data.hasSigner)) {
+          if (event.data.hasSigner) {
+            setExternalSigner(externalSignerListener);
+          } else {
+            setExternalSigner(undefined);
+          }
+        }
+      }
+    }
+    window.addEventListener("message", onMessageReceived);
+    return () => {
+      window.removeEventListener("message", onMessageReceived);
+    };
+  }, [externalSigner, externalSignerListener, parentOrigin]);
+  return externalSigner;
 };

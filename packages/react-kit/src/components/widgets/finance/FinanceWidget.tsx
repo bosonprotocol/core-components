@@ -30,7 +30,10 @@ import {
 import { CONFIG } from "../../../lib/config/config";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import { SignerProvider } from "../../signer/SignerContext";
-import { getExternalSignerListener } from "../../../lib/signer/externalSigner";
+import ConnectButton from "../../wallet/ConnectButton";
+import Grid from "../../ui/Grid";
+import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
+import { useAccount } from "../../../hooks/connection/connection";
 dayjs.extend(isBetween);
 
 const Wrapper = styled.div`
@@ -38,37 +41,44 @@ const Wrapper = styled.div`
 `;
 
 function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
-  const ComponentWithSellerData = (props: Pick<Props, "sellerId">) => {
+  const ComponentWithSellerData = (props: Partial<Pick<Props, "sellerId">>) => {
     const sellerId = props.sellerId;
-    const sellerRoles = useSellerRoles(sellerId || "");
+    const { address } = useAccount();
+    const { sellerIds } = useCurrentSellers({
+      address,
+      sellerId: sellerId,
+      enabled: !sellerId
+    });
+    const sellerIdToUse = sellerId || sellerIds?.[0] || "";
+    const sellerRoles = useSellerRoles(sellerIdToUse);
     const {
       store: { tokens }
     } = useConvertionRate();
 
     const exchangesTokens = useExchangeTokens(
       {
-        sellerId: sellerId || ""
+        sellerId: sellerIdToUse
       },
       {
-        enabled: !!sellerId
+        enabled: !!sellerIdToUse
       }
     );
     const sellerDeposit = useSellerDeposit(
       {
-        sellerId: sellerId || ""
+        sellerId: sellerIdToUse
       },
-      { enabled: !!sellerId }
+      { enabled: !!sellerIdToUse }
     );
-    const funds = useFunds(sellerId || "", tokens);
+    const funds = useFunds(sellerIdToUse, tokens);
     const newProps = useMemo(
       () => ({
-        sellerId,
+        sellerId: sellerIdToUse,
         exchangesTokens,
         sellerDeposit,
         funds,
         sellerRoles
       }),
-      [sellerId, exchangesTokens, sellerDeposit, funds, sellerRoles]
+      [sellerIdToUse, exchangesTokens, sellerDeposit, funds, sellerRoles]
     );
 
     const offersBacked = useOffersBacked({ ...newProps });
@@ -98,11 +108,13 @@ const queryClient = new QueryClient({
 
 type FinanceWidgetProps = {
   walletConnectProjectId: string;
-  parentOrigin?: `http${string}`;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
-  Parameters<typeof Component>[0];
+  (
+    | { parentOrigin: `http${string}`; sellerId: undefined }
+    | { parentOrigin: undefined | null; sellerId: string }
+  );
 
 const { infuraKey, magicLinkKey } = CONFIG;
 
@@ -115,31 +127,6 @@ export function FinanceWidget({
   parentOrigin,
   ...rest
 }: FinanceWidgetProps) {
-  const externalSignerListener = useMemo(
-    () =>
-      parentOrigin ? getExternalSignerListener({ parentOrigin }) : undefined,
-    [parentOrigin]
-  );
-  const [externalSigner, setExternalSigner] = useState<
-    Web3LibAdapter | undefined
-  >();
-  useEffect(() => {
-    function onMessageReceived(event: MessageEvent) {
-      if (event.origin === parentOrigin) {
-        if ([true, false].includes(event.data.hasSigner)) {
-          if (event.data.hasSigner) {
-            setExternalSigner(externalSignerListener);
-          } else {
-            setExternalSigner(undefined);
-          }
-        }
-      }
-    }
-    window.addEventListener("message", onMessageReceived);
-    return () => {
-      window.removeEventListener("message", onMessageReceived);
-    };
-  }, [externalSigner, externalSignerListener, parentOrigin]);
   return (
     <EnvironmentProvider envName={envName} configId={configId} metaTx={metaTx}>
       {
@@ -151,7 +138,7 @@ export function FinanceWidget({
         infuraKey={infuraKey}
         {...rest}
       >
-        <SignerProvider externalSigner={externalSigner}>
+        <SignerProvider parentOrigin={parentOrigin}>
           <MagicProvider>
             <WalletConnectionProvider
               walletConnectProjectId={walletConnectProjectId}
@@ -159,6 +146,11 @@ export function FinanceWidget({
               <QueryClientProvider client={queryClient}>
                 <ConvertionRateProvider>
                   <ModalProvider>
+                    {!parentOrigin && (
+                      <Grid justifyContent="flex-end">
+                        <ConnectButton showChangeWallet />
+                      </Grid>
+                    )}
                     <Component sellerId={sellerId} />
                   </ModalProvider>
                 </ConvertionRateProvider>

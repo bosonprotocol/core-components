@@ -5,7 +5,7 @@ import { useMagic } from "../../hooks";
 import { Button } from "../buttons/Button";
 import { Spinner } from "../ui/loading/Spinner";
 
-const GoogleLogo = () => {
+const GoogleLogo = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,6 +14,7 @@ const GoogleLogo = () => {
       width="20"
       height="20"
       viewBox="0 0 48 48"
+      {...props}
     >
       <path
         fill="#FFC107"
@@ -68,9 +69,7 @@ export const MagicLoginButton = () => {
           <Spinner size={20} />
         </>
       ) : (
-        <>
-          Login with email or <GoogleLogo />
-        </>
+        <>Login</>
       )}
     </Button>
   );
