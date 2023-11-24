@@ -33,70 +33,6 @@ import { ExchangeTokensProps } from "./exchange-tokens/useExchangeTokens";
 dayjs.extend(isBetween);
 const colors = theme.colors.light;
 const BosonButton = Button;
-interface QueryProps {
-  isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
-}
-
-interface FundsProps {
-  funds: Array<subgraph.FundsEntityFieldsFragment>;
-  reload: React.DispatchWithoutAction;
-  fundStatus: ProgressStatus;
-}
-
-interface ExchangesTokensProps extends QueryProps {
-  data: ExchangeTokensProps[] | undefined;
-}
-interface SellerExchangeProps {
-  id: string;
-  finalizedDate: string;
-  offer: {
-    sellerDeposit: string;
-    price: string;
-    exchangeToken: {
-      id: string;
-      address: string;
-      decimals: string;
-      symbol: string;
-      name: string;
-    };
-  };
-}
-interface SellerProps {
-  id: string;
-  exchanges: SellerExchangeProps[];
-}
-interface SellerDepositProps extends QueryProps {
-  data: SellerProps | undefined;
-}
-interface OffersBackedProps {
-  offersBacked: { token: string; value: number | null }[];
-  calcOffersBacked: {
-    [x: string]: string;
-  };
-  sellerLockedFunds: {
-    [x: string]: string;
-  };
-  threshold: number;
-  displayWarning: boolean;
-  offersBackedFn: (fund: subgraph.FundsEntityFieldsFragment) => number | null;
-}
-export type Props = {
-  sellerId: string;
-  funds: FundsProps;
-  exchangesTokens: ExchangesTokensProps;
-  sellerDeposit: SellerDepositProps;
-  offersBacked: OffersBackedProps;
-  sellerRoles: {
-    isSeller: boolean;
-    isActive: boolean;
-    isAdmin: boolean;
-    isClerk: boolean;
-    isAssistant: boolean;
-    isTreasury: boolean;
-  };
-};
 
 const Table = styled.table`
   width: 100%;
@@ -204,6 +140,71 @@ const WarningWrapper = styled(Grid)`
     color: ${colors.orange};
   }
 `;
+
+interface QueryProps {
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+}
+
+interface FundsProps {
+  funds: Array<subgraph.FundsEntityFieldsFragment>;
+  reload: React.DispatchWithoutAction;
+  fundStatus: ProgressStatus;
+}
+
+interface ExchangesTokensProps extends QueryProps {
+  data: ExchangeTokensProps[] | undefined;
+}
+interface SellerExchangeProps {
+  id: string;
+  finalizedDate: string;
+  offer: {
+    sellerDeposit: string;
+    price: string;
+    exchangeToken: {
+      id: string;
+      address: string;
+      decimals: string;
+      symbol: string;
+      name: string;
+    };
+  };
+}
+interface SellerProps {
+  id: string;
+  exchanges: SellerExchangeProps[];
+}
+interface SellerDepositProps extends QueryProps {
+  data: SellerProps | undefined;
+}
+interface OffersBackedProps {
+  offersBacked: { token: string; value: number | null }[];
+  calcOffersBacked: {
+    [x: string]: string;
+  };
+  sellerLockedFunds: {
+    [x: string]: string;
+  };
+  threshold: number;
+  displayWarning: boolean;
+  offersBackedFn: (fund: subgraph.FundsEntityFieldsFragment) => number | null;
+}
+export type Props = {
+  sellerId: string;
+  funds: FundsProps;
+  exchangesTokens: ExchangesTokensProps;
+  sellerDeposit: SellerDepositProps;
+  offersBacked: OffersBackedProps;
+  sellerRoles: {
+    isSeller: boolean;
+    isActive: boolean;
+    isAdmin: boolean;
+    isClerk: boolean;
+    isAssistant: boolean;
+    isTreasury: boolean;
+  };
+};
 
 export default function Finance({
   sellerId,
@@ -466,7 +467,7 @@ export default function Finance({
               {headerGroup.headers.map((column, i) => {
                 return (
                   <th
-                  // @ts-ignore// TODO: check
+                    // @ts-ignore// TODO: check
                     data-sortable={column.disableSortBy}
                     // @ts-ignore// TODO: check
                     {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -507,16 +508,17 @@ export default function Finance({
                 >
                   {
                     // @ts-ignore// TODO: check
-                  row.cells.map((cell, key) => {
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        key={`seller_table_finances_tbody_td_${id}-${key}`}
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
+                    row.cells.map((cell, key) => {
+                      return (
+                        <td
+                          {...cell.getCellProps()}
+                          key={`seller_table_finances_tbody_td_${id}-${key}`}
+                        >
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })
+                  }
                 </tr>
               );
             })) || (
