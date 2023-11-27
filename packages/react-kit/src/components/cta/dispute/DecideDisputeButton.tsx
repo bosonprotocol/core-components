@@ -1,9 +1,9 @@
 import React from "react";
 import { BigNumberish } from "ethers";
 
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type AdditionalProps = {
   exchangeId: BigNumberish;
@@ -23,7 +23,9 @@ export const DecideDisputeButton = ({
   variant = "primaryFill",
   ...restProps
 }: IDecideDisputeButton) => {
-  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({
+    coreSdkConfig: restProps.coreSdkConfig
+  });
   const actions = [
     {
       writeContractFn: () => coreSdk.decideDispute(exchangeId, buyerPercent)

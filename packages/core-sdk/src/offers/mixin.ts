@@ -19,7 +19,6 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { getValueFromLogs, getValuesFromLogs } from "../utils/logs";
 import { ITokenInfo, TokenInfoManager } from "../utils/tokenInfoManager";
 import { batchTasks } from "../utils/promises";
-import { ExchangesMixin } from "../exchanges/mixin";
 import { EventLogsMixin } from "../event-logs/mixin";
 import { AccountsMixin } from "../accounts/mixin";
 

@@ -92,6 +92,10 @@ export class CoreSDK extends BaseCoreSDK {
     return this._getTxExplorerUrl;
   }
 
+  public get web3Lib() {
+    return this._web3Lib;
+  }
+
   public checkMetaTxConfigSet(
     args: {
       contractAddress?: string;

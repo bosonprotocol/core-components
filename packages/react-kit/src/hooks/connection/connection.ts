@@ -11,11 +11,18 @@ import {
 } from "../magic";
 import { useEthersSigner } from "../ethers/useEthersSigner";
 import { useConfigContext } from "../../components/config/ConfigContext";
+import { useExternalSigner } from "../../components/signer/useExternalSigner";
+import { useSignerAddress } from "../useSignerAddress";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();
   const { user } = useUser();
-  return useMemo(() => ({ address: account ?? user }), [account, user]);
+  const externalSigner = useExternalSigner();
+  const externalSignerAddress = useSignerAddress(externalSigner);
+  return useMemo(
+    () => ({ address: externalSignerAddress ?? account ?? user }),
+    [account, user, externalSignerAddress]
+  );
 }
 
 export function useChainId() {

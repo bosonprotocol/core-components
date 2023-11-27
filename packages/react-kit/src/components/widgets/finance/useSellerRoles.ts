@@ -64,7 +64,7 @@ export function useSellerRoles(id: string) {
   );
 
   const sellerProps = useMemo(
-    () => ({
+    (): SellerRolesProps => ({
       isSeller: data !== null,
       isActive: data ? data?.active : false,
       isAdmin: data ? lowerCase(data?.admin) === lowerCase(address) : false,
@@ -79,5 +79,5 @@ export function useSellerRoles(id: string) {
     [data, address]
   );
 
-  return sellerProps as SellerRolesProps;
+  return { sellerRoles: sellerProps, seller: data };
 }

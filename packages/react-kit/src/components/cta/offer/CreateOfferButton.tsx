@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
@@ -10,6 +9,7 @@ import { Loading } from "../../Loading";
 import { offers, accounts } from "@bosonprotocol/core-sdk";
 import { TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type Props = {
   hasSellerAccount: boolean;
@@ -39,8 +39,8 @@ export const CreateOfferButton = ({
   coreSdkConfig,
   ...rest
 }: Props) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

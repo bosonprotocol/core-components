@@ -1,11 +1,11 @@
 import React from "react";
 import { BigNumber, BigNumberish, constants, ethers } from "ethers";
 
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { TransactionReceipt } from "@bosonprotocol/common";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type AdditionalProps = {
   exchangeToken: string;
@@ -25,8 +25,10 @@ export const DepositFundsButton = ({
   amountToDeposit,
   ...restProps
 }: IDepositFundsButton) => {
-  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
-  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
+  const coreSdk = useCoreSdkOverrides({
+    coreSdkConfig: restProps.coreSdkConfig
+  });
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   const actions = [
     // Approve exchange token
