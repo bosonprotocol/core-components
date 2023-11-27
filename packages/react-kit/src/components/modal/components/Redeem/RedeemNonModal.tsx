@@ -8,10 +8,9 @@ import React, {
 } from "react";
 import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
-import { ExchangePolicy } from "./ExchangePolicy/ExchangePolicy";
+import { RedeemOfferPolicyView } from "./OfferPolicyView/RedeemOfferPolicyView";
 import { MyItems, MyItemsProps } from "./MyItems/MyItems";
 import { FormModel } from "./RedeemFormModel";
-import StepsOverview from "./StepsOverview/StepsOverview";
 import { Exchange } from "../../../../types/exchange";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
@@ -20,7 +19,6 @@ import {
   ConfirmationViewProps
 } from "./Confirmation/ConfirmationView";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
-import { PurchaseOverviewView } from "./StepsOverview/PurchaseOverviewView";
 
 import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
 import {
@@ -45,9 +43,11 @@ import {
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
-import { BosonFooter } from "./BosonFooter";
+import { BosonFooter } from "../common/BosonFooter";
 import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
+import StepsOverview from "../common/StepsOverview/StepsOverview";
+import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -463,8 +463,8 @@ function RedeemNonModal({
                   isValid={isRedeemFormOK}
                 />
               ) : currentStep === ActiveStep.EXCHANGE_POLICY ? (
-                <ExchangePolicy
-                  exchange={exchange}
+                <RedeemOfferPolicyView
+                  offer={exchange?.offer}
                   onBackClick={goToPreviousStep}
                   onContractualAgreementClick={() =>
                     setActiveStep(ActiveStep.CONTRACTUAL_AGREEMENT)
@@ -481,7 +481,7 @@ function RedeemNonModal({
                 />
               ) : currentStep === ActiveStep.LICENSE_AGREEMENT ? (
                 <LicenseAgreementView
-                  exchange={exchange}
+                  offer={exchange?.offer}
                   onBackClick={goToPreviousStep}
                 />
               ) : currentStep === ActiveStep.REDEEM_FORM_CONFIRMATION ? (

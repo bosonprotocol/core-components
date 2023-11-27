@@ -1,12 +1,12 @@
 import { TextAlignLeft } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../../../../../theme";
-import { Exchange } from "../../../../../../types/exchange";
-import SellerID from "../../../../../avatar/SellerID";
-import Grid from "../../../../../ui/Grid";
-import ThemedButton from "../../../../../ui/ThemedButton";
-import Typography from "../../../../../ui/Typography";
+import { theme } from "../../../../../theme";
+import SellerID from "../../../../avatar/SellerID";
+import Grid from "../../../../ui/Grid";
+import ThemedButton from "../../../../ui/ThemedButton";
+import Typography from "../../../../ui/Typography";
+import { Offer } from "../../../../../types/offer";
 
 const colors = theme.colors.light;
 
@@ -26,15 +26,11 @@ const Container = styled(Grid)`
 `;
 
 type Props = {
-  exchange: Exchange;
+  offer: Offer;
   onViewFullDescription: () => void;
 };
 
-export function SellerAndDescription({
-  exchange,
-  onViewFullDescription
-}: Props) {
-  const { offer } = exchange;
+export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
   return (
     <Container>
       <SellerID

@@ -10,7 +10,7 @@ import { theme } from "../../../../../theme";
 const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
-  offer: Exchange["offer"] | null | undefined;
+  offer: Exchange["offer"] | null;
 }
 
 export function LicenseAgreementView({ onBackClick, offer }: Props) {
@@ -40,7 +40,7 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
       {offer ? (
         <License offerId={offer.id} offerData={offer} />
       ) : (
-        <p>Exchange could not be retrieved</p>
+        <p>Offer could not be retrieved</p>
       )}
     </>
   );

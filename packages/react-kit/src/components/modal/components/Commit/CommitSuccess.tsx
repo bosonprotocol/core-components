@@ -1,21 +1,18 @@
 import { CheckCircle, Fire, House } from "phosphor-react";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useExchanges } from "../../../../../hooks/useExchanges";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import Grid from "../../../../ui/Grid";
-import IpfsImage from "../../../../ui/IpfsImage";
-import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
-import DetailOpenSea from "../../common/DetailOpenSea";
-import { useFormikContext } from "formik";
-import { FormType } from "../RedeemFormModel";
-import { theme } from "../../../../../theme";
-import Video from "../../../../ui/Video";
-import { Button } from "../../../../buttons/Button";
-import GridContainer from "../../../../ui/GridContainer";
-import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
-import { useNonModalContext } from "../../../nonModal/NonModal";
+import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
+import Grid from "../../../ui/Grid";
+import IpfsImage from "../../../ui/IpfsImage";
+import Loading from "../../../ui/loading/Loading";
+import Typography from "../../../ui/Typography";
+import { theme } from "../../../../theme";
+import Video from "../../../ui/Video";
+import { Button } from "../../../buttons/Button";
+import GridContainer from "../../../ui/GridContainer";
+import { useNonModalContext } from "../../nonModal/NonModal";
+import { useExchanges } from "../../../../hooks/useExchanges";
+import DetailOpenSea from "../common/DetailOpenSea";
 
 const colors = theme.colors.light;
 
@@ -33,12 +30,11 @@ type Props = {
   exchangeId: string;
 };
 
-export function RedeemSuccess({
+export function CommitSuccess({
   onClickDone,
   onHouseClick,
   exchangeId
 }: Props) {
-  const { postDeliveryInfoUrl } = useRedemptionContext();
   const {
     data: exchanges,
     isError,
@@ -51,7 +47,6 @@ export function RedeemSuccess({
       enabled: !!exchangeId
     }
   );
-  const { values } = useFormikContext<FormType>();
   const exchange = exchanges?.[0];
   const offer = exchange?.offer;
 
@@ -68,7 +63,7 @@ export function RedeemSuccess({
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
             <Typography tag="h3" $width="100%">
-              Redeem your item
+              Sucess!
             </Typography>
           </Grid>
         ),
@@ -128,12 +123,6 @@ export function RedeemSuccess({
                 <Typography fontWeight="600" $fontSize="1.25rem">
                   Congratulations!
                 </Typography>
-
-                <p>
-                  {`Your item is on its way to the provided address. Please check ${
-                    postDeliveryInfoUrl ? "your email" : "the chat"
-                  } for the shipping confirmation. Thank you for using our service.`}
-                </p>
               </Grid>
             </Grid>
             <Grid
@@ -144,31 +133,8 @@ export function RedeemSuccess({
             >
               <Grid flex="1 1" alignItems="flex-start" gap="1rem">
                 <div>
-                  <Typography fontWeight="600">
-                    Your item is on it's way to:
-                  </Typography>
-                  <Grid
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    gap="0.25rem"
-                  >
-                    <div>{values.name}</div>
-                    <div>{values.streetNameAndNumber}</div>
-                    <div>{values.city}</div>
-                    <div>{values.state}</div>
-                    <div>{values.zip}</div>
-                    <div>{values.country}</div>
-                    <div>{values.email}</div>
-                    <div>{values.phone}</div>
-                  </Grid>
-                </div>
-                <div>
                   <Typography fontWeight="600">What's next?</Typography>
-                  <Typography tag="p">
-                    {postDeliveryInfoUrl
-                      ? `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via email.`
-                      : `Lean back and enjoy the wait! The seller will provide updates on the shipment of your purchase via chat.`}
-                  </Typography>
+                  <Typography tag="p">Redeem it!</Typography>
                 </div>
               </Grid>
               <Grid
@@ -177,7 +143,7 @@ export function RedeemSuccess({
                 gap="1rem"
               >
                 <Fire size={25} color={colors.orange} />
-                <Typography>Your rNFT was burned</Typography>
+                <Typography>You got an rNFT</Typography>
               </Grid>
             </Grid>
 

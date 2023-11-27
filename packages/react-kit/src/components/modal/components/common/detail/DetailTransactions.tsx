@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import React, { useMemo } from "react";
-import useTransactionHistory from "../../../../../../hooks/useTransactionHistory";
-import { getDateTimestamp } from "../../../../../../lib/dates/getDateTimestamp";
-import { IPrice } from "../../../../../../lib/price/convertPrice";
-import { Exchange } from "../../../../../../types/exchange";
-import { Offer } from "../../../../../../types/offer";
-import { useConvertedPrice } from "../../../../../price/useConvertedPrice";
-import Typography from "../../../../../ui/Typography";
+import useTransactionHistory from "../../../../../hooks/useTransactionHistory";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { IPrice } from "../../../../../lib/price/convertPrice";
+import { Exchange } from "../../../../../types/exchange";
+import { Offer } from "../../../../../types/offer";
+import { useConvertedPrice } from "../../../../price/useConvertedPrice";
+import Typography from "../../../../ui/Typography";
 
 import { Transactions } from "./Detail.style";
 const HEADER = ["Event", "From", "To", "Price", "Date"];

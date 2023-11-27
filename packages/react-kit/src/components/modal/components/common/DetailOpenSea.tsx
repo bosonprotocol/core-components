@@ -1,11 +1,11 @@
 import { exchanges, subgraph } from "@bosonprotocol/core-sdk";
 import { ArrowSquareOut } from "phosphor-react";
 import React, { useMemo } from "react";
-import { Exchange } from "../../../../../../types/exchange";
-import { useEnvContext } from "../../../../../environment/EnvironmentContext";
+import { Exchange } from "../../../../types/exchange";
+import { useEnvContext } from "../../../environment/EnvironmentContext";
 
-import { OpenSeaButton } from "./Detail.style";
-import { getExchangeTokenId } from "../../../../../../lib/utils/exchange";
+import { getExchangeTokenId } from "../../../../lib/utils/exchange";
+import { OpenSeaButton } from "./detail/Detail.style";
 
 interface Props {
   exchange?: Exchange;

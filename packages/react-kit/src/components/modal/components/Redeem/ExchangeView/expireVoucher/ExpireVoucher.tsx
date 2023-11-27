@@ -19,7 +19,7 @@ import Grid from "../../../../../ui/Grid";
 import { Spinner } from "../../../../../ui/loading/Spinner";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import Typography from "../../../../../ui/Typography";
-import DetailTable from "../detail/DetailTable";
+import DetailTable from "../../../common/detail/DetailTable";
 import { useSigner } from "../../../../../../hooks/connection/connection";
 import { extractUserFriendlyError } from "../../../../../../lib/errors/transactions";
 

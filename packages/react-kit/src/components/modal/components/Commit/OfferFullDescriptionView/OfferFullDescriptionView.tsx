@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
-import Grid from "../../../../ui/Grid";
-import Typography from "../../../../ui/Typography";
-import { ArrowLeft } from "phosphor-react";
-import { Exchange } from "../../../../../types/exchange";
-import License from "../../../../license/License";
-import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
+import { Offer } from "../../../../../types/offer";
+import { useNonModalContext } from "../../../nonModal/NonModal";
+import { OfferFullDescription } from "../../common/OfferFullDescription";
+import Grid from "../../../../ui/Grid";
+import { ArrowLeft } from "phosphor-react";
+import Typography from "../../../../ui/Typography";
 
 const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
-  offer: Exchange["offer"] | null | undefined;
+  offer: Offer;
 }
 
-export function LicenseAgreementView({ onBackClick, offer }: Props) {
+export function OfferFullDescriptionView({ onBackClick, offer }: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -25,7 +25,7 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">License Agreement</Typography>
+            <Typography tag="h3">{offer.metadata.name || ""}</Typography>
           </Grid>
         ),
         contentStyle: {
@@ -34,14 +34,6 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-  return (
-    <>
-      {offer ? (
-        <License offerId={offer.id} offerData={offer} />
-      ) : (
-        <p>Exchange could not be retrieved</p>
-      )}
-    </>
-  );
+  }, [dispatch, offer.metadata.name]);
+  return <OfferFullDescription offer={offer} />;
 }

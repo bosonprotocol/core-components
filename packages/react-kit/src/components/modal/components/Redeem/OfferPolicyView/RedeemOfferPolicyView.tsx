@@ -4,29 +4,29 @@ import Typography from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
 import { offers } from "@bosonprotocol/core-sdk";
-import ExchangePolicyDetails, {
-  ExchangePolicyDetailsProps
-} from "../../../../exchangePolicy/ExchangePolicyDetails";
+import OfferPolicyDetails, {
+  OfferPolicyDetailsProps
+} from "../../../../offerPolicy/OfferPolicyDetails";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
 
 const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
-  exchange: Exchange | null;
-  onContractualAgreementClick: ExchangePolicyDetailsProps["onContractualAgreementClick"];
-  onLicenseAgreementClick: ExchangePolicyDetailsProps["onLicenseAgreementClick"];
+  offer: Exchange["offer"] | null | undefined;
+  onContractualAgreementClick: OfferPolicyDetailsProps["onContractualAgreementClick"];
+  onLicenseAgreementClick: OfferPolicyDetailsProps["onLicenseAgreementClick"];
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
-export function ExchangePolicy({
+export function RedeemOfferPolicyView({
   onBackClick,
-  exchange,
+  offer,
   onContractualAgreementClick,
   onLicenseAgreementClick,
   exchangePolicyCheckResult
 }: Props) {
-  const exchangeName = exchange?.offer.metadata.name || "";
+  const offerName = offer?.metadata.name || "";
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -39,7 +39,7 @@ export function ExchangePolicy({
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
             <Typography tag="h3" style={{ flex: "1 1" }}>
-              {exchangeName}
+              {offerName}
             </Typography>
           </Grid>
         ),
@@ -49,18 +49,18 @@ export function ExchangePolicy({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, exchangeName]);
+  }, [dispatch, offerName]);
   return (
     <>
-      {exchange ? (
-        <ExchangePolicyDetails
-          exchange={exchange}
+      {offer ? (
+        <OfferPolicyDetails
+          offer={offer}
           exchangePolicyCheckResult={exchangePolicyCheckResult}
           onContractualAgreementClick={onContractualAgreementClick}
           onLicenseAgreementClick={onLicenseAgreementClick}
         />
       ) : (
-        <p>Exchange could not be retrieved</p>
+        <p>Offer could not be retrieved</p>
       )}
     </>
   );

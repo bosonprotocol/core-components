@@ -33,7 +33,7 @@ import {
   StyledCancelButton,
   Widget,
   WidgetUpperGrid
-} from "../detail/Detail.style";
+} from "../../../common/detail/Detail.style";
 import TokenGated from "./TokenGated";
 import { exchanges, offers, subgraph } from "@bosonprotocol/core-sdk";
 import Price from "../../../../../price/Price";
@@ -43,7 +43,7 @@ import {
 } from "../../../../../../lib/price/prices";
 import { useConfigContext } from "../../../../../config/ConfigContext";
 import { titleCase } from "../../../../../../lib/string/formatText";
-import DetailTable from "../detail/DetailTable";
+import DetailTable from "../../../common/detail/DetailTable";
 import { DetailDisputeResolver } from "./DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
@@ -149,7 +149,7 @@ const getOfferDetailData = (
                   <b>Redeemable</b>
                 </Typography>
                 <Typography tag="p">
-                  If you don’t redeem your NFT during the redemption period, it
+                  If you don't redeem your NFT during the redemption period, it
                   will expire and you will receive back the price minus the
                   Buyer cancel penalty
                 </Typography>
@@ -169,7 +169,7 @@ const getOfferDetailData = (
             <b>Redeemable</b>
           </Typography>
           <Typography tag="p">
-            If you don’t redeem your NFT during the redemption period, it will
+            If you don't redeem your NFT during the redemption period, it will
             expire and you will receive back the price minus the Buyer cancel
             penalty
           </Typography>
@@ -305,13 +305,14 @@ interface IDetailWidget {
   exchange?: Exchange;
   hasSellerEnoughFunds: boolean;
   isPreview?: boolean;
-  onCancelExchange: () => void;
+  onCancelExchange?: () => void;
   hasMultipleVariants?: boolean;
   onExchangePolicyClick: () => void;
-  onRedeem: () => void;
+  onRedeem?: () => void;
+  onCommit?: () => void;
   onPurchaseOverview: () => void;
-  onExpireVoucherClick: () => void;
-  onRaiseDisputeClick: () => void;
+  onExpireVoucherClick?: () => void;
+  onRaiseDisputeClick?: () => void;
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
@@ -328,6 +329,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   onPurchaseOverview,
   onRaiseDisputeClick,
   onRedeem,
+  onCommit,
   exchangePolicyCheckResult
 }) => {
   const core = useCoreSDKWithContext();
@@ -427,7 +429,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     if (!exchange) {
       return;
     }
-    onCancelExchange();
+    onCancelExchange?.();
   };
 
   const isOfferEmpty = quantity < 1;
@@ -477,207 +479,205 @@ const DetailView: React.FC<IDetailWidget> = ({
     offer
   });
   return (
-    <>
-      <Widget>
-        {isExchange && isToRedeem && (
+    <Widget>
+      {isExchange && isToRedeem && (
+        <ActionMessage>
+          {redeemableDays > 0
+            ? `${redeemableDays} days left to Redeem`
+            : `${redeemableHours} hours left to Redeem`}
+        </ActionMessage>
+      )}
+      <div>
+        {isExchange && isExchangeExpired && (
           <ActionMessage>
-            {redeemableDays > 0
-              ? `${redeemableDays} days left to Redeem`
-              : `${redeemableHours} hours left to Redeem`}
+            <Grid
+              alignItems="center"
+              justifyContent="space-between"
+              style={{
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                if (exchange) {
+                  onExpireVoucherClick?.();
+                }
+              }}
+            >
+              <Typography
+                tag="p"
+                style={{ color: colors.darkGrey, margin: 0 }}
+                $fontSize="0.75rem"
+              >
+                You can withdraw your funds here
+              </Typography>
+              <ArrowRight size={18} color={colors.darkGrey} />
+            </Grid>
           </ActionMessage>
         )}
-        <div>
-          {isExchange && isExchangeExpired && (
-            <ActionMessage>
-              <Grid
-                alignItems="center"
-                justifyContent="space-between"
-                style={{
-                  cursor: "pointer"
-                }}
-                onClick={() => {
-                  if (exchange) {
-                    onExpireVoucherClick();
-                  }
-                }}
-              >
-                <Typography
-                  tag="p"
-                  style={{ color: colors.darkGrey, margin: 0 }}
-                  $fontSize="0.75rem"
-                >
-                  You can withdraw your funds here
-                </Typography>
-                <ArrowRight size={18} color={colors.darkGrey} />
-              </Grid>
-            </ActionMessage>
-          )}
-          <WidgetUpperGrid
-            style={{ paddingBottom: !isExchange || isLteXS ? "0.5rem" : "0" }}
-          >
-            <StyledPrice
-              isExchange={isExchange}
-              currencySymbol={offer.exchangeToken.symbol}
-              value={offer.price}
-              decimals={offer.exchangeToken.decimals}
-              tag="h3"
-              convert
-              withBosonStyles
-              withAsterisk={isPreview && hasMultipleVariants}
-            />
-
-            {isOffer && !isNotCommittableOffer && (
-              <QuantityDisplay
-                quantityInitial={quantityInitial}
-                quantity={quantity}
-              />
-            )}
-
-            {isOffer && isNotCommittableOffer && (
-              <DetailTopRightLabel>
-                {!isPreview && notCommittableOfferStatus}
-              </DetailTopRightLabel>
-            )}
-            {isToRedeem && (
-              <RedeemButton
-                variant="primaryFill"
-                size={ButtonSize.Large}
-                disabled={isInWrongChain || isOffer || isPreview || !isBuyer}
-                onClick={() => {
-                  onRedeem();
-                }}
-              >
-                <span>Redeem</span>
-              </RedeemButton>
-            )}
-            {!isToRedeem && (
-              <ThemedButton theme="outline" disabled>
-                {disabledRedeemText}
-                <Check size={24} />
-              </ThemedButton>
-            )}
-          </WidgetUpperGrid>
-        </div>
-        <Grid
-          justifyContent="center"
-          style={
-            !isOffer && !isLteXS
-              ? {
-                  maxWidth: "50%",
-                  marginLeft: "calc(50% - 0.5rem)"
-                }
-              : {}
-          }
+        <WidgetUpperGrid
+          style={{ paddingBottom: !isExchange || isLteXS ? "0.5rem" : "0" }}
         >
-          {isBeforeRedeem ? (
-            <CommitAndRedeemButton
-              tag="p"
-              onClick={onPurchaseOverview}
-              style={{ fontSize: "0.75rem", marginTop: 0 }}
-            >
-              How it works?
-            </CommitAndRedeemButton>
-          ) : (
-            <CommitAndRedeemButton
-              tag="p"
-              style={{ fontSize: "0.75rem", marginTop: 0 }}
-            >
-              &nbsp;
-            </CommitAndRedeemButton>
+          <StyledPrice
+            isExchange={isExchange}
+            currencySymbol={offer.exchangeToken.symbol}
+            value={offer.price}
+            decimals={offer.exchangeToken.decimals}
+            tag="h3"
+            convert
+            withBosonStyles
+            withAsterisk={isPreview && hasMultipleVariants}
+          />
+
+          {isOffer && !isNotCommittableOffer && (
+            <QuantityDisplay
+              quantityInitial={quantityInitial}
+              quantity={quantity}
+            />
           )}
-        </Grid>
-        <Break />
-        {offer.condition && (
-          <TokenGated
-            coreSDK={core}
-            offer={offer}
-            commitProxyAddress={commitProxyAddress}
-            openseaLinkToOriginalMainnetCollection={
-              openseaLinkToOriginalMainnetCollection
-            }
-            isConditionMet={isConditionMet}
-          />
+
+          {isOffer && isNotCommittableOffer && (
+            <DetailTopRightLabel>
+              {!isPreview && notCommittableOfferStatus}
+            </DetailTopRightLabel>
+          )}
+          {isToRedeem && (
+            <RedeemButton
+              variant="primaryFill"
+              size={ButtonSize.Large}
+              disabled={isInWrongChain || isOffer || isPreview || !isBuyer}
+              onClick={() => {
+                onRedeem?.();
+              }}
+            >
+              <span>Redeem</span>
+            </RedeemButton>
+          )}
+          {!isToRedeem && (
+            <ThemedButton theme="outline" disabled>
+              {disabledRedeemText}
+              <Check size={24} />
+            </ThemedButton>
+          )}
+        </WidgetUpperGrid>
+      </div>
+      <Grid
+        justifyContent="center"
+        style={
+          !isOffer && !isLteXS
+            ? {
+                maxWidth: "50%",
+                marginLeft: "calc(50% - 0.5rem)"
+              }
+            : {}
+        }
+      >
+        {isBeforeRedeem ? (
+          <CommitAndRedeemButton
+            tag="p"
+            onClick={onPurchaseOverview}
+            style={{ fontSize: "0.75rem", marginTop: 0 }}
+          >
+            How it works?
+          </CommitAndRedeemButton>
+        ) : (
+          <CommitAndRedeemButton
+            tag="p"
+            style={{ fontSize: "0.75rem", marginTop: 0 }}
+          >
+            &nbsp;
+          </CommitAndRedeemButton>
         )}
-        <div style={{ paddingTop: "2rem", paddingBottom: "2rem" }}>
-          <DetailTable
-            align
-            noBorder
-            data={OFFER_DETAIL_DATA}
-            inheritColor={false}
-          />
-        </div>
-        {isExchange && (
-          <>
-            <Break />
-            <Grid as="section">
-              <ContactSellerButton
-                onClick={() => {
-                  const contactSellerForExchangeUrlWithId =
-                    contactSellerForExchangeUrl.replace(
-                      "{id}",
-                      exchange?.id || ""
-                    );
-                  window.open(contactSellerForExchangeUrlWithId, "_blank");
-                }}
-                theme="blank"
-                type="button"
-                style={{ fontSize: "0.875rem" }}
-                disabled={
-                  isInWrongChain || !isBuyer || !contactSellerForExchangeUrl
-                }
-              >
-                Contact seller
-              </ContactSellerButton>
-              {isBeforeRedeem ? (
-                <>
-                  {![
-                    exchanges.ExtendedExchangeState.Expired,
-                    subgraph.ExchangeState.Cancelled,
-                    subgraph.ExchangeState.Revoked,
-                    subgraph.ExchangeState.Completed
-                  ].includes(
-                    exchangeStatus as
-                      | exchanges.ExtendedExchangeState
-                      | subgraph.ExchangeState
-                  ) && (
-                    <StyledCancelButton
-                      onClick={handleCancel}
-                      theme="blank"
-                      type="button"
-                      style={{ fontSize: "0.875rem" }}
-                      disabled={isInWrongChain || !isBuyer}
-                    >
-                      Cancel
-                    </StyledCancelButton>
-                  )}
-                </>
-              ) : (
-                <>
-                  {!exchange?.disputed && (
-                    <RaiseProblemButton
-                      onClick={() => {
-                        onRaiseDisputeClick();
-                      }}
-                      type="button"
-                      theme="blank"
-                      style={{ fontSize: "0.875rem" }}
-                      disabled={
-                        exchange?.state !== "REDEEMED" ||
-                        !isBuyer ||
-                        isInWrongChain
-                      }
-                    >
-                      Raise a problem
-                      <Question size={18} />
-                    </RaiseProblemButton>
-                  )}
-                </>
-              )}
-            </Grid>
-          </>
-        )}
-      </Widget>
-    </>
+      </Grid>
+      <Break />
+      {offer.condition && (
+        <TokenGated
+          coreSDK={core}
+          offer={offer}
+          commitProxyAddress={commitProxyAddress}
+          openseaLinkToOriginalMainnetCollection={
+            openseaLinkToOriginalMainnetCollection
+          }
+          isConditionMet={isConditionMet}
+        />
+      )}
+      <div style={{ paddingTop: "2rem", paddingBottom: "2rem" }}>
+        <DetailTable
+          align
+          noBorder
+          data={OFFER_DETAIL_DATA}
+          inheritColor={false}
+        />
+      </div>
+      {isExchange && (
+        <>
+          <Break />
+          <Grid as="section">
+            <ContactSellerButton
+              onClick={() => {
+                const contactSellerForExchangeUrlWithId =
+                  contactSellerForExchangeUrl.replace(
+                    "{id}",
+                    exchange?.id || ""
+                  );
+                window.open(contactSellerForExchangeUrlWithId, "_blank");
+              }}
+              theme="blank"
+              type="button"
+              style={{ fontSize: "0.875rem" }}
+              disabled={
+                isInWrongChain || !isBuyer || !contactSellerForExchangeUrl
+              }
+            >
+              Contact seller
+            </ContactSellerButton>
+            {isBeforeRedeem ? (
+              <>
+                {![
+                  exchanges.ExtendedExchangeState.Expired,
+                  subgraph.ExchangeState.Cancelled,
+                  subgraph.ExchangeState.Revoked,
+                  subgraph.ExchangeState.Completed
+                ].includes(
+                  exchangeStatus as
+                    | exchanges.ExtendedExchangeState
+                    | subgraph.ExchangeState
+                ) && (
+                  <StyledCancelButton
+                    onClick={handleCancel}
+                    theme="blank"
+                    type="button"
+                    style={{ fontSize: "0.875rem" }}
+                    disabled={isInWrongChain || !isBuyer}
+                  >
+                    Cancel
+                  </StyledCancelButton>
+                )}
+              </>
+            ) : (
+              <>
+                {!exchange?.disputed && (
+                  <RaiseProblemButton
+                    onClick={() => {
+                      onRaiseDisputeClick?.();
+                    }}
+                    type="button"
+                    theme="blank"
+                    style={{ fontSize: "0.875rem" }}
+                    disabled={
+                      exchange?.state !== "REDEEMED" ||
+                      !isBuyer ||
+                      isInWrongChain
+                    }
+                  >
+                    Raise a problem
+                    <Question size={18} />
+                  </RaiseProblemButton>
+                )}
+              </>
+            )}
+          </Grid>
+        </>
+      )}
+    </Widget>
   );
 };
 

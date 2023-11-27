@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../theme";
-import { Exchange } from "../../types/exchange";
-import DetailTable from "../modal/components/Redeem/ExchangeView/detail/DetailTable";
 import Grid from "../ui/Grid";
 import ThemedButton from "../ui/ThemedButton";
 import Typography from "../ui/Typography";
@@ -12,6 +10,7 @@ import {
   CircleWavyQuestion,
   WarningCircle
 } from "phosphor-react";
+import DetailTable from "../modal/components/common/detail/DetailTable";
 
 const colors = theme.colors.light;
 const NoPaddingButton = styled(ThemedButton)`
@@ -19,20 +18,19 @@ const NoPaddingButton = styled(ThemedButton)`
   border-color: transparent !important;
 `;
 
-export interface ExchangePolicyDetailsProps {
-  exchange: Exchange;
+export interface OfferPolicyDetailsProps {
+  offer: subgraph.OfferFieldsFragment;
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
   onContractualAgreementClick: () => void;
   onLicenseAgreementClick: () => void;
 }
 
-export default function ExchangePolicyDetails({
-  exchange,
+export default function OfferPolicyDetails({
+  offer: offerData,
   exchangePolicyCheckResult,
   onContractualAgreementClick,
   onLicenseAgreementClick
-}: ExchangePolicyDetailsProps) {
-  const offerData: subgraph.OfferFieldsFragment = exchange.offer;
+}: OfferPolicyDetailsProps) {
   const isExchangePolicyValid =
     exchangePolicyCheckResult &&
     (exchangePolicyCheckResult.isValid ||

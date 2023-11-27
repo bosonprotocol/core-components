@@ -2,18 +2,19 @@ import React, { useEffect } from "react";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
-import { Exchange } from "../../../../../types/exchange";
-import License from "../../../../license/License";
+import ContractualAgreement from "../../../../contractualAgreement/ContractualAgreement";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
+import { Offer } from "../../../../../types/offer";
 
 const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
-  offer: Exchange["offer"] | null | undefined;
+  offer: Offer | null;
 }
 
-export function LicenseAgreementView({ onBackClick, offer }: Props) {
+export function ContractualAgreementView({ onBackClick, offer }: Props) {
+  const offerId = offer?.id;
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -25,7 +26,7 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">License Agreement</Typography>
+            <Typography tag="h3">Contractual Agreement</Typography>
           </Grid>
         ),
         contentStyle: {
@@ -38,9 +39,9 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
   return (
     <>
       {offer ? (
-        <License offerId={offer.id} offerData={offer} />
+        <ContractualAgreement offerId={offerId} offerData={offer} />
       ) : (
-        <p>Exchange could not be retrieved</p>
+        <p>Offer could not be retrieved</p>
       )}
     </>
   );

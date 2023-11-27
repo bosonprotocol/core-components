@@ -8,10 +8,7 @@ import {
 import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
-import {
-  LearnMore,
-  ModalBackground
-} from "../ExchangeView/detail/Detail.style";
+import { LearnMore, ModalBackground } from "../detail/Detail.style";
 import { CommitStep } from "./style";
 import styled from "styled-components";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";

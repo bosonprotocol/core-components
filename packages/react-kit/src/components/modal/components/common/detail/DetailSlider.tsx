@@ -5,13 +5,13 @@ import { CaretLeft, CaretRight } from "phosphor-react";
 import React, { useEffect, useMemo, useReducer, useRef } from "react";
 
 import { GlideSlide, GlideWrapper } from "./Detail.style";
-import { breakpointNumbers } from "../../../../../../lib/ui/breakpoint";
-import Grid from "../../../../../ui/Grid";
-import ThemedButton from "../../../../../ui/ThemedButton";
-import IpfsImage from "../../../../../ui/IpfsImage";
-import { zIndex } from "../../../../../ui/zIndex";
-import Video from "../../../../../ui/Video";
-import { theme } from "../../../../../../theme";
+import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
+import Grid from "../../../../ui/Grid";
+import ThemedButton from "../../../../ui/ThemedButton";
+import IpfsImage from "../../../../ui/IpfsImage";
+import { zIndex } from "../../../../ui/zIndex";
+import Video from "../../../../ui/Video";
+import { theme } from "../../../../../theme";
 import styled from "styled-components";
 
 const colors = theme.colors.light;

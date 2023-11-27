@@ -1,13 +1,13 @@
 import styled, { css } from "styled-components";
-import { breakpoint } from "../../../../../../lib/ui/breakpoint";
-import { theme } from "../../../../../../theme";
-import Grid from "../../../../../ui/Grid";
-import ThemedButton from "../../../../../ui/ThemedButton";
-import { zIndex } from "../../../../../ui/zIndex";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
+import { theme } from "../../../../../theme";
+import Grid from "../../../../ui/Grid";
+import ThemedButton from "../../../../ui/ThemedButton";
+import { zIndex } from "../../../../ui/zIndex";
 
-import frameImage from "../../../../../../assets/frame.png";
-import { buttonText } from "../../../../../ui/styles";
-import Typography from "../../../../../ui/Typography";
+import frameImage from "../../../../../assets/frame.png";
+import { buttonText } from "../../../../ui/styles";
+import Typography from "../../../../ui/Typography";
 const colors = theme.colors.light;
 
 export const ChartWrapper = styled.div`
@@ -498,6 +498,7 @@ export const Widget = styled.div`
   width: 100%;
   background: ${colors.white};
   font-family: "Plus Jakarta Sans";
+  padding-top: 2rem;
   > div {
     padding-left: 2rem;
     padding-right: 2rem;

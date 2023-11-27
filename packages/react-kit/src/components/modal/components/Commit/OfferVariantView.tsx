@@ -1,24 +1,21 @@
-import { House } from "phosphor-react";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { useExchanges } from "../../../../../hooks/useExchanges";
-import { useSellers } from "../../../../../hooks/useSellers";
-import { getOfferDetails } from "../../../../../lib/offer/getOfferDetails";
-import { VariantV1 } from "../../../../../types/variants";
-import Grid from "../../../../ui/Grid";
-import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
-import DetailOpenSea from "../../common/DetailOpenSea";
-import DetailView from "./DetailView/DetailView";
-import VariationSelects from "./VariationSelects";
-import { isTruthy } from "../../../../../types/helpers";
-import GridContainer from "../../../../ui/GridContainer";
-import { theme } from "../../../../../theme";
-import { useConvertionRate } from "../../../../widgets/finance/convertion-rate/useConvertionRate";
-import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
-import { useNonModalContext } from "../../../nonModal/NonModal";
-import { SellerAndDescription } from "../../common/detail/SellerAndDescription";
-import DetailSlider from "../../common/detail/DetailSlider";
+import { VariantV1 } from "../../../../types/variants";
+import { theme } from "../../../../theme";
+import { useSellers } from "../../../../hooks/useSellers";
+import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
+import { isTruthy } from "../../../../types/helpers";
+import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
+import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
+import { useNonModalContext } from "../../nonModal/NonModal";
+import Grid from "../../../ui/Grid";
+import Typography from "../../../ui/Typography";
+import { Loading } from "../../../Loading";
+import DetailSlider from "../common/detail/DetailSlider";
+import GridContainer from "../../../ui/GridContainer";
+import { SellerAndDescription } from "../common/detail/SellerAndDescription";
+import VariationSelects from "../Redeem/ExchangeView/VariationSelects";
+import DetailView from "../Redeem/ExchangeView/DetailView/DetailView";
 
 const colors = theme.colors.light;
 
@@ -29,19 +26,14 @@ const ImageWrapper = styled.div`
   width: -webkit-fill-available;
 `;
 
-export type ExchangeViewProps = {
-  onHouseClick: () => void;
+export type OfferVariantViewProps = {
   onNextClick: () => void;
-  onCancelExchange: () => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;
-  onExpireVoucherClick: () => void;
-  onRaiseDisputeClick: () => void;
-  exchangeId: string;
+  variant: VariantV1;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
-  isValid: boolean;
 };
 
 const SLIDER_OPTIONS = {
@@ -51,42 +43,23 @@ const SLIDER_OPTIONS = {
   perView: 1
 };
 
-export function ExchangeView({
-  onHouseClick,
+export function OfferVariantView({
+  variant,
   onNextClick,
-  onCancelExchange,
   onExchangePolicyClick,
   onPurchaseOverview,
   onViewFullDescription,
-  onExpireVoucherClick,
-  onRaiseDisputeClick,
-  exchangeId,
   fairExchangePolicyRules,
   defaultDisputeResolverId
-}: ExchangeViewProps) {
-  const {
-    data: exchanges,
-    isError,
-    isLoading
-  } = useExchanges(
-    {
-      id: exchangeId
-    },
-    {
-      enabled: !!exchangeId
-    }
-  );
-  const exchange = exchanges?.[0];
-  const offer = exchange?.offer;
-  const metadata = offer?.metadata;
-  const variations = metadata?.variations;
-  const hasVariations = !!variations?.length;
+}: OfferVariantViewProps) {
+  const hasVariations = !!variant.variations?.length;
+  const { offer } = variant;
 
-  const variant = {
-    offer,
-    variations
-  };
-  const { data: sellers } = useSellers(
+  const {
+    data: sellers,
+    isLoading,
+    isError
+  } = useSellers(
     {
       id: offer?.seller.id,
       includeFunds: true
@@ -117,7 +90,7 @@ export function ExchangeView({
   } = useConvertionRate();
 
   const exchangePolicyCheckResult = useCheckExchangePolicy({
-    offerId: exchange?.offer?.id,
+    offerId: offer.id,
     fairExchangePolicyRules,
     defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
     defaultTokens: defaultTokens || []
@@ -128,11 +101,6 @@ export function ExchangeView({
       payload: {
         headerComponent: (
           <Grid gap="1rem">
-            <House
-              onClick={onHouseClick}
-              size={32}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-            />
             {offer && (
               <Typography tag="h3" style={{ flex: "1 1" }}>
                 {offer.metadata.name}
@@ -153,7 +121,7 @@ export function ExchangeView({
         <Loading />
       ) : !offer ? (
         <div data-testid="notFound">This exchange does not exist</div>
-      ) : isError || !exchangeId ? (
+      ) : isError ? (
         <div data-testid="errorExchange">
           There has been an error, please try again later...
         </div>
@@ -169,8 +137,6 @@ export function ExchangeView({
         >
           <Grid flexDirection="column" alignItems="center">
             <ImageWrapper>
-              <DetailOpenSea exchange={exchange} />
-
               <>
                 {(allImages.length > 0 || animationUrl) && (
                   <DetailSlider
@@ -182,7 +148,7 @@ export function ExchangeView({
               </>
 
               <SellerAndDescription
-                offer={exchange.offer}
+                offer={offer}
                 onViewFullDescription={onViewFullDescription}
               />
             </ImageWrapper>
@@ -191,8 +157,8 @@ export function ExchangeView({
             {hasVariations && (
               <div style={{ width: "100%" }}>
                 <VariationSelects
-                  selectedVariant={variant as VariantV1}
-                  variants={[variant] as VariantV1[]}
+                  selectedVariant={variant}
+                  variants={[variant]}
                   disabled
                 />
               </div>
@@ -200,14 +166,10 @@ export function ExchangeView({
             <DetailView
               hasSellerEnoughFunds={hasSellerEnoughFunds}
               offer={offer}
-              exchange={exchange}
-              onCancelExchange={onCancelExchange}
               onExchangePolicyClick={onExchangePolicyClick}
-              onRedeem={onNextClick}
+              onCommit={onNextClick}
               onPurchaseOverview={onPurchaseOverview}
-              onExpireVoucherClick={onExpireVoucherClick}
-              onRaiseDisputeClick={onRaiseDisputeClick}
-              pageType="exchange"
+              pageType="offer"
               hasMultipleVariants={false}
               isPreview={false}
               exchangePolicyCheckResult={exchangePolicyCheckResult}
