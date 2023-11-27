@@ -28,8 +28,6 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
-import { useExternalSigner } from "../../../signer/useExternalSigner";
-import { useSignerAddress } from "../../../../hooks/useSignerAddress";
 
 interface Props {
   protocolBalance: string;
