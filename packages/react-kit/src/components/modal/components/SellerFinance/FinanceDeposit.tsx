@@ -124,9 +124,11 @@ export default function FinanceDeposit({
             >
               {symbol}
             </Typography>
-            <Typography $fontSize="0.625rem" margin="0">
-              Balance {dataBalance?.formatted}
-            </Typography>
+            {dataBalance && (
+              <Typography $fontSize="0.625rem" margin="0">
+                Balance {dataBalance.formatted}
+              </Typography>
+            )}
           </div>
         </InputWrapper>
       </AmountWrapper>

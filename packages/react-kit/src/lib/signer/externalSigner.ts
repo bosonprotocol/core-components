@@ -35,7 +35,7 @@ const getDefaultHandleSignerFunction = <R>({
         function: functionName,
         args
       },
-      "*"
+      parentOrigin
     );
   });
 };
@@ -133,7 +133,7 @@ const getExternalSignerListener = ({
             function: functionName,
             args: [transactionRequest]
           },
-          "*"
+          parentOrigin
         );
       });
     },

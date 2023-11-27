@@ -47,7 +47,7 @@ export const useCallSignerFromIframe = ({
                   ...commonPostMessage,
                   result: txReceipt
                 },
-                "*"
+                childIframeOrigin
               );
             }
           } catch (error) {
@@ -59,7 +59,10 @@ export const useCallSignerFromIframe = ({
                   ? error.message
                   : error
             };
-            iframeRef.current?.contentWindow?.postMessage(eventMessage, "*");
+            iframeRef.current?.contentWindow?.postMessage(
+              eventMessage,
+              childIframeOrigin
+            );
           }
         } else if (functionName) {
           const fn: keyof typeof EthersAdapter["prototype"] = functionName;
@@ -82,13 +85,19 @@ export const useCallSignerFromIframe = ({
                 function: functionName,
                 result: txResponseWithoutWait
               };
-              iframeRef.current?.contentWindow?.postMessage(eventMessage, "*");
+              iframeRef.current?.contentWindow?.postMessage(
+                eventMessage,
+                childIframeOrigin
+              );
             } else {
               const eventMessage = {
                 function: functionName,
                 result
               };
-              iframeRef.current?.contentWindow?.postMessage(eventMessage, "*");
+              iframeRef.current?.contentWindow?.postMessage(
+                eventMessage,
+                childIframeOrigin
+              );
             }
           } catch (error) {
             console.error(error);
@@ -99,7 +108,10 @@ export const useCallSignerFromIframe = ({
                   ? error.message
                   : error
             };
-            iframeRef.current?.contentWindow?.postMessage(eventMessage, "*");
+            iframeRef.current?.contentWindow?.postMessage(
+              eventMessage,
+              childIframeOrigin
+            );
           }
         }
       }
@@ -109,7 +121,7 @@ export const useCallSignerFromIframe = ({
         {
           hasSigner: !!ethersSigner
         },
-        "*"
+        childIframeOrigin
       );
       if (ethersSigner) {
         window.addEventListener("message", onMessageReceived);
