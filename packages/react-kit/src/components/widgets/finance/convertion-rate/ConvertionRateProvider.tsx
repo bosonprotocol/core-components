@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { getDefaultTokens } from "../exchange-tokens/tokens";
 
 import { useTokens } from "../exchange-tokens/useTokens";
 import { saveItemInStorage } from "../storage/useLocalStorage";

@@ -1,6 +1,5 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { EnvironmentType } from "@bosonprotocol/core-sdk";
 import {
   AvatarComponent,
   darkTheme,
