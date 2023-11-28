@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   SellerCreated,
   SellerUpdatePending,
@@ -35,6 +37,11 @@ import {
 import { saveAccountEventLog } from "../entities/event-log";
 import { saveSellerMetadata } from "../entities/metadata/handler";
 import { getSellerMetadataEntityId } from "../entities/metadata/seller";
+
+export function checkSellerExist(sellerId: BigInt): boolean {
+  const seller = Seller.load(sellerId.toString());
+  return !!seller;
+}
 
 export function handleSellerCreatedEventWithoutMetadataUri(
   event: SellerCreatedLegacy

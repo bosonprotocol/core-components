@@ -7,20 +7,19 @@ import {
   mockIpfsFile
 } from "matchstick-as/assembly/index";
 import {
-  handleSellerCreatedEvent,
   handleSellerUpdatedEvent,
   handleBuyerCreatedEvent,
   handleSellerCreatedEventWithoutMetadataUri,
   handleSellerUpdateAppliedEvent
 } from "../src/mappings/account-handler";
 import {
-  createSellerCreatedEvent,
   createSellerUpdatedEvent,
   createBuyerCreatedEvent,
   mockBosonVoucherContractCalls,
   createSellerCreatedEventLegacy,
   createSellerUpdateAppliedEvent,
-  mockCreateProduct
+  mockCreateProduct,
+  createSeller
 } from "./mocks";
 import { getSellerMetadataEntityId } from "../src/entities/metadata/seller";
 import {
@@ -31,7 +30,6 @@ import {
   Offer,
   ProductV1Product,
   SalesChannel,
-  SalesChannelDeployment,
   SellerMetadata
 } from "../generated/schema";
 import { getMetadataEntityId } from "../src/entities/metadata/utils";
@@ -76,30 +74,6 @@ test("handle legacy SellerCreatedEvent", () => {
   );
 });
 
-function createSeller(
-  sellerId: i32,
-  sellerAddress: string,
-  sellerMetadataFilepath: string
-): string {
-  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
-  mockIpfsFile(sellerMetadataHash, sellerMetadataFilepath);
-  const sellerCreatedEvent = createSellerCreatedEvent(
-    sellerId,
-    sellerAddress,
-    sellerAddress,
-    sellerAddress,
-    sellerAddress,
-    voucherCloneAddress,
-    0,
-    0,
-    sellerAddress,
-    "ipfs://" + sellerMetadataHash
-  );
-
-  handleSellerCreatedEvent(sellerCreatedEvent);
-  return sellerId.toString();
-}
-
 function updateSellerMetadata(
   sellerId: i32,
   sellerMetadataFilepath: string
@@ -123,7 +97,13 @@ function updateSellerMetadata(
 }
 
 test("handle SellerCreatedEvent", () => {
-  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
+  const sellerId = createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
 
   assert.fieldEquals("Seller", sellerId, "id", sellerId);
   assert.fieldEquals(
@@ -229,7 +209,13 @@ test("handle BuyerCreatedEvent", () => {
 });
 
 test("add/remove product salesChannels", () => {
-  const sellerId = createSeller(1, sellerAddress, "tests/metadata/seller.json");
+  const sellerId = createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
 
   // mock creation of ProductV1Product for Product_A and Product_B
   let productA = mockCreateProduct(sellerId, "Product_A", 1);
