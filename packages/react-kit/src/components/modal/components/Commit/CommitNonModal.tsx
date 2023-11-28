@@ -91,7 +91,7 @@ function CommitNonModal({
     variantsWithV1?.[0] ??
     singleOfferVariant;
 
-  const [exchange, setExchange] = useState<Exchange | null>(null);
+  const [exchangeId, setExchangeId] = useState<Exchange["id"] | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant
   );
@@ -187,9 +187,9 @@ function CommitNonModal({
           onLicenseAgreementClick={() =>
             setActiveStep(ActiveStep.LICENSE_AGREEMENT)
           }
-          onNextClick={() => {
+          onCommit={(exchangeId) => {
             setActiveStep(ActiveStep.COMMIT_SUCESS);
-            // TODO: call to setExchange(exchange)
+            setExchangeId(exchangeId);
           }}
           fairExchangePolicyRules={fairExchangePolicyRules}
           defaultDisputeResolverId={defaultDisputeResolverId}
@@ -230,7 +230,7 @@ function CommitNonModal({
           onExchangePolicyClick={() =>
             setActiveStep(ActiveStep.EXCHANGE_POLICY)
           }
-          exchangeId={exchange?.id || ""}
+          exchangeId={exchangeId ?? ""}
         />
       ) : (
         <p>Wrong step...something went wrong</p>

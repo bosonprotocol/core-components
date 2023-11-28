@@ -236,7 +236,7 @@ interface IDetailWidget {
   hasMultipleVariants?: boolean;
   onLicenseAgreementClick: () => void;
   onExchangePolicyClick: () => void;
-  onCommit?: () => void;
+  onCommit?: (exchangeId: string) => void;
   onPurchaseOverview: () => void;
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
@@ -375,6 +375,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         //   ...BASE_MODAL_DATA
         // });
         console.log("commit ok");
+        onCommit?.(exchangeId.toString());
       };
       showDetailWidgetModal();
       toast((t) => (
@@ -553,68 +554,63 @@ const DetailView: React.FC<IDetailWidget> = ({
             withAsterisk={isPreview && hasMultipleVariants}
           />
 
-          {!isNotCommittableOffer && (
+          {isNotCommittableOffer ? (
+            <DetailTopRightLabel>
+              {!isPreview && notCommittableOfferStatus}
+            </DetailTopRightLabel>
+          ) : (
             <QuantityDisplay
               quantityInitial={quantityInitial}
               quantity={quantity}
             />
           )}
 
-          {isNotCommittableOffer && (
-            <DetailTopRightLabel>
-              {!isPreview && notCommittableOfferStatus}
-            </DetailTopRightLabel>
-          )}
-          {
-            <CommitButtonWrapper
-              role="button"
-              $pointerEvents={!address ? "none" : "all"}
-              onClick={() => {
-                if (!address) {
-                  saveItemInStorage("isConnectWalletFromCommit", true);
-                  setIsCommittingFromNotConnectedWallet(true);
-                  openAccountModal?.();
-                }
-              }}
-            >
-              {balanceLoading && address ? (
-                <Button disabled>
-                  <Spinner />
-                </Button>
-              ) : (
-                <>
-                  {/* {showCommitProxyButton ? (
+          <CommitButtonWrapper
+            role="button"
+            $pointerEvents={!address ? "none" : "all"}
+            onClick={() => {
+              if (!address) {
+                saveItemInStorage("isConnectWalletFromCommit", true);
+                setIsCommittingFromNotConnectedWallet(true);
+                openAccountModal?.();
+              }
+            }}
+          >
+            {balanceLoading && address ? (
+              <Button disabled>
+                <Spinner />
+              </Button>
+            ) : (
+              <>
+                {/* {showCommitProxyButton ? (
                     <CommitProxyButton />
                   ) : ( */}
-                  <CommitButton
-                    coreSdkConfig={{
-                      envName: protocolConfig.envName,
-                      configId: protocolConfig.configId,
-                      web3Provider: signer?.provider,
-                      metaTx: protocolConfig.metaTx
-                    }}
-                    variant="primaryFill"
-                    isPauseCommitting={!address}
-                    buttonRef={commitButtonRef}
-                    onGetSignerAddress={handleOnGetSignerAddress}
-                    disabled={!!isCommitDisabled}
-                    offerId={offer.id}
-                    exchangeToken={offer.exchangeToken.address}
-                    price={offer.price}
-                    onError={onCommitError}
-                    onPendingSignature={onCommitPendingSignature}
-                    onPendingTransaction={onCommitPendingTransaction}
-                    onSuccess={onCommitSuccess}
-                    extraInfo="Step 1/2"
-                    withBosonStyle
-                  />
-                  {/* )} */}
-                </>
-              )}
-            </CommitButtonWrapper>
-          }
-        </WidgetUpperGrid>
-        {
+                <CommitButton
+                  coreSdkConfig={{
+                    envName: protocolConfig.envName,
+                    configId: protocolConfig.configId,
+                    web3Provider: signer?.provider,
+                    metaTx: protocolConfig.metaTx
+                  }}
+                  variant="primaryFill"
+                  isPauseCommitting={!address}
+                  buttonRef={commitButtonRef}
+                  onGetSignerAddress={handleOnGetSignerAddress}
+                  disabled={!!isCommitDisabled}
+                  offerId={offer.id}
+                  exchangeToken={offer.exchangeToken.address}
+                  price={offer.price}
+                  onError={onCommitError}
+                  onPendingSignature={onCommitPendingSignature}
+                  onPendingTransaction={onCommitPendingTransaction}
+                  onSuccess={onCommitSuccess}
+                  extraInfo="Step 1/2"
+                  withBosonStyle
+                />
+                {/* )} */}
+              </>
+            )}
+          </CommitButtonWrapper>
           <Typography
             $fontSize="0.8rem"
             style={{ display: "block", paddingBottom: "0.5rem" }}
@@ -634,9 +630,9 @@ const DetailView: React.FC<IDetailWidget> = ({
             </span>
             .
           </Typography>
-        }
+        </WidgetUpperGrid>
       </div>
-      <Break />
+      <Break style={{ marginTop: "2rem" }} />
       {offer.condition && (
         <TokenGated
           coreSDK={coreSDK}

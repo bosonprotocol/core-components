@@ -27,7 +27,7 @@ const ImageWrapper = styled.div`
 `;
 
 export type OfferVariantViewProps = {
-  onNextClick: () => void;
+  onCommit: (exchangeId: string) => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;
@@ -48,7 +48,7 @@ const SLIDER_OPTIONS = {
 export function OfferVariantView({
   selectedVariant,
   allVariants,
-  onNextClick,
+  onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
   onPurchaseOverview,
@@ -172,7 +172,7 @@ export function OfferVariantView({
               offer={offer}
               onExchangePolicyClick={onExchangePolicyClick}
               onLicenseAgreementClick={onLicenseAgreementClick}
-              onCommit={onNextClick}
+              onCommit={onCommit}
               onPurchaseOverview={onPurchaseOverview}
               hasMultipleVariants={false}
               isPreview={false}
