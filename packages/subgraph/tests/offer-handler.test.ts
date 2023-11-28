@@ -12,6 +12,7 @@ import {
 import {
   createOfferCreatedEvent,
   createOfferVoidedEvent,
+  createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
 
@@ -86,6 +87,7 @@ test("handle OfferCreatedEvent with BASE metadata", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(sellerId);
 
   handleOfferCreatedEvent(offerCreatedEvent);
 
@@ -119,6 +121,7 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
+  createSeller(sellerId);
 
   handleOfferCreatedEvent(offerCreatedEvent);
 
@@ -157,6 +160,7 @@ test("handle OfferVoidedEvent", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(sellerId);
   handleOfferCreatedEvent(offerCreatedEvent);
 
   const offerVoidedEvent = createOfferVoidedEvent(1, 1, exchangeTokenAddress);
