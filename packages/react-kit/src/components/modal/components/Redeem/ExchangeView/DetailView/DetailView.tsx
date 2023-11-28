@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { ethers } from "ethers";
 import {
   ArrowRight,
   ArrowSquareOut,
@@ -10,7 +9,6 @@ import {
 } from "phosphor-react";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { useBalance } from "wagmi";
 import { useBreakpoints } from "../../../../../../hooks/useBreakpoints";
 import { Offer } from "../../../../../../types/offer";
 import { Exchange } from "../../../../../../types/exchange";
@@ -22,8 +20,6 @@ import { theme } from "../../../../../../theme";
 import Grid from "../../../../../ui/Grid";
 import ThemedButton from "../../../../../ui/ThemedButton";
 import { useConvertedPrice } from "../../../../../price/useConvertedPrice";
-import DetailTopRightLabel from "./DetailTopRightLabel";
-import { QuantityDisplay } from "./QuantityDisplay";
 import {
   Break,
   CommitAndRedeemButton,
@@ -34,7 +30,6 @@ import {
   Widget,
   WidgetUpperGrid
 } from "../../../common/detail/Detail.style";
-import TokenGated from "./TokenGated";
 import { exchanges, offers, subgraph } from "@bosonprotocol/core-sdk";
 import Price from "../../../../../price/Price";
 import {
@@ -44,7 +39,7 @@ import {
 import { useConfigContext } from "../../../../../config/ConfigContext";
 import { titleCase } from "../../../../../../lib/string/formatText";
 import DetailTable from "../../../common/detail/DetailTable";
-import { DetailDisputeResolver } from "./DetailDisputeResolver";
+import { DetailDisputeResolver } from "../../../common/detail/DetailDisputeResolver";
 import { IPrice } from "../../../../../../lib/price/convertPrice";
 import useCheckTokenGatedOffer from "../../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { ButtonSize } from "../../../../../ui/buttonSize";
@@ -53,6 +48,7 @@ import {
   useIsConnectedToWrongChain
 } from "../../../../../../hooks/connection/connection";
 import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
+import TokenGated from "../../../common/detail/TokenGated";
 
 const colors = theme.colors.light;
 
@@ -103,7 +99,6 @@ const getOfferDetailData = (
   convertedPrice: IPrice | null,
   isModal: boolean,
   onExchangePolicyClick: IDetailWidget["onExchangePolicyClick"],
-  isExchange?: boolean,
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult
 ) => {
   const redeemableFromDayJs = dayjs(
@@ -137,9 +132,7 @@ const getOfferDetailData = (
     onExchangePolicyClick();
   };
   const redeemableFromValues =
-    isExchange &&
-    offer.voucherRedeemableFromDate &&
-    redeemableFromDayJs.isAfter(Date.now())
+    offer.voucherRedeemableFromDate && redeemableFromDayJs.isAfter(Date.now())
       ? [
           {
             name: "Redeemable from",
@@ -300,7 +293,6 @@ const NOT_REDEEMED_YET = [
 ];
 
 interface IDetailWidget {
-  pageType?: "exchange" | "offer";
   offer: Offer;
   exchange?: Exchange;
   hasSellerEnoughFunds: boolean;
@@ -309,7 +301,6 @@ interface IDetailWidget {
   hasMultipleVariants?: boolean;
   onExchangePolicyClick: () => void;
   onRedeem?: () => void;
-  onCommit?: () => void;
   onPurchaseOverview: () => void;
   onExpireVoucherClick?: () => void;
   onRaiseDisputeClick?: () => void;
@@ -317,7 +308,6 @@ interface IDetailWidget {
 }
 
 const DetailView: React.FC<IDetailWidget> = ({
-  pageType,
   offer,
   exchange,
   hasSellerEnoughFunds,
@@ -329,7 +319,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   onPurchaseOverview,
   onRaiseDisputeClick,
   onRedeem,
-  onCommit,
   exchangePolicyCheckResult
 }) => {
   const core = useCoreSDKWithContext();
@@ -344,23 +333,12 @@ const DetailView: React.FC<IDetailWidget> = ({
   const displayFloat = useDisplayFloat();
   const { address } = useAccount();
   const isBuyer = exchange?.buyer.wallet === address?.toLowerCase();
-  const isOffer = pageType === "offer";
-  const isExchange = pageType === "exchange";
   const exchangeStatus = exchange ? exchanges.getExchangeState(exchange) : null;
 
   const disabledRedeemText =
     exchangeStatus === exchanges.ExtendedExchangeState.NotRedeemableYet
       ? "Redeem"
       : titleCase(exchangeStatus || "Unsupported");
-
-  const { data: dataBalance } = useBalance(
-    offer.exchangeToken.address !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: offer.exchangeToken.address as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
-  );
 
   const isToRedeem =
     !exchangeStatus || exchangeStatus === subgraph.ExchangeState.Committed;
@@ -373,11 +351,6 @@ const DetailView: React.FC<IDetailWidget> = ({
     [exchanges.ExtendedExchangeState.Expired].includes(
       exchangeStatus as unknown as exchanges.ExtendedExchangeState
     );
-
-  const isBuyerInsufficientFunds: boolean = useMemo(
-    () => !!dataBalance?.value && dataBalance?.value < BigInt(offer.price),
-    [dataBalance, offer.price]
-  );
 
   const convertedPrice = useConvertedPrice({
     value: offer.price,
@@ -394,26 +367,10 @@ const DetailView: React.FC<IDetailWidget> = ({
         convertedPrice,
         false,
         onExchangePolicyClick,
-        isExchange,
         exchangePolicyCheckResult
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [offer, convertedPrice, isExchange, config, displayFloat]
-  );
-
-  const quantity = useMemo<number>(
-    () => Number(offer?.quantityAvailable || 0),
-    [offer?.quantityAvailable]
-  );
-
-  const quantityInitial = useMemo<number>(
-    () => Number(offer?.quantityInitial || 0),
-    [offer?.quantityInitial]
-  );
-
-  const isExpiredOffer = useMemo<boolean>(
-    () => dayjs(getDateTimestamp(offer?.validUntilDate)).isBefore(dayjs()),
-    [offer?.validUntilDate]
+    [offer, convertedPrice, config, displayFloat]
   );
 
   const voucherRedeemableUntilDate = dayjs(
@@ -432,55 +389,13 @@ const DetailView: React.FC<IDetailWidget> = ({
     onCancelExchange?.();
   };
 
-  const isOfferEmpty = quantity < 1;
-  const isOfferNotValidYet = dayjs(
-    getDateTimestamp(offer?.validFromDate)
-  ).isAfter(nowDate);
-
-  const isNotCommittableOffer =
-    (isOfferEmpty ||
-      isOfferNotValidYet ||
-      isExpiredOffer ||
-      offer.voided ||
-      !hasSellerEnoughFunds ||
-      isBuyerInsufficientFunds) &&
-    isOffer;
-
-  const notCommittableOfferStatus = useMemo(() => {
-    if (isBuyerInsufficientFunds) {
-      return "Insufficient Funds";
-    }
-    if (offer.voided) {
-      return "Offer voided";
-    }
-    if (isExpiredOffer) {
-      return "Expired";
-    }
-    if (isOfferNotValidYet) {
-      return "Sale starting soon™️";
-    }
-    if (isOfferEmpty) {
-      return "Sold out";
-    }
-    if (!hasSellerEnoughFunds) {
-      return "Invalid";
-    }
-    return "";
-  }, [
-    hasSellerEnoughFunds,
-    isBuyerInsufficientFunds,
-    isExpiredOffer,
-    isOfferEmpty,
-    isOfferNotValidYet,
-    offer.voided
-  ]);
   const { isConditionMet } = useCheckTokenGatedOffer({
     commitProxyAddress,
     offer
   });
   return (
     <Widget>
-      {isExchange && isToRedeem && (
+      {isToRedeem && (
         <ActionMessage>
           {redeemableDays > 0
             ? `${redeemableDays} days left to Redeem`
@@ -488,7 +403,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         </ActionMessage>
       )}
       <div>
-        {isExchange && isExchangeExpired && (
+        {isExchangeExpired && (
           <ActionMessage>
             <Grid
               alignItems="center"
@@ -513,11 +428,9 @@ const DetailView: React.FC<IDetailWidget> = ({
             </Grid>
           </ActionMessage>
         )}
-        <WidgetUpperGrid
-          style={{ paddingBottom: !isExchange || isLteXS ? "0.5rem" : "0" }}
-        >
+        <WidgetUpperGrid style={{ paddingBottom: isLteXS ? "0.5rem" : "0" }}>
           <StyledPrice
-            isExchange={isExchange}
+            isExchange
             currencySymbol={offer.exchangeToken.symbol}
             value={offer.price}
             decimals={offer.exchangeToken.decimals}
@@ -527,23 +440,11 @@ const DetailView: React.FC<IDetailWidget> = ({
             withAsterisk={isPreview && hasMultipleVariants}
           />
 
-          {isOffer && !isNotCommittableOffer && (
-            <QuantityDisplay
-              quantityInitial={quantityInitial}
-              quantity={quantity}
-            />
-          )}
-
-          {isOffer && isNotCommittableOffer && (
-            <DetailTopRightLabel>
-              {!isPreview && notCommittableOfferStatus}
-            </DetailTopRightLabel>
-          )}
           {isToRedeem && (
             <RedeemButton
               variant="primaryFill"
               size={ButtonSize.Large}
-              disabled={isInWrongChain || isOffer || isPreview || !isBuyer}
+              disabled={isInWrongChain || isPreview || !isBuyer}
               onClick={() => {
                 onRedeem?.();
               }}
@@ -562,7 +463,7 @@ const DetailView: React.FC<IDetailWidget> = ({
       <Grid
         justifyContent="center"
         style={
-          !isOffer && !isLteXS
+          !isLteXS
             ? {
                 maxWidth: "50%",
                 marginLeft: "calc(50% - 0.5rem)"
@@ -607,7 +508,7 @@ const DetailView: React.FC<IDetailWidget> = ({
           inheritColor={false}
         />
       </div>
-      {isExchange && (
+      {
         <>
           <Break />
           <Grid as="section">
@@ -676,7 +577,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             )}
           </Grid>
         </>
-      )}
+      }
     </Widget>
   );
 };

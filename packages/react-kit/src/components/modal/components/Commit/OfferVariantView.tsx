@@ -15,7 +15,7 @@ import DetailSlider from "../common/detail/DetailSlider";
 import GridContainer from "../../../ui/GridContainer";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import VariationSelects from "../Redeem/ExchangeView/VariationSelects";
-import DetailView from "../Redeem/ExchangeView/DetailView/DetailView";
+import DetailView from "./DetailView/DetailView";
 
 const colors = theme.colors.light;
 
@@ -31,7 +31,9 @@ export type OfferVariantViewProps = {
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;
-  variant: VariantV1;
+  onLicenseAgreementClick: () => void;
+  selectedVariant: VariantV1;
+  allVariants: VariantV1[];
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
 };
@@ -44,16 +46,18 @@ const SLIDER_OPTIONS = {
 };
 
 export function OfferVariantView({
-  variant,
+  selectedVariant,
+  allVariants,
   onNextClick,
   onExchangePolicyClick,
+  onLicenseAgreementClick,
   onPurchaseOverview,
   onViewFullDescription,
   fairExchangePolicyRules,
   defaultDisputeResolverId
 }: OfferVariantViewProps) {
-  const hasVariations = !!variant.variations?.length;
-  const { offer } = variant;
+  const hasVariations = !!selectedVariant.variations?.length;
+  const { offer } = selectedVariant;
 
   const {
     data: sellers,
@@ -157,9 +161,9 @@ export function OfferVariantView({
             {hasVariations && (
               <div style={{ width: "100%" }}>
                 <VariationSelects
-                  selectedVariant={variant}
-                  variants={[variant]}
-                  disabled
+                  selectedVariant={selectedVariant}
+                  variants={allVariants}
+                  disabled={allVariants.length < 2}
                 />
               </div>
             )}
@@ -167,9 +171,9 @@ export function OfferVariantView({
               hasSellerEnoughFunds={hasSellerEnoughFunds}
               offer={offer}
               onExchangePolicyClick={onExchangePolicyClick}
+              onLicenseAgreementClick={onLicenseAgreementClick}
               onCommit={onNextClick}
               onPurchaseOverview={onPurchaseOverview}
-              pageType="offer"
               hasMultipleVariants={false}
               isPreview={false}
               exchangePolicyCheckResult={exchangePolicyCheckResult}

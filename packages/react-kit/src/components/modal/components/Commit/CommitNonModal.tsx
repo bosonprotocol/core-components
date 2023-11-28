@@ -11,7 +11,6 @@ import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import Typography from "../../../ui/Typography";
 import { BosonFooter } from "../common/BosonFooter";
 import { useConfigContext } from "../../../config/ConfigContext";
-import { Loading } from "../../../Loading";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
 import { CommitOfferPolicyView } from "./OfferPolicyView/CommitOfferPolicyView";
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
@@ -20,6 +19,7 @@ import { ContractualAgreementView } from "./ContractualAgreementView/Contractual
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
 import { CommitSuccess } from "./CommitSuccess";
 import { Exchange } from "../../../../types/exchange";
+import Loading from "../../../ui/loading/Loading";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -170,7 +170,8 @@ function CommitNonModal({
     <>
       {currentStep === ActiveStep.OFFER_VIEW ? (
         <OfferVariantView
-          variant={selectedVariant}
+          allVariants={variantsWithV1 ?? [selectedVariant]}
+          selectedVariant={selectedVariant}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
             offerViewOnExchangePolicyClick?.();
@@ -183,6 +184,9 @@ function CommitNonModal({
             setActiveStep(ActiveStep.OFFER_FULL_DESCRIPTION);
             offerViewOnViewFullDescription?.();
           }}
+          onLicenseAgreementClick={() =>
+            setActiveStep(ActiveStep.LICENSE_AGREEMENT)
+          }
           onNextClick={() => {
             setActiveStep(ActiveStep.COMMIT_SUCESS);
             // TODO: call to setExchange(exchange)

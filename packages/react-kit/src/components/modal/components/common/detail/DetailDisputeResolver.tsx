@@ -1,6 +1,6 @@
 import React from "react";
-import Typography from "../../../../../ui/Typography";
-import { ReactComponent } from "../../../../../../assets/redeemeum.svg";
+import Typography from "../../../../ui/Typography";
+import { ReactComponent } from "../../../../../assets/redeemeum.svg";
 
 export const DetailDisputeResolver = {
   name: "Dispute resolver",

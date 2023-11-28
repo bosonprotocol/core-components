@@ -1,15 +1,14 @@
-import { EvaluationMethod, TokenType, GatingType } from "@bosonprotocol/common";
+import { EvaluationMethod, TokenType } from "@bosonprotocol/common";
 import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { Check, X } from "phosphor-react";
 import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { IPrice } from "../../../../../../lib/price/convertPrice";
-import { theme } from "../../../../../../theme";
-import { Offer } from "../../../../../../types/offer";
-import { Image } from "../../../../../image/Image";
-import { useConvertedPrice } from "../../../../../price/useConvertedPrice";
-import Grid from "../../../../../ui/Grid";
-
+import { IPrice } from "../../../../../lib/price/convertPrice";
+import { theme } from "../../../../../theme";
+import { useConvertedPrice } from "../../../../price/useConvertedPrice";
+import Grid from "../../../../ui/Grid";
+import { Offer } from "../../../../../types/offer";
+import { Image } from "../../../../image/Image";
 const colors = theme.colors.light;
 
 interface Props {
@@ -61,13 +60,10 @@ const buildMessage = (
     tokenType,
     minTokenId,
     maxTokenId,
-    gatingType,
+    // gatingType,
     tokenAddress,
     threshold
   } = condition;
-
-  const perWalletOrPerToken =
-    gatingType === GatingType.PerAddress ? " (per wallet)" : " (per token)";
 
   const TokenLink = (
     <a
@@ -91,7 +87,7 @@ const buildMessage = (
     if (method === EvaluationMethod.Threshold) {
       return (
         <>
-          {threshold} tokens {perWalletOrPerToken} from {TokenLink}
+          {threshold} tokens from {TokenLink}
         </>
       );
     }
@@ -99,14 +95,13 @@ const buildMessage = (
       if (minTokenId === maxTokenId) {
         return (
           <>
-            Token ID {perWalletOrPerToken}: {minTokenId} from {TokenLink}
+            Token ID : {minTokenId} from {TokenLink}
           </>
         );
       }
       return (
         <>
-          From token ID {minTokenId} to token ID {maxTokenId}{" "}
-          {perWalletOrPerToken} from {TokenLink}
+          From token ID {minTokenId} to token ID {maxTokenId} from {TokenLink}
         </>
       );
     }
@@ -115,15 +110,14 @@ const buildMessage = (
     if (minTokenId === maxTokenId) {
       return (
         <>
-          {threshold} x token(s) with id: {minTokenId} {perWalletOrPerToken}{" "}
-          from {TokenLink}
+          {threshold} x token(s) with id: {minTokenId} from {TokenLink}
         </>
       );
     }
     return (
       <>
         {threshold} x token(s) from token ID {minTokenId} to token ID{" "}
-        {maxTokenId} {perWalletOrPerToken} from {TokenLink}
+        {maxTokenId} from {TokenLink}
       </>
     );
   }

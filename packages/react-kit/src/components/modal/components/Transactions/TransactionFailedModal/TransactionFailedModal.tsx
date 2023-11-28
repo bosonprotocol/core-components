@@ -7,7 +7,7 @@ import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
 import { GenericModalProps } from "../../../ModalContext";
 const colors = theme.colors.light;
-export default function ConfirmationFailedModal({
+export default function TransactionFailedModal({
   errorMessage,
   detailedErrorMessage
 }: {
@@ -16,11 +16,11 @@ export default function ConfirmationFailedModal({
 }) {
   const { updateProps, store } = useModal();
   useEffect(() => {
-    updateProps<"CONFIRMATION_FAILED">({
+    updateProps<"TRANSACTION_FAILED">({
       ...store,
       modalProps: {
         ...store.modalProps
-      } as GenericModalProps<"CONFIRMATION_FAILED">,
+      } as GenericModalProps<"TRANSACTION_FAILED">,
       modalSize: "auto",
       modalMaxWidth: {
         xs: "550px"

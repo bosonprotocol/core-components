@@ -19,7 +19,7 @@ export function LicenseAgreementView({ onBackClick, offer }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid gap="1rem" justifyContent="flex-start">
             <ArrowLeft
               onClick={onBackClick}
               size={32}

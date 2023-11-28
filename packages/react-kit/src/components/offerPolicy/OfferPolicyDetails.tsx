@@ -170,10 +170,10 @@ export default function OfferPolicyDetails({
                   onClick={() => onLicenseAgreementClick()}
                   className="no-padding"
                 >
-                  <Typography tag="p">
+                  <p>
                     {exchangePolicy.rNFTLicense.title}{" "}
                     {exchangePolicy.rNFTLicense.version}{" "}
-                  </Typography>
+                  </p>
                   <ArrowSquareOut size={20} style={{ cursor: "pointer" }} />
                 </NoPaddingButton>
               </Grid>
@@ -188,13 +188,15 @@ export default function OfferPolicyDetails({
                   onClick={() => onContractualAgreementClick()}
                   className="no-padding"
                 >
-                  <Typography
-                    tag="p"
-                    color={exchangePolicy.contractualAgreement.color}
+                  <p
+                    style={{
+                      color: exchangePolicy.contractualAgreement.color,
+                      textAlign: "left"
+                    }}
                   >
                     {exchangePolicy.contractualAgreement.title}{" "}
                     {exchangePolicy.contractualAgreement.version}{" "}
-                  </Typography>
+                  </p>
                   <ArrowSquareOut
                     size={20}
                     style={{ cursor: "pointer" }}

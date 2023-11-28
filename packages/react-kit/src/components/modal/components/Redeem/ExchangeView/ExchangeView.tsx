@@ -207,7 +207,6 @@ export function ExchangeView({
               onPurchaseOverview={onPurchaseOverview}
               onExpireVoucherClick={onExpireVoucherClick}
               onRaiseDisputeClick={onRaiseDisputeClick}
-              pageType="exchange"
               hasMultipleVariants={false}
               isPreview={false}
               exchangePolicyCheckResult={exchangePolicyCheckResult}

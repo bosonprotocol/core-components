@@ -205,10 +205,10 @@ export default function FinanceDeposit({
             error.message = errorMessage;
             const hasUserRejectedTx = getHasUserRejectedTx(error);
             if (hasUserRejectedTx) {
-              showModal("CONFIRMATION_FAILED");
+              showModal("TRANSACTION_FAILED");
             } else {
               Sentry.captureException(error);
-              showModal("CONFIRMATION_FAILED", {
+              showModal("TRANSACTION_FAILED", {
                 errorMessage: "Something went wrong",
                 detailedErrorMessage: errorMessage
               });

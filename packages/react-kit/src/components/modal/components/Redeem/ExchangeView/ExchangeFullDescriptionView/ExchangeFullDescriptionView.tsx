@@ -19,7 +19,7 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid gap="1rem">
             <ArrowLeft
               onClick={onBackClick}
               size={32}
