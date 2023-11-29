@@ -8,7 +8,6 @@ import { Offer } from "../../../../types/offer";
 import { VariantV1 } from "../../../../types/variants";
 import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
-import Typography from "../../../ui/Typography";
 import { BosonFooter } from "../common/BosonFooter";
 import { useConfigContext } from "../../../config/ConfigContext";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";

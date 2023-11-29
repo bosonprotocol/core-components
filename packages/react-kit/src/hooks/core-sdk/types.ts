@@ -1,3 +1,3 @@
-import { CoreSDK } from "@bosonprotocol/react-kit";
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 
 export type ExtendedCoreSDK = CoreSDK & { uuid: string };
