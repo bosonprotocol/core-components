@@ -7,7 +7,7 @@ export async function fetchLens<T, V = Record<string, unknown>>(
   document: RequestDocument,
   variables?: V,
   headers?: Record<string, unknown>
-): Promise<T> {
+): Promise<T | null> {
   try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -17,10 +17,10 @@ export async function fetchLens<T, V = Record<string, unknown>>(
       "Content-Type": "application/json"
     });
     return data;
-  } catch (err) {
-    console.error(err);
-    throw err;
+  } catch (error) {
+    console.error(error);
   }
+  return null;
 }
 
 export async function fetchRawLens<T, V = Record<string, unknown>>(

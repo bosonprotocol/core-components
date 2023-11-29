@@ -7,13 +7,13 @@ import React, {
   useMemo,
   useState
 } from "react";
-import { isNumeric } from "../../../../../lib/numbers/numbers";
-import { isTruthy } from "../../../../../types/helpers";
-import { VariantV1, Variation } from "../../../../../types/variants";
-import SimpleError from "../../../../error/SimpleError";
-import { Select } from "../../../../form";
-import { SelectDataProps } from "../../../../form/types";
-import Grid from "../../../../ui/Grid";
+import { isNumeric } from "../../../../lib/numbers/numbers";
+import { isTruthy } from "../../../../types/helpers";
+import { VariantV1, Variation } from "../../../../types/variants";
+import SimpleError from "../../../error/SimpleError";
+import { Select } from "../../../form";
+import { SelectDataProps } from "../../../form/types";
+import Grid from "../../../ui/Grid";
 
 interface Quantity {
   type: string[];

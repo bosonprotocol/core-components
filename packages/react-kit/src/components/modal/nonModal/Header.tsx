@@ -12,7 +12,7 @@ const Wrapper = styled(Typography)<{ $title?: string }>`
   position: relative;
 
   text-align: left;
-  padding: 1rem 2rem;
+  padding: 1rem 0 1rem 2rem;
   display: flex;
   border-bottom: 2px solid ${colors.border};
   align-items: center;
@@ -20,7 +20,15 @@ const Wrapper = styled(Typography)<{ $title?: string }>`
   gap: 0.5rem;
 `;
 
+const StyledThemedButton = styled(ThemedButton)`
+  padding-right: 0 !important;
+`;
+
 const Close = styled(X)`
+  && {
+    stroke: unset;
+  }
+
   line {
     stroke: ${colors.darkGrey};
   }
@@ -45,9 +53,13 @@ const Header: React.FC<HeaderProps> = ({
           <Grid justifyContent="flex-end">
             <ConnectButton showChangeWallet />
             {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
+              <StyledThemedButton
+                data-close
+                theme="blank"
+                onClick={handleOnClose}
+              >
                 <Close size={32} />
-              </ThemedButton>
+              </StyledThemedButton>
             )}
           </Grid>
         </Wrapper>

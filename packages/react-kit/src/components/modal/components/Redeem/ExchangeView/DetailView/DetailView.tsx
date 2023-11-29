@@ -47,7 +47,7 @@ import {
   useAccount,
   useIsConnectedToWrongChain
 } from "../../../../../../hooks/connection/connection";
-import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import TokenGated from "../../../common/detail/TokenGated";
 
 const colors = theme.colors.light;

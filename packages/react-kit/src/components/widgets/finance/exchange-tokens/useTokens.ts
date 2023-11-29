@@ -1,7 +1,7 @@
 import { Offer } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { fetchSubgraph } from "../../../../lib/subgraph/subgraph";
 
 export function useTokens(

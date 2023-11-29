@@ -95,17 +95,15 @@ export default function RedeemWrapper({
 }: RedeemNonModalProps) {
   return (
     <NonModal
-      props={{
-        hideModal,
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
-        footerComponent: <BosonFooter />,
-        contentStyle: {
-          background: colors.white
-        }
+      hideModal={hideModal}
+      headerComponent={
+        <Typography tag="h3" $width="100%">
+          Redeem your item
+        </Typography>
+      }
+      footerComponent={<BosonFooter />}
+      contentStyle={{
+        background: colors.white
       }}
     >
       <RedeemNonModal hideModal={hideModal} {...props} />

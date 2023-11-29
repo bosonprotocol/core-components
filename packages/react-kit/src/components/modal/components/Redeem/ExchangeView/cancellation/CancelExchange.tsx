@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useAddPendingTransactionWithContext } from "../../../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { useCoreSDKWithContext } from "../../../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import useRefundData from "../../../../../../hooks/useRefundData";
 import { useDisplayFloat } from "../../../../../../lib/price/prices";
 import { poll } from "../../../../../../lib/promises/promises";

@@ -9,13 +9,11 @@ import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useC
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useNonModalContext } from "../../nonModal/NonModal";
 import Grid from "../../../ui/Grid";
-import Typography from "../../../ui/Typography";
-import { Loading } from "../../../Loading";
 import DetailSlider from "../common/detail/DetailSlider";
 import GridContainer from "../../../ui/GridContainer";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
-import VariationSelects from "../Redeem/ExchangeView/VariationSelects";
 import DetailView from "./DetailView/DetailView";
+import Loading from "../../../ui/loading/Loading";
 
 const colors = theme.colors.light;
 
@@ -56,7 +54,6 @@ export function OfferVariantView({
   fairExchangePolicyRules,
   defaultDisputeResolverId
 }: OfferVariantViewProps) {
-  const hasVariations = !!selectedVariant.variations?.length;
   const { offer } = selectedVariant;
 
   const {
@@ -103,30 +100,21 @@ export function OfferVariantView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
-          <Grid gap="1rem">
-            {offer && (
-              <Typography tag="h3" style={{ flex: "1 1" }}>
-                {offer.metadata.name}
-              </Typography>
-            )}
-          </Grid>
-        ),
+        headerComponent: <></>,
         contentStyle: {
           background: colors.lightGrey
         }
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, offer]);
+  }, [dispatch]);
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : !offer ? (
-        <div data-testid="notFound">This exchange does not exist</div>
+        <div data-testid="notFound">This offer does not exist</div>
       ) : isError ? (
-        <div data-testid="errorExchange">
+        <div data-testid="errorOffer">
           There has been an error, please try again later...
         </div>
       ) : (
@@ -157,28 +145,18 @@ export function OfferVariantView({
               />
             </ImageWrapper>
           </Grid>
-          <Grid flexDirection="column" gap="1rem" justifyContent="flex-start">
-            {hasVariations && (
-              <div style={{ width: "100%" }}>
-                <VariationSelects
-                  selectedVariant={selectedVariant}
-                  variants={allVariants}
-                  disabled={allVariants.length < 2}
-                />
-              </div>
-            )}
-            <DetailView
-              hasSellerEnoughFunds={hasSellerEnoughFunds}
-              offer={offer}
-              onExchangePolicyClick={onExchangePolicyClick}
-              onLicenseAgreementClick={onLicenseAgreementClick}
-              onCommit={onCommit}
-              onPurchaseOverview={onPurchaseOverview}
-              hasMultipleVariants={false}
-              isPreview={false}
-              exchangePolicyCheckResult={exchangePolicyCheckResult}
-            />
-          </Grid>
+          <DetailView
+            hasSellerEnoughFunds={hasSellerEnoughFunds}
+            selectedVariant={selectedVariant}
+            allVariants={allVariants}
+            onExchangePolicyClick={onExchangePolicyClick}
+            onLicenseAgreementClick={onLicenseAgreementClick}
+            onCommit={onCommit}
+            onPurchaseOverview={onPurchaseOverview}
+            hasMultipleVariants={false}
+            isPreview={false}
+            exchangePolicyCheckResult={exchangePolicyCheckResult}
+          />
         </GridContainer>
       )}
     </>

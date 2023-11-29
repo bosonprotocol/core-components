@@ -13,10 +13,10 @@ const colors = theme.colors.light;
 const Container = styled(Grid)`
   background: ${colors.white};
   padding: 1rem;
-  [data-seller-id] {
+  .seller-id {
     flex: 1 1 50%;
   }
-  [data-description] {
+  .description {
     flex: 1 1 50%;
     padding: 0 !important;
     [data-child-wrapper-button] {
@@ -38,10 +38,10 @@ export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
         buyerOrSeller={offer?.seller}
         justifyContent="flex-start"
         withProfileImage
-        data-seller-id
+        className="seller-id"
       />
       <ThemedButton
-        data-description
+        className="description"
         theme="blankSecondary"
         style={{ margin: "1rem" }}
         onClick={onViewFullDescription}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MagnifyingGlass } from "../../icons/MagnifyingGlass";
-import { useCoreSdk } from "../../hooks/useCoreSdk";
+import { useCoreSdk } from "../../hooks/core-sdk/useCoreSdk";
 import { InputField, InputWrapper } from "./SearchBar.styles";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { EnvironmentType, ConfigId } from "@bosonprotocol/common/src/types";

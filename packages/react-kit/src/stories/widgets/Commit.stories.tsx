@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentMeta, ComponentStory, Story } from "@storybook/react";
 
 import { CommitWidget } from "../../components/widgets/commit/CommitWidget";
-import { CtaButtonWrapper } from "../helpers/CtaButtonWrapper";
 import { EnvironmentType, getEnvConfigs } from "@bosonprotocol/core-sdk";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -12,9 +11,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof CommitWidget> = (args) => (
-  <CtaButtonWrapper>
-    <CommitWidget {...args} />
-  </CtaButtonWrapper>
+  <CommitWidget {...args} />
 );
 
 const wrapper = (Story: Story) => (

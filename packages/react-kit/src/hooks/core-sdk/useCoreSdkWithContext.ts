@@ -1,12 +1,13 @@
 import { providers } from "ethers";
-import { getEnvConfigById, hooks } from "..";
-import { useEnvContext } from "../components/environment/EnvironmentContext";
-import { Token } from "../components/widgets/finance/convertion-rate/ConvertionRateContext";
-import { useSigner } from "./connection/connection";
+import { getEnvConfigById, hooks } from "../..";
+import { useEnvContext } from "../../components/environment/EnvironmentContext";
+import { Token } from "../../components/widgets/finance/convertion-rate/ConvertionRateContext";
+import { useSigner } from "../connection/connection";
 import { useMemo } from "react";
-import { useExternalSigner } from "../components/signer/useExternalSigner";
+import { useExternalSigner } from "../../components/signer/useExternalSigner";
+import { ExtendedCoreSDK } from "./types";
 
-export function useCoreSDKWithContext() {
+export function useCoreSDKWithContext(): ExtendedCoreSDK {
   const { envName, configId, metaTx } = useEnvContext();
   const externalSigner = useExternalSigner();
   const signer = useSigner();
@@ -14,7 +15,7 @@ export function useCoreSDKWithContext() {
   const overrides = useMemo(() => {
     return externalSigner ? { web3Lib: externalSigner } : undefined;
   }, [externalSigner]);
-  return hooks.useCoreSdk(
+  const coreSDK = hooks.useCoreSdk(
     {
       envName,
       configId,
@@ -30,7 +31,11 @@ export function useCoreSDKWithContext() {
       }
     },
     overrides
-  );
+  ) as ExtendedCoreSDK;
+  if (!coreSDK.uuid) {
+    coreSDK.uuid = crypto.randomUUID();
+  }
+  return coreSDK;
 }
 
 function getMetaTxApiIds(

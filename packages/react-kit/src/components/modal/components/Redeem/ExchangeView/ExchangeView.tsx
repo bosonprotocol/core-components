@@ -10,7 +10,7 @@ import Loading from "../../../../ui/loading/Loading";
 import Typography from "../../../../ui/Typography";
 import DetailOpenSea from "../../common/DetailOpenSea";
 import DetailView from "./DetailView/DetailView";
-import VariationSelects from "./VariationSelects";
+import VariationSelects from "../../common/VariationSelects";
 import { isTruthy } from "../../../../../types/helpers";
 import GridContainer from "../../../../ui/GridContainer";
 import { theme } from "../../../../../theme";

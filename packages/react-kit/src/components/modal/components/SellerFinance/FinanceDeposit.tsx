@@ -20,7 +20,7 @@ import { Spinner } from "phosphor-react";
 import { Provider } from "@bosonprotocol/ethers-sdk";
 import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
-import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { useAccount, useSigner } from "../../../../hooks/connection/connection";

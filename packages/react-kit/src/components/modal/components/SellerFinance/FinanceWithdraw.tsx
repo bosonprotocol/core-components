@@ -24,7 +24,7 @@ import {
 } from "./FinancesStyles";
 import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
 import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useCoreSDKWithContext } from "../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
 import { subgraph } from "@bosonprotocol/core-sdk";

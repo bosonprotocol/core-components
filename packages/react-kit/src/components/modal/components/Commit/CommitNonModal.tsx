@@ -50,18 +50,13 @@ export default function CommitWrapper({
 }: CommitNonModalProps) {
   return (
     <NonModal
-      props={{
-        hideModal,
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Commit
-          </Typography>
-        ),
-        footerComponent: <BosonFooter />,
-        contentStyle: {
-          background: colors.white
-        }
+      hideModal={hideModal}
+      headerComponent={<></>}
+      footerComponent={<BosonFooter />}
+      contentStyle={{
+        background: colors.white
       }}
+      lookAndFeel="regular"
     >
       <CommitNonModal hideModal={hideModal} {...props} />
     </NonModal>
@@ -150,7 +145,7 @@ function CommitNonModal({
     disconnect();
   }
 
-  if (!address) {
+  if (!address && forcedAccount) {
     return (
       <>
         <p>Please connect your wallet</p>

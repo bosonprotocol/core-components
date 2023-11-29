@@ -2,7 +2,8 @@ import React, {
   useContext,
   CSSProperties,
   useReducer,
-  createContext
+  createContext,
+  useMemo
 } from "react";
 import { theme } from "../../../theme";
 import { ReactNode } from "react";
@@ -207,24 +208,22 @@ export interface NonModalProps {
   maxWidths?: Store["modalMaxWidth"];
   theme?: NonNullable<Store["theme"]>;
   closable?: boolean;
+  lookAndFeel?: "modal" | "regular";
+  children: ReactNode;
 }
 
 export default function NonModal({
   children,
-  props: {
-    hideModal,
-    headerComponent,
-    footerComponent: FooterComponent,
-    size = "auto",
-    maxWidths = null,
-    theme = "light",
-    contentStyle: _contentStyle,
-    closable = true
-  }
-}: {
-  children: React.ReactNode;
-  props: NonModalProps;
-}) {
+  hideModal,
+  headerComponent,
+  footerComponent: FooterComponent,
+  size = "auto",
+  maxWidths = null,
+  theme = "light",
+  contentStyle: _contentStyle,
+  closable = true,
+  lookAndFeel = "modal"
+}: NonModalProps) {
   const handleOnClose = () => {
     if (closable && hideModal) {
       hideModal();
@@ -235,9 +234,24 @@ export default function NonModal({
       headerComponent,
       contentStyle: _contentStyle
     });
-
+  const Container = useMemo(() => {
+    return ({ children }: { children: ReactNode }) => {
+      return lookAndFeel === "modal" ? (
+        <Root data-testid="modal">
+          <RootBG
+            onClick={() => {
+              handleOnClose();
+            }}
+          />
+        </Root>
+      ) : (
+        <>{children}</>
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lookAndFeel]);
   return (
-    <Root data-testid="modal">
+    <Container>
       <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
@@ -252,11 +266,6 @@ export default function NonModal({
         </Content>
         {FooterComponent && <FooterWrapper>{FooterComponent}</FooterWrapper>}
       </Wrapper>
-      <RootBG
-        onClick={() => {
-          handleOnClose();
-        }}
-      />
-    </Root>
+    </Container>
   );
 }

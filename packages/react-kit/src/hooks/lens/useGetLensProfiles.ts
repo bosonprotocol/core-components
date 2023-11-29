@@ -5,7 +5,7 @@ import {
   ProfilesDocument,
   ProfilesQuery
 } from "../../lib/lens/generated";
-import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 type Params = Parameters<typeof getLensProfiles>[1];
 
@@ -31,6 +31,8 @@ export default function useGetLensProfiles(
 }
 
 async function getLensProfiles(url: string, request: ProfileQueryRequest) {
-  return (await fetchLens<ProfilesQuery>(url, ProfilesDocument, { request }))
-    .profiles;
+  return (
+    (await fetchLens<ProfilesQuery>(url, ProfilesDocument, { request }))
+      ?.profiles || { items: [], pageInfo: { totalCount: 0 } }
+  );
 }

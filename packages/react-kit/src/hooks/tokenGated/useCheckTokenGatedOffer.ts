@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
 import { Offer } from "../../types/offer";
-import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 import { BosonSnapshotGate__factory } from "./BosonSnapshotGate/typechain";
 import { useAccount, useSigner } from "../connection/connection";
 

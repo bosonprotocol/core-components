@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useExternalSigner } from "../components/signer/useExternalSigner";
+import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { CoreSdkConfig, useCoreSdk } from "./useCoreSdk";
 
 export const useCoreSdkOverrides = ({

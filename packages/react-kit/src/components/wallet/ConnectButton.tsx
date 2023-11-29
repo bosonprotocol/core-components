@@ -104,7 +104,12 @@ export default function ConnectButton({
 
                       return (
                         <>
-                          <MagicLoginButton />
+                          <MagicLoginButton
+                            buttonProps={{
+                              size: isLteXS ? "small" : "regular",
+                              variant: "primaryFill"
+                            }}
+                          />
                           <Button
                             onClick={() => {
                               saveItemInStorage(

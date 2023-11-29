@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 export default function useProductByUuid(
   sellerId: string | undefined | null,
@@ -11,7 +11,7 @@ export default function useProductByUuid(
   const coreSDK = useCoreSDKWithContext();
 
   return useQuery(
-    ["get-product-by-uuid", uuid, coreSDK, sellerId],
+    ["get-product-by-uuid", uuid, coreSDK.uuid, sellerId],
     async () => {
       if (!uuid || !sellerId) {
         return;

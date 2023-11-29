@@ -9,7 +9,7 @@ import { GenericModalProps } from "../../../ModalContext";
 import { useModal } from "../../../useModal";
 import { theme } from "../../../../../theme";
 import { Button } from "../../../../buttons/Button";
-import { useCoreSDKWithContext } from "../../../../../hooks/useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 
 const colors = theme.colors.light;
 const StyledArrowCircleUp = styled(ArrowCircleUp)`

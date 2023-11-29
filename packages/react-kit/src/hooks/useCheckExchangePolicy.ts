@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { offers } from "@bosonprotocol/core-sdk";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 import { fetchTextFile } from "../lib/utils/textFile";
 import { getIpfsGatewayUrl } from "../lib/ipfs/ipfs";
 import { useIpfsContext } from "../components/ipfs/IpfsContext";

@@ -3,7 +3,7 @@ import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { ProgressStatus } from "../lib/progress/progressStatus";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 import { useIpfsStorage } from "./useIpfsStorage";
 

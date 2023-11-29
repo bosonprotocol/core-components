@@ -8,7 +8,7 @@ import { Loading } from "../../Loading";
 import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { DisputeResolutionFee } from "@bosonprotocol/core-sdk/dist/cjs/accounts";
 import { ButtonSize } from "../../ui/buttonSize";
-import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
+import { useCoreSdkOverrides } from "../../../hooks/core-sdk/useCoreSdkOverrides";
 export type IAddFeesDisputeResolverButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;

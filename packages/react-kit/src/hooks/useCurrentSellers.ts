@@ -7,7 +7,7 @@ import { Profile } from "../lib/lens/generated";
 import { getLensTokenIdDecimal, getLensTokenIdHex } from "../lib/lens/profile";
 import { fetchSubgraph } from "../lib/subgraph/subgraph";
 import useGetLensProfiles from "./lens/useGetLensProfiles";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
 

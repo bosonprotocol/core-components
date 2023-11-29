@@ -6,7 +6,7 @@ import {
 } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useQuery } from "react-query";
 import { Offer } from "../types/offer";
-import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "./core-sdk/useCoreSdkWithContext";
 
 export type Disputes = subgraph.DisputeFieldsFragment & {
   exchange: { offer: Offer } & subgraph.ExchangeFieldsFragment;
