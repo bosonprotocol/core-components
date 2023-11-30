@@ -57,7 +57,17 @@ import { DetailDisputeResolver } from "../../common/detail/DetailDisputeResolver
 import Grid from "../../../../ui/Grid";
 import VariationSelects from "../../common/VariationSelects";
 import { VariantV1 } from "../../../../../types/variants";
+import { breakpoint } from "../../../../../lib/ui/breakpoint";
 const colors = theme.colors.light;
+
+const StyledPrice = styled(Price)`
+  h3 {
+    font-size: 2rem;
+  }
+  small {
+    font-size: 1rem;
+  }
+`;
 
 const CommitButtonWrapper = styled.div<{
   $pointerEvents: string;
@@ -78,15 +88,22 @@ const CommitButtonWrapper = styled.div<{
     pointer-events: ${({ $pointerEvents }) => $pointerEvents};
   }
 `;
-
-const StyledPrice = styled(Price)`
-  h3 {
-    font-size: 2rem;
-  }
-  small {
-    font-size: 1rem;
+const CommitWrapper = styled(Grid)`
+  flex-direction: column;
+  column-gap: 1rem;
+  align-items: flex-start;
+  ${breakpoint.m} {
+    flex-direction: row;
   }
 `;
+
+const ResponsiveVariationSelects = styled(VariationSelects)`
+  flex-direction: column;
+  ${breakpoint.m} {
+    flex-direction: row;
+  }
+`;
+
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
 const getOfferDetailData = ({
@@ -194,41 +211,41 @@ const getOfferDetailData = ({
           <Typography tag="h6">
             <b>Exchange policy</b>
           </Typography>
-          <Typography tag="p">
+          <p>
             The Exchange policy ensures that the terms of sale are set in a fair
             way to protect both buyers and sellers.
-          </Typography>
+          </p>
         </>
       ),
       value: exchangePolicyCheckResult ? (
         exchangePolicyCheckResult.isValid ? (
-          <Typography tag="p">
+          <p>
             {exchangePolicyLabel + " "}
             <ArrowSquareOut
               size={20}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer" }}
             />
-          </Typography>
+          </p>
         ) : (
-          <Typography tag="p" color={colors.orange}>
+          <p style={{ color: colors.orange }}>
             <WarningCircle size={20}></WarningCircle> Non-standard{" "}
             <ArrowSquareOut
               size={20}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer" }}
             />
-          </Typography>
+          </p>
         )
       ) : (
-        <Typography tag="p" color="purple">
+        <p style={{ color: "purple" }}>
           <CircleWavyQuestion size={20}></CircleWavyQuestion> Unknown{" "}
           <ArrowSquareOut
             size={20}
             onClick={() => handleShowExchangePolicy()}
             style={{ cursor: "pointer" }}
           />
-        </Typography>
+        </p>
       )
     },
     {
@@ -558,7 +575,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
   const hasVariations = !!selectedVariant.variations?.length;
-
+  console.log("allVariants", allVariants);
   return (
     <Widget>
       <div>
@@ -592,7 +609,7 @@ const DetailView: React.FC<IDetailWidget> = ({
           <div
             style={{ width: "100%", marginTop: "0.5rem", marginBottom: "1rem" }}
           >
-            <VariationSelects
+            <ResponsiveVariationSelects
               selectedVariant={selectedVariant}
               variants={allVariants}
               disabled={allVariants.length < 2}
@@ -621,7 +638,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         />
       </div>
       <Break />
-      <Grid gap="1rem" justifyContent="space-between" margin="1rem 0">
+      <CommitWrapper justifyContent="space-between" margin="1rem 0">
         <CommitButtonWrapper
           disabled={!!isCommitDisabled}
           role="button"
@@ -685,7 +702,7 @@ const DetailView: React.FC<IDetailWidget> = ({
           </span>
           .
         </Typography>
-      </Grid>
+      </CommitWrapper>
     </Widget>
   );
 };

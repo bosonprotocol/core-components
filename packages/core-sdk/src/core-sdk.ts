@@ -96,6 +96,10 @@ export class CoreSDK extends BaseCoreSDK {
     return this._web3Lib;
   }
 
+  public get uuid() {
+    return this._uuid;
+  }
+
   public checkMetaTxConfigSet(
     args: {
       contractAddress?: string;
