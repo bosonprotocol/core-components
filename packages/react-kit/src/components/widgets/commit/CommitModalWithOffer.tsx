@@ -3,22 +3,17 @@ import CommitNonModal, {
   CommitNonModalProps
 } from "../../modal/components/Commit/CommitNonModal";
 import useProductByUuid from "../../../hooks/products/useProductByUuid";
-// TODO: implement hook in this repo
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const useOffer = (a, b) => ({ data: undefined } as any);
+import useProductByOfferId from "../../../hooks/products/useProductByOfferId";
 
 function WithProductOrOffer(
   WrappedComponent: React.ComponentType<CommitNonModalProps>
 ) {
   const ComponentWithProductOrOffer = (
-    props: Omit<
-      CommitNonModalProps,
-      "product" | "singleOffer" | "isLoading"
-    > & {
-      offerId?: string | undefined;
-      sellerId?: string | undefined;
-      productUuid?: string | undefined;
+    props: Omit<CommitNonModalProps, "product" | "isLoading"> & {
+      offerId?: string;
+      sellerId?: string;
+      productUuid?: string;
+      defaultSelectedOfferId?: string;
     }
   ) => {
     const allProductByUuidParamsDefined =
@@ -27,25 +22,18 @@ function WithProductOrOffer(
       props.sellerId,
       props.productUuid,
       {
-        enabled:
-          (!props.offerId && allProductByUuidParamsDefined) ||
-          !!(props.offerId && allProductByUuidParamsDefined)
+        enabled: allProductByUuidParamsDefined
       }
     );
-    const { data: offer, isLoading: isOfferLoading } = useOffer(
-      {
-        id: props.offerId
-      },
-      {
-        enabled: !props.productUuid && props.offerId
-      }
-    );
+    const { data: productByOfferId, isLoading: isProductByOfferIdLoading } =
+      useProductByOfferId(props.offerId, {
+        enabled: !!props.offerId && !allProductByUuidParamsDefined
+      });
     return (
       <WrappedComponent
         {...props}
-        product={product}
-        singleOffer={offer}
-        isLoading={isProductLoading || isOfferLoading}
+        product={product || productByOfferId}
+        isLoading={isProductLoading || isProductByOfferIdLoading}
       />
     );
   };

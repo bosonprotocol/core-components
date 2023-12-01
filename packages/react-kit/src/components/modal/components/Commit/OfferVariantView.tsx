@@ -34,6 +34,7 @@ export type OfferVariantViewProps = {
   allVariants: VariantV1[];
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
+  disableVariationsSelects?: boolean;
 };
 
 const SLIDER_OPTIONS = {
@@ -46,6 +47,7 @@ const SLIDER_OPTIONS = {
 export function OfferVariantView({
   selectedVariant,
   allVariants,
+  disableVariationsSelects,
   onCommit,
   onExchangePolicyClick,
   onLicenseAgreementClick,
@@ -146,6 +148,7 @@ export function OfferVariantView({
             </ImageWrapper>
           </Grid>
           <DetailView
+            disableVariationsSelects={disableVariationsSelects}
             hasSellerEnoughFunds={hasSellerEnoughFunds}
             selectedVariant={selectedVariant}
             allVariants={allVariants}

@@ -260,6 +260,7 @@ const getOfferDetailData = ({
 interface IDetailWidget {
   selectedVariant: VariantV1;
   allVariants: VariantV1[];
+  disableVariationsSelects?: boolean;
   name?: string;
   image?: string;
   hasSellerEnoughFunds: boolean;
@@ -276,6 +277,7 @@ interface IDetailWidget {
 const DetailView: React.FC<IDetailWidget> = ({
   selectedVariant,
   allVariants,
+  disableVariationsSelects,
   name = "",
   image = "",
   hasSellerEnoughFunds,
@@ -575,7 +577,6 @@ const DetailView: React.FC<IDetailWidget> = ({
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
   const hasVariations = !!selectedVariant.variations?.length;
-  console.log("allVariants", allVariants);
   return (
     <Widget>
       <div>
@@ -612,7 +613,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             <ResponsiveVariationSelects
               selectedVariant={selectedVariant}
               variants={allVariants}
-              disabled={allVariants.length < 2}
+              disabled={allVariants.length < 2 || disableVariationsSelects}
             />
           </div>
         )}
@@ -679,7 +680,6 @@ const DetailView: React.FC<IDetailWidget> = ({
                 onPendingSignature={onCommitPendingSignature}
                 onPendingTransaction={onCommitPendingTransaction}
                 onSuccess={onCommitSuccess}
-                extraInfo="Step 1/2"
                 withBosonStyle
               />
               {/* )} */}

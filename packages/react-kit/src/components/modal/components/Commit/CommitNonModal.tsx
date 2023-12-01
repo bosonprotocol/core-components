@@ -4,7 +4,6 @@ import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { OfferFullDescriptionView } from "./OfferFullDescriptionView/OfferFullDescriptionView";
 import { ReturnUseProductByUuid } from "../../../../hooks/products/useProductByUuid";
-import { Offer } from "../../../../types/offer";
 import { VariantV1 } from "../../../../types/variants";
 import { OfferVariantView, OfferVariantViewProps } from "./OfferVariantView";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
@@ -33,7 +32,8 @@ enum ActiveStep {
 
 export type CommitNonModalProps = {
   product?: ReturnUseProductByUuid;
-  singleOffer?: Offer;
+  defaultSelectedOfferId?: string;
+  disableVariationsSelects?: boolean;
   isLoading: boolean;
   fairExchangePolicyRules: string;
   hideModal?: NonModalProps["hideModal"];
@@ -63,8 +63,9 @@ export default function CommitWrapper({
 }
 
 function CommitNonModal({
-  singleOffer,
   product: productResult,
+  defaultSelectedOfferId,
+  disableVariationsSelects,
   isLoading,
   fairExchangePolicyRules,
   offerViewOnExchangePolicyClick,
@@ -77,13 +78,17 @@ function CommitNonModal({
   const variantsWithV1 = variants?.filter(
     ({ offer: { metadata } }) => metadata?.type === "PRODUCT_V1"
   ) as VariantV1[] | undefined;
-  const singleOfferVariant = singleOffer
-    ? { offer: singleOffer, variations: [] }
-    : undefined;
-  const defaultVariant =
-    variantsWithV1?.find((variant) => !variant.offer.voided) ??
-    variantsWithV1?.[0] ??
-    singleOfferVariant;
+  const firstVariant = variantsWithV1?.[0];
+  const firstNotVoidedVariant = variantsWithV1?.find(
+    (variant) => !variant.offer.voided
+  );
+  const defaultVariant = defaultSelectedOfferId
+    ? variantsWithV1?.find(
+        (variant) => variant.offer.id === defaultSelectedOfferId
+      ) ??
+      firstNotVoidedVariant ??
+      firstVariant
+    : firstNotVoidedVariant ?? firstVariant;
 
   const [exchangeId, setExchangeId] = useState<Exchange["id"] | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
@@ -157,7 +162,7 @@ function CommitNonModal({
   }
 
   if (!selectedVariant) {
-    return <p>No variant has been selected</p>;
+    return <p>This product could not be loaded</p>;
   }
 
   return (
@@ -166,6 +171,7 @@ function CommitNonModal({
         <OfferVariantView
           allVariants={variantsWithV1 ?? [selectedVariant]}
           selectedVariant={selectedVariant}
+          disableVariationsSelects={disableVariationsSelects}
           onExchangePolicyClick={() => {
             setActiveStep(ActiveStep.EXCHANGE_POLICY);
             offerViewOnExchangePolicyClick?.();

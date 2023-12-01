@@ -39,7 +39,9 @@ Commit.args = {
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
-  offerId: undefined,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: true,
   productUuid: "28f220-3c44-d7f4-cf0-0c72702cd4",
   sellerId: "26",
   metaTx: {

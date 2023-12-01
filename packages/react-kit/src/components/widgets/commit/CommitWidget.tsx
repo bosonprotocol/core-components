@@ -36,6 +36,8 @@ type CommitProps = {
     offerId?: string;
     sellerId?: string;
     productUuid?: string;
+    defaultSelectedOfferId?: string;
+    disableVariationsSelects?: boolean;
   };
 
 type WidgetProps = CommitProps &

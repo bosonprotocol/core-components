@@ -6,6 +6,7 @@ import {
   getProductV1MetadataEntities,
   getProductV1Products,
   getProductWithVariants,
+  getProductWithVariantsFromOfferId,
   getAllProductsWithVariants,
   getAllProductsWithNotVoidedVariants
 } from "./subgraph";
@@ -84,6 +85,12 @@ export class MetadataMixin extends BaseCoreSDK {
     }>;
   } | null> {
     return getProductWithVariants(this._subgraphUrl, sellerId, productUuid);
+  }
+
+  public async getProductWithVariantsFromOfferId(
+    offerId: string
+  ): ReturnType<typeof getProductWithVariantsFromOfferId> {
+    return getProductWithVariantsFromOfferId(this._subgraphUrl, offerId);
   }
 
   public async getAllProductsWithVariants(
