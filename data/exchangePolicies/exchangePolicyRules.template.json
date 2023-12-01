@@ -52,7 +52,7 @@
                 "description": "Buyer/Seller Agreement Template",
                 "type": "string",
                 "flags": "i",
-                "pattern": "^(fairExchangePolicy|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz|ipfs://QmZEYfG31PR1SgStg1wCFawQPxtbY9N44vDK9fjj3J9oz2|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz|ipfs://QmXfDShmggHm7BzMbkzv2rRowwPyJ55mypGp32qKSPGto4|ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ|ipfs://QmQ8ZTmmRV15rFaWG9KRyjFRrpaD1o2sDwZoYiWgBaAto6|ipfs://QmaNj7vGuCEvaM5vyucp5z1S9VprMnZWmVxYGn6FHhgePF)$",
+                "pattern": "^(fairExchangePolicy|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz|ipfs://QmZEYfG31PR1SgStg1wCFawQPxtbY9N44vDK9fjj3J9oz2|ipfs://QmS6SUVL1mhRq9wyNho914vcHwj3gC491vq7wtdoe34SUz|ipfs://QmXfDShmggHm7BzMbkzv2rRowwPyJ55mypGp32qKSPGto4|ipfs://QmXxRznUVMkQMb6hLiojbiv9uDw22RcEpVk6Gr3YywihcJ|ipfs://QmQ8ZTmmRV15rFaWG9KRyjFRrpaD1o2sDwZoYiWgBaAto6|ipfs://QmaNj7vGuCEvaM5vyucp5z1S9VprMnZWmVxYGn6FHhgePF|ipfs://QmbkoWec4NcmxJk7xpooNyfvj9ZarkW6RXq2ZJ9W6UGXZu)$",
                 "required": true
               }
             },
