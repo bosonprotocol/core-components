@@ -3,4 +3,4 @@ HERE AFTER THE IPFS HASH OF THE UPLOADED FILES (FOR RECORDING AND TRACEABILITY)
 
 contractualAgreement.template.md QmbkoWec4NcmxJk7xpooNyfvj9ZarkW6RXq2ZJ9W6UGXZu
 rNFTLicense.template.md QmZnkoiGRt9XX5KqyEz1G3UKUXTKfoYECRQz2rxa3m3z3a
-exchangePolicyRules.template.json QmbVmAspK2wi6Xrm6yB75TLqgfv9PAVv3kWxdsyQpEm79D
+exchangePolicyRules.template.json QmbUskZ7q6Vd4ZUHoZc6iQG5Cu4KUPSndRbTFdccWjEZYH
