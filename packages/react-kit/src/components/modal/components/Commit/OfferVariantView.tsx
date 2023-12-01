@@ -25,7 +25,7 @@ const ImageWrapper = styled.div`
 `;
 
 export type OfferVariantViewProps = {
-  onCommit: (exchangeId: string) => void;
+  onCommit: (exchangeId: string, txHash: string) => void;
   onExchangePolicyClick: () => void;
   onPurchaseOverview: () => void;
   onViewFullDescription: () => void;

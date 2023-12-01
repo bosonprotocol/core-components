@@ -15,7 +15,7 @@ import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
 import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
 import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
-import { CommitSuccess } from "./CommitSuccess";
+import { CommitSuccess } from "./CommitSuccess/CommitSuccess";
 import { Exchange } from "../../../../types/exchange";
 import Loading from "../../../ui/loading/Loading";
 
@@ -90,7 +90,10 @@ function CommitNonModal({
       firstVariant
     : firstNotVoidedVariant ?? firstVariant;
 
-  const [exchangeId, setExchangeId] = useState<Exchange["id"] | null>(null);
+  const [exchangeInfo, setExchangeInfo] = useState<{
+    exchangeId: Exchange["id"];
+    txHash: string;
+  } | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<VariantV1 | undefined>(
     defaultVariant
   );
@@ -187,9 +190,9 @@ function CommitNonModal({
           onLicenseAgreementClick={() =>
             setActiveStep(ActiveStep.LICENSE_AGREEMENT)
           }
-          onCommit={(exchangeId) => {
+          onCommit={(exchangeId, txHash) => {
             setActiveStep(ActiveStep.COMMIT_SUCESS);
-            setExchangeId(exchangeId);
+            setExchangeInfo({ exchangeId, txHash });
           }}
           fairExchangePolicyRules={fairExchangePolicyRules}
           defaultDisputeResolverId={defaultDisputeResolverId}
@@ -226,11 +229,11 @@ function CommitNonModal({
       ) : currentStep === ActiveStep.COMMIT_SUCESS ? (
         <CommitSuccess
           onHouseClick={() => setActiveStep(ActiveStep.OFFER_VIEW)}
-          onClickDone={() => hideModal?.()}
           onExchangePolicyClick={() =>
             setActiveStep(ActiveStep.EXCHANGE_POLICY)
           }
-          exchangeId={exchangeId ?? ""}
+          exchangeId={exchangeInfo?.exchangeId ?? ""}
+          commitHash={exchangeInfo?.txHash}
         />
       ) : (
         <p>Wrong step...something went wrong</p>

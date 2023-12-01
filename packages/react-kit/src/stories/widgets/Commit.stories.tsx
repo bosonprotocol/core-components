@@ -41,9 +41,9 @@ Commit.args = {
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
   offerId: "",
   defaultSelectedOfferId: "",
-  disableVariationsSelects: true,
-  productUuid: "28f220-3c44-d7f4-cf0-0c72702cd4",
-  sellerId: "26",
+  disableVariationsSelects: false,
+  productUuid: "086b32-3fcd-00d1-0624-67513e85415c",
+  sellerId: "138",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
     apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
@@ -51,7 +51,6 @@ Commit.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
-  modalMargin: "2%",
   forcedAccount: ""
 };
 

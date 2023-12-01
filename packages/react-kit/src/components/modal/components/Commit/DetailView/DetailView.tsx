@@ -269,7 +269,7 @@ interface IDetailWidget {
   hasMultipleVariants?: boolean;
   onLicenseAgreementClick: () => void;
   onExchangePolicyClick: () => void;
-  onCommit?: (exchangeId: string) => void;
+  onCommit?: (exchangeId: string, txHash: string) => void;
   onPurchaseOverview: () => void;
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
@@ -377,7 +377,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     }
   };
   const onCommitSuccess = async (
-    _receipt: ethers.providers.TransactionReceipt,
+    receipt: ethers.providers.TransactionReceipt,
     { exchangeId }: { exchangeId: BigNumberish }
   ) => {
     let createdExchange: subgraph.ExchangeFieldsFragment;
@@ -411,7 +411,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         //   ...BASE_MODAL_DATA
         // });
         console.log("commit ok");
-        onCommit?.(exchangeId.toString());
+        onCommit?.(exchangeId.toString(), receipt.transactionHash);
       };
       showDetailWidgetModal();
       toast((t) => (
