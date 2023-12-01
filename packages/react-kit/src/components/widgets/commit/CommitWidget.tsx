@@ -27,12 +27,8 @@ import { CONFIG } from "../../../lib/config/config";
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<
-  CommitNonModalProps,
-  "product" | "singleOffer" | "isLoading" | "hideModal"
-> & {
+} & Omit<CommitNonModalProps, "product" | "isLoading" | "hideModal"> & {
     closeWidgetClick?: () => void;
-    modalMargin?: string;
     offerId?: string;
     sellerId?: string;
     productUuid?: string;
@@ -58,43 +54,41 @@ const { infuraKey, magicLinkKey } = CONFIG;
 
 export function CommitWidget(props: WidgetProps) {
   return (
-    <div style={{ margin: props.modalMargin || "0" }}>
-      <EnvironmentProvider
-        envName={props.envName}
-        configId={props.configId}
-        metaTx={props.metaTx}
-      >
-        {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
+    <EnvironmentProvider
+      envName={props.envName}
+      configId={props.configId}
+      metaTx={props.metaTx}
+    >
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
         /* @ts-ignore */}
-        <GlobalStyle />
-        <ConfigProvider
-          magicLinkKey={magicLinkKey}
-          infuraKey={infuraKey}
-          {...props}
-        >
-          <MagicProvider>
-            <QueryClientProvider client={queryClient}>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>
-                        <CommitModalWithOffer
-                          {...props}
-                          hideModal={props.closeWidgetClick}
-                        />
-                      </ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WalletConnectionProvider>
-            </QueryClientProvider>
-          </MagicProvider>
-        </ConfigProvider>
-      </EnvironmentProvider>
-    </div>
+      <GlobalStyle />
+      <ConfigProvider
+        magicLinkKey={magicLinkKey}
+        infuraKey={infuraKey}
+        {...props}
+      >
+        <MagicProvider>
+          <QueryClientProvider client={queryClient}>
+            <WalletConnectionProvider
+              walletConnectProjectId={props.walletConnectProjectId}
+            >
+              <ChatProvider>
+                <IpfsProvider {...props}>
+                  <ConvertionRateProvider>
+                    <ModalProvider>
+                      <CommitModalWithOffer
+                        {...props}
+                        hideModal={props.closeWidgetClick}
+                      />
+                    </ModalProvider>
+                  </ConvertionRateProvider>
+                </IpfsProvider>
+              </ChatProvider>
+            </WalletConnectionProvider>
+          </QueryClientProvider>
+        </MagicProvider>
+      </ConfigProvider>
+    </EnvironmentProvider>
   );
 }
