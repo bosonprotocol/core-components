@@ -118,7 +118,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                       ? "Polygonscan"
                       : "Etherscan"}{" "}
                     <ArrowSquareUpRight
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: "text-bottom" }}
                       color={colors.secondary}
                       size={20}
                     />
@@ -143,7 +143,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                   >
                     Trade on OpenSea{" "}
                     <ArrowSquareUpRight
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: "text-bottom" }}
                       color={colors.secondary}
                       size={20}
                     />
@@ -164,7 +164,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                   >
                     Go to Redeem site{" "}
                     <ArrowSquareUpRight
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: "text-bottom" }}
                       color={colors.secondary}
                       size={20}
                     />
