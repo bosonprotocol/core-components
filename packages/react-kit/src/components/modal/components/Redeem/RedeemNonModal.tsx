@@ -95,6 +95,7 @@ export default function RedeemWrapper({
 }: RedeemNonModalProps) {
   return (
     <NonModal
+      lookAndFeel="modal"
       hideModal={hideModal}
       headerComponent={
         <Typography tag="h3" $width="100%">

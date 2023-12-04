@@ -238,6 +238,7 @@ export default function NonModal({
     return ({ children }: { children: ReactNode }) => {
       return lookAndFeel === "modal" ? (
         <Root data-testid="modal">
+          {children}
           <RootBG
             onClick={() => {
               handleOnClose();
@@ -252,7 +253,7 @@ export default function NonModal({
   }, [lookAndFeel]);
   return (
     <Container>
-      <Wrapper $size={size} $themeVal={theme} $maxWidths={maxWidths}>
+      <Wrapper $size={size} themeVal={theme} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
           closable={closable}
