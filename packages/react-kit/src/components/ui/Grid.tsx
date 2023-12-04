@@ -18,6 +18,10 @@ export type IGrid = Pick<
   | "columnGap"
   | "alignSelf"
   | "justifySelf"
+  | "marginTop"
+  | "marginRight"
+  | "marginBottom"
+  | "marginLeft"
 > & {
   $width?: CSSProperties['width'];
   $height?: CSSProperties['height'];
@@ -41,6 +45,11 @@ const Container = styled.div<IGrid>`
   ${({ flex }) => (flex ? `> * { flex: ${flex}; }` : "")}
   ${({ padding }) => (padding ? `padding:${padding};` : "")}
   ${({ margin }) => (margin ? `margin:${margin};` : "")}
+  ${({ marginTop }) => (marginTop ? `margin-top:${marginTop};` : "")}
+  ${({ marginRight }) => (marginRight ? `margin-right:${marginRight};` : "")}
+  ${({ marginBottom }) =>
+    marginBottom ? `margin-bottom:${marginBottom};` : ""}
+  ${({ marginLeft }) => (marginLeft ? `margin-left:${marginLeft};` : "")}
   ${({ alignSelf }) => (alignSelf ? `align-self:${alignSelf};` : "")}
   ${({ justifySelf }) => (justifySelf ? `justify-self:${justifySelf};` : "")}
 `;

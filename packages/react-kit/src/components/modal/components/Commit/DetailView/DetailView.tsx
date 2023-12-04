@@ -5,6 +5,7 @@ import { BigNumberish, ethers, providers } from "ethers";
 import {
   ArrowSquareOut,
   CircleWavyQuestion,
+  Info,
   Spinner,
   WarningCircle
 } from "phosphor-react";
@@ -36,7 +37,8 @@ import {
 import {
   Widget,
   WidgetUpperGrid,
-  Break
+  Break,
+  CommitAndRedeemButton
 } from "../../common/detail/Detail.style";
 import DetailTable from "../../common/detail/DetailTable";
 import DetailTopRightLabel from "./DetailTopRightLabel";
@@ -274,7 +276,6 @@ interface IDetailWidget {
   image?: string;
   hasSellerEnoughFunds: boolean;
   isPreview?: boolean;
-  onCancelExchange?: () => void;
   hasMultipleVariants?: boolean;
   onLicenseAgreementClick: () => void;
   onExchangePolicyClick: () => void;
@@ -292,7 +293,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   hasSellerEnoughFunds,
   isPreview = false,
   hasMultipleVariants,
-  onCancelExchange,
   onLicenseAgreementClick,
   onExchangePolicyClick,
   onPurchaseOverview,
@@ -419,7 +419,6 @@ const DetailView: React.FC<IDetailWidget> = ({
         //   state: "Committed",
         //   ...BASE_MODAL_DATA
         // });
-        console.log("commit ok");
         onCommit?.(exchangeId.toString(), receipt.transactionHash);
       };
       showDetailWidgetModal();
@@ -626,6 +625,27 @@ const DetailView: React.FC<IDetailWidget> = ({
         )}
       </div>
       <Break />
+      <Grid
+        justifyContent="center"
+        alignItems="center"
+        marginTop="12px"
+        marginBottom="12px"
+      >
+        <div
+          style={{
+            cursor: "pointer",
+            display: "flex",
+            gap: "0.1rem",
+            alignItems: "center"
+          }}
+          onClick={onPurchaseOverview}
+        >
+          <CommitAndRedeemButton>
+            What is commit and redeem?
+          </CommitAndRedeemButton>
+          <Info color={colors.secondary} size={15} />
+        </div>
+      </Grid>
       {offer.condition && (
         <TokenGated
           coreSDK={coreSDK}
