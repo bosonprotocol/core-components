@@ -3,7 +3,6 @@ import isBetween from "dayjs/plugin/isBetween";
 
 import React, { useMemo } from "react";
 import styled from "styled-components";
-
 import useOffersBacked from "./useOffersBacked";
 import Loading from "../../ui/loading/Loading";
 import Finance, { Props } from "./Finance";
@@ -29,47 +28,66 @@ import {
 } from "../../config/ConfigProvider";
 import { CONFIG } from "../../../lib/config/config";
 import { MagicProvider } from "../../magicLink/MagicContext";
+import { SignerProvider } from "../../signer/SignerContext";
+import ConnectButton from "../../wallet/ConnectButton";
+import Grid from "../../ui/Grid";
+import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
+import { useAccount } from "../../../hooks/connection/connection";
+import { useDisconnect } from "../../../hooks/connection/useDisconnect";
+import { ethers } from "ethers";
 dayjs.extend(isBetween);
+
+const StyledConnectButton = styled(ConnectButton)`
+  padding: 10px;
+`;
 
 const Wrapper = styled.div`
   text-align: center;
 `;
 
 function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
-  const ComponentWithSellerData = (props: Pick<Props, "sellerId">) => {
+  const ComponentWithSellerData = (props: Partial<Pick<Props, "sellerId">>) => {
     const sellerId = props.sellerId;
-    const sellerRoles = useSellerRoles(sellerId || "");
+    const { address } = useAccount();
+    const { sellerIds } = useCurrentSellers({
+      address,
+      sellerId: sellerId,
+      enabled: !sellerId
+    });
+    const sellerIdToUse = sellerId || sellerIds?.[0] || "";
+    const { sellerRoles, seller } = useSellerRoles(sellerIdToUse);
     const {
       store: { tokens }
     } = useConvertionRate();
 
     const exchangesTokens = useExchangeTokens(
       {
-        sellerId: sellerId || ""
+        sellerId: sellerIdToUse
       },
       {
-        enabled: !!sellerId
+        enabled: !!sellerIdToUse
       }
     );
     const sellerDeposit = useSellerDeposit(
       {
-        sellerId: sellerId || ""
+        sellerId: sellerIdToUse
       },
-      { enabled: !!sellerId }
+      { enabled: !!sellerIdToUse }
     );
-    const funds = useFunds(sellerId || "", tokens);
+    const funds = useFunds(sellerIdToUse, tokens);
     const newProps = useMemo(
       () => ({
-        sellerId,
+        sellerId: sellerIdToUse,
         exchangesTokens,
         sellerDeposit,
         funds,
         sellerRoles
       }),
-      [sellerId, exchangesTokens, sellerDeposit, funds, sellerRoles]
+      [sellerIdToUse, exchangesTokens, sellerDeposit, funds, sellerRoles]
     );
 
     const offersBacked = useOffersBacked({ ...newProps });
+    const disconnect = useDisconnect();
 
     if (exchangesTokens.isLoading || sellerDeposit.isLoading) {
       return (
@@ -78,6 +96,39 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
         </Wrapper>
       );
     }
+    if (!address) {
+      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+    }
+
+    if (!sellerIdToUse) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Connect a wallet that has a seller account
+        </p>
+      );
+    }
+    const forcedAccount =
+      sellerId && !sellerRoles.isAssistant ? seller?.assistant : "";
+    if (
+      forcedAccount &&
+      address &&
+      forcedAccount.toLowerCase() !== address.toLowerCase()
+    ) {
+      // force disconnection as the current connected wallet is not the forced one
+      disconnect();
+    }
+
+    if (forcedAccount) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Please connect this wallet account{" "}
+          <strong>{ethers.utils.getAddress(forcedAccount)}</strong> (which is
+          linked to the <strong>assistant</strong> role of the seller id{" "}
+          <strong>{sellerId}</strong>). The connected address is {address}
+        </p>
+      );
+    }
+
     return (
       <WrappedComponent {...props} {...newProps} offersBacked={offersBacked} />
     );
@@ -98,16 +149,20 @@ type FinanceWidgetProps = {
   walletConnectProjectId: string;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
-  ConvertionRateProviderProps &
-  Parameters<typeof Component>[0];
+  ConvertionRateProviderProps & {
+    parentOrigin: `http${string}` | undefined | null;
+    sellerId: string | null | undefined;
+  };
 
 const { infuraKey, magicLinkKey } = CONFIG;
+
 export function FinanceWidget({
   envName,
   configId,
   walletConnectProjectId,
   sellerId,
   metaTx,
+  parentOrigin,
   ...rest
 }: FinanceWidgetProps) {
   return (
@@ -121,19 +176,26 @@ export function FinanceWidget({
         infuraKey={infuraKey}
         {...rest}
       >
-        <MagicProvider>
-          <WalletConnectionProvider
-            walletConnectProjectId={walletConnectProjectId}
-          >
-            <QueryClientProvider client={queryClient}>
-              <ConvertionRateProvider>
-                <ModalProvider>
-                  <Component sellerId={sellerId} />
-                </ModalProvider>
-              </ConvertionRateProvider>
-            </QueryClientProvider>
-          </WalletConnectionProvider>
-        </MagicProvider>
+        <SignerProvider parentOrigin={parentOrigin}>
+          <MagicProvider>
+            <WalletConnectionProvider
+              walletConnectProjectId={walletConnectProjectId}
+            >
+              <QueryClientProvider client={queryClient}>
+                <ConvertionRateProvider>
+                  <ModalProvider>
+                    {!parentOrigin && (
+                      <Grid justifyContent="flex-end">
+                        <StyledConnectButton showChangeWallet />
+                      </Grid>
+                    )}
+                    <Component sellerId={sellerId ?? undefined} />
+                  </ModalProvider>
+                </ConvertionRateProvider>
+              </QueryClientProvider>
+            </WalletConnectionProvider>
+          </MagicProvider>
+        </SignerProvider>
       </ConfigProvider>
     </EnvironmentProvider>
   );

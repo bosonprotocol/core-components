@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   OfferCreated,
   OfferVoided,
@@ -17,6 +17,7 @@ import {
   saveDisputeResolutionTermsLegacy
 } from "../entities/dispute-resolution";
 import { saveOfferEventLog } from "../entities/event-log";
+import { checkSellerExist } from "./account-handler";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -29,6 +30,14 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     const offerDurationsStruct = event.params.offerDurations;
     const offerFeesStruct = event.params.offerFees;
     const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
+
+    if (!checkSellerExist(offerStruct.sellerId)) {
+      log.warning(
+        "Offer '{}' won't be created because seller '{}' does not exist",
+        [offerId.toString(), offerStruct.sellerId.toString()]
+      );
+      return;
+    }
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;
@@ -96,6 +105,14 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
     const offerDurationsStruct = event.params.offerDurations;
     const offerFeesStruct = event.params.offerFees;
     const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
+
+    if (!checkSellerExist(offerStruct.sellerId)) {
+      log.warning(
+        "Offer '{}' won't be created because seller '{}' does not exist",
+        [offerId.toString(), offerStruct.sellerId.toString()]
+      );
+      return;
+    }
 
     offer = new Offer(offerId.toString());
     offer.createdAt = event.block.timestamp;

@@ -20,7 +20,7 @@ As Web3’s Commerce Layer, Boson Protocol enables the tokenization, transfer an
 
 #### Offer Creation
 
-The Seller creates an Offer to sell an Item at a particular price, sets the Cancellation Penalty and the Seller Deposit, the Offer Validity Period, the Redemption Period, and the Resolution Period.
+The Seller creates an Offer to sell an Item at a particular price, sets the Cancellation Penalty and the Seller Deposit{{#hasExpirationDate}}, the Offer Validity Period{{/hasExpirationDate}}, the Redemption Period, and the Resolution Period.
 
 The Seller puts the Seller Deposit into the seller pool that is locked in a smart contract.
 
@@ -155,8 +155,10 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
    **Item Price** means the price originally paid by the Primary Buyer for an rNFT with the right to redeem an Item at the Commit action. The Item Price is set as **_{{priceValue}} {{exchangeTokenSymbol}}_**. The Item Price includes delivery costs. For customs and import taxes, refer to Exhibit A - Seller’s Shop Policy, clause 1.1.
 
    **Offer** means an expression of intent by the Seller to sell an Item.
-
+   
+   {{#hasExpirationDate}}
    **Offer Validity Period** means the period during which a Buyer may Commit to the Seller’s Offer, which is from **_{{#toISOString}}{{validFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{validUntilDateInMS}}{{/toISOString}}_**.
+   {{/hasExpirationDate}}
 
    **Primary Buyer** means the first buyer who has acquired the rNFT.
 
@@ -170,7 +172,7 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Redeemable NFT (rNFT / NFT Voucher)** means a voucher using NFT technology, representing the right to redeem an Item. It is important to note that an rNFT is a voucher that can be redeemed for a digital and/or physical good and it is subject to the rNFTs T&Cs and it is NOT a digital representation of said good. 
 
-   **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
+   **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is **_{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}_** days from and inclusive of the day you sign the transaction as your commitment to the Offer.
 
    **Resolution Period** means the time period during which the Buyer and the Seller may mutually resolve a Dispute, which is within **_{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}_** days after the dispute is raised.
 

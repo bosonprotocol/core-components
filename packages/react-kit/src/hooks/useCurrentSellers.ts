@@ -15,10 +15,16 @@ interface Props {
   address?: string;
   sellerId?: string;
   lensTokenId?: string;
+  enabled?: boolean;
 }
 
 const getSellersByIds =
-  (coreSDK: CoreSDK) => (sellerIds: string[], isSellerId: boolean) => {
+  (coreSDK: CoreSDK) =>
+  (
+    sellerIds: string[],
+    isSellerId: boolean,
+    { enabled }: Pick<Props, "enabled">
+  ) => {
     const resultSellerByIds = useQuery(
       ["seller-by-ids", { sellerIds }],
       async () => {
@@ -88,7 +94,7 @@ const getSellersByIds =
         return result.sellers;
       },
       {
-        enabled: isSellerId
+        enabled: isSellerId && enabled
       }
     );
     return resultSellerByIds;
@@ -101,11 +107,9 @@ const getSellersByIds =
  * @param
  * @returns
  */
-export function useCurrentSellers({
-  address,
-  sellerId,
-  lensTokenId
-}: Props = {}) {
+export function useCurrentSellers(
+  { address, sellerId, lensTokenId, enabled }: Props = { enabled: true }
+) {
   const coreSDK = useCoreSDKWithContext();
   const fetchSellers = getSellersByIds(coreSDK);
   const { address: loggedInUserAddress } = useAccount();
@@ -165,13 +169,14 @@ export function useCurrentSellers({
       };
     },
     {
-      enabled: enableResultByAddress
+      enabled: enableResultByAddress && enabled
     }
   );
   const enableResultById = !!sellerAddress && sellerAddressType === "SELLER_ID";
   const { data: sellers } = fetchSellers(
     typeof sellerAddress === "string" ? [sellerAddress] : [],
-    enableResultById
+    enableResultById,
+    { enabled }
   );
 
   const resultById = useQuery(
@@ -188,7 +193,7 @@ export function useCurrentSellers({
       );
     },
     {
-      enabled: enableResultById
+      enabled: enableResultById && enabled
     }
   );
 
@@ -243,7 +248,7 @@ export function useCurrentSellers({
       );
     },
     {
-      enabled: enableResultLensId
+      enabled: enableResultLensId && enabled
     }
   );
 
@@ -262,7 +267,8 @@ export function useCurrentSellers({
   const enableSellerById = !!sellerIdsToQuery?.length;
   const { data: sellers2, refetch: refetchFetchSellers } = fetchSellers(
     sellerIdsToQuery,
-    enableSellerById
+    enableSellerById,
+    { enabled }
   );
   const sellerById = useQuery(
     ["current-seller-by-id", { sellerIds: sellerIdsToQuery, sellers2 }],
@@ -288,7 +294,7 @@ export function useCurrentSellers({
       };
     },
     {
-      enabled: enableSellerById
+      enabled: enableSellerById && enabled
     }
   );
   const sellerValues = useMemo(
@@ -319,7 +325,7 @@ export function useCurrentSellers({
       profileIds
     },
     {
-      enabled: enableResultLens
+      enabled: enableResultLens && enabled
     }
   );
   const lens: Profile[] = useMemo(() => {

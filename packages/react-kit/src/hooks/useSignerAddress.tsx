@@ -1,19 +1,17 @@
-import { Provider } from "@bosonprotocol/ethers-sdk";
+import { Web3LibAdapter } from "@bosonprotocol/common";
+
 import { useEffect, useState } from "react";
 
-export function useSignerAddress(providerFromConfig?: Provider) {
+export function useSignerAddress(web3Lib: Web3LibAdapter | undefined) {
   const [signerAddress, setSignerAddress] = useState<string | undefined>();
 
   useEffect(() => {
-    if (
-      providerFromConfig &&
-      providerFromConfig.getSigner &&
-      providerFromConfig.getSigner()
-    ) {
-      providerFromConfig
-        .getSigner()
-        .getAddress()
-        .then(setSignerAddress)
+    if (web3Lib?.getSignerAddress) {
+      web3Lib
+        .getSignerAddress()
+        .then((address) => {
+          setSignerAddress(address);
+        })
         .catch((e) => {
           console.error(e);
           setSignerAddress(undefined);
@@ -21,7 +19,7 @@ export function useSignerAddress(providerFromConfig?: Provider) {
     }
 
     return () => setSignerAddress(undefined);
-  }, [providerFromConfig]);
+  }, [web3Lib]);
 
   return signerAddress;
 }

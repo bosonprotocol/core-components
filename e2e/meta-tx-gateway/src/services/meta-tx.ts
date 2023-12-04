@@ -5,8 +5,6 @@ import { Interface } from "@ethersproject/abi";
 import { ethers } from "ethers";
 import { Config, getConfig } from "../config";
 import { getSigner } from "../utils/web3";
-import { BytesLike } from "@ethersproject/bytes";
-import { BigNumberish } from "@ethersproject/bignumber";
 
 export type PostMetaTxBody = {
   to: string;

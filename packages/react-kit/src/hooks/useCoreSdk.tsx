@@ -8,7 +8,7 @@ import {
 } from "@bosonprotocol/core-sdk";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { IpfsMetadataStorage } from "@bosonprotocol/ipfs-storage";
-import { LensContracts } from "@bosonprotocol/common";
+import { LensContracts, Web3LibAdapter } from "@bosonprotocol/common";
 import { providers } from "ethers";
 
 export type CoreSdkConfig = {
@@ -63,6 +63,8 @@ export type CoreSdkConfig = {
   lensContracts?: LensContracts;
 };
 
+type CoreSdkOverrides = { web3Lib?: Web3LibAdapter };
+
 /**
  * Hook that initializes an instance of `CoreSDK` from the `@bosonprotocol/core-sdk`
  * package. The instance will be reinitialized when the passed in `web3Provider`
@@ -70,21 +72,26 @@ export type CoreSdkConfig = {
  * @param config - Configuration arguments.
  * @returns Instance of `CoreSDK`.
  */
-export function useCoreSdk(config: CoreSdkConfig) {
-  const [coreSdk, setCoreSdk] = useState<CoreSDK>(initCoreSdk(config));
+export function useCoreSdk(
+  config: CoreSdkConfig,
+  overrides?: CoreSdkOverrides
+): CoreSDK {
+  const [coreSdk, setCoreSdk] = useState<CoreSDK>(
+    initCoreSdk(config, overrides)
+  );
 
   useEffect(() => {
-    const newCoreSdk = initCoreSdk(config);
+    const newCoreSdk = initCoreSdk(config, overrides);
     setCoreSdk(newCoreSdk);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.web3Provider, config.configId]);
+  }, [config.web3Provider, config.configId, overrides]);
 
   return coreSdk;
 }
 
-function initCoreSdk(config: CoreSdkConfig) {
+function initCoreSdk(config: CoreSdkConfig, overrides?: CoreSdkOverrides) {
   const defaultConfig = getEnvConfigById(config.envName, config.configId);
-  const connectedProvider =
+  const getConnectedProvider = () =>
     config.web3Provider ||
     createDefaultProvider(config.jsonRpcUrl || defaultConfig.jsonRpcUrl);
   const metadataStorageUrl =
@@ -97,7 +104,7 @@ function initCoreSdk(config: CoreSdkConfig) {
 
   const instance = new CoreSDK({
     ...defaultConfig,
-    web3Lib: new EthersAdapter(connectedProvider),
+    web3Lib: overrides?.web3Lib ?? new EthersAdapter(getConnectedProvider()),
     protocolDiamond:
       config.protocolDiamond || defaultConfig.contracts.protocolDiamond,
     subgraphUrl: config.subgraphUrl || defaultConfig.subgraphUrl,

@@ -89,10 +89,7 @@ export default function ConnectButton({
         account && Sentry.setTag("wallet_address", account?.address);
 
         return (
-          <div
-            style={{ display: "flex", gap: 12, padding: "10px 0" }}
-            {...rest}
-          >
+          <div style={{ display: "flex", gap: 12 }} {...rest}>
             <InnerProvider>
               <InnerContext.Consumer>
                 {({ isMagicLoggedIn, chainId, globalAccount, disconnect }) => {

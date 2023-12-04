@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { BigNumber, BigNumberish } from "ethers";
 
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { TransactionReceipt } from "@bosonprotocol/common";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type AdditionalProps = {
   accountId: string;
@@ -26,8 +26,10 @@ export const WithdrawFundsButton = ({
   tokensToWithdraw,
   ...restProps
 }: IWithdrawFundsButton) => {
-  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
-  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
+  const coreSdk = useCoreSdkOverrides({
+    coreSdkConfig: restProps.coreSdkConfig
+  });
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
   const tokenList = useMemo(
     () => tokensToWithdraw.map((t) => t.address),
     [tokensToWithdraw]

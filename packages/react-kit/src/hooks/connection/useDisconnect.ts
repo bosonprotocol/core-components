@@ -17,7 +17,6 @@ export const useDisconnect = () => {
     }
   }, [disconnectAsync, status]);
 
-
   return useCallback(async () => {
     remove();
     if (isMagicLoggedIn) {

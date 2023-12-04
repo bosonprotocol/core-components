@@ -2,11 +2,11 @@ import { AddressZero } from "@ethersproject/constants";
 import { BigNumber, BigNumberish } from "ethers";
 import React, { useEffect } from "react";
 
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { Action } from "../../../hooks/useCtaClickHandler";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButton } from "../common/CtaButton";
 import { CtaButtonProps } from "../common/types";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type AdditionalProps = {
   /**
@@ -36,8 +36,10 @@ export const CommitButton = ({
   onGetSignerAddress,
   ...restProps
 }: Props) => {
-  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
-  const signerAddress = useSignerAddress(restProps.coreSdkConfig.web3Provider);
+  const coreSdk = useCoreSdkOverrides({
+    coreSdkConfig: restProps.coreSdkConfig
+  });
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   useEffect(() => {
     if (onGetSignerAddress) {

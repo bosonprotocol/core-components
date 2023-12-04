@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { ButtonSize } from "../../ui/buttonSize";
 import { TransactionResponse } from "@bosonprotocol/common";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type Props = {
   /**
@@ -35,10 +35,10 @@ export const BatchVoidButton = ({
   coreSdkConfig,
   ...rest
 }: Props) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   return (
     <Button

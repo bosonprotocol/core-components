@@ -1,9 +1,9 @@
 import React from "react";
 
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { CtaButtonProps } from "../common/types";
 import { CtaButton } from "../common/CtaButton";
 import { TransactionReceipt } from "@bosonprotocol/common";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 
 type AdditionalProps = {
   accountId: string;
@@ -19,7 +19,9 @@ export const WithdrawAllFundsButton = ({
   variant = "primaryFill",
   ...restProps
 }: IWithdrawAllFundsButton) => {
-  const coreSdk = useCoreSdk(restProps.coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({
+    coreSdkConfig: restProps.coreSdkConfig
+  });
   const actions = [
     // Withdraw all funds
     {

@@ -28,6 +28,7 @@ export type TemplateRenderingData = CreateOfferArgs &
     buyerCancelPenaltyValue: string; // Convert in decimals value
     escalationDepositValue: string; // Convert in decimals value
     exchangeTokenSymbol: string;
+    hasExpirationDate: boolean;
     toISOString: () => void;
     msecToDay: () => void;
     secToDay: () => void;
@@ -203,6 +204,7 @@ function convertExistingOfferData(offerDataSubGraph: OfferFieldsFragment): {
   };
 }
 
+const MAX_AND_MIN_DATE_TIMESTAMP = 8.64e15; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 export async function prepareRenderingData(
   offerData: CreateOfferArgs,
   offerMetadata: AdditionalOfferMetadata,
@@ -225,6 +227,10 @@ export async function prepareRenderingData(
       offerMetadata.escalationDeposit,
       tokenInfo.decimals
     ),
+    hasExpirationDate:
+      !!offerData.validUntilDateInMS &&
+      Number(offerData.validUntilDateInMS.toString()) <
+        MAX_AND_MIN_DATE_TIMESTAMP,
     toISOString: function () {
       return function (num, render) {
         try {

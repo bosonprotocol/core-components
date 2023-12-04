@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { BigNumberish, providers } from "ethers";
 
 import { Button } from "../../buttons/Button";
-import { useCoreSdk } from "../../../hooks/useCoreSdk";
 import { useSignerAddress } from "../../../hooks/useSignerAddress";
 import { ButtonTextWrapper, ExtraInfo, LoadingWrapper } from "../common/styles";
 import { CtaButtonProps } from "../common/types";
 import { Loading } from "../../Loading";
 import { CreateSellerArgs, TransactionResponse } from "@bosonprotocol/common";
 import { ButtonSize } from "../../ui/buttonSize";
+import { useCoreSdkOverrides } from "../../../hooks/useCoreSdkOverrides";
 export type ICreateSellerButton = {
   exchangeId: BigNumberish;
   createSellerArgs: CreateSellerArgs;
@@ -33,10 +33,10 @@ export const CreateSellerButton = ({
   coreSdkConfig,
   ...rest
 }: ICreateSellerButton) => {
-  const coreSdk = useCoreSdk(coreSdkConfig);
+  const coreSdk = useCoreSdkOverrides({ coreSdkConfig });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signerAddress = useSignerAddress(coreSdkConfig.web3Provider);
+  const signerAddress = useSignerAddress(coreSdk.web3Lib);
 
   return (
     <Button

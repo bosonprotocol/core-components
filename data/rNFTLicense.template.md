@@ -27,7 +27,7 @@ By redeeming the rNFT within the Redemption Period and having received from the 
 
 **Primary Buyer** means the first buyer who has acquired the rNFT.
 
-**Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
+**Redemption Period** means the time period during which the Seller promises tocomply with the terms of the rNFT, until it expires. The Redemption Period is **{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}** days from andinclusive of the day you sign the transaction as your commitment to the Offer.
 
 **Seller** means anyone who offers to sell an Item through an rNFT.
 ___
