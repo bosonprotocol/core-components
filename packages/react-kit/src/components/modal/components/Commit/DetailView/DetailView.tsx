@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import dayjs from "dayjs";
-import { BigNumberish, ethers, providers } from "ethers";
+import { BigNumberish, ethers, providers, utils } from "ethers";
 import {
   ArrowSquareOut,
   CircleWavyQuestion,
@@ -59,6 +59,9 @@ import { DetailDisputeResolver } from "../../common/detail/DetailDisputeResolver
 import Grid from "../../../../ui/Grid";
 import VariationSelects from "../../common/VariationSelects";
 import { VariantV1 } from "../../../../../types/variants";
+import ThemedButton from "../../../../ui/ThemedButton";
+import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
+import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 
 const colors = theme.colors.light;
 
@@ -88,7 +91,9 @@ const CommitButtonWrapper = styled.div<{
   ${({ disabled }) =>
     disabled
       ? css`
-          cursor: not-allowed;
+          * {
+            cursor: not-allowed;
+          }
         `
       : css`
           cursor: pointer;
@@ -146,14 +151,7 @@ const getOfferDetailData = ({
       ?.label || "Unspecified"
   ).replace("fairExchangePolicy", "Fair Exchange Policy");
 
-  // if offer is in creation, offer.id does not exist
   const handleShowExchangePolicy = () => {
-    // const offerData = offer.id ? undefined : offer;
-    // showModal(modalTypes.EXCHANGE_POLICY_DETAILS, {
-    //   title: "Exchange Policy Details",
-    //   offerId: offer.id,
-    //   offerData
-    // });
     onExchangePolicyClick();
   };
   return [
@@ -411,14 +409,6 @@ const DetailView: React.FC<IDetailWidget> = ({
       ));
     } else {
       const showDetailWidgetModal = () => {
-        // showModal(modalTypes.DETAIL_WIDGET, {
-        //   title: "You have successfully committed!",
-        //   message: "You now own the rNFT",
-        //   type: "SUCCESS",
-        //   id: exchangeId.toString(),
-        //   state: "Committed",
-        //   ...BASE_MODAL_DATA
-        // });
         onCommit?.(exchangeId.toString(), receipt.transactionHash);
       };
       showDetailWidgetModal();
@@ -461,19 +451,18 @@ const DetailView: React.FC<IDetailWidget> = ({
     setCommitType(null);
     // removePendingTransaction("offerId", offer.id);
   };
-  const { data: dataBalance, isLoading: balanceLoading } = useBalance(
-    offer.exchangeToken.address !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: offer.exchangeToken.address as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
-  );
+  const { balance: exchangeTokenBalance, loading: balanceLoading } =
+    useExchangeTokenBalance(offer.exchangeToken, {
+      enabled: offer.price !== "0"
+    });
 
   const isBuyerInsufficientFunds: boolean = useMemo(
-    () => !!dataBalance?.value && dataBalance?.value < BigInt(offer.price),
-    [dataBalance, offer.price]
+    () => !!exchangeTokenBalance && exchangeTokenBalance.lessThan(offer.price),
+    [exchangeTokenBalance, offer.price]
   );
+  const minNeededBalance = exchangeTokenBalance?.asFraction
+    ?.subtract(offer.price)
+    .multiply(-1);
 
   const OFFER_DETAIL_DATA = useMemo(
     () =>
@@ -519,6 +508,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     !hasSellerEnoughFunds ||
     isBuyerInsufficientFunds;
   const commitButtonRef = useRef<HTMLButtonElement>(null);
+  const tokenOrCoinSymbol = offer.exchangeToken.symbol;
   const notCommittableOfferStatus = useMemo(() => {
     if (isBuyerInsufficientFunds) {
       return "Insufficient Funds";
@@ -584,6 +574,18 @@ const DetailView: React.FC<IDetailWidget> = ({
     isOfferNotValidYet ||
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
+  console.log({
+    isCommitDisabled,
+    address,
+    hasSellerEnoughFunds,
+    isExpiredOffer,
+    isLoading,
+    quantity,
+    isVoidedOffer,
+    isPreview,
+    isOfferNotValidYet,
+    isBuyerInsufficientFunds
+  });
   const hasVariations = !!selectedVariant.variations?.length;
   return (
     <Widget>
@@ -666,6 +668,54 @@ const DetailView: React.FC<IDetailWidget> = ({
         />
       </div>
       <Break />
+
+      {isNotCommittableOffer && (
+        <DetailTopRightLabel
+          style={isBuyerInsufficientFunds ? { alignItems: "center" } : {}}
+          typographyStyle={
+            isBuyerInsufficientFunds ? { fontSize: "0.75rem" } : {}
+          }
+          secondChildren={
+            isBuyerInsufficientFunds ? (
+              <Button
+                size="small"
+                variant="accentFill"
+                withBosonStyle
+                style={{
+                  color: colors.white,
+                  width: "100%",
+                  height: "auto",
+                  padding: "0 1rem",
+                  marginTop: "1rem",
+                  minHeight: "2.125rem"
+                }}
+              >
+                <a
+                  style={{ all: "inherit" }}
+                  target="__blank"
+                  href={`https://bosonapp.io/#/swap?${new URLSearchParams({
+                    [swapQueryParameters.outputCurrency]:
+                      offer.exchangeToken.address,
+                    [swapQueryParameters.exactAmount]: minNeededBalance
+                      ? utils.formatUnits(
+                          minNeededBalance?.toSignificant(
+                            Number(offer.exchangeToken.decimals)
+                          ) || "",
+                          offer.exchangeToken.decimals
+                        )
+                      : "",
+                    [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
+                  }).toString()}`}
+                >
+                  Buy or Swap {tokenOrCoinSymbol}
+                </a>
+              </Button>
+            ) : null
+          }
+        >
+          {notCommittableOfferStatus}
+        </DetailTopRightLabel>
+      )}
       <CommitWrapper justifyContent="space-between" margin="1rem 0">
         <CommitButtonWrapper
           disabled={!!isCommitDisabled}
@@ -680,9 +730,9 @@ const DetailView: React.FC<IDetailWidget> = ({
           }}
         >
           {balanceLoading && address ? (
-            <Button disabled>
+            <ThemedButton disabled>
               <Spinner />
-            </Button>
+            </ThemedButton>
           ) : (
             <>
               {/* {showCommitProxyButton ? (
@@ -708,6 +758,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                 onPendingTransaction={onCommitPendingTransaction}
                 onSuccess={onCommitSuccess}
                 withBosonStyle
+                id="commit"
               />
               {/* )} */}
             </>

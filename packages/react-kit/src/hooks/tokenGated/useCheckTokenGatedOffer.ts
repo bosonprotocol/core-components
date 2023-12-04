@@ -15,14 +15,14 @@ export default function useCheckTokenGatedOffer({
   commitProxyAddress,
   offer
 }: Props) {
-  const { id, condition } = offer;
+  const { id: offerId, condition } = offer;
   const signer = useSigner();
   const { address } = useAccount();
   const core = useCoreSDKWithContext();
   const [isConditionMet, setConditionMet] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!address || !condition) {
+    if (!address || !condition || !offerId) {
       return;
     }
     (async () => {
@@ -57,7 +57,7 @@ export default function useCheckTokenGatedOffer({
       }
 
       try {
-        const met = await core.checkTokenGatedCondition(id, address);
+        const met = await core.checkTokenGatedCondition(offerId, address);
         setConditionMet(met);
       } catch (error) {
         console.error(error);
@@ -72,7 +72,7 @@ export default function useCheckTokenGatedOffer({
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [condition, address, commitProxyAddress]);
+  }, [condition, address, commitProxyAddress, offerId]);
   return {
     isConditionMet
   };

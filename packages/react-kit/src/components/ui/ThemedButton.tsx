@@ -68,7 +68,7 @@ const BaseButton = styled.button<{
   ${(props) =>
     props.theme.disabled
       ? css`
-          :disabled {
+          &:disabled {
             background-color: ${props.theme.disabled.background ||
             "transparent"};
             color: ${props.theme.disabled.color || colors.darkGrey};
@@ -78,7 +78,7 @@ const BaseButton = styled.button<{
           }
         `
       : css`
-          :disabled {
+          &:disabled {
             background-color: ${colors.lightGrey};
             color: ${colors.darkGrey};
             border-color: transparent;
@@ -114,7 +114,8 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         background: colors.black,
         color: colors.white,
         borderColor: colors.black
-      }
+      },
+      name: 'primary'
     },
     bosonPrimary: {
       color: colors.black,
