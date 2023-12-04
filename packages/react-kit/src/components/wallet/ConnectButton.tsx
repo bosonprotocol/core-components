@@ -9,7 +9,7 @@ import { Button } from "../buttons/Button";
 import ThemedButton from "../ui/ThemedButton";
 import { useBreakpoints } from "../../hooks/useBreakpoints";
 import { saveItemInStorage } from "../widgets/finance/storage/useLocalStorage";
-import { Wallet } from "phosphor-react";
+import { SignOut, Wallet } from "phosphor-react";
 import { useIsMagicLoggedIn } from "../../hooks";
 import { useAccount, useChainId } from "../../hooks/connection/connection";
 import { useDisconnect } from "../../hooks/connection/useDisconnect";
@@ -60,14 +60,19 @@ interface Props {
   showAddress?: boolean;
   showChangeWallet?: boolean;
 }
-
+const iconProps = {
+  size: 32,
+  style: {
+    cursor: 'pointer'
+  } as const
+} as const
 export default function ConnectButton({
   navigationBarPosition = "",
   showAddress = true,
   showChangeWallet,
   ...rest
 }: Props) {
-  const { isLteXS } = useBreakpoints();
+  const { isLteXS, isLteS } = useBreakpoints();
   const isSideBar = ["left", "right"].includes(navigationBarPosition);
   const buttonPadding = isSideBar ? "0.75rem 1rem" : "";
   const justifyContent = isSideBar ? "center" : "";
@@ -137,7 +142,7 @@ export default function ConnectButton({
                       return (
                         <ThemedButton
                           onClick={openChainModal}
-                          theme="warning"
+                          themeVal="warning"
                           size={isLteXS ? "small" : "regular"}
                           style={{
                             whiteSpace: "pre",
@@ -154,6 +159,8 @@ export default function ConnectButton({
                         style={{
                           display: "flex",
                           gap: 12,
+                          flexWrap: "wrap",
+                          alignItems: "center",
                           ...(justifyContent && {
                             justifyContent
                           }),
@@ -162,11 +169,7 @@ export default function ConnectButton({
                       >
                         {showChangeWallet && !isMagicLoggedIn && (
                           <Wallet
-                            style={{
-                              cursor: "pointer",
-                              height: "100%"
-                            }}
-                            size={32}
+                            {...iconProps}
                             onClick={async () => {
                               try {
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -186,7 +189,7 @@ export default function ConnectButton({
                         )}
                         <ThemedButton
                           onClick={openAccountModal}
-                          theme="outline"
+                          themeVal="outline"
                           size={isLteXS ? "small" : "regular"}
                           style={{
                             whiteSpace: "pre",
@@ -207,13 +210,17 @@ export default function ConnectButton({
                           )}
                           {showAddress && account?.displayName}
                         </ThemedButton>
-                        <ThemedButton
-                          theme="outline"
-                          size={isLteXS ? "small" : "regular"}
-                          onClick={disconnect}
-                        >
-                          Disconnect
-                        </ThemedButton>
+                        {isLteS ? (
+                          <SignOut {...iconProps} onClick={disconnect} />
+                        ) : (
+                          <ThemedButton
+                            themeVal="outline"
+                            size={isLteXS ? "small" : "regular"}
+                            onClick={disconnect}
+                          >
+                            Disconnect
+                          </ThemedButton>
+                        )}
                       </div>
                     );
                   })();

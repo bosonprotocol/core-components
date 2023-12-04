@@ -68,7 +68,6 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
   const exploreTxUrl = config.getTxExplorerUrl?.(commitHash, false);
-  console.log("config.chainId", config.chainId);
   return (
     <>
       {isFetching ? (

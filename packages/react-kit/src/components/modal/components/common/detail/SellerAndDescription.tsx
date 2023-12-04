@@ -42,7 +42,7 @@ export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
       />
       <ThemedButton
         className="description"
-        theme="blankSecondary"
+        themeVal="blankSecondary"
         style={{ margin: "1rem" }}
         onClick={onViewFullDescription}
       >

@@ -492,6 +492,7 @@ export const WidgetButtonWrapper = styled(Grid)`
 `;
 
 export const Widget = styled.div`
+  container-type: inline-size;
   position: relative;
   display: flex;
   flex-wrap: wrap;

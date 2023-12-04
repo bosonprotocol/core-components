@@ -91,21 +91,21 @@ const background = {
 
 const Wrapper = styled.div<{
   $size: NonModalProps["size"];
-  $theme: NonModalProps["theme"];
+  themeVal: NonModalProps["theme"];
   $maxWidths: NonModalProps["maxWidths"];
 }>`
   position: relative;
   z-index: ${zIndex.Modal};
-  color: ${({ $theme }) => {
-    switch ($theme) {
+  color: ${({ themeVal }) => {
+    switch (themeVal) {
       case "dark":
         return colors.white;
       default:
         return colors.black;
     }
   }};
-  background-color: ${({ $theme }) => {
-    return background[$theme as keyof typeof background] || colors.white;
+  background-color: ${({ themeVal }) => {
+    return background[themeVal as keyof typeof background] || colors.white;
   }};
   border: var(--secondary);
   ${({ $maxWidths }) => {
@@ -252,7 +252,7 @@ export default function NonModal({
   }, [lookAndFeel]);
   return (
     <Container>
-      <Wrapper $size={size} $theme={theme} $maxWidths={maxWidths}>
+      <Wrapper $size={size} $themeVal={theme} $maxWidths={maxWidths}>
         <Header
           HeaderComponent={HeaderComponent}
           closable={closable}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { VariantV1 } from "../../../../types/variants";
 import { theme } from "../../../../theme";
@@ -57,7 +57,6 @@ export function OfferVariantView({
   defaultDisputeResolverId
 }: OfferVariantViewProps) {
   const { offer } = selectedVariant;
-
   const {
     data: sellers,
     isLoading,
@@ -102,7 +101,7 @@ export function OfferVariantView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: <></>,
+        headerComponent: null,
         contentStyle: {
           background: colors.lightGrey
         }

@@ -63,7 +63,7 @@ const sizesMapWithWeights = Object.fromEntries(
   Object.entries(Object.values(sizes)).map(([key, value]) => [value, +key])
 );
 
-const emptyLabel = "Please select...";
+const emptyLabel = "-";
 
 const getVariationOption = (
   variation: Pick<Variation, "id" | "option"> | undefined,
@@ -293,8 +293,8 @@ export default function VariationSelects({
     >
       {({ submitForm }) => {
         return (
-          <Form {...rest}>
-            <Grid gap="2rem" data-grid>
+          <Form  {...rest}>
+            <Grid gap="1rem" data-grid>
               {numValidColorVariants > 0 && (
                 <>
                   <Select

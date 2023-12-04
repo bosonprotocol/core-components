@@ -105,10 +105,10 @@ export default function DetailSlider({
           }}
         >
           <Grid justifyContent="space-between">
-            <ThemedButton theme="blank" onClick={() => handleSlider("<")}>
+            <ThemedButton themeVal="blank" onClick={() => handleSlider("<")}>
               <CaretLeft size={32} />
             </ThemedButton>
-            <ThemedButton theme="blank" onClick={() => handleSlider(">")}>
+            <ThemedButton themeVal="blank" onClick={() => handleSlider(">")}>
               <CaretRight size={32} />
             </ThemedButton>
           </Grid>

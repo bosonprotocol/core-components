@@ -256,7 +256,7 @@ export default function ExpireVoucher({
               {isLoading && <Spinner size="20" />}
             </Grid>
           </ExpireButton>
-          <ThemedButton theme="blankOutline" onClick={onBackClick}>
+          <ThemedButton themeVal="blankOutline" onClick={onBackClick}>
             Back
           </ThemedButton>
         </Grid>

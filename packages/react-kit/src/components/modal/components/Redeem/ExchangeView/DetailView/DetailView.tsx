@@ -453,7 +453,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             </RedeemButton>
           )}
           {!isToRedeem && (
-            <ThemedButton theme="outline" disabled>
+            <ThemedButton themeVal="outline" disabled>
               {disabledRedeemText}
               <Check size={24} />
             </ThemedButton>
@@ -521,7 +521,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                   );
                 window.open(contactSellerForExchangeUrlWithId, "_blank");
               }}
-              theme="blank"
+              themeVal="blank"
               type="button"
               style={{ fontSize: "0.875rem" }}
               disabled={
@@ -544,7 +544,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                 ) && (
                   <StyledCancelButton
                     onClick={handleCancel}
-                    theme="blank"
+                    themeVal="blank"
                     type="button"
                     style={{ fontSize: "0.875rem" }}
                     disabled={isInWrongChain || !isBuyer}
@@ -561,7 +561,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                       onRaiseDisputeClick?.();
                     }}
                     type="button"
-                    theme="blank"
+                    themeVal="blank"
                     style={{ fontSize: "0.875rem" }}
                     disabled={
                       exchange?.state !== "REDEEMED" ||

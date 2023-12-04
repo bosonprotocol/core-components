@@ -32,7 +32,7 @@ const RenderModalComponent = ({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       size={store.modalSize || initalState.store.modalSize!}
       maxWidths={store.modalMaxWidth || initalState.store.modalMaxWidth}
-      theme={
+      themeVal={
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         store.theme || initalState.store.theme!
       }

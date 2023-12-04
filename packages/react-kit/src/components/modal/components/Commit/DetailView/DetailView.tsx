@@ -57,9 +57,18 @@ import { DetailDisputeResolver } from "../../common/detail/DetailDisputeResolver
 import Grid from "../../../../ui/Grid";
 import VariationSelects from "../../common/VariationSelects";
 import { VariantV1 } from "../../../../../types/variants";
-import { breakpoint } from "../../../../../lib/ui/breakpoint";
+
 const colors = theme.colors.light;
 
+const ResponsiveVariationSelects = styled(VariationSelects)`
+  container-type: inline-size;
+  [data-grid] {
+    flex-direction: column;
+    @container (width > 300px) {
+      flex-direction: row;
+    }
+  }
+`;
 const StyledPrice = styled(Price)`
   h3 {
     font-size: 2rem;
@@ -88,19 +97,19 @@ const CommitButtonWrapper = styled.div<{
     pointer-events: ${({ $pointerEvents }) => $pointerEvents};
   }
 `;
+
 const CommitWrapper = styled(Grid)`
   flex-direction: column;
+  row-gap: 0.5rem;
   column-gap: 1rem;
   align-items: flex-start;
-  ${breakpoint.m} {
+  justify-content: flex-start;
+  width: auto;
+  @container (width > 400px) {
     flex-direction: row;
-  }
-`;
-
-const ResponsiveVariationSelects = styled(VariationSelects)`
-  flex-direction: column;
-  ${breakpoint.m} {
-    flex-direction: row;
+    ${CommitButtonWrapper} {
+      max-width: 16.875rem;
+    }
   }
 `;
 
@@ -607,9 +616,7 @@ const DetailView: React.FC<IDetailWidget> = ({
           )}
         </WidgetUpperGrid>
         {hasVariations && (
-          <div
-            style={{ width: "100%", marginTop: "0.5rem", marginBottom: "1rem" }}
-          >
+          <div style={{ marginBottom: "1rem" }}>
             <ResponsiveVariationSelects
               selectedVariant={selectedVariant}
               variants={allVariants}
@@ -686,7 +693,10 @@ const DetailView: React.FC<IDetailWidget> = ({
             </>
           )}
         </CommitButtonWrapper>
-        <Typography $fontSize="0.8rem" style={{ display: "block" }}>
+        <Typography
+          $fontSize="0.8rem"
+          style={{ display: "block", width: "100%" }}
+        >
           By proceeding to Commit, I agree to the{" "}
           <span
             style={{

@@ -20,11 +20,11 @@ export default function SelectMonth({ month, setMonth }: Props) {
 
   return (
     <Selector>
-      <ThemedButton theme="blank" onClick={() => handleMonthChange(false)}>
+      <ThemedButton themeVal="blank" onClick={() => handleMonthChange(false)}>
         <CaretLeft size={18} />
       </ThemedButton>
       <Typography tag="p">{month.format("MMMM YYYY")}</Typography>
-      <ThemedButton theme="blank" onClick={() => handleMonthChange(true)}>
+      <ThemedButton themeVal="blank" onClick={() => handleMonthChange(true)}>
         <CaretRight size={18} />
       </ThemedButton>
     </Selector>

@@ -166,7 +166,7 @@ export default function OfferPolicyDetails({
             value: (
               <Grid justifyContent="flex-start" style={{ textAlign: "right" }}>
                 <NoPaddingButton
-                  theme="blankOutline"
+                  themeVal="blankOutline"
                   onClick={() => onLicenseAgreementClick()}
                   className="no-padding"
                 >
@@ -184,7 +184,7 @@ export default function OfferPolicyDetails({
             value: (
               <Grid justifyContent="flex-start" style={{ textAlign: "right" }}>
                 <NoPaddingButton
-                  theme="blankOutline"
+                  themeVal="blankOutline"
                   onClick={() => onContractualAgreementClick()}
                   className="no-padding"
                 >

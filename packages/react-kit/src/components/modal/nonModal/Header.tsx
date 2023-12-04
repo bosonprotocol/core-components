@@ -6,9 +6,11 @@ import Grid from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import Typography from "../../ui/Typography";
+import { Button } from "../../buttons/Button";
 
 const colors = theme.colors.light;
 const Wrapper = styled(Typography)<{ $title?: string }>`
+  container-type: inline-size;
   position: relative;
 
   text-align: left;
@@ -20,9 +22,6 @@ const Wrapper = styled(Typography)<{ $title?: string }>`
   gap: 0.5rem;
 `;
 
-const StyledThemedButton = styled(ThemedButton)`
-  padding-right: 0 !important;
-`;
 
 const Close = styled(X)`
   && {
@@ -46,25 +45,17 @@ const Header: React.FC<HeaderProps> = ({
   handleOnClose
 }) => {
   return (
-    <>
-      {HeaderComponent && (
-        <Wrapper tag="div" margin="0">
-          {HeaderComponent}
-          <Grid justifyContent="flex-end">
-            <ConnectButton showChangeWallet />
-            {closable && (
-              <StyledThemedButton
-                data-close
-                theme="blank"
-                onClick={handleOnClose}
-              >
-                <Close size={32} />
-              </StyledThemedButton>
-            )}
-          </Grid>
-        </Wrapper>
-      )}
-    </>
+    <Wrapper tag="div" margin="0">
+      {HeaderComponent}
+      <Grid justifyContent="flex-end" flexWrap="wrap-reverse" gap="1.5rem">
+        <ConnectButton showChangeWallet />
+        {closable && (
+          <ThemedButton data-close themeVal="blank" onClick={handleOnClose} id="close">
+            <Close size={32} />
+          </ThemedButton>
+        )}
+      </Grid>
+    </Wrapper>
   );
 };
 

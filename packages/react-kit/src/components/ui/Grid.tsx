@@ -1,67 +1,27 @@
 import React, { forwardRef } from "react";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
-type JustifyContent =
-  | "flex-start"
-  | "center"
-  | "flex-end"
-  | "space-evently"
-  | "space-between"
-  | "space-around"
-  | "stretch";
-type AlignItems = "flex-start" | "center" | "flex-end" | "baseline" | "stretch";
-type FlexDirection = "row" | "column" | "row-reverse" | "column-reverse";
-type AlignSelf =
-  | "auto"
-  | "normal"
-  | "self-start"
-  | "self-end"
-  | "flex-start"
-  | "flex-end"
-  | "center"
-  | "baseline"
-  | "first baseline"
-  | "last baseline"
-  | "stretch"
-  | "safe"
-  | "unsafe";
-type JustifySelf =
-  | "auto"
-  | "normal"
-  | "start"
-  | "end"
-  | "flex-start"
-  | "flex-end"
-  | "self-start"
-  | "self-end"
-  | "center"
-  | "left"
-  | "right"
-  | "baseline"
-  | "first baseline"
-  | "last baseline"
-  | "stretch"
-  | "safe"
-  | "unsafe";
-export interface IGrid {
-  $width?: string;
-  $height?: string;
-  alignItems?: AlignItems;
-  flexBasis?: string;
-  flexDirection?: FlexDirection;
-  justifyContent?: JustifyContent;
-  flexGrow?: string;
-  flexShrink?: string;
-  flexWrap?: string;
-  gap?: string;
-  flex?: string;
-  padding?: string;
-  margin?: string;
-  rowGap?: string;
-  columnGap?: string;
-  alignSelf?: AlignSelf;
-  justifySelf?: JustifySelf;
-}
+export type IGrid = Pick<
+  CSSProperties,
+  | "alignItems"
+  | "flexBasis"
+  | "flexDirection"
+  | "justifyContent"
+  | "flexGrow"
+  | "flexShrink"
+  | "flexWrap"
+  | "gap"
+  | "flex"
+  | "padding"
+  | "margin"
+  | "rowGap"
+  | "columnGap"
+  | "alignSelf"
+  | "justifySelf"
+> & {
+  $width?: CSSProperties['width'];
+  $height?: CSSProperties['height'];
+};
 
 const Container = styled.div<IGrid>`
   width: ${({ $width }) => $width || "100%"};

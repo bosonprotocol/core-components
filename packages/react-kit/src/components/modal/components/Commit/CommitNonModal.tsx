@@ -50,7 +50,6 @@ export default function CommitWrapper({
   return (
     <NonModal
       hideModal={hideModal}
-      headerComponent={<></>}
       footerComponent={<BosonFooter />}
       contentStyle={{
         background: colors.white

@@ -304,7 +304,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
         </Grid>
         <Grid flexDirection="row" flexBasis="0">
           <ThemedButton
-            theme="blankSecondary"
+            themeVal="blankSecondary"
             onClick={handleOnBackClick}
             disabled={
               isLoading || (redemptionInfoAccepted && !resumeRedemption)
@@ -545,7 +545,7 @@ ${FormModel.formFields.phone.placeholder}: ${message.deliveryDetails.phone}`;
           </RedeemButton>
         </div>
         <ThemedButton
-          theme="outline"
+          themeVal="outline"
           onClick={handleOnBackClick}
           disabled={isLoading || (redemptionInfoAccepted && !resumeRedemption)}
         >

@@ -50,7 +50,7 @@ export const CardCTA: React.FC<CardCTAProps> = ({
       flexDirection="column"
       alignItems="flex-start"
       padding="1.5rem"
-      theme={theme}
+      themeVal={theme}
     >
       <>
         <IconContainer>{icon}</IconContainer>

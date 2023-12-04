@@ -66,7 +66,7 @@ export const Tooltip = ({
     <Tippy
       content={content}
       placement={placement}
-      theme="light-border"
+      themeVal="light-border"
       duration={300}
       animation="shift-toward"
       interactive={interactive}
@@ -74,7 +74,7 @@ export const Tooltip = ({
       {...rest}
     >
       {wrap ? (
-        <Button type="button" theme={theme}>
+        <Button type="button" themeVal={theme}>
           {children ? children : <Question size={size} weight={weight} />}
         </Button>
       ) : (

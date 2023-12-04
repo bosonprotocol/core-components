@@ -262,7 +262,7 @@ export function CancelExchange({
           </CancelButton>
         </CancelButtonWrapper>
         {!isCancelModeOnly && (
-          <ThemedButton theme="blankOutline" onClick={() => onBackClick()}>
+          <ThemedButton themeVal="blankOutline" onClick={() => onBackClick()}>
             Back
           </ThemedButton>
         )}
