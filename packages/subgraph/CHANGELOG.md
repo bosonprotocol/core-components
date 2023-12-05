@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.28.1...@bosonprotocol/subgraph@1.29.0) (2023-12-05)
+
+
+### Bug Fixes
+
+* do not create an offer when the seller does not exist ([#614](https://github.com/bosonprotocol/core-components/issues/614)) ([ad49a79](https://github.com/bosonprotocol/core-components/commit/ad49a79c491d428a3cff8fb688eb062a75a24378))
+
+
+### Features
+
+* add ConditionalCommitAuthorizedEventLog ([#593](https://github.com/bosonprotocol/core-components/issues/593)) ([c799b27](https://github.com/bosonprotocol/core-components/commit/c799b2744a8c0f60401cf8c0d8df0ecf3fe5a231))
+* extend check offer condition to check if a buyer can commit to a token gated offer ([#592](https://github.com/bosonprotocol/core-components/issues/592)) ([16b69ec](https://github.com/bosonprotocol/core-components/commit/16b69ecd91370c76cddd2452999cfa8ed751c790))
+* set finalised date to exchanges in other states and add e2e test ([#595](https://github.com/bosonprotocol/core-components/issues/595)) ([59dd479](https://github.com/bosonprotocol/core-components/commit/59dd47943a88059e5ded922462f0f35d92f45e1f))
+
+
+
+
+
 ## [1.28.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.28.0...@bosonprotocol/subgraph@1.28.1) (2023-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/subgraph
