@@ -23,16 +23,20 @@ export const useWalletInfo = () => {
   });
 };
 
+let magicProvider: ethers.providers.Web3Provider | null = null;
+const setMagicProvider = (value: ethers.providers.Web3Provider | null) => {
+  magicProvider = value;
+};
+
 export function useMagicProvider() {
   const magic = useMagic();
-  const magicProvider = useMemo(
-    () =>
-      magic
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          new ethers.providers.Web3Provider(magic.rpcProvider as any)
-        : null,
-    [magic]
-  );
+  useMemo(() => {
+    if (!magicProvider) {
+      setMagicProvider(
+        new ethers.providers.Web3Provider(magic.rpcProvider as any)
+      );
+    }
+  }, [magic.rpcProvider]);
   return magicProvider;
 }
 
