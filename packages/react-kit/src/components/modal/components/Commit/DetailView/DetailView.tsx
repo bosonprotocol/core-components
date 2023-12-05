@@ -277,7 +277,8 @@ interface IDetailWidget {
   hasMultipleVariants?: boolean;
   onLicenseAgreementClick: () => void;
   onExchangePolicyClick: () => void;
-  onCommit?: (exchangeId: string, txHash: string) => void;
+  onCommit: (exchangeId: string, txHash: string) => void;
+  onCommitting: (txHash: string) => void;
   onPurchaseOverview: () => void;
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
@@ -295,6 +296,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   onExchangePolicyClick,
   onPurchaseOverview,
   onCommit,
+  onCommitting,
   exchangePolicyCheckResult
 }) => {
   const { offer } = selectedVariant;
@@ -370,6 +372,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         action: "Commit",
         txHash: hash
       });
+      onCommitting(hash);
       // addPendingTransaction({
       //   type: subgraph.EventType.BuyerCommitted,
       //   hash,
@@ -408,7 +411,7 @@ const DetailView: React.FC<IDetailWidget> = ({
       ));
     } else {
       const showDetailWidgetModal = () => {
-        onCommit?.(exchangeId.toString(), receipt.transactionHash);
+        onCommit(exchangeId.toString(), receipt.transactionHash);
       };
       showDetailWidgetModal();
       toast((t) => (
@@ -575,19 +578,6 @@ const DetailView: React.FC<IDetailWidget> = ({
     isOfferNotValidYet ||
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
-  console.log({
-    isCommitDisabled,
-    address,
-    hasSellerEnoughFunds,
-    isExpiredOffer,
-    isLoading,
-    balanceLoading,
-    quantity,
-    isVoidedOffer,
-    isPreview,
-    isOfferNotValidYet,
-    isBuyerInsufficientFunds
-  });
   const hasVariations = !!selectedVariant.variations?.length;
   return (
     <Widget>

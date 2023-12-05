@@ -42,9 +42,9 @@ Commit.args = {
   offerId: "",
   defaultSelectedOfferId: "",
   disableVariationsSelects: false,
-  // productUuid: "086b32-3fcd-00d1-0624-67513e85415c",
+  productUuid: "086b32-3fcd-00d1-0624-67513e85415c", // with size variations
   // productUuid: "1d4573d-42e-f557-0032-b1ab8170c102", // with color and size variations
-  productUuid: "cc482a1-c004-d003-c3ca-a1ed7537af1", // token gated no variations
+  // productUuid: "cc482a1-c004-d003-c3ca-a1ed7537af1", // token gated no variations
   sellerId: "138",
   metaTx: {
     apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,

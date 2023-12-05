@@ -15,6 +15,11 @@ import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import DetailView from "./DetailView/DetailView";
 import Loading from "../../../ui/loading/Loading";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
+import {
+  WaveLoader,
+  WaveLoader2
+} from "../../../ui/loading/WaveLoader/WaveLoader";
+import Typography from "../../../ui/Typography";
 
 const colors = theme.colors.light;
 
@@ -64,6 +69,7 @@ export function OfferVariantView({
   fairExchangePolicyRules,
   defaultDisputeResolverId
 }: OfferVariantViewProps) {
+  const [isCommitting, setIsComitting] = useState(true);
   const { offer } = selectedVariant;
   const {
     data: sellers,
@@ -111,14 +117,21 @@ export function OfferVariantView({
       payload: {
         headerComponent: null,
         contentStyle: {
-          background: colors.lightGrey
+          background: isCommitting ? colors.white : colors.lightGrey
         }
       }
     });
-  }, [dispatch]);
+  }, [dispatch, isCommitting]);
   return (
     <>
-      {isLoading ? (
+      {isCommitting ? (
+        <Grid flexDirection="column">
+          <Typography $fontSize="1.7rem">
+            <strong>Your transaction is being processed...</strong>
+          </Typography>
+          <WaveLoader />
+        </Grid>
+      ) : isLoading ? (
         <Loading />
       ) : !offer ? (
         <div data-testid="notFound">This offer does not exist</div>
@@ -161,7 +174,11 @@ export function OfferVariantView({
             allVariants={allVariants}
             onExchangePolicyClick={onExchangePolicyClick}
             onLicenseAgreementClick={onLicenseAgreementClick}
-            onCommit={onCommit}
+            onCommit={(...args) => {
+              onCommit(...args);
+              setIsComitting(false);
+            }}
+            onCommitting={() => setIsComitting(true)}
             onPurchaseOverview={onPurchaseOverview}
             hasMultipleVariants={false}
             isPreview={false}
