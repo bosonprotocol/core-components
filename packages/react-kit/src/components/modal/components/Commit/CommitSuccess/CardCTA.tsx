@@ -14,17 +14,7 @@ type CardCTAProps = {
 };
 
 const StyledGrid = styled(Grid)`
-  ${({ theme }: { theme: CardCTAProps["theme"] }) => {
-    if (theme === "dark") {
-      return css`
-        background: ${colors.black};
-        color: ${colors.white};
-      `;
-    }
-    return css`
-      background: ${colors.lightGrey};
-    `;
-  }}
+  background: ${colors.lightGrey};
 `;
 
 const IconContainer = styled(Grid)`
@@ -38,20 +28,9 @@ const IconContainer = styled(Grid)`
   }
 `;
 
-export const CardCTA: React.FC<CardCTAProps> = ({
-  title,
-  text,
-  icon,
-  cta,
-  theme = "light"
-}) => {
+export const CardCTA: React.FC<CardCTAProps> = ({ title, text, icon, cta }) => {
   return (
-    <StyledGrid
-      flexDirection="column"
-      alignItems="flex-start"
-      padding="1.5rem"
-      themeVal={theme}
-    >
+    <StyledGrid flexDirection="column" alignItems="flex-start" padding="1.5rem">
       <>
         <IconContainer>{icon}</IconContainer>
         <Typography fontWeight="600" $fontSize="1.25rem">

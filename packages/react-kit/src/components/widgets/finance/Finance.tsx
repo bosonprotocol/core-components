@@ -487,7 +487,8 @@ export default function Finance({
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={`seller_table_thead_th_${i}`}
                   >
-                    {column.render("Header")}
+                    {/* @ts-ignore// TODO: check */}
+                    {column.render("Header") as any}
                     {/* @ts-ignore// TODO: check */}
                     {i >= 0 && !column.disableSortBy && (
                       <HeaderSorter>

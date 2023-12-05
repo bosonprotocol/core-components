@@ -45,7 +45,7 @@ export const CurrencyDisplay = ({
     >
       <CurrencyLogo currency={currency} size={height} />
       {value && (
-        <CurrencyDisplayValue height={height}>{value}</CurrencyDisplayValue>
+        <CurrencyDisplayValue $height={height}>{value}</CurrencyDisplayValue>
       )}
     </CurrencyDisplayValueWrapper>
   );
@@ -57,13 +57,11 @@ const CurrencyDisplayValueWrapper = styled.div`
   align-items: center;
 `;
 
-const CurrencyDisplayValue = styled.span.attrs((props: { height: number }) => ({
-  height: props.height
-}))`
-  ${({ height }) =>
+const CurrencyDisplayValue = styled.span<{ $height: number }>`
+  ${({ $height }) =>
     css`
-      line-height: ${height}px;
-      font-size: ${height - 5}px;
+      line-height: ${$height}px;
+      font-size: ${$height - 5}px;
     `}
 
   color: #09182c;

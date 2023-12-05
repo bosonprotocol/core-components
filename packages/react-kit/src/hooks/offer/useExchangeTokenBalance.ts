@@ -1,4 +1,4 @@
-import { subgraph } from "@bosonprotocol/react-kit";
+import { subgraph } from "@bosonprotocol/core-sdk";
 import { BigNumber, ethers } from "ethers";
 
 import { useAccount, useBalance, useChainId } from "../connection/connection";

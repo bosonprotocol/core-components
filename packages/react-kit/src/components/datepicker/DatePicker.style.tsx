@@ -9,11 +9,7 @@ export const Picker = styled.div`
   width: 100%;
   position: relative;
 `;
-export const PickerGrid = styled.div.attrs(
-  (props: { selectTime: boolean }) => ({
-    selectTime: props.selectTime
-  })
-)`
+export const PickerGrid = styled.div<{ selectTime: boolean }>`
   width: 100%;
   display: grid;
   gap: 0px 1em;
@@ -27,12 +23,10 @@ export const PickerGrid = styled.div.attrs(
         `}
 `;
 
-export const DatePickerWrapper = styled.div.attrs(
-  (props: { show: boolean; selectTime: boolean }) => ({
-    show: props.show,
-    selectTime: props.selectTime
-  })
-)`
+export const DatePickerWrapper = styled.div<{
+  show: boolean;
+  selectTime: boolean;
+}>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -93,11 +87,7 @@ export const TimeSelector = styled.div`
   max-height: 10rem;
   padding: 0px 0.5rem 0 1rem;
 `;
-export const TimeSelectorElement = styled.div.attrs(
-  (props: { active: boolean }) => ({
-    active: props.active
-  })
-)`
+export const TimeSelectorElement = styled.div<{ active: boolean }>`
   padding: 0.25rem 0.5rem;
   ${({ active }) =>
     active
@@ -132,26 +122,19 @@ export const CalendarHeader = styled(CalendarFlex)`
   }
 `;
 
-export const CalendarCell = styled.div`
+export const CalendarCell = styled.div<{
+  active?: boolean;
+  current?: boolean;
+  between?: boolean;
+  disabled?: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.375rem;
 `;
 
-export const CalendarDay = styled(CalendarCell).attrs(
-  (props: {
-    active: boolean;
-    current: boolean;
-    between: boolean;
-    disabled: boolean;
-  }) => ({
-    active: props.active,
-    current: props.current,
-    between: props.between,
-    disabled: props.disabled
-  })
-)`
+export const CalendarDay = styled(CalendarCell)`
   cursor: pointer;
   position: relative;
   ${transition}

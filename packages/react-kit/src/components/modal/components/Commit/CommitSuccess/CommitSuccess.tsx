@@ -110,7 +110,10 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                   <a
                     href={exploreTxUrl}
                     target="__blank"
-                    style={{ color: colors.secondary, textWrap: "balance" }}
+                    style={{
+                      color: colors.secondary, // @ts-ignore
+                      textWrap: "balance"
+                    }}
                   >
                     View on{" "}
                     {[80001, 137].includes(config.chainId)
@@ -138,7 +141,11 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                       exchange
                     })}
                     target="__blank"
-                    style={{ color: colors.secondary, textWrap: "balance" }}
+                    style={{
+                      color: colors.secondary,
+                      // @ts-ignore
+                      textWrap: "balance"
+                    }}
                   >
                     Trade on OpenSea{" "}
                     <ArrowSquareUpRight
@@ -159,7 +166,10 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                   <a
                     href={`https://bosonapp.io/#/exchange/${exchangeId}`}
                     target="__blank"
-                    style={{ color: colors.secondary, textWrap: "balance" }}
+                    style={{
+                      color: colors.secondary, // @ts-ignore
+                      textWrap: "balance"
+                    }}
                   >
                     Go to Redeem site{" "}
                     <ArrowSquareUpRight

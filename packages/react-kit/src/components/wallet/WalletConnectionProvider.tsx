@@ -49,7 +49,7 @@ export default function WalletConnectionProvider({
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         chains={chains}
-        themeVal={walletConnectionTheme}
+        theme={walletConnectionTheme}
         avatar={CustomAvatar}
         appInfo={{ appName: "Boson Widgets" }}
       >

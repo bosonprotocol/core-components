@@ -250,7 +250,7 @@ export default function Modal({
       <Wrapper
         $size={size}
         $modalType={modalType}
-        $themeVal={theme}
+        themeVal={theme}
         $maxWidths={maxWidths}
       >
         {HeaderComponent ? (

@@ -1,10 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const InputWrapper = styled.div.attrs(
-  (props: { disabled: boolean }) => ({
-    disabled: props.disabled
-  })
-)`
+export const InputWrapper = styled.div<{ disabled?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;

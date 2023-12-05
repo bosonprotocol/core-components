@@ -30,7 +30,6 @@ export default function FormField({
       alignItems="flex-start"
       flexGrow="1"
       style={style}
-      themeVal={theme}
     >
       <>
         <Grid justifyContent="flex-start" margin="0 0 0.375rem 0">
