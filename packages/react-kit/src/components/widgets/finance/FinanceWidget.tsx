@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import useOffersBacked from "./useOffersBacked";
 import Loading from "../../ui/loading/Loading";
@@ -88,23 +88,17 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
 
     const offersBacked = useOffersBacked({ ...newProps });
     const disconnect = useDisconnect();
-
+    const addressRef = useRef<string | null>(null);
+    useEffect(() => {
+      if (address) {
+        addressRef.current = null;
+      }
+    }, [address]);
     if (exchangesTokens.isLoading || sellerDeposit.isLoading) {
       return (
         <Wrapper>
           <Loading />
         </Wrapper>
-      );
-    }
-    if (!address) {
-      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
-    }
-
-    if (!sellerIdToUse) {
-      return (
-        <p style={{ textAlign: "center" }}>
-          Connect a wallet that has a seller account
-        </p>
       );
     }
     const forcedAccount =
@@ -114,17 +108,34 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
       address &&
       forcedAccount.toLowerCase() !== address.toLowerCase()
     ) {
+      addressRef.current = address;
+      console.error(
+        `disconnect account because connected account (${address}) is not ${forcedAccount}`
+      );
       // force disconnection as the current connected wallet is not the forced one
       disconnect();
     }
 
-    if (forcedAccount) {
+    if (forcedAccount && addressRef.current) {
       return (
         <p style={{ textAlign: "center" }}>
           Please connect this wallet account{" "}
           <strong>{ethers.utils.getAddress(forcedAccount)}</strong> (which is
           linked to the <strong>assistant</strong> role of the seller id{" "}
-          <strong>{sellerId}</strong>). The connected address is {address}
+          <strong>{sellerId}</strong>). The connected address was{" "}
+          {addressRef.current}
+        </p>
+      );
+    }
+
+    if (!address) {
+      return <p style={{ textAlign: "center" }}>Please connect your wallet</p>;
+    }
+
+    if (!sellerIdToUse) {
+      return (
+        <p style={{ textAlign: "center" }}>
+          Connect a wallet that has a seller account
         </p>
       );
     }
@@ -169,7 +180,8 @@ export function FinanceWidget({
     <EnvironmentProvider envName={envName} configId={configId} metaTx={metaTx}>
       {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-        /* @ts-ignore */}
+        /* @ts-ignore */
+      }
       <GlobalStyle />
       <ConfigProvider
         magicLinkKey={magicLinkKey}

@@ -21,7 +21,11 @@ export function useExchangeTokenBalance(
 
   const isNativeCoin = exchangeToken.address === ethers.constants.AddressZero;
 
-  const { data: erc20Balance, isLoading: erc20Loading } = useErc20Balance(
+  const {
+    data: erc20Balance,
+    isLoading: erc20Loading,
+    refetch: refetchErc20
+  } = useErc20Balance(
     {
       contractAddress: exchangeToken.address,
       owner: address
@@ -30,10 +34,13 @@ export function useExchangeTokenBalance(
       enabled: !isNativeCoin && !!chainIdToUse && enabled
     }
   );
-  const { data: nativeBalances, isLoading: nativeLoading } = useBalance(
-    address ? [address] : [""],
-    { enabled: isNativeCoin && !!chainIdToUse && enabled }
-  );
+  const {
+    data: nativeBalances,
+    isLoading: nativeLoading,
+    refetch: refetchNative
+  } = useBalance(address ? [address] : [""], {
+    enabled: isNativeCoin && !!chainIdToUse && enabled
+  });
 
   return {
     balance: isNativeCoin
@@ -41,6 +48,9 @@ export function useExchangeTokenBalance(
       : erc20Balance
       ? BigNumber.from(erc20Balance)
       : undefined,
-    loading: erc20Loading || nativeLoading
+    loading: erc20Loading || nativeLoading,
+    refetch: () => {
+      return Promise.allSettled([refetchErc20(), refetchNative()]);
+    }
   };
 }
