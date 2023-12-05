@@ -31,8 +31,8 @@ export function useExchangeTokenBalance(
     }
   );
   const { data: nativeBalances, isLoading: nativeLoading } = useBalance(
-    isNativeCoin && address ? [address] : [""],
-    { enabled }
+    address ? [address] : [""],
+    { enabled: isNativeCoin && !!chainIdToUse && enabled }
   );
 
   return {

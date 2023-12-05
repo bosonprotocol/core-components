@@ -302,7 +302,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   const [commitType, setCommitType] = useState<ActionName | undefined | null>(
     null
   );
-  const { isLteXS } = useBreakpoints();
   const signer = useSigner();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { showModal, hideModal, modalTypes } = useModal();
@@ -451,13 +450,17 @@ const DetailView: React.FC<IDetailWidget> = ({
     setCommitType(null);
     // removePendingTransaction("offerId", offer.id);
   };
+  const isFreeOffer = offer.price === "0";
   const { balance: exchangeTokenBalance, loading: balanceLoading } =
     useExchangeTokenBalance(offer.exchangeToken, {
-      enabled: offer.price !== "0"
+      enabled: !isFreeOffer
     });
 
   const isBuyerInsufficientFunds: boolean = useMemo(
-    () => !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
+    () =>
+      isFreeOffer
+        ? false
+        : !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
     [exchangeTokenBalance, offer.price]
   );
   const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
@@ -578,6 +581,7 @@ const DetailView: React.FC<IDetailWidget> = ({
     hasSellerEnoughFunds,
     isExpiredOffer,
     isLoading,
+    balanceLoading,
     quantity,
     isVoidedOffer,
     isPreview,
