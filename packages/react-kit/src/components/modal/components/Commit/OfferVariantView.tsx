@@ -15,10 +15,7 @@ import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import DetailView from "./DetailView/DetailView";
 import Loading from "../../../ui/loading/Loading";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
-import {
-  WaveLoader,
-  WaveLoader2
-} from "../../../ui/loading/WaveLoader/WaveLoader";
+import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
 import Typography from "../../../ui/Typography";
 
 const colors = theme.colors.light;
@@ -69,7 +66,7 @@ export function OfferVariantView({
   fairExchangePolicyRules,
   defaultDisputeResolverId
 }: OfferVariantViewProps) {
-  const [isCommitting, setIsComitting] = useState(true);
+  const [isCommitting, setIsComitting] = useState(false);
   const { offer } = selectedVariant;
   const {
     data: sellers,
