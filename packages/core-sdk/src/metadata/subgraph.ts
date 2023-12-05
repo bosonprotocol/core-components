@@ -188,7 +188,7 @@ export async function getProductWithVariants(
 export async function getProductWithVariantsFromOfferId(
   subgraphUrl: string,
   offerId: string
-): ReturnType<typeof getProductWithVariants> {
+): Promise<ReturnType<typeof getProductWithVariants>> {
   // Look for ProductV1MetadataEntity, filtered by offerId
   const metadataEntity = await getProductV1MetadataEntityByOfferId(
     subgraphUrl,

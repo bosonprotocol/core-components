@@ -87,13 +87,13 @@ export class MetadataMixin extends BaseCoreSDK {
     return getProductWithVariants(this._subgraphUrl, sellerId, productUuid);
   }
 
-  public async getProductWithVariantsFromOfferId(
+  public getProductWithVariantsFromOfferId(
     offerId: string
   ): ReturnType<typeof getProductWithVariantsFromOfferId> {
     return getProductWithVariantsFromOfferId(this._subgraphUrl, offerId);
   }
 
-  public async getAllProductsWithVariants(
+  public getAllProductsWithVariants(
     queryVars?: subgraph.GetProductV1ProductsWithVariantsQueryQueryVariables
   ): Promise<subgraph.BaseProductV1ProductWithVariantsFieldsFragment[]> {
     return getAllProductsWithVariants(this._subgraphUrl, queryVars);
