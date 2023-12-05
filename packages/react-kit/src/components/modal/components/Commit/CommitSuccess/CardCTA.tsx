@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Grid from "../../../../ui/Grid";
 import { theme } from "../../../../../theme";
 import Typography from "../../../../ui/Typography";

@@ -111,6 +111,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     href={exploreTxUrl}
                     target="__blank"
                     style={{
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       color: colors.secondary, // @ts-ignore
                       textWrap: "balance"
                     }}
@@ -143,6 +144,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     target="__blank"
                     style={{
                       color: colors.secondary,
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
                       textWrap: "balance"
                     }}
@@ -167,6 +169,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
                     href={`https://bosonapp.io/#/exchange/${exchangeId}`}
                     target="__blank"
                     style={{
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       color: colors.secondary, // @ts-ignore
                       textWrap: "balance"
                     }}

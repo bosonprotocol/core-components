@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React from "react";
+import React, { ReactNode } from "react";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { BigNumber, utils } from "ethers";
@@ -487,8 +487,8 @@ export default function Finance({
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={`seller_table_thead_th_${i}`}
                   >
-                    {/* @ts-ignore// TODO: check */}
-                    {column.render("Header") as any}
+                    {/* @ts-ignore // TODO: check */}
+                    {column.render("Header") as ReactNode}
                     {/* @ts-ignore// TODO: check */}
                     {i >= 0 && !column.disableSortBy && (
                       <HeaderSorter>
