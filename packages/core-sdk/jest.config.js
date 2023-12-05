@@ -12,5 +12,4 @@ baseConfig.transform = {
 
 baseConfig.setupFilesAfterEnv = ["./setupTests.ts"];
 
-
 module.exports = baseConfig;
