@@ -14,6 +14,7 @@ import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
 import { useEthersProvider } from "../ethers/useEthersProvider";
+import { useQuery } from "react-query";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();
@@ -59,4 +60,14 @@ export function useSigner() {
     return isMagicLoggedIn ? magicProvider?.getSigner() : wagmiSigner;
   }, [wagmiSigner, magicProvider, isMagicLoggedIn]);
   return signer;
+}
+
+export function useBalance(
+  args: Parameters<ReturnType<typeof useProvider>["getBalance"]>,
+  options: { enabled: boolean } = { enabled: false }
+) {
+  const provider = useProvider();
+  return useQuery(["balance", ...args], () => provider.getBalance(...args), {
+    enabled: options.enabled
+  });
 }

@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import dayjs from "dayjs";
-import { BigNumberish, ethers, providers, utils } from "ethers";
+import { BigNumber, BigNumberish, ethers, providers, utils } from "ethers";
 import {
   ArrowSquareOut,
   CircleWavyQuestion,
@@ -457,12 +457,10 @@ const DetailView: React.FC<IDetailWidget> = ({
     });
 
   const isBuyerInsufficientFunds: boolean = useMemo(
-    () => !!exchangeTokenBalance && exchangeTokenBalance.lessThan(offer.price),
+    () => !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
     [exchangeTokenBalance, offer.price]
   );
-  const minNeededBalance = exchangeTokenBalance?.asFraction
-    ?.subtract(offer.price)
-    .multiply(-1);
+  const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
 
   const OFFER_DETAIL_DATA = useMemo(
     () =>
@@ -605,16 +603,10 @@ const DetailView: React.FC<IDetailWidget> = ({
             withAsterisk={isPreview && hasMultipleVariants}
           />
 
-          {isNotCommittableOffer ? (
-            <DetailTopRightLabel>
-              {!isPreview && notCommittableOfferStatus}
-            </DetailTopRightLabel>
-          ) : (
-            <QuantityDisplay
-              quantityInitial={quantityInitial}
-              quantity={quantity}
-            />
-          )}
+          <QuantityDisplay
+            quantityInitial={quantityInitial}
+            quantity={quantity}
+          />
         </WidgetUpperGrid>
         {hasVariations && (
           <div style={{ marginBottom: "1rem" }}>
@@ -686,7 +678,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                   width: "100%",
                   height: "auto",
                   padding: "0 1rem",
-                  marginTop: "1rem",
+
                   minHeight: "2.125rem"
                 }}
               >
@@ -698,9 +690,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                       offer.exchangeToken.address,
                     [swapQueryParameters.exactAmount]: minNeededBalance
                       ? utils.formatUnits(
-                          minNeededBalance?.toSignificant(
-                            Number(offer.exchangeToken.decimals)
-                          ) || "",
+                          minNeededBalance || "",
                           offer.exchangeToken.decimals
                         )
                       : "",
@@ -713,7 +703,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             ) : null
           }
         >
-          {notCommittableOfferStatus}
+          <span style={{ marginTop: "1rem" }}>{notCommittableOfferStatus}</span>
         </DetailTopRightLabel>
       )}
       <CommitWrapper justifyContent="space-between" margin="1rem 0">

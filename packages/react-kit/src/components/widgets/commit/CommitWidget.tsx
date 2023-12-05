@@ -24,8 +24,6 @@ import { CommitNonModalProps } from "../../modal/components/Commit/CommitNonModa
 import { CommitModalWithOffer } from "./CommitModalWithOffer";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import { CONFIG } from "../../../lib/config/config";
-import { MulticallUpdater } from "../../../lib/state/multicall";
-import { BlockNumberProvider } from "../../../hooks/block/useBlockNumber";
 
 type CommitProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -46,21 +44,6 @@ type WidgetProps = CommitProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName">;
 
-function Updaters() {
-  return (
-    <>
-      {/* <RadialGradientByChainUpdater /> */}
-      {/* <ListsUpdater /> */}
-      {/* <SystemThemeUpdater /> */}
-      {/* <ApplicationUpdater /> */}
-      {/* <TransactionUpdater /> */}
-      {/* <OrderUpdater /> */}
-      <MulticallUpdater />
-      {/* <LogsUpdater /> */}
-    </>
-  );
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -78,42 +61,37 @@ export function CommitWidget(props: WidgetProps) {
       configId={props.configId}
       metaTx={props.metaTx}
     >
-      <Provider store={store}>
-        {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-          /* @ts-ignore */
-        }
-        <GlobalStyle />
-        <ConfigProvider
-          magicLinkKey={magicLinkKey}
-          infuraKey={infuraKey}
-          {...props}
-        >
-          <MagicProvider>
-            <QueryClientProvider client={queryClient}>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <BlockNumberProvider>
-                  <Updaters />
-                  <ChatProvider>
-                    <IpfsProvider {...props}>
-                      <ConvertionRateProvider>
-                        <ModalProvider>
-                          <CommitModalWithOffer
-                            {...props}
-                            hideModal={props.closeWidgetClick}
-                          />
-                        </ModalProvider>
-                      </ConvertionRateProvider>
-                    </IpfsProvider>
-                  </ChatProvider>
-                </BlockNumberProvider>
-              </WalletConnectionProvider>
-            </QueryClientProvider>
-          </MagicProvider>
-        </ConfigProvider>
-      </Provider>
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
+        /* @ts-ignore */
+      }
+      <GlobalStyle />
+      <ConfigProvider
+        magicLinkKey={magicLinkKey}
+        infuraKey={infuraKey}
+        {...props}
+      >
+        <MagicProvider>
+          <QueryClientProvider client={queryClient}>
+            <WalletConnectionProvider
+              walletConnectProjectId={props.walletConnectProjectId}
+            >
+              <ChatProvider>
+                <IpfsProvider {...props}>
+                  <ConvertionRateProvider>
+                    <ModalProvider>
+                      <CommitModalWithOffer
+                        {...props}
+                        hideModal={props.closeWidgetClick}
+                      />
+                    </ModalProvider>
+                  </ConvertionRateProvider>
+                </IpfsProvider>
+              </ChatProvider>
+            </WalletConnectionProvider>
+          </QueryClientProvider>
+        </MagicProvider>
+      </ConfigProvider>
     </EnvironmentProvider>
   );
 }

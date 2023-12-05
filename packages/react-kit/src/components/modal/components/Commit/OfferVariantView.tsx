@@ -14,6 +14,7 @@ import GridContainer from "../../../ui/GridContainer";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import DetailView from "./DetailView/DetailView";
 import Loading from "../../../ui/loading/Loading";
+import { breakpoint } from "../../../../lib/ui/breakpoint";
 
 const colors = theme.colors.light;
 
@@ -22,6 +23,13 @@ const ImageWrapper = styled.div`
   max-width: 35rem !important;
   min-width: 50%;
   width: -webkit-fill-available;
+`;
+
+const ImageAndSellerIdContainer = styled(Grid)`
+  align-items: center;
+  ${breakpoint.s} {
+    align-items: flex-end;
+  }
 `;
 
 export type OfferVariantViewProps = {
@@ -128,7 +136,7 @@ export function OfferVariantView({
             xl: 2
           }}
         >
-          <Grid flexDirection="column" alignItems="center">
+          <ImageAndSellerIdContainer flexDirection="column">
             <ImageWrapper>
               <>
                 {(allImages.length > 0 || animationUrl) && (
@@ -145,7 +153,7 @@ export function OfferVariantView({
                 onViewFullDescription={onViewFullDescription}
               />
             </ImageWrapper>
-          </Grid>
+          </ImageAndSellerIdContainer>
           <DetailView
             disableVariationsSelects={disableVariationsSelects}
             hasSellerEnoughFunds={hasSellerEnoughFunds}

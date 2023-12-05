@@ -513,6 +513,10 @@ export const Widget = styled.div`
   > div {
     width: 100%;
   }
+
+  ${breakpoint.s} {
+    max-width: 550px;
+  }
 `;
 
 const miniButton = css`
@@ -599,4 +603,3 @@ export const Break = styled.span`
   height: 2px;
   background: ${colors.border};
 `;
-
