@@ -6,7 +6,6 @@ import Grid from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import Typography from "../../ui/Typography";
-import { Button } from "../../buttons/Button";
 
 const colors = theme.colors.light;
 const Wrapper = styled(Typography)<{ $title?: string }>`
@@ -21,7 +20,6 @@ const Wrapper = styled(Typography)<{ $title?: string }>`
   justify-content: space-between;
   gap: 0.5rem;
 `;
-
 
 const Close = styled(X)`
   && {
@@ -50,7 +48,12 @@ const Header: React.FC<HeaderProps> = ({
       <Grid justifyContent="flex-end" flexWrap="wrap-reverse" gap="1.5rem">
         <ConnectButton showChangeWallet />
         {closable && (
-          <ThemedButton data-close themeVal="blank" onClick={handleOnClose} id="close">
+          <ThemedButton
+            data-close
+            themeVal="blank"
+            onClick={handleOnClose}
+            id="close"
+          >
             <Close size={32} />
           </ThemedButton>
         )}

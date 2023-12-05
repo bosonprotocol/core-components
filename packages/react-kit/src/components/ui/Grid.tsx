@@ -23,8 +23,8 @@ export type IGrid = Pick<
   | "marginBottom"
   | "marginLeft"
 > & {
-  $width?: CSSProperties['width'];
-  $height?: CSSProperties['height'];
+  $width?: CSSProperties["width"];
+  $height?: CSSProperties["height"];
 };
 
 const Container = styled.div<IGrid>`

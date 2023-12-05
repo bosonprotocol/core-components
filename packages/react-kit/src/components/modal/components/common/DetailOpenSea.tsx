@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import { Exchange } from "../../../../types/exchange";
 import { useEnvContext } from "../../../environment/EnvironmentContext";
 
-import { getExchangeTokenId } from "../../../../lib/utils/exchange";
 import { OpenSeaButton } from "./detail/Detail.style";
 import { getOpenSeaUrl } from "../../../../lib/opensea/getOpenSeaUrl";
 

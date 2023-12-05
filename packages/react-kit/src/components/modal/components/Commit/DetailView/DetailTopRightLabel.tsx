@@ -1,5 +1,4 @@
 import React from "react";
-import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
 import { theme } from "../../../../../theme";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";

@@ -293,7 +293,7 @@ export default function VariationSelects({
     >
       {({ submitForm }) => {
         return (
-          <Form  {...rest}>
+          <Form {...rest}>
             <Grid gap="1rem" data-grid>
               {numValidColorVariants > 0 && (
                 <>

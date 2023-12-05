@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { CSSProperties } from "react";
 

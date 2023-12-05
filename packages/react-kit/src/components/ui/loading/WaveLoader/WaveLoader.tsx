@@ -62,7 +62,7 @@ export const WaveLoader = () => {
     }
 
     animateWave();
-  }, [waveRef1.current]);
+  }, []);
   return (
     <WaveContainer>
       <WaveLine src={line1} alt="Wave 1" ref={waveRef1} />

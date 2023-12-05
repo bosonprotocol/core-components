@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
 import dayjs from "dayjs";
-import { BigNumber, BigNumberish, ethers, providers, utils } from "ethers";
+import { BigNumberish, ethers, providers, utils } from "ethers";
 import {
   ArrowSquareOut,
   CircleWavyQuestion,
@@ -17,7 +17,6 @@ import {
   useAccount
 } from "../../../../../hooks/connection/connection";
 import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
-import { useBreakpoints } from "../../../../../hooks/useBreakpoints";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
 import {
@@ -46,7 +45,6 @@ import { QuantityDisplay } from "./QuantityDisplay";
 import TokenGated from "../../common/detail/TokenGated";
 import Price from "../../../../price/Price";
 import { Offer } from "../../../../../types/offer";
-import { useBalance } from "wagmi";
 import { useModal } from "../../../useModal";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
 import {
@@ -302,7 +300,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   );
   const signer = useSigner();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { showModal, hideModal, modalTypes } = useModal();
+  const { showModal, hideModal } = useModal();
   const config = useConfigContext();
   const {
     commitProxyAddress,
@@ -433,7 +431,7 @@ const DetailView: React.FC<IDetailWidget> = ({
       isFreeOffer
         ? false
         : !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
-    [exchangeTokenBalance, offer.price]
+    [exchangeTokenBalance, offer.price, isFreeOffer]
   );
   const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
 

@@ -11,7 +11,6 @@ import WalletConnectionProvider, {
   WalletConnectionProviderProps
 } from "../../wallet/WalletConnectionProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
 import {
   ConfigProvider,
   ConfigProviderProps

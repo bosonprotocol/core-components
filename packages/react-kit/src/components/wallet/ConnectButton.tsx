@@ -63,9 +63,9 @@ interface Props {
 const iconProps = {
   size: 32,
   style: {
-    cursor: 'pointer'
+    cursor: "pointer"
   } as const
-} as const
+} as const;
 export default function ConnectButton({
   navigationBarPosition = "",
   showAddress = true,

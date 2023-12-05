@@ -114,8 +114,7 @@ const allThemes = ({ withBosonStyle }: { withBosonStyle?: boolean }) => {
         background: colors.black,
         color: colors.white,
         borderColor: colors.black
-      },
-      name: 'primary'
+      }
     },
     bosonPrimary: {
       color: colors.black,
