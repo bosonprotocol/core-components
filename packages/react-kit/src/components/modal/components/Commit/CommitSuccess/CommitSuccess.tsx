@@ -102,7 +102,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
             }}
           >
             <CardCTA
-              icon={<Wallet color={colors.secondary} />}
+              icon={<Wallet color={colors.secondary} size={20} />}
               title="Hold"
               text="You can now hold on to your redeemable NFT and trade, transfer or redeem it in the future"
               cta={
@@ -126,7 +126,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
               }
             />
             <CardCTA
-              icon={<CurrencyCircleDollar color={colors.secondary} />}
+              icon={<CurrencyCircleDollar color={colors.secondary} size={20} />}
               title="Trade or Transfer"
               text="You can transfer or easily trade your rNFT on the secondary market for example OpenSea"
               cta={
@@ -151,7 +151,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
               }
             />
             <CardCTA
-              icon={<Package color={colors.secondary} />}
+              icon={<Package color={colors.secondary} size={20} />}
               title="Redeem"
               text="Redeem your rNFT to receive underlying item. The rNFT will be destroyed in the process."
               cta={

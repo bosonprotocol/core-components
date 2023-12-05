@@ -270,8 +270,6 @@ interface IDetailWidget {
   selectedVariant: VariantV1;
   allVariants: VariantV1[];
   disableVariationsSelects?: boolean;
-  name?: string;
-  image?: string;
   hasSellerEnoughFunds: boolean;
   isPreview?: boolean;
   hasMultipleVariants?: boolean;
@@ -287,8 +285,6 @@ const DetailView: React.FC<IDetailWidget> = ({
   selectedVariant,
   allVariants,
   disableVariationsSelects,
-  name = "",
-  image = "",
   hasSellerEnoughFunds,
   isPreview = false,
   hasMultipleVariants,
@@ -330,32 +326,6 @@ const DetailView: React.FC<IDetailWidget> = ({
     decimals: offer.exchangeToken.decimals,
     symbol: offer.exchangeToken.symbol
   });
-  const OFFER_DETAIL_DATA_MODAL = useMemo(
-    () =>
-      getOfferDetailData({
-        config,
-        offer,
-        exchangePolicyCheckResult,
-        displayFloat,
-        onExchangePolicyClick
-      }),
-    [
-      config,
-      offer,
-      exchangePolicyCheckResult,
-      displayFloat,
-      onExchangePolicyClick
-    ]
-  );
-  const BASE_MODAL_DATA = useMemo(
-    () => ({
-      data: OFFER_DETAIL_DATA_MODAL,
-      animationUrl: offer.metadata.animationUrl || "",
-      image,
-      name
-    }),
-    [OFFER_DETAIL_DATA_MODAL, image, name, offer.metadata.animationUrl]
-  );
   const onCommitPendingTransaction = (
     hash: string,
     isMetaTx?: boolean | undefined,
@@ -373,6 +343,7 @@ const DetailView: React.FC<IDetailWidget> = ({
         txHash: hash
       });
       onCommitting(hash);
+      // TODO: handle pending transactions
       // addPendingTransaction({
       //   type: subgraph.EventType.BuyerCommitted,
       //   hash,
@@ -425,6 +396,7 @@ const DetailView: React.FC<IDetailWidget> = ({
       ));
     }
     setCommitType(null);
+    // TODO: handle pending transactions
     // removePendingTransaction("offerId", offer.id);
   };
   const onCommitError = async (
@@ -438,19 +410,16 @@ const DetailView: React.FC<IDetailWidget> = ({
       showModal("TRANSACTION_FAILED");
     } else {
       Sentry.captureException(error);
-      // showModal(modalTypes.DETAIL_WIDGET, {
-      //   title: "An error occurred",
-      //   message: await extractUserFriendlyError(error, {
-      //     txResponse,
-      //     provider: signer?.provider
-      //   }),
-      //   type: "ERROR",
-      //   state: "Committed",
-      //   id: undefined,
-      //   ...BASE_MODAL_DATA
-      // });
+      showModal("TRANSACTION_FAILED", {
+        title: "An error occurred",
+        errorMessage: await extractUserFriendlyError(error, {
+          txResponse,
+          provider: signer?.provider
+        })
+      });
     }
     setCommitType(null);
+    // TODO: handle pending transactions
     // removePendingTransaction("offerId", offer.id);
   };
   const isFreeOffer = offer.price === "0";
@@ -719,7 +688,7 @@ const DetailView: React.FC<IDetailWidget> = ({
             </ThemedButton>
           ) : (
             <>
-              {/* {showCommitProxyButton ? (
+              {/* TODO: handle commit proxy button {showCommitProxyButton ? (
                     <CommitProxyButton />
                   ) : ( */}
               <CommitButton
