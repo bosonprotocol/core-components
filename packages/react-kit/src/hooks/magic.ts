@@ -9,7 +9,7 @@ export const useMagic = () => {
   if (!context) {
     throw new Error("useMagic must be used within MagicContext");
   }
-  return context;
+  return context.magic;
 };
 
 export const useWalletInfo = () => {
@@ -24,16 +24,11 @@ export const useWalletInfo = () => {
 };
 
 export function useMagicProvider() {
-  const magic = useMagic();
-  const magicProvider = useMemo(
-    () =>
-      magic
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          new ethers.providers.Web3Provider(magic.rpcProvider as any)
-        : null,
-    [magic]
-  );
-  return magicProvider;
+  const context = useContext(MagicContext);
+  if (!context) {
+    throw new Error("useMagic must be used within MagicContext");
+  }
+  return context.magicProvider;
 }
 
 export function useMagicChainId() {
