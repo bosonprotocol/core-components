@@ -11,14 +11,5 @@ export async function storeMetadataOnTheGraph(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<string | null> {
-  if (args.metadataStorage && args.theGraphStorage) {
-    const metadata = await args.metadataStorage.getMetadata(
-      args.metadataUriOrHash
-    );
-
-    const metadataUri = await args.theGraphStorage.storeMetadata(metadata);
-    return metadataUri;
-  }
-
-  return null;
+  return args.metadataUriOrHash;
 }
