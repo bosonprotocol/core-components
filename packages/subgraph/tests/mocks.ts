@@ -28,7 +28,8 @@ import {
 } from "../generated/BosonFundsHandler/IBosonFundsHandler";
 import {
   newMockEvent,
-  createMockedFunction
+  createMockedFunction,
+  mockIpfsFile
 } from "matchstick-as/assembly/index";
 import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts";
 import {
@@ -39,6 +40,7 @@ import {
 import { SellerUpdateApplied } from "../generated/BosonAccountHandler/IBosonAccountHandler";
 import { getProductId } from "../src/entities/metadata/product-v1/product";
 import { ProductV1Media, ProductV1Product } from "../generated/schema";
+import { handleSellerCreatedEvent } from "../src/mappings/account-handler";
 
 export function createOfferCreatedEvent(
   offerId: i32,
@@ -886,4 +888,30 @@ export function mockCreateProduct(
 
   product.save();
   return product;
+}
+
+export function createSeller(
+  sellerId: i32,
+  sellerAddress: string,
+  sellerMetadataFilepath: string,
+  voucherCloneAddress: string,
+  sellerMetadataHash: string
+): string {
+  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
+  mockIpfsFile(sellerMetadataHash, sellerMetadataFilepath);
+  const sellerCreatedEvent = createSellerCreatedEvent(
+    sellerId,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    sellerAddress,
+    voucherCloneAddress,
+    0,
+    0,
+    sellerAddress,
+    "ipfs://" + sellerMetadataHash
+  );
+
+  handleSellerCreatedEvent(sellerCreatedEvent);
+  return sellerId.toString();
 }

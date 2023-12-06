@@ -2,8 +2,7 @@ import {
   beforeEach,
   test,
   assert,
-  clearStore,
-  mockIpfsFile
+  clearStore
 } from "matchstick-as/assembly/index";
 import {
   handleFundsDepositedEvent,
@@ -11,16 +10,13 @@ import {
   handleFundsEncumberedEvent,
   handleFundsReleasedEvent
 } from "../src/mappings/funds-handler";
-import {
-  handleSellerCreatedEvent,
-  handleSellerCreatedEventWithoutMetadataUri
-} from "../src/mappings/account-handler";
+import { handleSellerCreatedEventWithoutMetadataUri } from "../src/mappings/account-handler";
 import {
   createFundsDepositedEvent,
   createFundsEncumberedEvent,
   createFundsReleasedEvent,
   createFundsWithdrawnEvent,
-  createSellerCreatedEvent,
+  createSeller,
   createSellerCreatedEventLegacy,
   mockBosonVoucherContractCalls
 } from "./mocks";
@@ -109,21 +105,12 @@ test("handle legacy FundsEncumberedEvent", () => {
 });
 
 test("handle FundsEncumberedEvent", () => {
-  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 1);
-  mockIpfsFile(sellerMetadataHash, "tests/metadata/seller.json");
-  handleSellerCreatedEvent(
-    createSellerCreatedEvent(
-      sellerId,
-      sellerAddress,
-      sellerAddress,
-      sellerAddress,
-      sellerAddress,
-      voucherCloneAddress,
-      0,
-      0,
-      sellerAddress,
-      "ipfs://" + sellerMetadataHash
-    )
+  createSeller(
+    sellerId,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
   );
   const fundsDepositedEvent = createFundsDepositedEvent(
     sellerId,

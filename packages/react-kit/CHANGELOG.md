@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.21.0...@bosonprotocol/react-kit@0.22.0) (2023-12-05)
+
+
+### Bug Fixes
+
+* checkTokenGatedCondition and typescript compilation warning ([#608](https://github.com/bosonprotocol/core-components/issues/608)) ([e466832](https://github.com/bosonprotocol/core-components/commit/e46683256877ef831e0897cf5e00d3249534a2dc))
+* disconnect and reset flow ([#588](https://github.com/bosonprotocol/core-components/issues/588)) ([22c4b03](https://github.com/bosonprotocol/core-components/commit/22c4b03654ca7d6b1a48d5d40e4fa7f33dfd603b))
+* disconnect should use same wagmi than useConfig+ upgrade wagmi and rainbowkit ([#597](https://github.com/bosonprotocol/core-components/issues/597)) ([9992101](https://github.com/bosonprotocol/core-components/commit/999210150fb490455e1f15bdd307537d7b0221e3))
+* eth-reverse-reason ([#603](https://github.com/bosonprotocol/core-components/issues/603)) ([f7884e2](https://github.com/bosonprotocol/core-components/commit/f7884e236b5f700e2603fe06a17704fb77f0100a))
+* excessive calls to infura provider (querying eth_chainId) ([#619](https://github.com/bosonprotocol/core-components/issues/619)) ([112bdce](https://github.com/bosonprotocol/core-components/commit/112bdce0b81ebd865ec61c3cc7017d302273e10a))
+* use offers backed ([#604](https://github.com/bosonprotocol/core-components/issues/604)) ([0563904](https://github.com/bosonprotocol/core-components/commit/05639048c9183619b0c5f005b059f89e8323fed1))
+
+
+### Features
+
+* add code from eth-reverse-reason dependency ([#601](https://github.com/bosonprotocol/core-components/issues/601)) ([571bf58](https://github.com/bosonprotocol/core-components/commit/571bf58f05a0f86459a5680709b268dfef88342e))
+* add redemption widget parameters to allow several usecases ([#587](https://github.com/bosonprotocol/core-components/issues/587)) ([116640e](https://github.com/bosonprotocol/core-components/commit/116640e3c649a39d6986f65bbf1750ff5eb2ed6e))
+* add tx response to on error handlers in ctas ([#599](https://github.com/bosonprotocol/core-components/issues/599)) ([b7bbf37](https://github.com/bosonprotocol/core-components/commit/b7bbf379b9c819e9b719eb98ecd4756a3e54ec99))
+* disable redeem confirmation based on supported or unsupported c… ([#589](https://github.com/bosonprotocol/core-components/issues/589)) ([81e3456](https://github.com/bosonprotocol/core-components/commit/81e3456e73b6487b692b2195c4720399337f051f))
+* display sucess message after cancelling exchange ([#586](https://github.com/bosonprotocol/core-components/issues/586)) ([425c93c](https://github.com/bosonprotocol/core-components/commit/425c93ce4d0e7ac537991f73294bf320364c8859))
+* extend check offer condition to check if a buyer can commit to a token gated offer ([#592](https://github.com/bosonprotocol/core-components/issues/592)) ([16b69ec](https://github.com/bosonprotocol/core-components/commit/16b69ecd91370c76cddd2452999cfa8ed751c790))
+* improve errors ([#600](https://github.com/bosonprotocol/core-components/issues/600)) ([951ffa1](https://github.com/bosonprotocol/core-components/commit/951ffa128746b3d24fd85f9b401ba53dbe9688d5))
+* integrate finance widget ([#609](https://github.com/bosonprotocol/core-components/issues/609)) ([79983d1](https://github.com/bosonprotocol/core-components/commit/79983d15468e86f71bd6e15b5154a7b21fe24798))
+* redemption widget - manage callbacks ([#594](https://github.com/bosonprotocol/core-components/issues/594)) ([c56c682](https://github.com/bosonprotocol/core-components/commit/c56c6825c7097c6c4fd3aa3eaa6699395ef824b1))
+* redemption widget add handlers ([#605](https://github.com/bosonprotocol/core-components/issues/605)) ([a40cd39](https://github.com/bosonprotocol/core-components/commit/a40cd3966d8d3c2c7127c64b3d797d8efd587d3d))
+
+
+
+
+
 # [0.21.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.20.2...@bosonprotocol/react-kit@0.21.0) (2023-10-10)
 
 

@@ -12,6 +12,7 @@ import {
 import {
   createOfferCreatedEvent,
   createOfferVoidedEvent,
+  createSeller,
   mockExchangeTokenContractCalls
 } from "./mocks";
 
@@ -24,6 +25,9 @@ const metadataHash = "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
 
 const offerId = 1;
 const sellerId = 1;
+const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
+const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
+const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
 const price = 1;
 const sellerDeposit = 1;
 const protocolFee = 1;
@@ -86,6 +90,13 @@ test("handle OfferCreatedEvent with BASE metadata", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
 
   handleOfferCreatedEvent(offerCreatedEvent);
 
@@ -119,6 +130,13 @@ test("handle OfferCreatedEvent with PRODUCT_V1 metadata", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/product-v1-full.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
 
   handleOfferCreatedEvent(offerCreatedEvent);
 
@@ -157,6 +175,13 @@ test("handle OfferVoidedEvent", () => {
     exchangeTokenSymbol
   );
   mockIpfsFile(metadataHash, "tests/metadata/base.json");
+  createSeller(
+    1,
+    sellerAddress,
+    "tests/metadata/seller.json",
+    voucherCloneAddress,
+    sellerMetadataHash
+  );
   handleOfferCreatedEvent(offerCreatedEvent);
 
   const offerVoidedEvent = createOfferVoidedEvent(1, 1, exchangeTokenAddress);

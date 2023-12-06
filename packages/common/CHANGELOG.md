@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.23.2...@bosonprotocol/common@1.24.0) (2023-12-05)
+
+
+### Features
+
+* add erc165SupportsInterface function to coreSDK ([#596](https://github.com/bosonprotocol/core-components/issues/596)) ([6a5b777](https://github.com/bosonprotocol/core-components/commit/6a5b777ef7ed6920daf3e0242cb073093893ade5))
+* extend check offer condition to check if a buyer can commit to a token gated offer ([#592](https://github.com/bosonprotocol/core-components/issues/592)) ([16b69ec](https://github.com/bosonprotocol/core-components/commit/16b69ecd91370c76cddd2452999cfa8ed751c790))
+* redemption widget - manage callbacks ([#594](https://github.com/bosonprotocol/core-components/issues/594)) ([c56c682](https://github.com/bosonprotocol/core-components/commit/c56c6825c7097c6c4fd3aa3eaa6699395ef824b1))
+
+
+
+
+
 ## [1.23.2](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/common@1.23.1...@bosonprotocol/common@1.23.2) (2023-10-03)
 
 **Note:** Version bump only for package @bosonprotocol/common

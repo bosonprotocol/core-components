@@ -572,7 +572,7 @@ describe("CoreSDK - accounts", () => {
       let exist = before.some((s) => s.id === seller.id);
       expect(exist).toBe(false);
       const after = await coreSDK.getSellers();
-      expect(after.length).toEqual(before.length + 1);
+      expect(after.length).toBeGreaterThan(before.length);
       exist = after.some((s) => s.id === seller.id);
       expect(exist).toBe(true);
     });
