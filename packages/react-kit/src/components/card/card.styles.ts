@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const CardLink = styled.a`
   font-family: Poppins, sans-serif;
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 0.9375rem;
   writing-mode: horizontal-tb;
   box-sizing: border-box;
   color: rgb(32, 129, 226);
@@ -17,7 +17,7 @@ export const CardLink = styled.a`
 
 export const CardArticle = styled.article`
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: rgb(53, 56, 64);
   writing-mode: horizontal-tb;
   box-sizing: border-box;
@@ -36,7 +36,7 @@ export const CardArticle = styled.article`
 
 export const CardTop = styled.div`
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 0.9375rem;
   writing-mode: horizontal-tb;
   color: rgb(32, 129, 226);
   pointer-events: initial;
@@ -51,7 +51,7 @@ export const CardTop = styled.div`
 
 export const CardBottom = styled.div`
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 0.9375rem;
   writing-mode: horizontal-tb;
   color: rgb(32, 129, 226);
   pointer-events: initial;
@@ -64,7 +64,7 @@ export const CardBottom = styled.div`
   #description {
     box-sizing: border-box;
     color: #04111d;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     line-height: 18px;
     overflow: hidden;
@@ -80,13 +80,13 @@ export const CardBottom = styled.div`
     display: flex;
     flex: 1 0 0%;
     flex-direction: column;
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 22.5px;
     span {
       box-sizing: border-box;
       color: #353840;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 600;
       line-height: 18px;
     }
@@ -99,7 +99,7 @@ export const CardBottom = styled.div`
       cursor: pointer;
       display: flex;
 
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 600;
       justify-content: flex-end;
       line-height: 24px;

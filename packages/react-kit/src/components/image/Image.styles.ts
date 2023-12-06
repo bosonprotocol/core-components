@@ -22,7 +22,7 @@ export const ImageContainer = styled.img`
 const buttonText = css`
   letter-spacing: 0.5px;
   font-style: normal;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   line-height: 24px;
 `;
