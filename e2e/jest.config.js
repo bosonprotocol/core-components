@@ -21,5 +21,6 @@ module.exports = {
         tsconfig: "<rootDir>/e2e/tsconfig.tests.json"
       }
     ]
-  }
+  },
+  setupFilesAfterEnv : ["./setupTests.ts"]
 };
