@@ -4,13 +4,14 @@ import { UserProvider } from "./UserContext";
 import { CONFIG } from "../../lib/config/config";
 import { useConfigContext } from "../config/ConfigContext";
 import type { getRpcUrls } from "../../lib/const/networks";
+import { ethers } from "ethers";
 
-export const MagicContext = createContext<
-  | (Magic & {
-      uuid: string;
-    })
-  | null
->(null);
+export const MagicContext = createContext<{
+  magic: Magic & {
+    uuid: string;
+  };
+  magicProvider: ethers.providers.Web3Provider;
+} | null>(null);
 
 export const MagicProvider = ({ children }: { children: ReactNode }) => {
   const { config, magicLinkKey } = useConfigContext();
@@ -53,7 +54,10 @@ export const InnerMagicProvider = ({
       .preload()
       .then(() => console.info("magic link preloaded"))
       .catch(() => console.info("magic link could not be preloaded"));
-    return magic as typeof magic & { uuid: string };
+    return {
+      magic: magic as typeof magic & { uuid: string },
+      magicProvider: new ethers.providers.Web3Provider(magic.rpcProvider as any)
+    }; // return magic provider too
   }, [chainId, magicLinkKey, rpcUrls]);
   return (
     <MagicContext.Provider value={magic}>

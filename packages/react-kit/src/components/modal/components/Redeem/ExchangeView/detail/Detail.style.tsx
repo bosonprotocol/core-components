@@ -27,7 +27,7 @@ export const Label = styled.div<{ $background: string; $color: string }>`
   padding: 0.5rem 1rem;
   font-family: "Plus Jakarta Sans";
   font-style: normal;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.5;
   text-transform: lowercase;
@@ -247,7 +247,7 @@ const tableStyles = css`
     tr {
       th {
         font-weight: 600;
-        font-size: 12px;
+        font-size: 0.75rem;
         text-align: left;
         line-height: 150%;
       }
@@ -257,7 +257,7 @@ const tableStyles = css`
     tr {
       td {
         font-weight: 400;
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 150%;
       }
     }
@@ -266,7 +266,7 @@ const tableStyles = css`
   th,
   td {
     font-style: normal;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 150%;
   }
 `;
@@ -522,7 +522,7 @@ const miniButton = css`
 
   font-style: normal;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 150%;
   &:hover {
     color: ${colors.black};

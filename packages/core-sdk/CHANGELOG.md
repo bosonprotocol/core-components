@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.32.0...@bosonprotocol/core-sdk@1.33.0) (2023-12-05)
+
+
+### Bug Fixes
+
+* checkTokenGatedCondition and typescript compilation warning ([#608](https://github.com/bosonprotocol/core-components/issues/608)) ([e466832](https://github.com/bosonprotocol/core-components/commit/e46683256877ef831e0897cf5e00d3249534a2dc))
+
+
+### Features
+
+* add ConditionalCommitAuthorizedEventLog ([#593](https://github.com/bosonprotocol/core-components/issues/593)) ([c799b27](https://github.com/bosonprotocol/core-components/commit/c799b2744a8c0f60401cf8c0d8df0ecf3fe5a231))
+* add erc165SupportsInterface function to coreSDK ([#596](https://github.com/bosonprotocol/core-components/issues/596)) ([6a5b777](https://github.com/bosonprotocol/core-components/commit/6a5b777ef7ed6920daf3e0242cb073093893ade5))
+* extend check offer condition to check if a buyer can commit to a token gated offer ([#592](https://github.com/bosonprotocol/core-components/issues/592)) ([16b69ec](https://github.com/bosonprotocol/core-components/commit/16b69ecd91370c76cddd2452999cfa8ed751c790))
+* integrate finance widget ([#609](https://github.com/bosonprotocol/core-components/issues/609)) ([79983d1](https://github.com/bosonprotocol/core-components/commit/79983d15468e86f71bd6e15b5154a7b21fe24798))
+* update contract offers no expiration ([#616](https://github.com/bosonprotocol/core-components/issues/616)) ([3954ade](https://github.com/bosonprotocol/core-components/commit/3954adea5a13242d8837cf71dab81f7be0498362))
+
+
+
+
+
 # [1.32.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/core-sdk@1.31.0...@bosonprotocol/core-sdk@1.32.0) (2023-10-03)
 
 
