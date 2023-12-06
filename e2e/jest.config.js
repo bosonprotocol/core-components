@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseConfig = require("../jest.config.sdk");
+baseConfig.setupFilesAfterEnv = ["./setupTests.ts"];
 
 module.exports = {
   ...baseConfig,
@@ -21,6 +22,5 @@ module.exports = {
         tsconfig: "<rootDir>/e2e/tsconfig.tests.json"
       }
     ]
-  },
-  setupFilesAfterEnv : ["./setupTests.ts"]
+  }
 };
