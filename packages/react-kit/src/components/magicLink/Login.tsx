@@ -5,7 +5,11 @@ import { useMagic } from "../../hooks";
 import { Button } from "../buttons/Button";
 import { Spinner } from "../ui/loading/Spinner";
 
-export const MagicLoginButton = () => {
+type MagicLoginButtonProps = Omit<
+  Parameters<typeof Button>[0],
+  "onClick" | "disabled"
+>;
+export const MagicLoginButton = (props: MagicLoginButtonProps) => {
   const magic = useMagic();
   const { setUser } = useUser();
   const [disabled, setDisabled] = useState(false);
@@ -31,7 +35,7 @@ export const MagicLoginButton = () => {
   };
 
   return (
-    <Button onClick={connect} disabled={disabled}>
+    <Button {...props} onClick={connect} disabled={disabled}>
       {loading ? (
         <>
           Loading
