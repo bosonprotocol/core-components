@@ -595,6 +595,13 @@ export class AccountsMixin extends BaseCoreSDK {
       contractAddress: string;
     }> = {}
   ): Promise<TransactionResponse> {
+    if (!collectionToCreate.sellerId) {
+      const { id: sellerId } = await this.getSellerByAssistant(
+        await this._web3Lib.getSignerAddress()
+      );
+      // If the caller is not a seller, the sellerId remains undefined
+      collectionToCreate.sellerId = sellerId;
+    }
     return accounts.handler.createNewCollection({
       collectionToCreate,
       web3Lib: this._web3Lib,

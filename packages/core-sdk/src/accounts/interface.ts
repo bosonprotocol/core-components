@@ -250,3 +250,25 @@ export function decodeIsSellerSaltAvailable(result: string): boolean {
   );
   return isAvailable;
 }
+
+export function encodeCalculateCollectionAddress(
+  sellerId: BigNumberish,
+  collectionSalt: string
+) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "calculateCollectionAddress",
+    [sellerId, collectionSalt]
+  );
+}
+
+export function decodeCalculateCollectionAddress(result: string): {
+  collectionAddress: string;
+  isAvailable: boolean;
+} {
+  const [collectionAddress, isAvailable] =
+    bosonAccountHandlerIface.decodeFunctionResult(
+      "calculateCollectionAddress",
+      result
+    );
+  return { collectionAddress, isAvailable };
+}

@@ -89,7 +89,9 @@ describe("Offer collections", () => {
         royaltyPercentage: 0,
         collectionId: customCollectionId
       })
-    ).rejects.toThrow(/Clone creation failed/);
+    ).rejects.toThrow(
+      `CollectionId '${customCollectionId}' is not available for seller '${seller.id}'`
+    );
   });
   test("Check collection metadata", async () => {
     // TODO:

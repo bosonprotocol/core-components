@@ -20,7 +20,9 @@ import {
   encodeOptInToDisputeResolverUpdate,
   encodeCreateNewCollection,
   encodeIsSellerSaltAvailable,
-  decodeIsSellerSaltAvailable
+  decodeIsSellerSaltAvailable,
+  encodeCalculateCollectionAddress,
+  decodeCalculateCollectionAddress
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -224,7 +226,20 @@ export async function createNewCollection(args: {
   contractAddress: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
-  // TODO: call calculateCollectionAddress() to check no collection with the same collectionId already exists
+  // call calculateCollectionAddress() to check no collection with the same collectionId already exists
+  if (args.collectionToCreate.sellerId) {
+    const { isAvailable } = await calculateCollectionAddress({
+      sellerId: args.collectionToCreate.sellerId,
+      collectionId: args.collectionToCreate.collectionId,
+      contractAddress: args.contractAddress,
+      web3Lib: args.web3Lib
+    });
+    if (!isAvailable) {
+      throw new Error(
+        `CollectionId '${args.collectionToCreate.collectionId}' is not available for seller '${args.collectionToCreate.sellerId}'`
+      );
+    }
+  }
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateNewCollection(args.collectionToCreate)
@@ -242,4 +257,18 @@ export async function isSellerSaltAvailable(args: {
     data: encodeIsSellerSaltAvailable(args.adminAddress, args.salt)
   });
   return decodeIsSellerSaltAvailable(result);
+}
+
+export async function calculateCollectionAddress(args: {
+  sellerId: BigNumberish;
+  collectionId: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<{ collectionAddress: string; isAvailable: boolean }> {
+  const collectionSalt = formatBytes32String(args.collectionId);
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeCalculateCollectionAddress(args.sellerId, collectionSalt)
+  });
+  return decodeCalculateCollectionAddress(result);
 }
