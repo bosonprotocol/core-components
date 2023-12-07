@@ -20,6 +20,7 @@ import { storeMetadataOnTheGraph } from "../offers/storage";
 import { CreateOfferArgs } from "../offers/types";
 import { CreateSellerArgs } from "../accounts/types";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { setSellerCollectionId } from "../accounts/handler";
 
 export async function createOfferAndSeller(args: {
   offerToCreate: CreateOfferArgs;
@@ -48,9 +49,10 @@ export async function createOfferAndSeller(args: {
     )
   );
 
+  const sellerToCreate = await setSellerCollectionId(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateSellerAndOffer(args.sellerToCreate, args.offerToCreate)
+    data: encodeCreateSellerAndOffer(sellerToCreate, args.offerToCreate)
   });
 }
 
@@ -102,10 +104,11 @@ export async function createSellerAndOfferWithCondition(args: {
     )
   );
 
+  const sellerToCreate = await setSellerCollectionId(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndOfferWithCondition(
-      args.sellerToCreate,
+      sellerToCreate,
       args.offerToCreate,
       args.condition
     )
@@ -194,10 +197,11 @@ export async function createSellerAndPremintedOffer(args: {
     )
   );
 
+  const sellerToCreate = await setSellerCollectionId(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndPremintedOffer(
-      args.sellerToCreate,
+      sellerToCreate,
       args.offerToCreate,
       args.reservedRangeLength
     )
@@ -229,10 +233,11 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
     )
   );
 
+  const sellerToCreate = await setSellerCollectionId(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndPremintedOfferWithCondition(
-      args.sellerToCreate,
+      sellerToCreate,
       args.offerToCreate,
       args.reservedRangeLength,
       args.condition

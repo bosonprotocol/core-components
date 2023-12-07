@@ -5,6 +5,7 @@ import {
   MetadataStorage
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { formatBytes32String } from "@ethersproject/strings";
 import { DisputeResolverFieldsFragment } from "../subgraph";
 import {
   encodeCreateSeller,
@@ -16,7 +17,10 @@ import {
   encodeRemoveSellersFromAllowList,
   encodeUpdateDisputeResolver,
   encodeOptInToSellerUpdate,
-  encodeOptInToDisputeResolverUpdate
+  encodeOptInToDisputeResolverUpdate,
+  encodeCreateNewCollection,
+  encodeIsSellerSaltAvailable,
+  decodeIsSellerSaltAvailable
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -26,9 +30,33 @@ import {
   DisputeResolutionFee,
   DisputeResolverUpdates,
   OptInToSellerUpdateArgs,
-  OptInToDisputeResolverUpdateArgs
+  OptInToDisputeResolverUpdateArgs,
+  CreateCollectionArgs
 } from "./types";
 import { storeMetadataOnTheGraph } from "../offers/storage";
+
+export async function setSellerCollectionId(args: {
+  sellerToCreate: CreateSellerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<CreateSellerArgs> {
+  if (!args.sellerToCreate.collectionId) {
+    let collectionId = "collection-0";
+    const isAvailable = await isSellerSaltAvailable({
+      adminAddress: args.sellerToCreate.admin,
+      salt: formatBytes32String(collectionId),
+      contractAddress: args.contractAddress,
+      web3Lib: args.web3Lib
+    });
+    if (!isAvailable) {
+      const uuid = Math.floor(Math.random() * 100000000).toFixed(0);
+      collectionId = `collection-0-${uuid}`;
+      console.log(`new collectionId ${collectionId}`);
+    }
+    args.sellerToCreate.collectionId = collectionId;
+  }
+  return args.sellerToCreate;
+}
 
 export async function createSeller(args: {
   sellerToCreate: CreateSellerArgs;
@@ -37,6 +65,7 @@ export async function createSeller(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
+  const sellerToCreate = await setSellerCollectionId(args);
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.sellerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
@@ -44,7 +73,7 @@ export async function createSeller(args: {
   });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateSeller(args.sellerToCreate)
+    data: encodeCreateSeller(sellerToCreate)
   });
 }
 
@@ -188,4 +217,29 @@ function assertDisputeResolver(
       `Dispute resolver with id ${disputeResolverId} does not exist`
     );
   }
+}
+
+export async function createNewCollection(args: {
+  collectionToCreate: CreateCollectionArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  // TODO: call calculateCollectionAddress() to check no collection with the same collectionId already exists
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCreateNewCollection(args.collectionToCreate)
+  });
+}
+
+export async function isSellerSaltAvailable(args: {
+  adminAddress: string;
+  salt: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<boolean> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeIsSellerSaltAvailable(args.adminAddress, args.salt)
+  });
+  return decodeIsSellerSaltAvailable(result);
 }

@@ -37,7 +37,8 @@ import {
   ACCOUNT_16,
   ACCOUNT_17,
   ACCOUNT_18,
-  ACCOUNT_19
+  ACCOUNT_19,
+  ACCOUNT_20
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -155,6 +156,8 @@ export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
 export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);
 // seedWallets used by core-sdk-set-contract-uri
 export const seedWallet19 = new Wallet(ACCOUNT_19.privateKey, provider);
+// seedWallets used by core-sdk-collections
+export const seedWallet20 = new Wallet(ACCOUNT_20.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,

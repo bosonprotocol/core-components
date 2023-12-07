@@ -13,7 +13,8 @@ export {
   OptInToSellerUpdateArgs,
   DisputeResolverUpdateFields,
   OptInToDisputeResolverUpdateArgs,
-  utils
+  utils,
+  CreateCollectionArgs
 } from "@bosonprotocol/common";
 
 export type CreateDisputeResolverArgs = {

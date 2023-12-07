@@ -15,7 +15,8 @@ import {
   OptInToSellerUpdateArgs,
   SellerUpdateFields,
   OptInToDisputeResolverUpdateArgs,
-  DisputeResolverUpdateFields
+  DisputeResolverUpdateFields,
+  CreateCollectionArgs
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
 
@@ -29,6 +30,14 @@ export function encodeCreateSeller(seller: CreateSellerArgs) {
     sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct,
     sellerArgs.voucherInitValues
+  ]);
+}
+
+export function encodeCreateNewCollection(collection: CreateCollectionArgs) {
+  const collectionArgs = createCollectionArgsToStruct(collection);
+  return bosonAccountHandlerIface.encodeFunctionData("createNewCollection", [
+    collectionArgs.externalId,
+    collectionArgs.voucherInitValues
   ]);
 }
 
@@ -142,6 +151,11 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     collectionId,
     ...sellerStructArgs
   } = args;
+  // collectionSalt is added to the seller admin address to give the sellerSalt that is used to compute the voucher contract address
+  // In case sellerSalt already exist, the seller creation will fail
+  // This may happen if the admin address was already assigned to another seller in the past
+  // In case of a failure, the collectionId could be used to define a different collectionSalt, and then a different sellerSalt
+  // TODO: to avoid any unexpected failure, add check that the collectionSalt/sellerSalt does not exist yet (call to method isSellerSaltAvailable())
   const collectionSalt = formatBytes32String(collectionId || "collection-0");
   return {
     sellerStruct: argsToSellerStruct(sellerStructArgs),
@@ -149,6 +163,23 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
       tokenId: authTokenId,
       tokenType: authTokenType
     },
+    voucherInitValues: {
+      contractURI: contractUri,
+      royaltyPercentage,
+      collectionSalt
+    }
+  };
+}
+
+export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
+  externalId: string;
+  voucherInitValues: VoucherInitValuesStruct;
+} {
+  const { collectionId, contractUri, royaltyPercentage } = args;
+  const collectionSalt =
+    args.collectionSalt || formatBytes32String(collectionId || "collection-0");
+  return {
+    externalId: collectionId,
     voucherInitValues: {
       contractURI: contractUri,
       royaltyPercentage,
@@ -200,4 +231,22 @@ function createDisputeResolverArgsToDisputeResolverStruct(
       args.escalationResponsePeriodInMS
     )
   };
+}
+
+export function encodeIsSellerSaltAvailable(
+  adminAddress: string,
+  salt: string
+) {
+  return bosonAccountHandlerIface.encodeFunctionData("isSellerSaltAvailable", [
+    adminAddress,
+    salt
+  ]);
+}
+
+export function decodeIsSellerSaltAvailable(result: string): boolean {
+  const [isAvailable] = bosonAccountHandlerIface.decodeFunctionResult(
+    "isSellerSaltAvailable",
+    result
+  );
+  return isAvailable;
 }

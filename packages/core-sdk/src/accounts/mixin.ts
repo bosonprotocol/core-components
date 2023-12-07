@@ -588,4 +588,17 @@ export class AccountsMixin extends BaseCoreSDK {
   ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
     return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
   }
+
+  public async createNewCollection(
+    collectionToCreate: accounts.CreateCollectionArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    return accounts.handler.createNewCollection({
+      collectionToCreate,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
 }
