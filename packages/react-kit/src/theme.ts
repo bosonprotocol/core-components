@@ -44,4 +44,4 @@ export const theme = {
     time: "150ms",
     timing: "ease-in-out"
   }
-};
+} as const;
