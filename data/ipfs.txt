@@ -1,6 +1,6 @@
 HERE AFTER THE IPFS HASH OF THE UPLOADED FILES (FOR RECORDING AND TRACEABILITY)
 ===============================================================================
 
-contractualAgreement.template.md QmbkoWec4NcmxJk7xpooNyfvj9ZarkW6RXq2ZJ9W6UGXZu
-rNFTLicense.template.md QmZnkoiGRt9XX5KqyEz1G3UKUXTKfoYECRQz2rxa3m3z3a
-exchangePolicyRules.template.json QmbUskZ7q6Vd4ZUHoZc6iQG5Cu4KUPSndRbTFdccWjEZYH
+contractualAgreement.template.md QmaUobgQYrMnm2jZ3WowPtwRs4MpMR2TSinp3ChebjnZwe
+rNFTLicense.template.md QmPbzbp7xcSKhQPjT5VacLRMVgM1U6DB4LiF2GVyHhvcA7
+exchangePolicyRules.template.json QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt
