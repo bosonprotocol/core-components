@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.23.0...@bosonprotocol/react-kit@0.23.1) (2023-12-08)
+
+
+### Bug Fixes
+
+* price currency ([#624](https://github.com/bosonprotocol/core-components/issues/624)) ([673f478](https://github.com/bosonprotocol/core-components/commit/673f478a74309cfaf1d20e710683372fb56fe226))
+
+
+
+
+
 # [0.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.22.0...@bosonprotocol/react-kit@0.23.0) (2023-12-08)
 
 
