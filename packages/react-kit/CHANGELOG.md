@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.22.0...@bosonprotocol/react-kit@0.23.0) (2023-12-08)
+
+
+### Features
+
+* add more props to magic login button ([#622](https://github.com/bosonprotocol/core-components/issues/622)) ([5eb46fb](https://github.com/bosonprotocol/core-components/commit/5eb46fb2f087b0fe75aa35be7c7351e9c567e381))
+
+
+
+
+
 # [0.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.21.0...@bosonprotocol/react-kit@0.22.0) (2023-12-05)
 
 
