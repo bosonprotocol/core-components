@@ -63,11 +63,11 @@ export function useSigner() {
 }
 
 export function useBalance(
-  args: Parameters<ReturnType<typeof useProvider>["getBalance"]>,
+  blockTag: Parameters<NonNullable<ReturnType<typeof useSigner>>["getBalance"]>[0],
   options: { enabled: boolean } = { enabled: false }
 ) {
-  const provider = useProvider();
-  return useQuery(["balance", ...args], () => provider.getBalance(...args), {
+  const signer = useSigner();
+  return useQuery(["balance", blockTag, !!signer], () => signer?.getBalance(blockTag), {
     enabled: options.enabled
   });
 }
