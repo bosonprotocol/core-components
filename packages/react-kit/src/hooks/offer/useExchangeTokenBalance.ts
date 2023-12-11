@@ -1,7 +1,12 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { BigNumber, ethers } from "ethers";
 
-import { useAccount, useBalance, useChainId } from "../connection/connection";
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useSigner
+} from "../connection/connection";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useErc20Balance } from "../contracts";
 
@@ -10,9 +15,7 @@ export function useExchangeTokenBalance(
     subgraph.OfferFieldsFragment["exchangeToken"],
     "address" | "decimals"
   >,
-  { enabled }: { enabled: boolean } = {
-    enabled: true
-  }
+  { enabled }: { enabled: boolean }
 ) {
   const chainId = useChainId();
   const { config } = useConfigContext();
@@ -20,7 +23,7 @@ export function useExchangeTokenBalance(
   const { address } = useAccount();
 
   const isNativeCoin = exchangeToken.address === ethers.constants.AddressZero;
-
+  const isErc20Enabled = !isNativeCoin && !!chainIdToUse;
   const {
     data: erc20Balance,
     isLoading: erc20Loading,
@@ -31,26 +34,38 @@ export function useExchangeTokenBalance(
       owner: address
     },
     {
-      enabled: !isNativeCoin && !!chainIdToUse && enabled
+      enabled: isErc20Enabled && enabled
     }
   );
+  const isNativeEnabled = isNativeCoin && !!chainIdToUse;
   const {
     data: nativeBalances,
     isLoading: nativeLoading,
     refetch: refetchNative
-  } = useBalance(address ? [address] : [""], {
-    enabled: isNativeCoin && !!chainIdToUse && enabled
+  } = useBalance(undefined, {
+    enabled: isNativeEnabled && enabled
   });
-
+  const balance = isNativeCoin
+    ? nativeBalances
+    : erc20Balance
+    ? BigNumber.from(erc20Balance)
+    : undefined;
   return {
-    balance: isNativeCoin
-      ? nativeBalances
-      : erc20Balance
-      ? BigNumber.from(erc20Balance)
-      : undefined,
+    balance,
+    formatted: balance
+      ? ethers.utils.formatUnits(balance, exchangeToken.decimals)
+      : balance,
     loading: erc20Loading || nativeLoading,
-    refetch: () => {
-      return Promise.allSettled([refetchErc20(), refetchNative()]);
+    refetch: async () => {
+      const refetchedBalance = await (isErc20Enabled
+        ? refetchErc20()
+        : isNativeEnabled
+        ? refetchNative()
+        : null);
+      if (!refetchedBalance) {
+        return null;
+      }
+      return BigNumber.from(refetchedBalance.data);
     }
   };
 }

@@ -28,6 +28,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
 
 interface Props {
   protocolBalance: string;
@@ -56,17 +57,17 @@ export default function FinanceDeposit({
   const [depositError, setDepositError] = useState<unknown>(null);
 
   const signer = useSigner();
-  const { address } = useAccount();
 
-  const { data: dataBalance, refetch } = useBalance(
-    exchangeToken !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: exchangeToken as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
-  );
-
+  const {
+    balance: dataBalance,
+    refetch,
+    formatted
+  } = useExchangeTokenBalance({
+    address: exchangeToken,
+    decimals: tokenDecimals
+  }, {
+    enabled: true
+  });
   const { showModal, hideModal } = useModal();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
@@ -124,7 +125,7 @@ export default function FinanceDeposit({
             </Typography>
             {dataBalance && (
               <Typography $fontSize="0.625rem" margin="0">
-                Balance {dataBalance.formatted}
+                Balance {formatted}
               </Typography>
             )}
           </div>
@@ -178,14 +179,14 @@ export default function FinanceDeposit({
                 break;
             }
           }}
-          onSuccess={async (...args) => {
+          onSuccess={async () => {
             await poll(
               async () => {
                 const balance = await refetch();
                 return balance;
               },
               (balance) => {
-                return dataBalance?.formatted === balance.data?.formatted;
+                return dataBalance?.toString() === balance?.toString();
               },
               500
             );

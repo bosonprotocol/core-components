@@ -33,6 +33,7 @@ import {
   extractUserFriendlyError,
   getHasUserRejectedTx
 } from "../../../../lib/errors/transactions";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -72,14 +73,16 @@ export default function FinanceWithdraw({
   const { address } = useAccount();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
-  const { data: dataBalance, refetch } = useBalance(
-    exchangeToken !== ethers.constants.AddressZero
-      ? {
-          address: address as `0x${string}`,
-          token: exchangeToken as `0x${string}`
-        }
-      : { address: address as `0x${string}` }
-  );
+  const {
+    balance: dataBalance,
+    refetch,
+    formatted
+  } = useExchangeTokenBalance({
+    address: exchangeToken,
+    decimals: tokenDecimals
+  }, {
+    enabled: true
+  });
   const { showModal, hideModal } = useModal();
 
   const tokenStep = 10 ** -Number(tokenDecimals);
@@ -143,7 +146,7 @@ export default function FinanceWithdraw({
       <Grid>
         {dataBalance ? (
           <Typography tag="p" margin="0" $fontSize="0.75rem" fontWeight="600">
-            Wallet Balance: {dataBalance?.formatted} {dataBalance?.symbol}
+            Wallet Balance: {formatted} {symbol}
           </Typography>
         ) : (
           <div />
@@ -193,7 +196,7 @@ export default function FinanceWithdraw({
                 return balance;
               },
               (balance) => {
-                return dataBalance?.formatted === balance.data?.formatted;
+                return dataBalance?.toString() === balance?.toString();
               },
               500
             );
