@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, crypto, log } from "@graphprotocol/graph-ts";
 import {
   SellerCreated,
   SellerUpdatePending,
@@ -11,7 +11,9 @@ import {
   DisputeResolverFeesAdded,
   DisputeResolverFeesRemoved,
   DisputeResolverUpdateApplied,
-  DisputeResolverUpdatePending
+  DisputeResolverUpdatePending,
+  CollectionCreated,
+  IBosonAccountHandler
 } from "../../generated/BosonAccountHandler/IBosonAccountHandler";
 import {
   SellerCreated as SellerCreatedLegacy,
@@ -27,7 +29,8 @@ import {
   Buyer,
   PendingSeller,
   DisputeResolver,
-  PendingDisputeResolver
+  PendingDisputeResolver,
+  OfferCollection
 } from "../../generated/schema";
 import { BosonVoucher } from "../../generated/templates";
 import {
@@ -115,6 +118,17 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.save();
 
   saveSellerMetadata(seller, event.block.timestamp);
+  const externalId = "initial";
+  const externalIdHash = crypto.keccak256(Bytes.fromUTF8(externalId));
+  // save original collection
+  saveOfferCollection(
+    getOfferCollectionId(sellerId, "0"),
+    event.params.sellerId,
+    new BigInt(0),
+    event.params.voucherCloneAddress,
+    Bytes.fromHexString(externalIdHash.toHexString()),
+    externalId
+  );
   saveAccountEventLog(
     event.transaction.hash.toHexString(),
     event.logIndex,
@@ -533,5 +547,75 @@ export function handleAllowedSellersRemovedEvent(
     event.block.timestamp,
     event.params.executedBy,
     disputeResolverId.toString()
+  );
+}
+
+export function getOfferCollectionId(
+  sellerId: string,
+  collectionIndex: string
+): string {
+  const offerCollectionId = sellerId + "-collection-" + collectionIndex;
+  return offerCollectionId;
+}
+
+function saveOfferCollection(
+  offerCollectionId: string,
+  sellerId: BigInt,
+  collectionIndex: BigInt,
+  collectionAddress: Address,
+  externalIdHash: Bytes,
+  externalId: string
+): void {
+  let offerCollection = OfferCollection.load(offerCollectionId);
+
+  if (!offerCollection) {
+    offerCollection = new OfferCollection(offerCollectionId);
+    offerCollection.sellerId = sellerId;
+    offerCollection.seller = sellerId.toString();
+    offerCollection.collectionIndex = collectionIndex;
+    offerCollection.collectionAddress = collectionAddress;
+    offerCollection.externalIdHash = externalIdHash;
+    offerCollection.externalId = externalId;
+    offerCollection.save();
+  } else {
+    log.warning("Offer collection with ID '{}' already exists!", [
+      offerCollectionId
+    ]);
+  }
+}
+
+export function handleCollectionCreatedEvent(event: CollectionCreated): void {
+  const sellerId = event.params.sellerId;
+  const collectionIndex = event.params.collectionIndex;
+  const offerCollectionId = getOfferCollectionId(
+    sellerId.toString(),
+    collectionIndex.toString()
+  );
+  const accountHandler = IBosonAccountHandler.bind(event.address);
+  const sellerCollectionsResult =
+    accountHandler.getSellersCollections(sellerId);
+  const collections = sellerCollectionsResult.value1;
+  let externalId = "";
+  if (collectionIndex.lt(BigInt.fromI32(1))) {
+    log.warning("Invalid collection index {} for seller {}", [
+      collectionIndex.toString(),
+      sellerId.toString()
+    ]);
+  } else if (collectionIndex.gt(BigInt.fromI32(collections.length))) {
+    log.warning("Unable to find collection for seller {} with index {}", [
+      sellerId.toString(),
+      collectionIndex.toString()
+    ]);
+  } else {
+    externalId = collections[collectionIndex.toU32() - 1].externalId;
+  }
+
+  saveOfferCollection(
+    offerCollectionId,
+    sellerId,
+    collectionIndex,
+    event.params.collectionAddress,
+    event.params.externalId,
+    externalId
   );
 }

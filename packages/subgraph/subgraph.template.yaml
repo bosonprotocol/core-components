@@ -120,6 +120,8 @@ dataSources:
           handler: handleAllowedSellersAddedEvent
         - event: AllowedSellersRemoved(indexed uint256,uint256[],indexed address)
           handler: handleAllowedSellersRemovedEvent
+        - event: CollectionCreated(indexed uint256,uint256,address,indexed string,indexed address)
+          handler: handleCollectionCreatedEvent
       file: ./src/mappings/account-handler.ts
   - kind: ethereum/contract
     name: BosonAccountHandlerLegacy
