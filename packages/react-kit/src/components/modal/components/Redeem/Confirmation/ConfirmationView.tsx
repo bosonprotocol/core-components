@@ -6,6 +6,7 @@ import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
 import { theme } from "../../../../../theme";
 import { useAccount } from "wagmi";
+import { RedeemHeader } from "../RedeemHeader";
 
 const colors = theme.colors.light;
 
@@ -34,11 +35,7 @@ export function ConfirmationView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
+        headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
         }

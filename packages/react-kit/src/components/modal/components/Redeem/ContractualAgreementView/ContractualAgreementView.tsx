@@ -21,13 +21,13 @@ export function ContractualAgreementView({ onBackClick, exchange }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid style={{ flex: "1" }}>
             <ArrowLeft
               onClick={onBackClick}
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">Contractual Agreement</Typography>
+            <h3 style={{ width: "100%", flex: 1 }}>Contractual Agreement</h3>
           </Grid>
         ),
         contentStyle: {

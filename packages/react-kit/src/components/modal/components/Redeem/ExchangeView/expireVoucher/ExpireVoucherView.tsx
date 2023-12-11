@@ -5,6 +5,7 @@ import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";
 import { useNonModalContext } from "../../../../nonModal/NonModal";
 import { theme } from "../../../../../../theme";
+import Grid from "../../../../../ui/Grid";
 
 const colors = theme.colors.light;
 export interface ExpireVoucherViewProps {
@@ -23,14 +24,14 @@ export const ExpireVoucherView: React.FC<ExpireVoucherViewProps> = ({
     dispatch({
       payload: {
         headerComponent: (
-          <>
+          <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft
               onClick={() => onBackClick()}
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">Expire voucher</Typography>
-          </>
+            <h3 style={{ width: "100%", flex: 1 }}>Expire voucher</h3>
+          </Grid>
         ),
         contentStyle: {
           background: colors.white

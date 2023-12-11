@@ -5,6 +5,7 @@ import { useNonModalContext } from "../../../nonModal/NonModal";
 import { Exchange } from "../../../../../types/exchange";
 import { theme } from "../../../../../theme";
 import { useAccount } from "../../../../../hooks/connection/connection";
+import { RedeemHeader } from "../RedeemHeader";
 
 const colors = theme.colors.light;
 
@@ -26,11 +27,7 @@ export default function RedeemFormView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
+        headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
         }

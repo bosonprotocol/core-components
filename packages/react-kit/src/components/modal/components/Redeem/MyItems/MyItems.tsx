@@ -47,9 +47,7 @@ export function MyItems({
     dispatch({
       payload: {
         headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Manage your exchanges
-          </Typography>
+          <h3 style={{ width: "100%", flex: 1 }}>Manage your exchanges</h3>
         ),
         contentStyle: {
           background: colors.lightGrey

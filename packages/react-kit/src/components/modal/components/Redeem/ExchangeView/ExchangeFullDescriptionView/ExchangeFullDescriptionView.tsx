@@ -19,13 +19,13 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid style={{ flex: "1" }}>
             <ArrowLeft
               onClick={onBackClick}
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">
+            <Typography tag="h3" style={{flex: '1'}}>
               {exchange?.offer.metadata.name || ""}
             </Typography>
           </Grid>

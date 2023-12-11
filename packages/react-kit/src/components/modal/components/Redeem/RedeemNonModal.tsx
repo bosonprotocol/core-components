@@ -48,6 +48,7 @@ import {
 import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
+import { RedeemHeader } from "./RedeemHeader";
 
 const colors = theme.colors.light;
 enum ActiveStep {
@@ -97,11 +98,7 @@ export default function RedeemWrapper({
     <NonModal
       props={{
         hideModal,
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
+        headerComponent: RedeemHeader,
         footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.white

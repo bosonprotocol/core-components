@@ -19,13 +19,13 @@ export function LicenseAgreementView({ onBackClick, exchange }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid style={{ flex: "1" }} gap="1rem">
             <ArrowLeft
               onClick={onBackClick}
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3">License Agreement</Typography>
+            <h3 style={{ width: "100%", flex: 1 }}>License Agreement</h3>
           </Grid>
         ),
         contentStyle: {

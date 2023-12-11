@@ -9,6 +9,7 @@ import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import Typography from "../../../../ui/Typography";
 import { theme } from "../../../../../theme";
+import { RedeemHeader } from "../RedeemHeader";
 
 const colors = theme.colors.light;
 const CommitStepWrapper = styled.div`
@@ -50,11 +51,7 @@ export default function StepsOverview({ onNextClick }: Props) {
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
+        headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
         }
