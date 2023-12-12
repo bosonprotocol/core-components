@@ -8,7 +8,7 @@ export const SignerContext = createContext<Web3LibAdapter | undefined>(
 
 type SignerProviderProps = {
   children: ReactNode;
-  parentOrigin: `http${string}` | null | undefined;
+  parentOrigin: string | null | undefined;
 };
 export const SignerProvider = ({
   children,
@@ -18,7 +18,7 @@ export const SignerProvider = ({
     parentOrigin
   });
   return (
-    <SignerContext.Provider value={externalSigner}>
+    <SignerContext.Provider value={externalSigner as Web3LibAdapter}>
       {children}
     </SignerContext.Provider>
   );

@@ -6,6 +6,7 @@ import { useEnvContext } from "../../environment/EnvironmentContext";
 import { Context } from "./ChatContext";
 import { getChatEnvName } from "./const";
 import { useSigner } from "../../../hooks/connection/connection";
+import { useExternalSigner } from "../../signer/useExternalSigner";
 
 interface Props {
   children: ReactNode;
@@ -13,6 +14,8 @@ interface Props {
 
 export default function ChatProvider({ children }: Props) {
   const signer = useSigner();
+  const externalSigner = useExternalSigner();
+  const signerToUse = externalSigner ?? signer;
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
@@ -20,12 +23,12 @@ export default function ChatProvider({ children }: Props) {
   const coreSDK = useCoreSDKWithContext();
   const { envName } = useEnvContext();
   useEffect(() => {
-    if (signer && initialize && !bosonXmtp && envName && coreSDK) {
+    if (signerToUse && initialize && !bosonXmtp && envName && coreSDK) {
       const newChatEnvName = getChatEnvName(envName, coreSDK.contracts);
       setChatEnvName(newChatEnvName);
       setLoading(true);
       BosonXmtpClient.initialise(
-        signer,
+        signerToUse as any,
         envName === "production" ? "production" : "dev",
         newChatEnvName
       )
@@ -35,7 +38,7 @@ export default function ChatProvider({ children }: Props) {
         .catch(console.error)
         .finally(() => setLoading(false));
     }
-  }, [signer, initialize, coreSDK, bosonXmtp, envName]);
+  }, [signerToUse, initialize, coreSDK, bosonXmtp, envName]);
   return (
     <Context.Provider
       value={{

@@ -25,6 +25,7 @@ import { RedeemNonModalProps } from "../../modal/components/Redeem/RedeemNonModa
 import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import { CONFIG } from "../../../lib/config/config";
+import { SignerProvider } from "../../signer/SignerContext";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -41,7 +42,9 @@ type WidgetProps = RedemptionProps &
   Omit<RedemptionContextProps, "setWidgetAction"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName">;
+  Omit<WalletConnectionProviderProps, "children" | "envName"> & {
+    parentOrigin?: string | undefined | null;
+  };
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -69,28 +72,30 @@ export function RedemptionWidget(props: WidgetProps) {
           infuraKey={infuraKey}
           {...props}
         >
-          <MagicProvider>
-            <QueryClientProvider client={queryClient}>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>
-                        <RedemptionProvider {...props}>
-                          <RedeemModalWithExchange
-                            {...props}
-                            hideModal={props.closeWidgetClick}
-                          />
-                        </RedemptionProvider>
-                      </ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WalletConnectionProvider>
-            </QueryClientProvider>
-          </MagicProvider>
+          <SignerProvider parentOrigin={props.parentOrigin}>
+            <MagicProvider>
+              <QueryClientProvider client={queryClient}>
+                <WalletConnectionProvider
+                  walletConnectProjectId={props.walletConnectProjectId}
+                >
+                  <ChatProvider>
+                    <IpfsProvider {...props}>
+                      <ConvertionRateProvider>
+                        <ModalProvider>
+                          <RedemptionProvider {...props}>
+                            <RedeemModalWithExchange
+                              {...props}
+                              hideModal={props.closeWidgetClick}
+                            />
+                          </RedemptionProvider>
+                        </ModalProvider>
+                      </ConvertionRateProvider>
+                    </IpfsProvider>
+                  </ChatProvider>
+                </WalletConnectionProvider>
+              </QueryClientProvider>
+            </MagicProvider>
+          </SignerProvider>
         </ConfigProvider>
       </EnvironmentProvider>
     </div>

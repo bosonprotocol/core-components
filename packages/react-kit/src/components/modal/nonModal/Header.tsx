@@ -30,12 +30,14 @@ type HeaderProps = {
   HeaderComponent: ReactNode;
   closable: boolean;
   handleOnClose: () => void;
+  showConnectButton: boolean;
 };
 
 const Header: React.FC<HeaderProps> = ({
   HeaderComponent,
   closable,
-  handleOnClose
+  handleOnClose,
+  showConnectButton
 }) => {
   return (
     <>
@@ -43,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({
         <Wrapper tag="div" margin="0">
           {HeaderComponent}
           <Grid justifyContent="flex-end">
-            <ConnectButton showChangeWallet />
+            {showConnectButton && <ConnectButton showChangeWallet />}
             {closable && (
               <ThemedButton data-close theme="blank" onClick={handleOnClose}>
                 <Close size={32} />

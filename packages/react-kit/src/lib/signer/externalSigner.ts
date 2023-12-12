@@ -4,8 +4,10 @@ import {
   TransactionResponse,
   TransactionReceipt
 } from "@bosonprotocol/common";
-import { BigNumberish } from "ethers";
+import { BigNumberish, Signer } from "ethers";
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "react-query";
+import { useExternalSigner } from "../../components/signer/useExternalSigner";
 
 const getDefaultHandleSignerFunction = <R>({
   parentOrigin,
@@ -13,7 +15,7 @@ const getDefaultHandleSignerFunction = <R>({
   args
 }: {
   parentOrigin: string;
-  functionName: keyof Web3LibAdapter;
+  functionName: keyof Web3LibAdapter | keyof Signer;
   args: unknown[] | undefined;
 }): Promise<R> => {
   return new Promise<R>((resolve, reject) => {
@@ -43,9 +45,30 @@ const getDefaultHandleSignerFunction = <R>({
 const getExternalSignerListener = ({
   parentOrigin
 }: {
-  parentOrigin: `http${string}`;
-}): Web3LibAdapter => {
+  parentOrigin: string;
+}): Web3LibAdapter | Signer => {
   return {
+    getAddress: (): Promise<string> => {
+      return getDefaultHandleSignerFunction<string>({
+        parentOrigin,
+        functionName: "getAddress",
+        args: undefined
+      });
+    },
+    signMessage: (...args): Promise<string> => {
+      return getDefaultHandleSignerFunction<string>({
+        parentOrigin,
+        functionName: "signMessage",
+        args
+      });
+    },
+    signTransaction: (...args): Promise<string> => {
+      return getDefaultHandleSignerFunction<string>({
+        parentOrigin,
+        functionName: "signTransaction",
+        args
+      });
+    },
     getSignerAddress: (): Promise<string> => {
       return getDefaultHandleSignerFunction<string>({
         parentOrigin,
@@ -60,7 +83,7 @@ const getExternalSignerListener = ({
         args: undefined
       });
     },
-    getBalance: async (...args): Promise<BigNumberish> => {
+    getBalance: async (...args: any[]): Promise<BigNumberish> => {
       return getDefaultHandleSignerFunction<BigNumberish>({
         parentOrigin,
         functionName: "getBalance",
@@ -137,7 +160,7 @@ const getExternalSignerListener = ({
         );
       });
     },
-    call: async (...args): Promise<string> => {
+    call: async (...args: any[]): Promise<string> => {
       return getDefaultHandleSignerFunction<string>({
         parentOrigin,
         functionName: "call",
@@ -164,7 +187,7 @@ const getExternalSignerListener = ({
 export const useProvideExternalSigner = ({
   parentOrigin
 }: {
-  parentOrigin: `http${string}` | null | undefined;
+  parentOrigin: string | null | undefined;
 }) => {
   const externalSignerListener = useMemo(
     () =>
@@ -172,7 +195,7 @@ export const useProvideExternalSigner = ({
     [parentOrigin]
   );
   const [externalSigner, setExternalSigner] = useState<
-    Web3LibAdapter | undefined
+    Web3LibAdapter | Signer | undefined
   >();
   useEffect(() => {
     function onMessageReceived(event: MessageEvent) {
@@ -192,4 +215,14 @@ export const useProvideExternalSigner = ({
     };
   }, [externalSigner, externalSignerListener, parentOrigin]);
   return externalSigner;
+};
+
+export const useExternalSignerChainId = () => {
+  const externalSigner = useExternalSigner();
+  return useQuery(["useExternalSignerChainId", externalSigner], () => {
+    if (!externalSigner) {
+      return;
+    }
+    return externalSigner.getChainId();
+  });
 };

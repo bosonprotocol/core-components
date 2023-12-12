@@ -13,6 +13,7 @@ import { useEthersSigner } from "../ethers/useEthersSigner";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
 import { useSignerAddress } from "../useSignerAddress";
+import { useExternalSignerChainId } from "../../lib/signer/externalSigner";
 
 export function useAccount() {
   const { address: account } = useWagmiAccount();
@@ -26,10 +27,16 @@ export function useAccount() {
 }
 
 export function useChainId() {
+  const externalSigner = useExternalSigner();
+  const { data: externalSignerChainId } = useExternalSignerChainId();
   const { chain } = useNetwork();
   const magicChainId = useMagicChainId();
   const isMagicLoggedIn = useIsMagicLoggedIn();
-  const chainIdToReturn = isMagicLoggedIn ? magicChainId : chain?.id;
+  const chainIdToReturn = externalSigner
+    ? externalSignerChainId
+    : isMagicLoggedIn
+    ? magicChainId
+    : chain?.id;
   return chainIdToReturn;
 }
 
