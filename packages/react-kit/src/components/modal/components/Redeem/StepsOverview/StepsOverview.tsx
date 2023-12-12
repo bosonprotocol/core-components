@@ -7,7 +7,6 @@ import { CommitStep } from "./style";
 import Step from "../../../../ui/Step";
 import { breakpoint } from "../../../../../lib/ui/breakpoint";
 import { useNonModalContext } from "../../../nonModal/NonModal";
-import Typography from "../../../../ui/Typography";
 import { theme } from "../../../../../theme";
 import { RedeemHeader } from "../RedeemHeader";
 

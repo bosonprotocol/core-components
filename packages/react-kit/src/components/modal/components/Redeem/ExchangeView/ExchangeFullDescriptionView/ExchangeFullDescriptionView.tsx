@@ -25,7 +25,7 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
               size={32}
               style={{ cursor: "pointer" }}
             />
-            <Typography tag="h3" style={{flex: '1'}}>
+            <Typography tag="h3" style={{ flex: "1" }}>
               {exchange?.offer.metadata.name || ""}
             </Typography>
           </Grid>

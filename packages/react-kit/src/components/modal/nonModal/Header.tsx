@@ -5,7 +5,6 @@ import { X } from "phosphor-react";
 import Grid from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
-import Typography from "../../ui/Typography";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
 
 const colors = theme.colors.light;
