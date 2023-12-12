@@ -14,8 +14,6 @@ interface Props {
 
 export default function ChatProvider({ children }: Props) {
   const signer = useSigner();
-  const externalSigner = useExternalSigner();
-  const signerToUse = externalSigner ?? signer;
   const [initialize, setInitialized] = useState<number>(0);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bosonXmtp, setBosonXmtp] = useState<BosonXmtpClient>();
@@ -23,12 +21,12 @@ export default function ChatProvider({ children }: Props) {
   const coreSDK = useCoreSDKWithContext();
   const { envName } = useEnvContext();
   useEffect(() => {
-    if (signerToUse && initialize && !bosonXmtp && envName && coreSDK) {
+    if (signer && initialize && !bosonXmtp && envName && coreSDK) {
       const newChatEnvName = getChatEnvName(envName, coreSDK.contracts);
       setChatEnvName(newChatEnvName);
       setLoading(true);
       BosonXmtpClient.initialise(
-        signerToUse as any,
+        signer,
         envName === "production" ? "production" : "dev",
         newChatEnvName
       )
@@ -38,7 +36,7 @@ export default function ChatProvider({ children }: Props) {
         .catch(console.error)
         .finally(() => setLoading(false));
     }
-  }, [signerToUse, initialize, coreSDK, bosonXmtp, envName]);
+  }, [signer, initialize, coreSDK, bosonXmtp, envName]);
   return (
     <Context.Provider
       value={{
