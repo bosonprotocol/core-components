@@ -32,7 +32,7 @@ export async function depositFunds(args: {
 }
 
 export async function withdrawFunds(args: {
-  sellerId: BigNumberish;
+  entityId: BigNumberish;
   tokensToWithdraw: Array<string>;
   amountsToWithdraw: Array<BigNumberish>;
   contractAddress: string;
@@ -41,7 +41,7 @@ export async function withdrawFunds(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeWithdrawFunds(
-      args.sellerId,
+      args.entityId,
       args.tokensToWithdraw,
       args.amountsToWithdraw
     )
@@ -49,14 +49,14 @@ export async function withdrawFunds(args: {
 }
 
 export async function withdrawAllAvailableFunds(args: {
-  sellerId: BigNumberish;
+  entityId: BigNumberish;
   subgraphUrl: string;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
 }): Promise<TransactionResponse> {
   const funds = await getFunds(args.subgraphUrl, {
     fundsFilter: {
-      accountId: args.sellerId.toString()
+      accountId: args.entityId.toString()
     }
   });
 
@@ -77,7 +77,7 @@ export async function withdrawAllAvailableFunds(args: {
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeWithdrawFunds(
-      args.sellerId,
+      args.entityId,
       tokensToWithdraw,
       amountsToWithdraw
     )
