@@ -207,6 +207,7 @@ export interface NonModalProps {
   maxWidths?: Store["modalMaxWidth"];
   theme?: NonNullable<Store["theme"]>;
   closable?: boolean;
+  showConnectButton: boolean;
 }
 
 export default function NonModal({
@@ -219,7 +220,8 @@ export default function NonModal({
     maxWidths = null,
     theme = "light",
     contentStyle: _contentStyle,
-    closable = true
+    closable = true,
+    showConnectButton
   }
 }: {
   children: React.ReactNode;
@@ -243,6 +245,7 @@ export default function NonModal({
           HeaderComponent={HeaderComponent}
           closable={closable}
           handleOnClose={handleOnClose}
+          showConnectButton={showConnectButton}
         />
 
         <Content $size={size} style={contentStyle}>
