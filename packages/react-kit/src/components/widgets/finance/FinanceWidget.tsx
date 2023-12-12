@@ -150,7 +150,7 @@ type FinanceWidgetProps = {
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps & {
-    parentOrigin: `http${string}` | undefined | null;
+    parentOrigin: string | undefined | null;
     sellerId: string | null | undefined;
   };
 

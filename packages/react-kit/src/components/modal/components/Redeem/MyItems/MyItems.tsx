@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
 import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";

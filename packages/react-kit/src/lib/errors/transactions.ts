@@ -1,4 +1,3 @@
-import { Provider } from "@bosonprotocol/ethers-sdk";
 import * as Sentry from "@sentry/browser";
 import { getRevertReason } from "./eth-revert-reason";
 import { providers } from "ethers";
@@ -12,7 +11,7 @@ export async function extractUserFriendlyError(
   }: {
     defaultError?: string;
     txResponse?: providers.TransactionResponse;
-    provider?: Provider;
+    provider?: providers.Provider;
   } = {}
 ): Promise<string> {
   try {

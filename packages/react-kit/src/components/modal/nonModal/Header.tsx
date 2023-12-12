@@ -41,12 +41,14 @@ type HeaderProps = {
   HeaderComponent: ReactNode;
   closable: boolean;
   handleOnClose: () => void;
+  showConnectButton: boolean;
 };
 
 const Header: React.FC<HeaderProps> = ({
   HeaderComponent,
   closable,
-  handleOnClose
+  handleOnClose,
+  showConnectButton
 }) => {
   const { isLteXS } = useBreakpoints();
   const InnerContainer = isLteXS ? Grid : Fragment;
@@ -54,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
     <Wrapper $flexWrap={isLteXS ? "wrap" : "nowrap"}>
       <InnerContainer>
         {HeaderComponent}
-        {!isLteXS && <ConnectButton showChangeWallet />}
+        {showConnectButton && !isLteXS && <ConnectButton showChangeWallet />}
         {closable && (
           <ThemedButton
             data-close
@@ -67,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </InnerContainer>
 
-      {isLteXS && (
+      {showConnectButton && isLteXS && (
         <Grid justifyContent="flex-end">
           <ConnectButton showChangeWallet />
         </Grid>

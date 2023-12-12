@@ -39,7 +39,6 @@ import { ContactPreference } from "./const";
 import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
-import Typography from "../../../ui/Typography";
 import { useConfigContext } from "../../../config/ConfigContext";
 import {
   RedemptionWidgetAction,
@@ -88,6 +87,7 @@ export type RedeemNonModalProps = {
   cancellationViewOnSuccess?: CancellationViewProps["onSuccess"];
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
   forcedAccount?: string;
+  parentOrigin?: string | null;
 };
 
 export default function RedeemWrapper({
@@ -102,7 +102,8 @@ export default function RedeemWrapper({
         footerComponent: <BosonFooter />,
         contentStyle: {
           background: colors.white
-        }
+        },
+        showConnectButton: !props.parentOrigin
       }}
     >
       <RedeemNonModal hideModal={hideModal} {...props} />

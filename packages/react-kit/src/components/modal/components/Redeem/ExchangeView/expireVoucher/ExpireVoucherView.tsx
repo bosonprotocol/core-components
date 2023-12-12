@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Typography from "../../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../../types/exchange";
 import ExpireVoucher, { ExpireVoucherProps } from "./ExpireVoucher";

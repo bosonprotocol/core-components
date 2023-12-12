@@ -4,8 +4,8 @@ import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
-import { useAccount } from "wagmi";
 import { RedeemHeader } from "../RedeemHeader";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
