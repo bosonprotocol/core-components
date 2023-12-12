@@ -61,7 +61,7 @@ const CurrencyDisplayValue = styled.span<{ $height: number }>`
   ${({ $height }) =>
     css`
       line-height: ${$height}px;
-      font-size: ${($height - 5) / 16}px;
+      font-size: ${($height - 5) / 16}rem;
     `}
 
   color: #09182c;
