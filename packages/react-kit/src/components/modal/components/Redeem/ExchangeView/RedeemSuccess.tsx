@@ -16,6 +16,7 @@ import { Button } from "../../../../buttons/Button";
 import GridContainer from "../../../../ui/GridContainer";
 import { useRedemptionContext } from "../../../../widgets/redemption/provider/RedemptionContext";
 import { useNonModalContext } from "../../../nonModal/NonModal";
+import { RedeemHeader } from "../RedeemHeader";
 
 const colors = theme.colors.light;
 
@@ -61,15 +62,13 @@ export function RedeemSuccess({
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid style={{ flex: "1" }}>
             <House
               onClick={onHouseClick}
               size={32}
               style={{ cursor: "pointer", flexShrink: 0 }}
             />
-            <Typography tag="h3" $width="100%">
-              Redeem your item
-            </Typography>
+            {RedeemHeader}
           </Grid>
         ),
         contentStyle: {

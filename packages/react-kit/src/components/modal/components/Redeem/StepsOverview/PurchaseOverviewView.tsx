@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import PurchaseOverview from "./PurchaseOverview";
 import { useNonModalContext } from "../../../nonModal/NonModal";
 import { theme } from "../../../../../theme";
+import Grid from "../../../../ui/Grid";
 
 const colors = theme.colors.light;
 type Props = {
@@ -14,11 +15,13 @@ export function PurchaseOverviewView({ onBackClick }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <ArrowLeft
-            onClick={onBackClick}
-            size={32}
-            style={{ cursor: "pointer", flexShrink: 0 }}
-          />
+          <Grid style={{ flex: "1" }}>
+            <ArrowLeft
+              onClick={onBackClick}
+              size={32}
+              style={{ cursor: "pointer" }}
+            />
+          </Grid>
         ),
         contentStyle: {
           background: colors.white

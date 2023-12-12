@@ -32,7 +32,7 @@ export function ExchangePolicy({
     dispatch({
       payload: {
         headerComponent: (
-          <Grid gap="1rem">
+          <Grid gap="1rem" style={{ flex: "1" }}>
             <ArrowLeft
               onClick={onBackClick}
               size={32}

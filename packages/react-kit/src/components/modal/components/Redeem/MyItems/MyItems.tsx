@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { useBuyers } from "../../../../../hooks/useBuyers";
 import { Checkbox } from "../../../../form";
 import Loading from "../../../../ui/loading/Loading";
-import Typography from "../../../../ui/Typography";
 import Exchanges from "./Exchanges";
 import { ExchangesStates, WithExchangesData } from "./WithExchangesData";
 import { Exchange } from "../../../../../types/exchange";
@@ -47,9 +46,7 @@ export function MyItems({
     dispatch({
       payload: {
         headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Manage your exchanges
-          </Typography>
+          <h3 style={{ width: "100%", flex: 1 }}>Manage your exchanges</h3>
         ),
         contentStyle: {
           background: colors.lightGrey

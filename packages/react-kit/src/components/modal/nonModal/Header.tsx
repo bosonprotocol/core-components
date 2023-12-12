@@ -1,26 +1,37 @@
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { theme } from "../../../theme";
 import styled from "styled-components";
 import { X } from "phosphor-react";
 import Grid from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
-import Typography from "../../ui/Typography";
+import { useBreakpoints } from "../../../hooks/useBreakpoints";
 
 const colors = theme.colors.light;
-const Wrapper = styled(Typography)<{ $title?: string }>`
+const Wrapper = styled.div<{ $flexWrap: string }>`
+  container-type: inline-size;
   position: relative;
-
+  width: 100%;
   text-align: left;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem 1rem 2rem;
   display: flex;
+  flex-wrap: ${({ $flexWrap }) => $flexWrap};
   border-bottom: 2px solid ${colors.border};
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;
+
+  > * {
+    margin: 0;
+    align-self: center;
+  }
 `;
 
 const Close = styled(X)`
+  && {
+    stroke: unset;
+  }
+
   line {
     stroke: ${colors.darkGrey};
   }
@@ -39,22 +50,31 @@ const Header: React.FC<HeaderProps> = ({
   handleOnClose,
   showConnectButton
 }) => {
+  const { isLteXS } = useBreakpoints();
+  const InnerContainer = isLteXS ? Grid : Fragment;
   return (
-    <>
-      {HeaderComponent && (
-        <Wrapper tag="div" margin="0">
-          {HeaderComponent}
-          <Grid justifyContent="flex-end">
-            {showConnectButton && <ConnectButton showChangeWallet />}
-            {closable && (
-              <ThemedButton data-close theme="blank" onClick={handleOnClose}>
-                <Close size={32} />
-              </ThemedButton>
-            )}
-          </Grid>
-        </Wrapper>
+    <Wrapper $flexWrap={isLteXS ? "wrap" : "nowrap"}>
+      <InnerContainer>
+        {HeaderComponent}
+        {showConnectButton && !isLteXS && <ConnectButton showChangeWallet />}
+        {closable && (
+          <ThemedButton
+            data-close
+            theme="blank"
+            onClick={handleOnClose}
+            id="close"
+          >
+            <Close size={32} />
+          </ThemedButton>
+        )}
+      </InnerContainer>
+
+      {showConnectButton && isLteXS && (
+        <Grid justifyContent="flex-end">
+          <ConnectButton showChangeWallet />
+        </Grid>
       )}
-    </>
+    </Wrapper>
   );
 };
 

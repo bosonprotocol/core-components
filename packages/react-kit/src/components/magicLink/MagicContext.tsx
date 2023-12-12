@@ -56,6 +56,7 @@ export const InnerMagicProvider = ({
       .catch(() => console.info("magic link could not be preloaded"));
     return {
       magic: magic as typeof magic & { uuid: string },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       magicProvider: new ethers.providers.Web3Provider(magic.rpcProvider as any)
     }; // return magic provider too
   }, [chainId, magicLinkKey, rpcUrls]);

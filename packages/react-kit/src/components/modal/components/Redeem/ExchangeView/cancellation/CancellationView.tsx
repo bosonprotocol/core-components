@@ -31,13 +31,13 @@ export const CancellationView: React.FC<CancellationViewProps> = ({
     dispatch({
       payload: {
         headerComponent: isCancelModeOnly ? (
-          <Grid gap="1rem">
+          <Grid gap="1rem" style={{ flex: "1" }}>
             <Typography tag="h3" style={{ flex: "1 1" }}>
               Cancel exchange
             </Typography>
           </Grid>
         ) : (
-          <Grid gap="1rem">
+          <Grid gap="1rem" style={{ flex: "1" }}>
             <ArrowLeft
               onClick={onBackClick}
               size={32}
