@@ -61,13 +61,11 @@ export type CreateSellerArgs = {
   authTokenType: number;
   /** Uri of the seller metadata */
   metadataUri: string;
-  /** A tag to identify the seller's first collection */
-  collectionId?: string;
 };
 
 export type UpdateSellerArgs = { id: BigNumberish } & Omit<
   CreateSellerArgs,
-  "contractUri" | "royaltyPercentage" | "collectionId"
+  "contractUri" | "royaltyPercentage"
 >;
 
 export const SellerUpdateFields = {
@@ -142,7 +140,7 @@ export type DisputeResolverStruct = {
 };
 
 export type CreateCollectionArgs = {
-  /** A tag to identify the seller's first collection */
+  /** A tag to identify the seller's collection */
   collectionId: string;
   /** Uri of the metadata of the collection voucher contract */
   contractUri: string;

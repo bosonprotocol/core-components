@@ -44,6 +44,7 @@ export function mockRawSellerFromSubgraph(
     contractURI: "ipfs://seller-contract-uri",
     funds: [],
     offers: [],
+    collections: [],
     exchanges: [],
     metadataUri: sellerMetadataUri,
     ...overrides
@@ -65,6 +66,14 @@ export function mockRawOfferFromSubgraph(
   return {
     id: "1",
     collectionIndex: "0",
+    collection: {
+      id: "1-collection-0",
+      collectionAddress: ZERO_ADDRESS,
+      collectionIndex: "0",
+      externalId: "initial",
+      externalIdHash: "0x00",
+      sellerId: "1"
+    },
     disputeResolverId: "1",
     createdAt: utils.timestamp.msToSec(Date.now() - DAY_IN_MS).toString(),
     price: "1",

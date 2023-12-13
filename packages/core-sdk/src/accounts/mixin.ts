@@ -608,4 +608,10 @@ export class AccountsMixin extends BaseCoreSDK {
       contractAddress: overrides.contractAddress || this._protocolDiamond
     });
   }
+
+  public async getOfferCollections(
+    queryVars?: subgraph.GetOfferCollectionsQueryQueryVariables
+  ): Promise<subgraph.OfferCollectionFieldsFragment[]> {
+    return accounts.subgraph.getOfferCollections(this._subgraphUrl, queryVars);
+  }
 }

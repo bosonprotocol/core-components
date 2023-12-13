@@ -20,7 +20,7 @@ import { storeMetadataOnTheGraph } from "../offers/storage";
 import { CreateOfferArgs } from "../offers/types";
 import { CreateSellerArgs } from "../accounts/types";
 import { BigNumberish } from "@ethersproject/bignumber";
-import { setSellerCollectionId } from "../accounts/handler";
+import { findCollectionSalt } from "../accounts/handler";
 
 export async function createOfferAndSeller(args: {
   offerToCreate: CreateOfferArgs;
@@ -49,10 +49,14 @@ export async function createOfferAndSeller(args: {
     )
   );
 
-  const sellerToCreate = await setSellerCollectionId(args);
+  const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateSellerAndOffer(sellerToCreate, args.offerToCreate)
+    data: encodeCreateSellerAndOffer(
+      args.sellerToCreate,
+      collectionSalt,
+      args.offerToCreate
+    )
   });
 }
 
@@ -104,11 +108,12 @@ export async function createSellerAndOfferWithCondition(args: {
     )
   );
 
-  const sellerToCreate = await setSellerCollectionId(args);
+  const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndOfferWithCondition(
-      sellerToCreate,
+      args.sellerToCreate,
+      collectionSalt,
       args.offerToCreate,
       args.condition
     )
@@ -197,11 +202,12 @@ export async function createSellerAndPremintedOffer(args: {
     )
   );
 
-  const sellerToCreate = await setSellerCollectionId(args);
+  const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndPremintedOffer(
-      sellerToCreate,
+      args.sellerToCreate,
+      collectionSalt,
       args.offerToCreate,
       args.reservedRangeLength
     )
@@ -233,11 +239,12 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
     )
   );
 
-  const sellerToCreate = await setSellerCollectionId(args);
+  const collectionSalt = await findCollectionSalt(args);
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSellerAndPremintedOfferWithCondition(
-      sellerToCreate,
+      args.sellerToCreate,
+      collectionSalt,
       args.offerToCreate,
       args.reservedRangeLength,
       args.condition

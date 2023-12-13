@@ -133,6 +133,9 @@ fragment BaseOfferFields on Offer {
   seller {
     ...BaseSellerFields
   }
+  collection {
+    ...BaseOfferCollectionFields
+  }
   exchangeToken {
     ...BaseExchangeTokenFields
   }

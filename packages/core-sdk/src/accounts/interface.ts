@@ -19,13 +19,17 @@ import {
   CreateCollectionArgs
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
+import { INITIAL_COLLECTION_ID } from "./handler";
 
 export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
 );
 
-export function encodeCreateSeller(seller: CreateSellerArgs) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+export function encodeCreateSeller(
+  seller: CreateSellerArgs,
+  collectionSalt: string
+) {
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
     sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct,
@@ -138,7 +142,10 @@ export function encodeOptInToDisputeResolverUpdate(
 }
 
 // TODO: add a unit test for collectionId
-export function createSellerArgsToStruct(args: CreateSellerArgs): {
+export function createSellerArgsToStruct(
+  args: CreateSellerArgs,
+  collectionSalt: string
+): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
   voucherInitValues: VoucherInitValuesStruct;
@@ -148,15 +155,8 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     authTokenType,
     contractUri,
     royaltyPercentage,
-    collectionId,
     ...sellerStructArgs
   } = args;
-  // collectionSalt is added to the seller admin address to give the sellerSalt that is used to compute the voucher contract address
-  // In case sellerSalt already exist, the seller creation will fail
-  // This may happen if the admin address was already assigned to another seller in the past
-  // In case of a failure, the collectionId could be used to define a different collectionSalt, and then a different sellerSalt
-  // TODO: to avoid any unexpected failure, add check that the collectionSalt/sellerSalt does not exist yet (call to method isSellerSaltAvailable())
-  const collectionSalt = formatBytes32String(collectionId || "collection-0");
   return {
     sellerStruct: argsToSellerStruct(sellerStructArgs),
     authTokenStruct: {
@@ -177,7 +177,8 @@ export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
 } {
   const { collectionId, contractUri, royaltyPercentage } = args;
   const collectionSalt =
-    args.collectionSalt || formatBytes32String(collectionId || "collection-0");
+    args.collectionSalt ||
+    formatBytes32String(collectionId || INITIAL_COLLECTION_ID);
   return {
     externalId: collectionId,
     voucherInitValues: {

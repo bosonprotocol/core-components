@@ -208,8 +208,60 @@ query getConditionalCommitAuthorizedEventLogsQuery(
   }
 }
 
+query getOfferCollectionsQuery(
+  $offerCollectionsSkip: Int
+  $offerCollectionsFirst: Int
+  $offerCollectionsOrderBy: OfferCollection_orderBy
+  $offerCollectionsOrderDirection: OrderDirection
+  $offerCollectionsFilter: OfferCollection_filter
+  $offersSkip: Int
+  $offersFirst: Int
+  $offersOrderBy: Offer_orderBy
+  $offersOrderDirection: OrderDirection
+  $offersFilter: Offer_filter
+  $includeOffers: Boolean = false
+) {
+  offerCollections(
+    skip: $offerCollectionsSkip
+    first: $offerCollectionsFirst
+    orderBy: $offerCollectionsOrderBy
+    orderDirection: $offerCollectionsOrderDirection
+    where: $offerCollectionsFilter
+  ) {
+    ...OfferCollectionFields
+  }
+}
+
+fragment OfferCollectionFields on OfferCollection {
+  ...BaseOfferCollectionFields
+  seller {
+    ...BaseSellerFields
+  }
+  offers(
+    skip: $offersSkip
+    first: $offersFirst
+    orderBy: $offersOrderBy
+    orderDirection: $offersOrderDirection
+    where: $offersFilter
+  ) @include(if: $includeOffers) {
+    ...BaseOfferFields
+  }
+}
+
+fragment BaseOfferCollectionFields on OfferCollection {
+  id
+  sellerId
+  collectionIndex
+  collectionAddress
+  externalIdHash
+  externalId
+}
+
 fragment SellerFields on Seller {
   ...BaseSellerFields
+  collections {
+    ...BaseOfferCollectionFields
+  }
   pendingSeller {
     ...PendingSellerFields
   }

@@ -8,7 +8,9 @@ import {
   GetSellerByIdQueryQueryVariables,
   GetDisputeResolverByIdQueryQueryVariables,
   GetDisputeResolversQueryQueryVariables,
-  DisputeResolverFieldsFragment
+  DisputeResolverFieldsFragment,
+  GetOfferCollectionsQueryQueryVariables,
+  OfferCollectionFieldsFragment
 } from "../subgraph";
 import { BigNumberish } from "@ethersproject/bignumber";
 
@@ -168,4 +170,15 @@ export async function getDisputeResolvers(
     queryVars
   );
   return disputeResolvers;
+}
+
+export async function getOfferCollections(
+  subgraphUrl: string,
+  queryVars: GetOfferCollectionsQueryQueryVariables = {}
+): Promise<OfferCollectionFieldsFragment[]> {
+  const sdk = getSubgraphSdk(subgraphUrl);
+  const { offerCollections = [] } = await sdk.getOfferCollectionsQuery(
+    queryVars
+  );
+  return offerCollections;
 }

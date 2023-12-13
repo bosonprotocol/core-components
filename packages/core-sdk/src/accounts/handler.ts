@@ -37,27 +37,29 @@ import {
 } from "./types";
 import { storeMetadataOnTheGraph } from "../offers/storage";
 
-export async function setSellerCollectionId(args: {
+export const INITIAL_COLLECTION_ID = "initial";
+
+export async function findCollectionSalt(args: {
   sellerToCreate: CreateSellerArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
-}): Promise<CreateSellerArgs> {
-  if (!args.sellerToCreate.collectionId) {
-    let collectionId = "collection-0";
-    const isAvailable = await isSellerSaltAvailable({
-      adminAddress: args.sellerToCreate.admin,
-      salt: formatBytes32String(collectionId),
-      contractAddress: args.contractAddress,
-      web3Lib: args.web3Lib
-    });
-    if (!isAvailable) {
-      const uuid = Math.floor(Math.random() * 100000000).toFixed(0);
-      collectionId = `collection-0-${uuid}`;
-      console.log(`new collectionId ${collectionId}`);
-    }
-    args.sellerToCreate.collectionId = collectionId;
+}): Promise<string> {
+  // collectionSalt is added to the seller admin address to give the sellerSalt that is used to compute the voucher contract address
+  // The seller creation will fail in case sellerSalt already exists
+  // This may happen if the admin address was already assigned to another seller in the past
+  // In that case, we add a random suffix on the collectionId to generate a different salt
+  let collectionSalt = formatBytes32String(INITIAL_COLLECTION_ID);
+  const isAvailable = await isSellerSaltAvailable({
+    adminAddress: args.sellerToCreate.admin,
+    salt: collectionSalt,
+    contractAddress: args.contractAddress,
+    web3Lib: args.web3Lib
+  });
+  if (!isAvailable) {
+    const uuid = Math.floor(Math.random() * 100000000).toFixed(0);
+    collectionSalt = formatBytes32String(`${INITIAL_COLLECTION_ID}-${uuid}`);
   }
-  return args.sellerToCreate;
+  return collectionSalt;
 }
 
 export async function createSeller(args: {
@@ -67,7 +69,7 @@ export async function createSeller(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
-  const sellerToCreate = await setSellerCollectionId(args);
+  const collectionSalt = await findCollectionSalt(args);
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.sellerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
@@ -75,7 +77,7 @@ export async function createSeller(args: {
   });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateSeller(sellerToCreate)
+    data: encodeCreateSeller(args.sellerToCreate, collectionSalt)
   });
 }
 
