@@ -4,6 +4,7 @@ import { Signer } from "ethers";
 import {
   MutableRefObject,
   RefObject,
+  useCallback,
   useEffect,
   useMemo,
   useState
@@ -22,6 +23,7 @@ export const useCallSignerFromIframe = ({
   isIframeLoaded: boolean;
   childIframeOrigin: `http${string}`;
 }) => {
+  const [loadCounter, reload] = useState(0);
   const ethersSigner = useMemo(
     () =>
       signer?.provider ? new EthersAdapter(signer.provider as Provider) : null,
@@ -149,5 +151,11 @@ export const useCallSignerFromIframe = ({
     return () => {
       window.removeEventListener("message", onMessageReceived);
     };
-  }, [ethersSigner, iframeRef, isIframeLoaded, txMap, childIframeOrigin]);
+  }, [ethersSigner, iframeRef, isIframeLoaded, txMap, childIframeOrigin, loadCounter]);
+  return {
+    reload: useCallback(
+      () => reload(prev => ++prev),
+      [reload],
+    )
+  }
 };
