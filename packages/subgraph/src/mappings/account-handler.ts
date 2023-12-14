@@ -38,7 +38,10 @@ import {
   getAndSaveDisputeResolverFees
 } from "../entities/dispute-resolution";
 import { saveAccountEventLog } from "../entities/event-log";
-import { saveSellerMetadata } from "../entities/metadata/handler";
+import {
+  saveCollectionMetadata,
+  saveSellerMetadata
+} from "../entities/metadata/handler";
 import { getSellerMetadataEntityId } from "../entities/metadata/seller";
 
 export function checkSellerExist(sellerId: BigInt): boolean {
@@ -95,6 +98,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   const bosonVoucherContract = IBosonVoucher.bind(
     event.params.voucherCloneAddress
   );
+  const collectionMetadataUri = bosonVoucherContract.contractURI();
 
   let seller = Seller.load(sellerId);
 
@@ -111,7 +115,7 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   seller.authTokenId = authTokenFromEvent.tokenId;
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
-  seller.contractURI = bosonVoucherContract.contractURI();
+  seller.contractURI = collectionMetadataUri;
   seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.metadataUri = sellerFromEvent.metadataUri || "";
   seller.metadata = getSellerMetadataEntityId(seller.id.toString());
@@ -121,8 +125,14 @@ export function handleSellerCreatedEvent(event: SellerCreated): void {
   const externalId = "initial";
   const externalIdHash = crypto.keccak256(Bytes.fromUTF8(externalId));
   // save original collection
+  const collectionId = getOfferCollectionId(sellerId, "0");
+  saveCollectionMetadata(
+    collectionId,
+    collectionMetadataUri,
+    event.block.timestamp
+  );
   saveOfferCollection(
-    getOfferCollectionId(sellerId, "0"),
+    collectionId,
     event.params.sellerId,
     new BigInt(0),
     event.params.voucherCloneAddress,
@@ -576,6 +586,7 @@ function saveOfferCollection(
     offerCollection.collectionAddress = collectionAddress;
     offerCollection.externalIdHash = externalIdHash;
     offerCollection.externalId = externalId;
+    offerCollection.metadata = offerCollectionId;
     offerCollection.save();
   } else {
     log.warning("Offer collection with ID '{}' already exists!", [
@@ -610,6 +621,15 @@ export function handleCollectionCreatedEvent(event: CollectionCreated): void {
     externalId = collections[collectionIndex.toU32() - 1].externalId;
   }
 
+  const bosonVoucherContract = IBosonVoucher.bind(
+    event.params.collectionAddress
+  );
+  const collectionMetadataUri = bosonVoucherContract.contractURI();
+  saveCollectionMetadata(
+    offerCollectionId,
+    collectionMetadataUri,
+    event.block.timestamp
+  );
   saveOfferCollection(
     offerCollectionId,
     sellerId,

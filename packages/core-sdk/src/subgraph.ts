@@ -2963,6 +2963,138 @@ export enum MetadataType {
 }
 
 /**
+ * Nft Contract Metadata
+ *
+ */
+export type NftContractMetadata = {
+  __typename?: "NftContractMetadata";
+  collaborators?: Maybe<Array<Scalars["String"]>>;
+  createdAt: Scalars["BigInt"];
+  description?: Maybe<Scalars["String"]>;
+  externalLink?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  image?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+};
+
+export type NftContractMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  collaborators?: InputMaybe<Array<Scalars["String"]>>;
+  collaborators_contains?: InputMaybe<Array<Scalars["String"]>>;
+  collaborators_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  collaborators_not?: InputMaybe<Array<Scalars["String"]>>;
+  collaborators_not_contains?: InputMaybe<Array<Scalars["String"]>>;
+  collaborators_not_contains_nocase?: InputMaybe<Array<Scalars["String"]>>;
+  createdAt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_gte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  createdAt_lt?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_lte?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not?: InputMaybe<Scalars["BigInt"]>;
+  createdAt_not_in?: InputMaybe<Array<Scalars["BigInt"]>>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_contains?: InputMaybe<Scalars["String"]>;
+  description_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_ends_with?: InputMaybe<Scalars["String"]>;
+  description_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_gt?: InputMaybe<Scalars["String"]>;
+  description_gte?: InputMaybe<Scalars["String"]>;
+  description_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_lt?: InputMaybe<Scalars["String"]>;
+  description_lte?: InputMaybe<Scalars["String"]>;
+  description_not?: InputMaybe<Scalars["String"]>;
+  description_not_contains?: InputMaybe<Scalars["String"]>;
+  description_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with?: InputMaybe<Scalars["String"]>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  description_not_starts_with?: InputMaybe<Scalars["String"]>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  description_starts_with?: InputMaybe<Scalars["String"]>;
+  description_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink?: InputMaybe<Scalars["String"]>;
+  externalLink_contains?: InputMaybe<Scalars["String"]>;
+  externalLink_contains_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink_ends_with?: InputMaybe<Scalars["String"]>;
+  externalLink_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink_gt?: InputMaybe<Scalars["String"]>;
+  externalLink_gte?: InputMaybe<Scalars["String"]>;
+  externalLink_in?: InputMaybe<Array<Scalars["String"]>>;
+  externalLink_lt?: InputMaybe<Scalars["String"]>;
+  externalLink_lte?: InputMaybe<Scalars["String"]>;
+  externalLink_not?: InputMaybe<Scalars["String"]>;
+  externalLink_not_contains?: InputMaybe<Scalars["String"]>;
+  externalLink_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink_not_ends_with?: InputMaybe<Scalars["String"]>;
+  externalLink_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  externalLink_not_starts_with?: InputMaybe<Scalars["String"]>;
+  externalLink_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  externalLink_starts_with?: InputMaybe<Scalars["String"]>;
+  externalLink_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_gt?: InputMaybe<Scalars["ID"]>;
+  id_gte?: InputMaybe<Scalars["ID"]>;
+  id_in?: InputMaybe<Array<Scalars["ID"]>>;
+  id_lt?: InputMaybe<Scalars["ID"]>;
+  id_lte?: InputMaybe<Scalars["ID"]>;
+  id_not?: InputMaybe<Scalars["ID"]>;
+  id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  image?: InputMaybe<Scalars["String"]>;
+  image_contains?: InputMaybe<Scalars["String"]>;
+  image_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_ends_with?: InputMaybe<Scalars["String"]>;
+  image_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_gt?: InputMaybe<Scalars["String"]>;
+  image_gte?: InputMaybe<Scalars["String"]>;
+  image_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_lt?: InputMaybe<Scalars["String"]>;
+  image_lte?: InputMaybe<Scalars["String"]>;
+  image_not?: InputMaybe<Scalars["String"]>;
+  image_not_contains?: InputMaybe<Scalars["String"]>;
+  image_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with?: InputMaybe<Scalars["String"]>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  image_not_starts_with?: InputMaybe<Scalars["String"]>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  image_starts_with?: InputMaybe<Scalars["String"]>;
+  image_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_contains?: InputMaybe<Scalars["String"]>;
+  name_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_ends_with?: InputMaybe<Scalars["String"]>;
+  name_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_gt?: InputMaybe<Scalars["String"]>;
+  name_gte?: InputMaybe<Scalars["String"]>;
+  name_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_lt?: InputMaybe<Scalars["String"]>;
+  name_lte?: InputMaybe<Scalars["String"]>;
+  name_not?: InputMaybe<Scalars["String"]>;
+  name_not_contains?: InputMaybe<Scalars["String"]>;
+  name_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with?: InputMaybe<Scalars["String"]>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  name_not_starts_with?: InputMaybe<Scalars["String"]>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  name_starts_with?: InputMaybe<Scalars["String"]>;
+  name_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+};
+
+export enum NftContractMetadata_OrderBy {
+  Collaborators = "collaborators",
+  CreatedAt = "createdAt",
+  Description = "description",
+  ExternalLink = "externalLink",
+  Id = "id",
+  Image = "image",
+  Name = "name"
+}
+
+/**
  * Offer
  *
  */
@@ -3032,6 +3164,7 @@ export type OfferCollection = {
   externalId: Scalars["String"];
   externalIdHash: Scalars["Bytes"];
   id: Scalars["ID"];
+  metadata?: Maybe<NftContractMetadata>;
   offers: Array<Offer>;
   seller: Seller;
   sellerId: Scalars["BigInt"];
@@ -3100,6 +3233,27 @@ export type OfferCollection_Filter = {
   id_lte?: InputMaybe<Scalars["ID"]>;
   id_not?: InputMaybe<Scalars["ID"]>;
   id_not_in?: InputMaybe<Array<Scalars["ID"]>>;
+  metadata?: InputMaybe<Scalars["String"]>;
+  metadata_?: InputMaybe<NftContractMetadata_Filter>;
+  metadata_contains?: InputMaybe<Scalars["String"]>;
+  metadata_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_gt?: InputMaybe<Scalars["String"]>;
+  metadata_gte?: InputMaybe<Scalars["String"]>;
+  metadata_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_lt?: InputMaybe<Scalars["String"]>;
+  metadata_lte?: InputMaybe<Scalars["String"]>;
+  metadata_not?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains?: InputMaybe<Scalars["String"]>;
+  metadata_not_contains_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_not_in?: InputMaybe<Array<Scalars["String"]>>;
+  metadata_not_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with?: InputMaybe<Scalars["String"]>;
+  metadata_starts_with_nocase?: InputMaybe<Scalars["String"]>;
   offers_?: InputMaybe<Offer_Filter>;
   seller?: InputMaybe<Scalars["String"]>;
   sellerId?: InputMaybe<Scalars["BigInt"]>;
@@ -3138,6 +3292,7 @@ export enum OfferCollection_OrderBy {
   ExternalId = "externalId",
   ExternalIdHash = "externalIdHash",
   Id = "id",
+  Metadata = "metadata",
   Offers = "offers",
   Seller = "seller",
   SellerId = "sellerId"
@@ -7194,6 +7349,7 @@ export type Query = {
   metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
+  nftContractMetadata: Array<NftContractMetadata>;
   offer?: Maybe<Offer>;
   offerCollection?: Maybe<OfferCollection>;
   offerCollections: Array<OfferCollection>;
@@ -7568,6 +7724,16 @@ export type QueryMetadataInterfacesArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<MetadataInterface_Filter>;
+};
+
+export type QueryNftContractMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<NftContractMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<NftContractMetadata_Filter>;
 };
 
 export type QueryOfferArgs = {
@@ -9148,6 +9314,7 @@ export type Subscription = {
   metadataAttributes: Array<MetadataAttribute>;
   metadataInterface?: Maybe<MetadataInterface>;
   metadataInterfaces: Array<MetadataInterface>;
+  nftContractMetadata: Array<NftContractMetadata>;
   offer?: Maybe<Offer>;
   offerCollection?: Maybe<OfferCollection>;
   offerCollections: Array<OfferCollection>;
@@ -9522,6 +9689,16 @@ export type SubscriptionMetadataInterfacesArgs = {
   skip?: InputMaybe<Scalars["Int"]>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<MetadataInterface_Filter>;
+};
+
+export type SubscriptionNftContractMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<NftContractMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars["Int"]>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<NftContractMetadata_Filter>;
 };
 
 export type SubscriptionOfferArgs = {
@@ -10060,6 +10237,16 @@ export type GetSellerByIdQueryQuery = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     }>;
     pendingSeller?: {
       __typename?: "PendingSeller";
@@ -10202,6 +10389,16 @@ export type GetSellerByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -10977,6 +11174,16 @@ export type GetSellersQueryQuery = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     }>;
     pendingSeller?: {
       __typename?: "PendingSeller";
@@ -11119,6 +11326,16 @@ export type GetSellersQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -12450,6 +12667,16 @@ export type GetDisputeResolverByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13177,6 +13404,16 @@ export type GetDisputeResolversQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -13987,6 +14224,16 @@ export type GetOfferCollectionsQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -14468,6 +14715,16 @@ export type GetOfferCollectionsQueryQuery = {
         owner: string;
       } | null;
     }>;
+    metadata?: {
+      __typename?: "NftContractMetadata";
+      id: string;
+      name?: string | null;
+      description?: string | null;
+      image?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      collaborators?: Array<string> | null;
+    } | null;
   }>;
 };
 
@@ -14670,6 +14927,16 @@ export type OfferCollectionFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -15143,6 +15410,16 @@ export type OfferCollectionFieldsFragment = {
       owner: string;
     } | null;
   }>;
+  metadata?: {
+    __typename?: "NftContractMetadata";
+    id: string;
+    name?: string | null;
+    description?: string | null;
+    image?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    collaborators?: Array<string> | null;
+  } | null;
 };
 
 export type BaseOfferCollectionFieldsFragment = {
@@ -15153,6 +15430,16 @@ export type BaseOfferCollectionFieldsFragment = {
   collectionAddress: string;
   externalIdHash: string;
   externalId: string;
+  metadata?: {
+    __typename?: "NftContractMetadata";
+    id: string;
+    name?: string | null;
+    description?: string | null;
+    image?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    collaborators?: Array<string> | null;
+  } | null;
 };
 
 export type SellerFieldsFragment = {
@@ -15177,6 +15464,16 @@ export type SellerFieldsFragment = {
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    metadata?: {
+      __typename?: "NftContractMetadata";
+      id: string;
+      name?: string | null;
+      description?: string | null;
+      image?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      collaborators?: Array<string> | null;
+    } | null;
   }>;
   pendingSeller?: {
     __typename?: "PendingSeller";
@@ -15319,6 +15616,16 @@ export type SellerFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -16502,6 +16809,16 @@ export type DisputeResolverFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -17927,6 +18244,16 @@ export type GetExchangeTokenByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -18565,6 +18892,16 @@ export type GetExchangeTokensQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -19181,6 +19518,16 @@ export type ExchangeTokenFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -19972,6 +20319,16 @@ export type GetExchangeByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -20692,6 +21049,16 @@ export type GetExchangesQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -21402,6 +21769,16 @@ export type ExchangeFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -22314,6 +22691,16 @@ export type GetBaseMetadataEntityByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -23039,6 +23426,16 @@ export type GetBaseMetadataEntitiesQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -23754,6 +24151,16 @@ export type BaseMetadataEntityFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -24460,6 +24867,16 @@ export type BaseBaseMetadataEntityFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -25518,6 +25935,16 @@ export type GetProductV1ProductsWithVariantsQueryQuery = {
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          metadata?: {
+            __typename?: "NftContractMetadata";
+            id: string;
+            name?: string | null;
+            description?: string | null;
+            image?: string | null;
+            externalLink?: string | null;
+            createdAt: string;
+            collaborators?: Array<string> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -26452,6 +26879,16 @@ export type GetAllProductsWithNotVoidedVariantsQueryQuery = {
           collectionAddress: string;
           externalIdHash: string;
           externalId: string;
+          metadata?: {
+            __typename?: "NftContractMetadata";
+            id: string;
+            name?: string | null;
+            description?: string | null;
+            image?: string | null;
+            externalLink?: string | null;
+            createdAt: string;
+            collaborators?: Array<string> | null;
+          } | null;
         };
         exchangeToken: {
           __typename?: "ExchangeToken";
@@ -27400,6 +27837,16 @@ export type GetProductV1MetadataEntityByIdQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -28548,6 +28995,16 @@ export type GetProductV1MetadataEntitiesQueryQuery = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -29686,6 +30143,16 @@ export type ProductV1MetadataEntityFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -30815,6 +31282,16 @@ export type BaseProductV1MetadataEntityFieldsFragment = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -32157,6 +32634,16 @@ export type BaseProductV1ProductWithVariantsFieldsFragment = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -33080,6 +33567,16 @@ export type BaseProductV1ProductWithNotVoidedVariantsFieldsFragment = {
         collectionAddress: string;
         externalIdHash: string;
         externalId: string;
+        metadata?: {
+          __typename?: "NftContractMetadata";
+          id: string;
+          name?: string | null;
+          description?: string | null;
+          image?: string | null;
+          externalLink?: string | null;
+          createdAt: string;
+          collaborators?: Array<string> | null;
+        } | null;
       };
       exchangeToken: {
         __typename?: "ExchangeToken";
@@ -34206,6 +34703,16 @@ export type GetOfferByIdQueryQuery = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -34924,6 +35431,16 @@ export type GetOffersQueryQuery = {
       collectionAddress: string;
       externalIdHash: string;
       externalId: string;
+      metadata?: {
+        __typename?: "NftContractMetadata";
+        id: string;
+        name?: string | null;
+        description?: string | null;
+        image?: string | null;
+        externalLink?: string | null;
+        createdAt: string;
+        collaborators?: Array<string> | null;
+      } | null;
     };
     exchangeToken: {
       __typename?: "ExchangeToken";
@@ -35691,6 +36208,16 @@ export type OfferFieldsFragment = {
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    metadata?: {
+      __typename?: "NftContractMetadata";
+      id: string;
+      name?: string | null;
+      description?: string | null;
+      image?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      collaborators?: Array<string> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -36284,6 +36811,16 @@ export type BaseOfferFieldsFragment = {
     collectionAddress: string;
     externalIdHash: string;
     externalId: string;
+    metadata?: {
+      __typename?: "NftContractMetadata";
+      id: string;
+      name?: string | null;
+      description?: string | null;
+      image?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      collaborators?: Array<string> | null;
+    } | null;
   };
   exchangeToken: {
     __typename?: "ExchangeToken";
@@ -36774,6 +37311,15 @@ export const BaseOfferCollectionFieldsFragmentDoc = gql`
     collectionAddress
     externalIdHash
     externalId
+    metadata {
+      id
+      name
+      description
+      image
+      externalLink
+      createdAt
+      collaborators
+    }
   }
 `;
 export const SellerMetadataMediaFieldsFragmentDoc = gql`

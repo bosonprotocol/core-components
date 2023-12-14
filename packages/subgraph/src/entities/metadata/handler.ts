@@ -5,6 +5,7 @@ import { saveBaseMetadata } from "./base";
 import { getIpfsMetadataObject, parseIpfsHash } from "../../utils/ipfs";
 import { convertToString } from "../../utils/json";
 import { saveInnerSellerMetadata } from "./seller";
+import { saveInnerNftContractMetadata } from "./nft-contract";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function saveMetadata(offer: Offer, timestamp: BigInt): string | null {
@@ -69,4 +70,32 @@ export function saveSellerMetadata(
   }
 
   return null;
+}
+
+export function saveCollectionMetadata(
+  collectionId: string,
+  collectionMetadataUri: string,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  timestamp: BigInt
+): void {
+  if (collectionMetadataUri === "") {
+    return;
+  }
+  const ipfsHash = parseIpfsHash(collectionMetadataUri);
+
+  if (ipfsHash === null) {
+    log.warning("Collection metadata URI does not contain supported CID: {}", [
+      collectionMetadataUri
+    ]);
+    return;
+  }
+  const metadataObj = getIpfsMetadataObject(ipfsHash);
+
+  if (metadataObj === null) {
+    log.warning("Could not load collection metadata with ipfsHash: {}", [
+      ipfsHash
+    ]);
+    return;
+  }
+  saveInnerNftContractMetadata(collectionId, metadataObj, timestamp);
 }

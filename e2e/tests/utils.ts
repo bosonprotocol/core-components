@@ -14,7 +14,10 @@ import {
 } from "ethers";
 import { CoreSDK, getEnvConfigs, accounts } from "../../packages/core-sdk/src";
 import { base, seller } from "../../packages/metadata/src";
-import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
+import {
+  BaseIpfsStorage,
+  IpfsMetadataStorage
+} from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -48,6 +51,7 @@ import {
 } from "./mockAbis";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
+import { sortObjKeys } from "../../packages/ipfs-storage/src/utils";
 
 const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
   getEnvConfigs(arg0)[0];
@@ -754,4 +758,16 @@ export async function commitToOffer(args: {
   await waitForGraphNodeIndexing();
   const exchange = await args.buyerCoreSDK.getExchangeById(exchangeId);
   return exchange;
+}
+
+export async function publishNftContractMetadata(
+  coreSDK: CoreSDK,
+  metadata: Record<string, unknown>
+): Promise<string> {
+  const ipfsStorage = new BaseIpfsStorage({
+    url: getFirstEnvConfig("local").ipfsMetadataUrl
+  });
+  const metadataWithSortedKeys = sortObjKeys(metadata);
+  const cid = await ipfsStorage.add(JSON.stringify(metadataWithSortedKeys));
+  return "ipfs://" + cid;
 }

@@ -460,6 +460,20 @@ type OfferCollection @entity {
   externalIdHash: Bytes!
   externalId: String!
   offers: [Offer!]! @derivedFrom(field: "collection")
+  metadata: NftContractMetadata
+}
+
+"""
+Nft Contract Metadata
+"""
+type NftContractMetadata @entity {
+  id: ID!
+  createdAt: BigInt!
+  name: String
+  description: String
+  image: String
+  externalLink: String
+  collaborators: [String!]
 }
 
 """

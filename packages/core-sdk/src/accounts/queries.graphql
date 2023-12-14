@@ -255,6 +255,15 @@ fragment BaseOfferCollectionFields on OfferCollection {
   collectionAddress
   externalIdHash
   externalId
+  metadata {
+    id
+    name
+    description
+    image
+    externalLink
+    createdAt
+    collaborators
+  }
 }
 
 fragment SellerFields on Seller {
