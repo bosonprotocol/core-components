@@ -194,8 +194,28 @@ describe("Offer collections", () => {
       `No such collection`
     );
   });
-  test("Create a collection with a ID too long (>32 char)", async () => {
-    // TODO: ensure the length of the collectionId is checked before being submitted to the blockchain
+  test("Create a collection with max length ID (31 char)", async () => {
+    const { coreSDK: coreSDK, fundedWallet } =
+      await initCoreSDKWithFundedWallet(seedWallet20);
+    const seller = await createSeller(coreSDK, fundedWallet.address);
+    const maxLengthId = "x".repeat(31);
+    expect(seller).toBeTruthy();
+    const tx = await coreSDK.createNewCollection({
+      contractUri: "",
+      royaltyPercentage: 0,
+      collectionId: maxLengthId
+    });
+    await tx.wait();
+    await waitForGraphNodeIndexing();
+    const collections = await coreSDK_A.getOfferCollections({
+      offerCollectionsFilter: {
+        sellerId: seller.id
+      }
+    });
+    expect(collections.length).toEqual(2);
+    expect(collections[1].externalId).toEqual(maxLengthId);
+  });
+  test("Create a collection with a ID too long (>31 char)", async () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);
     const seller = await createSeller(coreSDK, fundedWallet.address);
@@ -204,9 +224,9 @@ describe("Offer collections", () => {
       coreSDK.createNewCollection({
         contractUri: "",
         royaltyPercentage: 0,
-        collectionId: "0".repeat(33)
+        collectionId: "x".repeat(32)
       })
-    ).rejects.toThrow(`bytes32 string must be less than 32 bytes`);
+    ).rejects.toThrow(`collectionId length should not exceed 31 characters`);
   });
   test("Check collection metadata", async () => {
     // TODO:

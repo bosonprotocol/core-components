@@ -267,6 +267,9 @@ export async function calculateCollectionAddress(args: {
   contractAddress: string;
   web3Lib: Web3LibAdapter;
 }): Promise<{ collectionAddress: string; isAvailable: boolean }> {
+  if (args.collectionId.length >= 32) {
+    throw new Error(`collectionId length should not exceed 31 characters`);
+  }
   const collectionSalt = formatBytes32String(args.collectionId);
   const result = await args.web3Lib.call({
     to: args.contractAddress,
