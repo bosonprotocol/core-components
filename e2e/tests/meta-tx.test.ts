@@ -105,8 +105,7 @@ describe("meta-tx", () => {
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri,
-            collectionId: Date.now().toString() // ensure the salt is random to avoid collision
+            metadataUri
           },
           nonce
         });
