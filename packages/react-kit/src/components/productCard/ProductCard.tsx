@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Currencies,
   CurrencyDisplay
@@ -87,10 +87,6 @@ export const ProductCard = (props: IProductCard) => {
     tooltipProps = {}
   } = props;
 
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  const isNotImageLoaded = !isImageLoaded;
-
   return (
     <ProductCardWrapper
       data-card={dataCard}
@@ -102,9 +98,9 @@ export const ProductCard = (props: IProductCard) => {
       }}
     >
       <ProductCardImageWrapper>
-        <Image {...imageProps} onLoaded={() => setIsImageLoaded(true)} />
+        <Image {...imageProps} />
       </ProductCardImageWrapper>
-      <ProductCardBottom $isNotImageLoaded={isNotImageLoaded}>
+      <ProductCardBottom>
         <div>
           <ProductCardBottomContent>
             <ProductCardData>
