@@ -14,9 +14,10 @@ export const bosonOrchestrationHandlerIface = new Interface(
 
 export function encodeCreateSellerAndOffer(
   seller: CreateSellerArgs,
+  collectionSalt: string,
   offer: CreateOfferArgs
 ) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   const offerArgs = createOfferArgsToStructs(offer);
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndOffer",
@@ -53,10 +54,11 @@ export function encodeCreateOfferWithCondition(
 
 export function encodeCreateSellerAndOfferWithCondition(
   seller: CreateSellerArgs,
+  collectionSalt: string,
   offer: CreateOfferArgs,
   condition: ConditionStruct
 ) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   const offerArgs = createOfferArgsToStructs(offer);
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndOfferWithCondition",
@@ -117,10 +119,11 @@ export function encodeCreatePremintedOfferWithCondition(
 
 export function encodeCreateSellerAndPremintedOffer(
   seller: CreateSellerArgs,
+  collectionSalt: string,
   offer: CreateOfferArgs,
   reservedRangeLength: BigNumberish
 ) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   const offerArgs = createOfferArgsToStructs(offer);
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndPremintedOffer",
@@ -140,11 +143,12 @@ export function encodeCreateSellerAndPremintedOffer(
 
 export function encodeCreateSellerAndPremintedOfferWithCondition(
   seller: CreateSellerArgs,
+  collectionSalt: string,
   offer: CreateOfferArgs,
   reservedRangeLength: BigNumberish,
   condition: ConditionStruct
 ) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   const offerArgs = createOfferArgsToStructs(offer);
   return bosonOrchestrationHandlerIface.encodeFunctionData(
     "createSellerAndPremintedOfferWithCondition",

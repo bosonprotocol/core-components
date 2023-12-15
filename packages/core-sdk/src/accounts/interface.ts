@@ -15,20 +15,33 @@ import {
   OptInToSellerUpdateArgs,
   SellerUpdateFields,
   OptInToDisputeResolverUpdateArgs,
-  DisputeResolverUpdateFields
+  DisputeResolverUpdateFields,
+  CreateCollectionArgs
 } from "./types";
 import { AddressZero } from "@ethersproject/constants";
+import { INITIAL_COLLECTION_ID } from "./handler";
 
 export const bosonAccountHandlerIface = new Interface(
   abis.IBosonAccountHandlerABI
 );
 
-export function encodeCreateSeller(seller: CreateSellerArgs) {
-  const sellerArgs = createSellerArgsToStruct(seller);
+export function encodeCreateSeller(
+  seller: CreateSellerArgs,
+  collectionSalt: string
+) {
+  const sellerArgs = createSellerArgsToStruct(seller, collectionSalt);
   return bosonAccountHandlerIface.encodeFunctionData("createSeller", [
     sellerArgs.sellerStruct,
     sellerArgs.authTokenStruct,
     sellerArgs.voucherInitValues
+  ]);
+}
+
+export function encodeCreateNewCollection(collection: CreateCollectionArgs) {
+  const collectionArgs = createCollectionArgsToStruct(collection);
+  return bosonAccountHandlerIface.encodeFunctionData("createNewCollection", [
+    collectionArgs.externalId,
+    collectionArgs.voucherInitValues
   ]);
 }
 
@@ -129,7 +142,10 @@ export function encodeOptInToDisputeResolverUpdate(
 }
 
 // TODO: add a unit test for collectionId
-export function createSellerArgsToStruct(args: CreateSellerArgs): {
+export function createSellerArgsToStruct(
+  args: CreateSellerArgs,
+  collectionSalt: string
+): {
   sellerStruct: Partial<SellerStruct>;
   authTokenStruct: AuthTokenStruct;
   voucherInitValues: VoucherInitValuesStruct;
@@ -139,16 +155,32 @@ export function createSellerArgsToStruct(args: CreateSellerArgs): {
     authTokenType,
     contractUri,
     royaltyPercentage,
-    collectionId,
     ...sellerStructArgs
   } = args;
-  const collectionSalt = formatBytes32String(collectionId || "collection-0");
   return {
     sellerStruct: argsToSellerStruct(sellerStructArgs),
     authTokenStruct: {
       tokenId: authTokenId,
       tokenType: authTokenType
     },
+    voucherInitValues: {
+      contractURI: contractUri,
+      royaltyPercentage,
+      collectionSalt
+    }
+  };
+}
+
+export function createCollectionArgsToStruct(args: CreateCollectionArgs): {
+  externalId: string;
+  voucherInitValues: VoucherInitValuesStruct;
+} {
+  const { collectionId, contractUri, royaltyPercentage } = args;
+  const collectionSalt =
+    args.collectionSalt ||
+    formatBytes32String(collectionId || INITIAL_COLLECTION_ID);
+  return {
+    externalId: collectionId,
     voucherInitValues: {
       contractURI: contractUri,
       royaltyPercentage,
@@ -200,4 +232,44 @@ function createDisputeResolverArgsToDisputeResolverStruct(
       args.escalationResponsePeriodInMS
     )
   };
+}
+
+export function encodeIsSellerSaltAvailable(
+  adminAddress: string,
+  salt: string
+) {
+  return bosonAccountHandlerIface.encodeFunctionData("isSellerSaltAvailable", [
+    adminAddress,
+    salt
+  ]);
+}
+
+export function decodeIsSellerSaltAvailable(result: string): boolean {
+  const [isAvailable] = bosonAccountHandlerIface.decodeFunctionResult(
+    "isSellerSaltAvailable",
+    result
+  );
+  return isAvailable;
+}
+
+export function encodeCalculateCollectionAddress(
+  sellerId: BigNumberish,
+  collectionSalt: string
+) {
+  return bosonAccountHandlerIface.encodeFunctionData(
+    "calculateCollectionAddress",
+    [sellerId, collectionSalt]
+  );
+}
+
+export function decodeCalculateCollectionAddress(result: string): {
+  collectionAddress: string;
+  isAvailable: boolean;
+} {
+  const [collectionAddress, isAvailable] =
+    bosonAccountHandlerIface.decodeFunctionResult(
+      "calculateCollectionAddress",
+      result
+    );
+  return { collectionAddress, isAvailable };
 }

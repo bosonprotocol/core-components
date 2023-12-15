@@ -428,6 +428,7 @@ type Offer @entity {
   metadataHash: String!
   voided: Boolean!
   collectionIndex: BigInt!
+  collection: OfferCollection!
   disputeResolverId: BigInt!
   disputeResolver: DisputeResolver!
   disputeResolutionTerms: DisputeResolutionTermsEntity!
@@ -445,6 +446,34 @@ type Offer @entity {
   "Stats"
   numberOfCommits: BigInt!
   numberOfRedemptions: BigInt!
+}
+
+"""
+Offer Collection
+"""
+type OfferCollection @entity {
+  id: ID!
+  seller: Seller!
+  sellerId: BigInt!
+  collectionIndex: BigInt!
+  collectionAddress: Bytes!
+  externalIdHash: Bytes!
+  externalId: String!
+  offers: [Offer!]! @derivedFrom(field: "collection")
+  metadata: NftContractMetadata
+}
+
+"""
+Nft Contract Metadata
+"""
+type NftContractMetadata @entity {
+  id: ID!
+  createdAt: BigInt!
+  name: String
+  description: String
+  image: String
+  externalLink: String
+  collaborators: [String!]
 }
 
 """
@@ -503,6 +532,7 @@ type Seller implements Account @entity {
   id: ID! # Offer.sellerId
   sellerId: BigInt! # Allows sorting numerically by id
   offers: [Offer!]! @derivedFrom(field: "seller")
+  collections: [OfferCollection!]! @derivedFrom(field: "seller")
   exchanges: [Exchange!]! @derivedFrom(field: "seller")
   assistant: Bytes!
   admin: Bytes!

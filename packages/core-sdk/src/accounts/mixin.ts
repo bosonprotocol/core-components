@@ -588,4 +588,30 @@ export class AccountsMixin extends BaseCoreSDK {
   ): Promise<subgraph.DisputeResolverFieldsFragment[]> {
     return accounts.subgraph.getDisputeResolvers(this._subgraphUrl, queryVars);
   }
+
+  public async createNewCollection(
+    collectionToCreate: accounts.CreateCollectionArgs,
+    overrides: Partial<{
+      contractAddress: string;
+    }> = {}
+  ): Promise<TransactionResponse> {
+    if (!collectionToCreate.sellerId) {
+      const { id: sellerId } = await this.getSellerByAssistant(
+        await this._web3Lib.getSignerAddress()
+      );
+      // If the caller is not a seller, the sellerId remains undefined
+      collectionToCreate.sellerId = sellerId;
+    }
+    return accounts.handler.createNewCollection({
+      collectionToCreate,
+      web3Lib: this._web3Lib,
+      contractAddress: overrides.contractAddress || this._protocolDiamond
+    });
+  }
+
+  public async getOfferCollections(
+    queryVars?: subgraph.GetOfferCollectionsQueryQueryVariables
+  ): Promise<subgraph.OfferCollectionFieldsFragment[]> {
+    return accounts.subgraph.getOfferCollections(this._subgraphUrl, queryVars);
+  }
 }

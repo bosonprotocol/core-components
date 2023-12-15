@@ -17,7 +17,7 @@ import {
   saveDisputeResolutionTermsLegacy
 } from "../entities/dispute-resolution";
 import { saveOfferEventLog } from "../entities/event-log";
-import { checkSellerExist } from "./account-handler";
+import { checkSellerExist, getOfferCollectionId } from "./account-handler";
 
 export function handleOfferCreatedEvent(event: OfferCreated): void {
   const offerId = event.params.offerId;
@@ -71,6 +71,10 @@ export function handleOfferCreatedEvent(event: OfferCreated): void {
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
     offer.collectionIndex = offerStruct.collectionIndex;
+    offer.collection = getOfferCollectionId(
+      offerStruct.sellerId.toString(),
+      offerStruct.collectionIndex.toString()
+    );
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
 
