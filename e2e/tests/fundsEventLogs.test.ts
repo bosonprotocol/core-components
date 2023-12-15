@@ -39,7 +39,7 @@ describe("fundsEventLogs", () => {
     expect(eventLogs.length).toEqual(0);
     const tx = await coreSDK.commitToOffer(createdOffer.id);
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     funds = await coreSDK.getFunds({
       fundsFilter: {
         account: createdOffer.seller.id,

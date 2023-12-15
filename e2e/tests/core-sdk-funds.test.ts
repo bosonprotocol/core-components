@@ -198,7 +198,6 @@ describe("core-sdk-funds", () => {
         buyerCoreSDK,
         sellerCoreSDK
       });
-      await waitForGraphNodeIndexing();
       const [buyer] = await buyerCoreSDK.getBuyers({
         buyersFilter: {
           wallet: buyerWallet.address
@@ -209,20 +208,17 @@ describe("core-sdk-funds", () => {
         buyerCoreSDK,
         sellerCoreSDK
       });
-      await waitForGraphNodeIndexing();
       const ex3 = await commitToOffer({
         offerId: offer1.id,
         buyerCoreSDK,
         sellerCoreSDK
       });
-      await waitForGraphNodeIndexing();
 
       const ex4 = await commitToOffer({
         offerId: offer1.id,
         buyerCoreSDK,
         sellerCoreSDK
       });
-      await waitForGraphNodeIndexing();
 
       const ex5 = await commitToOffer({
         offerId: offer1.id,
@@ -236,8 +232,8 @@ describe("core-sdk-funds", () => {
       await (await buyerCoreSDK.raiseDispute(ex3.id)).wait();
       await (await buyerCoreSDK.redeemVoucher(ex4.id)).wait();
       await (await buyerCoreSDK.completeExchange(ex4.id)).wait();
-      await (await sellerCoreSDK.revokeVoucher(ex5.id)).wait();
-      await waitForGraphNodeIndexing();
+      const receipt = await (await sellerCoreSDK.revokeVoucher(ex5.id)).wait();
+      await waitForGraphNodeIndexing(receipt);
 
       const sellerFundsAfter = await sellerCoreSDK.getFunds({
         fundsFilter: {
@@ -311,7 +307,7 @@ async function depositFunds(args: {
   );
   await depositFundsTxResponse.wait();
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(depositFundsTxResponse);
 
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {
@@ -339,7 +335,7 @@ async function withdrawFunds(args: {
     args.amountsInEth.map((amount) => utils.parseEther(amount))
   );
   await withdrawResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(withdrawResponse);
 
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {

@@ -88,14 +88,14 @@ describe("CoreSDK - accounts", () => {
 
       const { coreSDK: coreSDK2, fundedWallet: randomWallet } =
         await initCoreSDKWithFundedWallet(seedWallet3);
-      await (
+      const receipt = await (
         await coreSDK.updateDisputeResolver(disputeResolverBeforeUpdate.id, {
           assistant: randomWallet.address,
           metadataUri: "ipfs://changed",
           escalationResponsePeriodInMS: 123_000
         })
       ).wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -126,7 +126,7 @@ describe("CoreSDK - accounts", () => {
         }
       });
       await txOptIn.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(txOptIn);
       const disputeResolverAfterOptIn = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
       );
@@ -162,10 +162,10 @@ describe("CoreSDK - accounts", () => {
         tokenName: "Not-Native",
         feeAmount: utils.parseEther("0")
       };
-      await (
+      const receipt = await (
         await coreSDK.addFeesToDisputeResolver(disputeResolver.id, [secondFee])
       ).wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolver.id
@@ -213,13 +213,13 @@ describe("CoreSDK - accounts", () => {
           sellerAllowList: []
         });
 
-      await (
+      const receipt = await (
         await coreSDK.removeFeesFromDisputeResolver(
           disputeResolverBeforeUpdate.id,
           [ethDisputeResolutionFee.tokenAddress]
         )
       ).wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -251,12 +251,12 @@ describe("CoreSDK - accounts", () => {
         }
       );
 
-      await (
+      const receipt = await (
         await coreSDK.addSellersToDisputeResolverAllowList(disputeResolver.id, [
           seller.id
         ])
       ).wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolver.id
@@ -284,13 +284,13 @@ describe("CoreSDK - accounts", () => {
           sellerAllowList: [seller.id]
         });
 
-      await (
+      const receipt = await (
         await coreSDK.removeSellersFromDisputeResolverAllowList(
           disputeResolverBeforeUpdate.id,
           [seller.id]
         )
       ).wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
 
       const disputeResolverAfterUpdate = await coreSDK.getDisputeResolverById(
         disputeResolverBeforeUpdate.id
@@ -529,7 +529,7 @@ describe("CoreSDK - accounts", () => {
         }
       });
       await optInTx.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(optInTx);
       seller = await coreSDK.getSellerById(seller.id as string);
       expect(seller).toBeTruthy();
       expect(seller.assistant).toEqual(randomWallet.address.toLowerCase());
