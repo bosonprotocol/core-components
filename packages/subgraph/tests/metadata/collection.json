@@ -1,0 +1,15 @@
+{
+  "name": "MyCollection",
+  "description": "This is my collection",
+  "image": "https://upload.wikimedia.org/wikipedia/en/c/c4/Various_Bored_Ape.jpg",
+  "external_link": "www.mycollection.com",
+  "collaborators": [
+    "Doc",
+    "Grumpy",
+    "Happy",
+    "Sleepy",
+    "Bashful",
+    "Sneezy",
+    "Dopey"
+  ]
+}

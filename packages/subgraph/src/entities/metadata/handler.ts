@@ -83,7 +83,7 @@ export function saveCollectionMetadata(
   }
   const ipfsHash = parseIpfsHash(collectionMetadataUri);
 
-  if (ipfsHash === null) {
+  if (ipfsHash === null || ipfsHash === "") {
     log.warning("Collection metadata URI does not contain supported CID: {}", [
       collectionMetadataUri
     ]);

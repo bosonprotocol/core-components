@@ -59,6 +59,7 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   const bosonVoucherContract = IBosonVoucher.bind(
     event.params.voucherCloneAddress
   );
+  const collectionMetadataUri = bosonVoucherContract.contractURI();
 
   let seller = Seller.load(sellerId);
 
@@ -75,10 +76,27 @@ export function handleSellerCreatedEventWithoutMetadataUri(
   seller.authTokenId = authTokenFromEvent.tokenId;
   seller.authTokenType = authTokenFromEvent.tokenType;
   seller.active = true;
-  seller.contractURI = bosonVoucherContract.contractURI();
+  seller.contractURI = collectionMetadataUri;
   seller.royaltyPercentage = bosonVoucherContract.getRoyaltyPercentage();
   seller.save();
 
+  const externalId = "initial";
+  const externalIdHash = crypto.keccak256(Bytes.fromUTF8(externalId));
+  // save original collection
+  const collectionId = getOfferCollectionId(sellerId, "0");
+  saveCollectionMetadata(
+    collectionId,
+    collectionMetadataUri,
+    event.block.timestamp
+  );
+  saveOfferCollection(
+    collectionId,
+    event.params.sellerId,
+    new BigInt(0),
+    event.params.voucherCloneAddress,
+    Bytes.fromHexString(externalIdHash.toHexString()),
+    externalId
+  );
   saveAccountEventLog(
     event.transaction.hash.toHexString(),
     event.logIndex,
