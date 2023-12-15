@@ -32,8 +32,9 @@ ProductCardSkeleton.args = {
 
 ProductCardSkeleton.decorators = [(Story) => wrapper(Story)];
 
-export const CollectionsCardSkeleton: ComponentStory<typeof _CollectionsCardSkeleton> =
-  _CollectionsCardSkeleton;
+export const CollectionsCardSkeleton: ComponentStory<
+  typeof _CollectionsCardSkeleton
+> = _CollectionsCardSkeleton;
 
 // // More on args: https://storybook.js.org/docs/react/writing-stories/args
 // CollectionsCardSkeleton.args = {

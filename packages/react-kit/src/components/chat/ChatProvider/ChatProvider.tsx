@@ -6,7 +6,6 @@ import { useEnvContext } from "../../environment/EnvironmentContext";
 import { Context } from "./ChatContext";
 import { getChatEnvName } from "./const";
 import { useSigner } from "../../../hooks/connection/connection";
-import { useExternalSigner } from "../../signer/useExternalSigner";
 
 interface Props {
   children: ReactNode;
