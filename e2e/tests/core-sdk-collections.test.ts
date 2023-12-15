@@ -101,7 +101,7 @@ describe("Offer collections", () => {
       collectionId: customCollectionId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -123,7 +123,7 @@ describe("Offer collections", () => {
       collectionId: customCollectionId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -231,7 +231,7 @@ describe("Offer collections", () => {
       collectionId: maxLengthId
     });
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     const collections = await coreSDK_A.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id
@@ -291,7 +291,7 @@ describe("Offer collections", () => {
       collectionId: collectionMetadata2.name
     });
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     const collections = await coreSDK.getOfferCollections({
       offerCollectionsFilter: {
         sellerId: seller.id

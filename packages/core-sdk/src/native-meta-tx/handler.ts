@@ -183,7 +183,8 @@ export async function relayNativeMetaTransaction(args: {
         from: txReceipt?.from || metaTx.params.userAddress,
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
-        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice)
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
+        blockNumber: txReceipt.blockNumber
       };
     },
     hash: relayTxResponse.txHash

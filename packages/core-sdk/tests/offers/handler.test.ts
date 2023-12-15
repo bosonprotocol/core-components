@@ -42,7 +42,8 @@ describe("#createOffer()", () => {
             to: "0x",
             logs: [],
             transactionHash: "0x",
-            effectiveGasPrice: "0"
+            effectiveGasPrice: "0",
+            blockNumber: 0
           })
         }
       }),

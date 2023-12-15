@@ -122,7 +122,8 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
       to: ADDRESS,
       logs: [],
       status: 0,
-      effectiveGasPrice: "10"
+      effectiveGasPrice: "10",
+      blockNumber: 12
     })
   },
   send: "0x",
@@ -133,7 +134,8 @@ const defaultMockedReturnValues: MockedWeb3LibReturnValues = {
     to: ADDRESS,
     logs: [],
     status: 0,
-    effectiveGasPrice: "10"
+    effectiveGasPrice: "10",
+    blockNumber: 12
   }
 };
 

@@ -110,7 +110,7 @@ describe("core-sdk", () => {
 
       const txResponse = await coreSDK.voidOffer(createdOffer.id);
       await txResponse.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(txResponse);
 
       const offer = await coreSDK.getOfferById(createdOffer.id);
       expect(offer.voided).toBe(true);
@@ -171,7 +171,7 @@ describe("core-sdk", () => {
       const createdGroupTx = await sellerCoreSDK.createGroup(groupToCreate);
       await createdGroupTx.wait();
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(createdGroupTx);
 
       // Check the 3 offers are linked to the condition in the SubGraph
       for (const offerId of offerIds) {
@@ -352,7 +352,7 @@ describe("core-sdk", () => {
 
         await createdGroupTx.wait();
 
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(createdGroupTx);
 
         const offerWithCondition = await sellerCoreSDK.getOfferById(
           createdOffer.id
@@ -447,7 +447,7 @@ describe("core-sdk", () => {
 
         await createdGroupTx.wait();
 
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(createdGroupTx);
 
         const exchange = await commitToConditionalOffer({
           buyerCoreSDK,
@@ -535,7 +535,7 @@ describe("core-sdk", () => {
         );
 
         const createOfferCond = await createOfferCondTx.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(createOfferCond);
 
         const offerId = sellerCoreSDK.getCreatedOfferIdFromLogs(
           createOfferCond.logs
@@ -627,7 +627,7 @@ describe("core-sdk", () => {
         );
 
         const createOfferCond = await createOfferCondTx.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(createOfferCond);
 
         const offerId = sellerCoreSDK.getCreatedOfferIdFromLogs(
           createOfferCond.logs
@@ -761,7 +761,7 @@ describe("core-sdk", () => {
         );
 
         const receipt = await createOfferCondTx.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(receipt);
 
         const offerId = buyerCoreSDK.getCreatedOfferIdFromLogs(receipt.logs);
         const buyerAddress = await buyerWallet.getAddress();
@@ -907,7 +907,7 @@ describe("core-sdk", () => {
         );
 
         const receipt = await createOfferCondTx.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(receipt);
         const offerId = buyerCoreSDK.getCreatedOfferIdFromLogs(receipt.logs);
 
         if (!offerId) {
@@ -921,10 +921,10 @@ describe("core-sdk", () => {
           ].includes(token)
         ) {
           // let's use the tokenId to make it fail
-          await (
+          const receipt = await (
             await buyerCoreSDK.commitToConditionalOffer(offerId, tokenId)
           ).wait();
-          await waitForGraphNodeIndexing();
+          await waitForGraphNodeIndexing(receipt);
         }
 
         const buyerAddress = await buyerWallet.getAddress();
@@ -999,7 +999,7 @@ describe("core-sdk", () => {
 
       const txResponse = await sellerCoreSDK.revokeVoucher(exchange.id);
       await txResponse.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(txResponse);
       const exchangeAfterRevoke = await sellerCoreSDK.getExchangeById(
         exchange.id
       );
@@ -1027,7 +1027,7 @@ describe("core-sdk", () => {
 
       const txResponse = await buyerCoreSDK.cancelVoucher(exchange.id);
       await txResponse.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(txResponse);
       const exchangeAfterRevoke = await buyerCoreSDK.getExchangeById(
         exchange.id
       );
@@ -1055,7 +1055,7 @@ describe("core-sdk", () => {
 
       const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
       await txResponse.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(txResponse);
       const exchangeAfterRevoke = await buyerCoreSDK.getExchangeById(
         exchange.id
       );
@@ -1099,11 +1099,11 @@ describe("core-sdk", () => {
       const txResponse2 = await buyerCoreSDK.redeemVoucher(exchange2.id);
       await txResponse2.wait();
 
+      await waitForGraphNodeIndexing(txResponse2);
       const exchangesAfterComplete = await completeExchangeBatch({
         coreSDK: buyerCoreSDK,
         exchangeIds: [exchange1.id, exchange2.id]
       });
-      await waitForGraphNodeIndexing();
 
       expect(exchangesAfterComplete[0].state).toBe(ExchangeState.Completed);
       expect(exchangesAfterComplete[0].completedDate).toBeTruthy();
@@ -1119,7 +1119,7 @@ describe("core-sdk", () => {
       const buyerCoreSDK = initCoreSDKWithWallet(buyerWallet);
 
       beforeEach(async () => {
-        await waitForGraphNodeIndexing();
+        // await waitForGraphNodeIndexing(); //?
         await ensureCreatedSeller(sellerWallet);
 
         // before each case, create offer + commit + redeem
@@ -1136,7 +1136,7 @@ describe("core-sdk", () => {
 
         const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
         await txResponse.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(txResponse);
       });
 
       test("raise dispute", async () => {
@@ -1175,7 +1175,7 @@ describe("core-sdk", () => {
 
         const txResponse = await buyerCoreSDK.redeemVoucher(exchange.id);
         await txResponse.wait();
-        await waitForGraphNodeIndexing();
+        await waitForGraphNodeIndexing(txResponse);
 
         // Raise the dispute
         await raiseDispute(exchange.id, buyerCoreSDK);
@@ -1340,7 +1340,7 @@ async function depositFunds(args: {
   );
   await depositFundsTxResponse.wait();
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(depositFundsTxResponse);
 
   const funds = await args.coreSDK.getFunds({
     fundsFilter: {
@@ -1371,7 +1371,7 @@ async function commitToConditionalOffer(args: {
   const exchangeId = args.buyerCoreSDK.getCommittedExchangeIdFromLogs(
     commitToOfferTxReceipt.logs
   );
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(commitToOfferTxReceipt);
   const exchange = await args.sellerCoreSDK.getExchangeById(
     exchangeId as string
   );
@@ -1386,7 +1386,7 @@ async function completeExchange(args: {
     args.exchangeId
   );
   await completeExchangeTxResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(completeExchangeTxResponse);
   const exchangeAfterComplete = await args.coreSDK.getExchangeById(
     args.exchangeId
   );
@@ -1401,7 +1401,7 @@ async function completeExchangeBatch(args: {
     args.exchangeIds
   );
   await completeExchangeTxResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(completeExchangeTxResponse);
   const exchangesAfterComplete = await args.coreSDK.getExchanges({
     exchangesFilter: {
       id_in: args.exchangeIds.map((id) => id.toString())
@@ -1420,7 +1420,7 @@ async function raiseDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
 
   const txResponse = await buyerCoreSDK.raiseDispute(exchangeId);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
   const exchangeAfterDispute = await buyerCoreSDK.getExchangeById(exchangeId);
   expect(exchangeAfterDispute.state).toBe(ExchangeState.Disputed);
   expect(exchangeAfterDispute.completedDate).toBeNull();
@@ -1452,7 +1452,7 @@ async function checkDisputeResolving(exchangeId: string, coreSDK: CoreSDK) {
 async function retractDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   const txResponse = await buyerCoreSDK.retractDispute(exchangeId);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
 
 async function checkDisputeRetracted(exchangeId: string, coreSDK: CoreSDK) {
@@ -1506,7 +1506,7 @@ async function resolveDispute(
       sigV
     });
     await txResponse.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(txResponse);
   }
 }
 
@@ -1542,7 +1542,7 @@ async function checkDisputeResolved(
 async function escalateDispute(exchangeId: string, buyerCoreSDK: CoreSDK) {
   const txResponse = await buyerCoreSDK.escalateDispute(exchangeId);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
 
 async function checkDisputeEscalated(exchangeId: string, coreSDK: CoreSDK) {
@@ -1583,7 +1583,7 @@ async function decideDispute(
 ) {
   const txResponse = await drCoreSDK.decideDispute(exchangeId, buyerPercent);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
 
 async function checkDisputeDecided(
@@ -1625,7 +1625,7 @@ async function extendDisputeTimeout(
     newTimeout
   );
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
 
 async function checkDisputeTimeout(
@@ -1644,7 +1644,7 @@ async function checkDisputeTimeout(
 async function refuseDispute(exchangeId: string, drCoreSDK: CoreSDK) {
   const txResponse = await drCoreSDK.refuseEscalatedDispute(exchangeId);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
 
 async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
@@ -1675,5 +1675,5 @@ async function checkDisputeRefused(exchangeId: string, coreSDK: CoreSDK) {
 async function expireDispute(exchangeId: string, coreSDK: CoreSDK) {
   const txResponse = await coreSDK.expireDispute(exchangeId);
   await txResponse.wait();
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(txResponse);
 }
