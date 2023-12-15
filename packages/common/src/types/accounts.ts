@@ -149,6 +149,6 @@ export type CreateCollectionArgs = {
   /** collectionSalt is added to the seller admin address to give the sellerSalt
       that is used to compute the voucher contract address. By default, deduced from collectionId */
   collectionSalt?: string;
-  /** optional field to specify the sellerId (will be retrived from caller wallet is not specified) */
+  /** optional field to specify the sellerId (will be retrieved from caller wallet if not specified) */
   sellerId?: BigNumberish;
 };
