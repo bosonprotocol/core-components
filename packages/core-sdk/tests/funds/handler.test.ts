@@ -36,7 +36,7 @@ describe("#withdrawAllAvailableFunds()", () => {
     });
 
     await withdrawAllAvailableFunds({
-      sellerId: sellerId,
+      entityId: sellerId,
       subgraphUrl: SUBGRAPH_URL,
       contractAddress: ADDRESS,
       web3Lib: mockWebLibApapter

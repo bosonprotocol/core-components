@@ -17,12 +17,12 @@ export function encodeDepositFunds(
 }
 
 export function encodeWithdrawFunds(
-  sellerId: BigNumberish,
+  entityId: BigNumberish,
   tokensToWithdraw: Array<string>,
   amountsToWithdraw: Array<BigNumberish>
 ) {
   return bosonFundsHandlerIface.encodeFunctionData("withdrawFunds", [
-    sellerId,
+    entityId,
     tokensToWithdraw,
     amountsToWithdraw
   ]);

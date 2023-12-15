@@ -1,7 +1,14 @@
 import { TransactionResponse } from "@bosonprotocol/common";
 import { EthersAdapter, Provider } from "@bosonprotocol/ethers-sdk";
 import { Signer } from "ethers";
-import { RefObject, useEffect, useMemo, useState } from "react";
+import {
+  MutableRefObject,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 type TransactionResponseHash = string;
 export const useCallSignerFromIframe = ({
   signer,
@@ -10,10 +17,13 @@ export const useCallSignerFromIframe = ({
   childIframeOrigin
 }: {
   signer: Signer | undefined;
-  iframeRef: RefObject<HTMLIFrameElement>;
+  iframeRef:
+    | RefObject<HTMLIFrameElement>
+    | MutableRefObject<HTMLIFrameElement | undefined>;
   isIframeLoaded: boolean;
   childIframeOrigin: `http${string}`;
 }) => {
+  const [loadCounter, reload] = useState(0);
   const ethersSigner = useMemo(
     () =>
       signer?.provider ? new EthersAdapter(signer.provider as Provider) : null,
@@ -66,11 +76,22 @@ export const useCallSignerFromIframe = ({
           }
         } else if (functionName) {
           const fn: keyof typeof EthersAdapter["prototype"] = functionName;
+          const signerFn: keyof typeof Signer["prototype"] = functionName;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const args: any[] = event.data.args ?? [];
 
           try {
-            const result = await ethersSigner?.[fn]?.(args[0], args[1]);
+            let result;
+            if (
+              signer &&
+              signer[signerFn] &&
+              typeof signer[signerFn] === "function"
+            ) {
+              // @ts-ignore
+              result = await signer[signerFn]?.(args[0], args[1]);
+            } else {
+              result = await ethersSigner?.[fn]?.(args[0], args[1]);
+            }
             if (
               functionName === "sendTransaction" &&
               typeof result === "object" &&
@@ -130,5 +151,11 @@ export const useCallSignerFromIframe = ({
     return () => {
       window.removeEventListener("message", onMessageReceived);
     };
-  }, [ethersSigner, iframeRef, isIframeLoaded, txMap, childIframeOrigin]);
+  }, [ethersSigner, iframeRef, isIframeLoaded, txMap, childIframeOrigin, loadCounter]);
+  return {
+    reload: useCallback(
+      () => reload(prev => ++prev),
+      [reload],
+    )
+  }
 };

@@ -172,7 +172,13 @@ The Buyer can cancel the rNFT and receive in exchange the Item Price minus the C
 
    **Redeemable NFT (rNFT / NFT Voucher)** means a voucher using NFT technology, representing the right to redeem an Item. It is important to note that an rNFT is a voucher that can be redeemed for a digital and/or physical good and it is subject to the rNFTs T&Cs and it is NOT a digital representation of said good. 
 
+   {{^hasExpirationDate}}
    **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is **_{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}_** days from and inclusive of the day you sign the transaction as your commitment to the Offer.
+   {{/hasExpirationDate}}
+
+   {{#hasExpirationDate}}
+   **Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
+   {{/hasExpirationDate}}
 
    **Resolution Period** means the time period during which the Buyer and the Seller may mutually resolve a Dispute, which is within **_{{#msecToDay}}{{resolutionPeriodDurationInMS}}{{/msecToDay}}_** days after the dispute is raised.
 

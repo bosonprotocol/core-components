@@ -1,6 +1,6 @@
 # Redeemable NFT Terms
 
-By purchasing the Redeemable Non-Fungible Token (“rNFT”)<sup>*</sup> at the primary point of sale, the Primary Buyer becomes the beneficiary of the following terms (“Terms”) so long as the Primary Buyer is holding the rNFT. Once the token is transferred to a third party, any subsequent holders of the rNFT will become the beneficiary of the Terms.
+By purchasing the Redeemable Non-Fungible Token (“rNFT”) at the primary point of sale, the Primary Buyer becomes the beneficiary of the following terms (“Terms”) so long as the Primary Buyer is holding the rNFT. Once the token is transferred to a third party, any subsequent holders of the rNFT will become the beneficiary of the Terms.
 
 The rNFT entitles its holder(s):
 - to transfer and sell the rNFT to any third party;
@@ -10,8 +10,6 @@ The rNFT entitles its holder(s):
 If the holder of the rNFT does not redeem the rNFT before the Redemption Period is over, the holder will no longer be able to benefit from the associated Terms. Instead, upon the Cancel function being called, the current holder of the rNFT will be able to withdraw the funds (i.e. the Item Price minus the Cancellation Penalty).
 
 By redeeming the rNFT within the Redemption Period and having received from the Seller the seller's information as required by laws applicable to the Buyer, the holder of the rNFT is deemed to have agreed to the Buyer & Seller Agreement (See the link to the agreement below).
-
-<p align=center><em><sup>*</sup>It is important to note that an rNFT is a voucher that can be redeemed for a digital and/or physical good and it is subject to the rNFTs T&Cs and it is NOT a digital representation of said good.</em></p>
 
 ## Definition
 
@@ -27,7 +25,13 @@ By redeeming the rNFT within the Redemption Period and having received from the 
 
 **Primary Buyer** means the first buyer who has acquired the rNFT.
 
-**Redemption Period** means the time period during which the Seller promises tocomply with the terms of the rNFT, until it expires. The Redemption Period is **{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}** days from andinclusive of the day you sign the transaction as your commitment to the Offer.
+{{^hasExpirationDate}}
+**Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is **_{{#msecToDay}}{{voucherValidDurationInMS}}{{/msecToDay}}_** days from and inclusive of the day you sign the transaction as your commitment to the Offer.
+{{/hasExpirationDate}}
+
+{{#hasExpirationDate}}
+**Redemption Period** means the time period during which the Seller promises to comply with the terms of the rNFT, until it expires. The Redemption Period is from **_{{#toISOString}}{{voucherRedeemableFromDateInMS}}{{/toISOString}}_** to **_{{#toISOString}}{{voucherRedeemableUntilDateInMS}}{{/toISOString}}_**.
+{{/hasExpirationDate}}
 
 **Seller** means anyone who offers to sell an Item through an rNFT.
 ___
