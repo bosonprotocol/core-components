@@ -596,7 +596,11 @@ function saveOfferCollection(
 ): void {
   let offerCollection = OfferCollection.load(offerCollectionId);
 
-  if (!offerCollection) {
+  if (offerCollection) {
+     log.warning("Offer collection with ID '{}' already exists!", [
+        offerCollectionId
+      ]);
+  } else {
     offerCollection = new OfferCollection(offerCollectionId);
     offerCollection.sellerId = sellerId;
     offerCollection.seller = sellerId.toString();
@@ -606,10 +610,6 @@ function saveOfferCollection(
     offerCollection.externalId = externalId;
     offerCollection.metadata = offerCollectionId;
     offerCollection.save();
-  } else {
-    log.warning("Offer collection with ID '{}' already exists!", [
-      offerCollectionId
-    ]);
   }
 }
 
