@@ -34,7 +34,8 @@ import {
   createSellerAndOfferWithCondition,
   createSeller,
   createSellerAndOffer,
-  commitToOffer
+  commitToOffer,
+  wait
 } from "./utils";
 import { EvaluationMethod, GatingType, TokenType } from "@bosonprotocol/common";
 
@@ -1181,6 +1182,8 @@ describe("core-sdk", () => {
         await raiseDispute(exchange.id, buyerCoreSDK);
 
         await checkDisputeResolving(exchange.id, buyerCoreSDK);
+
+        await wait(1_000);
 
         // Expire the dispute
         await expireDispute(exchange.id, sellerCoreSDK);
