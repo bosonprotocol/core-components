@@ -56,7 +56,7 @@ export async function findCollectionSalt(args: {
     web3Lib: args.web3Lib
   });
   if (!isAvailable) {
-    const uuid = crypto.randomUUID();
+    const uuid = Math.floor(Math.random() * 100000000).toFixed(0);
     collectionSalt = formatBytes32String(
       `${INITIAL_COLLECTION_ID}-${uuid}`.slice(0, 31)
     );
