@@ -33,6 +33,7 @@
     "lodash.uniqby": "4.7.0",
     "magic-sdk": "^20.1.1",
     "phosphor-react": "1.4.1",
+    "polished": "^4.2.2",
     "react-hot-toast": "2.4.0",
     "react-markdown": "8.0.6",
     "react-phone-number-input": "3.2.19",
