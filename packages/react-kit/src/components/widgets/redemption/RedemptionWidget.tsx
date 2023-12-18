@@ -30,7 +30,7 @@ import { SignerProvider } from "../../signer/SignerContext";
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<RedeemNonModalProps, "exchange" | "hideModal"> & {
+} & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "signatures"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
     modalMargin?: string;
@@ -43,7 +43,8 @@ type WidgetProps = RedemptionProps &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName"> & {
-    parentOrigin?: string | undefined | null;
+    withExternalSigner?: boolean;
+    signatures?: string | undefined | null; // signature1,signature2,signature3
   };
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,12 @@ const queryClient = new QueryClient({
 const { infuraKey, magicLinkKey } = CONFIG;
 
 export function RedemptionWidget(props: WidgetProps) {
+  const parentOrigin =
+    window.location !== window.parent.location && document.referrer
+      ? new URL(document.referrer).origin
+      : null;
+  const parentOriginToUse = props.withExternalSigner ? parentOrigin : null;
+  const splitSignatures = props.signatures?.split(",");
   return (
     <div style={{ margin: props.modalMargin || "0" }}>
       <EnvironmentProvider
@@ -65,14 +72,14 @@ export function RedemptionWidget(props: WidgetProps) {
       >
         {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-        /* @ts-ignore */}
+          /* @ts-ignore */}
         <GlobalStyle />
         <ConfigProvider
           magicLinkKey={magicLinkKey}
           infuraKey={infuraKey}
           {...props}
         >
-          <SignerProvider parentOrigin={props.parentOrigin}>
+          <SignerProvider parentOrigin={parentOriginToUse}>
             <MagicProvider>
               <QueryClientProvider client={queryClient}>
                 <WalletConnectionProvider
@@ -85,6 +92,8 @@ export function RedemptionWidget(props: WidgetProps) {
                           <RedemptionProvider {...props}>
                             <RedeemModalWithExchange
                               {...props}
+                              signatures={splitSignatures}
+                              parentOrigin={parentOrigin}
                               hideModal={props.closeWidgetClick}
                             />
                           </RedemptionProvider>

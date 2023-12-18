@@ -41,15 +41,104 @@ import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useC
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { useConfigContext } from "../../../config/ConfigContext";
 import {
+  RedemptionContextProps,
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
 import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
-import { useAccount } from "../../../../hooks/connection/connection";
+import { useAccount, useSigner } from "../../../../hooks/connection/connection";
 import { RedeemHeader } from "./RedeemHeader";
+import { isTruthy } from "../../../../types/helpers";
+import { useSellers } from "../../../../hooks/useSellers";
+import { ethers } from "ethers";
+import { subgraph } from "@bosonprotocol/core-sdk";
 
 const colors = theme.colors.light;
+
+const checkSignatures = ({
+  doFetchSellersFromSellerIds,
+  parentOrigin,
+  sellerIds,
+  signatures,
+  sellersFromSellerIds,
+  areSignaturesMandatory
+}: Pick<RedeemNonModalProps, "parentOrigin" | "sellerIds" | "signatures"> & {
+  doFetchSellersFromSellerIds: boolean;
+  sellersFromSellerIds: subgraph.SellerFieldsFragment[] | undefined;
+  areSignaturesMandatory: boolean;
+}) => {
+  if (
+    areSignaturesMandatory &&
+    (!signatures || signatures.filter(isTruthy).length !== sellerIds?.length)
+  ) {
+    return (
+      <p>
+        Please provide a list of signatures of the message{" "}
+        {JSON.stringify({ origin: "<parentWindowOrigin>" })} for each seller in
+        sellerIds list
+      </p>
+    );
+  }
+  if (doFetchSellersFromSellerIds && !sellersFromSellerIds) {
+    return (
+      <p>Could not retrieve sellers from the specified sellerIds {sellerIds}</p>
+    );
+  }
+  const originMessage = JSON.stringify({ origin: parentOrigin });
+  const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
+    ({ admin }, index) => {
+      if (!signatures?.[index]) {
+        return true;
+      }
+      const signerAddr = ethers.utils.verifyMessage(
+        originMessage,
+        signatures?.[index]
+      );
+      if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
+        return true;
+      }
+      return false;
+    }
+  );
+  if (
+    firstIndexSignatureThatDoesntMatch !== undefined &&
+    firstIndexSignatureThatDoesntMatch !== -1 &&
+    sellersFromSellerIds
+  ) {
+    return (
+      <div>
+        <p>Signature does not match.</p>
+        <ul>
+          <li>Signatures: {signatures}</li>
+          <li>
+            Seller admin address is{" "}
+            {sellersFromSellerIds[
+              firstIndexSignatureThatDoesntMatch
+            ]?.admin.toLowerCase()}
+          </li>
+          <li>
+            Address that signed the message:{" "}
+            {signatures
+              ? ethers.utils
+                  .verifyMessage(
+                    originMessage,
+                    signatures[firstIndexSignatureThatDoesntMatch]
+                  )
+                  .toLowerCase()
+              : "(no signatures)"}
+          </li>
+          <li>
+            Received signature for this seller:{" "}
+            {signatures?.[firstIndexSignatureThatDoesntMatch]}
+          </li>
+          <li>Origin message used to verify signature: {originMessage}</li>
+        </ul>
+      </div>
+    );
+  }
+};
+
 enum ActiveStep {
   STEPS_OVERVIEW,
   MY_ITEMS,
@@ -66,7 +155,13 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
-export type RedeemNonModalProps = {
+export type RedeemNonModalProps = Pick<
+  RedemptionContextProps,
+  | "postDeliveryInfoUrl"
+  | "deliveryInfoHandler"
+  | "redemptionSubmittedHandler"
+  | "redemptionConfirmedHandler"
+> & {
   sellerIds?: string[];
   exchange?: Exchange;
   fairExchangePolicyRules: string;
@@ -88,6 +183,7 @@ export type RedeemNonModalProps = {
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
   forcedAccount?: string;
   parentOrigin?: string | null;
+  signatures?: string[] | undefined | null;
 };
 
 export default function RedeemWrapper({
@@ -154,10 +250,34 @@ function RedeemNonModal({
   cancellationViewOnSuccess,
   confirmationViewOnSuccess,
   forcedAccount,
-  hideModal
+  hideModal,
+  postDeliveryInfoUrl,
+  deliveryInfoHandler,
+  redemptionSubmittedHandler,
+  redemptionConfirmedHandler,
+  signatures,
+  parentOrigin
 }: RedeemNonModalProps) {
+  const areSignaturesMandatory = !!(
+    postDeliveryInfoUrl ||
+    deliveryInfoHandler ||
+    redemptionSubmittedHandler ||
+    redemptionConfirmedHandler
+  );
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
+  const doFetchSellersFromSellerIds = !!sellerIds?.length;
+  const {
+    data: sellersFromSellerIds,
+    isLoading: areSellersFromSellerIdsLoading
+  } = useSellers(
+    {
+      admin_in: sellerIds
+    },
+    {
+      enabled: doFetchSellersFromSellerIds
+    }
+  );
   const {
     showRedemptionOverview,
     widgetAction,
@@ -288,8 +408,20 @@ function RedeemNonModal({
       </>
     );
   }
-  if (isLoading) {
+
+  if (isLoading || areSellersFromSellerIdsLoading) {
     return <Loading />;
+  }
+  const jsx = checkSignatures({
+    doFetchSellersFromSellerIds,
+    sellersFromSellerIds,
+    parentOrigin,
+    sellerIds,
+    signatures,
+    areSignaturesMandatory
+  });
+  if (jsx) {
+    return jsx;
   }
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)

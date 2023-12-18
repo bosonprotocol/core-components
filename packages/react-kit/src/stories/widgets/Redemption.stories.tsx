@@ -62,7 +62,8 @@ Redemption.args = {
   exchangeState: subgraph.ExchangeState.Committed,
   sendDeliveryInfoThroughXMTP: true,
   forcedAccount: "",
-  sellerIds: undefined
+  sellerIds: undefined,
+  signatures: ""
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];
