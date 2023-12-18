@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.29.0...@bosonprotocol/subgraph@1.30.0) (2023-12-18)
+
+
+### Features
+
+* manage collections at seller level ([#630](https://github.com/bosonprotocol/core-components/issues/630)) ([f9b264e](https://github.com/bosonprotocol/core-components/commit/f9b264ed8c7a6adf0714d664028c945b303750d2))
+
+
+
+
+
 # [1.29.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.28.1...@bosonprotocol/subgraph@1.29.0) (2023-12-05)
 
 
