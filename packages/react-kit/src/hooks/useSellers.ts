@@ -12,6 +12,7 @@ interface Props {
   clerk?: string;
   treasury?: string;
   id?: string;
+  id_in?: string[];
   includeFunds?: boolean;
   enableCurationList?: boolean;
 }
@@ -62,7 +63,8 @@ export function useSellers(
     ...(props.assistant && { assistant: props.assistant }),
     ...(props.clerk && { clerk: props.clerk }),
     ...(props.treasury && { treasury: props.treasury }),
-    ...(props.id && { id: props.id })
+    ...(props.id && { id: props.id }),
+    ...(props.id_in && { id_in: props.id_in })
   };
   return useQuery(
     ["sellers", props],
@@ -72,8 +74,11 @@ export function useSellers(
           ...filter,
           id_in:
             enableCurationList && curationLists.enableCurationLists
-              ? curationLists.sellerCurationList
-              : undefined
+              ? [
+                  ...(curationLists.sellerCurationList ?? []),
+                  ...(props.id_in ?? [])
+                ]
+              : props.id_in
         },
         sellersOrderBy: subgraph.Seller_OrderBy.SellerId,
         sellersOrderDirection: subgraph.OrderDirection.Asc,

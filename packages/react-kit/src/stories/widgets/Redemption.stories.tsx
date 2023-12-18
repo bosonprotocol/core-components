@@ -63,7 +63,7 @@ Redemption.args = {
   sendDeliveryInfoThroughXMTP: true,
   forcedAccount: "",
   sellerIds: undefined,
-  signatures: ""
+  signatures: undefined
 };
 
 Redemption.decorators = [(Story) => wrapper(Story)];

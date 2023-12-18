@@ -30,7 +30,7 @@ import { SignerProvider } from "../../signer/SignerContext";
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "signatures"> & {
+} & Omit<RedeemNonModalProps, "exchange" | "hideModal"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
     modalMargin?: string;
@@ -44,7 +44,7 @@ type WidgetProps = RedemptionProps &
   ConvertionRateProviderProps &
   Omit<WalletConnectionProviderProps, "children" | "envName"> & {
     withExternalSigner?: boolean;
-    signatures?: string | undefined | null; // signature1,signature2,signature3
+    signatures?: string[] | undefined | null; // signature1,signature2,signature3
   };
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,7 +62,6 @@ export function RedemptionWidget(props: WidgetProps) {
       ? new URL(document.referrer).origin
       : null;
   const parentOriginToUse = props.withExternalSigner ? parentOrigin : null;
-  const splitSignatures = props.signatures?.split(",");
   return (
     <div style={{ margin: props.modalMargin || "0" }}>
       <EnvironmentProvider
@@ -92,7 +91,6 @@ export function RedemptionWidget(props: WidgetProps) {
                           <RedemptionProvider {...props}>
                             <RedeemModalWithExchange
                               {...props}
-                              signatures={splitSignatures}
                               parentOrigin={parentOrigin}
                               hideModal={props.closeWidgetClick}
                             />

@@ -47,7 +47,7 @@ import {
 } from "../../../widgets/redemption/provider/RedemptionContext";
 import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
-import { useAccount, useSigner } from "../../../../hooks/connection/connection";
+import { useAccount } from "../../../../hooks/connection/connection";
 import { RedeemHeader } from "./RedeemHeader";
 import { isTruthy } from "../../../../types/helpers";
 import { useSellers } from "../../../../hooks/useSellers";
@@ -68,9 +68,9 @@ const checkSignatures = ({
   sellersFromSellerIds: subgraph.SellerFieldsFragment[] | undefined;
   areSignaturesMandatory: boolean;
 }) => {
-  if (
+  if (sellerIds?.length && 
     areSignaturesMandatory &&
-    (!signatures || signatures.filter(isTruthy).length !== sellerIds?.length)
+    (!signatures || signatures?.filter(isTruthy).length !== sellerIds.length)
   ) {
     return (
       <p>
@@ -93,7 +93,7 @@ const checkSignatures = ({
       }
       const signerAddr = ethers.utils.verifyMessage(
         originMessage,
-        signatures?.[index]
+        signatures[index]
       );
       if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
         return true;
@@ -272,7 +272,7 @@ function RedeemNonModal({
     isLoading: areSellersFromSellerIdsLoading
   } = useSellers(
     {
-      admin_in: sellerIds
+      id_in: sellerIds
     },
     {
       enabled: doFetchSellersFromSellerIds
