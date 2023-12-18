@@ -109,6 +109,7 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
     const offerDurationsStruct = event.params.offerDurations;
     const offerFeesStruct = event.params.offerFees;
     const disputeResolutionTermsStruct = event.params.disputeResolutionTerms;
+    const collectionIndex = BigInt.fromI32(0); // collectionIndex does not exist in OfferCreatedLegacy event (< v2.3.0)
 
     if (!checkSellerExist(offerStruct.sellerId)) {
       log.warning(
@@ -149,7 +150,12 @@ export function handleOfferCreatedEventLegacy(event: OfferCreatedLegacy): void {
     offer.metadataHash = offerStruct.metadataHash;
     offer.metadata = offerId.toString() + "-metadata";
     offer.voided = false;
-    offer.collectionIndex = BigInt.fromI32(0); // collectionIndex does not exist in OfferCreatedLegacy event (< v2.3.0)
+    offer.collectionIndex = collectionIndex;
+    offer.collection = getOfferCollectionId(
+      offerStruct.sellerId.toString(),
+      collectionIndex.toString()
+    );
+
     offer.numberOfCommits = BigInt.fromI32(0);
     offer.numberOfRedemptions = BigInt.fromI32(0);
 
