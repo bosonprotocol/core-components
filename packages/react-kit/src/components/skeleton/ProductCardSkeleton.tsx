@@ -1,6 +1,4 @@
 import React, { ButtonHTMLAttributes } from "react";
-import styled, { CSSProperties, css, keyframes } from "styled-components";
-import { lighten } from "polished";
 import {
   BottomText,
   ProductCardBottom,
