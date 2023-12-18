@@ -37,8 +37,8 @@ describe("core-sdk-premint", () => {
 
     const offerId = createdOffer.id;
     const range = 8;
-    await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
-    await waitForGraphNodeIndexing();
+    const receipt = await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
+    await waitForGraphNodeIndexing(receipt);
 
     const offerReserveRange = await coreSDK.getOfferById(offerId);
     expect(Number(offerReserveRange.quantityAvailable)).toBe(
@@ -75,12 +75,12 @@ describe("core-sdk-premint", () => {
     await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
-    await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
+    const receipt = await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(receipt);
     const offer = await sellerCoreSDK.getOfferById(offerId);
     expect(offer.range).toBeTruthy();
 
@@ -90,11 +90,11 @@ describe("core-sdk-premint", () => {
     const tokenId = resultRange.start;
     const exchangeId = getExchangeIdFromRange(resultRange);
 
-    await (
+    const receipt2 = await (
       await sellerCoreSDK.transferFrom(offerId, buyerWallet.address, tokenId)
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(receipt2);
     const exchange = await sellerCoreSDK.getExchangeById(exchangeId);
     expect(exchange.state).toBe(ExchangeState.Committed);
   });
@@ -118,12 +118,12 @@ describe("core-sdk-premint", () => {
     await (await sellerCoreSDK.reserveRange(offerId, range, "seller")).wait();
 
     const preMinted = 2;
-    await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
+    const receipt = await (await sellerCoreSDK.preMint(offerId, preMinted)).wait();
 
     const resultRange = await sellerCoreSDK.getRangeByOfferId(offerId);
     expect(Number(resultRange.length.toString())).toBe(range);
 
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(receipt);
     const offer = await sellerCoreSDK.getOfferById(offerId);
     expect(offer.range).toBeTruthy();
 
@@ -132,7 +132,7 @@ describe("core-sdk-premint", () => {
     ).wait();
     const tokenId = resultRange.start;
     const exchangeId = getExchangeIdFromRange(resultRange);
-    await (
+    const receipt2 = await (
       await sellerCoreSDK.transferFrom(
         offerId,
         fundedBuyerWallet.address,
@@ -140,13 +140,12 @@ describe("core-sdk-premint", () => {
       )
     ) // this will call commitToPreMintedOffer and create an exchange
       .wait();
-    await waitForGraphNodeIndexing();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(receipt2);
 
     await (await buyerCoreSDK.redeemVoucher(exchangeId)).wait();
 
-    await (await buyerCoreSDK.raiseAndEscalateDispute(exchangeId)).wait();
-    await waitForGraphNodeIndexing();
+    const receipt3 = await (await buyerCoreSDK.raiseAndEscalateDispute(exchangeId)).wait();
+    await waitForGraphNodeIndexing(receipt3);
 
     const escalatedExchange = await sellerCoreSDK.getExchangeById(exchangeId);
     expect(escalatedExchange?.dispute?.id).toBeTruthy();
@@ -173,12 +172,12 @@ describe("core-sdk-premint", () => {
 
       const offerId = createdOffer.id;
       const range = 10;
-      await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
+      const receipt = await (await coreSDK.reserveRange(offerId, range, "seller")).wait();
 
       const resultRange = await coreSDK.getRangeByOfferId(offerId);
       expect(Number(resultRange.length.toString())).toBe(range);
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(receipt);
       const offer = await coreSDK.getOfferById(offerId);
       expect(offer.range).toBeTruthy();
 

@@ -165,7 +165,8 @@ export class EthConnectAdapter implements Web3LibAdapter {
         return { data: log.data, topics: log.topics };
       }),
       transactionHash: txReceipt.transactionHash,
-      effectiveGasPrice: txReceipt.gasUsed
+      effectiveGasPrice: txReceipt.gasUsed,
+      blockNumber: Number(txReceipt.blockNumber)
     };
   }
 }

@@ -32,7 +32,7 @@ describe("core-sdk-set-contract-uri", () => {
     const tx = await coreSDK.setContractURI(newContractURI);
     await tx.wait();
 
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     const sellerWithNewContractURI = await coreSDK.getSellerById(
       createdOffer.seller.id
     );
