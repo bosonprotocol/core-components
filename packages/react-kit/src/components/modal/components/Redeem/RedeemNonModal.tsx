@@ -54,9 +54,14 @@ import { isTruthy } from "../../../../types/helpers";
 import { useSellers } from "../../../../hooks/useSellers";
 import { ethers } from "ethers";
 import { subgraph } from "@bosonprotocol/core-sdk";
+import styled from "styled-components";
 
 const colors = theme.colors.light;
-
+const UlWithWordBreak = styled.ul`
+  * > {
+    word-break: break-word;
+  }
+`;
 const checkSignatures = ({
   doFetchSellersFromSellerIds,
   parentOrigin,
@@ -70,6 +75,15 @@ const checkSignatures = ({
   areSignaturesMandatory: boolean;
 }) => {
   try {
+    if (areSignaturesMandatory && !sellerIds) {
+      return (
+        <p>
+          SellerIds must be defined as these are defined postDeliveryInfoUrl,
+          deliveryInfoHandler, redemptionSubmittedHandler,
+          redemptionConfirmedHandler{" "}
+        </p>
+      );
+    }
     if (
       sellerIds?.length &&
       areSignaturesMandatory &&
@@ -114,7 +128,7 @@ const checkSignatures = ({
       return (
         <div>
           <p>Signature does not match.</p>
-          <ul>
+          <UlWithWordBreak>
             <li>Signatures: {signatures}</li>
             <li>
               Seller admin address is{" "}
@@ -137,8 +151,8 @@ const checkSignatures = ({
               Received signature for this seller:{" "}
               {signatures?.[firstIndexSignatureThatDoesntMatch]}
             </li>
-            <li>Origin message used to verify signature: {originMessage}</li>
-          </ul>
+            <li>Message used to verify signature: {originMessage}</li>
+          </UlWithWordBreak>
         </div>
       );
     }
@@ -147,7 +161,8 @@ const checkSignatures = ({
     Sentry.captureException(error);
     return (
       <p>
-        Something went wrong: <b>{error instanceof Error ? error.message : error}</b>
+        Something went wrong:{" "}
+        <b>{error instanceof Error ? error.message : error}</b>
       </p>
     );
   }
