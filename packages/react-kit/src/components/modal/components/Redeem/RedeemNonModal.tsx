@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import { Form, Formik, FormikProps } from "formik";
 import React, {
   useCallback,
@@ -68,73 +69,86 @@ const checkSignatures = ({
   sellersFromSellerIds: subgraph.SellerFieldsFragment[] | undefined;
   areSignaturesMandatory: boolean;
 }) => {
-  if (sellerIds?.length && 
-    areSignaturesMandatory &&
-    (!signatures || signatures?.filter(isTruthy).length !== sellerIds.length)
-  ) {
+  try {
+    if (
+      sellerIds?.length &&
+      areSignaturesMandatory &&
+      (!signatures || signatures?.filter(isTruthy).length !== sellerIds.length)
+    ) {
+      return (
+        <p>
+          Please provide a list of signatures of the message{" "}
+          {JSON.stringify({ origin: "<parentWindowOrigin>" })} for each seller
+          in sellerIds list
+        </p>
+      );
+    }
+    if (doFetchSellersFromSellerIds && !sellersFromSellerIds) {
+      return (
+        <p>
+          Could not retrieve sellers from the specified sellerIds {sellerIds}
+        </p>
+      );
+    }
+    const originMessage = JSON.stringify({ origin: parentOrigin });
+    const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
+      ({ admin }, index) => {
+        if (!signatures?.[index]) {
+          return true;
+        }
+        const signerAddr = ethers.utils.verifyMessage(
+          originMessage,
+          signatures[index]
+        );
+        if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
+          return true;
+        }
+        return false;
+      }
+    );
+    if (
+      firstIndexSignatureThatDoesntMatch !== undefined &&
+      firstIndexSignatureThatDoesntMatch !== -1 &&
+      sellersFromSellerIds
+    ) {
+      return (
+        <div>
+          <p>Signature does not match.</p>
+          <ul>
+            <li>Signatures: {signatures}</li>
+            <li>
+              Seller admin address is{" "}
+              {sellersFromSellerIds[
+                firstIndexSignatureThatDoesntMatch
+              ]?.admin.toLowerCase()}
+            </li>
+            <li>
+              Address that signed the message:{" "}
+              {signatures
+                ? ethers.utils
+                    .verifyMessage(
+                      originMessage,
+                      signatures[firstIndexSignatureThatDoesntMatch]
+                    )
+                    .toLowerCase()
+                : "(no signatures)"}
+            </li>
+            <li>
+              Received signature for this seller:{" "}
+              {signatures?.[firstIndexSignatureThatDoesntMatch]}
+            </li>
+            <li>Origin message used to verify signature: {originMessage}</li>
+          </ul>
+        </div>
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    Sentry.captureException(error);
     return (
       <p>
-        Please provide a list of signatures of the message{" "}
-        {JSON.stringify({ origin: "<parentWindowOrigin>" })} for each seller in
-        sellerIds list
+        Something went wrong: <b>{error instanceof Error ? error.message : error}</b>
       </p>
-    );
-  }
-  if (doFetchSellersFromSellerIds && !sellersFromSellerIds) {
-    return (
-      <p>Could not retrieve sellers from the specified sellerIds {sellerIds}</p>
-    );
-  }
-  const originMessage = JSON.stringify({ origin: parentOrigin });
-  const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
-    ({ admin }, index) => {
-      if (!signatures?.[index]) {
-        return true;
-      }
-      const signerAddr = ethers.utils.verifyMessage(
-        originMessage,
-        signatures[index]
-      );
-      if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
-        return true;
-      }
-      return false;
-    }
-  );
-  if (
-    firstIndexSignatureThatDoesntMatch !== undefined &&
-    firstIndexSignatureThatDoesntMatch !== -1 &&
-    sellersFromSellerIds
-  ) {
-    return (
-      <div>
-        <p>Signature does not match.</p>
-        <ul>
-          <li>Signatures: {signatures}</li>
-          <li>
-            Seller admin address is{" "}
-            {sellersFromSellerIds[
-              firstIndexSignatureThatDoesntMatch
-            ]?.admin.toLowerCase()}
-          </li>
-          <li>
-            Address that signed the message:{" "}
-            {signatures
-              ? ethers.utils
-                  .verifyMessage(
-                    originMessage,
-                    signatures[firstIndexSignatureThatDoesntMatch]
-                  )
-                  .toLowerCase()
-              : "(no signatures)"}
-          </li>
-          <li>
-            Received signature for this seller:{" "}
-            {signatures?.[firstIndexSignatureThatDoesntMatch]}
-          </li>
-          <li>Origin message used to verify signature: {originMessage}</li>
-        </ul>
-      </div>
     );
   }
 };
