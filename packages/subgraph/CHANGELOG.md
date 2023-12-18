@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.30.0...@bosonprotocol/subgraph@1.30.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* ensure collection are referenced for offers created before protocol v2.3.0 ([#634](https://github.com/bosonprotocol/core-components/issues/634)) ([34240ca](https://github.com/bosonprotocol/core-components/commit/34240ca8a85b9d904815489893d5e565198a15ab))
+
+
+
+
+
 # [1.30.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/subgraph@1.29.0...@bosonprotocol/subgraph@1.30.0) (2023-12-18)
 
 
