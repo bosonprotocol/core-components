@@ -62,6 +62,7 @@ Redemption.args = {
   exchangeState: subgraph.ExchangeState.Committed,
   sendDeliveryInfoThroughXMTP: true,
   forcedAccount: "",
+  withExternalSigner: false,
   sellerIds: undefined,
   signatures: undefined
 };

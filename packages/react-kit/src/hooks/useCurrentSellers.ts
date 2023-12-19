@@ -10,6 +10,8 @@ import useGetLensProfiles from "./lens/useGetLensProfiles";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
+import { useErc721OwnerOf } from "./erc/erc721";
+import { useConfigContext } from "../components/config/ConfigContext";
 
 interface Props {
   address?: string;
@@ -303,7 +305,7 @@ export function useCurrentSellers(
     }
   );
   const sellerValues: (subgraph.SellerFieldsFragment & {
-    lens?: undefined | Profile | null;
+    lensOwner?: undefined | string | null;
   })[] = useMemo(
     () =>
       (sellerAddressType === "ADDRESS"
@@ -316,10 +318,15 @@ export function useCurrentSellers(
   );
   const profileIds = useMemo(
     () =>
-      sellerValues
-        .filter((seller) => !!Number(seller?.authTokenId))
-        .map((seller) => getLensTokenIdHex(seller?.authTokenId))
-        .filter((value) => !!value),
+      sellerValues.map((seller) => {
+        if (Number(seller?.authTokenId)) {
+          const tokenIdHex = getLensTokenIdHex(seller?.authTokenId);
+          if (tokenIdHex) {
+            return tokenIdHex;
+          }
+        }
+        return null;
+      }),
     [sellerValues]
   );
   const enableResultLens =
@@ -327,23 +334,26 @@ export function useCurrentSellers(
     !!sellerValues &&
     !!sellerAddressType &&
     !!profileIds.length;
-  const resultLens = useGetLensProfiles(
+
+  const { config } = useConfigContext();
+  const resultLens = useErc721OwnerOf(
     {
-      profileIds
+      contractAddress: config.lens?.LENS_HUB_CONTRACT,
+      tokenIds: profileIds
     },
     {
       enabled: enableResultLens && enabled
     }
   );
-  const lens: Profile[] = useMemo(() => {
-    return (resultLens?.data?.items as Profile[]) ?? [];
+  const lensOwners: (string | null)[] = useMemo(() => {
+    return resultLens?.data ?? [];
   }, [resultLens?.data]);
-  sellerValues.forEach((seller) => {
-    if (!!Number(seller.authTokenId)) {
-      const lensTokenId = getLensTokenIdHex(seller.authTokenId);
-      seller.lens = lens.find((lensProfile) => lensProfile.id === lensTokenId);
+  sellerValues.forEach((seller, index) => {
+    const owner = resultLens.data?.[index];
+    if (owner) {
+      seller.lensOwner = owner;
     } else {
-      seller.lens = null;
+      seller.lensOwner = null;
     }
   });
   const sellerIdsToReturn = useMemo(() => {
@@ -395,7 +405,7 @@ export function useCurrentSellers(
     sellerIds: sellerIdsToReturn,
     sellerType,
     sellers: sellerValues,
-    lens,
+    lensOwners,
     refetch: async () => {
       enableResultByAddress && resultByAddress.refetch();
       enableResultById && resultById.refetch();

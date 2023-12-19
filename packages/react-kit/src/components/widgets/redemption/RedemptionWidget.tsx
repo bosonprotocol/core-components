@@ -26,6 +26,8 @@ import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import { CONFIG } from "../../../lib/config/config";
 import { SignerProvider } from "../../signer/SignerContext";
+import { CommonWidgetTypes } from "../types";
+import { getParentWindowOrigin } from "../common";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
@@ -42,8 +44,8 @@ type WidgetProps = RedemptionProps &
   Omit<RedemptionContextProps, "setWidgetAction"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
+  CommonWidgetTypes &
   Omit<WalletConnectionProviderProps, "children" | "envName"> & {
-    withExternalSigner?: boolean;
     signatures?: string[] | undefined | null; // signature1,signature2,signature3
   };
 const queryClient = new QueryClient({
@@ -57,11 +59,7 @@ const queryClient = new QueryClient({
 const { infuraKey, magicLinkKey } = CONFIG;
 
 export function RedemptionWidget(props: WidgetProps) {
-  const parentOrigin =
-    window.location !== window.parent.location && document.referrer
-      ? new URL(document.referrer).origin
-      : null;
-  const parentOriginToUse = props.withExternalSigner ? parentOrigin : null;
+  const parentOrigin = getParentWindowOrigin();
   const sellerIds = Array.isArray(props.sellerIds)
     ? props.sellerIds
     : undefined;
@@ -84,7 +82,10 @@ export function RedemptionWidget(props: WidgetProps) {
           infuraKey={infuraKey}
           {...props}
         >
-          <SignerProvider parentOrigin={parentOriginToUse}>
+          <SignerProvider
+            parentOrigin={parentOrigin}
+            withExternalSigner={props.withExternalSigner}
+          >
             <MagicProvider>
               <QueryClientProvider client={queryClient}>
                 <WalletConnectionProvider

@@ -345,23 +345,31 @@ const getExternalSignerListener = ({
     },
     connect: (..._args: any[]): ReturnType<Signer["connect"]> => {
       // TODO: how can we implement this?
-      throw new Error('External signer does not implement the "connect" function')
+      throw new Error(
+        'External signer does not implement the "connect" function'
+      );
     },
-    checkTransaction: (...args: any[]): ReturnType<Signer["checkTransaction"]> => {
+    checkTransaction: (
+      ...args: any[]
+    ): ReturnType<Signer["checkTransaction"]> => {
       // TODO: how can we implement this?
-      throw new Error('External signer does not implement the "checkTransaction" function')
-    },
+      throw new Error(
+        'External signer does not implement the "checkTransaction" function'
+      );
+    }
   };
 };
 
 export const useProvideExternalSigner = ({
-  parentOrigin
+  parentOrigin,
+  withExternalSigner
 }: {
   parentOrigin: string | null | undefined;
+  withExternalSigner: boolean | null | undefined;
 }) => {
   const externalSignerListenerObject = useMemo(
     () =>
-      parentOrigin
+      parentOrigin && withExternalSigner
         ? {
             externalSigner: getExternalSignerListener({ parentOrigin }),
             externalWeb3LibAdapter: getExternalWeb3LibAdapterListener({
@@ -369,7 +377,7 @@ export const useProvideExternalSigner = ({
             })
           }
         : undefined,
-    [parentOrigin]
+    [parentOrigin, withExternalSigner]
   );
   const [externalSigner, setExternalSigner] =
     useState<typeof externalSignerListenerObject>();

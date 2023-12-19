@@ -35,6 +35,8 @@ import { useCurrentSellers } from "../../../hooks/useCurrentSellers";
 import { useAccount } from "../../../hooks/connection/connection";
 import { useDisconnect } from "../../../hooks/connection/useDisconnect";
 import { ethers } from "ethers";
+import { CommonWidgetTypes } from "../types";
+import { getParentWindowOrigin } from "../common";
 dayjs.extend(isBetween);
 
 const StyledConnectButton = styled(ConnectButton)`
@@ -149,8 +151,8 @@ type FinanceWidgetProps = {
   walletConnectProjectId: string;
 } & Omit<ConfigProviderProps, "magicLinkKey" | "infuraKey"> &
   EnvironmentProviderProps &
+  CommonWidgetTypes &
   ConvertionRateProviderProps & {
-    parentOrigin: string | undefined | null;
     sellerId: string | null | undefined;
   };
 
@@ -162,9 +164,10 @@ export function FinanceWidget({
   walletConnectProjectId,
   sellerId,
   metaTx,
-  parentOrigin,
+  withExternalSigner,
   ...rest
 }: FinanceWidgetProps) {
+  const parentOrigin = getParentWindowOrigin();
   return (
     <EnvironmentProvider envName={envName} configId={configId} metaTx={metaTx}>
       {
@@ -176,7 +179,10 @@ export function FinanceWidget({
         infuraKey={infuraKey}
         {...rest}
       >
-        <SignerProvider parentOrigin={parentOrigin}>
+        <SignerProvider
+          parentOrigin={parentOrigin}
+          withExternalSigner={withExternalSigner}
+        >
           <MagicProvider>
             <WalletConnectionProvider
               walletConnectProjectId={walletConnectProjectId}
@@ -184,7 +190,7 @@ export function FinanceWidget({
               <QueryClientProvider client={queryClient}>
                 <ConvertionRateProvider>
                   <ModalProvider>
-                    {!parentOrigin && (
+                    {!withExternalSigner && (
                       <Grid justifyContent="flex-end">
                         <StyledConnectButton showChangeWallet />
                       </Grid>

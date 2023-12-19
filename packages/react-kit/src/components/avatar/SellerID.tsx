@@ -5,7 +5,6 @@ import Grid, { IGrid } from "../../components/ui/Grid";
 import { theme } from "../../theme";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { Offer } from "../../types/offer";
-import { useCurrentSellers } from "../../hooks/useCurrentSellers";
 import { MediaSet } from "../../lib/lens/generated";
 import { getLensImageUrl } from "../../lib/images/images";
 import { getLensProfilePictureUrl } from "../../lib/lens/profile";
@@ -82,11 +81,9 @@ const SellerID: React.FC<
 }) => {
   const { ipfsGateway } = useIpfsContext();
   const { address } = useAccount();
-  const { lens: lensProfiles } = useCurrentSellers({
-    sellerIds: offer?.seller?.id ? [offer?.seller?.id] : [],
-    enabled: !!offer?.seller?.id
-  });
-  const [lens] = lensProfiles;
+  // TODO: remove/change once we migrate to lens v2
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lens = {} as any;
   const { artist } = getOfferDetails(offer);
 
   const userId = buyerOrSeller?.id;

@@ -65,12 +65,10 @@ export default function Exchange({
   onRaiseDisputeClick,
   onAvatarClick
 }: Props) {
-  const { lens: lensProfiles } = useCurrentSellers({
-    sellerIds: offer?.seller?.id ? [offer?.seller?.id] : [],
-    enabled: !!offer?.seller?.id
-  });
+  // TODO: remove/change once we migrate to lens v2
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lens = {} as any;
   const { ipfsGateway } = useIpfsContext();
-  const [lens] = lensProfiles;
   const avatar = getLensImageUrl(getLensProfilePictureUrl(lens), ipfsGateway);
 
   const offerImageUrl = offer.metadata?.imageUrl || "";

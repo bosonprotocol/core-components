@@ -51,11 +51,9 @@ import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { RedeemHeader } from "./RedeemHeader";
 import { isTruthy } from "../../../../types/helpers";
-import { useSellers } from "../../../../hooks/useSellers";
 import { ethers } from "ethers";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import styled from "styled-components";
-import { Profile } from "../../../../lib/lens/generated";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -74,7 +72,7 @@ const checkSignatures = ({
   doFetchSellersFromSellerIds: boolean;
   sellersFromSellerIds:
     | (subgraph.SellerFieldsFragment & {
-        lens?: Profile | null | undefined;
+        lensOwner?: string | null | undefined;
       })[]
     | undefined;
   areSignaturesMandatory: boolean;
@@ -111,7 +109,7 @@ const checkSignatures = ({
     }
     const originMessage = JSON.stringify({ origin: parentOrigin });
     const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
-      ({ admin, lens }, index) => {
+      ({ admin, lensOwner }, index) => {
         if (!signatures?.[index]) {
           return true;
         }
@@ -120,15 +118,8 @@ const checkSignatures = ({
           .toLowerCase();
 
         if (
-          admin.toLowerCase() === ethers.constants.AddressZero &&
-          lens &&
-          ((typeof lens.ownedBy === "string" &&
-            lens?.ownedBy?.toLowerCase?.() !== signerAddr.toLowerCase()) ||
-            (typeof lens.ownedBy === "object" &&
-              "address" in lens.ownedBy &&
-              typeof lens.ownedBy.address === "string" &&
-              lens?.ownedBy?.address?.toLowerCase?.() !==
-                signerAddr.toLowerCase()))
+          admin.toLowerCase() === ethers.constants.AddressZero.toLowerCase() &&
+          lensOwner?.toLowerCase?.() !== signerAddr.toLowerCase()
         ) {
           return true;
         }
@@ -232,6 +223,7 @@ export type RedeemNonModalProps = Pick<
   forcedAccount?: string;
   parentOrigin?: string | null;
   signatures?: string[] | undefined | null;
+  withExternalSigner: boolean | undefined | null;
 };
 
 export default function RedeemWrapper({
@@ -247,7 +239,7 @@ export default function RedeemWrapper({
         contentStyle: {
           background: colors.white
         },
-        showConnectButton: !props.parentOrigin
+        showConnectButton: !props.withExternalSigner
       }}
     >
       <RedeemNonModal hideModal={hideModal} {...props} />
