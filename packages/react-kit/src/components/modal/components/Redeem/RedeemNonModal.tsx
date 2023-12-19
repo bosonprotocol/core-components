@@ -144,7 +144,14 @@ const checkSignatures = ({
               Seller admin address is{" "}
               {sellersFromSellerIds[
                 firstIndexSignatureThatDoesntMatch
-              ]?.admin.toLowerCase()}
+              ]?.admin.toLowerCase() ===
+              ethers.constants.AddressZero.toLowerCase()
+                ? sellersFromSellerIds[
+                    firstIndexSignatureThatDoesntMatch
+                  ]?.lensOwner?.toLowerCase()
+                : sellersFromSellerIds[
+                    firstIndexSignatureThatDoesntMatch
+                  ]?.admin?.toLowerCase()}
             </li>
             <li>
               Address that signed the message:{" "}

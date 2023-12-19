@@ -152,7 +152,7 @@ export function useCurrentSellers(
         ])
         .filter((role) => {
           return (
-            ((Object.values(role)[0] as string) || "").toLowerCase() ==
+            ((Object.values(role)[0] as string) || "").toLowerCase() ===
             sellerAddress.toLowerCase()
           );
         })
