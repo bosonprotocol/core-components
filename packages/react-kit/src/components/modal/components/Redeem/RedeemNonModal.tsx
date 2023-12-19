@@ -55,6 +55,7 @@ import { useSellers } from "../../../../hooks/useSellers";
 import { ethers } from "ethers";
 import { subgraph } from "@bosonprotocol/core-sdk";
 import styled from "styled-components";
+import { Profile } from "../../../../lib/lens/generated";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -71,7 +72,11 @@ const checkSignatures = ({
   areSignaturesMandatory
 }: Pick<RedeemNonModalProps, "parentOrigin" | "sellerIds" | "signatures"> & {
   doFetchSellersFromSellerIds: boolean;
-  sellersFromSellerIds: subgraph.SellerFieldsFragment[] | undefined;
+  sellersFromSellerIds:
+    | (subgraph.SellerFieldsFragment & {
+        lens?: Profile | null | undefined;
+      })[]
+    | undefined;
   areSignaturesMandatory: boolean;
 }) => {
   try {
@@ -106,14 +111,20 @@ const checkSignatures = ({
     }
     const originMessage = JSON.stringify({ origin: parentOrigin });
     const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
-      ({ admin }, index) => {
+      ({ admin, lens }, index) => {
         if (!signatures?.[index]) {
           return true;
         }
-        const signerAddr = ethers.utils.verifyMessage(
-          originMessage,
-          signatures[index]
-        );
+        const signerAddr = ethers.utils
+          .verifyMessage(originMessage, signatures[index])
+          .toLowerCase();
+
+        if (
+          admin.toLowerCase() === ethers.constants.AddressZero &&
+          lens?.ownedBy?.address?.toLowerCase?.() !== signerAddr.toLowerCase()
+        ) {
+          return true;
+        }
         if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
           return true;
         }
@@ -123,7 +134,8 @@ const checkSignatures = ({
     if (
       firstIndexSignatureThatDoesntMatch !== undefined &&
       firstIndexSignatureThatDoesntMatch !== -1 &&
-      sellersFromSellerIds
+      sellersFromSellerIds &&
+      signatures
     ) {
       return (
         <div>
@@ -297,16 +309,12 @@ function RedeemNonModal({
   const { sellers, isLoading } = useCurrentSellers();
   const doFetchSellersFromSellerIds = !!sellerIds?.length;
   const {
-    data: sellersFromSellerIds,
+    sellers: sellersFromSellerIds,
     isLoading: areSellersFromSellerIdsLoading
-  } = useSellers(
-    {
-      id_in: sellerIds
-    },
-    {
-      enabled: doFetchSellersFromSellerIds
-    }
-  );
+  } = useCurrentSellers({
+    sellerIds: sellerIds,
+    enabled: doFetchSellersFromSellerIds
+  });
   const {
     showRedemptionOverview,
     widgetAction,

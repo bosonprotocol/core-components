@@ -62,6 +62,12 @@ export function RedemptionWidget(props: WidgetProps) {
       ? new URL(document.referrer).origin
       : null;
   const parentOriginToUse = props.withExternalSigner ? parentOrigin : null;
+  const sellerIds = Array.isArray(props.sellerIds)
+    ? props.sellerIds
+    : undefined;
+  const signatures = Array.isArray(props.signatures)
+    ? props.signatures
+    : undefined;
   return (
     <div style={{ margin: props.modalMargin || "0" }}>
       <EnvironmentProvider
@@ -91,6 +97,8 @@ export function RedemptionWidget(props: WidgetProps) {
                           <RedemptionProvider {...props}>
                             <RedeemModalWithExchange
                               {...props}
+                              sellerIds={sellerIds}
+                              signatures={signatures}
                               parentOrigin={parentOrigin}
                               hideModal={props.closeWidgetClick}
                             />

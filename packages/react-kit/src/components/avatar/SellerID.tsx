@@ -83,7 +83,8 @@ const SellerID: React.FC<
   const { ipfsGateway } = useIpfsContext();
   const { address } = useAccount();
   const { lens: lensProfiles } = useCurrentSellers({
-    sellerId: offer?.seller?.id
+    sellerIds: offer?.seller?.id ? [offer?.seller?.id] : [],
+    enabled: !!offer?.seller?.id
   });
   const [lens] = lensProfiles;
   const { artist } = getOfferDetails(offer);

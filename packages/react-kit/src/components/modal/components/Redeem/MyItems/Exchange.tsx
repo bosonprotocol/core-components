@@ -66,7 +66,8 @@ export default function Exchange({
   onAvatarClick
 }: Props) {
   const { lens: lensProfiles } = useCurrentSellers({
-    sellerId: offer?.seller?.id
+    sellerIds: offer?.seller?.id ? [offer?.seller?.id] : [],
+    enabled: !!offer?.seller?.id
   });
   const { ipfsGateway } = useIpfsContext();
   const [lens] = lensProfiles;

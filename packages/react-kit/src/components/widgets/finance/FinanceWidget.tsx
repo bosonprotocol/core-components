@@ -51,7 +51,7 @@ function WithSellerData(WrappedComponent: React.ComponentType<Props>) {
     const { address } = useAccount();
     const { sellerIds } = useCurrentSellers({
       address,
-      sellerId: sellerId,
+      sellerIds: sellerId ? [sellerId] : [],
       enabled: !sellerId
     });
     const sellerIdToUse = sellerId || sellerIds?.[0] || "";
