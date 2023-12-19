@@ -20,6 +20,7 @@ export class BaseCoreSDK {
   protected _metaTxConfig?: Partial<MetaTxConfig>;
   protected _lens?: Lens;
   protected _contracts?: ContractAddresses;
+  protected _uuid: string;
   protected _getTxExplorerUrl?: (
     txHash?: string,
     isAddress?: boolean
@@ -50,6 +51,7 @@ export class BaseCoreSDK {
     this._metaTxConfig = opts.metaTx;
     this._lens = opts.lens;
     this._contracts = opts.contracts;
+    this._uuid = crypto.randomUUID();
     this._getTxExplorerUrl = opts.getTxExplorerUrl;
   }
 
