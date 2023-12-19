@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import { Form, Formik, FormikProps } from "formik";
 import React, {
   useCallback,
@@ -41,6 +42,7 @@ import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useC
 import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { useConfigContext } from "../../../config/ConfigContext";
 import {
+  RedemptionContextProps,
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
@@ -48,8 +50,149 @@ import { BosonFooter } from "./BosonFooter";
 import { theme } from "../../../../theme";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { RedeemHeader } from "./RedeemHeader";
+import { isTruthy } from "../../../../types/helpers";
+import { ethers } from "ethers";
+import { subgraph } from "@bosonprotocol/core-sdk";
+import styled from "styled-components";
 
 const colors = theme.colors.light;
+const UlWithWordBreak = styled.ul`
+  * > {
+    word-break: break-word;
+  }
+`;
+const checkSignatures = ({
+  doFetchSellersFromSellerIds,
+  parentOrigin,
+  sellerIds,
+  signatures,
+  sellersFromSellerIds,
+  areSignaturesMandatory
+}: Pick<RedeemNonModalProps, "parentOrigin" | "sellerIds" | "signatures"> & {
+  doFetchSellersFromSellerIds: boolean;
+  sellersFromSellerIds:
+    | (subgraph.SellerFieldsFragment & {
+        lensOwner?: string | null | undefined;
+      })[]
+    | undefined;
+  areSignaturesMandatory: boolean;
+}) => {
+  try {
+    if (areSignaturesMandatory && !sellerIds) {
+      return (
+        <p>
+          SellerIds must be defined as these are defined postDeliveryInfoUrl,
+          deliveryInfoHandler, redemptionSubmittedHandler,
+          redemptionConfirmedHandler{" "}
+        </p>
+      );
+    }
+    if (
+      sellerIds?.length &&
+      areSignaturesMandatory &&
+      (!signatures || signatures?.filter(isTruthy).length !== sellerIds.length)
+    ) {
+      return (
+        <p>
+          Please provide a list of signatures of the message{" "}
+          {JSON.stringify({ origin: "<parentWindowOrigin>" })} for each seller
+          in sellerIds list
+        </p>
+      );
+    }
+    if (
+      doFetchSellersFromSellerIds &&
+      (!sellersFromSellerIds ||
+        sellersFromSellerIds.length !== sellerIds?.length)
+    ) {
+      return (
+        <p>
+          Could not retrieve sellers from the specified sellerIds{" "}
+          {sellerIds?.join(",")}
+        </p>
+      );
+    }
+    const originMessage = JSON.stringify({ origin: parentOrigin });
+    const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
+      ({ admin, lensOwner }, index) => {
+        if (!signatures?.[index]) {
+          return true;
+        }
+        const signerAddr = ethers.utils
+          .verifyMessage(originMessage, signatures[index])
+          .toLowerCase();
+
+        if (
+          admin.toLowerCase() === ethers.constants.AddressZero.toLowerCase() &&
+          lensOwner?.toLowerCase?.() !== signerAddr.toLowerCase()
+        ) {
+          return true;
+        }
+        if (
+          admin.toLowerCase() !== ethers.constants.AddressZero.toLowerCase() &&
+          signerAddr.toLowerCase() !== admin.toLowerCase()
+        ) {
+          return true;
+        }
+        return false;
+      }
+    );
+    if (
+      firstIndexSignatureThatDoesntMatch !== undefined &&
+      firstIndexSignatureThatDoesntMatch !== -1 &&
+      sellersFromSellerIds &&
+      signatures
+    ) {
+      return (
+        <div>
+          <p>Signature does not match.</p>
+          <UlWithWordBreak>
+            <li>Signatures: {signatures}</li>
+            <li>
+              Seller admin address is{" "}
+              {sellersFromSellerIds[
+                firstIndexSignatureThatDoesntMatch
+              ]?.admin.toLowerCase() ===
+              ethers.constants.AddressZero.toLowerCase()
+                ? sellersFromSellerIds[
+                    firstIndexSignatureThatDoesntMatch
+                  ]?.lensOwner?.toLowerCase()
+                : sellersFromSellerIds[
+                    firstIndexSignatureThatDoesntMatch
+                  ]?.admin?.toLowerCase()}
+            </li>
+            <li>
+              Address that signed the message:{" "}
+              {signatures
+                ? ethers.utils
+                    .verifyMessage(
+                      originMessage,
+                      signatures[firstIndexSignatureThatDoesntMatch]
+                    )
+                    .toLowerCase()
+                : "(no signatures)"}
+            </li>
+            <li>
+              Received signature for this seller:{" "}
+              {signatures?.[firstIndexSignatureThatDoesntMatch]}
+            </li>
+            <li>Message used to verify signature: {originMessage}</li>
+          </UlWithWordBreak>
+        </div>
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    Sentry.captureException(error);
+    return (
+      <p>
+        Something went wrong:{" "}
+        <b>{error instanceof Error ? error.message : error}</b>
+      </p>
+    );
+  }
+};
+
 enum ActiveStep {
   STEPS_OVERVIEW,
   MY_ITEMS,
@@ -66,7 +209,13 @@ enum ActiveStep {
   EXPIRE_VOUCHER_VIEW
 }
 
-export type RedeemNonModalProps = {
+export type RedeemNonModalProps = Pick<
+  RedemptionContextProps,
+  | "postDeliveryInfoUrl"
+  | "deliveryInfoHandler"
+  | "redemptionSubmittedHandler"
+  | "redemptionConfirmedHandler"
+> & {
   sellerIds?: string[];
   exchange?: Exchange;
   fairExchangePolicyRules: string;
@@ -88,6 +237,8 @@ export type RedeemNonModalProps = {
   confirmationViewOnSuccess?: ConfirmationViewProps["onSuccess"];
   forcedAccount?: string;
   parentOrigin?: string | null;
+  signatures?: string[] | undefined | null;
+  withExternalSigner: boolean | undefined | null;
 };
 
 export default function RedeemWrapper({
@@ -103,7 +254,7 @@ export default function RedeemWrapper({
         contentStyle: {
           background: colors.white
         },
-        showConnectButton: !props.parentOrigin
+        showConnectButton: !props.withExternalSigner
       }}
     >
       <RedeemNonModal hideModal={hideModal} {...props} />
@@ -154,10 +305,30 @@ function RedeemNonModal({
   cancellationViewOnSuccess,
   confirmationViewOnSuccess,
   forcedAccount,
-  hideModal
+  hideModal,
+  postDeliveryInfoUrl,
+  deliveryInfoHandler,
+  redemptionSubmittedHandler,
+  redemptionConfirmedHandler,
+  signatures,
+  parentOrigin
 }: RedeemNonModalProps) {
+  const areSignaturesMandatory = !!(
+    postDeliveryInfoUrl ||
+    deliveryInfoHandler ||
+    redemptionSubmittedHandler ||
+    redemptionConfirmedHandler
+  );
   const [exchange, setExchange] = useState<Exchange | null>(null);
   const { sellers, isLoading } = useCurrentSellers();
+  const doFetchSellersFromSellerIds = !!sellerIds?.length;
+  const {
+    sellers: sellersFromSellerIds,
+    isLoading: areSellersFromSellerIdsLoading
+  } = useCurrentSellers({
+    sellerIds: sellerIds,
+    enabled: doFetchSellersFromSellerIds
+  });
   const {
     showRedemptionOverview,
     widgetAction,
@@ -288,8 +459,20 @@ function RedeemNonModal({
       </>
     );
   }
-  if (isLoading) {
+
+  if (isLoading || areSellersFromSellerIdsLoading) {
     return <Loading />;
+  }
+  const jsx = checkSignatures({
+    doFetchSellersFromSellerIds,
+    sellersFromSellerIds,
+    parentOrigin,
+    sellerIds,
+    signatures,
+    areSignaturesMandatory
+  });
+  if (jsx) {
+    return jsx;
   }
   const mockedDeliveryAddress = process.env.REACT_APP_DELIVERY_ADDRESS_MOCK
     ? JSON.parse(process.env.REACT_APP_DELIVERY_ADDRESS_MOCK)

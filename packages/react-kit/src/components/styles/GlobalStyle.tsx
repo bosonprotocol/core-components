@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
+import { zIndex } from "../ui/zIndex";
 
 const colors = theme.colors.light;
 const GlobalStyle = createGlobalStyle<
@@ -26,6 +27,8 @@ const GlobalStyle = createGlobalStyle<
   }
   * {
     box-sizing: border-box;
+    /* zIndex for wallet connect legacy view */    
+    --wcm-z-index: ${zIndex.Modal + 100};
   }
   :root {
     --l: 50%;

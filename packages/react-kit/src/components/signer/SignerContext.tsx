@@ -10,13 +10,16 @@ export const SignerContext = createContext<
 type SignerProviderProps = {
   children: ReactNode;
   parentOrigin: string | null | undefined;
+  withExternalSigner: boolean | null | undefined;
 };
 export const SignerProvider = ({
   children,
-  parentOrigin
+  parentOrigin,
+  withExternalSigner
 }: SignerProviderProps) => {
   const externalSignerListenerObject = useProvideExternalSigner({
-    parentOrigin
+    parentOrigin,
+    withExternalSigner
   });
   return (
     <SignerContext.Provider value={externalSignerListenerObject}>

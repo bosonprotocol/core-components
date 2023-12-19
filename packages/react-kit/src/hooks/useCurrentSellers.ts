@@ -10,10 +10,12 @@ import useGetLensProfiles from "./lens/useGetLensProfiles";
 import { useCoreSDKWithContext } from "./useCoreSdkWithContext";
 import { SellerFieldsFragment } from "@bosonprotocol/core-sdk/dist/cjs/subgraph";
 import { useAccount } from "./connection/connection";
+import { useErc721OwnerOf } from "./erc/erc721";
+import { useConfigContext } from "../components/config/ConfigContext";
 
 interface Props {
   address?: string;
-  sellerId?: string;
+  sellerIds?: string[];
   lensTokenId?: string;
   enabled?: boolean;
 }
@@ -108,20 +110,20 @@ const getSellersByIds =
  * @returns
  */
 export function useCurrentSellers(
-  { address, sellerId, lensTokenId, enabled }: Props = { enabled: true }
+  { address, sellerIds, lensTokenId, enabled }: Props = { enabled: true }
 ) {
   const coreSDK = useCoreSDKWithContext();
   const fetchSellers = getSellersByIds(coreSDK);
   const { address: loggedInUserAddress } = useAccount();
-  const sellerAddress =
-    address || sellerId || lensTokenId || loggedInUserAddress || null;
+  const sellerAddress: string | string[] | null | undefined =
+    address || sellerIds || lensTokenId || loggedInUserAddress || null;
   const sellerAddressType = useMemo(() => {
     if (sellerAddress) {
       if (address) {
         return "ADDRESS";
       }
-      if (sellerId) {
-        return "SELLER_ID";
+      if (sellerIds) {
+        return "SELLER_IDS";
       }
       if (lensTokenId) {
         return "LENS_TOKEN_ID";
@@ -129,14 +131,14 @@ export function useCurrentSellers(
       return "ADDRESS";
     }
     return null;
-  }, [address, sellerAddress, sellerId, lensTokenId]);
+  }, [address, sellerAddress, sellerIds, lensTokenId]);
 
   const enableResultByAddress =
     !!sellerAddress && sellerAddressType === "ADDRESS";
   const resultByAddress = useQuery(
     ["current-seller-data-by-address", { address: sellerAddress }],
     async () => {
-      if (!sellerAddress) {
+      if (!sellerAddress || typeof sellerAddress !== "string") {
         return null;
       }
       const sellers = await coreSDK.getSellersByAddress(sellerAddress);
@@ -150,7 +152,7 @@ export function useCurrentSellers(
         ])
         .filter((role) => {
           return (
-            ((Object.values(role)[0] as string) || "").toLowerCase() ==
+            ((Object.values(role)[0] as string) || "").toLowerCase() ===
             sellerAddress.toLowerCase()
           );
         })
@@ -172,9 +174,10 @@ export function useCurrentSellers(
       enabled: enableResultByAddress && enabled
     }
   );
-  const enableResultById = !!sellerAddress && sellerAddressType === "SELLER_ID";
+  const enableResultById =
+    !!sellerAddress && sellerAddressType === "SELLER_IDS";
   const { data: sellers } = fetchSellers(
-    typeof sellerAddress === "string" ? [sellerAddress] : [],
+    Array.isArray(sellerAddress) ? sellerAddress : [],
     enableResultById,
     { enabled }
   );
@@ -182,15 +185,17 @@ export function useCurrentSellers(
   const resultById = useQuery(
     ["current-seller-data-by-id", { sellerId: sellerAddress }],
     async () => {
-      const allProps = {
-        admin: sellers?.[0]?.admin || null,
-        clerk: sellers?.[0]?.clerk || null,
-        assistant: sellers?.[0]?.assistant || null,
-        treasury: sellers?.[0]?.treasury || null
-      };
-      return Object.fromEntries(
-        Object.entries(allProps).filter(([, value]) => value !== null)
-      );
+      return sellers?.map((seller) => {
+        const allProps = {
+          admin: seller?.admin || null,
+          clerk: seller?.clerk || null,
+          assistant: seller?.assistant || null,
+          treasury: seller?.treasury || null
+        };
+        return Object.fromEntries(
+          Object.entries(allProps).filter(([, value]) => value !== null)
+        );
+      });
     },
     {
       enabled: enableResultById && enabled
@@ -252,15 +257,15 @@ export function useCurrentSellers(
     }
   );
 
-  const sellerType: string[] = resultById?.data
-    ? Object.keys(resultById.data)
+  const sellerType: string[] | string[][] = resultById?.data
+    ? resultById.data.map((d) => Object.keys(d))
     : resultByLensId?.data
     ? Object.keys(resultByLensId.data)
     : resultByAddress?.data?.sellerType || [];
 
   const sellerIdsToQuery: string[] =
-    sellerAddressType === "SELLER_ID"
-      ? [sellerAddress as string]
+    sellerAddressType === "SELLER_IDS"
+      ? (sellerAddress as string[])
       : sellerAddressType === "LENS_TOKEN_ID" && resultByLensId?.data?.sellerId
       ? [resultByLensId?.data.sellerId]
       : [];
@@ -270,49 +275,55 @@ export function useCurrentSellers(
     enableSellerById,
     { enabled }
   );
-  const sellerById = useQuery(
+  const sellersById = useQuery(
     ["current-seller-by-id", { sellerIds: sellerIdsToQuery, sellers2 }],
     async () => {
-      const currentSeller = sellers2?.[0] || null;
+      return sellers2?.map((currentSeller) => {
+        const currentSellerRoles = {
+          admin: currentSeller?.admin || null,
+          clerk: currentSeller?.clerk || null,
+          assistant: currentSeller?.assistant || null,
+          treasury: currentSeller?.treasury || null
+        };
+        const currentSellerRolesWithoutNull = Object.fromEntries(
+          Object.entries(currentSellerRoles).filter(
+            ([, value]) => value !== null
+          )
+        );
 
-      const currentSellerRoles = {
-        admin: currentSeller?.admin || null,
-        clerk: currentSeller?.clerk || null,
-        assistant: currentSeller?.assistant || null,
-        treasury: currentSeller?.treasury || null
-      };
-      const currentSellerRolesWithoutNull = Object.fromEntries(
-        Object.entries(currentSellerRoles).filter(([, value]) => value !== null)
-      );
-
-      return {
-        ...currentSeller,
-        sellerAddress:
-          (currentSellerRolesWithoutNull &&
-            Object.values(currentSellerRolesWithoutNull)[0]) ??
-          null
-      };
+        return {
+          ...currentSeller,
+          sellerAddress:
+            (currentSellerRolesWithoutNull &&
+              Object.values(currentSellerRolesWithoutNull)[0]) ??
+            null
+        };
+      });
     },
     {
       enabled: enableSellerById && enabled
     }
   );
-  const sellerValues = useMemo(
+  const sellerValues: (subgraph.SellerFieldsFragment & {
+    lensOwner?: undefined | string | null;
+  })[] = useMemo(
     () =>
       (sellerAddressType === "ADDRESS"
         ? resultByAddress.data?.sellers || []
-        : ([sellerById?.data] as unknown as subgraph.SellerFieldsFragment[]) ||
+        : (sellersById?.data as unknown as subgraph.SellerFieldsFragment[]) ||
           []
       ).filter((value) => !!value),
 
-    [resultByAddress.data?.sellers, sellerAddressType, sellerById?.data]
+    [resultByAddress.data?.sellers, sellerAddressType, sellersById?.data]
   );
   const profileIds = useMemo(
     () =>
-      sellerValues
-        .filter((seller) => !!Number(seller?.authTokenId))
-        .map((seller) => getLensTokenIdHex(seller?.authTokenId))
-        .filter((value) => !!value),
+      sellerValues.map((seller) => {
+        if (Number(seller?.authTokenId)) {
+          return seller?.authTokenId;
+        }
+        return null;
+      }),
     [sellerValues]
   );
   const enableResultLens =
@@ -320,22 +331,33 @@ export function useCurrentSellers(
     !!sellerValues &&
     !!sellerAddressType &&
     !!profileIds.length;
-  const resultLens = useGetLensProfiles(
+
+  const { config } = useConfigContext();
+  const resultLens = useErc721OwnerOf(
     {
-      profileIds
+      contractAddress: config.lens?.LENS_HUB_CONTRACT,
+      tokenIds: profileIds
     },
     {
       enabled: enableResultLens && enabled
     }
   );
-  const lens: Profile[] = useMemo(() => {
-    return (resultLens?.data?.items as Profile[]) ?? [];
+  const lensOwners: (string | null)[] = useMemo(() => {
+    return resultLens?.data ?? [];
   }, [resultLens?.data]);
-  const sellerIds = useMemo(() => {
+  sellerValues.forEach((seller, index) => {
+    const owner = resultLens.data?.[index];
+    if (owner) {
+      seller.lensOwner = owner;
+    } else {
+      seller.lensOwner = null;
+    }
+  });
+  const sellerIdsToReturn = useMemo(() => {
     return (
       resultByAddress.data
         ? resultByAddress.data.sellers.map((seller) => seller.id)
-        : sellerAddressType === "SELLER_ID"
+        : sellerAddressType === "SELLER_IDS"
         ? [sellerAddress]
         : []
     ).filter((sellerId) => !!sellerId) as string[];
@@ -345,48 +367,48 @@ export function useCurrentSellers(
       resultById?.isSuccess ||
       resultByAddress?.isSuccess ||
       resultByLensId?.isSuccess ||
-      sellerById?.isSuccess ||
+      sellersById?.isSuccess ||
       resultLens?.isSuccess,
     isLoading:
       resultById?.isLoading ||
       resultByAddress?.isLoading ||
       resultByLensId?.isLoading ||
-      sellerById?.isLoading ||
+      sellersById?.isLoading ||
       resultLens?.isLoading,
     isRefetching:
       resultById?.isRefetching ||
       resultByAddress?.isRefetching ||
       resultByLensId?.isRefetching ||
-      sellerById?.isRefetching ||
+      sellersById?.isRefetching ||
       resultLens?.isRefetching,
     isFetched:
       resultById?.isFetched ||
       resultByAddress?.isFetched ||
       resultByLensId?.isFetched ||
-      sellerById?.isFetched ||
+      sellersById?.isFetched ||
       resultLens?.isFetched,
     isFetching:
       resultById?.isFetching ||
       resultByAddress?.isFetching ||
       resultByLensId?.isFetching ||
-      sellerById?.isFetching ||
+      sellersById?.isFetching ||
       resultLens?.isFetching,
     isError:
       resultById?.isError ||
       resultByAddress?.isError ||
       resultByLensId?.isError ||
-      sellerById?.isError ||
+      sellersById?.isError ||
       resultLens?.isError,
-    sellerIds,
+    sellerIds: sellerIdsToReturn,
     sellerType,
     sellers: sellerValues,
-    lens,
+    lensOwners,
     refetch: async () => {
       enableResultByAddress && resultByAddress.refetch();
       enableResultById && resultById.refetch();
       enableResultLensId && resultByLensId.refetch();
       enableSellerById && refetchFetchSellers();
-      enableSellerById && sellerById.refetch();
+      enableSellerById && sellersById.refetch();
       enableResultLens && resultLens.refetch();
     }
   };

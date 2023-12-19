@@ -6,6 +6,7 @@ import Grid from "../../ui/Grid";
 import ConnectButton from "../../wallet/ConnectButton";
 import ThemedButton from "../../ui/ThemedButton";
 import { useBreakpoints } from "../../../hooks/useBreakpoints";
+import { zIndex } from "../../ui/zIndex";
 
 const colors = theme.colors.light;
 const Wrapper = styled.div<{ $flexWrap: string }>`
