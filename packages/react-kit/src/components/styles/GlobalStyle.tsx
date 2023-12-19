@@ -27,6 +27,8 @@ const GlobalStyle = createGlobalStyle<
   }
   * {
     box-sizing: border-box;
+    /* zIndex for wallet connect legacy view */    
+    --wcm-z-index: ${zIndex.Modal + 100};
   }
   :root {
     --l: 50%;
@@ -84,8 +86,7 @@ const GlobalStyle = createGlobalStyle<
       props.$buttonTextColor && !props.$withBosonStyles
         ? props.$buttonTextColor
         : colors.black};
-    /* zIndex for wallet connect legacy view */    
-    --wcm-z-index: ${zIndex.Modal + 100}; /* TODO: fix as it doesnt work */
+
     font-size: 0.75rem;
     ${breakpoint.xs} {
       font-size: 0.75rem;
