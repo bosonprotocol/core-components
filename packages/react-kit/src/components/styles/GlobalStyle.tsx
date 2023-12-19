@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { breakpoint } from "../../lib/ui/breakpoint";
 import { theme } from "../../theme";
+import { zIndex } from "../ui/zIndex";
 
 const colors = theme.colors.light;
 const GlobalStyle = createGlobalStyle<
@@ -83,7 +84,8 @@ const GlobalStyle = createGlobalStyle<
       props.$buttonTextColor && !props.$withBosonStyles
         ? props.$buttonTextColor
         : colors.black};
-
+    /* zIndex for wallet connect legacy view */    
+    --wcm-z-index: ${zIndex.Modal + 100}; /* TODO: fix as it doesnt work */
     font-size: 0.75rem;
     ${breakpoint.xs} {
       font-size: 0.75rem;

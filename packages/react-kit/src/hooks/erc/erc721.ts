@@ -2,17 +2,15 @@ import { useQuery } from "react-query";
 import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
 
 export const useErc721OwnerOf = (
-  {
-    contractAddress,
-    tokenIds
-  }: {
+  props: {
     contractAddress: string | undefined;
     tokenIds: (string | null | undefined)[] | undefined;
   },
   { enabled }: { enabled: boolean | undefined }
 ) => {
   const coreSDK = useCoreSDKWithContext();
-  return useQuery(["erc721-owner-of", coreSDK.uuid], () => {
+  return useQuery(["erc721-owner-of", coreSDK.uuid, props], async () => {
+    const { contractAddress, tokenIds } = props;
     if (!contractAddress || !tokenIds) {
       return;
     }

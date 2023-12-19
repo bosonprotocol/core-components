@@ -320,10 +320,7 @@ export function useCurrentSellers(
     () =>
       sellerValues.map((seller) => {
         if (Number(seller?.authTokenId)) {
-          const tokenIdHex = getLensTokenIdHex(seller?.authTokenId);
-          if (tokenIdHex) {
-            return tokenIdHex;
-          }
+          return seller?.authTokenId;
         }
         return null;
       }),
