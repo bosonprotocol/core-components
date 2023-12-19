@@ -121,7 +121,14 @@ const checkSignatures = ({
 
         if (
           admin.toLowerCase() === ethers.constants.AddressZero &&
-          lens?.ownedBy?.address?.toLowerCase?.() !== signerAddr.toLowerCase()
+          lens &&
+          ((typeof lens.ownedBy === "string" &&
+            lens?.ownedBy?.toLowerCase?.() !== signerAddr.toLowerCase()) ||
+            (typeof lens.ownedBy === "object" &&
+              "address" in lens.ownedBy &&
+              typeof lens.ownedBy.address === "string" &&
+              lens?.ownedBy?.address?.toLowerCase?.() !==
+                signerAddr.toLowerCase()))
         ) {
           return true;
         }
