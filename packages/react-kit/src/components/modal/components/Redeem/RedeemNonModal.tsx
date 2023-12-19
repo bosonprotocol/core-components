@@ -100,7 +100,10 @@ const checkSignatures = ({
         </p>
       );
     }
-    if (doFetchSellersFromSellerIds && !sellersFromSellerIds) {
+    if (
+      doFetchSellersFromSellerIds &&
+      (!sellersFromSellerIds || sellersFromSellerIds.length !== sellerIds?.length)
+    ) {
       return (
         <p>
           Could not retrieve sellers from the specified sellerIds {sellerIds}
