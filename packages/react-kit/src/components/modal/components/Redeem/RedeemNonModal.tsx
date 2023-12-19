@@ -102,11 +102,13 @@ const checkSignatures = ({
     }
     if (
       doFetchSellersFromSellerIds &&
-      (!sellersFromSellerIds || sellersFromSellerIds.length !== sellerIds?.length)
+      (!sellersFromSellerIds ||
+        sellersFromSellerIds.length !== sellerIds?.length)
     ) {
       return (
         <p>
-          Could not retrieve sellers from the specified sellerIds {sellerIds?.join(",")}
+          Could not retrieve sellers from the specified sellerIds{" "}
+          {sellerIds?.join(",")}
         </p>
       );
     }
