@@ -123,7 +123,10 @@ const checkSignatures = ({
         ) {
           return true;
         }
-        if (signerAddr.toLowerCase() !== admin.toLowerCase()) {
+        if (
+          admin.toLowerCase() !== ethers.constants.AddressZero.toLowerCase() &&
+          signerAddr.toLowerCase() !== admin.toLowerCase()
+        ) {
           return true;
         }
         return false;
