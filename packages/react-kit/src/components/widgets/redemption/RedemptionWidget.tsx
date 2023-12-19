@@ -32,7 +32,7 @@ import { getParentWindowOrigin } from "../common";
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<RedeemNonModalProps, "exchange" | "hideModal"> & {
+} & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "parentOrigin"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
     modalMargin?: string;
