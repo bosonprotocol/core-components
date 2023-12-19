@@ -106,7 +106,7 @@ const checkSignatures = ({
     ) {
       return (
         <p>
-          Could not retrieve sellers from the specified sellerIds {sellerIds}
+          Could not retrieve sellers from the specified sellerIds {sellerIds?.join(",")}
         </p>
       );
     }
