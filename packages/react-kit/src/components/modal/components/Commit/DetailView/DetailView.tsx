@@ -7,6 +7,7 @@ import {
   ArrowSquareOut,
   CircleWavyQuestion,
   Info,
+  Lock,
   Spinner,
   WarningCircle
 } from "phosphor-react";
@@ -61,6 +62,7 @@ import { VariantV1 } from "../../../../../types/variants";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
+import { DetailsSummary } from "../../../../ui/DetailsSummary";
 
 const colors = theme.colors.light;
 
@@ -139,11 +141,8 @@ const getOfferDetailData = ({
   ).format(config.dateFormat);
   const calcPercentage = getCalcPercentage(displayFloat);
 
-  const { deposit, formatted } = calcPercentage(offer, "buyerCancelPenalty");
-  const { deposit: sellerDeposit, formatted: sellerFormatted } = calcPercentage(
-    offer,
-    "sellerDeposit"
-  );
+  const { formatted } = calcPercentage(offer, "buyerCancelPenalty");
+  const { formatted: sellerFormatted } = calcPercentage(offer, "sellerDeposit");
 
   const exchangePolicyLabel = (
     (offer.metadata as subgraph.ProductV1MetadataEntity)?.exchangePolicy
@@ -187,8 +186,8 @@ const getOfferDetailData = ({
       ),
       value: (
         <Typography tag="p">
-          {sellerFormatted} {offer.exchangeToken.symbol}
-          {sellerDeposit !== "0" ? <small>({sellerDeposit}%)</small> : ""}
+          {sellerFormatted}{" "}
+          <span style={{ opacity: 0.5 }}>{offer.exchangeToken.symbol}</span>
         </Typography>
       )
     },
@@ -207,8 +206,8 @@ const getOfferDetailData = ({
       ),
       value: (
         <Typography tag="p">
-          {formatted} {offer.exchangeToken.symbol}
-          {deposit !== "0" ? <small>({deposit}%)</small> : ""}
+          {formatted}{" "}
+          <span style={{ opacity: 0.5 }}>{offer.exchangeToken.symbol}</span>
         </Typography>
       )
     },
@@ -227,33 +226,37 @@ const getOfferDetailData = ({
       ),
       value: exchangePolicyCheckResult ? (
         exchangePolicyCheckResult.isValid ? (
-          <p>
+          <>
             {exchangePolicyLabel + " "}
             <ArrowSquareOut
               size={20}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer" }}
             />
-          </p>
+          </>
         ) : (
-          <p style={{ color: colors.orange }}>
-            <WarningCircle size={20}></WarningCircle> Non-standard{" "}
+          <>
+            <WarningCircle size={20} color={colors.orange}></WarningCircle>{" "}
+            <span style={{ color: colors.orange }}>Non-standard </span>
             <ArrowSquareOut
               size={20}
+              color={colors.orange}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer" }}
             />
-          </p>
+          </>
         )
       ) : (
-        <p style={{ color: "purple" }}>
-          <CircleWavyQuestion size={20}></CircleWavyQuestion> Unknown{" "}
+        <>
+          <CircleWavyQuestion size={20} color="purple"></CircleWavyQuestion>{" "}
+          <span style={{ color: colors.orange }}>Unknown </span>
           <ArrowSquareOut
             size={20}
+            color="purple"
             onClick={() => handleShowExchangePolicy()}
             style={{ cursor: "pointer" }}
           />
-        </p>
+        </>
       )
     },
     {
@@ -603,25 +606,29 @@ const DetailView: React.FC<IDetailWidget> = ({
         </div>
       </Grid>
       {offer.condition && (
-        <TokenGated
-          coreSDK={coreSDK}
-          offer={offer}
-          commitProxyAddress={commitProxyAddress}
-          openseaLinkToOriginalMainnetCollection={
-            openseaLinkToOriginalMainnetCollection
-          }
-          isConditionMet={isConditionMet}
-        />
+        <DetailsSummary
+          summaryText="Token Gated Offer"
+          icon={<Lock size={16} />}
+        >
+          <TokenGated
+            coreSDK={coreSDK}
+            offer={offer}
+            commitProxyAddress={commitProxyAddress}
+            openseaLinkToOriginalMainnetCollection={
+              openseaLinkToOriginalMainnetCollection
+            }
+            isConditionMet={isConditionMet}
+          />
+        </DetailsSummary>
       )}
-      <div style={{ paddingTop: "2rem", paddingBottom: "2rem" }}>
+      <DetailsSummary summaryText="Details">
         <DetailTable
-          align
+          align={false}
           noBorder
           data={OFFER_DETAIL_DATA}
           inheritColor={false}
         />
-      </div>
-      <Break />
+      </DetailsSummary>
 
       {isNotCommittableOffer && (
         <DetailTopRightLabel

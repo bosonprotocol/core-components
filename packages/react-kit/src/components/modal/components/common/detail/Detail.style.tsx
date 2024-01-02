@@ -500,6 +500,9 @@ export const Widget = styled.div`
   background: ${colors.white};
   font-family: "Plus Jakarta Sans";
   padding-top: 2rem;
+  details:nth-of-type(1):not([open]) > summary {
+    border-bottom: none;
+  }
   > div {
     padding-left: 2rem;
     padding-right: 2rem;
