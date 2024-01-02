@@ -27,6 +27,7 @@ export type TransactionReceipt = {
   logs: Log[];
   transactionHash: string;
   effectiveGasPrice: BigNumberish;
+  blockNumber: number;
 };
 
 export interface Web3LibAdapter {

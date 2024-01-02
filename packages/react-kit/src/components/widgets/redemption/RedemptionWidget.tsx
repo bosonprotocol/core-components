@@ -25,11 +25,14 @@ import { RedeemNonModalProps } from "../../modal/components/Redeem/RedeemNonModa
 import { RedeemModalWithExchange } from "./RedeemModalWithExchange";
 import { MagicProvider } from "../../magicLink/MagicContext";
 import { CONFIG } from "../../../lib/config/config";
+import { SignerProvider } from "../../signer/SignerContext";
+import { CommonWidgetTypes } from "../types";
+import { getParentWindowOrigin } from "../common";
 
 type RedemptionProps = {
   buttonProps?: Omit<ButtonProps, "onClick">;
   trigger?: ComponentType<{ onClick: () => unknown }> | undefined;
-} & Omit<RedeemNonModalProps, "exchange" | "hideModal"> & {
+} & Omit<RedeemNonModalProps, "exchange" | "hideModal" | "parentOrigin"> & {
     exchangeId?: string;
     closeWidgetClick?: () => void;
     modalMargin?: string;
@@ -41,7 +44,10 @@ type WidgetProps = RedemptionProps &
   Omit<RedemptionContextProps, "setWidgetAction"> &
   EnvironmentProviderProps &
   ConvertionRateProviderProps &
-  Omit<WalletConnectionProviderProps, "children" | "envName">;
+  CommonWidgetTypes &
+  Omit<WalletConnectionProviderProps, "children" | "envName"> & {
+    signatures?: string[] | undefined | null; // signature1,signature2,signature3
+  };
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -53,6 +59,13 @@ const queryClient = new QueryClient({
 const { infuraKey, magicLinkKey } = CONFIG;
 
 export function RedemptionWidget(props: WidgetProps) {
+  const parentOrigin = getParentWindowOrigin();
+  const sellerIds = Array.isArray(props.sellerIds)
+    ? props.sellerIds
+    : undefined;
+  const signatures = Array.isArray(props.signatures)
+    ? props.signatures
+    : undefined;
   return (
     <div style={{ margin: props.modalMargin || "0" }}>
       <EnvironmentProvider
@@ -62,35 +75,43 @@ export function RedemptionWidget(props: WidgetProps) {
       >
         {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment, prettier/prettier
-        /* @ts-ignore */}
+          /* @ts-ignore */}
         <GlobalStyle />
         <ConfigProvider
           magicLinkKey={magicLinkKey}
           infuraKey={infuraKey}
           {...props}
         >
-          <MagicProvider>
-            <QueryClientProvider client={queryClient}>
-              <WalletConnectionProvider
-                walletConnectProjectId={props.walletConnectProjectId}
-              >
-                <ChatProvider>
-                  <IpfsProvider {...props}>
-                    <ConvertionRateProvider>
-                      <ModalProvider>
-                        <RedemptionProvider {...props}>
-                          <RedeemModalWithExchange
-                            {...props}
-                            hideModal={props.closeWidgetClick}
-                          />
-                        </RedemptionProvider>
-                      </ModalProvider>
-                    </ConvertionRateProvider>
-                  </IpfsProvider>
-                </ChatProvider>
-              </WalletConnectionProvider>
-            </QueryClientProvider>
-          </MagicProvider>
+          <SignerProvider
+            parentOrigin={parentOrigin}
+            withExternalSigner={props.withExternalSigner}
+          >
+            <MagicProvider>
+              <QueryClientProvider client={queryClient}>
+                <WalletConnectionProvider
+                  walletConnectProjectId={props.walletConnectProjectId}
+                >
+                  <ChatProvider>
+                    <IpfsProvider {...props}>
+                      <ConvertionRateProvider>
+                        <ModalProvider>
+                          <RedemptionProvider {...props}>
+                            <RedeemModalWithExchange
+                              {...props}
+                              sellerIds={sellerIds}
+                              signatures={signatures}
+                              parentOrigin={parentOrigin}
+                              hideModal={props.closeWidgetClick}
+                            />
+                          </RedemptionProvider>
+                        </ModalProvider>
+                      </ConvertionRateProvider>
+                    </IpfsProvider>
+                  </ChatProvider>
+                </WalletConnectionProvider>
+              </QueryClientProvider>
+            </MagicProvider>
+          </SignerProvider>
         </ConfigProvider>
       </EnvironmentProvider>
     </div>

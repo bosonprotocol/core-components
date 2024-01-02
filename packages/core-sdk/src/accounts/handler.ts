@@ -5,6 +5,7 @@ import {
   MetadataStorage
 } from "@bosonprotocol/common";
 import { BigNumberish } from "@ethersproject/bignumber";
+import { formatBytes32String } from "@ethersproject/strings";
 import { DisputeResolverFieldsFragment } from "../subgraph";
 import {
   encodeCreateSeller,
@@ -16,7 +17,12 @@ import {
   encodeRemoveSellersFromAllowList,
   encodeUpdateDisputeResolver,
   encodeOptInToSellerUpdate,
-  encodeOptInToDisputeResolverUpdate
+  encodeOptInToDisputeResolverUpdate,
+  encodeCreateNewCollection,
+  encodeIsSellerSaltAvailable,
+  decodeIsSellerSaltAvailable,
+  encodeCalculateCollectionAddress,
+  decodeCalculateCollectionAddress
 } from "./interface";
 import { getDisputeResolverById } from "./subgraph";
 import {
@@ -26,9 +32,37 @@ import {
   DisputeResolutionFee,
   DisputeResolverUpdates,
   OptInToSellerUpdateArgs,
-  OptInToDisputeResolverUpdateArgs
+  OptInToDisputeResolverUpdateArgs,
+  CreateCollectionArgs
 } from "./types";
 import { storeMetadataOnTheGraph } from "../offers/storage";
+
+export const INITIAL_COLLECTION_ID = "initial";
+
+export async function findCollectionSalt(args: {
+  sellerToCreate: CreateSellerArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<string> {
+  // collectionSalt is added to the seller admin address to give the sellerSalt that is used to compute the voucher contract address
+  // The seller creation will fail in case sellerSalt already exists
+  // This may happen if the admin address was already assigned to another seller in the past
+  // In that case, we add a random suffix on the collectionId to generate a different salt
+  let collectionSalt = formatBytes32String(INITIAL_COLLECTION_ID);
+  const isAvailable = await isSellerSaltAvailable({
+    adminAddress: args.sellerToCreate.admin,
+    salt: collectionSalt,
+    contractAddress: args.contractAddress,
+    web3Lib: args.web3Lib
+  });
+  if (!isAvailable) {
+    const uuid = Math.floor(Math.random() * 100000000).toFixed(0);
+    collectionSalt = formatBytes32String(
+      `${INITIAL_COLLECTION_ID}-${uuid}`.slice(0, 31)
+    );
+  }
+  return collectionSalt;
+}
 
 export async function createSeller(args: {
   sellerToCreate: CreateSellerArgs;
@@ -37,6 +71,7 @@ export async function createSeller(args: {
   metadataStorage?: MetadataStorage;
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
+  const collectionSalt = await findCollectionSalt(args);
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.sellerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
@@ -44,7 +79,7 @@ export async function createSeller(args: {
   });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
-    data: encodeCreateSeller(args.sellerToCreate)
+    data: encodeCreateSeller(args.sellerToCreate, collectionSalt)
   });
 }
 
@@ -188,4 +223,59 @@ function assertDisputeResolver(
       `Dispute resolver with id ${disputeResolverId} does not exist`
     );
   }
+}
+
+export async function createNewCollection(args: {
+  collectionToCreate: CreateCollectionArgs;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<TransactionResponse> {
+  // call calculateCollectionAddress() to check no collection with the same collectionId already exists
+  if (args.collectionToCreate.sellerId) {
+    const { isAvailable } = await calculateCollectionAddress({
+      sellerId: args.collectionToCreate.sellerId,
+      collectionId: args.collectionToCreate.collectionId,
+      contractAddress: args.contractAddress,
+      web3Lib: args.web3Lib
+    });
+    if (!isAvailable) {
+      throw new Error(
+        `CollectionId '${args.collectionToCreate.collectionId}' is not available for seller '${args.collectionToCreate.sellerId}'`
+      );
+    }
+  }
+  return args.web3Lib.sendTransaction({
+    to: args.contractAddress,
+    data: encodeCreateNewCollection(args.collectionToCreate)
+  });
+}
+
+export async function isSellerSaltAvailable(args: {
+  adminAddress: string;
+  salt: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<boolean> {
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeIsSellerSaltAvailable(args.adminAddress, args.salt)
+  });
+  return decodeIsSellerSaltAvailable(result);
+}
+
+export async function calculateCollectionAddress(args: {
+  sellerId: BigNumberish;
+  collectionId: string;
+  contractAddress: string;
+  web3Lib: Web3LibAdapter;
+}): Promise<{ collectionAddress: string; isAvailable: boolean }> {
+  if (args.collectionId.length >= 32) {
+    throw new Error(`collectionId length should not exceed 31 characters`);
+  }
+  const collectionSalt = formatBytes32String(args.collectionId);
+  const result = await args.web3Lib.call({
+    to: args.contractAddress,
+    data: encodeCalculateCollectionAddress(args.sellerId, collectionSalt)
+  });
+  return decodeCalculateCollectionAddress(result);
 }

@@ -54,6 +54,7 @@ import { ERC20ForwardRequest } from "../forwarder/biconomy-interface";
 import { getNonce, verifyEIP712 } from "../forwarder/handler";
 import { MockForwardRequest } from "../forwarder/mock-interface";
 import { isTrustedForwarder } from "../voucher/handler";
+import { findCollectionSalt } from "../accounts/handler";
 
 export type BaseMetaTxArgs = {
   web3Lib: Web3LibAdapter;
@@ -376,7 +377,8 @@ export async function relayBiconomyMetaTransaction(args: {
         from: txReceipt?.from || metaTx.params.userAddress,
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
-        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice)
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
+        blockNumber: txReceipt.blockNumber
       };
     },
     hash: relayTxResponse.txHash
@@ -395,11 +397,16 @@ export async function signMetaTxCreateSeller(
     metadataStorage: args.metadataStorage,
     theGraphStorage: args.theGraphStorage
   });
+  const collectionSalt = await findCollectionSalt({
+    sellerToCreate: args.createSellerArgs,
+    contractAddress: args.metaTxHandlerAddress,
+    ...args
+  });
   return signMetaTx({
     ...args,
     functionName:
       "createSeller((uint256,address,address,address,address,bool,string),(uint256,uint8),(string,uint256,bytes32))",
-    functionSignature: encodeCreateSeller(args.createSellerArgs)
+    functionSignature: encodeCreateSeller(args.createSellerArgs, collectionSalt)
   });
 }
 
@@ -1257,7 +1264,8 @@ export async function relayMetaTransaction(args: {
         from: txReceipt?.from || metaTx.params.userAddress,
         transactionHash: txHash,
         logs: txReceipt?.logs || [],
-        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice)
+        effectiveGasPrice: BigNumber.from(waitResponse.data.newGasPrice),
+        blockNumber: txReceipt.blockNumber
       };
     },
     hash: relayTxResponse.txHash

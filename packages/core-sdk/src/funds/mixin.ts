@@ -62,18 +62,18 @@ export class FundsMixin extends BaseCoreSDK {
 
   /**
    * Withdraw selected funds by calling the `FundsHandlerFacet` contract.
-   * @param sellerId - ID of seller account to withdraw funds for.
+   * @param entityId - ID of seller/buyer/agent account to withdraw funds for.
    * @param tokensToWithdraw - Addresses of funds tokens to withdraw.
    * @param amountsToWithdraw - Amounts of funds token to withdraw.
    * @returns Transaction response.
    */
   public async withdrawFunds(
-    sellerId: BigNumberish,
+    entityId: BigNumberish,
     tokensToWithdraw: Array<string>,
     amountsToWithdraw: Array<BigNumberish>
   ): Promise<TransactionResponse> {
     return withdrawFunds({
-      sellerId,
+      entityId,
       tokensToWithdraw,
       amountsToWithdraw,
       contractAddress: this._protocolDiamond,
@@ -83,14 +83,14 @@ export class FundsMixin extends BaseCoreSDK {
 
   /**
    * Withdraw all available funds by calling the `FundsHandlerFacet` contract.
-   * @param sellerId - ID of seller account to withdraw funds for.
+   * @param entityId - ID of seller/buyer/agent account to withdraw funds for.
    * @returns Transaction response.
    */
   public async withdrawAllAvailableFunds(
-    sellerId: BigNumberish
+    entityId: BigNumberish
   ): Promise<TransactionResponse> {
     return withdrawAllAvailableFunds({
-      sellerId,
+      entityId,
       subgraphUrl: this._subgraphUrl,
       contractAddress: this._protocolDiamond,
       web3Lib: this._web3Lib

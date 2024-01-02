@@ -51,7 +51,6 @@ describe("meta-tx", () => {
     // do not approve for buyer (we expect commit to do it when needed)
     await ensureMintedAndAllowedTokens([buyerWallet], undefined, false);
     const createdOfferId = await createOfferAndDepositFunds(sellerWallet);
-    await waitForGraphNodeIndexing();
     offerToCommit = await sellerCoreSDK.getOfferById(createdOfferId);
   });
 
@@ -105,8 +104,7 @@ describe("meta-tx", () => {
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,
-            metadataUri,
-            collectionId: Date.now().toString() // ensure the salt is random to avoid collision
+            metadataUri
           },
           nonce
         });
@@ -168,7 +166,7 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const existingSeller = await sellerCoreSDK.getSellerById(seller.id);
       expect(existingSeller.pendingSeller?.admin).toBe(
         randomWallet.address.toLowerCase()
@@ -259,7 +257,7 @@ describe("meta-tx", () => {
         });
       await metaTxUpdateSellerRandom.wait();
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxUpdateSellerRandom);
 
       nonce = Date.now();
       const { r, s, v, functionName, functionSignature } =
@@ -287,7 +285,7 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const existingSeller = await seller1CoreSDK.getSellerById(seller1.id);
       expect(existingSeller.pendingSeller?.admin).toBe(constants.AddressZero);
       expect(existingSeller.admin.toLowerCase()).toBe(
@@ -423,7 +421,7 @@ describe("meta-tx", () => {
         metaTxReceipt.logs
       );
       expect(groupId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const tokenGatedOffer = await sellerCoreSDK.getOfferById(createdOffer.id);
       expect(tokenGatedOffer.condition).toBeTruthy();
     });
@@ -489,7 +487,7 @@ describe("meta-tx", () => {
         metaTxReceipt.logs
       );
       expect(offerId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const tokenGatedOffer = await sellerCoreSDK.getOfferById(
         offerId as string
       );
@@ -877,7 +875,7 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const fundsAfter = await getFunds(
         newSellerCoreSDK,
         seller.id,
@@ -914,7 +912,7 @@ describe("meta-tx", () => {
       );
       await depositTx.wait();
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(depositTx);
       const fundsAfterDeposit = await getFunds(
         newSellerCoreSDK,
         seller.id,
@@ -951,7 +949,7 @@ describe("meta-tx", () => {
       expect(metaTxReceipt.transactionHash).toBeTruthy();
       expect(BigNumber.from(metaTxReceipt.effectiveGasPrice).gt(0)).toBe(true);
 
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(metaTxReceipt);
       const fundsAfter = await getFunds(
         newSellerCoreSDK,
         seller.id,
@@ -969,7 +967,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
       expect(exchangeId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(commitTxReceipt);
       const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId as string);
       await redeemTx.wait();
 
@@ -1005,7 +1003,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
       expect(exchangeId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(commitTxReceipt);
       const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId as string);
       await redeemTx.wait();
 
@@ -1046,7 +1044,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       );
       expect(exchangeId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(commitTxReceipt);
       const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId as string);
       await redeemTx.wait();
 
@@ -1087,7 +1085,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       ) as string;
       expect(exchangeId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(commitTxReceipt);
       const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId);
       await redeemTx.wait();
 
@@ -1140,7 +1138,7 @@ describe("meta-tx", () => {
         commitTxReceipt.logs
       ) as string;
       expect(exchangeId).toBeTruthy();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(commitTxReceipt);
       const redeemTx = await buyerCoreSDK.redeemVoucher(exchangeId);
       await redeemTx.wait();
 
@@ -1148,7 +1146,7 @@ describe("meta-tx", () => {
         exchangeId as string
       );
       await raiseDisputeTx.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(raiseDisputeTx);
 
       const dispute = await buyerCoreSDK.getDisputeById(exchangeId);
       const newTimeout = BigNumber.from(dispute.timeout).add(12).toString();
@@ -1435,6 +1433,7 @@ async function createOfferAndDepositFunds(sellerWallet: Wallet) {
     MOCK_ERC20_ADDRESS
   );
   await depositFundsTx.wait();
+  await waitForGraphNodeIndexing(depositFundsTx);
 
   return offerId as string;
 }

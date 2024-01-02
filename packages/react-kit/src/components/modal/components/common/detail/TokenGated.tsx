@@ -95,7 +95,7 @@ const buildMessage = (
       if (minTokenId === maxTokenId) {
         return (
           <>
-            Token ID : {minTokenId} from {TokenLink}
+            Token ID: {minTokenId} from {TokenLink}
           </>
         );
       }

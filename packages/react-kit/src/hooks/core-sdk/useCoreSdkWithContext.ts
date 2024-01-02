@@ -12,7 +12,9 @@ export function useCoreSDKWithContext(): CoreSDK {
   const signer = useSigner();
   const defaultConfig = getEnvConfigById(envName, configId);
   const overrides = useMemo(() => {
-    return externalSigner ? { web3Lib: externalSigner } : undefined;
+    return externalSigner
+      ? { web3Lib: externalSigner.externalWeb3LibAdapter }
+      : undefined;
   }, [externalSigner]);
   return hooks.useCoreSdk(
     {

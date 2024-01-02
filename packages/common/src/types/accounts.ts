@@ -61,13 +61,11 @@ export type CreateSellerArgs = {
   authTokenType: number;
   /** Uri of the seller metadata */
   metadataUri: string;
-  /** A tag to identify the seller's first collection */
-  collectionId?: string;
 };
 
 export type UpdateSellerArgs = { id: BigNumberish } & Omit<
   CreateSellerArgs,
-  "contractUri" | "royaltyPercentage" | "collectionId"
+  "contractUri" | "royaltyPercentage"
 >;
 
 export const SellerUpdateFields = {
@@ -139,4 +137,18 @@ export type DisputeResolverStruct = {
   treasury: string;
   metadataUri: string;
   active: boolean;
+};
+
+export type CreateCollectionArgs = {
+  /** A tag to identify the seller's collection */
+  collectionId: string;
+  /** Uri of the metadata of the collection voucher contract */
+  contractUri: string;
+  /** Royalty percentage for voucher secondary sales */
+  royaltyPercentage: BigNumberish;
+  /** collectionSalt is added to the seller admin address to give the sellerSalt
+      that is used to compute the voucher contract address. By default, deduced from collectionId */
+  collectionSalt?: string;
+  /** optional field to specify the sellerId (will be retrieved from caller wallet if not specified) */
+  sellerId?: BigNumberish;
 };

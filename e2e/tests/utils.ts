@@ -1,8 +1,10 @@
+import { GraphQLClient, gql } from "graphql-request";
 import { AddressZero } from "@ethersproject/constants";
 import {
   ConditionStruct,
   CreateSellerArgs,
-  TransactionResponse
+  TransactionResponse,
+  TransactionReceipt
 } from "../../packages/common/src/index";
 import {
   providers,
@@ -14,7 +16,10 @@ import {
 } from "ethers";
 import { CoreSDK, getEnvConfigs, accounts } from "../../packages/core-sdk/src";
 import { base, seller } from "../../packages/metadata/src";
-import { IpfsMetadataStorage } from "../../packages/ipfs-storage/src";
+import {
+  BaseIpfsStorage,
+  IpfsMetadataStorage
+} from "../../packages/ipfs-storage/src";
 import { EthersAdapter } from "../../packages/ethers-sdk/src";
 import { CreateOfferArgs } from "./../../packages/common/src/types/offers";
 import { mockCreateOfferArgs } from "../../packages/common/tests/mocks";
@@ -37,7 +42,8 @@ import {
   ACCOUNT_16,
   ACCOUNT_17,
   ACCOUNT_18,
-  ACCOUNT_19
+  ACCOUNT_19,
+  ACCOUNT_20
 } from "../../contracts/accounts";
 import {
   MOCK_ERC1155_ABI,
@@ -47,6 +53,7 @@ import {
 } from "./mockAbis";
 import { SellerFieldsFragment } from "../../packages/core-sdk/src/subgraph";
 import { ZERO_ADDRESS } from "../../packages/core-sdk/tests/mocks";
+import { sortObjKeys } from "../../packages/ipfs-storage/src/utils";
 
 const getFirstEnvConfig = (arg0: Parameters<typeof getEnvConfigs>[0]) =>
   getEnvConfigs(arg0)[0];
@@ -155,6 +162,8 @@ export const seedWallet17 = new Wallet(ACCOUNT_17.privateKey, provider);
 export const seedWallet18 = new Wallet(ACCOUNT_18.privateKey, provider);
 // seedWallets used by core-sdk-set-contract-uri
 export const seedWallet19 = new Wallet(ACCOUNT_19.privateKey, provider);
+// seedWallets used by core-sdk-collections
+export const seedWallet20 = new Wallet(ACCOUNT_20.privateKey, provider);
 
 export const mockErc20Contract = new Contract(
   MOCK_ERC20_ADDRESS,
@@ -227,7 +236,32 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
   });
 }
 
-export async function waitForGraphNodeIndexing() {
+export async function waitForGraphNodeIndexing(
+  blockNumberOrTransaction?:
+    | number
+    | TransactionResponse
+    | TransactionReceipt
+) {
+  let blockToWaitFor = 0;
+  if (typeof blockNumberOrTransaction === "number") {
+    blockToWaitFor = blockNumberOrTransaction;
+  } else if (blockNumberOrTransaction?.["blockNumber"]) {
+    blockToWaitFor = (blockNumberOrTransaction as TransactionReceipt)
+      .blockNumber;
+  } else if (blockNumberOrTransaction?.["wait"]) {
+    const txReceipt = await (
+      blockNumberOrTransaction as TransactionResponse
+    ).wait();
+    blockToWaitFor = txReceipt.blockNumber;
+  }
+  if (blockToWaitFor > 0) {
+    let currentBlock = await getSubgraphBlockNumber();
+    while (currentBlock < blockToWaitFor) {
+      await wait(200);
+      currentBlock = await getSubgraphBlockNumber();
+    }
+    return;
+  }
   await wait(3_000);
 }
 
@@ -270,7 +304,7 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
       metadataUri: sellerMetadataUri
     });
     await tx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(tx);
     sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   }
 
@@ -349,7 +383,7 @@ export async function createDisputeResolver(
     throw new Error("Failed to create dispute resolver");
   }
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(receipt);
 
   const disputeResolver = await drCoreSDK.getDisputeResolverById(
     disputeResolverId
@@ -385,7 +419,7 @@ export async function createOffer(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -421,7 +455,7 @@ export async function createOfferWithCondition(
     createOfferTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId as string);
 
   return offer;
@@ -474,7 +508,7 @@ export async function createSellerAndOfferWithCondition(
   if (createdOfferId === null) {
     throw new Error("Failed to create offer with condition");
   }
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
@@ -510,7 +544,7 @@ export async function createSeller(
     createSellerTxReceipt.logs
   );
 
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(createSellerTxReceipt);
   if (createdSellerId === null) {
     throw new Error("Failed to create seller");
   }
@@ -547,8 +581,9 @@ export async function updateSeller(
       })
     );
   }
-  await Promise.all(optInTxs.map((tx) => tx.wait()));
-  await waitForGraphNodeIndexing();
+  const receipts = await Promise.all(optInTxs.map((tx) => tx.wait()));
+  const maxBlockNum = receipts.reduce((max, receipt) => Math.max(max, receipt.blockNumber), 0);
+  await waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
 }
@@ -593,8 +628,9 @@ export async function updateSellerMetaTx(
       })
     );
   }
-  await Promise.all(optInTxs.map((tx) => tx.wait()));
-  await waitForGraphNodeIndexing();
+  const receipts = await Promise.all(optInTxs.map((tx) => tx.wait()));
+  const maxBlockNum = receipts.reduce((max, receipt) => Math.max(max, receipt.blockNumber), 0);
+  await waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
 }
@@ -642,7 +678,7 @@ export async function createSellerAndOffer(
   if (createdOfferId === null) {
     throw new Error("Failed to create offer");
   }
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
   const offer = await coreSDK.getOfferById(createdOfferId);
 
   return offer;
@@ -748,7 +784,33 @@ export async function commitToOffer(args: {
   if (!exchangeId) {
     throw new Error("exchangeId is not defined");
   }
-  await waitForGraphNodeIndexing();
+  await waitForGraphNodeIndexing(commitToOfferTxReceipt);
   const exchange = await args.buyerCoreSDK.getExchangeById(exchangeId);
   return exchange;
+}
+
+export async function publishNftContractMetadata(
+  coreSDK: CoreSDK,
+  metadata: Record<string, unknown>
+): Promise<string> {
+  const ipfsStorage = new BaseIpfsStorage({
+    url: getFirstEnvConfig("local").ipfsMetadataUrl
+  });
+  const metadataWithSortedKeys = sortObjKeys(metadata);
+  const cid = await ipfsStorage.add(JSON.stringify(metadataWithSortedKeys));
+  return "ipfs://" + cid;
+}
+
+export async function getSubgraphBlockNumber(): Promise<number> {
+  const client = new GraphQLClient(getFirstEnvConfig("local").subgraphUrl);
+  const response = await client.request(gql`
+    query MyQuery {
+      _meta {
+        block {
+          number
+        }
+      }
+    }
+  `);
+  return response?._meta?.block?.number || 0;
 }

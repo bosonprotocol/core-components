@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.24.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.24.0...@bosonprotocol/react-kit@0.24.1) (2023-12-18)
+
+**Note:** Version bump only for package @bosonprotocol/react-kit
+
+
+
+
+
+# [0.24.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.23.1...@bosonprotocol/react-kit@0.24.0) (2023-12-18)
+
+
+### Bug Fixes
+
+* responsiveness header redemption widget ([#626](https://github.com/bosonprotocol/core-components/issues/626)) ([c9b1dfe](https://github.com/bosonprotocol/core-components/commit/c9b1dfe03e946e754178701ed9326c21e3f70f92))
+* useCallSignerFromIframe ([#629](https://github.com/bosonprotocol/core-components/issues/629)) ([8531ee9](https://github.com/bosonprotocol/core-components/commit/8531ee9eee841fc6d0c6eca1451e0db1937036b0))
+
+
+### Features
+
+* create product card and collections card skeleton components ([#631](https://github.com/bosonprotocol/core-components/issues/631)) ([7aa283d](https://github.com/bosonprotocol/core-components/commit/7aa283d8b767e52cb58ed289aeeb2d5a2a600f84))
+* redemption widget without connecting wallet ([#627](https://github.com/bosonprotocol/core-components/issues/627)) ([241fbcb](https://github.com/bosonprotocol/core-components/commit/241fbcbdc5c2be1b60d1b4097e3388c36c00beed))
+
+
+
+
+
+## [0.23.1](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.23.0...@bosonprotocol/react-kit@0.23.1) (2023-12-08)
+
+
+### Bug Fixes
+
+* price currency ([#624](https://github.com/bosonprotocol/core-components/issues/624)) ([673f478](https://github.com/bosonprotocol/core-components/commit/673f478a74309cfaf1d20e710683372fb56fe226))
+
+
+
+
+
+# [0.23.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.22.0...@bosonprotocol/react-kit@0.23.0) (2023-12-08)
+
+
+### Features
+
+* add more props to magic login button ([#622](https://github.com/bosonprotocol/core-components/issues/622)) ([5eb46fb](https://github.com/bosonprotocol/core-components/commit/5eb46fb2f087b0fe75aa35be7c7351e9c567e381))
+
+
+
+
+
 # [0.22.0](https://github.com/bosonprotocol/core-components/compare/@bosonprotocol/react-kit@0.21.0...@bosonprotocol/react-kit@0.22.0) (2023-12-05)
 
 

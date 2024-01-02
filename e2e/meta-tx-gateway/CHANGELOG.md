@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.6.0...meta-tx-gateway@1.6.1) (2023-12-18)
+
+**Note:** Version bump only for package meta-tx-gateway
+
+
+
+
+
 # [1.6.0](https://github.com/bosonprotocol/core-components/compare/meta-tx-gateway@1.5.2...meta-tx-gateway@1.6.0) (2023-12-05)
 
 

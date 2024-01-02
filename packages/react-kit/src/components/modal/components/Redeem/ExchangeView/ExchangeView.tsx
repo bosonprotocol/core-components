@@ -127,7 +127,7 @@ export function ExchangeView({
     dispatch({
       payload: {
         headerComponent: (
-          <Grid gap="1rem">
+          <Grid gap="1rem" style={{ flex: "1" }}>
             <House
               onClick={onHouseClick}
               size={32}

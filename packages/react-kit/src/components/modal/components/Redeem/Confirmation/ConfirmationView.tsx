@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { Exchange } from "../../../../../types/exchange";
 import Confirmation, { ConfirmationProps } from "./Confirmation";
 import { NonModalProps, useNonModalContext } from "../../../nonModal/NonModal";
-import Typography from "../../../../ui/Typography";
 import { theme } from "../../../../../theme";
-import { useAccount } from "wagmi";
+import { RedeemHeader } from "../RedeemHeader";
+import { useAccount } from "../../../../../hooks/connection/connection";
 
 const colors = theme.colors.light;
 
@@ -34,11 +34,7 @@ export function ConfirmationView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: (
-          <Typography tag="h3" $width="100%">
-            Redeem your item
-          </Typography>
-        ),
+        headerComponent: RedeemHeader,
         contentStyle: {
           background: colors.white
         }

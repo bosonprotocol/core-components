@@ -131,13 +131,9 @@ async function createOffer(
     createOfferTxReceipt.logs
   );
 
-  let offer: subgraph.OfferFieldsFragment | null = null;
-  for (let i = 0; i < 3 && !offer; i++) {
-    await waitForGraphNodeIndexing();
-    offer = await coreSDK.getOfferById(createdOfferId as string);
-  }
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
 
-  return offer;
+  return await coreSDK.getOfferById(createdOfferId as string);
 }
 
 async function createOfferBatch(
@@ -167,19 +163,11 @@ async function createOfferBatch(
 
   expect(createdOfferIds.length).toEqual(offersArgs.length);
 
-  let offers: subgraph.OfferFieldsFragment[] = [];
-  for (
-    let i = 0;
-    i < 3 && offers.length < offersArgs.length && createdOfferIds.length > 0;
-    i++
-  ) {
-    offers = [];
-    await waitForGraphNodeIndexing();
-    const offerPromises = createdOfferIds.map((createdOfferId) =>
-      coreSDK.getOfferById(createdOfferId as string)
-    );
-    offers = await Promise.all(offerPromises);
-  }
+  await waitForGraphNodeIndexing(createOfferTxReceipt);
+  const offerPromises = createdOfferIds.map((createdOfferId) =>
+    coreSDK.getOfferById(createdOfferId as string)
+  );
+  const offers = await Promise.all(offerPromises);
 
   // Be sure the returned offers are in the same order as the offersArgs
   // (here we know that the metadataHash is unique for every offer)
@@ -680,7 +668,7 @@ describe("Multi-variant offers tests", () => {
     // Commit to the offer
     const commitTx = await coreSDK.commitToOffer(offer?.id as string);
     await commitTx.wait();
-    await waitForGraphNodeIndexing();
+    await waitForGraphNodeIndexing(commitTx);
 
     const productWithVariants = await coreSDK.getProductWithVariants(
       offer?.seller.id as string,
@@ -855,7 +843,7 @@ describe("Multi-variant offers tests", () => {
       // Void the offer1
       const voidTx = await coreSDK.voidOffer(offers[0].id);
       await voidTx.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(voidTx);
 
       // Check the notVoidedVariants for product1 only includes the offer2
       let allProductsWithVariants =
@@ -872,7 +860,7 @@ describe("Multi-variant offers tests", () => {
         offers[3].id
       ]);
       await batchVoidTx.wait();
-      await waitForGraphNodeIndexing();
+      await waitForGraphNodeIndexing(batchVoidTx);
 
       // Check the notVoidedVariants for product2 do not include any offer
       allProductsWithVariants =

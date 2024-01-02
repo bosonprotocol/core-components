@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { theme } from "../../theme";
+import { cardWrapperStyles } from "./commonStyles";
 
 export const ProductCardCreator = styled.div`
   display: flex;
@@ -71,9 +72,7 @@ export const ProductCardData = styled.div`
   flex-direction: column;
 `;
 
-export const ProductCardBottom = styled.div.attrs({ className: "bottom" })<{
-  $isNotImageLoaded: boolean;
-}>`
+export const ProductCardBottom = styled.div.attrs({ className: "bottom" })`
   width: 100%;
   background: ${theme?.colors?.light.white};
   height: 12rem;
@@ -99,19 +98,14 @@ export const ProductCardTitleWrapper = styled.div`
 `;
 
 export const ProductCardWrapper = styled.div<{ $isHoverDisabled: boolean }>`
+  ${cardWrapperStyles}
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  padding: 0px;
-  isolation: isolate;
-  width: 100%;
-  min-height: 31.25rem;
-  box-shadow: 0px 4.31783px 107.946px rgba(21, 30, 52, 0.1);
   cursor: pointer;
-  background: ${theme.colors.light.white};
   [data-image-wrapper] {
     position: static;
     padding-top: 0;

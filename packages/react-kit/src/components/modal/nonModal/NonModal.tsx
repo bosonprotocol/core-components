@@ -210,6 +210,7 @@ export interface NonModalProps {
   closable?: boolean;
   lookAndFeel?: "modal" | "regular";
   children: ReactNode;
+  showConnectButton: boolean;
 }
 
 export default function NonModal({
@@ -222,7 +223,8 @@ export default function NonModal({
   theme = "light",
   contentStyle: _contentStyle,
   closable = true,
-  lookAndFeel = "modal"
+  lookAndFeel = "modal",
+  showConnectButton
 }: NonModalProps) {
   const handleOnClose = () => {
     if (closable && hideModal) {
@@ -258,6 +260,7 @@ export default function NonModal({
           HeaderComponent={HeaderComponent}
           closable={closable}
           handleOnClose={handleOnClose}
+          showConnectButton={showConnectButton}
         />
 
         <Content $size={size} style={contentStyle}>

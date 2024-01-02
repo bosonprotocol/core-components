@@ -39,6 +39,7 @@ import { getProductId } from "../src/entities/metadata/product-v1/product";
 const sellerAddress = "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7";
 const voucherCloneAddress = "0x123456789a123456789a123456789a123456789a";
 const sellerMetadataHash = "QmZffs1Uv6pmf4649UpMqinDord9QBerJaWcwRgdenAto1";
+const collectionMetadataHash = "QmXuD1PnVjGDn5cH2ARiAkpPkpEyr2SUyBe3vuUfe52NFi";
 let hashCount = 0;
 
 beforeEach(() => {
@@ -46,7 +47,13 @@ beforeEach(() => {
 });
 
 test("handle legacy SellerCreatedEvent", () => {
-  mockBosonVoucherContractCalls(voucherCloneAddress, "ipfs://", 0);
+  mockIpfsFile(collectionMetadataHash, "tests/metadata/collection.json");
+
+  mockBosonVoucherContractCalls(
+    voucherCloneAddress,
+    `ipfs://${collectionMetadataHash}`,
+    0
+  );
   const sellerCreatedEvent = createSellerCreatedEventLegacy(
     1,
     sellerAddress,
