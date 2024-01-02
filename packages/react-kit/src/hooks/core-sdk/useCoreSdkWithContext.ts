@@ -1,10 +1,12 @@
 import { providers } from "ethers";
-import { CoreSDK, getEnvConfigById, hooks } from "../..";
+import { getEnvConfigById } from "@bosonprotocol/common";
+import { CoreSDK } from "@bosonprotocol/core-sdk";
 import { useEnvContext } from "../../components/environment/EnvironmentContext";
 import { Token } from "../../components/widgets/finance/convertion-rate/ConvertionRateContext";
 import { useSigner } from "../connection/connection";
 import { useMemo } from "react";
 import { useExternalSigner } from "../../components/signer/useExternalSigner";
+import { hooks } from "../..";
 
 export function useCoreSDKWithContext(): CoreSDK {
   const { envName, configId, metaTx } = useEnvContext();

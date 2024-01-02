@@ -41,6 +41,7 @@ export type CommitNonModalProps = {
   offerViewOnPurchaseOverview?: OfferVariantViewProps["onPurchaseOverview"];
   offerViewOnViewFullDescription?: OfferVariantViewProps["onViewFullDescription"];
   forcedAccount?: string;
+  withExternalSigner: boolean | undefined | null;
 };
 
 export default function CommitWrapper({
@@ -55,6 +56,7 @@ export default function CommitWrapper({
         background: colors.white
       }}
       lookAndFeel="regular"
+      showConnectButton={!props.withExternalSigner}
     >
       <CommitNonModal hideModal={hideModal} {...props} />
     </NonModal>

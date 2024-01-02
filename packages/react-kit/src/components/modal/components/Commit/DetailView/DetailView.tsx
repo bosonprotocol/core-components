@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { offers, subgraph } from "@bosonprotocol/core-sdk";
+import { Provider } from "@bosonprotocol/ethers-sdk";
 import dayjs from "dayjs";
 import { BigNumberish, ethers, providers, utils } from "ethers";
 import {
@@ -693,7 +694,7 @@ const DetailView: React.FC<IDetailWidget> = ({
                 coreSdkConfig={{
                   envName: protocolConfig.envName,
                   configId: protocolConfig.configId,
-                  web3Provider: signer?.provider,
+                  web3Provider: signer?.provider as Provider,
                   metaTx: protocolConfig.metaTx
                 }}
                 variant="primaryFill"

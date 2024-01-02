@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useCoreSDKWithContext } from "../useCoreSdkWithContext";
+import { useCoreSDKWithContext } from "../core-sdk/useCoreSdkWithContext";
 
 export const useErc721OwnerOf = (
   props: {

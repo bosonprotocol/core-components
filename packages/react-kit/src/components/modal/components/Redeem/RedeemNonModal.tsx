@@ -186,8 +186,7 @@ const checkSignatures = ({
     Sentry.captureException(error);
     return (
       <p>
-        Something went wrong:{" "}
-        <b>{error instanceof Error ? error.message : error}</b>
+        Something went wrong: {error instanceof Error && <b>{error.message}</b>}
       </p>
     );
   }
