@@ -14,7 +14,12 @@ import {
   BigNumber,
   BigNumberish
 } from "ethers";
-import { CoreSDK, getEnvConfigs, accounts } from "../../packages/core-sdk/src";
+import {
+  CoreSDK,
+  getEnvConfigs,
+  accounts,
+  MetadataType
+} from "../../packages/core-sdk/src";
 import { base, seller } from "../../packages/metadata/src";
 import {
   BaseIpfsStorage,
@@ -237,10 +242,7 @@ export function initCoreSDKWithWallet(wallet: Wallet) {
 }
 
 export async function waitForGraphNodeIndexing(
-  blockNumberOrTransaction?:
-    | number
-    | TransactionResponse
-    | TransactionReceipt
+  blockNumberOrTransaction?: number | TransactionResponse | TransactionReceipt
 ) {
   let blockToWaitFor = 0;
   if (typeof blockNumberOrTransaction === "number") {
@@ -290,14 +292,14 @@ export async function ensureCreatedSeller(sellerWallet: Wallet) {
   const sellerCoreSDK = initCoreSDKWithWallet(sellerWallet);
   let sellers = await sellerCoreSDK.getSellersByAddress(sellerAddress);
   const sellerMetadataUri = await getSellerMetadataUri(sellerCoreSDK);
+  const contractUri = await getCollectionMetadataUri(sellerCoreSDK);
 
   if (!sellers.length) {
     const tx = await sellerCoreSDK.createSeller({
       assistant: sellerAddress,
       treasury: sellerAddress,
       admin: sellerAddress,
-      // TODO: replace with correct uri
-      contractUri: "ipfs://seller-contract",
+      contractUri,
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
@@ -527,7 +529,7 @@ export async function createSeller(
     ...overrides.sellerMetadata
   });
   const metadataUri = "ipfs://" + metadataHash;
-  const contractUri = "ipfs://0123456789abcdef";
+  const contractUri = await getCollectionMetadataUri(coreSDK);
   const createSellerTxResponse = await coreSDK.createSeller({
     assistant: sellerAddress,
     admin: sellerAddress,
@@ -582,7 +584,10 @@ export async function updateSeller(
     );
   }
   const receipts = await Promise.all(optInTxs.map((tx) => tx.wait()));
-  const maxBlockNum = receipts.reduce((max, receipt) => Math.max(max, receipt.blockNumber), 0);
+  const maxBlockNum = receipts.reduce(
+    (max, receipt) => Math.max(max, receipt.blockNumber),
+    0
+  );
   await waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
@@ -629,7 +634,10 @@ export async function updateSellerMetaTx(
     );
   }
   const receipts = await Promise.all(optInTxs.map((tx) => tx.wait()));
-  const maxBlockNum = receipts.reduce((max, receipt) => Math.max(max, receipt.blockNumber), 0);
+  const maxBlockNum = receipts.reduce(
+    (max, receipt) => Math.max(max, receipt.blockNumber),
+    0
+  );
   await waitForGraphNodeIndexing(maxBlockNum);
   const updatedSeller = await coreSDK.getSellerById(seller.id as string);
   return updatedSeller;
@@ -643,6 +651,19 @@ export async function getSellerMetadataUri(coreSDK: CoreSDK) {
   return sellerMetadataUri;
 }
 
+export async function getCollectionMetadataUri(coreSDK: CoreSDK) {
+  const collectionMetadataHash = await coreSDK.storeMetadata({
+    type: MetadataType.BASE,
+    schemaUrl: "schema-url.com",
+    name: "MyCollection",
+    description: "MyCollection",
+    externalUrl: "external-url.com",
+    licenseUrl: "license-url.com"
+  });
+  const collectionMetadataUri = "ipfs://" + collectionMetadataHash;
+  return collectionMetadataUri;
+}
+
 export async function createSellerAndOffer(
   coreSDK: CoreSDK,
   sellerAddress: string,
@@ -654,12 +675,13 @@ export async function createSellerAndOffer(
   });
   const metadataUri = "ipfs://" + metadataHash;
   const sellerMetadataUri = await getSellerMetadataUri(coreSDK);
+  const contractUri = await getCollectionMetadataUri(coreSDK);
   const createOfferTxResponse = await coreSDK.createSellerAndOffer(
     {
       assistant: sellerAddress,
       admin: sellerAddress,
       treasury: sellerAddress,
-      contractUri: metadataUri,
+      contractUri,
       royaltyPercentage: "0",
       authTokenId: "0",
       authTokenType: 0,
