@@ -57,7 +57,6 @@ import { poll } from "../../../../../lib/promises/promises";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
 import { DetailDisputeResolver } from "../../common/detail/DetailDisputeResolver";
 import Grid from "../../../../ui/Grid";
-import VariationSelects from "../../common/VariationSelects";
 import { VariantV1 } from "../../../../../types/variants";
 import ThemedButton from "../../../../ui/ThemedButton";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
@@ -67,15 +66,6 @@ import { TokenGatedList } from "../../common/detail/TokenGatedList";
 
 const colors = theme.colors.light;
 
-const ResponsiveVariationSelects = styled(VariationSelects)`
-  container-type: inline-size;
-  [data-grid] {
-    flex-direction: column;
-    @container (width > 300px) {
-      flex-direction: row;
-    }
-  }
-`;
 const StyledPrice = styled(Price)`
   h3 {
     font-size: 2rem;
@@ -565,14 +555,10 @@ const DetailView: React.FC<IDetailWidget> = ({
     isOfferNotValidYet ||
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
-  const hasVariations = !!selectedVariant.variations?.length;
   return (
     <Widget>
       <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>
       <div>
-        <Typography tag="h3" style={{ flex: "1 1", marginTop: 0 }}>
-          {offer.metadata.name}
-        </Typography>
         <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
           <StyledPrice
             isExchange={false}
@@ -595,15 +581,6 @@ const DetailView: React.FC<IDetailWidget> = ({
             />
           )}
         </WidgetUpperGrid>
-        {hasVariations && (
-          <div style={{ marginBottom: "1rem" }}>
-            <ResponsiveVariationSelects
-              selectedVariant={selectedVariant}
-              variants={allVariants}
-              disabled={allVariants.length < 2 || disableVariationsSelects}
-            />
-          </div>
-        )}
       </div>
       {isNotCommittableOffer && isBuyerInsufficientFunds && (
         <Grid marginBottom="1rem">

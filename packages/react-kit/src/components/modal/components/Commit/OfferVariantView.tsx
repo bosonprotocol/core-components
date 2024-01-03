@@ -17,9 +17,18 @@ import Loading from "../../../ui/loading/Loading";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
 import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
 import Typography from "../../../ui/Typography";
+import VariationSelects from "../common/VariationSelects";
 
 const colors = theme.colors.light;
-
+const ResponsiveVariationSelects = styled(VariationSelects)`
+  container-type: inline-size;
+  [data-grid] {
+    flex-direction: column;
+    @container (width > 300px) {
+      flex-direction: row;
+    }
+  }
+`;
 const ImageWrapper = styled.div`
   position: relative;
   max-width: 35rem !important;
@@ -112,13 +121,18 @@ export function OfferVariantView({
   useEffect(() => {
     dispatch({
       payload: {
-        headerComponent: null,
+        headerComponent: (
+          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-start">
+            <Typography tag="h3">{offer.metadata.name || ""}</Typography>
+          </Grid>
+        ),
         contentStyle: {
           background: isCommitting ? colors.white : colors.lightGrey
         }
       }
     });
-  }, [dispatch, isCommitting]);
+  }, [dispatch, isCommitting, offer.metadata.name]);
+  const hasVariations = !!selectedVariant.variations?.length;
   return (
     <>
       {isCommitting ? (
@@ -164,23 +178,34 @@ export function OfferVariantView({
               />
             </ImageWrapper>
           </ImageAndSellerIdContainer>
-          <DetailView
-            disableVariationsSelects={disableVariationsSelects}
-            hasSellerEnoughFunds={hasSellerEnoughFunds}
-            selectedVariant={selectedVariant}
-            allVariants={allVariants}
-            onExchangePolicyClick={onExchangePolicyClick}
-            onLicenseAgreementClick={onLicenseAgreementClick}
-            onCommit={(...args) => {
-              onCommit(...args);
-              setIsComitting(false);
-            }}
-            onCommitting={() => setIsComitting(true)}
-            onPurchaseOverview={onPurchaseOverview}
-            hasMultipleVariants={false}
-            isPreview={false}
-            exchangePolicyCheckResult={exchangePolicyCheckResult}
-          />
+          <Grid flexDirection="column">
+            {hasVariations && (
+              <div style={{ marginBottom: "1rem" }}>
+                <ResponsiveVariationSelects
+                  selectedVariant={selectedVariant}
+                  variants={allVariants}
+                  disabled={allVariants.length < 2 || disableVariationsSelects}
+                />
+              </div>
+            )}
+            <DetailView
+              disableVariationsSelects={disableVariationsSelects}
+              hasSellerEnoughFunds={hasSellerEnoughFunds}
+              selectedVariant={selectedVariant}
+              allVariants={allVariants}
+              onExchangePolicyClick={onExchangePolicyClick}
+              onLicenseAgreementClick={onLicenseAgreementClick}
+              onCommit={(...args) => {
+                onCommit(...args);
+                setIsComitting(false);
+              }}
+              onCommitting={() => setIsComitting(true)}
+              onPurchaseOverview={onPurchaseOverview}
+              hasMultipleVariants={false}
+              isPreview={false}
+              exchangePolicyCheckResult={exchangePolicyCheckResult}
+            />
+          </Grid>
         </GridContainer>
       )}
     </>
