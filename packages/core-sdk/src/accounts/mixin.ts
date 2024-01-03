@@ -605,7 +605,9 @@ export class AccountsMixin extends BaseCoreSDK {
     return accounts.handler.createNewCollection({
       collectionToCreate,
       web3Lib: this._web3Lib,
-      contractAddress: overrides.contractAddress || this._protocolDiamond
+      contractAddress: overrides.contractAddress || this._protocolDiamond,
+      theGraphStorage: this._theGraphStorage,
+      metadataStorage: this._metadataStorage
     });
   }
 
