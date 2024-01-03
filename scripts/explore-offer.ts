@@ -165,7 +165,7 @@ function exportOfferData(
     disputeResolverId: offerData.disputeResolutionTerms.disputeResolverId,
     metadataUri: offerData.offer.metadataUri,
     metadataHash: offerData.offer.metadataHash,
-    collectionIndex: "0" // TODO: get the real collectionIndex from the offer
+    collectionIndex: offerData.offer.collectionIndex
   };
   fs.writeFileSync(filePath, JSON.stringify(createOfferArgs, undefined, 2));
 }
