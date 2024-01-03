@@ -653,12 +653,10 @@ export async function getSellerMetadataUri(coreSDK: CoreSDK) {
 
 export async function getCollectionMetadataUri(coreSDK: CoreSDK) {
   const collectionMetadataHash = await coreSDK.storeMetadata({
-    type: MetadataType.BASE,
-    schemaUrl: "schema-url.com",
+    type: MetadataType.COLLECTION,
     name: "MyCollection",
     description: "MyCollection",
-    externalUrl: "external-url.com",
-    licenseUrl: "license-url.com"
+    external_link: "external-url.com"
   });
   const collectionMetadataUri = "ipfs://" + collectionMetadataHash;
   return collectionMetadataUri;

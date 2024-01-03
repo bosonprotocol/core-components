@@ -20,6 +20,7 @@ describe("Offer collections", () => {
   let wallet_A: Wallet, wallet_B: Wallet;
   const customCollectionId = "summer-2024-collection";
   const collectionMetadata1 = {
+    type: "COLLECTION",
     name: "MyCollection",
     description: "This is my collection",
     image:
@@ -36,6 +37,7 @@ describe("Offer collections", () => {
     ]
   };
   const collectionMetadata2 = {
+    type: "COLLECTION",
     name: "MyCollection2",
     description: "This is my 2nd collection",
     image:
@@ -312,37 +314,27 @@ describe("Offer collections", () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);
     const collectionMetadataUri = await publishNftContractMetadata(coreSDK, {
-      name: collectionMetadata1.name
+      type: "COLLECTION"
       // no other fields
     });
-    const seller = await createSeller(coreSDK, fundedWallet.address, {
-      sellerParams: { contractUri: collectionMetadataUri }
-    });
-    expect(seller).toBeTruthy();
-    expect(seller.collections.length).toEqual(1);
-    expect(seller.collections[0].metadata).toBeTruthy();
-    expect(seller.collections[0].metadata.name).toEqual(
-      collectionMetadata1.name
-    );
-    expect(seller.collections[0].metadata.externalLink).toEqual(null);
-    expect(seller.collections[0].metadata.collaborators.length).toEqual(0);
+    await expect(
+      createSeller(coreSDK, fundedWallet.address, {
+        sellerParams: { contractUri: collectionMetadataUri }
+      })
+    ).rejects.toThrow("name is a required field");
   });
   test("Check invalid collection metadata", async () => {
     const { coreSDK: coreSDK, fundedWallet } =
       await initCoreSDKWithFundedWallet(seedWallet20);
     const collectionMetadataUri = await publishNftContractMetadata(coreSDK, {
-      invalidKey: "invalidValue"
-      // no other fields
+      type: "INVALID",
+      name: "MyCollection"
     });
-    const seller = await createSeller(coreSDK, fundedWallet.address, {
-      sellerParams: { contractUri: collectionMetadataUri }
-    });
-    expect(seller).toBeTruthy();
-    expect(seller.collections.length).toEqual(1);
-    expect(seller.collections[0].metadata).toBeTruthy();
-    expect(seller.collections[0].metadata.name).toEqual(null);
-    expect(seller.collections[0].metadata.externalLink).toEqual(null);
-    expect(seller.collections[0].metadata.collaborators.length).toEqual(0);
+    await expect(
+      createSeller(coreSDK, fundedWallet.address, {
+        sellerParams: { contractUri: collectionMetadataUri }
+      })
+    ).rejects.toThrow("Metadata validation failed for unknown type: INVALID");
   });
   test("Check non existing collection metadata file", async () => {
     const { coreSDK: coreSDK, fundedWallet } =
@@ -351,13 +343,12 @@ describe("Offer collections", () => {
       coreSDK,
       collectionMetadata1
     );
-    const seller = await createSeller(coreSDK, fundedWallet.address, {
-      sellerParams: {
-        contractUri: collectionMetadata1Uri + "x" // tamper the IPFS link
-      }
-    });
-    expect(seller).toBeTruthy();
-    expect(seller.collections.length).toEqual(1);
-    expect(seller.collections[0].metadata).toBeFalsy();
+    await expect(
+      createSeller(coreSDK, fundedWallet.address, {
+        sellerParams: {
+          contractUri: collectionMetadata1Uri + "x" // tamper the IPFS link
+        }
+      })
+    ).rejects.toThrow();
   });
 });
