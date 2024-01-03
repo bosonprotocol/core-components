@@ -31,6 +31,8 @@ export default function useGetLensProfiles(
 }
 
 async function getLensProfiles(url: string, request: ProfileQueryRequest) {
-  return (await fetchLens<ProfilesQuery>(url, ProfilesDocument, { request }))
-    .profiles;
+  return (
+    (await fetchLens<ProfilesQuery>(url, ProfilesDocument, { request }))
+      ?.profiles || { items: [], pageInfo: { totalCount: 0 } }
+  );
 }

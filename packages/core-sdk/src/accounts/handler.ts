@@ -72,6 +72,7 @@ export async function createSeller(args: {
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
   const collectionSalt = await findCollectionSalt(args);
+  // TODO: storeMetadataOnTheGraph for contractUri, as well
   await storeMetadataOnTheGraph({
     metadataUriOrHash: args.sellerToCreate.metadataUri,
     metadataStorage: args.metadataStorage,
