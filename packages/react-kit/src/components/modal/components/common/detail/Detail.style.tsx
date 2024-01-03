@@ -200,6 +200,22 @@ export const ImageWrapper = styled.div`
 `;
 
 export const GlideWrapper = styled.div`
+  &:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 4rem;
+    z-index: ${zIndex.Carousel};
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      ${colors.lightGrey} 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
   &:after {
     content: "";
     position: absolute;
@@ -495,12 +511,13 @@ export const Widget = styled.div`
   container-type: inline-size;
   position: relative;
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
   background: ${colors.white};
   font-family: "Plus Jakarta Sans";
   padding-top: 2rem;
-  details:nth-of-type(1):not([open]) > summary {
+  details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;
   }
   > div {
@@ -567,8 +584,10 @@ export const ActionMessage = styled.div`
 `;
 
 export const CommitAndRedeemButton = styled(Typography)`
+  font-style: normal;
   font-weight: 600;
-  color: ${colors.darkGrey};
+  line-height: 150%;
+  color: ${colors.accent};
   cursor: pointer;
   transition: color 150ms ease-in-out;
   &:hover {

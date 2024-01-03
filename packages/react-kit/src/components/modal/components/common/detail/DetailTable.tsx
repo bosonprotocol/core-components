@@ -8,6 +8,7 @@ export interface Data {
   hide?: boolean | undefined;
   name?: React.ReactNode | string;
   info?: React.ReactNode | string;
+  tooltip?: React.ReactNode | string;
   value?: React.ReactNode | string;
   nextLine?: React.ReactNode | string;
 }
@@ -37,7 +38,13 @@ export default function DetailTable({
                 <tr>
                   <td>
                     <Grid justifyContent="flex-start">
-                      <Typography tag={tag}>{d.name}</Typography>
+                      {d.tooltip ? (
+                        <Tooltip content={d.tooltip} size={20}>
+                          <Typography tag={tag}>{d.name}</Typography>
+                        </Tooltip>
+                      ) : (
+                        <Typography tag={tag}>{d.name}</Typography>
+                      )}
                       {d.info && <Tooltip content={d.info} size={20} />}
                     </Grid>
                   </td>

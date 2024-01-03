@@ -19,7 +19,7 @@ export function OfferFullDescriptionView({ onBackClick, offer }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid gap="1rem">
+          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-start">
             <ArrowLeft
               onClick={onBackClick}
               size={32}
@@ -29,7 +29,8 @@ export function OfferFullDescriptionView({ onBackClick, offer }: Props) {
           </Grid>
         ),
         contentStyle: {
-          background: colors.white
+          background: colors.white,
+          padding: 0
         }
       }
     });

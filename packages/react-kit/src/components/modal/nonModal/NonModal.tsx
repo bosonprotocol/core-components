@@ -13,6 +13,7 @@ import Header from "./Header";
 import { Store } from "../ModalContext";
 import { zIndex } from "../../ui/zIndex";
 import { breakpoint } from "../../../lib/ui/breakpoint";
+import { Content } from "./styles";
 
 const colors = theme.colors.light;
 const Root = styled.div`
@@ -163,12 +164,6 @@ const FooterWrapper = styled.div`
   border-top: 2px solid ${colors.border};
 `;
 
-const Content = styled.div<{
-  $size: NonModalProps["size"];
-}>`
-  padding: 2rem;
-`;
-
 export enum ActionKind {
   HEADER = "HEADER",
   CONTENT_STYLE = "CONTENT_STYLE"
@@ -263,7 +258,7 @@ export default function NonModal({
           showConnectButton={showConnectButton}
         />
 
-        <Content $size={size} style={contentStyle}>
+        <Content style={contentStyle}>
           <NonModalContext.Provider value={dispatch}>
             {children}
           </NonModalContext.Provider>

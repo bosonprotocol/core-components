@@ -1,11 +1,14 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { Offer } from "../../../../types/offer";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { theme } from "../../../../theme";
-import GridContainer from "../../../ui/GridContainer";
 import Typography from "../../../ui/Typography";
 import Grid from "../../../ui/Grid";
 import DetailTable from "./detail/DetailTable";
+import { Tabs } from "../../../ui/Tabs";
+import { isTruthy } from "../../../../types/helpers";
+import DetailSlider from "./detail/DetailSlider";
+import { Content } from "../../nonModal/styles";
 
 const colors = theme.colors.light;
 
@@ -18,52 +21,86 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
   offer,
   children
 }) => {
-  const { description, artistDescription, shippingInfo } =
-    getOfferDetails(offer);
-
+  const {
+    description,
+    artistDescription,
+    shippingInfo,
+    animationUrl,
+    images,
+    offerImg
+  } = getOfferDetails(offer);
+  const allImages = useMemo(() => {
+    return Array.from(new Set([offerImg || "", ...(images || [])])).filter(
+      isTruthy
+    );
+  }, [offerImg, images]);
   return (
-    <>
-      <GridContainer
-        itemsPerRow={{
-          xs: 1,
-          s: 2,
-          m: 2,
-          l: 2,
-          xl: 2
-        }}
-      >
-        <div>
-          <Typography tag="h3">Product description</Typography>
-          <Typography
-            tag="p"
-            data-testid="description"
-            style={{ whiteSpace: "pre-wrap" }}
-          >
-            {description}
-          </Typography>
-        </div>
-
-        <div>
-          <Typography tag="h3">About the creator</Typography>
-          <Typography tag="p" style={{ whiteSpace: "pre-wrap" }}>
-            {artistDescription}
-          </Typography>
-        </div>
-      </GridContainer>
-      <Grid flexDirection="column" alignItems="flex-start">
-        {children}
-        {(shippingInfo.returnPeriodInDays !== undefined ||
-          !!shippingInfo.shippingTable.length) && (
-          <div>
-            <Typography tag="h3">Shipping information</Typography>
-            <Typography tag="p" style={{ color: colors.darkGrey }}>
-              Return period: {shippingInfo.returnPeriodInDays}{" "}
-              {shippingInfo.returnPeriodInDays === 1 ? "day" : "days"}
-            </Typography>
-            <DetailTable data={shippingInfo.shippingTable} inheritColor />
-          </div>
-        )}
-      </Grid>
-    </>
+    <Tabs
+      data={[
+        {
+          id: "product-data",
+          title: "Product data",
+          content: (
+            <Content>
+              <Typography tag="h3">Product data</Typography>
+              <Typography
+                tag="p"
+                data-testid="description"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
+                {description}
+              </Typography>
+              <Typography tag="h3">Product images</Typography>
+              <>
+                {(allImages.length > 0 || animationUrl) && (
+                  <DetailSlider
+                    animationUrl={animationUrl}
+                    images={allImages}
+                    arrowsAbove
+                  />
+                )}
+              </>
+            </Content>
+          )
+        },
+        {
+          id: "about-creator",
+          title: "About the creator",
+          content: (
+            <Content>
+              <Typography tag="h3">About the creator</Typography>
+              <Typography tag="p" style={{ whiteSpace: "pre-wrap" }}>
+                {artistDescription}
+              </Typography>
+            </Content>
+          )
+        },
+        {
+          id: "shipping-inventory",
+          title: "Shipping & Inventory",
+          content: (
+            <Content>
+              <Grid flexDirection="column" alignItems="flex-start">
+                {children}
+                {(shippingInfo.returnPeriodInDays !== undefined ||
+                  !!shippingInfo.shippingTable.length) && (
+                  <div>
+                    <Typography tag="h3">Shipping information</Typography>
+                    <Typography tag="p" style={{ color: colors.darkGrey }}>
+                      Return period: {shippingInfo.returnPeriodInDays}{" "}
+                      {shippingInfo.returnPeriodInDays === 1 ? "day" : "days"}
+                    </Typography>
+                    <DetailTable
+                      data={shippingInfo.shippingTable}
+                      inheritColor
+                    />
+                  </div>
+                )}
+              </Grid>
+            </Content>
+          )
+        }
+      ]}
+    />
   );
 };

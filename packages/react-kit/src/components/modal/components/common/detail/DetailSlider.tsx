@@ -2,7 +2,14 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 
 import Glide from "@glidejs/glide";
 import { CaretLeft, CaretRight } from "phosphor-react";
-import React, { useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  ReactNode,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef
+} from "react";
 
 import { GlideSlide, GlideWrapper } from "./Detail.style";
 import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
@@ -41,20 +48,48 @@ const GlideSlides = styled.div`
   }
 `;
 
+const ArrowButton = styled(ThemedButton)`
+  padding: 0 !important;
+`;
+
 type Direction = "<" | ">";
 interface Props {
   animationUrl?: string;
   images: Array<string>;
   sliderOptions?: ConstructorParameters<typeof Glide>[1];
+  arrowsAbove?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let glide: any = null;
-
+const DivChildren = forwardRef(
+  ({ children, ...rest }: { children: ReactNode; className: string }, ref) => (
+    <div {...rest} ref={ref as React.LegacyRef<HTMLDivElement>}>
+      {children}
+    </div>
+  )
+);
+const GlideWrapperChildren = forwardRef(
+  (
+    {
+      children,
+      ...rest
+    }: {
+      children: ReactNode;
+      className: string;
+    },
+    ref
+  ) => (
+    <GlideWrapper {...rest} ref={ref as React.LegacyRef<HTMLDivElement>}>
+      {children}
+    </GlideWrapper>
+  )
+);
 export default function DetailSlider({
   animationUrl,
   images,
-  sliderOptions = SLIDER_OPTIONS
+  sliderOptions = SLIDER_OPTIONS,
+  arrowsAbove
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [reinitializeGlide, reinitiliazeGlide] = useReducer(
@@ -93,24 +128,32 @@ export default function DetailSlider({
   if (media.length === 0) {
     return null;
   }
-
+  const Wrapper = arrowsAbove ? DivChildren : GlideWrapperChildren;
   return (
     <div style={{ maxWidth: "100%" }}>
-      <GlideWrapper className="glide" ref={ref}>
+      <Wrapper className="glide" ref={ref}>
         <Grid
-          style={{
-            position: "absolute",
-            height: "100%",
-            zIndex: zIndex.Carousel + 1
-          }}
+          style={
+            arrowsAbove
+              ? undefined
+              : {
+                  position: "absolute",
+                  height: "100%",
+                  zIndex: zIndex.Carousel + 1
+                }
+          }
         >
-          <Grid justifyContent="space-between">
-            <ThemedButton themeVal="blank" onClick={() => handleSlider("<")}>
+          <Grid
+            justifyContent={arrowsAbove ? "flex-end" : "space-between"}
+            gap="1rem"
+            marginBottom="1rem"
+          >
+            <ArrowButton themeVal="blank" onClick={() => handleSlider("<")}>
               <CaretLeft size={32} />
-            </ThemedButton>
-            <ThemedButton themeVal="blank" onClick={() => handleSlider(">")}>
+            </ArrowButton>
+            <ArrowButton themeVal="blank" onClick={() => handleSlider(">")}>
               <CaretRight size={32} />
-            </ThemedButton>
+            </ArrowButton>
           </Grid>
         </Grid>
         <div className="glide__track" data-glide-el="track">
@@ -147,7 +190,7 @@ export default function DetailSlider({
             ))}
           </GlideSlides>
         </div>
-      </GlideWrapper>
+      </Wrapper>
     </div>
   );
 }

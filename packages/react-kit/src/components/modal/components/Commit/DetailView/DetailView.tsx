@@ -5,7 +5,9 @@ import dayjs from "dayjs";
 import { BigNumberish, ethers, providers, utils } from "ethers";
 import {
   ArrowSquareOut,
+  ArrowsLeftRight,
   CircleWavyQuestion,
+  Cube,
   Info,
   Lock,
   Spinner,
@@ -42,9 +44,7 @@ import {
   CommitAndRedeemButton
 } from "../../common/detail/Detail.style";
 import DetailTable from "../../common/detail/DetailTable";
-import DetailTopRightLabel from "./DetailTopRightLabel";
 import { QuantityDisplay } from "./QuantityDisplay";
-import TokenGated from "../../common/detail/TokenGated";
 import Price from "../../../../price/Price";
 import { Offer } from "../../../../../types/offer";
 import { useModal } from "../../../useModal";
@@ -63,6 +63,7 @@ import ThemedButton from "../../../../ui/ThemedButton";
 import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
+import { TokenGatedList } from "../../common/detail/TokenGatedList";
 
 const colors = theme.colors.light;
 
@@ -155,7 +156,7 @@ const getOfferDetailData = ({
   return [
     {
       name: "Redeemable until",
-      info: (
+      tooltip: (
         <>
           <Typography tag="h6">
             <b>Redeemable</b>
@@ -171,7 +172,7 @@ const getOfferDetailData = ({
     },
     {
       name: "Seller deposit",
-      info: (
+      tooltip: (
         <>
           <Typography tag="h6">
             <b>Seller deposit</b>
@@ -192,8 +193,8 @@ const getOfferDetailData = ({
       )
     },
     {
-      name: "Buyer cancel. pen.",
-      info: (
+      name: "Buyer cancellation penalty",
+      tooltip: (
         <>
           <Typography tag="h6">
             <b>Buyer Cancelation penalty</b>
@@ -213,7 +214,7 @@ const getOfferDetailData = ({
     },
     {
       name: "Exchange policy",
-      info: (
+      tooltip: (
         <>
           <Typography tag="h6">
             <b>Exchange policy</b>
@@ -226,21 +227,14 @@ const getOfferDetailData = ({
       ),
       value: exchangePolicyCheckResult ? (
         exchangePolicyCheckResult.isValid ? (
-          <>
-            {exchangePolicyLabel + " "}
-            <ArrowSquareOut
-              size={20}
-              onClick={() => handleShowExchangePolicy()}
-              style={{ cursor: "pointer" }}
-            />
-          </>
+          <>{exchangePolicyLabel}</>
         ) : (
           <>
-            <WarningCircle size={20} color={colors.orange}></WarningCircle>{" "}
-            <span style={{ color: colors.orange }}>Non-standard </span>
+            <WarningCircle size={20} color={"purple"}></WarningCircle>{" "}
+            <span style={{ color: "purple" }}>Non-standard </span>
             <ArrowSquareOut
               size={20}
-              color={colors.orange}
+              color={"purple"}
               onClick={() => handleShowExchangePolicy()}
               style={{ cursor: "pointer" }}
             />
@@ -249,7 +243,7 @@ const getOfferDetailData = ({
       ) : (
         <>
           <CircleWavyQuestion size={20} color="purple"></CircleWavyQuestion>{" "}
-          <span style={{ color: colors.orange }}>Unknown </span>
+          <span style={{ color: "purple" }}>Unknown </span>
           <ArrowSquareOut
             size={20}
             color="purple"
@@ -261,12 +255,34 @@ const getOfferDetailData = ({
     },
     {
       name: DetailDisputeResolver.name,
-      info: DetailDisputeResolver.info,
+      tooltip: DetailDisputeResolver.info,
       // eslint-disable-next-line react/jsx-pascal-case
       value: <DetailDisputeResolver.value />
     }
   ];
 };
+
+const SwapArrows = styled(ArrowsLeftRight)`
+  && {
+    stroke: none;
+  }
+`;
+
+const BosonExclusiveContainer = styled.div`
+  && {
+    position: absolute;
+    top: -1.625rem;
+    padding: 0.25rem 1rem;
+    background-color: ${colors.black};
+    color: ${colors.white};
+    width: auto;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    border-radius: 1.0625rem 1.0625rem 0rem 0rem;
+  }
+`;
 
 interface IDetailWidget {
   selectedVariant: VariantV1;
@@ -552,6 +568,7 @@ const DetailView: React.FC<IDetailWidget> = ({
   const hasVariations = !!selectedVariant.variations?.length;
   return (
     <Widget>
+      <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>
       <div>
         <Typography tag="h3" style={{ flex: "1 1", marginTop: 0 }}>
           {offer.metadata.name}
@@ -567,11 +584,16 @@ const DetailView: React.FC<IDetailWidget> = ({
             withBosonStyles
             withAsterisk={isPreview && hasMultipleVariants}
           />
-
-          <QuantityDisplay
-            quantityInitial={quantityInitial}
-            quantity={quantity}
-          />
+          {notCommittableOfferStatus ? (
+            <span style={{ color: colors.orange, textAlign: "right" }}>
+              {notCommittableOfferStatus}
+            </span>
+          ) : (
+            <QuantityDisplay
+              quantityInitial={quantityInitial}
+              quantity={quantity}
+            />
+          )}
         </WidgetUpperGrid>
         {hasVariations && (
           <div style={{ marginBottom: "1rem" }}>
@@ -583,7 +605,142 @@ const DetailView: React.FC<IDetailWidget> = ({
           </div>
         )}
       </div>
-      <Break />
+      {isNotCommittableOffer && isBuyerInsufficientFunds && (
+        <Grid marginBottom="1rem">
+          <Button
+            size="regular"
+            variant="accentInverted"
+            withBosonStyle
+            style={{
+              width: "100%"
+            }}
+          >
+            <a
+              style={{ all: "inherit", fontWeight: "600" }}
+              target="__blank"
+              href={`https://bosonapp.io/#/swap?${new URLSearchParams({
+                [swapQueryParameters.outputCurrency]:
+                  offer.exchangeToken.address,
+                [swapQueryParameters.exactAmount]: minNeededBalance
+                  ? utils.formatUnits(
+                      minNeededBalance || "",
+                      offer.exchangeToken.decimals
+                    )
+                  : "",
+                [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
+              }).toString()}`}
+            >
+              Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
+            </a>
+          </Button>
+        </Grid>
+      )}
+      {!isBuyerInsufficientFunds && (
+        <CommitWrapper justifyContent="space-between" margin="1rem 0">
+          <CommitButtonWrapper
+            disabled={!!isCommitDisabled}
+            role="button"
+            $pointerEvents={!address ? "none" : "all"}
+            onClick={() => {
+              if (!address) {
+                saveItemInStorage("isConnectWalletFromCommit", true);
+                setIsCommittingFromNotConnectedWallet(true);
+                openAccountModal?.();
+              }
+            }}
+          >
+            {balanceLoading && address ? (
+              <ThemedButton disabled>
+                <Spinner />
+              </ThemedButton>
+            ) : (
+              <>
+                {/* TODO: handle commit proxy button {showCommitProxyButton ? (
+                    <CommitProxyButton />
+                  ) : ( */}
+                <CommitButton
+                  coreSdkConfig={{
+                    envName: protocolConfig.envName,
+                    configId: protocolConfig.configId,
+                    web3Provider: signer?.provider as Provider,
+                    metaTx: protocolConfig.metaTx
+                  }}
+                  variant="primaryFill"
+                  isPauseCommitting={!address}
+                  buttonRef={commitButtonRef}
+                  onGetSignerAddress={handleOnGetSignerAddress}
+                  disabled={!!isCommitDisabled}
+                  offerId={offer.id}
+                  exchangeToken={offer.exchangeToken.address}
+                  price={offer.price}
+                  onError={onCommitError}
+                  onPendingSignature={onCommitPendingSignature}
+                  onPendingTransaction={onCommitPendingTransaction}
+                  onSuccess={onCommitSuccess}
+                  withBosonStyle
+                  id="commit"
+                />
+                {/* )} */}
+              </>
+            )}
+          </CommitButtonWrapper>
+          <Typography
+            $fontSize="0.8rem"
+            style={{ display: "block", width: "100%" }}
+          >
+            By proceeding to Commit, I agree to the{" "}
+            <span
+              style={{
+                color: colors.blue,
+                fontSize: "inherit",
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                onLicenseAgreementClick();
+              }}
+            >
+              rNFT Terms
+            </span>
+            .
+          </Typography>
+        </CommitWrapper>
+      )}
+      {offer.condition && (
+        <DetailsSummary
+          summaryText="Token Gated Offer"
+          icon={<Lock size={16} />}
+        >
+          <TokenGatedList
+            coreSDK={coreSDK}
+            offer={offer}
+            commitProxyAddress={commitProxyAddress}
+            openseaLinkToOriginalMainnetCollection={
+              openseaLinkToOriginalMainnetCollection
+            }
+            isConditionMet={isConditionMet}
+          />
+        </DetailsSummary>
+      )}
+      <DetailsSummary summaryText="Phygital Product" icon={<Cube size={16} />}>
+        <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
+          <Typography>
+            This is what you'll get when you purchase this product.
+          </Typography>
+          <Grid flexDirection="column" alignItems="flex-start">
+            <Typography>
+              <b>This product includes:</b>
+            </Typography>
+          </Grid>
+        </Grid>
+      </DetailsSummary>
+      <DetailsSummary summaryText="Details" initiallyOpen>
+        <DetailTable
+          align={false}
+          noBorder
+          data={OFFER_DETAIL_DATA}
+          inheritColor={false}
+        />
+      </DetailsSummary>
       <Grid
         justifyContent="center"
         alignItems="center"
@@ -599,150 +756,11 @@ const DetailView: React.FC<IDetailWidget> = ({
           }}
           onClick={onPurchaseOverview}
         >
-          <CommitAndRedeemButton>
-            What is commit and redeem?
-          </CommitAndRedeemButton>
-          <Info color={colors.secondary} size={15} />
+          <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
+          <Info color={colors.secondary} size={24} />
         </div>
       </Grid>
-      {offer.condition && (
-        <DetailsSummary
-          summaryText="Token Gated Offer"
-          icon={<Lock size={16} />}
-        >
-          <TokenGated
-            coreSDK={coreSDK}
-            offer={offer}
-            commitProxyAddress={commitProxyAddress}
-            openseaLinkToOriginalMainnetCollection={
-              openseaLinkToOriginalMainnetCollection
-            }
-            isConditionMet={isConditionMet}
-          />
-        </DetailsSummary>
-      )}
-      <DetailsSummary summaryText="Details">
-        <DetailTable
-          align={false}
-          noBorder
-          data={OFFER_DETAIL_DATA}
-          inheritColor={false}
-        />
-      </DetailsSummary>
-
-      {isNotCommittableOffer && (
-        <DetailTopRightLabel
-          style={isBuyerInsufficientFunds ? { alignItems: "center" } : {}}
-          typographyStyle={
-            isBuyerInsufficientFunds ? { fontSize: "0.75rem" } : {}
-          }
-          secondChildren={
-            isBuyerInsufficientFunds ? (
-              <Button
-                size="small"
-                variant="accentFill"
-                withBosonStyle
-                style={{
-                  color: colors.white,
-                  width: "100%",
-                  height: "auto",
-                  padding: "0 1rem",
-
-                  minHeight: "2.125rem"
-                }}
-              >
-                <a
-                  style={{ all: "inherit" }}
-                  target="__blank"
-                  href={`https://bosonapp.io/#/swap?${new URLSearchParams({
-                    [swapQueryParameters.outputCurrency]:
-                      offer.exchangeToken.address,
-                    [swapQueryParameters.exactAmount]: minNeededBalance
-                      ? utils.formatUnits(
-                          minNeededBalance || "",
-                          offer.exchangeToken.decimals
-                        )
-                      : "",
-                    [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
-                  }).toString()}`}
-                >
-                  Buy or Swap {tokenOrCoinSymbol}
-                </a>
-              </Button>
-            ) : null
-          }
-        >
-          <span style={{ marginTop: "1rem" }}>{notCommittableOfferStatus}</span>
-        </DetailTopRightLabel>
-      )}
-      <CommitWrapper justifyContent="space-between" margin="1rem 0">
-        <CommitButtonWrapper
-          disabled={!!isCommitDisabled}
-          role="button"
-          $pointerEvents={!address ? "none" : "all"}
-          onClick={() => {
-            if (!address) {
-              saveItemInStorage("isConnectWalletFromCommit", true);
-              setIsCommittingFromNotConnectedWallet(true);
-              openAccountModal?.();
-            }
-          }}
-        >
-          {balanceLoading && address ? (
-            <ThemedButton disabled>
-              <Spinner />
-            </ThemedButton>
-          ) : (
-            <>
-              {/* TODO: handle commit proxy button {showCommitProxyButton ? (
-                    <CommitProxyButton />
-                  ) : ( */}
-              <CommitButton
-                coreSdkConfig={{
-                  envName: protocolConfig.envName,
-                  configId: protocolConfig.configId,
-                  web3Provider: signer?.provider as Provider,
-                  metaTx: protocolConfig.metaTx
-                }}
-                variant="primaryFill"
-                isPauseCommitting={!address}
-                buttonRef={commitButtonRef}
-                onGetSignerAddress={handleOnGetSignerAddress}
-                disabled={!!isCommitDisabled}
-                offerId={offer.id}
-                exchangeToken={offer.exchangeToken.address}
-                price={offer.price}
-                onError={onCommitError}
-                onPendingSignature={onCommitPendingSignature}
-                onPendingTransaction={onCommitPendingTransaction}
-                onSuccess={onCommitSuccess}
-                withBosonStyle
-                id="commit"
-              />
-              {/* )} */}
-            </>
-          )}
-        </CommitButtonWrapper>
-        <Typography
-          $fontSize="0.8rem"
-          style={{ display: "block", width: "100%" }}
-        >
-          By proceeding to Commit, I agree to the{" "}
-          <span
-            style={{
-              color: colors.blue,
-              fontSize: "inherit",
-              cursor: "pointer"
-            }}
-            onClick={() => {
-              onLicenseAgreementClick();
-            }}
-          >
-            rNFT Terms
-          </span>
-          .
-        </Typography>
-      </CommitWrapper>
+      <Break />
     </Widget>
   );
 };

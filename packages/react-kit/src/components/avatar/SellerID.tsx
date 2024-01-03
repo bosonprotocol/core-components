@@ -51,6 +51,12 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .avatar {
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    padding: 0;
+  }
 `;
 
 type Buyer = Pick<subgraph.Buyer, "id" | "wallet">;
@@ -117,12 +123,7 @@ const SellerID: React.FC<
                   ipfsGateway
                 )}
                 alt="avatar"
-                style={{
-                  height: "1rem",
-                  width: "1rem",
-                  borderRadius: "50%",
-                  padding: 0
-                }}
+                className="avatar"
               />
             ) : (
               <AccountImage

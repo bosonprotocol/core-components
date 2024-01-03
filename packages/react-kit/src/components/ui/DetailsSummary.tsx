@@ -17,6 +17,9 @@ const IconWrapper = styled.div`
 
 const Details = styled.details<Pick<DetailsSummaryProps, "$paddingSides">>`
   width: 100%;
+  &[open]:last-of-type {
+    border-bottom: 2px solid ${colors.border};
+  }
   summary {
     cursor: pointer;
     display: flex;
@@ -78,16 +81,13 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(initiallyOpen ?? false);
   return (
-    <Details
-      className={className}
-      open={open}
-      onClick={(e) => {
-        e.preventDefault();
-        setOpen(!open);
-      }}
-      $paddingSides={$paddingSides}
-    >
-      <summary>
+    <Details className={className} open={open} $paddingSides={$paddingSides}>
+      <summary
+        onClick={(e) => {
+          e.preventDefault();
+          setOpen(!open);
+        }}
+      >
         <Grid justifyContent="flex-start" gap="1rem">
           {icon && <IconWrapper>{icon}</IconWrapper>}
           {summaryText}

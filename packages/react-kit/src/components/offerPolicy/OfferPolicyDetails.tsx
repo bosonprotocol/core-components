@@ -69,7 +69,7 @@ export default function OfferPolicyDetails({
         </>
       ),
       version: isExchangePolicyValid ? "v1" : "(Non-standard)",
-      color: isExchangePolicyValid ? undefined : colors.orange
+      color: isExchangePolicyValid ? undefined : "purple"
     },
     rNFTLicense: {
       title: "License Agreement",
@@ -182,21 +182,17 @@ export default function OfferPolicyDetails({
           {
             name: "Buyer & Seller Agreement",
             value: (
-              <Grid justifyContent="flex-start" style={{ textAlign: "right" }}>
+              <Grid justifyContent="flex-start">
                 <NoPaddingButton
                   themeVal="blankOutline"
                   onClick={() => onContractualAgreementClick()}
                   className="no-padding"
+                  style={{
+                    color: exchangePolicy.contractualAgreement.color
+                  }}
                 >
-                  <p
-                    style={{
-                      color: exchangePolicy.contractualAgreement.color,
-                      textAlign: "left"
-                    }}
-                  >
-                    {exchangePolicy.contractualAgreement.title}{" "}
-                    {exchangePolicy.contractualAgreement.version}{" "}
-                  </p>
+                  {exchangePolicy.contractualAgreement.title}{" "}
+                  {exchangePolicy.contractualAgreement.version}{" "}
                   <ArrowSquareOut
                     size={20}
                     style={{ cursor: "pointer" }}

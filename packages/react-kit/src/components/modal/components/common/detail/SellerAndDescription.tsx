@@ -15,6 +15,13 @@ const Container = styled(Grid)`
   padding: 1rem;
   .seller-id {
     flex: 1 1 50%;
+    * {
+      font-size: 1rem;
+    }
+    img.avatar {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
   .description {
     flex: 1 1 50%;
@@ -29,7 +36,11 @@ type Props = {
   offer: Offer;
   onViewFullDescription: () => void;
 };
-
+const StyledTextAlignLeft = styled(TextAlignLeft)`
+  && {
+    stroke: none;
+  }
+`;
 export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
   return (
     <Container>
@@ -54,7 +65,7 @@ export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
           gap="0.7344rem"
         >
           <span style={{ textAlign: "right" }}>View full description</span>
-          <TextAlignLeft size={30} color={colors.accent} />
+          <StyledTextAlignLeft size={30} color={colors.accent} />
         </Typography>
       </ThemedButton>
     </Container>
