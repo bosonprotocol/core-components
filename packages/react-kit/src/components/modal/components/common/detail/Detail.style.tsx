@@ -507,7 +507,7 @@ export const WidgetButtonWrapper = styled(Grid)`
   }
 `;
 
-export const Widget = styled.div`
+export const BaseWidget = styled.div`
   container-type: inline-size;
   position: relative;
   display: flex;
@@ -516,7 +516,6 @@ export const Widget = styled.div`
   width: 100%;
   background: ${colors.white};
   font-family: "Plus Jakarta Sans";
-  padding-top: 2rem;
   details:not(details:nth-last-of-type(1)):not([open]) > summary {
     border-bottom: none;
   }

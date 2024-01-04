@@ -46,10 +46,10 @@ import {
   saveItemInStorage
 } from "../../../../widgets/finance/storage/useLocalStorage";
 import {
-  Widget,
   WidgetUpperGrid,
   Break,
-  CommitAndRedeemButton
+  CommitAndRedeemButton,
+  BaseWidget
 } from "../../common/detail/Detail.style";
 import DetailTable from "../../common/detail/DetailTable";
 import { QuantityDisplay } from "./QuantityDisplay";
@@ -308,6 +308,10 @@ const BlackLogo = styled(Logo)`
   width: 6.25rem;
   height: fit-content;
   padding: 1.2rem 0;
+`;
+
+const Widget = styled(BaseWidget)`
+  padding-top: 2rem;
 `;
 
 interface IDetailWidget {

@@ -27,7 +27,7 @@ import {
   RaiseProblemButton,
   ActionMessage,
   StyledCancelButton,
-  Widget,
+  BaseWidget,
   WidgetUpperGrid
 } from "../../../common/detail/Detail.style";
 import { exchanges, offers, subgraph } from "@bosonprotocol/core-sdk";
@@ -91,6 +91,8 @@ const RedeemButton = styled(Button)`
     }
   }
 `;
+
+const Widget = BaseWidget;
 
 const getOfferDetailData = (
   config: ReturnType<typeof useConfigContext>,
