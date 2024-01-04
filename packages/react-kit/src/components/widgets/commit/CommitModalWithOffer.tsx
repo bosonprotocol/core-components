@@ -4,7 +4,6 @@ import CommitNonModal, {
 } from "../../modal/components/Commit/CommitNonModal";
 import useProductByUuid from "../../../hooks/products/useProductByUuid";
 import useProductByOfferId from "../../../hooks/products/useProductByOfferId";
-import { useExchanges } from "../../../hooks/useExchanges";
 
 function WithProductOrOffer(
   WrappedComponent: React.ComponentType<CommitNonModalProps>

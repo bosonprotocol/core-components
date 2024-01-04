@@ -15,6 +15,7 @@ import {
 } from "phosphor-react";
 import toast from "react-hot-toast";
 import React, {
+  ElementRef,
   forwardRef,
   useCallback,
   useMemo,
@@ -26,6 +27,7 @@ import {
   useSigner,
   useAccount
 } from "../../../../../hooks/connection/connection";
+import { ReactComponent as Logo } from "../../../../../assets/logo.svg";
 import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
 import { useCoreSDKWithContext } from "../../../../../hooks/core-sdk/useCoreSdkWithContext";
 import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
@@ -70,6 +72,7 @@ import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeT
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { TokenGatedList } from "../../common/detail/TokenGatedList";
 import { createPortal } from "react-dom";
+import { RedeemButton } from "../../../../cta/exchange/RedeemButton";
 
 const colors = theme.colors.light;
 
@@ -103,6 +106,23 @@ const CommitButtonWrapper = styled.div<{
     pointer-events: ${({ $pointerEvents }) => $pointerEvents};
   }
 `;
+const containerBreakpoint = "400px";
+const CTAsGrid = styled(Grid)`
+  .show-in-larger-view {
+    display: none;
+  }
+  .show-in-smaller-view {
+    display: block;
+  }
+  @container (width > ${containerBreakpoint}) {
+    .show-in-larger-view {
+      display: block;
+    }
+    .show-in-smaller-view {
+      display: none;
+    }
+  }
+`;
 
 const CommitWrapper = styled(Grid)`
   flex-direction: column;
@@ -110,13 +130,16 @@ const CommitWrapper = styled(Grid)`
   column-gap: 1rem;
   align-items: flex-start;
   justify-content: flex-start;
-  width: auto;
-  @container (width > 400px) {
+  @container (width > ${containerBreakpoint}) {
     flex-direction: row;
-    ${CommitButtonWrapper} {
-      max-width: 16.875rem;
+    > * {
+      flex: 1 1 50%;
     }
   }
+`;
+
+const StyledRedeemButton = styled(RedeemButton)`
+  width: 100%;
 `;
 
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
@@ -281,6 +304,12 @@ const BosonExclusiveContainer = styled.div`
   }
 `;
 
+const BlackLogo = styled(Logo)`
+  width: 6.25rem;
+  height: fit-content;
+  padding: 1.2rem 0;
+`;
+
 interface IDetailWidget {
   selectedVariant: VariantV1;
   allVariants: VariantV1[];
@@ -288,6 +317,7 @@ interface IDetailWidget {
   hasSellerEnoughFunds: boolean;
   isPreview?: boolean;
   hasMultipleVariants?: boolean;
+  showBosonLogo?: boolean;
   onLicenseAgreementClick: () => void;
   onExchangePolicyClick: () => void;
   onCommit: (exchangeId: string, txHash: string) => void;
@@ -302,6 +332,7 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
       selectedVariant,
       allVariants,
       disableVariationsSelects,
+      showBosonLogo,
       hasSellerEnoughFunds,
       isPreview = false,
       hasMultipleVariants,
@@ -314,6 +345,7 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
     },
     ref
   ) => {
+    const forwardedRef = ref as React.MutableRefObject<ElementRef<"div">>;
     const { offer } = selectedVariant;
     const coreSDK = useCoreSDKWithContext();
     const [commitType, setCommitType] = useState<ActionName | undefined | null>(
@@ -569,18 +601,13 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
     const isBosonExclusive = true;
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
-    console.log("ref", ref);
     return (
       <Widget>
         {isBosonExclusive &&
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          ref?.current &&
+          forwardedRef?.current &&
           createPortal(
             <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            ref?.current as any
+            forwardedRef?.current
           )}
         <div>
           <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
@@ -637,57 +664,100 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
           </Grid>
         )}
         {!isBuyerInsufficientFunds && (
-          <CommitWrapper justifyContent="space-between" margin="1rem 0">
-            <CommitButtonWrapper
-              disabled={!!isCommitDisabled}
-              role="button"
-              $pointerEvents={!address ? "none" : "all"}
-              onClick={() => {
-                if (!address) {
-                  saveItemInStorage("isConnectWalletFromCommit", true);
-                  setIsCommittingFromNotConnectedWallet(true);
-                  openAccountModal?.();
-                }
-              }}
-            >
-              {balanceLoading && address ? (
-                <ThemedButton disabled>
-                  <Spinner />
-                </ThemedButton>
-              ) : (
-                <>
-                  {/* TODO: handle commit proxy button {showCommitProxyButton ? (
+          <CTAsGrid
+            flexDirection="column"
+            alignItems="center"
+            margin="1.5rem 0"
+          >
+            <CommitWrapper justifyContent="space-between">
+              <Grid flexDirection="column" alignItems="center">
+                <CommitButtonWrapper
+                  disabled={!!isCommitDisabled}
+                  role="button"
+                  $pointerEvents={!address ? "none" : "all"}
+                  onClick={() => {
+                    if (!address) {
+                      saveItemInStorage("isConnectWalletFromCommit", true);
+                      setIsCommittingFromNotConnectedWallet(true);
+                      openAccountModal?.();
+                    }
+                  }}
+                >
+                  {balanceLoading && address ? (
+                    <ThemedButton disabled>
+                      <Spinner />
+                    </ThemedButton>
+                  ) : (
+                    <>
+                      {/* TODO: handle commit proxy button {showCommitProxyButton ? (
                     <CommitProxyButton />
                   ) : ( */}
-                  <CommitButton
-                    coreSdkConfig={{
-                      envName: protocolConfig.envName,
-                      configId: protocolConfig.configId,
-                      web3Provider: signer?.provider as Provider,
-                      metaTx: protocolConfig.metaTx
+                      <CommitButton
+                        coreSdkConfig={{
+                          envName: protocolConfig.envName,
+                          configId: protocolConfig.configId,
+                          web3Provider: signer?.provider as Provider,
+                          metaTx: protocolConfig.metaTx
+                        }}
+                        variant="primaryFill"
+                        isPauseCommitting={!address}
+                        buttonRef={commitButtonRef}
+                        onGetSignerAddress={handleOnGetSignerAddress}
+                        disabled={!!isCommitDisabled}
+                        offerId={offer.id}
+                        exchangeToken={offer.exchangeToken.address}
+                        price={offer.price}
+                        onError={onCommitError}
+                        onPendingSignature={onCommitPendingSignature}
+                        onPendingTransaction={onCommitPendingTransaction}
+                        onSuccess={onCommitSuccess}
+                        withBosonStyle
+                        extraInfo="Step 1/2"
+                        id="commit"
+                      />
+                      {/* )} */}
+                    </>
+                  )}
+                </CommitButtonWrapper>
+                <Typography
+                  className="show-in-smaller-view"
+                  $fontSize="0.8rem"
+                  marginTop="0.25rem"
+                >
+                  By proceeding to Commit, I agree to the{" "}
+                  <span
+                    style={{
+                      fontSize: "inherit",
+                      cursor: "pointer",
+                      textDecoration: "underline"
                     }}
-                    variant="primaryFill"
-                    isPauseCommitting={!address}
-                    buttonRef={commitButtonRef}
-                    onGetSignerAddress={handleOnGetSignerAddress}
-                    disabled={!!isCommitDisabled}
-                    offerId={offer.id}
-                    exchangeToken={offer.exchangeToken.address}
-                    price={offer.price}
-                    onError={onCommitError}
-                    onPendingSignature={onCommitPendingSignature}
-                    onPendingTransaction={onCommitPendingTransaction}
-                    onSuccess={onCommitSuccess}
-                    withBosonStyle
-                    id="commit"
-                  />
-                  {/* )} */}
-                </>
-              )}
-            </CommitButtonWrapper>
+                    onClick={() => {
+                      onLicenseAgreementClick();
+                    }}
+                  >
+                    rNFT Terms
+                  </span>
+                  .
+                </Typography>
+              </Grid>
+              <StyledRedeemButton
+                coreSdkConfig={{
+                  envName: protocolConfig.envName,
+                  configId: protocolConfig.configId,
+                  web3Provider: signer?.provider as Provider,
+                  metaTx: protocolConfig.metaTx
+                }}
+                disabled
+                withBosonStyle
+                exchangeId="0"
+                extraInfo="Step 2/2"
+                variant="primaryFill"
+              />
+            </CommitWrapper>
             <Typography
+              className="show-in-larger-view"
               $fontSize="0.8rem"
-              style={{ display: "block", width: "100%" }}
+              marginTop="0.25rem"
             >
               By proceeding to Commit, I agree to the{" "}
               <span
@@ -704,7 +774,7 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
               </span>
               .
             </Typography>
-          </CommitWrapper>
+          </CTAsGrid>
         )}
         {offer.condition && (
           <DetailsSummary
@@ -783,10 +853,29 @@ const DetailView: React.FC<IDetailWidget> = forwardRef(
             <Info color={colors.secondary} size={24} />
           </div>
         </Grid>
-        <Break />
+        {showBosonLogo && (
+          <>
+            <Break />
+            <Grid justifyContent="center" alignItems="center">
+              <BlackLogo />
+            </Grid>
+          </>
+        )}
       </Widget>
     );
   }
 );
 
-export default DetailView;
+export default function DetailViewWithPortal(props: IDetailWidget) {
+  const portalRef = useRef<ElementRef<"div">>(null);
+
+  return (
+    <Grid flexDirection="column">
+      <div
+        ref={portalRef}
+        style={{ width: "100%", height: "3rem", position: "relative" }}
+      />
+      <DetailView {...props} />
+    </Grid>
+  );
+}

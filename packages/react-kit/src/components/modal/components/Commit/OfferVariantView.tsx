@@ -53,6 +53,7 @@ export type OfferVariantViewProps = {
   onLicenseAgreementClick: () => void;
   selectedVariant: VariantV1;
   allVariants: VariantV1[];
+  showBosonLogo?: boolean;
   fairExchangePolicyRules: string;
   defaultDisputeResolverId: string;
   disableVariationsSelects?: boolean;
@@ -68,6 +69,7 @@ const SLIDER_OPTIONS = {
 export function OfferVariantView({
   selectedVariant,
   allVariants,
+  showBosonLogo,
   disableVariationsSelects,
   onCommit,
   onExchangePolicyClick,
@@ -191,32 +193,28 @@ export function OfferVariantView({
                 disabled={allVariants.length < 2 || disableVariationsSelects}
               />
             )}
-            <Grid flexDirection="column">
-              <div
-                ref={portalRef}
-                style={{ width: "100%", height: "3rem", position: "relative" }}
-              />
-              <DetailView
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                ref={portalRef}
-                disableVariationsSelects={disableVariationsSelects}
-                hasSellerEnoughFunds={hasSellerEnoughFunds}
-                selectedVariant={selectedVariant}
-                allVariants={allVariants}
-                onExchangePolicyClick={onExchangePolicyClick}
-                onLicenseAgreementClick={onLicenseAgreementClick}
-                onCommit={(...args) => {
-                  onCommit(...args);
-                  setIsComitting(false);
-                }}
-                onCommitting={() => setIsComitting(true)}
-                onPurchaseOverview={onPurchaseOverview}
-                hasMultipleVariants={false}
-                isPreview={false}
-                exchangePolicyCheckResult={exchangePolicyCheckResult}
-              />
-            </Grid>
+
+            <DetailView
+              showBosonLogo={showBosonLogo}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              ref={portalRef}
+              disableVariationsSelects={disableVariationsSelects}
+              hasSellerEnoughFunds={hasSellerEnoughFunds}
+              selectedVariant={selectedVariant}
+              allVariants={allVariants}
+              onExchangePolicyClick={onExchangePolicyClick}
+              onLicenseAgreementClick={onLicenseAgreementClick}
+              onCommit={(...args) => {
+                onCommit(...args);
+                setIsComitting(false);
+              }}
+              onCommitting={() => setIsComitting(true)}
+              onPurchaseOverview={onPurchaseOverview}
+              hasMultipleVariants={false}
+              isPreview={false}
+              exchangePolicyCheckResult={exchangePolicyCheckResult}
+            />
           </Grid>
         </GridContainer>
       )}

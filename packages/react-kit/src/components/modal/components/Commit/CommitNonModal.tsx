@@ -32,6 +32,7 @@ enum ActiveStep {
 
 export type CommitNonModalProps = {
   product?: ReturnUseProductByUuid;
+  showBosonLogo?: boolean;
   defaultSelectedOfferId?: string;
   disableVariationsSelects?: boolean;
   isLoading: boolean;
@@ -65,6 +66,7 @@ export default function CommitWrapper({
 
 function CommitNonModal({
   product: productResult,
+  showBosonLogo,
   defaultSelectedOfferId,
   disableVariationsSelects,
   isLoading,
@@ -173,6 +175,7 @@ function CommitNonModal({
     <>
       {currentStep === ActiveStep.OFFER_VIEW ? (
         <OfferVariantView
+          showBosonLogo={showBosonLogo}
           allVariants={variantsWithV1 ?? [selectedVariant]}
           selectedVariant={selectedVariant}
           disableVariationsSelects={disableVariationsSelects}

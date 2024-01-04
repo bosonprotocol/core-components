@@ -53,7 +53,8 @@ Commit.args = {
   closeWidgetClick: () => {
     console.log("closeWidgetClick()");
   },
-  forcedAccount: ""
+  forcedAccount: "",
+  showBosonLogo: false
 };
 
 Commit.decorators = [(Story) => wrapper(Story)];
