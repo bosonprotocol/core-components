@@ -392,11 +392,16 @@ export async function signMetaTxCreateSeller(
     theGraphStorage?: MetadataStorage;
   }
 ) {
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.createSellerArgs.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.createSellerArgs.contractUri, args.createSellerArgs.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
   const collectionSalt = await findCollectionSalt({
     sellerToCreate: args.createSellerArgs,
     contractAddress: args.metaTxHandlerAddress,

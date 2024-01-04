@@ -72,11 +72,16 @@ export async function createSeller(args: {
   theGraphStorage?: MetadataStorage;
 }): Promise<TransactionResponse> {
   const collectionSalt = await findCollectionSalt(args);
-  await storeMetadataOnTheGraph({
-    metadataUriOrHash: args.sellerToCreate.metadataUri,
-    metadataStorage: args.metadataStorage,
-    theGraphStorage: args.theGraphStorage
-  });
+  await Promise.all(
+    [args.sellerToCreate.contractUri, args.sellerToCreate.metadataUri].map(
+      (metadataUri) =>
+        storeMetadataOnTheGraph({
+          metadataUriOrHash: metadataUri,
+          metadataStorage: args.metadataStorage,
+          theGraphStorage: args.theGraphStorage
+        })
+    )
+  );
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateSeller(args.sellerToCreate, collectionSalt)
@@ -229,6 +234,8 @@ export async function createNewCollection(args: {
   collectionToCreate: CreateCollectionArgs;
   contractAddress: string;
   web3Lib: Web3LibAdapter;
+  metadataStorage: MetadataStorage;
+  theGraphStorage: MetadataStorage;
 }): Promise<TransactionResponse> {
   // call calculateCollectionAddress() to check no collection with the same collectionId already exists
   if (args.collectionToCreate.sellerId) {
@@ -244,6 +251,11 @@ export async function createNewCollection(args: {
       );
     }
   }
+  await storeMetadataOnTheGraph({
+    metadataUriOrHash: args.collectionToCreate.contractUri,
+    metadataStorage: args.metadataStorage,
+    theGraphStorage: args.theGraphStorage
+  });
   return args.web3Lib.sendTransaction({
     to: args.contractAddress,
     data: encodeCreateNewCollection(args.collectionToCreate)

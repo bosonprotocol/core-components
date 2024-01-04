@@ -21,7 +21,9 @@ export class IpfsMetadataStorage
    * @returns Metadata CID.
    */
   public async storeMetadata(metadata: AnyMetadata): Promise<string> {
-    validateMetadata(metadata);
+    if (metadata.type) {
+      validateMetadata(metadata);
+    }
     const metadataConformingToERC721 = convertToERC721Metadata(metadata);
     const metadataWithSortedKeys = sortObjKeys(metadataConformingToERC721);
     const cid = await this.add(JSON.stringify(metadataWithSortedKeys));
@@ -38,7 +40,9 @@ export class IpfsMetadataStorage
     const metadata = (await this.get<ERC721Metadata>(
       metadataUriOrHash
     )) as ERC721Metadata;
-    validateMetadata(metadata);
+    if (metadata.type) {
+      validateMetadata(metadata);
+    }
 
     return metadata;
   }

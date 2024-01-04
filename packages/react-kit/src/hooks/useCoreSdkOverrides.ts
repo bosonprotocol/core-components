@@ -9,7 +9,9 @@ export const useCoreSdkOverrides = ({
 }) => {
   const externalSigner = useExternalSigner();
   const overrides = useMemo(() => {
-    return externalSigner ? { web3Lib: externalSigner.externalWeb3LibAdapter } : undefined;
+    return externalSigner
+      ? { web3Lib: externalSigner.externalWeb3LibAdapter }
+      : undefined;
   }, [externalSigner]);
   const coreSdk = useCoreSdk(coreSdkConfig, overrides);
   return coreSdk;

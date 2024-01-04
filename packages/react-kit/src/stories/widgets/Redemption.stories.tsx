@@ -77,7 +77,12 @@ RedemptionCallbacks.args = {
   sendDeliveryInfoThroughXMTP: false,
   postDeliveryInfoUrl: "http://localhost:3666/deliveryInfo",
   postRedemptionSubmittedUrl: "http://localhost:3666/submitted",
-  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed"
+  postRedemptionConfirmedUrl: "http://localhost:3666/confirmed",
+  sellerIds: ["0", "26"],
+  signatures: [
+    "0x8357f1aabd7b1811c4b7e30ed867471b9d813614ebb56ce0a90d9bae0b86c4a5272a1b9749c1cf9ad6823eb6fe5a0367c0f727b68bd411eec02167080d28d3a21c",
+    "0x8357f1aabd7b1811c4b7e30ed867471b9d813614ebb56ce0a90d9bae0b86c4a5272a1b9749c1cf9ad6823eb6fe5a0367c0f727b68bd411eec02167080d28d3a21c"
+  ]
 };
 
 export const RedemptionCallbacksThenClose: ComponentStory<
