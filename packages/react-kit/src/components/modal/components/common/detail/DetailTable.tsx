@@ -1,13 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Tooltip } from "../../../../tooltip/Tooltip";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { Table } from "./Detail.style";
+import styled from "styled-components";
+import { Instance } from "tippy.js";
 
 export interface Data {
   hide?: boolean | undefined;
   name?: React.ReactNode | string;
-  info?: React.ReactNode | string;
+  info?: React.ReactNode;
   tooltip?: React.ReactNode | string;
   value?: React.ReactNode | string;
   nextLine?: React.ReactNode | string;
@@ -28,6 +30,8 @@ export default function DetailTable({
   inheritColor = false,
   tag = "span"
 }: Props) {
+  const [displayIndex, setDisplayIndex] = useState<number | undefined>();
+  const tipRef = useRef<Record<number, Instance<unknown>>>();
   return (
     <Table noBorder={noBorder} $inheritColor={inheritColor}>
       <tbody>
@@ -35,17 +39,39 @@ export default function DetailTable({
           ({ hide = false, ...d }: Data, index: number) =>
             !hide && (
               <Fragment key={`tr_fragment_${index}`}>
-                <tr>
+                <tr
+                  onMouseEnter={() => {
+                    setDisplayIndex(index);
+                    tipRef.current?.[index]?.show();
+                  }}
+                  onMouseLeave={() => {
+                    setDisplayIndex(undefined);
+                    tipRef.current?.[index]?.hide();
+                  }}
+                >
                   <td>
                     <Grid justifyContent="flex-start">
-                      {d.tooltip ? (
-                        <Tooltip content={d.tooltip} size={20}>
-                          <Typography tag={tag}>{d.name}</Typography>
-                        </Tooltip>
-                      ) : (
-                        <Typography tag={tag}>{d.name}</Typography>
+                      <Typography tag={tag}>{d.name}</Typography>
+
+                      {d.info && (
+                        <div
+                          style={{
+                            visibility:
+                              index === displayIndex ? "visible" : "hidden"
+                          }}
+                        >
+                          <Tooltip
+                            content={d.info}
+                            size={20}
+                            onCreate={(tip) => {
+                              if (!tipRef.current) {
+                                tipRef.current = {};
+                              }
+                              tipRef.current[index] = tip;
+                            }}
+                          />
+                        </div>
                       )}
-                      {d.info && <Tooltip content={d.info} size={20} />}
                     </Grid>
                   </td>
                   <td>

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import styled from "styled-components";
 
 import { IGrid } from "./Grid";
 
-interface WrapperProps extends IGrid {
+interface WrapperProps extends IGrid, HTMLAttributes<unknown> {
   $fontSize?: string;
   fontWeight?: string;
   lineHeight?: string;

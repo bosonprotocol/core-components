@@ -2,16 +2,15 @@ import "tippy.js/animations/shift-toward.css";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light-border.css";
 
-import Tippy from "@tippyjs/react";
+import Tippy, { TippyProps } from "@tippyjs/react";
 import { IconWeight, Question } from "phosphor-react";
 import React from "react";
 import styled from "styled-components";
 
 import { theme } from "../../theme";
 
-export interface TooltipProps {
-  content: string | JSX.Element | React.ReactNode;
-  children?: React.ReactNode;
+export interface TooltipProps extends TippyProps {
+  content: React.ReactNode;
   interactive?: boolean;
   size?: number;
   weight?: IconWeight;

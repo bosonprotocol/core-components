@@ -146,7 +146,7 @@ const getOfferDetailData = ({
   return [
     {
       name: "Redeemable until",
-      tooltip: (
+      info: (
         <>
           <Typography tag="h6">
             <b>Redeemable</b>
@@ -162,7 +162,7 @@ const getOfferDetailData = ({
     },
     {
       name: "Seller deposit",
-      tooltip: (
+      info: (
         <>
           <Typography tag="h6">
             <b>Seller deposit</b>
@@ -184,7 +184,7 @@ const getOfferDetailData = ({
     },
     {
       name: "Buyer cancellation penalty",
-      tooltip: (
+      info: (
         <>
           <Typography tag="h6">
             <b>Buyer Cancelation penalty</b>
@@ -204,7 +204,7 @@ const getOfferDetailData = ({
     },
     {
       name: "Exchange policy",
-      tooltip: (
+      info: (
         <>
           <Typography tag="h6">
             <b>Exchange policy</b>
@@ -245,7 +245,7 @@ const getOfferDetailData = ({
     },
     {
       name: DetailDisputeResolver.name,
-      tooltip: DetailDisputeResolver.info,
+      info: DetailDisputeResolver.info,
       // eslint-disable-next-line react/jsx-pascal-case
       value: <DetailDisputeResolver.value />
     }
@@ -673,9 +673,9 @@ const DetailView: React.FC<IDetailWidget> = ({
             By proceeding to Commit, I agree to the{" "}
             <span
               style={{
-                color: colors.blue,
                 fontSize: "inherit",
-                cursor: "pointer"
+                cursor: "pointer",
+                textDecoration: "underline"
               }}
               onClick={() => {
                 onLicenseAgreementClick();

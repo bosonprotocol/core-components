@@ -160,6 +160,7 @@ export function OfferVariantView({
             xl: 2
           }}
           style={{ paddingTop: "1rem" }}
+          rowGap="3rem"
         >
           <ImageAndSellerIdContainer flexDirection="column">
             <ImageWrapper>
