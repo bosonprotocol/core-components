@@ -9,6 +9,7 @@ import { Tabs } from "../../../ui/Tabs";
 import { isTruthy } from "../../../../types/helpers";
 import DetailSlider from "./detail/DetailSlider";
 import { Content } from "../../nonModal/styles";
+import { DetailChart } from "../../../detail/DetailChart";
 
 const colors = theme.colors.light;
 
@@ -34,6 +35,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
       isTruthy
     );
   }, [offerImg, images]);
+  const isPhygital = false; // TODO: change
   return (
     <Tabs
       data={[
@@ -63,6 +65,19 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
             </Content>
           )
         },
+        ...(isPhygital
+          ? [
+              {
+                id: "phygital-product-data",
+                title: "Digital Product data",
+                content: (
+                  <Content>
+                    <Typography tag="h3">Digital Product data</Typography>
+                  </Content>
+                )
+              }
+            ]
+          : []),
         {
           id: "about-creator",
           title: "About the creator",
@@ -81,7 +96,6 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
           content: (
             <Content>
               <Grid flexDirection="column" alignItems="flex-start">
-                {children}
                 {(shippingInfo.returnPeriodInDays !== undefined ||
                   !!shippingInfo.shippingTable.length) && (
                   <div>
@@ -96,6 +110,8 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
                     />
                   </div>
                 )}
+                <DetailChart offer={offer} title="Inventory graph" />
+                {children}
               </Grid>
             </Content>
           )

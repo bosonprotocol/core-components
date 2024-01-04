@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ElementRef, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { VariantV1 } from "../../../../types/variants";
 import { theme } from "../../../../theme";
@@ -22,6 +22,8 @@ import VariationSelects from "../common/VariationSelects";
 const colors = theme.colors.light;
 const ResponsiveVariationSelects = styled(VariationSelects)`
   container-type: inline-size;
+  z-index: calc(var(--wcm-z-index) + 1);
+  width: 100%;
   [data-grid] {
     flex-direction: column;
     @container (width > 300px) {
@@ -133,6 +135,7 @@ export function OfferVariantView({
     });
   }, [dispatch, isCommitting, offer.metadata.name]);
   const hasVariations = !!selectedVariant.variations?.length;
+  const portalRef = useRef<ElementRef<"div">>(null);
   return (
     <>
       {isCommitting ? (
@@ -180,33 +183,40 @@ export function OfferVariantView({
               />
             </ImageWrapper>
           </ImageAndSellerIdContainer>
-          <Grid flexDirection="column">
+          <Grid flexDirection="column" justifyContent="flex-start">
             {hasVariations && (
-              <div style={{ marginBottom: "1rem" }}>
-                <ResponsiveVariationSelects
-                  selectedVariant={selectedVariant}
-                  variants={allVariants}
-                  disabled={allVariants.length < 2 || disableVariationsSelects}
-                />
-              </div>
+              <ResponsiveVariationSelects
+                selectedVariant={selectedVariant}
+                variants={allVariants}
+                disabled={allVariants.length < 2 || disableVariationsSelects}
+              />
             )}
-            <DetailView
-              disableVariationsSelects={disableVariationsSelects}
-              hasSellerEnoughFunds={hasSellerEnoughFunds}
-              selectedVariant={selectedVariant}
-              allVariants={allVariants}
-              onExchangePolicyClick={onExchangePolicyClick}
-              onLicenseAgreementClick={onLicenseAgreementClick}
-              onCommit={(...args) => {
-                onCommit(...args);
-                setIsComitting(false);
-              }}
-              onCommitting={() => setIsComitting(true)}
-              onPurchaseOverview={onPurchaseOverview}
-              hasMultipleVariants={false}
-              isPreview={false}
-              exchangePolicyCheckResult={exchangePolicyCheckResult}
-            />
+            <Grid flexDirection="column">
+              <div
+                ref={portalRef}
+                style={{ width: "100%", height: "3rem", position: "relative" }}
+              />
+              <DetailView
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                ref={portalRef}
+                disableVariationsSelects={disableVariationsSelects}
+                hasSellerEnoughFunds={hasSellerEnoughFunds}
+                selectedVariant={selectedVariant}
+                allVariants={allVariants}
+                onExchangePolicyClick={onExchangePolicyClick}
+                onLicenseAgreementClick={onLicenseAgreementClick}
+                onCommit={(...args) => {
+                  onCommit(...args);
+                  setIsComitting(false);
+                }}
+                onCommitting={() => setIsComitting(true)}
+                onPurchaseOverview={onPurchaseOverview}
+                hasMultipleVariants={false}
+                isPreview={false}
+                exchangePolicyCheckResult={exchangePolicyCheckResult}
+              />
+            </Grid>
           </Grid>
         </GridContainer>
       )}

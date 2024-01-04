@@ -14,7 +14,13 @@ import {
   WarningCircle
 } from "phosphor-react";
 import toast from "react-hot-toast";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import styled, { css } from "styled-components";
 import {
   useSigner,
@@ -63,6 +69,7 @@ import { Field, swapQueryParameters } from "../../../../../lib/parameters/swap";
 import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
 import { DetailsSummary } from "../../../../ui/DetailsSummary";
 import { TokenGatedList } from "../../common/detail/TokenGatedList";
+import { createPortal } from "react-dom";
 
 const colors = theme.colors.light;
 
@@ -261,7 +268,7 @@ const SwapArrows = styled(ArrowsLeftRight)`
 const BosonExclusiveContainer = styled.div`
   && {
     position: absolute;
-    top: -1.625rem;
+    bottom: 0;
     padding: 0.25rem 1rem;
     background-color: ${colors.black};
     color: ${colors.white};
@@ -289,408 +296,441 @@ interface IDetailWidget {
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
-const DetailView: React.FC<IDetailWidget> = ({
-  selectedVariant,
-  allVariants,
-  disableVariationsSelects,
-  hasSellerEnoughFunds,
-  isPreview = false,
-  hasMultipleVariants,
-  onLicenseAgreementClick,
-  onExchangePolicyClick,
-  onPurchaseOverview,
-  onCommit,
-  onCommitting,
-  exchangePolicyCheckResult
-}) => {
-  const { offer } = selectedVariant;
-  const coreSDK = useCoreSDKWithContext();
-  const [commitType, setCommitType] = useState<ActionName | undefined | null>(
-    null
-  );
-  const signer = useSigner();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { showModal, hideModal } = useModal();
-  const config = useConfigContext();
-  const {
-    commitProxyAddress,
-    openseaLinkToOriginalMainnetCollection,
-    config: protocolConfig
-  } = config;
-  const [
-    isCommittingFromNotConnectedWallet,
-    setIsCommittingFromNotConnectedWallet
-  ] = useState(false);
-  const displayFloat = useDisplayFloat();
-  const { address } = useAccount();
-  const { openAccountModal } = useAccountModal();
-  const onCommitPendingSignature = () => {
-    setIsLoading(true);
-    showModal("WAITING_FOR_CONFIRMATION");
-  };
-
-  const convertedPrice = useConvertedPrice({
-    value: offer.price,
-    decimals: offer.exchangeToken.decimals,
-    symbol: offer.exchangeToken.symbol
-  });
-  const onCommitPendingTransaction = (
-    hash: string,
-    isMetaTx?: boolean | undefined,
-    actionName?: ActionName | undefined
-  ) => {
-    setCommitType(actionName);
-    if (actionName && actionName === "approveExchangeToken") {
-      showModal("TRANSACTION_SUBMITTED", {
-        action: "Approve ERC20 Token",
-        txHash: hash
-      });
-    } else {
-      showModal("TRANSACTION_SUBMITTED", {
-        action: "Commit",
-        txHash: hash
-      });
-      onCommitting(hash);
-      // TODO: handle pending transactions
-      // addPendingTransaction({
-      //   type: subgraph.EventType.BuyerCommitted,
-      //   hash,
-      //   isMetaTx,
-      //   accountType: "Buyer",
-      //   offerId: offer.id,
-      //   offer: {
-      //     id: offer.id
-      //   }
-      // });
-    }
-  };
-  const onCommitSuccess = async (
-    receipt: ethers.providers.TransactionReceipt,
-    { exchangeId }: { exchangeId: BigNumberish }
-  ) => {
-    let createdExchange: subgraph.ExchangeFieldsFragment;
-    await poll(
-      async () => {
-        createdExchange = await coreSDK.getExchangeById(exchangeId);
-        return createdExchange;
-      },
-      (createdExchange) => {
-        return !createdExchange;
-      },
-      500
-    );
-    setIsLoading(false);
-    hideModal();
-    if (commitType === "approveExchangeToken") {
-      toast((t) => (
-        <SuccessTransactionToast
-          t={t}
-          action={"Token approval transaction submitted"}
-        />
-      ));
-    } else {
-      const showDetailWidgetModal = () => {
-        onCommit(exchangeId.toString(), receipt.transactionHash);
-      };
-      showDetailWidgetModal();
-      toast((t) => (
-        <SuccessTransactionToast
-          t={t}
-          action={`Commit to offer: ${offer.metadata.name}`}
-          onViewDetails={() => {
-            showDetailWidgetModal();
-          }}
-        />
-      ));
-    }
-    setCommitType(null);
-    // TODO: handle pending transactions
-    // removePendingTransaction("offerId", offer.id);
-  };
-  const onCommitError = async (
-    error: Error,
-    { txResponse }: { txResponse: providers.TransactionResponse | undefined }
-  ) => {
-    console.error("onError", error);
-    setIsLoading(false);
-    const hasUserRejectedTx = getHasUserRejectedTx(error);
-    if (hasUserRejectedTx) {
-      showModal("TRANSACTION_FAILED");
-    } else {
-      Sentry.captureException(error);
-      showModal("TRANSACTION_FAILED", {
-        title: "An error occurred",
-        errorMessage: await extractUserFriendlyError(error, {
-          txResponse,
-          provider: signer?.provider
-        })
-      });
-    }
-    setCommitType(null);
-    // TODO: handle pending transactions
-    // removePendingTransaction("offerId", offer.id);
-  };
-  const isFreeOffer = offer.price === "0";
-  const { balance: exchangeTokenBalance, loading: balanceLoading } =
-    useExchangeTokenBalance(offer.exchangeToken, {
-      enabled: !isFreeOffer
-    });
-
-  const isBuyerInsufficientFunds: boolean = useMemo(
-    () =>
-      isFreeOffer
-        ? false
-        : !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
-    [exchangeTokenBalance, offer.price, isFreeOffer]
-  );
-  const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
-
-  const OFFER_DETAIL_DATA = useMemo(
-    () =>
-      getOfferDetailData({
-        config,
-        displayFloat,
-        offer,
-        onExchangePolicyClick,
-        exchangePolicyCheckResult
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [offer, convertedPrice, config, displayFloat]
-  );
-
-  const quantity = useMemo<number>(
-    () => Number(offer?.quantityAvailable || 0),
-    [offer?.quantityAvailable]
-  );
-
-  const quantityInitial = useMemo<number>(
-    () => Number(offer?.quantityInitial || 0),
-    [offer?.quantityInitial]
-  );
-
-  const isExpiredOffer = useMemo<boolean>(
-    () => dayjs(getDateTimestamp(offer?.validUntilDate)).isBefore(dayjs()),
-    [offer?.validUntilDate]
-  );
-  const isVoidedOffer = !!offer.voidedAt;
-
-  const nowDate = dayjs();
-
-  const isOfferEmpty = quantity < 1;
-  const isOfferNotValidYet = dayjs(
-    getDateTimestamp(offer?.validFromDate)
-  ).isAfter(nowDate);
-
-  const isNotCommittableOffer =
-    isOfferEmpty ||
-    isOfferNotValidYet ||
-    isExpiredOffer ||
-    offer.voided ||
-    !hasSellerEnoughFunds ||
-    isBuyerInsufficientFunds;
-  const commitButtonRef = useRef<HTMLButtonElement>(null);
-  const tokenOrCoinSymbol = offer.exchangeToken.symbol;
-  const notCommittableOfferStatus = useMemo(() => {
-    if (isBuyerInsufficientFunds) {
-      return "Insufficient Funds";
-    }
-    if (offer.voided) {
-      return "Offer voided";
-    }
-    if (isExpiredOffer) {
-      return "Expired";
-    }
-    if (isOfferNotValidYet) {
-      return "Sale starting soon™️";
-    }
-    if (isOfferEmpty) {
-      return "Sold out";
-    }
-    if (!hasSellerEnoughFunds) {
-      return "Invalid";
-    }
-    return "";
-  }, [
-    hasSellerEnoughFunds,
-    isBuyerInsufficientFunds,
-    isExpiredOffer,
-    isOfferEmpty,
-    isOfferNotValidYet,
-    offer.voided
-  ]);
-  const { isConditionMet } = useCheckTokenGatedOffer({
-    commitProxyAddress,
-    offer
-  });
-  const handleOnGetSignerAddress = useCallback(
-    (signerAddress: string | undefined) => {
-      const isConnectWalletFromCommit = getItemFromStorage(
-        "isConnectWalletFromCommit",
-        false
-      );
-      if (
-        isCommittingFromNotConnectedWallet &&
-        address &&
-        signerAddress &&
-        isConnectWalletFromCommit
-      ) {
-        const commitButton = commitButtonRef.current;
-        if (commitButton) {
-          commitButton.click();
-          setIsCommittingFromNotConnectedWallet(false);
-        }
-      }
-      return signerAddress;
+const DetailView: React.FC<IDetailWidget> = forwardRef(
+  (
+    {
+      selectedVariant,
+      allVariants,
+      disableVariationsSelects,
+      hasSellerEnoughFunds,
+      isPreview = false,
+      hasMultipleVariants,
+      onLicenseAgreementClick,
+      onExchangePolicyClick,
+      onPurchaseOverview,
+      onCommit,
+      onCommitting,
+      exchangePolicyCheckResult
     },
-    [address, isCommittingFromNotConnectedWallet]
-  );
-  const isCommitDisabled =
-    !address ||
-    !hasSellerEnoughFunds ||
-    isExpiredOffer ||
-    isLoading ||
-    !quantity ||
-    isVoidedOffer ||
-    isPreview ||
-    isOfferNotValidYet ||
-    isBuyerInsufficientFunds ||
-    (offer.condition && !isConditionMet);
-  const isBosonExclusive = true;
-  const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
-  const closeDetailsRef = useRef(true);
-  return (
-    <Widget>
-      {isBosonExclusive && (
-        <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>
-      )}
-      <div>
-        <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
-          <StyledPrice
-            isExchange={false}
-            currencySymbol={offer.exchangeToken.symbol}
-            value={offer.price}
-            decimals={offer.exchangeToken.decimals}
-            tag="h3"
-            convert
-            withBosonStyles
-            withAsterisk={isPreview && hasMultipleVariants}
+    ref
+  ) => {
+    const { offer } = selectedVariant;
+    const coreSDK = useCoreSDKWithContext();
+    const [commitType, setCommitType] = useState<ActionName | undefined | null>(
+      null
+    );
+    const signer = useSigner();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { showModal, hideModal } = useModal();
+    const config = useConfigContext();
+    const {
+      commitProxyAddress,
+      openseaLinkToOriginalMainnetCollection,
+      config: protocolConfig
+    } = config;
+    const [
+      isCommittingFromNotConnectedWallet,
+      setIsCommittingFromNotConnectedWallet
+    ] = useState(false);
+    const displayFloat = useDisplayFloat();
+    const { address } = useAccount();
+    const { openAccountModal } = useAccountModal();
+    const onCommitPendingSignature = () => {
+      setIsLoading(true);
+      showModal("WAITING_FOR_CONFIRMATION");
+    };
+
+    const convertedPrice = useConvertedPrice({
+      value: offer.price,
+      decimals: offer.exchangeToken.decimals,
+      symbol: offer.exchangeToken.symbol
+    });
+    const onCommitPendingTransaction = (
+      hash: string,
+      isMetaTx?: boolean | undefined,
+      actionName?: ActionName | undefined
+    ) => {
+      setCommitType(actionName);
+      if (actionName && actionName === "approveExchangeToken") {
+        showModal("TRANSACTION_SUBMITTED", {
+          action: "Approve ERC20 Token",
+          txHash: hash
+        });
+      } else {
+        showModal("TRANSACTION_SUBMITTED", {
+          action: "Commit",
+          txHash: hash
+        });
+        onCommitting(hash);
+        // TODO: handle pending transactions
+        // addPendingTransaction({
+        //   type: subgraph.EventType.BuyerCommitted,
+        //   hash,
+        //   isMetaTx,
+        //   accountType: "Buyer",
+        //   offerId: offer.id,
+        //   offer: {
+        //     id: offer.id
+        //   }
+        // });
+      }
+    };
+    const onCommitSuccess = async (
+      receipt: ethers.providers.TransactionReceipt,
+      { exchangeId }: { exchangeId: BigNumberish }
+    ) => {
+      let createdExchange: subgraph.ExchangeFieldsFragment;
+      await poll(
+        async () => {
+          createdExchange = await coreSDK.getExchangeById(exchangeId);
+          return createdExchange;
+        },
+        (createdExchange) => {
+          return !createdExchange;
+        },
+        500
+      );
+      setIsLoading(false);
+      hideModal();
+      if (commitType === "approveExchangeToken") {
+        toast((t) => (
+          <SuccessTransactionToast
+            t={t}
+            action={"Token approval transaction submitted"}
           />
-          {notCommittableOfferStatus ? (
-            <span style={{ color: colors.orange, textAlign: "right" }}>
-              {notCommittableOfferStatus}
-            </span>
-          ) : (
-            <QuantityDisplay
-              quantityInitial={quantityInitial}
-              quantity={quantity}
-            />
-          )}
-        </WidgetUpperGrid>
-      </div>
-      {isNotCommittableOffer && isBuyerInsufficientFunds && (
-        <Grid marginBottom="1rem">
-          <Button
-            size="regular"
-            variant="accentInverted"
-            withBosonStyle
-            style={{
-              width: "100%"
+        ));
+      } else {
+        const showDetailWidgetModal = () => {
+          onCommit(exchangeId.toString(), receipt.transactionHash);
+        };
+        showDetailWidgetModal();
+        toast((t) => (
+          <SuccessTransactionToast
+            t={t}
+            action={`Commit to offer: ${offer.metadata.name}`}
+            onViewDetails={() => {
+              showDetailWidgetModal();
             }}
-          >
-            <a
-              style={{ all: "inherit", fontWeight: "600" }}
-              target="__blank"
-              href={`https://bosonapp.io/#/swap?${new URLSearchParams({
-                [swapQueryParameters.outputCurrency]:
-                  offer.exchangeToken.address,
-                [swapQueryParameters.exactAmount]: minNeededBalance
-                  ? utils.formatUnits(
-                      minNeededBalance || "",
-                      offer.exchangeToken.decimals
-                    )
-                  : "",
-                [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
-              }).toString()}`}
+          />
+        ));
+      }
+      setCommitType(null);
+      // TODO: handle pending transactions
+      // removePendingTransaction("offerId", offer.id);
+    };
+    const onCommitError = async (
+      error: Error,
+      { txResponse }: { txResponse: providers.TransactionResponse | undefined }
+    ) => {
+      console.error("onError", error);
+      setIsLoading(false);
+      const hasUserRejectedTx = getHasUserRejectedTx(error);
+      if (hasUserRejectedTx) {
+        showModal("TRANSACTION_FAILED");
+      } else {
+        Sentry.captureException(error);
+        showModal("TRANSACTION_FAILED", {
+          title: "An error occurred",
+          errorMessage: await extractUserFriendlyError(error, {
+            txResponse,
+            provider: signer?.provider
+          })
+        });
+      }
+      setCommitType(null);
+      // TODO: handle pending transactions
+      // removePendingTransaction("offerId", offer.id);
+    };
+    const isFreeOffer = offer.price === "0";
+    const { balance: exchangeTokenBalance, loading: balanceLoading } =
+      useExchangeTokenBalance(offer.exchangeToken, {
+        enabled: !isFreeOffer
+      });
+
+    const isBuyerInsufficientFunds: boolean = useMemo(
+      () =>
+        isFreeOffer
+          ? false
+          : !!exchangeTokenBalance && exchangeTokenBalance.lte(offer.price),
+      [exchangeTokenBalance, offer.price, isFreeOffer]
+    );
+    const minNeededBalance = exchangeTokenBalance?.sub(offer.price).mul(-1);
+
+    const OFFER_DETAIL_DATA = useMemo(
+      () =>
+        getOfferDetailData({
+          config,
+          displayFloat,
+          offer,
+          onExchangePolicyClick,
+          exchangePolicyCheckResult
+        }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [offer, convertedPrice, config, displayFloat]
+    );
+
+    const quantity = useMemo<number>(
+      () => Number(offer?.quantityAvailable || 0),
+      [offer?.quantityAvailable]
+    );
+
+    const quantityInitial = useMemo<number>(
+      () => Number(offer?.quantityInitial || 0),
+      [offer?.quantityInitial]
+    );
+
+    const isExpiredOffer = useMemo<boolean>(
+      () => dayjs(getDateTimestamp(offer?.validUntilDate)).isBefore(dayjs()),
+      [offer?.validUntilDate]
+    );
+    const isVoidedOffer = !!offer.voidedAt;
+
+    const nowDate = dayjs();
+
+    const isOfferEmpty = quantity < 1;
+    const isOfferNotValidYet = dayjs(
+      getDateTimestamp(offer?.validFromDate)
+    ).isAfter(nowDate);
+
+    const isNotCommittableOffer =
+      isOfferEmpty ||
+      isOfferNotValidYet ||
+      isExpiredOffer ||
+      offer.voided ||
+      !hasSellerEnoughFunds ||
+      isBuyerInsufficientFunds;
+    const commitButtonRef = useRef<HTMLButtonElement>(null);
+    const tokenOrCoinSymbol = offer.exchangeToken.symbol;
+    const notCommittableOfferStatus = useMemo(() => {
+      if (isBuyerInsufficientFunds) {
+        return "Insufficient Funds";
+      }
+      if (offer.voided) {
+        return "Offer voided";
+      }
+      if (isExpiredOffer) {
+        return "Expired";
+      }
+      if (isOfferNotValidYet) {
+        return "Sale starting soon™️";
+      }
+      if (isOfferEmpty) {
+        return "Sold out";
+      }
+      if (!hasSellerEnoughFunds) {
+        return "Invalid";
+      }
+      return "";
+    }, [
+      hasSellerEnoughFunds,
+      isBuyerInsufficientFunds,
+      isExpiredOffer,
+      isOfferEmpty,
+      isOfferNotValidYet,
+      offer.voided
+    ]);
+    const { isConditionMet } = useCheckTokenGatedOffer({
+      commitProxyAddress,
+      offer
+    });
+    const handleOnGetSignerAddress = useCallback(
+      (signerAddress: string | undefined) => {
+        const isConnectWalletFromCommit = getItemFromStorage(
+          "isConnectWalletFromCommit",
+          false
+        );
+        if (
+          isCommittingFromNotConnectedWallet &&
+          address &&
+          signerAddress &&
+          isConnectWalletFromCommit
+        ) {
+          const commitButton = commitButtonRef.current;
+          if (commitButton) {
+            commitButton.click();
+            setIsCommittingFromNotConnectedWallet(false);
+          }
+        }
+        return signerAddress;
+      },
+      [address, isCommittingFromNotConnectedWallet]
+    );
+    const isCommitDisabled =
+      !address ||
+      !hasSellerEnoughFunds ||
+      isExpiredOffer ||
+      isLoading ||
+      !quantity ||
+      isVoidedOffer ||
+      isPreview ||
+      isOfferNotValidYet ||
+      isBuyerInsufficientFunds ||
+      (offer.condition && !isConditionMet);
+    const isBosonExclusive = true;
+    const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
+    const closeDetailsRef = useRef(true);
+    console.log("ref", ref);
+    return (
+      <Widget>
+        {isBosonExclusive &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref?.current &&
+          createPortal(
+            <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            ref?.current as any
+          )}
+        <div>
+          <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
+            <StyledPrice
+              isExchange={false}
+              currencySymbol={offer.exchangeToken.symbol}
+              value={offer.price}
+              decimals={offer.exchangeToken.decimals}
+              tag="h3"
+              convert
+              withBosonStyles
+              withAsterisk={isPreview && hasMultipleVariants}
+            />
+            {notCommittableOfferStatus ? (
+              <span style={{ color: colors.orange, textAlign: "right" }}>
+                {notCommittableOfferStatus}
+              </span>
+            ) : (
+              <QuantityDisplay
+                quantityInitial={quantityInitial}
+                quantity={quantity}
+              />
+            )}
+          </WidgetUpperGrid>
+        </div>
+        {isNotCommittableOffer && isBuyerInsufficientFunds && (
+          <Grid marginBottom="1rem">
+            <Button
+              size="regular"
+              variant="accentInverted"
+              withBosonStyle
+              style={{
+                width: "100%"
+              }}
             >
-              Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
-            </a>
-          </Button>
-        </Grid>
-      )}
-      {!isBuyerInsufficientFunds && (
-        <CommitWrapper justifyContent="space-between" margin="1rem 0">
-          <CommitButtonWrapper
-            disabled={!!isCommitDisabled}
-            role="button"
-            $pointerEvents={!address ? "none" : "all"}
-            onClick={() => {
-              if (!address) {
-                saveItemInStorage("isConnectWalletFromCommit", true);
-                setIsCommittingFromNotConnectedWallet(true);
-                openAccountModal?.();
+              <a
+                style={{ all: "inherit", fontWeight: "600" }}
+                target="__blank"
+                href={`https://bosonapp.io/#/swap?${new URLSearchParams({
+                  [swapQueryParameters.outputCurrency]:
+                    offer.exchangeToken.address,
+                  [swapQueryParameters.exactAmount]: minNeededBalance
+                    ? utils.formatUnits(
+                        minNeededBalance || "",
+                        offer.exchangeToken.decimals
+                      )
+                    : "",
+                  [swapQueryParameters.exactField]: Field.OUTPUT.toLowerCase()
+                }).toString()}`}
+              >
+                Buy or Swap {tokenOrCoinSymbol} <SwapArrows size={24} />
+              </a>
+            </Button>
+          </Grid>
+        )}
+        {!isBuyerInsufficientFunds && (
+          <CommitWrapper justifyContent="space-between" margin="1rem 0">
+            <CommitButtonWrapper
+              disabled={!!isCommitDisabled}
+              role="button"
+              $pointerEvents={!address ? "none" : "all"}
+              onClick={() => {
+                if (!address) {
+                  saveItemInStorage("isConnectWalletFromCommit", true);
+                  setIsCommittingFromNotConnectedWallet(true);
+                  openAccountModal?.();
+                }
+              }}
+            >
+              {balanceLoading && address ? (
+                <ThemedButton disabled>
+                  <Spinner />
+                </ThemedButton>
+              ) : (
+                <>
+                  {/* TODO: handle commit proxy button {showCommitProxyButton ? (
+                    <CommitProxyButton />
+                  ) : ( */}
+                  <CommitButton
+                    coreSdkConfig={{
+                      envName: protocolConfig.envName,
+                      configId: protocolConfig.configId,
+                      web3Provider: signer?.provider as Provider,
+                      metaTx: protocolConfig.metaTx
+                    }}
+                    variant="primaryFill"
+                    isPauseCommitting={!address}
+                    buttonRef={commitButtonRef}
+                    onGetSignerAddress={handleOnGetSignerAddress}
+                    disabled={!!isCommitDisabled}
+                    offerId={offer.id}
+                    exchangeToken={offer.exchangeToken.address}
+                    price={offer.price}
+                    onError={onCommitError}
+                    onPendingSignature={onCommitPendingSignature}
+                    onPendingTransaction={onCommitPendingTransaction}
+                    onSuccess={onCommitSuccess}
+                    withBosonStyle
+                    id="commit"
+                  />
+                  {/* )} */}
+                </>
+              )}
+            </CommitButtonWrapper>
+            <Typography
+              $fontSize="0.8rem"
+              style={{ display: "block", width: "100%" }}
+            >
+              By proceeding to Commit, I agree to the{" "}
+              <span
+                style={{
+                  fontSize: "inherit",
+                  cursor: "pointer",
+                  textDecoration: "underline"
+                }}
+                onClick={() => {
+                  onLicenseAgreementClick();
+                }}
+              >
+                rNFT Terms
+              </span>
+              .
+            </Typography>
+          </CommitWrapper>
+        )}
+        {offer.condition && (
+          <DetailsSummary
+            summaryText="Token Gated Offer"
+            icon={<Lock size={16} />}
+            onSetOpen={(open) => {
+              if (open && closeDetailsRef.current) {
+                setDetailsOpen(false);
+                closeDetailsRef.current = false;
               }
             }}
           >
-            {balanceLoading && address ? (
-              <ThemedButton disabled>
-                <Spinner />
-              </ThemedButton>
-            ) : (
-              <>
-                {/* TODO: handle commit proxy button {showCommitProxyButton ? (
-                    <CommitProxyButton />
-                  ) : ( */}
-                <CommitButton
-                  coreSdkConfig={{
-                    envName: protocolConfig.envName,
-                    configId: protocolConfig.configId,
-                    web3Provider: signer?.provider as Provider,
-                    metaTx: protocolConfig.metaTx
-                  }}
-                  variant="primaryFill"
-                  isPauseCommitting={!address}
-                  buttonRef={commitButtonRef}
-                  onGetSignerAddress={handleOnGetSignerAddress}
-                  disabled={!!isCommitDisabled}
-                  offerId={offer.id}
-                  exchangeToken={offer.exchangeToken.address}
-                  price={offer.price}
-                  onError={onCommitError}
-                  onPendingSignature={onCommitPendingSignature}
-                  onPendingTransaction={onCommitPendingTransaction}
-                  onSuccess={onCommitSuccess}
-                  withBosonStyle
-                  id="commit"
-                />
-                {/* )} */}
-              </>
-            )}
-          </CommitButtonWrapper>
-          <Typography
-            $fontSize="0.8rem"
-            style={{ display: "block", width: "100%" }}
-          >
-            By proceeding to Commit, I agree to the{" "}
-            <span
-              style={{
-                fontSize: "inherit",
-                cursor: "pointer",
-                textDecoration: "underline"
-              }}
-              onClick={() => {
-                onLicenseAgreementClick();
-              }}
-            >
-              rNFT Terms
-            </span>
-            .
-          </Typography>
-        </CommitWrapper>
-      )}
-      {offer.condition && (
+            <TokenGatedList
+              coreSDK={coreSDK}
+              offer={offer}
+              commitProxyAddress={commitProxyAddress}
+              openseaLinkToOriginalMainnetCollection={
+                openseaLinkToOriginalMainnetCollection
+              }
+              isConditionMet={isConditionMet}
+            />
+          </DetailsSummary>
+        )}
         <DetailsSummary
-          summaryText="Token Gated Offer"
-          icon={<Lock size={16} />}
+          summaryText="Phygital Product"
+          icon={<Cube size={16} />}
           onSetOpen={(open) => {
             if (open && closeDetailsRef.current) {
               setDetailsOpen(false);
@@ -698,75 +738,55 @@ const DetailView: React.FC<IDetailWidget> = ({
             }
           }}
         >
-          <TokenGatedList
-            coreSDK={coreSDK}
-            offer={offer}
-            commitProxyAddress={commitProxyAddress}
-            openseaLinkToOriginalMainnetCollection={
-              openseaLinkToOriginalMainnetCollection
-            }
-            isConditionMet={isConditionMet}
+          <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
+            <Typography>
+              This is what you'll get when you purchase this product.
+            </Typography>
+            <Grid flexDirection="column" alignItems="flex-start">
+              <Typography>
+                <b>This product includes:</b>
+              </Typography>
+            </Grid>
+          </Grid>
+        </DetailsSummary>
+        <DetailsSummary
+          summaryText="Details"
+          initiallyOpen
+          isOpen={isDetailsOpen}
+          onSetOpen={(open) => {
+            setDetailsOpen(open);
+          }}
+        >
+          <DetailTable
+            align={false}
+            noBorder
+            data={OFFER_DETAIL_DATA}
+            inheritColor={false}
           />
         </DetailsSummary>
-      )}
-      <DetailsSummary
-        summaryText="Phygital Product"
-        icon={<Cube size={16} />}
-        onSetOpen={(open) => {
-          if (open && closeDetailsRef.current) {
-            setDetailsOpen(false);
-            closeDetailsRef.current = false;
-          }
-        }}
-      >
-        <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
-          <Typography>
-            This is what you'll get when you purchase this product.
-          </Typography>
-          <Grid flexDirection="column" alignItems="flex-start">
-            <Typography>
-              <b>This product includes:</b>
-            </Typography>
-          </Grid>
-        </Grid>
-      </DetailsSummary>
-      <DetailsSummary
-        summaryText="Details"
-        initiallyOpen
-        isOpen={isDetailsOpen}
-        onSetOpen={(open) => {
-          setDetailsOpen(open);
-        }}
-      >
-        <DetailTable
-          align={false}
-          noBorder
-          data={OFFER_DETAIL_DATA}
-          inheritColor={false}
-        />
-      </DetailsSummary>
-      <Grid
-        justifyContent="center"
-        alignItems="center"
-        marginTop="12px"
-        marginBottom="12px"
-      >
-        <div
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            gap: "0.1rem",
-            alignItems: "center"
-          }}
-          onClick={onPurchaseOverview}
+        <Grid
+          justifyContent="center"
+          alignItems="center"
+          marginTop="12px"
+          marginBottom="12px"
         >
-          <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
-          <Info color={colors.secondary} size={24} />
-        </div>
-      </Grid>
-      <Break />
-    </Widget>
-  );
-};
+          <div
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              gap: "0.1rem",
+              alignItems: "center"
+            }}
+            onClick={onPurchaseOverview}
+          >
+            <CommitAndRedeemButton>How it works?</CommitAndRedeemButton>
+            <Info color={colors.secondary} size={24} />
+          </div>
+        </Grid>
+        <Break />
+      </Widget>
+    );
+  }
+);
 
 export default DetailView;
