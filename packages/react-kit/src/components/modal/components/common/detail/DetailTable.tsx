@@ -39,19 +39,22 @@ export default function DetailTable({
           ({ hide = false, ...d }: Data, index: number) =>
             !hide && (
               <Fragment key={`tr_fragment_${index}`}>
-                <tr
-                  onMouseEnter={() => {
-                    setDisplayIndex(index);
-                    tipRef.current?.[index]?.show();
-                  }}
-                  onMouseLeave={() => {
-                    setDisplayIndex(undefined);
-                    tipRef.current?.[index]?.hide();
-                  }}
-                >
+                <tr>
                   <td>
                     <Grid justifyContent="flex-start">
-                      <Typography tag={tag}>{d.name}</Typography>
+                      <Typography
+                        tag={tag}
+                        onMouseEnter={() => {
+                          setDisplayIndex(index);
+                          tipRef.current?.[index]?.show();
+                        }}
+                        onMouseLeave={() => {
+                          setDisplayIndex(undefined);
+                          tipRef.current?.[index]?.hide();
+                        }}
+                      >
+                        {d.name}
+                      </Typography>
 
                       {d.info && (
                         <div
