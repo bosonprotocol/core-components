@@ -1,5 +1,5 @@
 import { CaretDown, CaretUp } from "phosphor-react";
-import React, { ReactElement, ReactNode, useState } from "react";
+import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { theme } from "../../theme";
 import Grid from "./Grid";
@@ -64,6 +64,8 @@ type DetailsSummaryProps = {
   icon?: ReactElement;
   children: ReactNode;
   initiallyOpen?: boolean;
+  isOpen?: boolean;
+  onSetOpen?: (open: boolean) => unknown;
   className?: string;
   $paddingSides?: CSSProperties["paddingLeft"];
 };
@@ -76,16 +78,26 @@ export const DetailsSummary: React.FC<DetailsSummaryProps> = ({
   children,
   className,
   initiallyOpen,
+  isOpen,
+  onSetOpen,
   icon,
   $paddingSides = "2rem"
 }) => {
   const [open, setOpen] = useState<boolean>(initiallyOpen ?? false);
+  const handleOpen = (o: boolean) => {
+    setOpen(o);
+    onSetOpen?.(o);
+  };
+  useEffect(() => {
+    handleOpen(isOpen ?? false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
   return (
     <Details className={className} open={open} $paddingSides={$paddingSides}>
       <summary
         onClick={(e) => {
           e.preventDefault();
-          setOpen(!open);
+          handleOpen(!open);
         }}
       >
         <Grid justifyContent="flex-start" gap="1rem">

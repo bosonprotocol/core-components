@@ -38,11 +38,11 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
     <Tabs
       data={[
         {
-          id: "product-data",
-          title: "Product data",
+          id: "physical-product-data",
+          title: "Physical Product data",
           content: (
             <Content>
-              <Typography tag="h3">Product data</Typography>
+              <Typography tag="h3">Physical Product data</Typography>
               <Typography
                 tag="p"
                 data-testid="description"
@@ -50,7 +50,7 @@ export const OfferFullDescription: React.FC<OfferFullDescriptionProps> = ({
               >
                 {description}
               </Typography>
-              <Typography tag="h3">Product images</Typography>
+              <Typography tag="h3">Physical Product images</Typography>
               <>
                 {(allImages.length > 0 || animationUrl) && (
                   <DetailSlider

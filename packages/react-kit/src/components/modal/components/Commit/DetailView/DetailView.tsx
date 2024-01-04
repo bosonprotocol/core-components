@@ -555,9 +555,14 @@ const DetailView: React.FC<IDetailWidget> = ({
     isOfferNotValidYet ||
     isBuyerInsufficientFunds ||
     (offer.condition && !isConditionMet);
+  const isBosonExclusive = true;
+  const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
+  const closeDetailsRef = useRef(true);
   return (
     <Widget>
-      <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>
+      {isBosonExclusive && (
+        <BosonExclusiveContainer>BOSON EXCLUSIVE</BosonExclusiveContainer>
+      )}
       <div>
         <WidgetUpperGrid style={{ paddingBottom: "0.5rem" }}>
           <StyledPrice
@@ -686,6 +691,12 @@ const DetailView: React.FC<IDetailWidget> = ({
         <DetailsSummary
           summaryText="Token Gated Offer"
           icon={<Lock size={16} />}
+          onSetOpen={(open) => {
+            if (open && closeDetailsRef.current) {
+              setDetailsOpen(false);
+              closeDetailsRef.current = false;
+            }
+          }}
         >
           <TokenGatedList
             coreSDK={coreSDK}
@@ -698,7 +709,16 @@ const DetailView: React.FC<IDetailWidget> = ({
           />
         </DetailsSummary>
       )}
-      <DetailsSummary summaryText="Phygital Product" icon={<Cube size={16} />}>
+      <DetailsSummary
+        summaryText="Phygital Product"
+        icon={<Cube size={16} />}
+        onSetOpen={(open) => {
+          if (open && closeDetailsRef.current) {
+            setDetailsOpen(false);
+            closeDetailsRef.current = false;
+          }
+        }}
+      >
         <Grid flexDirection="column" alignItems="flex-start" gap="1rem">
           <Typography>
             This is what you'll get when you purchase this product.
@@ -710,7 +730,14 @@ const DetailView: React.FC<IDetailWidget> = ({
           </Grid>
         </Grid>
       </DetailsSummary>
-      <DetailsSummary summaryText="Details" initiallyOpen>
+      <DetailsSummary
+        summaryText="Details"
+        initiallyOpen
+        isOpen={isDetailsOpen}
+        onSetOpen={(open) => {
+          setDetailsOpen(open);
+        }}
+      >
         <DetailTable
           align={false}
           noBorder

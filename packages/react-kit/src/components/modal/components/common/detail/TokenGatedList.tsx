@@ -42,17 +42,6 @@ interface Condition {
  * method 2 - specific token
  */
 
-interface TokenInfo {
-  convertedValue: IPrice;
-  symbol: string;
-}
-
-const tokenTypeToErcNumber = {
-  0: 20,
-  1: 721,
-  2: 1155
-} as const;
-
 export const TokenGatedList = ({
   offer,
   commitProxyAddress,
