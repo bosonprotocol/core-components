@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { VariantV1 } from "../../../../types/variants";
 import { theme } from "../../../../theme";
-import { useSellers } from "../../../../hooks/useSellers";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
 import { isTruthy } from "../../../../types/helpers";
 import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
@@ -12,12 +11,11 @@ import Grid from "../../../ui/Grid";
 import DetailSlider from "../common/detail/DetailSlider";
 import GridContainer from "../../../ui/GridContainer";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
-import DetailView from "./DetailView/DetailView";
-import Loading from "../../../ui/loading/Loading";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
 import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
 import Typography from "../../../ui/Typography";
 import VariationSelects from "../common/VariationSelects";
+import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
 
 const colors = theme.colors.light;
 const ResponsiveVariationSelects = styled(VariationSelects)`
@@ -45,6 +43,12 @@ const ImageAndSellerIdContainer = styled(Grid)`
   }
 `;
 
+const VariationsAndWhiteWidget = styled(Grid)`
+  ${breakpoint.s} {
+    max-width: 550px;
+  }
+`;
+
 export type OfferVariantViewProps = {
   onCommit: (exchangeId: string, txHash: string) => void;
   onExchangePolicyClick: () => void;
@@ -55,7 +59,6 @@ export type OfferVariantViewProps = {
   allVariants: VariantV1[];
   showBosonLogo?: boolean;
   fairExchangePolicyRules: string;
-  defaultDisputeResolverId: string;
   disableVariationsSelects?: boolean;
 };
 
@@ -76,33 +79,11 @@ export function OfferVariantView({
   onLicenseAgreementClick,
   onPurchaseOverview,
   onViewFullDescription,
-  fairExchangePolicyRules,
-  defaultDisputeResolverId
+  fairExchangePolicyRules
 }: OfferVariantViewProps) {
   const [isCommitting, setIsComitting] = useState(false);
   const { offer } = selectedVariant;
-  const {
-    data: sellers,
-    isLoading,
-    isError
-  } = useSellers(
-    {
-      id: offer?.seller.id,
-      includeFunds: true
-    },
-    {
-      enabled: !!offer?.seller.id
-    }
-  );
 
-  const sellerAvailableDeposit = sellers?.[0]?.funds?.find(
-    (fund) => fund.token.address === offer?.exchangeToken.address
-  )?.availableAmount;
-  const offerRequiredDeposit = Number(offer?.sellerDeposit || 0);
-  const hasSellerEnoughFunds =
-    offerRequiredDeposit > 0
-      ? Number(sellerAvailableDeposit) >= offerRequiredDeposit
-      : true;
   const { offerImg, animationUrl, images } = offer
     ? getOfferDetails(offer)
     : ({} as ReturnType<typeof getOfferDetails>);
@@ -111,16 +92,7 @@ export function OfferVariantView({
       isTruthy
     );
   }, [offerImg, images]);
-  const {
-    store: { tokens: defaultTokens }
-  } = useConvertionRate();
 
-  const exchangePolicyCheckResult = useCheckExchangePolicy({
-    offerId: offer.id,
-    fairExchangePolicyRules,
-    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
-    defaultTokens: defaultTokens || []
-  });
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -146,14 +118,8 @@ export function OfferVariantView({
           </Typography>
           <WaveLoader />
         </Grid>
-      ) : isLoading ? (
-        <Loading />
       ) : !offer ? (
         <div data-testid="notFound">This offer does not exist</div>
-      ) : isError ? (
-        <div data-testid="errorOffer">
-          There has been an error, please try again later...
-        </div>
       ) : (
         <GridContainer
           itemsPerRow={{
@@ -184,7 +150,10 @@ export function OfferVariantView({
               />
             </ImageWrapper>
           </ImageAndSellerIdContainer>
-          <Grid flexDirection="column" justifyContent="flex-start">
+          <VariationsAndWhiteWidget
+            flexDirection="column"
+            justifyContent="flex-start"
+          >
             {hasVariations && (
               <ResponsiveVariationSelects
                 selectedVariant={selectedVariant}
@@ -193,10 +162,10 @@ export function OfferVariantView({
               />
             )}
 
-            <DetailView
-              showBosonLogo={showBosonLogo}
+            <DetailViewWithProvider
+              showBosonLogo={showBosonLogo ?? false}
               // disableVariationsSelects={disableVariationsSelects}
-              hasSellerEnoughFunds={hasSellerEnoughFunds}
+              // hasSellerEnoughFunds={hasSellerEnoughFunds}
               selectedVariant={selectedVariant}
               // allVariants={allVariants}
               onExchangePolicyClick={onExchangePolicyClick}
@@ -209,9 +178,8 @@ export function OfferVariantView({
               onPurchaseOverview={onPurchaseOverview}
               hasMultipleVariants={false}
               isPreview={false}
-              exchangePolicyCheckResult={exchangePolicyCheckResult}
             />
-          </Grid>
+          </VariationsAndWhiteWidget>
         </GridContainer>
       )}
     </>

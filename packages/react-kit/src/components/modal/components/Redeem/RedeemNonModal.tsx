@@ -655,7 +655,6 @@ function RedeemNonModal({
                   onLicenseAgreementClick={() =>
                     setActiveStep(ActiveStep.LICENSE_AGREEMENT)
                   }
-                  exchangePolicyCheckResult={exchangePolicyCheckResult}
                 />
               ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
                 <ContractualAgreementView

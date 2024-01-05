@@ -3,7 +3,6 @@ import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { ArrowLeft } from "phosphor-react";
 import { Exchange } from "../../../../../types/exchange";
-import { offers } from "@bosonprotocol/core-sdk";
 import OfferPolicyDetails, {
   OfferPolicyDetailsProps
 } from "../../../../offerPolicy/OfferPolicyDetails";
@@ -16,15 +15,13 @@ interface Props {
   offer: Exchange["offer"] | null | undefined;
   onContractualAgreementClick: OfferPolicyDetailsProps["onContractualAgreementClick"];
   onLicenseAgreementClick: OfferPolicyDetailsProps["onLicenseAgreementClick"];
-  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
 export function CommitOfferPolicyView({
   onBackClick,
   offer,
   onContractualAgreementClick,
-  onLicenseAgreementClick,
-  exchangePolicyCheckResult
+  onLicenseAgreementClick
 }: Props) {
   const offerName = offer?.metadata.name || "";
   const dispatch = useNonModalContext();
@@ -55,7 +52,6 @@ export function CommitOfferPolicyView({
       {offer ? (
         <OfferPolicyDetails
           offer={offer}
-          exchangePolicyCheckResult={exchangePolicyCheckResult}
           onContractualAgreementClick={onContractualAgreementClick}
           onLicenseAgreementClick={onLicenseAgreementClick}
         />

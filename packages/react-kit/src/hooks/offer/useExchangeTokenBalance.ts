@@ -1,12 +1,7 @@
 import { subgraph } from "@bosonprotocol/core-sdk";
 import { BigNumber, ethers } from "ethers";
 
-import {
-  useAccount,
-  useBalance,
-  useChainId,
-  useSigner
-} from "../connection/connection";
+import { useAccount, useBalance, useChainId } from "../connection/connection";
 import { useConfigContext } from "../../components/config/ConfigContext";
 import { useErc20Balance } from "../contracts";
 

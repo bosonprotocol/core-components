@@ -109,7 +109,6 @@ function CommitNonModal({
     store: { tokens: defaultTokens }
   } = useConvertionRate();
   const { config: coreConfig } = useConfigContext();
-  const defaultDisputeResolverId = coreConfig?.defaultDisputeResolverId;
 
   const [{ currentStep }, setStep] = useState<{
     previousStep: ActiveStep[];
@@ -140,12 +139,7 @@ function CommitNonModal({
   }, []);
   const { address } = useAccount();
   const disconnect = useDisconnect();
-  const exchangePolicyCheckResult = useCheckExchangePolicy({
-    offerId: selectedVariant?.offer?.id,
-    fairExchangePolicyRules,
-    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
-    defaultTokens: defaultTokens || []
-  });
+
   if (
     forcedAccount &&
     address &&
@@ -199,7 +193,6 @@ function CommitNonModal({
             setExchangeInfo({ exchangeId, txHash });
           }}
           fairExchangePolicyRules={fairExchangePolicyRules}
-          defaultDisputeResolverId={defaultDisputeResolverId}
         />
       ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION ? (
         <OfferFullDescriptionView
@@ -218,7 +211,6 @@ function CommitNonModal({
           onLicenseAgreementClick={() =>
             setActiveStep(ActiveStep.LICENSE_AGREEMENT)
           }
-          exchangePolicyCheckResult={exchangePolicyCheckResult}
         />
       ) : currentStep === ActiveStep.CONTRACTUAL_AGREEMENT ? (
         <ContractualAgreementView

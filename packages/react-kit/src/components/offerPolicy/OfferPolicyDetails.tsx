@@ -11,6 +11,8 @@ import {
   WarningCircle
 } from "phosphor-react";
 import DetailTable from "../modal/components/common/detail/DetailTable";
+import useCheckExchangePolicy from "../../hooks/useCheckExchangePolicy";
+import { useConfigContext } from "../config/ConfigContext";
 
 const colors = theme.colors.light;
 const NoPaddingButton = styled(ThemedButton)`
@@ -20,17 +22,24 @@ const NoPaddingButton = styled(ThemedButton)`
 
 export interface OfferPolicyDetailsProps {
   offer: subgraph.OfferFieldsFragment;
-  exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
   onContractualAgreementClick: () => void;
   onLicenseAgreementClick: () => void;
 }
 
 export default function OfferPolicyDetails({
   offer: offerData,
-  exchangePolicyCheckResult,
   onContractualAgreementClick,
   onLicenseAgreementClick
 }: OfferPolicyDetailsProps) {
+  const config = useConfigContext();
+
+  const exchangePolicyCheckResult = useCheckExchangePolicy({
+    offerId: offerData.id,
+    defaultDisputeResolverId:
+      config.config.defaultDisputeResolverId || "unknown",
+    defaultTokens: config.config.defaultTokens ?? [], // TODO: check default tokens list
+    fairExchangePolicyRules: config.fairExchangePolicyRules
+  });
   const isExchangePolicyValid =
     exchangePolicyCheckResult &&
     (exchangePolicyCheckResult.isValid ||

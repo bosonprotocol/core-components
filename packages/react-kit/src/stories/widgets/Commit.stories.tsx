@@ -35,7 +35,7 @@ Commit.args = {
   defaultCurrencyTicker: "USD",
   contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
   fairExchangePolicyRules:
-    "ipfs://QmV3Wy2wmrFdEXzhyhvvaW25Q8w2wTd2UypFVyhwsdBE8T",
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
   ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
   ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
   ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,

@@ -32,14 +32,13 @@ export function useAccount() {
 export function useChainId(): number | undefined {
   const externalSigner = useExternalSigner();
   const { data: externalSignerChainId } = useExternalSignerChainId();
-  const { chain } = useNetwork();
   const magicChainId = useMagicChainId();
   const isMagicLoggedIn = useIsMagicLoggedIn();
   const chainIdToReturn = externalSigner
     ? externalSignerChainId
     : isMagicLoggedIn
     ? magicChainId
-    : chain?.id;
+    : useNetwork().chain?.id;
   return chainIdToReturn;
 }
 

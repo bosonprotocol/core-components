@@ -45,6 +45,7 @@ export * from "./theme";
 export * from "./components/magicLink/Login";
 export * from "./components/magicLink/MagicContext";
 export * from "./components/magicLink/UserContext";
+export * from "./components/modal/components/Commit/DetailView/ExternalDetailView";
 export * from "./lib/magicLink/logout";
 export * from "./lib/magicLink/provider";
 export * from "./lib/const/networks";

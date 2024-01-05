@@ -507,6 +507,22 @@ export const WidgetButtonWrapper = styled(Grid)`
   }
 `;
 
+export const BosonExclusiveContainer = styled.div`
+  && {
+    position: absolute;
+    bottom: 0;
+    padding: 0.25rem 1rem;
+    background-color: ${colors.black};
+    color: ${colors.white};
+    width: auto;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    border-radius: 1.0625rem 1.0625rem 0rem 0rem;
+  }
+`;
+
 export const BaseWidget = styled.div`
   container-type: inline-size;
   position: relative;
@@ -531,10 +547,6 @@ export const BaseWidget = styled.div`
 
   > div {
     width: 100%;
-  }
-
-  ${breakpoint.s} {
-    max-width: 550px;
   }
 `;
 
