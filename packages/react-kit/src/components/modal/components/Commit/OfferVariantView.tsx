@@ -1,4 +1,4 @@
-import React, { ElementRef, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { VariantV1 } from "../../../../types/variants";
 import { theme } from "../../../../theme";
@@ -137,7 +137,6 @@ export function OfferVariantView({
     });
   }, [dispatch, isCommitting, offer.metadata.name]);
   const hasVariations = !!selectedVariant.variations?.length;
-  const portalRef = useRef<ElementRef<"div">>(null);
   return (
     <>
       {isCommitting ? (
@@ -196,13 +195,10 @@ export function OfferVariantView({
 
             <DetailView
               showBosonLogo={showBosonLogo}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              ref={portalRef}
-              disableVariationsSelects={disableVariationsSelects}
+              // disableVariationsSelects={disableVariationsSelects}
               hasSellerEnoughFunds={hasSellerEnoughFunds}
               selectedVariant={selectedVariant}
-              allVariants={allVariants}
+              // allVariants={allVariants}
               onExchangePolicyClick={onExchangePolicyClick}
               onLicenseAgreementClick={onLicenseAgreementClick}
               onCommit={(...args) => {

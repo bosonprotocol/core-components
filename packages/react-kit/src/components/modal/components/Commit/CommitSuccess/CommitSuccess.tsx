@@ -52,7 +52,7 @@ export function CommitSuccess({ onHouseClick, exchangeId, commitHash }: Props) {
     dispatch({
       payload: {
         headerComponent: (
-          <Grid>
+          <Grid style={{ flex: "1 1" }}>
             <House
               onClick={onHouseClick}
               size={32}

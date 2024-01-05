@@ -316,8 +316,8 @@ const Widget = styled(BaseWidget)`
 
 interface IDetailWidget {
   selectedVariant: VariantV1;
-  allVariants: VariantV1[];
-  disableVariationsSelects?: boolean;
+  // allVariants: VariantV1[];
+  // disableVariationsSelects?: boolean;
   hasSellerEnoughFunds: boolean;
   isPreview?: boolean;
   hasMultipleVariants?: boolean;
@@ -330,12 +330,12 @@ interface IDetailWidget {
   exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 }
 
-const DetailView: React.FC<IDetailWidget> = forwardRef(
+const DetailView = forwardRef<ElementRef<"div">, IDetailWidget>(
   (
     {
       selectedVariant,
-      allVariants,
-      disableVariationsSelects,
+      // allVariants,
+      // disableVariationsSelects,
       showBosonLogo,
       hasSellerEnoughFunds,
       isPreview = false,
@@ -879,7 +879,7 @@ export default function DetailViewWithPortal(props: IDetailWidget) {
         ref={portalRef}
         style={{ width: "100%", height: "3rem", position: "relative" }}
       />
-      <DetailView {...props} />
+      <DetailView {...props} ref={portalRef} />
     </Grid>
   );
 }
