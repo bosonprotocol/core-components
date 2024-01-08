@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { theme } from "../../../../../theme";
 import SellerID from "../../../../avatar/SellerID";
 import Grid from "../../../../ui/Grid";
-import ThemedButton from "../../../../ui/ThemedButton";
-import Typography from "../../../../ui/Typography";
 import { Offer } from "../../../../../types/offer";
 
 const colors = theme.colors.light;
@@ -13,10 +11,11 @@ const colors = theme.colors.light;
 const Container = styled(Grid)`
   background: ${colors.white};
   padding: 1rem;
+  flex-direction: column;
   .seller-id {
-    flex: 1 1 50%;
     * {
       font-size: 1rem;
+      white-space: nowrap;
     }
     img.avatar {
       width: 1.5rem;
@@ -24,11 +23,23 @@ const Container = styled(Grid)`
     }
   }
   .description {
-    flex: 1 1 50%;
-    padding: 0 !important;
-    [data-child-wrapper-button] {
-      justify-content: flex-end;
+    color: ${colors.accent};
+    font-weight: 600;
+    font-size: 0.875rem;
+    justify-content: flex-end;
+    gap: 0.7344rem;
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background: ${colors.border};
+      cursor: pointer;
     }
+  }
+  @container (width > 300px) {
+    flex-direction: row;
   }
 `;
 
@@ -43,7 +54,7 @@ const StyledTextAlignLeft = styled(TextAlignLeft)`
 `;
 export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
   return (
-    <Container>
+    <Container flex="1" gap="1rem">
       <SellerID
         offer={offer}
         buyerOrSeller={offer?.seller}
@@ -51,23 +62,10 @@ export function SellerAndDescription({ offer, onViewFullDescription }: Props) {
         withProfileImage
         className="seller-id"
       />
-      <ThemedButton
-        className="description"
-        themeVal="blankSecondary"
-        style={{ margin: "1rem" }}
-        onClick={onViewFullDescription}
-      >
-        <Typography
-          color={colors.accent}
-          fontWeight="600"
-          $fontSize="0.875rem"
-          alignItems="center"
-          gap="0.7344rem"
-        >
-          <span style={{ textAlign: "right" }}>View full description</span>
-          <StyledTextAlignLeft size={30} color={colors.accent} />
-        </Typography>
-      </ThemedButton>
+      <div onClick={onViewFullDescription} className="description">
+        <span style={{ textAlign: "right" }}>View full offer description</span>
+        <StyledTextAlignLeft size={30} color={colors.accent} />
+      </div>
     </Container>
   );
 }

@@ -56,23 +56,6 @@ const CommitButtonWrapper = styled.div<{
   }
 `;
 const containerBreakpoint = "400px";
-const CTAsGrid = styled(Grid)`
-  .show-in-larger-view {
-    display: none;
-  }
-  .show-in-smaller-view {
-    display: block;
-  }
-  @container (width > ${containerBreakpoint}) {
-    .show-in-larger-view {
-      display: block;
-    }
-    .show-in-smaller-view {
-      display: none;
-    }
-  }
-`;
-
 const CommitWrapper = styled(Grid)`
   flex-direction: column;
   row-gap: 0.5rem;
@@ -87,9 +70,6 @@ const CommitWrapper = styled(Grid)`
   }
 `;
 
-const StyledRedeemButton = styled(RedeemButton)`
-  width: 100%;
-`;
 export type DetailViewWithCTAsProps = Omit<
   DetailViewProps & {
     onLicenseAgreementClick: () => void;
@@ -190,17 +170,6 @@ export default function InnerDetailViewWithCTAs(
         txHash: hash
       });
       onCommitting(hash);
-      // TODO: handle pending transactions
-      // addPendingTransaction({
-      //   type: subgraph.EventType.BuyerCommitted,
-      //   hash,
-      //   isMetaTx,
-      //   accountType: "Buyer",
-      //   offerId: offer.id,
-      //   offer: {
-      //     id: offer.id
-      //   }
-      // });
     }
   };
   const onCommitSuccess = async (
@@ -243,8 +212,6 @@ export default function InnerDetailViewWithCTAs(
       ));
     }
     setCommitType(null);
-    // TODO: handle pending transactions
-    // removePendingTransaction("offerId", offer.id);
   };
   const onCommitError = async (
     error: Error,
@@ -266,13 +233,11 @@ export default function InnerDetailViewWithCTAs(
       });
     }
     setCommitType(null);
-    // TODO: handle pending transactions
-    // removePendingTransaction("offerId", offer.id);
   };
 
   return (
     <InnerDetailViewWithPortal {...props}>
-      <CTAsGrid flexDirection="column" alignItems="center" margin="1.5rem 0">
+      <Grid flexDirection="column" alignItems="center" margin="1.5rem 0">
         <CommitWrapper justifyContent="space-between">
           <Grid flexDirection="column" alignItems="center">
             <CommitButtonWrapper
@@ -324,9 +289,9 @@ export default function InnerDetailViewWithCTAs(
               )}
             </CommitButtonWrapper>
             <Typography
-              className="show-in-smaller-view"
               $fontSize="0.8rem"
               marginTop="0.25rem"
+              style={{ display: "block" }}
             >
               By proceeding to Commit, I agree to the{" "}
               <span
@@ -344,41 +309,8 @@ export default function InnerDetailViewWithCTAs(
               .
             </Typography>
           </Grid>
-          <StyledRedeemButton
-            coreSdkConfig={{
-              envName: protocolConfig.envName,
-              configId: protocolConfig.configId,
-              web3Provider: signer?.provider as Provider,
-              metaTx: protocolConfig.metaTx
-            }}
-            disabled
-            withBosonStyle
-            exchangeId="0"
-            extraInfo="Step 2/2"
-            variant="primaryFill"
-          />
         </CommitWrapper>
-        <Typography
-          className="show-in-larger-view"
-          $fontSize="0.8rem"
-          marginTop="0.25rem"
-        >
-          By proceeding to Commit, I agree to the{" "}
-          <span
-            style={{
-              fontSize: "inherit",
-              cursor: "pointer",
-              textDecoration: "underline"
-            }}
-            onClick={() => {
-              onLicenseAgreementClick();
-            }}
-          >
-            rNFT Terms
-          </span>
-          .
-        </Typography>
-      </CTAsGrid>
+      </Grid>
     </InnerDetailViewWithPortal>
   );
 }

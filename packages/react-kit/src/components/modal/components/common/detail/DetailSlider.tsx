@@ -1,7 +1,6 @@
 import "@glidejs/glide/dist/css/glide.core.min.css";
 
 import Glide from "@glidejs/glide";
-import { CaretLeft, CaretRight } from "phosphor-react";
 import React, {
   ReactNode,
   forwardRef,
@@ -11,15 +10,15 @@ import React, {
   useRef
 } from "react";
 
-import { GlideSlide, GlideWrapper } from "./Detail.style";
-import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
-import Grid from "../../../../ui/Grid";
-import ThemedButton from "../../../../ui/ThemedButton";
-import IpfsImage from "../../../../ui/IpfsImage";
-import { zIndex } from "../../../../ui/zIndex";
-import Video from "../../../../ui/Video";
-import { theme } from "../../../../../theme";
 import styled from "styled-components";
+import { breakpointNumbers } from "../../../../../lib/ui/breakpoint";
+import { theme } from "../../../../../theme";
+import Grid from "../../../../ui/Grid";
+import IpfsImage from "../../../../ui/IpfsImage";
+import ThemedButton from "../../../../ui/ThemedButton";
+import Video from "../../../../ui/Video";
+import { zIndex } from "../../../../ui/zIndex";
+import { GlideSlide } from "./Detail.style";
 
 const colors = theme.colors.light;
 
@@ -69,22 +68,7 @@ const DivChildren = forwardRef(
     </div>
   )
 );
-const GlideWrapperChildren = forwardRef(
-  (
-    {
-      children,
-      ...rest
-    }: {
-      children: ReactNode;
-      className: string;
-    },
-    ref
-  ) => (
-    <GlideWrapper {...rest} ref={ref as React.LegacyRef<HTMLDivElement>}>
-      {children}
-    </GlideWrapper>
-  )
-);
+
 export default function DetailSlider({
   animationUrl,
   images,
@@ -128,10 +112,9 @@ export default function DetailSlider({
   if (media.length === 0) {
     return null;
   }
-  const Wrapper = arrowsAbove ? DivChildren : GlideWrapperChildren;
   return (
     <div style={{ maxWidth: "100%" }}>
-      <Wrapper className="glide" ref={ref}>
+      <DivChildren className="glide" ref={ref}>
         <Grid
           style={
             arrowsAbove
@@ -149,10 +132,56 @@ export default function DetailSlider({
             marginBottom="1rem"
           >
             <ArrowButton themeVal="blank" onClick={() => handleSlider("<")}>
-              <CaretLeft size={32} />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <polyline
+                  points="160 208 80 128 160 48"
+                  fill="none"
+                  stroke={colors.black}
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="20"
+                ></polyline>
+                <polyline
+                  points="160 208 80 128 160 48"
+                  fill="none"
+                  stroke={colors.white}
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="15"
+                ></polyline>
+              </svg>
             </ArrowButton>
             <ArrowButton themeVal="blank" onClick={() => handleSlider(">")}>
-              <CaretRight size={32} />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 256 256"
+                stroke-width="16"
+              >
+                <polyline
+                  points="96 48 176 128 96 208"
+                  fill="none"
+                  stroke={colors.black}
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="20"
+                ></polyline>
+                <polyline
+                  points="96 48 176 128 96 208"
+                  fill="none"
+                  stroke={colors.white}
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="15"
+                ></polyline>
+              </svg>
             </ArrowButton>
           </Grid>
         </Grid>
@@ -190,7 +219,7 @@ export default function DetailSlider({
             ))}
           </GlideSlides>
         </div>
-      </Wrapper>
+      </DivChildren>
     </div>
   );
 }

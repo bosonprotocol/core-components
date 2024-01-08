@@ -1,35 +1,63 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { VariantV1 } from "../../../../types/variants";
-import { theme } from "../../../../theme";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { isTruthy } from "../../../../types/helpers";
-import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
-import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
-import { useNonModalContext } from "../../nonModal/NonModal";
-import Grid from "../../../ui/Grid";
-import DetailSlider from "../common/detail/DetailSlider";
-import GridContainer from "../../../ui/GridContainer";
-import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { breakpoint } from "../../../../lib/ui/breakpoint";
-import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
+import { theme } from "../../../../theme";
+import { isTruthy } from "../../../../types/helpers";
+import { VariantV1 } from "../../../../types/variants";
+import Grid from "../../../ui/Grid";
+import GridContainer from "../../../ui/GridContainer";
 import Typography from "../../../ui/Typography";
+import { WaveLoader } from "../../../ui/loading/WaveLoader/WaveLoader";
+import { useNonModalContext } from "../../nonModal/NonModal";
 import VariationSelects from "../common/VariationSelects";
+import DetailSlider from "../common/detail/DetailSlider";
+import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
 
 const colors = theme.colors.light;
+const selectWidth = "10rem";
 const ResponsiveVariationSelects = styled(VariationSelects)`
   container-type: inline-size;
   z-index: calc(var(--wcm-z-index) + 1);
   width: 100%;
-  [data-grid] {
-    flex-direction: column;
-    @container (width > 300px) {
-      flex-direction: row;
+  && {
+    [data-grid] {
+      [class*="container"] {
+        width: 100%;
+      }
+      [class*="control"] {
+        width: 100%;
+      }
+      flex-direction: column;
+      @container (width > 300px) {
+        justify-content: flex-start;
+        flex-direction: row;
+      }
+      @container (350px < width) {
+        [class*="container"] {
+          width: auto;
+        }
+        [class*="control"] {
+          width: auto;
+        }
+      }
     }
+  }
+
+  [class*="control"] {
+    background-color: ${colors.white};
+    border-color: ${colors.white};
+    max-width: 100%;
+    width: ${selectWidth};
+  }
+  [class*="menu"] {
+    max-width: 100%;
+    width: ${selectWidth};
   }
 `;
 const ImageWrapper = styled.div`
+  container-type: inline-size;
   position: relative;
   max-width: 35rem !important;
   min-width: 50%;
@@ -164,10 +192,7 @@ export function OfferVariantView({
 
             <DetailViewWithProvider
               showBosonLogo={showBosonLogo ?? false}
-              // disableVariationsSelects={disableVariationsSelects}
-              // hasSellerEnoughFunds={hasSellerEnoughFunds}
               selectedVariant={selectedVariant}
-              // allVariants={allVariants}
               onExchangePolicyClick={onExchangePolicyClick}
               onLicenseAgreementClick={onLicenseAgreementClick}
               onCommit={(...args) => {

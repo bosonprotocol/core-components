@@ -8,6 +8,7 @@ import {
   Cube,
   Info,
   Lock,
+  LockOpen,
   WarningCircle
 } from "phosphor-react";
 import React, {
@@ -474,7 +475,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, DetailViewProps>(
         {offer.condition && (
           <DetailsSummary
             summaryText="Token Gated Offer"
-            icon={<Lock size={16} />}
+            icon={isConditionMet ? <LockOpen size={16} /> : <Lock size={16} />}
             onSetOpen={(open) => {
               if (open && closeDetailsRef.current) {
                 setDetailsOpen(false);
