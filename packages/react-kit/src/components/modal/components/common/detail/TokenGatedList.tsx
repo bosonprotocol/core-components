@@ -127,7 +127,6 @@ export const TokenGatedList = ({
           <Image src={sellerAvatar} />
         </TokenIcon>
       )}
-      {/* <Grid gap="1rem"> */}
       {condition.tokenType === TokenType.FungibleToken ? (
         <>
           <div>{condition.threshold}x</div> {tokenInfo.symbol} Tokens
@@ -156,7 +155,6 @@ export const TokenGatedList = ({
       ) : (
         <></>
       )}
-      {/* </Grid> */}
     </Grid>
   );
 };

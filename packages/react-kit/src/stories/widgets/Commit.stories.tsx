@@ -127,3 +127,38 @@ CommitWithColorAndSizeVariations.args = {
 };
 
 CommitWithColorAndSizeVariations.decorators = [(Story) => wrapper(Story)];
+
+export const CommitTokenGated1155: ComponentStory<typeof CommitWidget> =
+  Template.bind({});
+
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+CommitTokenGated1155.args = {
+  envName,
+  configId: envConfig[0].configId,
+  walletConnectProjectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID,
+  dateFormat: "YYYY/MM/DD",
+  defaultCurrencySymbol: "$",
+  defaultCurrencyTicker: "USD",
+  contactSellerForExchangeUrl: "https://bosonapp.io/#/chat/{id}",
+  fairExchangePolicyRules:
+    "ipfs://QmX8Wnq1eWbf7pRhEDQqdAqWp17YSKXQq8ckZVe4YdqAvt",
+  ipfsGateway: process.env.STORYBOOK_DATA_IPFS_GATEWAY,
+  ipfsProjectId: process.env.STORYBOOK_DATA_IPFS_PROJECT_ID,
+  ipfsProjectSecret: process.env.STORYBOOK_DATA_IPFS_PROJECT_SECRET,
+  offerId: "",
+  defaultSelectedOfferId: "",
+  disableVariationsSelects: false,
+  productUuid: "57f5ba8-7276-d12f-6d45-6dff2afc3d", // token gated 1155
+  sellerId: "138",
+  metaTx: {
+    apiKey: process.env.STORYBOOK_DATA_META_TX_API_KEY as string,
+    apiIds: process.env.STORYBOOK_DATA_META_TX_API_IDS as string
+  },
+  closeWidgetClick: () => {
+    console.log("closeWidgetClick()");
+  },
+  forcedAccount: "",
+  showBosonLogo: false
+};
+
+CommitTokenGated1155.decorators = [(Story) => wrapper(Story)];
