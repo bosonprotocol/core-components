@@ -47,8 +47,28 @@ const GlideSlides = styled.div`
   }
 `;
 
-const ArrowButton = styled(ThemedButton)`
-  padding: 0 !important;
+const ArrowSvg = styled.svg`
+  cursor: pointer;
+  :nth-of-type(1) {
+    stroke: ${colors.black};
+    &:hover {
+      stroke: ${colors.white};
+    }
+  }
+  :nth-of-type(2) {
+    stroke: ${colors.white};
+    &:hover {
+      stroke: ${colors.black};
+    }
+  }
+  &:hover {
+    :nth-of-type(1) {
+      stroke: ${colors.white};
+    }
+    :nth-of-type(2) {
+      stroke: ${colors.black};
+    }
+  }
 `;
 
 type Direction = "<" | ">";
@@ -131,58 +151,56 @@ export default function DetailSlider({
             gap="1rem"
             marginBottom="1rem"
           >
-            <ArrowButton themeVal="blank" onClick={() => handleSlider("<")}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <polyline
-                  points="160 208 80 128 160 48"
-                  fill="none"
-                  stroke={colors.black}
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="20"
-                ></polyline>
-                <polyline
-                  points="160 208 80 128 160 48"
-                  fill="none"
-                  stroke={colors.white}
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="15"
-                ></polyline>
-              </svg>
-            </ArrowButton>
-            <ArrowButton themeVal="blank" onClick={() => handleSlider(">")}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 256 256"
-                stroke-width="16"
-              >
-                <polyline
-                  points="96 48 176 128 96 208"
-                  fill="none"
-                  stroke={colors.black}
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="20"
-                ></polyline>
-                <polyline
-                  points="96 48 176 128 96 208"
-                  fill="none"
-                  stroke={colors.white}
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="15"
-                ></polyline>
-              </svg>
-            </ArrowButton>
+            <ArrowSvg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="currentColor"
+              viewBox="0 0 256 256"
+              onClick={() => handleSlider("<")}
+            >
+              <polyline
+                points="160 208 80 128 160 48"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="20"
+                className="first-layer"
+              ></polyline>
+              <polyline
+                points="160 208 80 128 160 48"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="15"
+                className="second-layer"
+              ></polyline>
+            </ArrowSvg>
+            <ArrowSvg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 256 256"
+              stroke-width="16"
+              onClick={() => handleSlider(">")}
+            >
+              <polyline
+                points="96 48 176 128 96 208"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="20"
+                className="first-layer"
+              ></polyline>
+              <polyline
+                points="96 48 176 128 96 208"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="15"
+                className="second-layer"
+              ></polyline>
+            </ArrowSvg>
           </Grid>
         </Grid>
         <div className="glide__track" data-glide-el="track">
