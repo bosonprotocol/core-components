@@ -101,15 +101,19 @@ export const TokenGatedList = ({
   const ConditionUI = (
     <>
       {isConditionMet ? (
-        <>
-          <Check color={colors.green} size={24} />
-          {ContractButton}
-        </>
+        <Check color={colors.green} size={24} />
       ) : (
-        <>
-          <X color={colors.red} size={24} />
-          {BuyButton}
-        </>
+        <X color={colors.red} size={24} />
+      )}
+    </>
+  );
+  const ActionButton = isConditionMet ? ContractButton : BuyButton;
+  const Icon = (
+    <>
+      {sellerAvatar && (
+        <TokenIcon>
+          <Image src={sellerAvatar} />
+        </TokenIcon>
       )}
     </>
   );
@@ -117,31 +121,69 @@ export const TokenGatedList = ({
     <Grid
       padding="0 0"
       style={style}
-      justifyContent="flex-start"
+      justifyContent="space-between"
       alignItems="center"
       flexWrap="wrap"
       gap="1rem"
+      flex="0"
     >
-      {sellerAvatar && (
-        <TokenIcon>
-          <Image src={sellerAvatar} />
-        </TokenIcon>
-      )}
       {condition.tokenType === TokenType.FungibleToken ? (
         <>
-          <div>{condition.threshold}x</div> {tokenInfo.symbol} Tokens
-          {ConditionUI}
+          <Grid gap="1rem" justifyContent="flex-start">
+            {Icon}
+            <div>{condition.threshold}x</div>
+            <Grid
+              flexGrow={0}
+              flexShrink={0}
+              gap="1rem"
+              justifyContent="flex-start"
+              flex={0}
+              $width="auto"
+            >
+              <div>{tokenInfo.symbol} Tokens</div>
+              {ConditionUI}
+            </Grid>{" "}
+          </Grid>
+          {ActionButton}
         </>
       ) : condition.tokenType === TokenType.NonFungibleToken ? (
         <>
           {condition.method === EvaluationMethod.Threshold ? (
             <>
-              <div>{condition.threshold}x</div> NFTs {ConditionUI}
+              <Grid gap="1rem" justifyContent="flex-start">
+                {Icon}
+                <div>{condition.threshold}x</div>{" "}
+                <Grid
+                  flexGrow={0}
+                  flexShrink={0}
+                  gap="1rem"
+                  justifyContent="flex-start"
+                  flex={0}
+                  $width="auto"
+                >
+                  <div>NFTs</div> {ConditionUI}
+                </Grid>{" "}
+              </Grid>
+              {ActionButton}
             </>
           ) : condition.method === EvaluationMethod.TokenRange ? (
             <>
-              <div>1x</div> <Grid flexDirection="column">NFT {rangeText}</Grid>{" "}
-              {ConditionUI}
+              <Grid gap="1rem" justifyContent="flex-start">
+                {Icon}
+                <div>1x</div>{" "}
+                <Grid
+                  flexGrow={0}
+                  flexShrink={0}
+                  gap="1rem"
+                  justifyContent="flex-start"
+                  flex={0}
+                  $width="auto"
+                >
+                  <Grid flexDirection="column">NFT {rangeText}</Grid>{" "}
+                  {ConditionUI}{" "}
+                </Grid>
+              </Grid>
+              {ActionButton}
             </>
           ) : (
             <></>
@@ -149,8 +191,21 @@ export const TokenGatedList = ({
         </>
       ) : condition.tokenType === TokenType.MultiToken ? (
         <>
-          <div>{condition.threshold}x</div>{" "}
-          <Grid flexDirection="column">NFT {rangeText}</Grid> {ConditionUI}
+          <Grid gap="1rem" justifyContent="flex-start">
+            {Icon}
+            <div>{condition.threshold}x</div>{" "}
+            <Grid
+              flexGrow={0}
+              flexShrink={0}
+              gap="1rem"
+              justifyContent="flex-start"
+              flex={0}
+              $width="auto"
+            >
+              <Grid flexDirection="column">NFT {rangeText}</Grid> {ConditionUI}
+            </Grid>{" "}
+          </Grid>
+          {ActionButton}
         </>
       ) : (
         <></>
