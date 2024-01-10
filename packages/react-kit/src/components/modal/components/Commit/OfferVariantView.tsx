@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { getOfferDetails } from "../../../../lib/offer/getOfferDetails";
-import { breakpoint, breakpointNumbers } from "../../../../lib/ui/breakpoint";
+import { breakpoint } from "../../../../lib/ui/breakpoint";
 import { theme } from "../../../../theme";
 import { isTruthy } from "../../../../types/helpers";
 import { VariantV1 } from "../../../../types/variants";
@@ -21,8 +21,8 @@ import VariationSelects from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
-import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
 import { DetailViewProps } from "./DetailView/common/DetailViewCore";
+import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
 
 const colors = theme.colors.light;
 const selectWidth = "10rem";

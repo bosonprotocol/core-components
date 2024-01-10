@@ -1,8 +1,7 @@
 import "@glidejs/glide/dist/css/glide.core.min.css";
-import Glide, { Swipe, Controls } from "@glidejs/glide/dist/glide.modular.esm";
+import Glide, { Controls, Swipe } from "@glidejs/glide/dist/glide.modular.esm";
 
 import React, {
-  ElementRef,
   ReactNode,
   forwardRef,
   useEffect,

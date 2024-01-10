@@ -177,6 +177,7 @@ export function ExchangeView({
                     animationUrl={animationUrl}
                     images={allImages}
                     sliderOptions={SLIDER_OPTIONS}
+                    arrowsAbove={false}
                   />
                 )}
               </>
@@ -193,6 +194,7 @@ export function ExchangeView({
                 <VariationSelects
                   selectedVariant={variant as VariantV1}
                   variants={[variant] as VariantV1[]}
+                  setSelectedVariant={undefined}
                   disabled
                 />
               </div>
