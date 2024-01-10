@@ -59,6 +59,11 @@ const GlideSlides = styled.div<{ $highlightActive: boolean }>`
           outline-offset: -2px;
         `}
     }
+    img,
+    video {
+      object-fit: contain;
+      padding: 0.5rem;
+    }
     video {
       display: flex;
     }
