@@ -9,51 +9,49 @@ import React, {
 } from "react";
 import { useDisconnect } from "wagmi";
 import * as Yup from "yup";
-import { RedeemOfferPolicyView } from "./OfferPolicyView/RedeemOfferPolicyView";
-import { MyItems, MyItemsProps } from "./MyItems/MyItems";
-import { FormModel } from "./RedeemFormModel";
 import { Exchange } from "../../../../types/exchange";
-import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
-import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
 import {
   ConfirmationView,
   ConfirmationViewProps
 } from "./Confirmation/ConfirmationView";
+import { ContractualAgreementView } from "./ContractualAgreementView/ContractualAgreementView";
+import { LicenseAgreementView } from "./LicenseAgreementView/LicenseAgreementView";
+import { MyItems, MyItemsProps } from "./MyItems/MyItems";
+import { RedeemOfferPolicyView } from "./OfferPolicyView/RedeemOfferPolicyView";
 import RedeemFormView from "./RedeemForm/RedeemFormView";
+import { FormModel } from "./RedeemFormModel";
 
-import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
-import {
-  ExpireVoucherView,
-  ExpireVoucherViewProps
-} from "./ExchangeView/expireVoucher/ExpireVoucherView";
-import { ExchangeView, ExchangeViewProps } from "./ExchangeView/ExchangeView";
-import {
-  CancellationView,
-  CancellationViewProps
-} from "./ExchangeView/cancellation/CancellationView";
-import { ExchangeFullDescriptionView } from "./ExchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { ethers } from "ethers";
+import styled from "styled-components";
+import { useAccount } from "../../../../hooks/connection/connection";
 import { useCurrentSellers } from "../../../../hooks/useCurrentSellers";
+import { theme } from "../../../../theme";
+import { isTruthy } from "../../../../types/helpers";
 import { Loading } from "../../../Loading";
-import { ContactPreference } from "./const";
-import useCheckExchangePolicy from "../../../../hooks/useCheckExchangePolicy";
-import { useConvertionRate } from "../../../widgets/finance/convertion-rate/useConvertionRate";
-import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { useConfigContext } from "../../../config/ConfigContext";
+import Typography from "../../../ui/Typography";
 import {
   RedemptionContextProps,
   RedemptionWidgetAction,
   useRedemptionContext
 } from "../../../widgets/redemption/provider/RedemptionContext";
+import NonModal, { NonModalProps } from "../../nonModal/NonModal";
 import { BosonFooter } from "../common/BosonFooter";
-import { theme } from "../../../../theme";
-import { useAccount } from "../../../../hooks/connection/connection";
-import StepsOverview from "../common/StepsOverview/StepsOverview";
 import { PurchaseOverviewView } from "../common/StepsOverview/PurchaseOverviewView";
-import Typography from "../../../ui/Typography";
-import { isTruthy } from "../../../../types/helpers";
-import { ethers } from "ethers";
-import { subgraph } from "@bosonprotocol/core-sdk";
-import styled from "styled-components";
+import StepsOverview from "../common/StepsOverview/StepsOverview";
+import { ExchangeFullDescriptionView } from "./ExchangeView/ExchangeFullDescriptionView/ExchangeFullDescriptionView";
+import { ExchangeView, ExchangeViewProps } from "./ExchangeView/ExchangeView";
+import { RedeemSuccess } from "./ExchangeView/RedeemSuccess";
+import {
+  CancellationView,
+  CancellationViewProps
+} from "./ExchangeView/cancellation/CancellationView";
+import {
+  ExpireVoucherView,
+  ExpireVoucherViewProps
+} from "./ExchangeView/expireVoucher/ExpireVoucherView";
+import { ContactPreference } from "./const";
 
 const colors = theme.colors.light;
 const UlWithWordBreak = styled.ul`
@@ -225,7 +223,7 @@ export type RedeemNonModalProps = Pick<
   myItemsOnCancelExchange?: MyItemsProps["onCancelExchange"];
   myItemsOnRaiseDisputeClick?: MyItemsProps["onRaiseDisputeClick"];
   myItemsOnAvatarClick?: MyItemsProps["onAvatarClick"];
-  exchangeViewOnExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
+  onExchangePolicyClick?: ExchangeViewProps["onExchangePolicyClick"];
   exchangeViewOnPurchaseOverview?: ExchangeViewProps["onPurchaseOverview"];
   exchangeViewOnViewFullDescription?: ExchangeViewProps["onViewFullDescription"];
   exchangeViewOnCancelExchange?: ExchangeViewProps["onCancelExchange"];
@@ -297,7 +295,7 @@ function RedeemNonModal({
   myItemsOnCancelExchange,
   myItemsOnRaiseDisputeClick,
   myItemsOnAvatarClick,
-  exchangeViewOnExchangePolicyClick,
+  onExchangePolicyClick,
   exchangeViewOnPurchaseOverview,
   exchangeViewOnViewFullDescription,
   exchangeViewOnCancelExchange,
@@ -383,18 +381,9 @@ function RedeemNonModal({
     previousStep: getPreviousSteps(widgetAction, showRedemptionOverview),
     currentStep: getInitialStep(widgetAction, showRedemptionOverview)
   });
-  const {
-    store: { tokens: defaultTokens }
-  } = useConvertionRate();
+
   const { config: coreConfig } = useConfigContext();
   const defaultDisputeResolverId = coreConfig?.defaultDisputeResolverId;
-
-  const exchangePolicyCheckResult = useCheckExchangePolicy({
-    offerId: exchange?.offer?.id,
-    fairExchangePolicyRules,
-    defaultDisputeResolverId: defaultDisputeResolverId || "unknown",
-    defaultTokens: defaultTokens || []
-  });
 
   const setActiveStep = (newCurrentStep: ActiveStep) => {
     setStep((prev) => ({
@@ -581,7 +570,7 @@ function RedeemNonModal({
                   onNextClick={() => setActiveStep(ActiveStep.REDEEM_FORM)}
                   onExchangePolicyClick={() => {
                     setActiveStep(ActiveStep.EXCHANGE_POLICY);
-                    exchangeViewOnExchangePolicyClick?.();
+                    onExchangePolicyClick?.();
                   }}
                   onPurchaseOverview={() => {
                     setActiveStep(ActiveStep.PURCHASE_OVERVIEW);
@@ -612,6 +601,10 @@ function RedeemNonModal({
                 <ExchangeFullDescriptionView
                   onBackClick={goToPreviousStep}
                   exchange={exchange || selectedExchange || null}
+                  onExchangePolicyClick={() => {
+                    setActiveStep(ActiveStep.EXCHANGE_POLICY);
+                    onExchangePolicyClick?.();
+                  }}
                 />
               ) : currentStep === ActiveStep.EXPIRE_VOUCHER_VIEW ? (
                 <ExpireVoucherView

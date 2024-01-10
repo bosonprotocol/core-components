@@ -1,18 +1,29 @@
-import React from "react";
 import * as Sentry from "@sentry/browser";
+import React from "react";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { Spinner } from "phosphor-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useBalance } from "wagmi";
 import {
   getNumberWithDecimals,
   getNumberWithoutDecimals
 } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
 
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { Provider } from "@bosonprotocol/ethers-sdk";
+import { useSigner } from "../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 import { theme } from "../../../../theme";
+import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
+import { useEnvContext } from "../../../environment/EnvironmentContext";
 import Grid from "../../../ui/Grid";
 import Typography from "../../../ui/Typography";
 import { useModal } from "../../useModal";
@@ -22,18 +33,6 @@ import {
   InputWrapper,
   ProtocolStrong
 } from "./FinancesStyles";
-import { WithdrawFundsButton } from "../../../cta/funds/WithdrawFundsButton";
-import { Provider } from "@bosonprotocol/ethers-sdk";
-import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { useEnvContext } from "../../../environment/EnvironmentContext";
-import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { subgraph } from "@bosonprotocol/core-sdk";
-import { useAccount, useSigner } from "../../../../hooks/connection/connection";
-import {
-  extractUserFriendlyError,
-  getHasUserRejectedTx
-} from "../../../../lib/errors/transactions";
-import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
 const colors = theme.colors.light;
 
 const MaxLimitWrapper = styled.div`
@@ -70,19 +69,21 @@ export default function FinanceWithdraw({
   const [withdrawError, setWithdrawError] = useState<unknown>(null);
 
   const signer = useSigner();
-  const { address } = useAccount();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 
   const {
     balance: dataBalance,
     refetch,
     formatted
-  } = useExchangeTokenBalance({
-    address: exchangeToken,
-    decimals: tokenDecimals
-  }, {
-    enabled: true
-  });
+  } = useExchangeTokenBalance(
+    {
+      address: exchangeToken,
+      decimals: tokenDecimals
+    },
+    {
+      enabled: true
+    }
+  );
   const { showModal, hideModal } = useModal();
 
   const tokenStep = 10 ** -Number(tokenDecimals);

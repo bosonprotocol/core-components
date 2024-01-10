@@ -14,7 +14,6 @@ import VariationSelects from "../common/VariationSelects";
 import DetailSlider from "../common/detail/DetailSlider";
 import { SellerAndDescription } from "../common/detail/SellerAndDescription";
 import { DetailViewWithProvider } from "./DetailView/DetailViewWithProvider";
-import { Image } from "../../../image/Image";
 import { DetailContextProps } from "./DetailView/common/DetailViewProvider";
 
 const colors = theme.colors.light;
@@ -128,16 +127,18 @@ export function OfferVariantView({
     dispatch({
       payload: {
         headerComponent: (
-          <Grid gap="1rem" style={{ flex: "1 1" }} justifyContent="flex-start">
-            <Typography tag="h3">{offer.metadata.name || ""}</Typography>
-          </Grid>
+          <Grid
+            gap="1rem"
+            style={{ flex: "1 1" }}
+            justifyContent="flex-start"
+          />
         ),
         contentStyle: {
           background: isCommitting ? colors.white : colors.lightGrey
         }
       }
     });
-  }, [dispatch, isCommitting, offer.metadata.name]);
+  }, [dispatch, isCommitting]);
   const hasVariations = !!selectedVariant.variations?.length;
   const innerOnGetProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
@@ -189,7 +190,11 @@ export function OfferVariantView({
           <VariationsAndWhiteWidget
             flexDirection="column"
             justifyContent="flex-start"
+            alignItems="flex-start"
           >
+            <Typography tag="h3" marginTop="0" marginBottom="1rem">
+              {offer.metadata.name || ""}
+            </Typography>
             {hasVariations && (
               <ResponsiveVariationSelects
                 selectedVariant={selectedVariant}

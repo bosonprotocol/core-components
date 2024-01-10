@@ -11,7 +11,6 @@ import {
 import { Currencies } from "../../../../currencyDisplay/CurrencyDisplay";
 import { exchanges } from "@bosonprotocol/core-sdk";
 import { theme } from "../../../../../theme";
-import { useCurrentSellers } from "../../../../../hooks/useCurrentSellers";
 import { getLensProfilePictureUrl } from "../../../../../lib/lens/profile";
 import { calcPrice } from "../../../../../lib/price/prices";
 import { useIpfsContext } from "../../../../ipfs/IpfsContext";

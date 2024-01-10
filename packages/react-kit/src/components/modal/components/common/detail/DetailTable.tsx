@@ -3,7 +3,6 @@ import { Tooltip } from "../../../../tooltip/Tooltip";
 import Grid from "../../../../ui/Grid";
 import Typography from "../../../../ui/Typography";
 import { Table } from "./Detail.style";
-import styled from "styled-components";
 import { Instance } from "tippy.js";
 
 export interface Data {

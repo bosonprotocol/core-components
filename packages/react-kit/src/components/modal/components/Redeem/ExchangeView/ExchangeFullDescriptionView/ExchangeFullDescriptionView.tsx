@@ -11,9 +11,14 @@ const colors = theme.colors.light;
 interface Props {
   onBackClick: () => void;
   exchange: Exchange | null;
+  onExchangePolicyClick: () => void;
 }
 
-export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
+export function ExchangeFullDescriptionView({
+  onBackClick,
+  exchange,
+  onExchangePolicyClick
+}: Props) {
   const dispatch = useNonModalContext();
   useEffect(() => {
     dispatch({
@@ -42,7 +47,10 @@ export function ExchangeFullDescriptionView({ onBackClick, exchange }: Props) {
       {!exchange ? (
         <p>Exchange could not be retrieved</p>
       ) : (
-        <ExchangeFullDescription exchange={exchange} />
+        <ExchangeFullDescription
+          exchange={exchange}
+          onExchangePolicyClick={onExchangePolicyClick}
+        />
       )}
     </>
   );

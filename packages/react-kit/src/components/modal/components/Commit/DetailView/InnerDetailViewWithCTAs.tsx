@@ -17,7 +17,7 @@ import {
   getHasUserRejectedTx
 } from "../../../../../lib/errors/transactions";
 import { poll } from "../../../../../lib/promises/promises";
-import { RedeemButton } from "../../../../cta/exchange/RedeemButton";
+import { useConfigContext } from "../../../../config/ConfigContext";
 import { CommitButton } from "../../../../cta/offer/CommitButton";
 import SuccessTransactionToast from "../../../../toasts/SuccessTransactionToast";
 import Grid from "../../../../ui/Grid";
@@ -31,7 +31,6 @@ import { useModal } from "../../../useModal";
 import { InnerDetailViewWithPortal } from "./InnerDetailViewWithPortal";
 import { DetailViewProps } from "./common/DetailViewCore";
 import { useDetailViewContext } from "./common/DetailViewProvider";
-import { useConfigContext } from "../../../../config/ConfigContext";
 type ActionName = "approveExchangeToken" | "depositFunds" | "commit";
 
 const CommitButtonWrapper = styled.div<{

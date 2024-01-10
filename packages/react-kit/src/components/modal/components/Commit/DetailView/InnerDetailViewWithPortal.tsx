@@ -1,18 +1,55 @@
 import React, { ElementRef, useRef } from "react";
 import { DetailViewCore, DetailViewProps } from "./common/DetailViewCore";
 import Grid from "../../../../ui/Grid";
+import styled, { css } from "styled-components";
+
+const BosonExclusive = styled.div<{
+  $hasVariations: boolean;
+  $isBosonExclusive: boolean;
+}>`
+  width: 100%;
+  position: relative;
+  height: 1rem;
+  &:has(*) {
+    height: 2rem;
+  }
+  ${({ $hasVariations, $isBosonExclusive }) =>
+    $hasVariations &&
+    $isBosonExclusive &&
+    css`
+      && {
+        height: 3rem;
+      }
+    `}
+
+  ${({ $hasVariations, $isBosonExclusive }) =>
+    !$hasVariations &&
+    !$isBosonExclusive &&
+    css`
+      && {
+        height: 0;
+      }
+    `}
+`;
 
 export type DetailViewWithPortalProps = DetailViewProps;
 export function InnerDetailViewWithPortal(props: DetailViewProps) {
   const portalRef = useRef<ElementRef<"div">>(null);
+  const hasVariations = !!props.selectedVariant.variations?.length;
+  const isBosonExclusive = true;
 
   return (
     <Grid flexDirection="column">
-      <div
+      <BosonExclusive
         ref={portalRef}
-        style={{ width: "100%", height: "3rem", position: "relative" }}
+        $hasVariations={hasVariations}
+        $isBosonExclusive={isBosonExclusive}
       />
-      <DetailViewCore {...props} ref={portalRef}>
+      <DetailViewCore
+        {...props}
+        ref={portalRef}
+        isBosonExclusive={isBosonExclusive}
+      >
         {props.children}
       </DetailViewCore>
     </Grid>

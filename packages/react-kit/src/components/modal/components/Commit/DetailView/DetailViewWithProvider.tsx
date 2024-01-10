@@ -1,24 +1,24 @@
+import dayjs from "dayjs";
 import React, { useEffect, useMemo } from "react";
-import {
-  InnerDetailViewWithPortal,
-  DetailViewWithPortalProps
-} from "./InnerDetailViewWithPortal";
+import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
+import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
+import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
+import { useSellers } from "../../../../../hooks/useSellers";
+import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
+import { useConfigContext } from "../../../../config/ConfigContext";
+import Loading from "../../../../ui/loading/Loading";
 import InnerDetailViewWithCTAs, {
   DetailViewWithCTAsProps
 } from "./InnerDetailViewWithCTAs";
+import {
+  DetailViewWithPortalProps,
+  InnerDetailViewWithPortal
+} from "./InnerDetailViewWithPortal";
 import {
   DetailContextProps,
   DetailViewProvider,
   useDetailViewContext
 } from "./common/DetailViewProvider";
-import { useExchangeTokenBalance } from "../../../../../hooks/offer/useExchangeTokenBalance";
-import dayjs from "dayjs";
-import { getDateTimestamp } from "../../../../../lib/dates/getDateTimestamp";
-import useCheckTokenGatedOffer from "../../../../../hooks/tokenGated/useCheckTokenGatedOffer";
-import { useConfigContext } from "../../../../config/ConfigContext";
-import { useSellers } from "../../../../../hooks/useSellers";
-import Loading from "../../../../ui/loading/Loading";
-import useCheckExchangePolicy from "../../../../../hooks/useCheckExchangePolicy";
 
 export type DetailViewWithProviderProps = ConsumerProps &
   (DetailViewWithCTAsProps | DetailViewWithPortalProps);

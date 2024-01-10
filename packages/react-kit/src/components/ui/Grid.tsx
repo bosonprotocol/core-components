@@ -54,7 +54,7 @@ const Container = styled.div<IGrid>`
   ${({ justifySelf }) => (justifySelf ? `justify-self:${justifySelf};` : "")}
 `;
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   as?: React.ElementType;
   src?: string;
 } & IGrid &

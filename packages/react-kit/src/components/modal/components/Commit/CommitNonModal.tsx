@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAccount } from "../../../../hooks/connection/connection";
 import { useDisconnect } from "../../../../hooks/connection/useDisconnect";
 import { ReturnUseProductByUuid } from "../../../../hooks/products/useProductByUuid";
@@ -136,10 +136,10 @@ function CommitNonModal({
   }, []);
   const { address } = useAccount();
   const disconnect = useDisconnect();
-  const [providerProps, setProviderProps] = useState<DetailContextProps>();
+  const providerPropsRef = useRef<DetailContextProps>();
   const onGetDetailViewProviderProps = useCallback(
     (providerProps: DetailContextProps) => {
-      setProviderProps(providerProps);
+      providerPropsRef.current = providerProps;
     },
     []
   );
@@ -197,8 +197,9 @@ function CommitNonModal({
           }}
           onGetDetailViewProviderProps={onGetDetailViewProviderProps}
         />
-      ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION && providerProps ? (
-        <DetailViewProvider {...providerProps}>
+      ) : currentStep === ActiveStep.OFFER_FULL_DESCRIPTION &&
+        providerPropsRef.current ? (
+        <DetailViewProvider {...providerPropsRef.current}>
           <OfferFullDescriptionView
             onBackClick={goToPreviousStep}
             onExchangePolicyClick={() => {

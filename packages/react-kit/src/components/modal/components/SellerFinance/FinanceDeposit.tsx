@@ -1,12 +1,24 @@
-import React from "react";
 import * as Sentry from "@sentry/browser";
+import React from "react";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { useState } from "react";
-import { useBalance } from "wagmi";
 
+import { subgraph } from "@bosonprotocol/core-sdk";
+import { Provider } from "@bosonprotocol/ethers-sdk";
+import { Spinner } from "phosphor-react";
+import { useSigner } from "../../../../hooks/connection/connection";
+import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
+import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
+import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
+import {
+  extractUserFriendlyError,
+  getHasUserRejectedTx
+} from "../../../../lib/errors/transactions";
 import { getNumberWithoutDecimals } from "../../../../lib/numbers/numbers";
 import { poll } from "../../../../lib/promises/promises";
+import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
+import { useEnvContext } from "../../../environment/EnvironmentContext";
 import Grid from "../../../ui/Grid";
 import Typography from "../../../ui/Typography";
 import { useModal } from "../../useModal";
@@ -16,19 +28,6 @@ import {
   InputWrapper,
   ProtocolStrong
 } from "./FinancesStyles";
-import { Spinner } from "phosphor-react";
-import { Provider } from "@bosonprotocol/ethers-sdk";
-import { DepositFundsButton } from "../../../cta/funds/DepositFundsButton";
-import { useEnvContext } from "../../../environment/EnvironmentContext";
-import { useCoreSDKWithContext } from "../../../../hooks/core-sdk/useCoreSdkWithContext";
-import { useAddPendingTransactionWithContext } from "../../../../hooks/transactions/usePendingTransactionsWithContext";
-import { subgraph } from "@bosonprotocol/core-sdk";
-import { useAccount, useSigner } from "../../../../hooks/connection/connection";
-import {
-  extractUserFriendlyError,
-  getHasUserRejectedTx
-} from "../../../../lib/errors/transactions";
-import { useExchangeTokenBalance } from "../../../../hooks/offer/useExchangeTokenBalance";
 
 interface Props {
   protocolBalance: string;
@@ -62,12 +61,15 @@ export default function FinanceDeposit({
     balance: dataBalance,
     refetch,
     formatted
-  } = useExchangeTokenBalance({
-    address: exchangeToken,
-    decimals: tokenDecimals
-  }, {
-    enabled: true
-  });
+  } = useExchangeTokenBalance(
+    {
+      address: exchangeToken,
+      decimals: tokenDecimals
+    },
+    {
+      enabled: true
+    }
+  );
   const { showModal, hideModal } = useModal();
   const addPendingTransaction = useAddPendingTransactionWithContext();
 

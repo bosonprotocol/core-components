@@ -85,7 +85,9 @@ export type DetailViewProps = {
   // exchangePolicyCheckResult?: offers.CheckExchangePolicyResult;
 };
 
-export const DetailViewCore = forwardRef<ElementRef<"div">, DetailViewProps>(
+type Props = { isBosonExclusive: boolean } & DetailViewProps;
+
+export const DetailViewCore = forwardRef<ElementRef<"div">, Props>(
   (
     {
       selectedVariant,
@@ -95,6 +97,7 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, DetailViewProps>(
       showBosonLogo,
       isPreview = false,
       hasMultipleVariants,
+      isBosonExclusive,
       onExchangePolicyClick,
       onPurchaseOverview
     },
@@ -158,7 +161,6 @@ export const DetailViewCore = forwardRef<ElementRef<"div">, DetailViewProps>(
       isOfferVoided: offer.voided
     });
 
-    const isBosonExclusive = true;
     const [isDetailsOpen, setDetailsOpen] = useState<boolean>(true);
     const closeDetailsRef = useRef(true);
     return (

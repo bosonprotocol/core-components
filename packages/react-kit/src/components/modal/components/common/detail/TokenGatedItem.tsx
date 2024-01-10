@@ -93,9 +93,9 @@ export const TokenGatedItem = ({ offer, isConditionMet, style }: Props) => {
   const ConditionUI = (
     <>
       {isConditionMet ? (
-        <Check color={colors.green} size={24} />
+        <Check color={colors.green} size={24} style={{ minWidth: "24px" }} />
       ) : (
-        <X color={colors.red} size={24} />
+        <X color={colors.red} size={24} style={{ minWidth: "24px" }} />
       )}
     </>
   );

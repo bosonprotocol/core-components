@@ -5,16 +5,20 @@ import { OfferFullDescription } from "../../../common/OfferFullDescription/Offer
 
 interface ExchangeFullDescriptionProps {
   exchange: Exchange;
+  onExchangePolicyClick: () => void;
 }
 
 export const ExchangeFullDescription: React.FC<
   ExchangeFullDescriptionProps
-> = ({ exchange }) => {
+> = ({ exchange, onExchangePolicyClick }) => {
   const { offer } = exchange;
   const buyerAddress = exchange.buyer.wallet;
 
   return (
-    <OfferFullDescription offer={offer}>
+    <OfferFullDescription
+      offer={offer}
+      onExchangePolicyClick={onExchangePolicyClick}
+    >
       <DetailTransactions
         title="Transaction History (this item)"
         exchange={exchange}
