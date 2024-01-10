@@ -164,7 +164,8 @@ function exportOfferData(
     exchangeToken: offerData.offer.exchangeToken,
     disputeResolverId: offerData.disputeResolutionTerms.disputeResolverId,
     metadataUri: offerData.offer.metadataUri,
-    metadataHash: offerData.offer.metadataHash
+    metadataHash: offerData.offer.metadataHash,
+    collectionIndex: offerData.offer.collectionIndex
   };
   fs.writeFileSync(filePath, JSON.stringify(createOfferArgs, undefined, 2));
 }

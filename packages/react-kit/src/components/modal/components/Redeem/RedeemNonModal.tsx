@@ -112,7 +112,7 @@ const checkSignatures = ({
     }
     const originMessage = JSON.stringify({ origin: parentOrigin });
     const firstIndexSignatureThatDoesntMatch = sellersFromSellerIds?.findIndex(
-      ({ admin, lensOwner }, index) => {
+      ({ assistant }, index) => {
         if (!signatures?.[index]) {
           return true;
         }
@@ -120,16 +120,7 @@ const checkSignatures = ({
           .verifyMessage(originMessage, signatures[index])
           .toLowerCase();
 
-        if (
-          admin.toLowerCase() === ethers.constants.AddressZero.toLowerCase() &&
-          lensOwner?.toLowerCase?.() !== signerAddr.toLowerCase()
-        ) {
-          return true;
-        }
-        if (
-          admin.toLowerCase() !== ethers.constants.AddressZero.toLowerCase() &&
-          signerAddr.toLowerCase() !== admin.toLowerCase()
-        ) {
+        if (signerAddr.toLowerCase() !== assistant.toLowerCase()) {
           return true;
         }
         return false;
@@ -147,17 +138,10 @@ const checkSignatures = ({
           <UlWithWordBreak>
             <li>Signatures: {signatures}</li>
             <li>
-              Seller admin address is{" "}
+              Seller assistant address is{" "}
               {sellersFromSellerIds[
                 firstIndexSignatureThatDoesntMatch
-              ]?.admin.toLowerCase() ===
-              ethers.constants.AddressZero.toLowerCase()
-                ? sellersFromSellerIds[
-                    firstIndexSignatureThatDoesntMatch
-                  ]?.lensOwner?.toLowerCase()
-                : sellersFromSellerIds[
-                    firstIndexSignatureThatDoesntMatch
-                  ]?.admin?.toLowerCase()}
+              ]?.assistant?.toLowerCase()}
             </li>
             <li>
               Address that signed the message:{" "}

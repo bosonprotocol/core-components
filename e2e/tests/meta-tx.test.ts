@@ -24,7 +24,8 @@ import {
   createSeller,
   updateSellerMetaTx,
   getSellerMetadataUri,
-  createOfferWithCondition
+  createOfferWithCondition,
+  getCollectionMetadataUri
 } from "./utils";
 import { CoreSDK } from "../../packages/core-sdk/src";
 import EvaluationMethod from "../../contracts/protocol-contracts/scripts/domain/EvaluationMethod";
@@ -91,6 +92,7 @@ describe("meta-tx", () => {
         await optinTx.wait();
       }
       const metadataUri = await getSellerMetadataUri(newSellerCoreSDK);
+      const contractUri = await getCollectionMetadataUri(newSellerCoreSDK);
 
       // Random seller signs meta tx
       const { r, s, v, functionName, functionSignature } =
@@ -99,8 +101,7 @@ describe("meta-tx", () => {
             assistant: newSellerWallet.address,
             treasury: newSellerWallet.address,
             admin: newSellerWallet.address,
-            // TODO: replace with correct uri
-            contractUri: "ipfs://seller-contract",
+            contractUri,
             royaltyPercentage: "0",
             authTokenId: "0",
             authTokenType: 0,

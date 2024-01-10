@@ -39,13 +39,16 @@ export async function createOfferAndSeller(args: {
   });
 
   await Promise.all(
-    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
-      (metadataUri) =>
-        storeMetadataOnTheGraph({
-          metadataUriOrHash: metadataUri,
-          metadataStorage: args.metadataStorage,
-          theGraphStorage: args.theGraphStorage
-        })
+    [
+      args.offerToCreate.metadataUri,
+      args.sellerToCreate.metadataUri,
+      args.sellerToCreate.contractUri
+    ].map((metadataUri) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
     )
   );
 
@@ -98,13 +101,16 @@ export async function createSellerAndOfferWithCondition(args: {
   });
 
   await Promise.all(
-    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
-      (metadataUri) =>
-        storeMetadataOnTheGraph({
-          metadataUriOrHash: metadataUri,
-          metadataStorage: args.metadataStorage,
-          theGraphStorage: args.theGraphStorage
-        })
+    [
+      args.offerToCreate.metadataUri,
+      args.sellerToCreate.metadataUri,
+      args.sellerToCreate.contractUri
+    ].map((metadataUri) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
     )
   );
 
@@ -192,13 +198,16 @@ export async function createSellerAndPremintedOffer(args: {
   });
 
   await Promise.all(
-    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
-      (metadataUri) =>
-        storeMetadataOnTheGraph({
-          metadataUriOrHash: metadataUri,
-          metadataStorage: args.metadataStorage,
-          theGraphStorage: args.theGraphStorage
-        })
+    [
+      args.offerToCreate.metadataUri,
+      args.sellerToCreate.metadataUri,
+      args.sellerToCreate.contractUri
+    ].map((metadataUri) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
     )
   );
 
@@ -229,13 +238,16 @@ export async function createSellerAndPremintedOfferWithCondition(args: {
   });
 
   await Promise.all(
-    [args.offerToCreate.metadataUri, args.sellerToCreate.metadataUri].map(
-      (metadataUri) =>
-        storeMetadataOnTheGraph({
-          metadataUriOrHash: metadataUri,
-          metadataStorage: args.metadataStorage,
-          theGraphStorage: args.theGraphStorage
-        })
+    [
+      args.offerToCreate.metadataUri,
+      args.sellerToCreate.metadataUri,
+      args.sellerToCreate.contractUri
+    ].map((metadataUri) =>
+      storeMetadataOnTheGraph({
+        metadataUriOrHash: metadataUri,
+        metadataStorage: args.metadataStorage,
+        theGraphStorage: args.theGraphStorage
+      })
     )
   );
 

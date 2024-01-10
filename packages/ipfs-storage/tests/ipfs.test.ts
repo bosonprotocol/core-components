@@ -127,7 +127,9 @@ describe("#getMetadata()", () => {
         url: IPFS_URL
       })
     });
-    mockedFetch.mockResolvedValueOnce(new Response(JSON.stringify({})));
+    mockedFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ type: MetadataType.BASE }))
+    );
     const ipfsStorage = new IpfsMetadataStorage({
       url: IPFS_URL
     });

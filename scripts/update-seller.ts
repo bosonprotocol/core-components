@@ -176,7 +176,6 @@ async function main() {
     if (
       optInSigner.fields.admin ||
       optInSigner.fields.assistant ||
-      optInSigner.fields.clerk ||
       optInSigner.fields.authToken
     ) {
       console.log(

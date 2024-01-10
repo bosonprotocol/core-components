@@ -1,15 +1,20 @@
 import * as base from "./base";
 import * as productV1 from "./product-v1";
 import * as seller from "./seller";
+import * as collection from "./collection";
 
 export type AnyMetadata = base.BaseMetadata | productV1.ProductV1Metadata;
 
-export type OfferOrSellerMetadata = AnyMetadata | seller.SellerMetadata;
+export type OfferOrSellerMetadata =
+  | AnyMetadata
+  | seller.SellerMetadata
+  | collection.CollectionMetadata;
 
 export enum MetadataType {
   BASE = "BASE",
   PRODUCT_V1 = "PRODUCT_V1",
-  SELLER = "SELLER"
+  SELLER = "SELLER",
+  COLLECTION = "COLLECTION"
 }
 
 export interface MetadataStorage {
@@ -65,6 +70,11 @@ function validateMetadata(metadata: OfferOrSellerMetadata) {
         return true;
       case MetadataType.SELLER:
         seller.sellerMetadataSchema.validateSync(metadata, {
+          abortEarly: false
+        });
+        return true;
+      case MetadataType.COLLECTION:
+        collection.collectionMetadataSchema.validateSync(metadata, {
           abortEarly: false
         });
         return true;
